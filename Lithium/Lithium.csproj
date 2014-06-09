@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A4FA73C1-2527-4EF9-ACFE-3072386100DC}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Lithium</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Netron.Lithium</RootNamespace>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>doc.xml</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\ConnectionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\ShapeCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Connection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Delegates\Delegates.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\Enums.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GraphAbstract.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\Interfaces.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\DataType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\EdgeType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\GraphDataAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\GraphDataCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\GraphSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\GraphType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\NodeType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\ParentChild.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\ParentChildCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Proxy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ShapeBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Shapes\OvalShape.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Shapes\SimpleRectangle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Shapes\TextLabel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\LithiumControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Visitors\DeleteVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Visitors\ExpanderVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="LithiumControl.bmp" />
+    <EmbeddedResource Include="UI\LithiumControl.resx">
+      <DependentUpon>LithiumControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

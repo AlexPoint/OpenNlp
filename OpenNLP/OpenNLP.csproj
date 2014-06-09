@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B70185DF-81FD-4417-914F-7C90E65E7D9F}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>OpenNLP</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OpenNLP</RootNamespace>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\OpenNLP.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SharpWordNet, Version=1.0.2435.492, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharpWordNet\bin\Debug\SharpWordNet.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Chunker\ChunkerEventReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Chunker\DefaultChunkerContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Chunker\EnglishTreebankChunker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Chunker\IChunker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Chunker\IChunkerContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Chunker\MaximumEntropyChunker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Coreference\AbstractLinker.cs" />
+    <Compile Include="Tools\Coreference\DefaultLinker.cs" />
+    <Compile Include="Tools\Coreference\DiscourseElement.cs" />
+    <Compile Include="Tools\Coreference\DiscourseEntity.cs" />
+    <Compile Include="Tools\Coreference\DiscourseModel.cs" />
+    <Compile Include="Tools\Coreference\ILinker.cs" />
+    <Compile Include="Tools\Coreference\LinkerMode.cs" />
+    <Compile Include="Tools\Coreference\Mention\AbstractMentionFinder.cs" />
+    <Compile Include="Tools\Coreference\Mention\AbstractParse.cs" />
+    <Compile Include="Tools\Coreference\Mention\DefaultParse.cs" />
+    <Compile Include="Tools\Coreference\Mention\IDictionary.cs" />
+    <Compile Include="Tools\Coreference\Mention\DictionaryFactory.cs" />
+    <Compile Include="Tools\Coreference\Mention\IHeadFinder.cs" />
+    <Compile Include="Tools\Coreference\Mention\Mention.cs" />
+    <Compile Include="Tools\Coreference\Mention\MentionContext.cs" />
+    <Compile Include="Tools\Coreference\Mention\IMentionFinder.cs" />
+    <Compile Include="Tools\Coreference\Mention\IParse.cs" />
+    <Compile Include="Tools\Coreference\Mention\PennTreebankHeadFinder.cs" />
+    <Compile Include="Tools\Coreference\Mention\PennTreebankMentionFinder.cs" />
+    <Compile Include="Tools\Coreference\Mention\ShallowParseMentionFinder.cs" />
+    <Compile Include="Tools\Coreference\Mention\WordnetDictionary.cs" />
+    <Compile Include="Tools\Coreference\Resolver\AbstractResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\CommonNounResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\DefaultNonReferentialResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\DefiniteNounResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\FixedNonReferentialResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\IsAResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\MaximumEntropyResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\INonReferentialResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\PerfectResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\PluralNounResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\PluralPronounResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\ProperNounResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\IResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\ResolverMode.cs" />
+    <Compile Include="Tools\Coreference\Resolver\SingletonNonReferentialResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\SingularPronounResolver.cs" />
+    <Compile Include="Tools\Coreference\Resolver\SpeechPronounResolver.cs" />
+    <Compile Include="Tools\Coreference\Similarity\Context.cs" />
+    <Compile Include="Tools\Coreference\Similarity\Gender.cs" />
+    <Compile Include="Tools\Coreference\Similarity\GenderEnum.cs" />
+    <Compile Include="Tools\Coreference\Similarity\GenderModel.cs" />
+    <Compile Include="Tools\Coreference\Similarity\MaximumEntropyCompatibilityModel.cs" />
+    <Compile Include="Tools\Coreference\Similarity\Number.cs" />
+    <Compile Include="Tools\Coreference\Similarity\NumberEnum.cs" />
+    <Compile Include="Tools\Coreference\Similarity\NumberModel.cs" />
+    <Compile Include="Tools\Coreference\Similarity\SemanticCompatibility.cs" />
+    <Compile Include="Tools\Coreference\Similarity\SemanticEnum.cs" />
+    <Compile Include="Tools\Coreference\Similarity\SimilarityModel.cs" />
+    <Compile Include="Tools\Coreference\Similarity\ITestGenderModel.cs" />
+    <Compile Include="Tools\Coreference\Similarity\ITestNumberModel.cs" />
+    <Compile Include="Tools\Coreference\Similarity\ITestSimilarityModel.cs" />
+    <Compile Include="Tools\Coreference\Similarity\ITrainSimilarityModel.cs" />
+    <Compile Include="Tools\Coreference\TreebankLinker.cs" />
+    <Compile Include="Tools\NameFind\DefaultNameContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\NameFind\EnglishNameFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\NameFind\INameContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\NameFind\INameFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\NameFind\MaximumEntropyNameFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\NameFind\NameFinderEventReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Parser\BuildContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Parser\CheckContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Parser\ChunkContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Parser\EnglishHeadRules.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Parser\EnglishTreebankParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Parser\IHeadRules.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Parser\IParserChunker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Parser\IParserTagger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Parser\MaximumEntropyParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Parser\Parse.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Parser\ParserEventReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\PosTagger\DefaultPosContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\PosTagger\EnglishMaximumEntropyPosTagger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\PosTagger\IPosContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\PosTagger\IPosTagger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\PosTagger\MaximumEntropyPosTagger.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\PosTagger\PosEventReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\PosTagger\PosLookupList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\PosTagger\PosLookupListWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\SentenceDetect\DefaultEndOfSentenceScanner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\SentenceDetect\EnglishMaximumEntropySentenceDetector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\SentenceDetect\IEndOfSentenceScanner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\SentenceDetect\ISentenceDectector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\SentenceDetect\MaximumEntropySentenceDetector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\SentenceDetect\SentenceDetectionContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\SentenceDetect\SentenceDetectionEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\SentenceDetect\SentenceDetectionEventReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Tokenize\EnglishMaximumEntropyTokenizer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Tokenize\ITokenizer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Tokenize\MaximumEntropyTokenizer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Tokenize\TokenContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Tokenize\TokenEventReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Tokenize\TokenSpanEventReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\BeamSearch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\Cache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\CollectionEventStream.cs" />
+    <Compile Include="Tools\Util\CountedSet.cs" />
+    <Compile Include="Tools\Util\HashList.cs" />
+    <Compile Include="Tools\Util\HashSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\IBeamSearchContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\IHeap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\ListHeap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\Pair.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\ReverseListIterator.cs" />
+    <Compile Include="Tools\Util\Sequence.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\Set.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\SortedSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\Span.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\StringTokenizer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\TreeHeap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\TreeSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SharpEntropy\SharpEntropy.csproj">
+      <Project>{BF0BF8B0-1894-4EDF-BF51-F370B063797E}</Project>
+      <Name>SharpEntropy</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -329,8 +329,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SharpEntropy\SharpEntropy.csproj">
-      <Project>{BF0BF8B0-1894-4EDF-BF51-F370B063797E}</Project>
+    <ProjectReference Include="..\SharpEntropy\SharpEntropy.csproj">
+      <Project>{bf0bf8b0-1894-4edf-bf51-f370b063797e}</Project>
       <Name>SharpEntropy</Name>
     </ProjectReference>
   </ItemGroup>

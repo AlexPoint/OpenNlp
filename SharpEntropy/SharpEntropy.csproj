@@ -4,25 +4,26 @@
     <ProjectType>Local</ProjectType>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{19A1DDC0-9EE7-46D1-9EA4-3F8D274FAE3F}</ProjectGuid>
+    <ProjectGuid>{BF0BF8B0-1894-4EDF-BF51-F370B063797E}</ProjectGuid>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>App.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>ModelConverter</AssemblyName>
+    <AssemblyName>SharpEntropy</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>ModelConverter</RootNamespace>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SharpEntropy</RootNamespace>
     <StartupObject>
     </StartupObject>
     <FileUpgradeFlags>
@@ -40,8 +41,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>SharpEntropyDoc.xml</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <Optimize>false</Optimize>
@@ -84,19 +84,87 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App.ico" />
+    <Compile Include="AbstractDataIndexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converter.cs">
+    <Compile Include="BasicContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BasicEventReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ComparableEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GisModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GisTrainer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IContextGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IMaximumEntropyModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\BinaryGisModelReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\BinaryGisModelWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\GisModelReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\GisModelWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\IGisModelReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\JavaBinaryGisModelReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\JavaBinaryGisModelWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\PlainTextGisModelReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IO\PlainTextGisModelWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITrainingDataIndexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITrainingDataReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITrainingEventReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OnePassDataIndexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PatternedPredicate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PlainTextByLineDataReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TrainingEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TwoPassDataIndexer.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SharpEntropy\SharpEntropy.csproj">
-      <Project>{bf0bf8b0-1894-4edf-bf51-f370b063797e}</Project>
-      <Name>SharpEntropy</Name>
-    </ProjectReference>
+    <None Include="SharpEntropy.ndoc" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

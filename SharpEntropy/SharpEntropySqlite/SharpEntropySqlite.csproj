@@ -4,25 +4,26 @@
     <ProjectType>Local</ProjectType>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{19A1DDC0-9EE7-46D1-9EA4-3F8D274FAE3F}</ProjectGuid>
+    <ProjectGuid>{0B266E2E-A9C3-4C2C-B7BA-86F553E30F24}</ProjectGuid>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>App.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>ModelConverter</AssemblyName>
+    <AssemblyName>SharpEntropySqlite</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>ModelConverter</RootNamespace>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SharpEntropySqlite</RootNamespace>
     <StartupObject>
     </StartupObject>
     <FileUpgradeFlags>
@@ -79,22 +80,28 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.26.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SQLite.NET\bin\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App.ico" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converter.cs">
+    <Compile Include="SqliteGisModelReader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqliteGisModelWriter.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SharpEntropy\SharpEntropy.csproj">
-      <Project>{bf0bf8b0-1894-4edf-bf51-f370b063797e}</Project>
+    <ProjectReference Include="..\SharpEntropy.csproj">
+      <Project>{BF0BF8B0-1894-4EDF-BF51-F370B063797E}</Project>
       <Name>SharpEntropy</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,0 +1,1936 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SharpEntropy</name>
+    </assembly>
+    <members>
+        <member name="T:SharpEntropy.AbstractDataIndexer">
+            <summary>
+            Abstract base for DataIndexer implementations.
+            </summary>
+            <author>
+            Tom Morton
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+        </member>
+        <member name="T:SharpEntropy.ITrainingDataIndexer">
+            <summary>
+            Object that compresses events in memory and performs feature selection.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.ITrainingDataIndexer.GetContexts">
+            <summary>
+            Gets an array of context data calculated from the training data.
+            </summary>
+            <returns>
+            Array of integer arrays, each containing the context data for an event.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.ITrainingDataIndexer.GetNumTimesEventsSeen">
+            <summary>
+            Gets an array indicating how many times each event is seen.
+            </summary>
+            <returns>
+            Integer array with event frequencies.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.ITrainingDataIndexer.GetOutcomeList">
+            <summary>
+            Gets an outcome list.
+            </summary>
+            <returns>
+            Integer array of outcomes.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.ITrainingDataIndexer.GetPredicateLabels">
+            <summary>
+            Gets an array of predicate labels.
+            </summary>
+            <returns>
+            Array of predicate labels.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.ITrainingDataIndexer.GetOutcomeLabels">
+            <summary>
+            Gets an array of outcome labels.
+            </summary>
+            <returns>
+            Array of outcome labels.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.AbstractDataIndexer.GetContexts">
+            <summary>
+            Gets an array of context data calculated from the training data.
+            </summary>
+            <returns>
+            Array of integer arrays, each containing the context data for an event.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.AbstractDataIndexer.SetContexts(System.Int32[][])">
+            <summary>
+            Sets the array of context data calculated from the training data.
+            </summary>
+            <param name="newContexts">
+            Array of integer arrays, each containing the context data for an event.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.AbstractDataIndexer.GetNumTimesEventsSeen">
+            <summary>
+            Gets an array indicating how many times each event is seen.
+            </summary>
+            <returns>
+            Integer array with event frequencies.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.AbstractDataIndexer.SetNumTimesEventsSeen(System.Int32[])">
+            <summary>
+            Sets an array indicating how many times each event is seen.
+            </summary>
+            <param name="newNumTimesEventsSeen">
+            Integer array with event frequencies.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.AbstractDataIndexer.GetOutcomeList">
+            <summary>
+            Gets an outcome list.
+            </summary>
+            <returns>
+            Integer array of outcomes.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.AbstractDataIndexer.SetOutcomeList(System.Int32[])">
+            <summary>
+            Sets an outcome list.
+            </summary>
+            <param name="newOutcomeList">
+            Integer array of outcomes.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.AbstractDataIndexer.GetPredicateLabels">
+            <summary>
+            Gets an array of predicate labels.
+            </summary>
+            <returns>
+            Array of predicate labels.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.AbstractDataIndexer.SetPredicateLabels(System.String[])">
+            <summary>
+            Sets an array of predicate labels.
+            </summary>
+            <param name="newPredicateLabels">
+            Array of predicate labels.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.AbstractDataIndexer.GetOutcomeLabels">
+            <summary>
+            Gets an array of outcome labels.
+            </summary>
+            <returns>
+            Array of outcome labels.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.AbstractDataIndexer.SetOutcomeLabels(System.String[])">
+            <summary>
+            Sets an array of outcome labels.
+            </summary>
+            <param name="newOutcomeLabels">
+            Array of outcome labels.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.AbstractDataIndexer.SortAndMerge(System.Collections.Generic.List{SharpEntropy.ComparableEvent})">
+            <summary>
+            Sorts and uniques the array of comparable events.  This method
+            will alter the eventsToCompare array -- it does an in place
+            sort, followed by an in place edit to remove duplicates.
+            </summary>
+            <param name="eventsToCompare">
+            a List of <code>ComparableEvent</code> values
+            </param>
+        </member>
+        <member name="M:SharpEntropy.AbstractDataIndexer.ToIndexedStringArray(System.Collections.Generic.Dictionary{System.String,System.Int32})">
+            <summary>
+            Utility method for creating a string[] array from a dictionary whose
+            keys are labels (strings) to be stored in the array and whose
+            values are the indices (integers) at which the corresponding
+            labels should be inserted.
+            </summary>
+            <param name="labelToIndexMap">
+            a <code>Dictionary</code> value
+            </param>
+            <returns>
+            a <code>string[]</code> value
+            </returns>
+        </member>
+        <member name="T:SharpEntropy.BasicContextGenerator">
+            <summary>
+            Generate contexts for maxent decisions, assuming that the input
+            given to the GetContext() method is a String containing contextual
+            predicates separated by spaces, e.g:
+            <p>
+            cp_1 cp_2 ... cp_n
+            </p>
+            </summary>
+            <author>
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>based on BasicContextGenerator.java, $Revision: 1.2 $, $Date: 2002/04/30 08:48:35 $
+            </version>
+        </member>
+        <member name="T:SharpEntropy.IContextGenerator`1">
+            <summary> 
+            Generate contexts for maximum entropy decisions.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IContextGenerator`1.GetContext(`0)">
+            <summary>
+            Builds up the list of contextual predicates given an object of type T.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.BasicContextGenerator.GetContext(System.String)">
+            <summary>
+            Builds up the list of contextual predicates given a string.
+            </summary>
+            <param name="input">
+            String with contextual predicates separated by spaces.
+            </param>
+            <returns>String array of contextual predicates.</returns>
+        </member>
+        <member name="T:SharpEntropy.BasicEventReader">
+            <summary>
+            An object which can deliver a stream of training events assuming
+            that each event is represented as a space separated list containing
+            all the contextual predicates, with the last item being the
+            outcome, e.g.: 
+            
+            <p> cp_1 cp_2 ... cp_n outcome</p>
+            </summary>
+        </member>
+        <member name="T:SharpEntropy.ITrainingEventReader">
+            <summary>
+            An object which can deliver a stream of training events for the GIS
+            procedure (or others such as IIS if and when they are implemented).
+            TrainingEventReaders don't need to use SharpEntropy.ITrainingDataReader, but doing so
+            would provide greater flexibility for producing events from data stored in
+            different formats.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.ITrainingEventReader.ReadNextEvent">
+            <summary> 
+            Returns the next TrainingEvent object held in this TrainingEventReader.
+            </summary>
+            <returns>
+            the TrainingEvent object which is next in this TrainingEventReader
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.ITrainingEventReader.HasNext">
+            <summary> 
+            Test whether there are any TrainingEvents remaining in this TrainingEventReader.
+            </summary>
+            <returns>
+            true if this TrainingEventReader has more TrainingEvents
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.BasicEventReader.#ctor(SharpEntropy.ITrainingDataReader{System.String})">
+            <summary>
+            Constructor sets up the training event reader based on a stream of training data.
+            </summary>
+            <param name="dataReader">
+            Stream of training data.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.BasicEventReader.ReadNextEvent">
+            <summary> 
+            Returns the next Event object held in this EventReader.  Each call to ReadNextEvent advances the EventReader.
+            </summary>
+            <returns>
+            the Event object which is next in this EventReader
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.BasicEventReader.HasNext">
+            <summary> 
+            Test whether there are any Events remaining in this EventReader.
+            </summary>
+            <returns>
+            true if this EventReader has more Events
+            </returns>
+        </member>
+        <member name="T:SharpEntropy.ComparableEvent">
+            <summary>
+            A Maximum Entropy event representation which we can use to sort based on the
+            predicates indexes contained in the events.
+            </summary>
+            <author>
+             Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version> 
+            based on ComparableEvent.java, $Revision: 1.2 $, $Date: 2001/12/27 19:20:26 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.ComparableEvent.GetPredicateIndexes">
+            <summary>
+            Returns an array containing the indexes of the predicates in this event.
+            </summary>
+            <returns>
+            Integer array of predicate indexes.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.ComparableEvent.SetPredicateIndexes(System.Int32[])">
+            <summary>
+            Sets the array containing the indices of the predicates in this event.
+            </summary>
+            <param name="predicateIndexes">
+            Integer array of predicate indexes.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.ComparableEvent.#ctor(System.Int32,System.Int32[])">
+            <summary>
+            Constructor for the ComparableEvent.
+            </summary>
+            <param name="outcome">
+            The ID of the outcome for this event.
+            </param>
+            <param name="predicateIndexes">
+            Array of indexes for the predicates in this event.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.ComparableEvent.CompareTo(SharpEntropy.ComparableEvent)">
+            <summary>
+            Implementation of the IComparable interface.
+            </summary>
+            <param name="eventToCompare">
+            ComparableEvent to compare this event to.
+            </param>
+            <returns>
+            A value indicating if the compared object is smaller, greater or the same as this event.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.ComparableEvent.Equals(System.Object)">
+            <summary>
+            Tests if this event is equal to another object.
+            </summary>
+            <param name="o">
+            Object to test against.
+            </param>
+            <returns>
+            True if the objects are equal.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.ComparableEvent.GetHashCode">
+            <summary>
+            Provides a hashcode for storing events in a dictionary or hashtable.
+            </summary>
+            <returns>
+            A hashcode value.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.ComparableEvent.ToString">
+            <summary>
+            Override to provide a succint summary of the ComparableEvent object.
+            </summary>
+            <returns>
+            String representation of the ComparableEvent object.
+            </returns>
+        </member>
+        <member name="P:SharpEntropy.ComparableEvent.Outcome">
+            <summary>
+            The outcome ID of this event.
+            </summary>
+        </member>
+        <member name="P:SharpEntropy.ComparableEvent.SeenCount">
+            <summary>
+            The number of times this event
+            has been seen.
+            </summary>
+        </member>
+        <member name="T:SharpEntropy.GisModel">
+            <summary>
+            A maximum entropy model which has been trained using the Generalized
+            Iterative Scaling procedure.
+            </summary>
+            <author>
+            Tom Morton and Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on GISModel.java, $Revision: 1.13 $, $Date: 2004/06/11 20:51:44 $
+            </version>
+        </member>
+        <member name="T:SharpEntropy.IMaximumEntropyModel">
+            <summary>
+            Interface for maximum entropy models.
+            </summary>
+            <author>
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>    
+            based on MaxentModel.java, $Revision: 1.4 $, $Date: 2003/12/09 23:13:53 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.IMaximumEntropyModel.Evaluate(System.String[])">
+            <summary> 
+            Evaluates a context.
+            </summary>
+            <param name="context">
+            A list of string names of the contextual predicates
+            which are to be evaluated together.
+            </param>
+            <returns>
+            An array of the probabilities for each of the different
+            outcomes, all of which sum to 1.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.IMaximumEntropyModel.Evaluate(System.String[],System.Double[])">
+            <summary>
+            Evaluates a context.
+            </summary>
+            <param name="context">
+            A list of string names of the contextual predicates
+            which are to be evaluated together.
+            </param>
+            <param name="probabilities">
+            An array which is populated with the probabilities for each of the different
+            outcomes, all of which sum to 1.
+            </param>
+            <returns>
+            an array of the probabilities for each of the different
+            outcomes, all of which sum to 1.  The <code>probabilities</code> array is returned if it is appropiately sized. 
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.IMaximumEntropyModel.GetBestOutcome(System.Double[])">
+            <summary>
+            Simple function to return the outcome associated with the index
+            containing the highest probability in the double[].
+            </summary>
+            <param name="outcomes">
+            A <code>double[]</code> as returned by the
+            <code>Evaluate(string[] context)</code>
+            method.
+            </param>
+            <returns> 
+            the string name of the best outcome
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.IMaximumEntropyModel.GetAllOutcomes(System.Double[])">
+            <summary>
+            Return a string matching all the outcome names with all the
+            probabilities produced by the <code>eval(String[]
+            context)</code> method.
+            </summary>
+            <param name="outcomes">
+            A <code>double[]</code> as returned by the
+            <code>eval(String[] context)</code>
+            method.
+            </param>
+            <returns>
+            String containing outcome names paired with the normalized
+            probability (contained in the <code>double[] ocs</code>)
+            for each one.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.IMaximumEntropyModel.GetOutcomeName(System.Int32)">
+            <summary>
+            Gets the String name of the outcome associated with the supplied index
+            </summary>
+            <param name="index">
+            the index for which the name of the associated outcome is desired.
+            </param>
+            <returns> 
+            the String name of the outcome
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.IMaximumEntropyModel.GetOutcomeIndex(System.String)">
+            <summary>
+            Gets the index associated with the string name of the given
+            outcome.
+            </summary>
+            <param name="outcome">
+            the String name of the outcome for which the
+            index is desired
+            </param>
+            <returns>
+            the index if the given outcome label exists for this
+            model, -1 if it does not.
+            </returns>
+        </member>
+        <member name="P:SharpEntropy.IMaximumEntropyModel.OutcomeCount">
+            <summary>
+            Returns the number of outcomes for this model.
+            </summary>
+            <returns>
+            The number of outcomes.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.GisModel.#ctor(SharpEntropy.IO.IGisModelReader)">
+            <summary>
+            Constructor for a maximum entropy model trained using the
+            Generalized Iterative Scaling procedure.
+            </summary>
+            <param name="reader">
+            A reader providing the data for the model.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.GisModel.Evaluate(System.String[])">
+            <summary> 
+            Evaluates a context.
+            </summary>
+            <param name="context">
+            A list of string names of the contextual predicates
+            which are to be evaluated together.
+            </param>
+            <returns>
+            An array of the probabilities for each of the different
+            outcomes, all of which sum to 1.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.GisModel.Evaluate(System.String[],System.Double[])">
+            <summary>
+            Use this model to evaluate a context and return an array of the
+            likelihood of each outcome given that context.
+            </summary>
+            <param name="context">
+            The names of the predicates which have been observed at
+            the present decision point.
+            </param>
+            <param name="outcomeSums">
+            This is where the distribution is stored.
+            </param>
+            <returns>
+            The normalized probabilities for the outcomes given the
+            context. The indexes of the double[] are the outcome
+            ids, and the actual string representation of the
+            outcomes can be obtained from the method
+            GetOutcome(int outcomeIndex).
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.GisModel.GetBestOutcome(System.Double[])">
+            <summary>
+            Return the name of the outcome corresponding to the highest likelihood
+            in the parameter outcomes.
+            </summary>
+            <param name="outcomes">
+            A double[] as returned by the Evaluate(string[] context)
+            method.
+            </param>
+            <returns>
+            The name of the most likely outcome.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.GisModel.GetAllOutcomes(System.Double[])">
+            <summary>
+            Return a string matching all the outcome names with all the
+            probabilities produced by the <code>Evaluate(string[] context)</code>
+            method.
+            </summary>
+            <param name="outcomes">
+            A <code>double[]</code> as returned by the
+            <code>eval(String[] context)</code>
+            method.
+            </param>
+            <returns>
+            String containing outcome names paired with the normalized
+            probability (contained in the <code>double[] outcomes</code>)
+            for each one.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.GisModel.GetOutcomeName(System.Int32)">
+            <summary>
+            Return the name of an outcome corresponding to an integer ID value.
+            </summary>
+            <param name="outcomeIndex">
+            An outcome ID.
+            </param>
+            <returns>
+            The name of the outcome associated with that ID.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.GisModel.GetOutcomeIndex(System.String)">
+            <summary> 
+            Gets the index associated with the string name of the given outcome.
+            </summary>
+            <param name="outcome">
+            the string name of the outcome for which the
+            index is desired
+            </param>
+            <returns>
+            the index if the given outcome label exists for this
+            model, -1 if it does not.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.GisModel.GetPredicates">
+            <summary>
+            Provides the predicates data structure which is part of the encoding of the maxent model
+            information.  This method will usually only be needed by
+            GisModelWriters.
+            </summary>
+            <returns>
+            Dictionary containing PatternedPredicate objects.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.GisModel.GetOutcomePatterns">
+            <summary>
+            Provides the list of outcome patterns used by the predicates.  This method will usually
+            only be needed by GisModelWriters.
+            </summary>
+            <returns>
+            Array of outcome patterns.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.GisModel.GetOutcomeNames">
+            <summary>
+            Provides the outcome names data structure which is part of the encoding of the maxent model
+            information.  This method will usually only be needed by
+            GisModelWriters.
+            </summary>
+            <returns>
+            Array containing the outcome names.
+            </returns>
+        </member>
+        <member name="P:SharpEntropy.GisModel.OutcomeCount">
+            <summary>
+            Returns the number of outcomes for this model.
+            </summary>
+            <returns>
+            The number of outcomes.
+            </returns>
+        </member>
+        <member name="P:SharpEntropy.GisModel.CorrectionConstant">
+            <summary>
+            Provides the model's correction constant.  This property will usually only be needed by
+            GisModelWriters.
+            </summary>
+        </member>
+        <member name="P:SharpEntropy.GisModel.CorrectionParameter">
+            <summary>
+            Provides the model's correction parameter.  This property will usually only be needed by
+            GisModelWriters.
+            </summary>
+        </member>
+        <member name="T:SharpEntropy.GisTrainer">
+            <summary>
+            An implementation of Generalized Iterative Scaling.  The reference paper
+            for this implementation was Adwait Ratnaparkhi's tech report at the
+            University of Pennsylvania's Institute for Research in Cognitive Science,
+            and is available at <a href ="ftp://ftp.cis.upenn.edu/pub/ircs/tr/97-08.ps.Z"><code>ftp://ftp.cis.upenn.edu/pub/ircs/tr/97-08.ps.Z</code></a>. 
+            </summary>
+            <author>
+            Jason Baldridge
+            </author>
+            <author>
+             Richard J, Northedge
+            </author>
+            <version>
+            based on GISTrainer.java, $Revision: 1.15 $, $Date: 2004/06/14 20:52:41 $
+            </version>
+        </member>
+        <member name="T:SharpEntropy.IO.IGisModelReader">
+            <summary> 
+            Interface for readers of GIS models.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.IGisModelReader.GetOutcomeLabels">
+            <summary>
+            Returns the model's outcome labels as a String array.  This method should
+            usually only be accessed by GIS model writer classes via the GisModel class.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.IGisModelReader.GetOutcomePatterns">
+            <summary>
+            Returns the model's outcome patterns.  This method should
+            usually only be accessed by GIS model writer classes via the GisModel class.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.IGisModelReader.GetPredicates">
+            <summary>
+            Returns the model's predicates.  This method should
+            usually only be accessed by GIS model writer classes via the GisModel class.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.IGisModelReader.GetPredicateData(System.String,System.Int32[],System.Double[])">
+            <summary>
+            Returns model information for a predicate, given the predicate label.
+            </summary>
+            <param name="predicateLabel">
+            The predicate label to fetch information for.
+            </param>
+            <param name="featureCounts">
+            Array to be passed in to the method; it should have a length equal to the number of outcomes
+            in the model.  The method increments the count of each outcome that is active in the specified
+            predicate.
+            </param>
+            <param name="outcomeSums">
+            Array to be passed in to the method; it should have a length equal to the number of outcomes
+            in the model.  The method adds the parameter values for each of the active outcomes in the
+            predicate.
+            </param>
+        </member>
+        <member name="P:SharpEntropy.IO.IGisModelReader.CorrectionConstant">
+            <summary>
+            Returns the value of the model's correction constant.  This property should
+            usually only be accessed by GIS model writer classes via the GisModel class.
+            </summary>
+        </member>
+        <member name="P:SharpEntropy.IO.IGisModelReader.CorrectionParameter">
+            <summary>
+            Returns the value of the model's correction constant parameter.  This property should
+            usually only be accessed by GIS model writer classes via the GisModel class.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.OnTrainingProgress(SharpEntropy.TrainingProgressEventArgs)">
+            <summary>
+            Used to raise events providing messages with information
+            about training progress.
+            </summary>
+            <param name="e">
+            Contains the message with information about the progress of 
+            the training algorithm.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.#ctor">
+            <summary>
+            Creates a new <code>GisTrainer</code> instance.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.#ctor(System.Boolean)">
+            <summary>
+            Creates a new <code>GisTrainer</code> instance.
+            </summary>
+            <param name="useSlackParameter">
+            Sets whether this trainer will use slack parameters while training the model.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.#ctor(System.Double)">
+            <summary>
+            Creates a new <code>GisTrainer</code> instance.
+            </summary>
+            <param name="smoothingObservation">
+            If smoothing is in use, this value indicates the "number" of
+            times we want the trainer to imagine that it saw a feature that it
+            actually didn't see.  Defaulted to 0.1.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.#ctor(System.Boolean,System.Double)">
+            <summary>
+            Creates a new <code>GisTrainer</code> instance.
+            </summary>
+            <param name="useSlackParameter">
+            Sets whether this trainer will use slack parameters while training the model.
+            </param>
+            <param name="smoothingObservation">
+            If smoothing is in use, this value indicates the "number" of
+            times we want the trainer to imagine that it saw a feature that it
+            actually didn't see.  Defaulted to 0.1.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.TrainModel(SharpEntropy.ITrainingEventReader)">
+            <summary>
+            Train a model using the GIS algorithm.
+            </summary>
+            <param name="eventReader">
+            The ITrainingEventReader holding the data on which this model
+            will be trained.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.TrainModel(SharpEntropy.ITrainingEventReader,System.Int32,System.Int32)">
+            <summary>
+            Train a model using the GIS algorithm.
+            </summary>
+            <param name="eventReader">
+            The ITrainingEventReader holding the data on which this model
+            will be trained.
+            </param>
+            <param name="iterations">
+            The number of GIS iterations to perform.
+            </param>
+            <param name="cutoff">
+            The number of times a predicate must be seen in order
+            to be relevant for training.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.TrainModel(System.Int32,SharpEntropy.ITrainingDataIndexer)">
+            <summary>
+            Train a model using the GIS algorithm.
+            </summary>
+            <param name="iterations">
+            The number of GIS iterations to perform.
+            </param>
+            <param name="dataIndexer">
+            The data indexer used to compress events in memory.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.FindParameters(System.Int32)">
+            <summary>
+            Estimate and return the model parameters.
+            </summary>
+            <param name="iterations">
+            Number of iterations to run through.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.Evaluate(System.Int32[],System.Double[])">
+            <summary>
+            Use this model to evaluate a context and return an array of the
+            likelihood of each outcome given that context.
+            </summary>
+            <param name="context">
+            The integers of the predicates which have been
+            observed at the present decision point.
+            </param>
+            <param name="outcomeSums">
+            The normalized probabilities for the outcomes given the
+            context. The indexes of the double[] are the outcome
+            ids.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.NextIteration">
+            <summary>
+            Compute one iteration of GIS and retutn log-likelihood.
+            </summary>
+            <returns>The log-likelihood.</returns>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.ConvertPredicates">
+            <summary>
+            Convert the predicate data into the outcome pattern / patterned predicate format used by the GIS models.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.GetOutcomeLabels">
+            <summary>
+            Obtains the outcome labels for the model produced as a result of training.
+            </summary>
+            <returns>
+            Array of outcome labels.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.GetOutcomePatterns">
+            <summary>
+            Obtains the outcome patterns for the model produced as a result of training.
+            </summary>
+            <returns>
+            Array of outcome patterns.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.GetPredicates">
+            <summary>
+            Obtains the predicate data for the model produced as a result of training.
+            </summary>
+            <returns>
+            Dictionary containing PatternedPredicate objects.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.GetPredicateData(System.String,System.Int32[],System.Double[])">
+            <summary>
+            Returns trained model information for a predicate, given the predicate label.
+            </summary>
+            <param name="predicateLabel">
+            The predicate label to fetch information for.
+            </param>
+            <param name="featureCounts">
+            Array to be passed in to the method; it should have a length equal to the number of outcomes
+            in the model.  The method increments the count of each outcome that is active in the specified
+            predicate.
+            </param>
+            <param name="outcomeSums">
+            Array to be passed in to the method; it should have a length equal to the number of outcomes
+            in the model.  The method adds the parameter values for each of the active outcomes in the
+            predicate.
+            </param>
+        </member>
+        <member name="E:SharpEntropy.GisTrainer.TrainingProgress">
+            <summary>
+            Used to provide informational messages regarding the
+            progress of the training algorithm.
+            </summary>
+        </member>
+        <member name="P:SharpEntropy.GisTrainer.Smoothing">
+            <summary>
+            Sets whether this trainer will use smoothing while training the model.
+            This can improve model accuracy, though training will potentially take
+            longer and use more memory.  Model size will also be larger.
+            </summary>
+            <remarks>
+            Initial testing indicates improvements for models built on small data sets and
+            few outcomes, but performance degradation for those with large data
+            sets and lots of outcomes.
+            </remarks>
+        </member>
+        <member name="P:SharpEntropy.GisTrainer.UseSlackParameter">
+            <summary>
+            Sets whether this trainer will use slack parameters while training the model.
+            </summary>
+        </member>
+        <member name="P:SharpEntropy.GisTrainer.SmoothingObservation">
+            <summary>
+            If smoothing is in use, this value indicates the "number" of
+            times we want the trainer to imagine that it saw a feature that it
+            actually didn't see.  Defaulted to 0.1.
+            </summary>
+        </member>
+        <member name="P:SharpEntropy.GisTrainer.CorrectionConstant">
+            <summary>
+            The correction constant for the model produced as a result of training.
+            </summary>
+        </member>
+        <member name="P:SharpEntropy.GisTrainer.CorrectionParameter">
+            <summary>
+            The correction parameter for the model produced as a result of training.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.GisTrainer.OutcomePatternComparer.Compare(System.Int32[],System.Int32[])">
+            <summary>
+            Compare two outcome patterns and determines which comes first,
+            based on the outcome ids (lower outcome ids first)
+            </summary>
+            <param name="firstPattern">
+            First outcome pattern to compare.
+            </param>
+            <param name="secondPattern">
+            Second outcome pattern to compare.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="T:SharpEntropy.TrainingProgressEventArgs">
+            <summary>
+            Event arguments class for training progress events.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.TrainingProgressEventArgs.#ctor(System.String)">
+            <summary>
+            Constructor for the training progress event arguments.
+            </summary>
+            <param name="message">
+            Information message about the progress of training.
+            </param>
+        </member>
+        <member name="P:SharpEntropy.TrainingProgressEventArgs.Message">
+            <summary>
+            Information message about the progress of training.
+            </summary>
+        </member>
+        <member name="T:SharpEntropy.TrainingProgressEventHandler">
+            <summary>
+            Event handler delegate for the training progress event.
+            </summary>
+        </member>
+        <member name="T:SharpEntropy.IContextGenerator">
+            <summary> 
+            Generate contexts for maximum entropy decisions.
+            </summary>
+            <author>
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on ContextGenerator.java, $Revision: 1.1.1.1 $, $Date: 2001/10/23 14:06:53 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.IContextGenerator.GetContext(System.Object)">
+            <summary>
+            Builds up the list of contextual predicates given an object.
+            </summary>
+        </member>
+        <member name="T:SharpEntropy.IO.BinaryGisModelReader">
+            <summary>
+            A reader for GIS models stored in a binary format.  This format is not the one
+            used by the <see cref="T:SharpEntropy.IO.JavaBinaryGisModelReader">java version of MaxEnt</see>.
+            It has two main differences, designed for performance when loading the data
+            from file: first, it uses big endian data values, which is native for C#, and secondly it
+            encodes the outcome patterns and values in a more efficient manner.
+            </summary>
+            <author> 
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on BinaryGISModelReader.java, $Revision: 1.1.1.1 $, $Date: 2001/10/23 14:06:53 $
+            </version>
+        </member>
+        <member name="T:SharpEntropy.IO.GisModelReader">
+            <summary>
+            Abstract parent class for readers of GIS models.
+            </summary>
+            <author>
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on GISModelReader.java, $Revision: 1.5 $, $Date: 2004/06/11 20:51:36 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.ReadModel">
+            <summary>
+            Retrieve a model from disk.
+            
+            <p>This method delegates to worker methods for each part of this 
+            sequence.  If you are creating a reader that conforms largely to this
+            sequence but varies at one or more points, override the relevant worker
+            method(s) to achieve the required format.</p>
+            
+            <p>If you are creating a reader for a format which does not follow this
+            sequence at all, override this method and ignore the
+            other ReadX methods provided in this abstract class.</p>
+            </summary>
+            <remarks>
+            Thie method assumes that models are saved in the
+            following sequence:
+            
+            <p>GIS (model type identifier)</p>
+            <p>1. the correction constant (int)</p>
+            <p>2. the correction constant parameter (double)</p>
+            <p>3. outcomes</p>
+            <p>3a. number of outcomes (int)</p>
+            <p>3b. outcome names (string array - length specified in 3a)</p>
+            <p>4. predicates</p>
+            <p>4a. outcome patterns</p>
+            <p>4ai. number of outcome patterns (int)</p>
+            <p>4aii. outcome pattern values (each stored in a space delimited string)</p>
+            <p>4b. predicate labels</p>
+            <p>4bi. number of predicates (int)</p>
+            <p>4bii. predicate names (string array - length specified in 4bi)</p>
+            <p>4c. predicate parameters (double values)</p>
+            </remarks>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.CheckModelType">
+            <summary>
+            Checks the model file being read from begins with the sequence of characters
+            "GIS".
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.ReadCorrectionConstant">
+            <summary>
+            Reads the correction constant from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.ReadCorrectionParameter">
+            <summary>
+            Reads the correction constant parameter from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.ReadOutcomes">
+            <summary>
+            Reads the outcome names from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.ReadPredicates(System.Int32[][]@,System.Collections.Generic.Dictionary{System.String,SharpEntropy.PatternedPredicate}@)">
+            <summary>
+            Reads the predicate information from the model file, placing the data in two
+            structures - an array of outcome patterns, and a Dictionary of predicates
+            keyed by predicate name.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.ReadOutcomePatterns">
+            <summary>
+            Reads the outcome pattern information from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.ReadPredicateLabels">
+            <summary>
+            Reads the outcome labels from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.ReadParameters(System.Int32[][],System.String[])">
+            <summary>
+            Reads the predicate parameter information from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.ReadInt32">
+            <summary>
+            Implement as needed for the format the model is stored in.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.ReadDouble">
+            <summary>
+            Implement as needed for the format the model is stored in.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.ReadString">
+            <summary>
+            Implement as needed for the format the model is stored in.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.GetOutcomeLabels">
+            <summary>
+            Returns the labels for all the outcomes in the model.
+            </summary>
+            <returns>
+            String array containing outcome labels.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.GetOutcomePatterns">
+            <summary>
+            Returns the outcome patterns in the model.
+            </summary>
+            <returns>
+            Array of integer arrays containing the information for
+            each outcome pattern in the model.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.GetPredicates">
+            <summary>
+            Returns the predicates in the model.
+            </summary>
+            <returns>
+            Dictionary containing PatternedPredicate objects keyed
+            by predicate label.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelReader.GetPredicateData(System.String,System.Int32[],System.Double[])">
+            <summary>
+            Returns model information for a predicate, given the predicate label.
+            </summary>
+            <param name="predicateLabel">
+            The predicate label to fetch information for.
+            </param>
+            <param name="featureCounts">
+            Array to be passed in to the method; it should have a length equal to the number of outcomes
+            in the model.  The method increments the count of each outcome that is active in the specified
+            predicate.
+            </param>
+            <param name="outcomeSums">
+            Array to be passed in to the method; it should have a length equal to the number of outcomes
+            in the model.  The method adds the parameter values for each of the active outcomes in the
+            predicate.
+            </param>
+        </member>
+        <member name="P:SharpEntropy.IO.GisModelReader.PredicateCount">
+            <summary>
+            The number of predicates contained in the model.
+            </summary>
+        </member>
+        <member name="P:SharpEntropy.IO.GisModelReader.CorrectionConstant">
+            <summary>
+            The model's correction constant.
+            </summary>
+        </member>
+        <member name="P:SharpEntropy.IO.GisModelReader.CorrectionParameter">
+            <summary>
+            The model's correction constant parameter.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelReader.#ctor(System.IO.Stream)">
+            <summary>
+            Constructor which directly instantiates the Stream containing
+            the model contents.
+            </summary>
+            <param name="dataInputStream">
+            The Stream containing the model information.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelReader.#ctor(System.String)">
+            <summary>
+            Constructor which takes a filename and creates a reader for it. 
+            </summary>
+            <param name="fileName">
+            The full path and name of the file in which the model is stored.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelReader.ReadInt32">
+            <summary>
+            Reads a 32-bit signed integer from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelReader.ReadDouble">
+            <summary>
+            Reads a double-precision floating point number from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelReader.ReadString">
+            <summary>
+            Reads a UTF-8 encoded string from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelReader.ReadPredicates(System.Int32[][]@,System.Collections.Generic.Dictionary{System.String,SharpEntropy.PatternedPredicate}@)">
+            <summary>
+            Reads the predicate data from the file in a more efficient format to that implemented by
+            GisModelReader.
+            </summary>
+            <param name="outcomePatterns">
+            Jagged 2-dimensional array of integers that will contain the outcome patterns for the model
+            after this method is called.
+            </param>
+            <param name="predicates">
+            Dictionary that will contain the predicate information for the model
+            after this method is called.
+            </param>
+        </member>
+        <member name="T:SharpEntropy.IO.BinaryGisModelWriter">
+            <summary>
+            A writer for GIS models that saves models in a binary format. This format is not the one
+            used by the <see cref="T:SharpEntropy.IO.JavaBinaryGisModelWriter">java version of MaxEnt</see>.
+            It has two main differences, designed for performance when loading the data
+            from file: first, it uses big endian data values, which is native for C#, and secondly it
+            encodes the outcome patterns and values in a more efficient manner.
+            </summary>
+            <author> 
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on BinaryGISModelWriter.java $Revision: 1.1.1.1 $, $Date: 2001/10/23 14:06:53 $
+            </version>
+        </member>
+        <member name="T:SharpEntropy.IO.GisModelWriter">
+            <summary> Abstract parent class for GIS model writers that save data to a single
+            file.  It provides the persist method which takes care of the structure of a stored 
+            document, and requires an extending class to define precisely how the data should
+             be stored.
+            </summary>
+            <author>
+             Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on GISModelWriter.java, $Revision: 1.5 $, $Date: 2004/06/11 20:51:36 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.WriteString(System.String)">
+            <summary>
+            Implement as needed for the format the model is stored in.
+            </summary>
+            <param name="data">
+            String data to be written to storage.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.WriteInt32(System.Int32)">
+            <summary>
+            Implement as needed for the format the model is stored in.
+            </summary>
+            <param name="data">
+            Integer data to be written to storage.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.WriteDouble(System.Double)">
+            <summary>
+            Implement as needed for the format the model is stored in.
+            </summary>
+            <param name="data">
+            Double precision floating point data to be written to storage.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.GetPredicates">
+            <summary>
+            Obtains a list of the predicates in the model to be written to storage.
+            </summary>
+            <returns>
+            Array of PatternedPredicate objects containing the predicate data for the model.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.SetPredicates(SharpEntropy.PatternedPredicate[])">
+            <summary>
+            Sets the list of predicates to be written to storage.
+            </summary>
+            <param name="predicates">
+            Array of PatternedPredicate objects to be persisted.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.Persist(SharpEntropy.GisModel)">
+            <summary>
+            Writes the model to persistent storage, using the <code>writeX()</code> methods
+            provided by extending classes.
+            
+            <p>This method delegates to worker methods for each part of this 
+            sequence.  If you are creating a writer that conforms largely to this
+            sequence but varies at one or more points, override the relevant worker
+            method(s) to achieve the required format.</p>
+            
+            <p>If you are creating a writer for a format which does not follow this
+            sequence at all, override this method and ignore the
+            other WriteX methods provided in this abstract class.</p>  
+            </summary>
+            <param name="model">
+            GIS model whose data is to be persisted.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.Initialize(SharpEntropy.GisModel)">
+             <summary>
+             Organises the data available in the GIS model into a structure that is easier to
+             persist from.
+             </summary>
+             <param name="model">
+             The GIS model to be persisted. 
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.WriteModelType(System.String)">
+            <summary>
+            Writes the model type identifier at the beginning of the file.
+            </summary>
+            <param name="modelType">String identifying the model type.</param>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.WriteCorrectionConstant(System.Int32)">
+            <summary>
+            Writes the value of the correction constant
+            </summary>
+            <param name="correctionConstant">the model's correction constant value.</param>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.WriteCorrectionParameter(System.Double)">
+            <summary>
+            Writes the value of the correction constant parameter.
+            </summary>
+            <param name="correctionParameter">the model's correction constant parameter.</param>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.WriteOutcomes(System.String[])">
+            <summary>
+            Writes the outcome labels to the file.
+            </summary>
+            <param name="outcomeLabels">String array of outcome labels.</param>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.WritePredicates(SharpEntropy.GisModel)">
+            <summary>
+            Writes the predicate information to the model file.
+            </summary>
+            <param name="model">The GIS model to write the data from.</param>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.WriteOutcomePatterns(System.Int32[][])">
+            <summary>
+            Writes the outcome pattern data to the file.
+            </summary>
+            <param name="outcomePatterns">
+            Array of outcome patterns, each an integer array containing
+            the number of predicates using the pattern, and then the list of
+            outcome IDs in the pattern.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.WritePredicateNames">
+            <summary>
+            Write the names of the predicates to the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.WriteParameters">
+            <summary>
+            Writes out the parameter values for all the predicates to the model file.
+            </summary>
+        </member>
+        <member name="T:SharpEntropy.IO.GisModelWriter.OutcomePatternIndexComparer">
+            <summary>
+            Class to enable sorting PatternedPredicates into order based on the
+            outcome pattern index.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.OutcomePatternIndexComparer.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.GisModelWriter.OutcomePatternIndexComparer.Compare(SharpEntropy.PatternedPredicate,SharpEntropy.PatternedPredicate)">
+            <summary>
+            Implementation of the IComparer interface.
+            Compares two PatternedPredicate objects and returns a value indicating whether
+            one is less than, equal to or greater than the other.
+            </summary>
+            <param name="firstPredicate">
+            First object to compare.
+            </param>
+            <param name="secondPredicate">
+            Second object to compare.
+            </param>
+            <returns>
+            -1 if the first PatternedPredicate has a lower outcome pattern index;
+            1 if the second PatternedPredicate has a lower outcome pattern index;
+            0 if they both have the same outcome pattern index.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelWriter.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelWriter.Persist(SharpEntropy.GisModel,System.String)">
+            <summary>
+            Takes a GIS model and a file and
+            writes the model to that file.
+            </summary>
+            <param name="model">
+            The GisModel which is to be persisted.
+            </param>
+            <param name="fileName">
+            The full path and name of the file in which the model is to be persisted.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelWriter.Persist(SharpEntropy.GisModel,System.IO.Stream)">
+            <summary>
+            Takes a GIS model and a Stream and
+            writes the model to that Stream.
+            </summary>
+            <param name="model">
+            The GIS model which is to be persisted.
+            </param>
+            <param name="dataOutputStream">
+            The Stream which will be used to persist the model.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelWriter.WriteString(System.String)">
+            <summary>
+            Writes a UTF-8 encoded string to the model file.
+            </summary>
+            <param name="data">
+            The string data to be persisted.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelWriter.WriteInt32(System.Int32)">
+            <summary>
+            Writes a 32-bit signed integer to the model file.
+            </summary>
+            <param name="data">
+            The integer data to be persisted.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelWriter.WriteDouble(System.Double)">
+            <summary>
+            Writes a double-precision floating point number to the model file.
+            </summary>
+            <param name="data">
+            The floating point data to be persisted.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.BinaryGisModelWriter.WritePredicates(SharpEntropy.GisModel)">
+            <summary>
+            Writes the predicate data to the file in a more efficient format to that implemented by
+            GisModelWriter.
+            </summary>
+            <param name="model">
+            The GIS model containing the predicate data to be persisted.
+            </param>
+        </member>
+        <member name="T:SharpEntropy.IO.JavaBinaryGisModelReader">
+            <summary>
+            A reader for GIS models stored in the binary format produced by the java version
+            of MaxEnt.  This binary format stores data using big-endian values, which means
+            that the C# version must reverse the byte order of each value in turn, making it
+            less efficient.  Use only for compatibility with the java MaxEnt library.
+            </summary>
+            <author> 
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on BinaryGISModelReader.java, $Revision: 1.1.1.1 $, $Date: 2001/10/23 14:06:53 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.IO.JavaBinaryGisModelReader.#ctor(System.IO.Stream)">
+            <summary>
+            Constructor which directly instantiates the Stream containing
+            the model contents.
+            </summary>
+            <param name="dataInputStream">The Stream containing the model information.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.JavaBinaryGisModelReader.#ctor(System.String)">
+            <summary>
+            Constructor which takes a filename and creates a reader for it.
+            </summary>
+            <param name="fileName">The full path and name of the file in which the model is stored.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.JavaBinaryGisModelReader.ReadInt32">
+            <summary>
+            Reads a 32-bit signed integer from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.JavaBinaryGisModelReader.ReadDouble">
+            <summary>
+            Reads a double-precision floating point number from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.JavaBinaryGisModelReader.ReadString">
+            <summary>
+            Reads a UTF-8 encoded string from the model file.
+            </summary>
+        </member>
+        <member name="T:SharpEntropy.IO.JavaBinaryGisModelWriter">
+            <summary>
+            A writer for GIS models that saves models in the binary format used by the java 
+            version of MaxEnt.  This binary format stores data using big-endian values, which means
+            that the C# version must reverse the byte order of each value in turn, making it
+            less efficient.  Use only for compatibility with the java MaxEnt library.
+            </summary>
+            <author> 
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on BinaryGISModelWriter.java $Revision: 1.1.1.1 $, $Date: 2001/10/23 14:06:53 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.IO.JavaBinaryGisModelWriter.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.JavaBinaryGisModelWriter.Persist(SharpEntropy.GisModel,System.String)">
+            <summary> Takes a GisModel and a File and
+            writes the model to that file.
+            </summary>
+            <param name="model">The GisModel which is to be persisted.
+            </param>
+            <param name="fileName">The name of the file in which the model is to be persisted.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.JavaBinaryGisModelWriter.Persist(SharpEntropy.GisModel,System.IO.Stream)">
+            <summary>
+            Takes a GisModel and a Stream and writes the model to that stream.
+            </summary>
+            <param name="model">
+            The GIS model which is to be persisted.
+            </param>
+            <param name="dataOutputStream">
+            The Stream which will be used to persist the model.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.JavaBinaryGisModelWriter.WriteString(System.String)">
+            <summary>
+            Writes a UTF-8 encoded string to the model file.
+            </summary>
+            /// <param name="data">
+            The string data to be persisted.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.JavaBinaryGisModelWriter.WriteInt32(System.Int32)">
+            <summary>
+            Writes a 32-bit signed integer to the model file.
+            </summary>
+            /// <param name="data">
+            The integer data to be persisted.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.JavaBinaryGisModelWriter.WriteDouble(System.Double)">
+            <summary>
+            Writes a double-precision floating point number to the model file.
+            </summary>
+            /// <param name="data">
+            The floating point data to be persisted.
+            </param>
+        </member>
+        <member name="T:SharpEntropy.IO.PlainTextGisModelReader">
+            <summary>
+            A reader for GIS models stored in plain text format.
+            </summary>
+            <author>
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on PlainTextGISModelReader.java, $Revision: 1.1.1.1 $, $Date: 2001/10/23 14:06:53 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.IO.PlainTextGisModelReader.#ctor(System.IO.StreamReader)">
+            <summary>
+            Constructor which directly instantiates the StreamReader containing
+            the model contents.
+            </summary>
+            <param name="reader">
+            The StreamReader containing the model information.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.PlainTextGisModelReader.#ctor(System.String)">
+            <summary>
+            Constructor which takes a file and creates a reader for it. 
+            </summary>
+            <param name="fileName">
+            The full path and file name in which the model is stored.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.PlainTextGisModelReader.ReadInt32">
+            <summary>
+            Reads a 32-bit signed integer from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.PlainTextGisModelReader.ReadDouble">
+            <summary>
+            Reads a double-precision floating point number from the model file.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.PlainTextGisModelReader.ReadString">
+            <summary>
+            Reads a string from the model file.
+            </summary>
+        </member>
+        <member name="T:SharpEntropy.IO.PlainTextGisModelWriter">
+            <summary> 
+            Model writer that saves models in plain text format.
+            </summary>
+            <author>
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on PlainTextGISModelWriter.java, $Revision: 1.1.1.1 $, $Date: 2001/10/23 14:06:53 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.IO.PlainTextGisModelWriter.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:SharpEntropy.IO.PlainTextGisModelWriter.Persist(SharpEntropy.GisModel,System.String)">
+            <summary>
+            Takes a GIS model and a file and writes the model to that file.
+            </summary>
+            <param name="model">
+            The GisModel which is to be persisted.
+            </param>
+            <param name="fileName">
+            The name of the file in which the model is to be persisted.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.PlainTextGisModelWriter.Persist(SharpEntropy.GisModel,System.IO.StreamWriter)">
+            <summary>
+            Takes a GisModel and a stream and writes the model to that stream.
+            </summary>
+            <param name="model">
+            The GisModel which is to be persisted.
+            </param>
+            <param name="writer">
+            The StreamWriter which will be used to persist the model.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.PlainTextGisModelWriter.WriteString(System.String)">
+            <summary>
+            Writes a string to the model file.
+            </summary>
+            /// <param name="data">
+            The string data to be persisted.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.PlainTextGisModelWriter.WriteInt32(System.Int32)">
+            <summary>
+            Writes a 32-bit signed integer to the model file.
+            </summary>
+            <param name="data">
+            The integer data to be persisted.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.IO.PlainTextGisModelWriter.WriteDouble(System.Double)">
+            <summary>
+            Writes a double-precision floating point number to the model file.
+            </summary>
+            <param name="data">
+            The floating point data to be persisted.
+            </param>
+        </member>
+        <member name="T:SharpEntropy.ITrainingDataReader`1">
+            <summary>
+            A interface for objects which can deliver a stream of training data to be
+            supplied to an ITrainingEventReader. It is not necessary to use a ITrainingDataReader in a
+            SharpEntropy application, but it can be used to support a wider variety of formats
+            in which your training data can be held.
+            </summary>
+            <author>
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on DataStream.java, $Revision: 1.1.1.1 $, $Date: 2001/10/23 14:06:53 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.ITrainingDataReader`1.NextToken">
+            <summary> 
+            Returns the next slice of data held in this ITrainingDataReader.
+            </summary>
+            <returns>
+            the object representing the data which is next in this
+            ITrainingDataReader
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.ITrainingDataReader`1.HasNext">
+            <summary> 
+            Test whether there are any training data items remaining in this ITrainingDataReader.
+            </summary>
+            <returns>
+            true if this ITrainingDataReader has more data tokens
+            </returns>
+        </member>
+        <member name="T:SharpEntropy.OnePassDataIndexer">
+            <summary>
+            An indexer for maxent model data which handles cutoffs for uncommon
+            contextual predicates and provides a unique integer index for each of the
+            predicates.  The data structures built in the constructor of this class are
+            used by the GIS trainer.
+            </summary>
+            <author>
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on OnePassDataIndexer.java, $Revision: 1.1 $, $Date: 2003/12/13 16:41:29 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.OnePassDataIndexer.#ctor(SharpEntropy.ITrainingEventReader)">
+            <summary>
+            One argument constructor for OnePassDataIndexer which calls the two argument
+            constructor assuming no cutoff.
+            </summary>
+            <param name="eventReader">
+            An ITrainingEventReader which contains the a list of all the Events
+            seen in the training data.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.OnePassDataIndexer.#ctor(SharpEntropy.ITrainingEventReader,System.Int32)">
+            <summary> 
+            Two argument constructor for OnePassDataIndexer.
+            </summary>
+            <param name="eventReader">
+            An ITrainingEventReader which contains the a list of all the Events
+            seen in the training data.
+            </param>
+            <param name="cutoff">
+            The minimum number of times a predicate must have been
+            observed in order to be included in the model.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.OnePassDataIndexer.ComputeEventCounts(SharpEntropy.ITrainingEventReader,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Int32)">
+            <summary>
+            Reads events from <tt>eventReader</tt> into a List&lt;TrainingEvent&gt;.  The
+            predicates associated with each event are counted and any which
+            occur at least <tt>cutoff</tt> times are added to the
+            <tt>predicatesInOut</tt> dictionary along with a unique integer index.
+            </summary>
+            <param name="eventReader">
+            an <code>ITrainingEventReader</code> value
+            </param>
+            <param name="predicatesInOut">
+            a <code>Dictionary</code> value
+            </param>
+            <param name="cutoff">
+            an <code>int</code> value
+            </param>
+            <returns>
+            an <code>List of TrainingEvents</code> value
+            </returns>
+        </member>
+        <member name="T:SharpEntropy.PatternedPredicate">
+            <summary>
+            Object containing predicate data, where the parameters are matched to
+            the outcomes in an outcome pattern.
+            </summary>
+            <author>
+            Richard J. Northedge
+            </author>
+        </member>
+        <member name="M:SharpEntropy.PatternedPredicate.#ctor(System.Int32,System.Double[])">
+            <summary>
+            Creates a PatternedPredicate object.
+            </summary>
+            <param name="outcomePattern">
+            Index into the outcome pattern array, specifying which outcome pattern relates to
+            this predicate.
+            </param>
+            <param name="parameters">
+            Array of parameters for this predicate.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.PatternedPredicate.#ctor(System.String,System.Double[])">
+            <summary>
+            Creates a PatternedPredicate object.
+            </summary>
+            <param name="name">
+            The predicate name.
+            </param>
+            <param name="parameters">
+            Array of parameters for this predicate.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.PatternedPredicate.GetParameter(System.Int32)">
+            <summary>
+            Gets the value of a parameter from this predicate.
+            </summary>
+            <param name="index">
+            index into the parameter array.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="P:SharpEntropy.PatternedPredicate.OutcomePattern">
+            <summary>
+            Index into array of outcome patterns.
+            </summary>
+        </member>
+        <member name="P:SharpEntropy.PatternedPredicate.ParameterCount">
+            <summary>
+            Number of parameters associated with this predicate.
+            </summary>
+        </member>
+        <member name="P:SharpEntropy.PatternedPredicate.Name">
+            <summary>
+            Name of the predicate.
+            </summary>
+        </member>
+        <member name="T:SharpEntropy.PlainTextByLineDataReader">
+            <summary>
+            This ITrainingDataReader implementation will take care of reading a plain text file
+            and returning the strings between each new line character, which is what
+            many SharpEntropy applications need in order to create ITrainingEventReaders.
+            </summary>
+            <author>
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on PlainTextByLineDataStream.java, $Revision: 1.1.1.1 $, $Date: 2001/10/23 14:06:53 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.PlainTextByLineDataReader.#ctor(System.IO.StreamReader)">
+            <summary>
+            Creates a training data reader for reading text lines from a file or other text stream.
+            </summary>
+            <param name="dataSource">
+            StreamReader containing the source of the training data.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.PlainTextByLineDataReader.NextToken">
+            <summary>
+            Gets the next text line from the training data.
+            </summary>
+            <returns>
+            Next text line from the training data.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.PlainTextByLineDataReader.HasNext">
+            <summary>
+            Checks if there is any more training data.
+            </summary>
+            <returns>
+            true if there is more training data to be read.
+            </returns>
+        </member>
+        <member name="T:SharpEntropy.TrainingEvent">
+            <summary>
+            The context of a decision point during training.  This includes
+            contextual predicates and an outcome.
+            </summary>
+            <author>
+            Jason Baldridge
+            </author>
+            <author>
+            Richard J. Northedge
+            </author>
+            <version>
+            based on Event.java, $Revision: 1.3 $, $Date: 2003/12/09 23:13:08 $
+            </version>
+        </member>
+        <member name="M:SharpEntropy.TrainingEvent.GetContext">
+            <summary>
+            Gets the context for this training event.
+            </summary>
+            <returns>
+            A string array of context values for this training event.
+            </returns>
+        </member>
+        <member name="M:SharpEntropy.TrainingEvent.#ctor(System.String,System.String[])">
+            <summary>
+            Constructor for a training event.
+            </summary>
+            <param name="outcome">
+            the outcome label
+            </param>
+            <param name="context">
+            array containing context values
+            </param>
+        </member>
+        <member name="M:SharpEntropy.TrainingEvent.ToString">
+            <summary>
+            Override providing text summary of the training event.
+            </summary>
+            <returns>
+            Summary of the training event.
+            </returns>
+        </member>
+        <member name="P:SharpEntropy.TrainingEvent.Outcome">
+            <summary>
+            The outcome label for this training event.
+            </summary>
+        </member>
+        <member name="T:SharpEntropy.TwoPassDataIndexer">
+            <summary>
+            Collecting event and context counts by making two passes over the events.  The
+            first pass determines which contexts will be used by the model, and the
+            second pass creates the events in memory containing only the contexts which 
+            will be used.  This greatly reduces the amount of memory required for storing
+            the events.  During the first pass a temporary event file is created which
+            is read during the second pass.
+            </summary>
+            /// <author>  
+            Tom Morton
+            </author>
+            /// /// <author>  
+            Richard J. Northedge
+            </author>
+        </member>
+        <member name="M:SharpEntropy.TwoPassDataIndexer.#ctor(SharpEntropy.ITrainingEventReader)">
+            <summary>
+            One argument constructor for DataIndexer which calls the two argument
+            constructor assuming no cutoff.
+            </summary>
+            <param name="eventReader">
+            An ITrainingEventReader which contains the list of all the events
+            seen in the training data.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.TwoPassDataIndexer.#ctor(SharpEntropy.ITrainingEventReader,System.Int32)">
+            <summary> 
+            Two argument constructor for TwoPassDataIndexer.
+            </summary>
+            <param name="eventReader">
+            An ITrainingEventReader which contains the a list of all the events
+            seen in the training data.
+            </param>
+            <param name="cutoff">
+            The minimum number of times a predicate must have been
+            observed in order to be included in the model.
+            </param>
+        </member>
+        <member name="M:SharpEntropy.TwoPassDataIndexer.ComputeEventCounts(SharpEntropy.ITrainingEventReader,System.String,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Int32)">
+            <summary>
+            Reads events from <tt>eventStream</tt> into a dictionary.  The
+            predicates associated with each event are counted and any which
+            occur at least <tt>cutoff</tt> times are added to the
+            <tt>predicatesInOut</tt> map along with a unique integer index.
+            </summary>
+            <param name="eventReader">
+            an <code>ITrainingEventReader</code> value
+            </param>
+            <param name="eventStoreFile">
+            a file name to which the events are written to for later processing.
+            </param>
+            <param name="predicatesInOut">
+            a <code>Dictionary</code> value
+            </param>
+            <param name="cutoff">
+            an <code>int</code> value
+            </param>
+        </member>
+    </members>
+</doc>

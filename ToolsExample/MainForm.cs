@@ -281,7 +281,7 @@ namespace ToolsExample
 				string[] tokens = TokenizeSentence(sentence);
 				string[] tags = PosTagTokens(tokens);
 
-				output.Append(ChunkSentence(tokens, tags)).Append("\r\n");
+				output.Append(ChunkSentence(tokens, tags)).Append("\r\n\r\n");
 			}
 
 			txtOut.Text = output.ToString();

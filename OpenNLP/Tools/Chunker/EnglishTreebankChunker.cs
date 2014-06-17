@@ -111,7 +111,7 @@ namespace OpenNLP.Tools.Chunker
 		/// </returns>
 		public string GetChunks(string[] tokens, string[] tags)
 		{
-			StringBuilder output = new StringBuilder();
+			var output = new StringBuilder();
 
 			string[] chunks = Chunk(tokens, tags);
 			for (int currentChunk = 0, chunkCount = chunks.Length; currentChunk < chunkCount; currentChunk++)
@@ -131,7 +131,7 @@ namespace OpenNLP.Tools.Chunker
 			{
 				output.Append(" ]");
 			}
-			output.Append("\r\n");
+			//output.Append("\r\n");
 
 			return output.ToString();
 

@@ -43,10 +43,10 @@ namespace OpenNLP.Tools.NameFind
 	/// <summary> Class is used to create a name finder for English.</summary>
 	public class EnglishNameFinder 
 	{
-		private Dictionary<string, MaximumEntropyNameFinder> mFinders;
-		private string mModelPath;
+		private readonly Dictionary<string, MaximumEntropyNameFinder> mFinders;
+		private readonly string mModelPath;
 
-        public static string[] NameTypes = new string[] { "person", "organization", "location", "date", "time", "percentage", "money" };
+        public static string[] NameTypes = { "person", "organization", "location", "date", "time", "percentage", "money" };
 		
 		public EnglishNameFinder(string modelPath)
 		{
@@ -56,13 +56,13 @@ namespace OpenNLP.Tools.NameFind
 
 		private Span[] TokenizeToSpans(string input)
 		{
-			CharacterEnum charType = CharacterEnum.Whitespace;
+			var charType = CharacterEnum.Whitespace;
 			CharacterEnum state = charType;
 
-            List<Span> tokens = new List<Span>();
+            var tokens = new List<Span>();
 			int inputLength = input.Length;
 			int start = - 1;
-			char previousChar = (char) (0);
+			var previousChar = (char) (0);
 			for (int characterIndex = 0; characterIndex < inputLength; characterIndex++)
 			{
 				char c = input[characterIndex];
@@ -109,7 +109,7 @@ namespace OpenNLP.Tools.NameFind
 		
 		private string[] SpansToStrings(Span[] spans, string input)
 		{
-			string[] tokens = new string[spans.Length];
+			var tokens = new string[spans.Length];
 			for (int currentSpan = 0, spanCount = spans.Length; currentSpan < spanCount; currentSpan++)
 			{
 				tokens[currentSpan] = input.Substring(spans[currentSpan].Start, (spans[currentSpan].End) - (spans[currentSpan].Start));
@@ -133,7 +133,7 @@ namespace OpenNLP.Tools.NameFind
 				
 				if (commonParent != null)
 				{
-					Span nameSpan = new Span(startToken.Span.Start, endToken.Span.End);
+					var nameSpan = new Span(startToken.Span.Start, endToken.Span.End);
 					if (nameSpan.Equals(commonParent.Span))
 					{
 						
@@ -173,7 +173,7 @@ namespace OpenNLP.Tools.NameFind
 		
 		private Dictionary<string, string>[] CreatePreviousTokenMaps(string[] finders)
 		{
-            Dictionary<string, string>[] previousTokenMaps = new Dictionary<string, string>[finders.Length];
+            var previousTokenMaps = new Dictionary<string, string>[finders.Length];
 			for (int currentFinder = 0, finderCount = finders.Length; currentFinder < finderCount; currentFinder++)
 			{
                 previousTokenMaps[currentFinder] = new Dictionary<string, string>();
@@ -202,13 +202,13 @@ namespace OpenNLP.Tools.NameFind
 		
 		private string ProcessParse(string[] models, Parse lineParse)
 		{
-			System.Text.StringBuilder output = new System.Text.StringBuilder();
+			var output = new System.Text.StringBuilder();
 
-			string[][] finderTags = new string[models.Length][];
+			var finderTags = new string[models.Length][];
 			Dictionary<string, string>[] previousTokenMaps = CreatePreviousTokenMaps(models);
 
 			Parse[] tokenParses = lineParse.GetTagNodes();
-            string[] tokens = new string[tokenParses.Length];
+            var tokens = new string[tokenParses.Length];
             for (int currentToken = 0; currentToken < tokens.Length; currentToken++)
             {
                 tokens[currentToken] = tokenParses[currentToken].ToString();
@@ -224,7 +224,7 @@ namespace OpenNLP.Tools.NameFind
 			{
 				int start = -1;
 
-                List<Span> names = new List<Span>(5);
+                var names = new List<Span>(5);
 				for (int currentToken = 0, tokenCount = tokens.Length; currentToken < tokenCount; currentToken++)
 				{
 					if ((finderTags[currentFinder][currentToken] == MaximumEntropyNameFinder.Start) || (finderTags[currentFinder][currentToken] == MaximumEntropyNameFinder.Other))
@@ -247,7 +247,7 @@ namespace OpenNLP.Tools.NameFind
 				AddNames(models[currentFinder], names, tokenParses, lineParse);
 			}
 			output.Append(lineParse.Show());
-			output.Append("\r\n");
+			//output.Append("\r\n");
 			
 			return output.ToString();
 		}
@@ -263,9 +263,9 @@ namespace OpenNLP.Tools.NameFind
 		/// </param>
 		private string ProcessText(string[] models, string line)
 		{
-			System.Text.StringBuilder output = new System.Text.StringBuilder();
+			var output = new System.Text.StringBuilder();
 
-			string[][] finderTags = new string[models.Length][];
+			var finderTags = new string[models.Length][];
 			Dictionary<string, string>[] previousTokenMaps = CreatePreviousTokenMaps(models);
 			
 			if (line.Length == 0)
@@ -345,18 +345,18 @@ namespace OpenNLP.Tools.NameFind
 			return ProcessParse(models, data);
 		}
 
-		private void CreateModels(string[] models)
+		private void CreateModels(IEnumerable<string> models)
 		{
-			for (int currentModel = 0; currentModel < models.Length; currentModel++)
-			{
-				if (!mFinders.ContainsKey(models[currentModel]))
-				{
-					string modelName = mModelPath + models[currentModel] + ".nbin";
-					SharpEntropy.IMaximumEntropyModel model = new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(modelName));
-					MaximumEntropyNameFinder finder = new MaximumEntropyNameFinder(model);
-					mFinders.Add(models[currentModel], finder);
-				}
-			}
+		    foreach (string mod in models)
+		    {
+		        if (!mFinders.ContainsKey(mod))
+		        {
+		            string modelName = mModelPath + mod + ".nbin";
+		            SharpEntropy.IMaximumEntropyModel model = new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(modelName));
+		            var finder = new MaximumEntropyNameFinder(model);
+		            mFinders.Add(mod, finder);
+		        }
+		    }
 		}
 	}
 	

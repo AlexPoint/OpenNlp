@@ -45,34 +45,27 @@ namespace OpenNLP.Tools.Parser
 	/// </summary>
 	public sealed class EnglishTreebankParser
 	{
-		MaximumEntropyParser mParser;
-		OpenNLP.Tools.Tokenize.EnglishMaximumEntropyTokenizer mTokenizer;
+	    readonly MaximumEntropyParser mParser;
+	    readonly Tokenize.EnglishMaximumEntropyTokenizer mTokenizer;
 
 		public EnglishTreebankParser(string dataDirectory, bool useTagDictionary, bool useCaseSensitiveTagDictionary, int beamSize, double advancePercentage)
 		{
-			SharpEntropy.IO.BinaryGisModelReader buildModelReader = new SharpEntropy.IO.BinaryGisModelReader(dataDirectory + "parser\\build.nbin");
-			SharpEntropy.GisModel buildModel = new SharpEntropy.GisModel(buildModelReader);
+			var buildModelReader = new SharpEntropy.IO.BinaryGisModelReader(dataDirectory + "parser\\build.nbin");
+			var buildModel = new SharpEntropy.GisModel(buildModelReader);
 
-			SharpEntropy.IO.BinaryGisModelReader checkModelReader = new SharpEntropy.IO.BinaryGisModelReader(dataDirectory + "parser\\check.nbin");
+			var checkModelReader = new SharpEntropy.IO.BinaryGisModelReader(dataDirectory + "parser\\check.nbin");
 			SharpEntropy.IMaximumEntropyModel checkModel = new SharpEntropy.GisModel(checkModelReader);
 
-			EnglishTreebankPosTagger posTagger;
+		    EnglishTreebankPosTagger posTagger = useTagDictionary ? 
+                new EnglishTreebankPosTagger(dataDirectory + "parser\\tag.nbin", dataDirectory + "parser\\tagdict", useCaseSensitiveTagDictionary) 
+		        : new EnglishTreebankPosTagger(dataDirectory + "parser\\tag.nbin");
 
-			if (useTagDictionary)
-			{
-				posTagger = new EnglishTreebankPosTagger(dataDirectory + "parser\\tag.nbin", dataDirectory + "parser\\tagdict", useCaseSensitiveTagDictionary);
-			}
-			else
-			{
-				posTagger = new EnglishTreebankPosTagger(dataDirectory + "parser\\tag.nbin");
-			}
-
-			EnglishTreebankParserChunker chunker = new EnglishTreebankParserChunker(dataDirectory + "parser\\chunk.nbin");
-			EnglishHeadRules headRules = new EnglishHeadRules(dataDirectory + "parser\\head_rules");
+			var chunker = new EnglishTreebankParserChunker(dataDirectory + "parser\\chunk.nbin");
+			var headRules = new EnglishHeadRules(dataDirectory + "parser\\head_rules");
 
 			mParser = new MaximumEntropyParser(buildModel, checkModel, posTagger, chunker, headRules, beamSize, advancePercentage);
 		
-			mTokenizer = new OpenNLP.Tools.Tokenize.EnglishMaximumEntropyTokenizer(dataDirectory + "EnglishTok.nbin");
+			mTokenizer = new Tokenize.EnglishMaximumEntropyTokenizer(dataDirectory + "EnglishTok.nbin");
 
 		}
 		
@@ -92,10 +85,10 @@ namespace OpenNLP.Tools.Parser
 		{
 		}
 
-		private class EnglishTreebankPosTagger : PosTagger.MaximumEntropyPosTagger, IParserTagger
+		private sealed class EnglishTreebankPosTagger : PosTagger.MaximumEntropyPosTagger, IParserTagger
 		{
 			private const int K = 10;
-			private int mBeamSize;
+			private readonly int mBeamSize;
 
 			public EnglishTreebankPosTagger(string modelFile) : this(modelFile, K, K)
 			{
@@ -115,22 +108,22 @@ namespace OpenNLP.Tools.Parser
 				mBeamSize = beamSize;
 			}
 
-			public virtual Util.Sequence[] TopKSequences(ArrayList sentence)
+			public Util.Sequence[] TopKSequences(ArrayList sentence)
 			{
 				return Beam.BestSequences(mBeamSize, sentence.ToArray(), null);
 			}
 			
-			public virtual Util.Sequence[] TopKSequences(string[] sentence)
+			public Util.Sequence[] TopKSequences(string[] sentence)
 			{
 				 return Beam.BestSequences(mBeamSize, sentence, null);
 			}
 		}
 		
-		private class EnglishTreebankParserChunker : Chunker.MaximumEntropyChunker, IParserChunker
+		private sealed class EnglishTreebankParserChunker : Chunker.MaximumEntropyChunker, IParserChunker
 		{
 			private const int K = 10;
-			private int mBeamSize;
-			private Dictionary<string, string> mContinueStartMap;
+			private readonly int mBeamSize;
+			private readonly Dictionary<string, string> mContinueStartMap;
     
 			public EnglishTreebankParserChunker(string modelFile) : this(modelFile, K, K)
 			{
@@ -150,12 +143,12 @@ namespace OpenNLP.Tools.Parser
 				mBeamSize = beamSize;
 			}
 
-			public virtual Util.Sequence[] TopKSequences(ArrayList sentence, ArrayList tags)
+			public Util.Sequence[] TopKSequences(ArrayList sentence, ArrayList tags)
 			{
 				return Beam.BestSequences(mBeamSize, sentence.ToArray(), new object[]{tags});
 			}
 			
-			public virtual Util.Sequence[] TopKSequences(string[] sentence, string[] tags, double minSequenceScore) 
+			public Util.Sequence[] TopKSequences(string[] sentence, string[] tags, double minSequenceScore) 
 			{
 				return Beam.BestSequences(mBeamSize, sentence, new object[] {tags}, minSequenceScore);
 			}
@@ -243,14 +236,14 @@ namespace OpenNLP.Tools.Parser
 		public string DoParse(string[] lines, int requestedParses)
 		{
 						
-			System.Text.StringBuilder parseStringBuilder = new System.Text.StringBuilder();
+			var parseStringBuilder = new System.Text.StringBuilder();
 
 			foreach (string line in lines)
 			{
-				System.Text.StringBuilder lineBuilder = new System.Text.StringBuilder();				
+				var lineBuilder = new System.Text.StringBuilder();				
 			
 				string[] rawTokens = mTokenizer.Tokenize(line);
-				ArrayList tokens = new ArrayList();
+				var tokens = new ArrayList();
 				foreach (string rawToken in rawTokens)
 				{
 					string convertedToken = ConvertToken(rawToken);
@@ -260,7 +253,7 @@ namespace OpenNLP.Tools.Parser
 				if (lineBuilder.Length != 0)
 				{
 					string text = lineBuilder.ToString(0, lineBuilder.Length - 1).ToString();
-					Parse currentParse = new Parse(text, new Util.Span(0, text.Length), "INC", 1, null);
+					var currentParse = new Parse(text, new Util.Span(0, text.Length), "INC", 1, null);
 					int start = 0;
 					
 					foreach (string token in tokens)
@@ -290,9 +283,9 @@ namespace OpenNLP.Tools.Parser
 
 		public Parse[] DoParse(string line, int requestedParses)
 		{			
-			System.Text.StringBuilder lineBuilder = new System.Text.StringBuilder();				
+			var lineBuilder = new System.Text.StringBuilder();				
 			string[] rawTokens = mTokenizer.Tokenize(line);
-			ArrayList tokens = new ArrayList();
+			var tokens = new ArrayList();
 			foreach (string rawToken in rawTokens)
 			{
 				string convertedToken = ConvertToken(rawToken);
@@ -302,7 +295,7 @@ namespace OpenNLP.Tools.Parser
 			if (lineBuilder.Length != 0)
 			{
 				string text = lineBuilder.ToString(0, lineBuilder.Length - 1).ToString();
-				Parse currentParse = new Parse(text, new Util.Span(0, text.Length), "INC", 1, null);
+				var currentParse = new Parse(text, new Util.Span(0, text.Length), "INC", 1, null);
 				int start = 0;
 				
 				foreach (string token in tokens)

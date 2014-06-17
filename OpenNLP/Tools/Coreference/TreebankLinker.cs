@@ -74,7 +74,7 @@ namespace OpenNLP.Tools.Lang.English
 		
 		private static string ShowEntities(DiscourseEntity[] entities)
 		{
-            StringBuilder output = new StringBuilder();
+            var output = new StringBuilder();
 			for (int currentEntity = 0; currentEntity < entities.Length; currentEntity++)
 			{
 				output.Append(currentEntity + " " + entities[currentEntity]).Append("\r\n");
@@ -89,17 +89,10 @@ namespace OpenNLP.Tools.Lang.English
         /// <returns></returns>
         public string GetCoreferenceParse(string[] parsedSentences)
         {
-            List<Parse> parses = new List<Parse>(parsedSentences.Length);
+            var parses = new List<Parse>(parsedSentences.Length);
             foreach (string line in parsedSentences)
             {
-                if (line == string.Empty)
-                {
-                    parses.Add(null);
-                }
-                else
-                {
-                    parses.Add(Parse.FromParseString(line));
-                }
+                parses.Add(line == string.Empty ? null : Parse.FromParseString(line));
             }
             return GetCoreferenceParse(parses.ToArray());
         }
@@ -112,9 +105,9 @@ namespace OpenNLP.Tools.Lang.English
         public string GetCoreferenceParse(Parse[] parsedSentences)
 		{
 			int sentenceNumber = 0;
-            List<Mention> document = new List<Mention>();
-            List<Parse> parses = new List<Parse>();
-            StringBuilder output = new StringBuilder();
+            var document = new List<Mention>();
+            var parses = new List<Parse>();
+            var output = new StringBuilder();
 
             foreach (Parse lineParse in parsedSentences)
 			{
@@ -132,16 +125,16 @@ namespace OpenNLP.Tools.Lang.English
 					Mention[] extents = MentionFinder.GetMentions(new DefaultParse(lineParse, sentenceNumber));
 					
                     //construct new parses for mentions which don't have constituents.
-					for (int currentExtent = 0; currentExtent < extents.Length; currentExtent++)
+					foreach (Mention mention in extents)
 					{
-						if (extents[currentExtent].Parse == null)
-						{
-							Parse snp = new Parse(lineParse.Text, extents[currentExtent].Span, "NML", 1.0);
-							lineParse.Insert(snp);
-							extents[currentExtent].Parse = new DefaultParse(snp, sentenceNumber);
-						}
+					    if (mention.Parse == null)
+					    {
+					        var snp = new Parse(lineParse.Text, mention.Span, "NML", 1.0);
+					        lineParse.Insert(snp);
+					        mention.Parse = new DefaultParse(snp, sentenceNumber);
+					    }
 					}
-                    document.AddRange(extents);
+				    document.AddRange(extents);
                     sentenceNumber++;
 				}
 			}
@@ -157,8 +150,8 @@ namespace OpenNLP.Tools.Lang.English
 	
 	internal class CoreferenceParse
 	{
-		private Dictionary<Parse, int> mParseMap;
-        private List<Parse> mParses;
+		private readonly Dictionary<Parse, int> mParseMap;
+        private readonly List<Parse> mParses;
 		
 		public CoreferenceParse(List<Parse> parses, DiscourseEntity[] entities)
 		{
@@ -180,12 +173,12 @@ namespace OpenNLP.Tools.Lang.English
 		
 		public virtual string Show()
 		{
-            StringBuilder buffer = new StringBuilder();
+            var buffer = new StringBuilder();
 
-			for (int currentParse = 0; currentParse < mParses.Count; currentParse++)
+			foreach (Parse parse in mParses)
 			{
-				Show(mParses[currentParse], buffer);
-				buffer.Append("\r\n");
+			    Show(parse, buffer);
+			    buffer.Append("\r\n");
 			}
             return buffer.ToString();
 		}
@@ -204,16 +197,15 @@ namespace OpenNLP.Tools.Lang.English
 				buffer.Append(" ");
 			}
 			Parse[] children = p.GetChildren();
-			for (int currentParse = 0; currentParse < children.Length; currentParse++)
+			foreach (Parse c in children)
 			{
-				Parse c = children[currentParse];
-				Util.Span s = c.Span;
-				if (start < s.Start)
-				{
-                    buffer.Append(p.Text.Substring(start, (s.Start) - (start)));
-				}
-				Show(c, buffer);
-				start = s.End;
+			    Util.Span s = c.Span;
+			    if (start < s.Start)
+			    {
+			        buffer.Append(p.Text.Substring(start, (s.Start) - (start)));
+			    }
+			    Show(c, buffer);
+			    start = s.End;
 			}
             buffer.Append(p.Text.Substring(start, p.Span.End - start));
             if (p.Type != MaximumEntropyParser.TokenNode)

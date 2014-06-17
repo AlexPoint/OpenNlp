@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
@@ -225,16 +226,16 @@ namespace ToolsExample
 
 		#region Button click events
 
-		private void btnSplit_Click(object sender, System.EventArgs e)
+		private void btnSplit_Click(object sender, EventArgs e)
 		{		
 			string[] sentences = SplitSentences(txtIn.Text);
 			
 			txtOut.Text = string.Join("\r\n\r\n", sentences);
 		}
 
-		private void btnTokenize_Click(object sender, System.EventArgs e)
+		private void btnTokenize_Click(object sender, EventArgs e)
 		{
-			StringBuilder output = new StringBuilder();
+			var output = new StringBuilder();
 
 			string[] sentences = SplitSentences(txtIn.Text);
 
@@ -247,9 +248,9 @@ namespace ToolsExample
 			txtOut.Text = output.ToString();
 		}
 
-		private void btnPOSTag_Click(object sender, System.EventArgs e)
+		private void btnPOSTag_Click(object sender, EventArgs e)
 		{
-			StringBuilder output = new StringBuilder();
+			var output = new StringBuilder();
 
 			string[] sentences = SplitSentences(txtIn.Text);
 
@@ -269,9 +270,9 @@ namespace ToolsExample
 			txtOut.Text = output.ToString();
 		}
 
-		private void btnChunk_Click(object sender, System.EventArgs e)
+		private void btnChunk_Click(object sender, EventArgs e)
 		{
-			StringBuilder output = new StringBuilder();
+			var output = new StringBuilder();
 
 			string[] sentences = SplitSentences(txtIn.Text);
 
@@ -286,9 +287,9 @@ namespace ToolsExample
 			txtOut.Text = output.ToString();
 		}
 
-		private void btnParse_Click(object sender, System.EventArgs e)
+		private void btnParse_Click(object sender, EventArgs e)
 		{
-			StringBuilder output = new StringBuilder();
+			var output = new StringBuilder();
 
 			string[] sentences = SplitSentences(txtIn.Text);
 
@@ -300,7 +301,7 @@ namespace ToolsExample
 			txtOut.Text = output.ToString();
 		}
 
-		private void btnNameFind_Click(object sender, System.EventArgs e)
+		private void btnNameFind_Click(object sender, EventArgs e)
 		{
 			var output = new StringBuilder();
 
@@ -375,7 +376,7 @@ namespace ToolsExample
 				mNameFinder = new OpenNLP.Tools.NameFind.EnglishNameFinder(mModelPath + "namefind\\");
 			}
 
-			string[] models = new string[] {"date", "location", "money", "organization", "percentage", "person", "time"};
+			var models = new[] {"date", "location", "money", "organization", "percentage", "person", "time"};
 			return mNameFinder.GetNames(models, sentence);
 		}
 
@@ -386,23 +387,22 @@ namespace ToolsExample
                 mNameFinder = new OpenNLP.Tools.NameFind.EnglishNameFinder(mModelPath + "namefind\\");
             }
 
-            string[] models = new string[] { "date", "location", "money", "organization", "percentage", "person", "time" };
+            var models = new[] { "date", "location", "money", "organization", "percentage", "person", "time" };
             return mNameFinder.GetNames(models, sentenceParse);
         }
 
-        private string IdentifyCoreferents(string[] sentences)
+        private string IdentifyCoreferents(IEnumerable<string> sentences)
         {
             if (mCoreferenceFinder == null)
             {
                 mCoreferenceFinder = new OpenNLP.Tools.Lang.English.TreebankLinker(mModelPath + "coref");
             }
 
-            System.Collections.Generic.List<OpenNLP.Tools.Parser.Parse> parsedSentences = new System.Collections.Generic.List<OpenNLP.Tools.Parser.Parse>();
+            var parsedSentences = new List<OpenNLP.Tools.Parser.Parse>();
 
             foreach (string sentence in sentences)
             {
                 OpenNLP.Tools.Parser.Parse sentenceParse = ParseSentence(sentence);
-                string findNames = FindNames(sentenceParse);
                 parsedSentences.Add(sentenceParse);
             }
             return mCoreferenceFinder.GetCoreferenceParse(parsedSentences.ToArray());
@@ -439,7 +439,7 @@ namespace ToolsExample
 
         private void btnSimilarity_Click(object sender, EventArgs e)
         {
-            StringBuilder output = new StringBuilder();
+            var output = new StringBuilder();
 
             string[] sentences = SplitSentences(txtIn.Text);
 

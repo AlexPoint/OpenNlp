@@ -119,10 +119,10 @@ namespace OpenNLP.Tools.SentenceDetect
 			
 			for (System.Collections.IEnumerator iterator = mScanner.GetPositions(buffer).GetEnumerator(); iterator.MoveNext(); )
 			{
-				int candidate = (int) iterator.Current;
-                Util.Pair<System.Text.StringBuilder, int> pair = new Util.Pair<System.Text.StringBuilder, int>(buffer, candidate);
+				var candidate = (int) iterator.Current;
+                var pair = new Util.Pair<System.Text.StringBuilder, int>(buffer, candidate);
 				string type = (candidate == sentenceEndPosition) ? "T" : "F";
-				SentenceDetectionEvent sentenceEvent = new SentenceDetectionEvent(type, mContextGenerator.GetContext(pair));
+				var sentenceEvent = new SentenceDetectionEvent(type, mContextGenerator.GetContext(pair));
 				
 				if (null != mTail)
 				{

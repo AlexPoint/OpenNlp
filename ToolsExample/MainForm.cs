@@ -302,7 +302,7 @@ namespace ToolsExample
 
 		private void btnNameFind_Click(object sender, System.EventArgs e)
 		{
-			StringBuilder output = new StringBuilder();
+			var output = new StringBuilder();
 
 			string[] sentences = SplitSentences(txtIn.Text);
 

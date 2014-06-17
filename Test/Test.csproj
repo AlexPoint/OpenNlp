@@ -48,10 +48,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OpenNLP\OpenNLP.csproj">
+      <Project>{B70185DF-81FD-4417-914F-7C90E65E7D9F}</Project>
+      <Name>OpenNLP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharpEntropy\SharpEntropy.csproj">
       <Project>{BF0BF8B0-1894-4EDF-BF51-F370B063797E}</Project>
       <Name>SharpEntropy</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Input\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -35,6 +35,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace OpenNLP.Tools.Tokenize
@@ -250,7 +251,7 @@ namespace OpenNLP.Tools.Tokenize
 		
 		public static void Train(string input, string output)
 		{
-			var dataReader = new System.IO.StreamReader(new System.IO.FileInfo(input).FullName);
+			var dataReader = new StreamReader(new FileInfo(input).FullName);
 			SharpEntropy.ITrainingEventReader eventReader = new TokenEventReader(dataReader);
 			Train(eventReader, output);
 		}		

@@ -395,7 +395,7 @@ namespace SharpEntropy
 			mOutcomeLabels = dataIndexer.GetOutcomeLabels();
 			outcomeList = dataIndexer.GetOutcomeList();
 			mOutcomeCount = mOutcomeLabels.Length;
-			mInitialProbability = System.Math.Log(1.0 / mOutcomeCount);
+			mInitialProbability = Math.Log(1.0 / mOutcomeCount);
 			
 			mPredicateLabels = dataIndexer.GetPredicateLabels();
 			mPredicateCount = mPredicateLabels.Length;
@@ -405,7 +405,7 @@ namespace SharpEntropy
 			NotifyProgress("\t  Number of Predicates: " + mPredicateCount);
 			
 			// set up feature arrays
-			int[][] predicateCounts = new int[mPredicateCount][];
+			var predicateCounts = new int[mPredicateCount][];
 			for (mPredicateId = 0; mPredicateId < mPredicateCount; mPredicateId++)
 			{
 				predicateCounts[mPredicateId] = new int[mOutcomeCount];
@@ -417,10 +417,8 @@ namespace SharpEntropy
 					predicateCounts[mContexts[mTokenID][currentContext]][outcomeList[mTokenID]] += mNumTimesEventsSeen[mTokenID];
 				}
 			}
-			
-			dataIndexer = null; // don't need it anymore
-			
-			// A fake "observation" to cover features which are not detected in
+
+		    // A fake "observation" to cover features which are not detected in
 			// the data.  The default is to assume that we observed "1/10th" of a
 			// feature during training.
 			double smoothingObservation = mSmoothingObservation;
@@ -434,13 +432,11 @@ namespace SharpEntropy
 			mParameters = new double[mPredicateCount][];
 			mModelExpections = new double[mPredicateCount][];
 			mObservedExpections = new double[mPredicateCount][];
-			
-			int activeOutcomeCount;
-			int currentOutcome;
 
-			for (mPredicateId = 0; mPredicateId < mPredicateCount; mPredicateId++)
+		    for (mPredicateId = 0; mPredicateId < mPredicateCount; mPredicateId++)
 			{
-				if (mSimpleSmoothing)
+			    int activeOutcomeCount;
+			    if (mSimpleSmoothing)
 				{
 					activeOutcomeCount = mOutcomeCount;
 				}
@@ -461,19 +457,19 @@ namespace SharpEntropy
 				mModelExpections[mPredicateId] = new double[activeOutcomeCount];
 				mObservedExpections[mPredicateId] = new double[activeOutcomeCount];
 
-				currentOutcome = 0;
+				int currentOutcome = 0;
 				for (mOutcomeId = 0; mOutcomeId < mOutcomeCount; mOutcomeId++)
 				{
 					if (predicateCounts[mPredicateId][mOutcomeId] > 0)
 					{
 						mOutcomePatterns[mPredicateId][currentOutcome] = mOutcomeId;
-						mObservedExpections[mPredicateId][currentOutcome] = System.Math.Log(predicateCounts[mPredicateId][mOutcomeId]);
+						mObservedExpections[mPredicateId][currentOutcome] = Math.Log(predicateCounts[mPredicateId][mOutcomeId]);
 						currentOutcome++;
 					}
 					else if (mSimpleSmoothing)
 					{
 						mOutcomePatterns[mPredicateId][currentOutcome] = mOutcomeId;
-						mObservedExpections[mPredicateId][currentOutcome] = System.Math.Log(smoothingObservation);
+						mObservedExpections[mPredicateId][currentOutcome] = Math.Log(smoothingObservation);
 						currentOutcome++;
 					}
 				}
@@ -498,19 +494,17 @@ namespace SharpEntropy
 				}
 				if (correctionFeatureValueSum == 0)
 				{
-					mCorrectionFeatureObservedExpectation = System.Math.Log(mNearZero); //nearly zero so log is defined
+					mCorrectionFeatureObservedExpectation = Math.Log(mNearZero); //nearly zero so log is defined
 				}
 				else
 				{
-					mCorrectionFeatureObservedExpectation = System.Math.Log(correctionFeatureValueSum);
+					mCorrectionFeatureObservedExpectation = Math.Log(correctionFeatureValueSum);
 				}
 			
 				mCorrectionParameter = 0.0;
 			}
 
-			predicateCounts = null; // don't need it anymore
-			
-			NotifyProgress("...done.");
+		    NotifyProgress("...done.");
 			
 			mModelDistribution = new double[mOutcomeCount];
 			mFeatureCounts = new int[mOutcomeCount];
@@ -533,8 +527,7 @@ namespace SharpEntropy
 		private void FindParameters(int iterations)
 		{
 			double previousLogLikelihood = 0.0;
-			double currentLogLikelihood = 0.0;
-			NotifyProgress("Performing " + iterations + " iterations.");
+		    NotifyProgress("Performing " + iterations + " iterations.");
 			for (int currentIteration = 1; currentIteration <= iterations; currentIteration++)
 			{
 				if (currentIteration < 10)
@@ -549,7 +542,7 @@ namespace SharpEntropy
 				{
 					NotifyProgress(currentIteration + ":  ");
 				}
-				currentLogLikelihood = NextIteration();
+				double currentLogLikelihood = NextIteration();
 				if (currentIteration > 1)
 				{
 					if (previousLogLikelihood > currentLogLikelihood)

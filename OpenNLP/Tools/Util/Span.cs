@@ -41,42 +41,26 @@ namespace OpenNLP.Tools.Util
 	/// Class for storing start and end integer offsets.  
 	/// </summary>
 	
-	public class Span : System.IComparable
+	public class Span : IComparable
 	{
-		private int mStart;
-		private int mEnd;
-		
 		/// <summary>
 		/// Return the start of a span.
 		/// </summary>
 		/// <returns> 
 		/// the start of a span.
 		/// </returns>
-		virtual public int Start
-		{
-			get
-			{
-				return mStart;
-			}
-			
-		}
+		public virtual int Start { get; private set; }
+
 		/// <summary>
 		/// Return the end of a span.
 		/// </summary>
 		/// <returns> 
 		/// the end of a span.
 		/// </returns>
-		virtual public int End
-		{
-			get
-			{
-				return mEnd;
-			}
-			
-		}
-		
-		
-		/// <summary>Constructs a new Span object.
+		public virtual int End{ get; private set; }
+
+
+	    /// <summary>Constructs a new Span object.
 		/// </summary>
 		/// <param name="startOfSpan">
 		/// start of span.
@@ -86,13 +70,13 @@ namespace OpenNLP.Tools.Util
 		/// </param>
 		public Span(int startOfSpan, int endOfSpan)
 		{
-			mStart = startOfSpan;
-			mEnd = endOfSpan;
+			Start = startOfSpan;
+			End = endOfSpan;
 		}
 		
 		public virtual int Length()
 		{
-			return (mEnd - mStart);
+			return (End - Start);
 		}
 		
 		/// <summary>
@@ -107,7 +91,7 @@ namespace OpenNLP.Tools.Util
 		/// </returns>
 		public virtual bool Contains(Span span)
 		{
-			return (mStart <= span.Start && span.End <= mEnd);
+			return (Start <= span.Start && span.End <= End);
 		}
 		
 		/// <summary>
@@ -124,8 +108,8 @@ namespace OpenNLP.Tools.Util
 			int spanStart = span.Start;
 			//either span's start is in this or this's start is in span
 			return (this.Contains(span) || span.Contains(this) ||
-				(mStart <= spanStart && spanStart < mEnd ||
-				spanStart <= mStart && mStart < span.End));
+				(Start <= spanStart && spanStart < End ||
+				spanStart <= Start && Start < span.End));
 		}
   
 		/// <summary>
@@ -142,13 +126,13 @@ namespace OpenNLP.Tools.Util
 			int spanStart = span.Start;
 			//either span's Start is in this or this's Start is in span
 			return (!this.Contains(span) && !span.Contains(this) && 
-				(mStart <= spanStart && spanStart < mEnd ||
-				spanStart <= mStart && mStart < span.End));
+				(Start <= spanStart && spanStart < End ||
+				spanStart <= Start && Start < span.End));
 		}
 
 		public virtual int CompareTo(object o) 
 		{ 
-			Span compareSpan = (Span) o;
+			var compareSpan = (Span) o;
 			if (Start < compareSpan.Start) 
 			{
 				return -1;
@@ -185,13 +169,13 @@ namespace OpenNLP.Tools.Util
 			{
 				return false;
 			}
-			Span currentSpan = (Span) o;
+			var currentSpan = (Span) o;
 			return(Start == currentSpan.Start && End == currentSpan.End);
 		}
 
 		public override string ToString()
 		{
-			System.Text.StringBuilder buffer = new System.Text.StringBuilder(15);
+			var buffer = new System.Text.StringBuilder(15);
 			return (buffer.Append(Start).Append("..").Append(End).ToString());
 		}
 	}

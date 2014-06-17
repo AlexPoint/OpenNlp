@@ -139,7 +139,8 @@ namespace OpenNLP.Tools.Tokenize
 					double tokenProbability = 1.0;
 					for (int currentPosition = originalStart + 1; currentPosition < endPosition; currentPosition++)
 					{
-						double[] probabilities = mModel.Evaluate(mContextGenerator.GetContext(new Util.Pair<string, int>(token, currentPosition - originalStart)));
+					    var context = mContextGenerator.GetContext(new Util.Pair<string, int>(token, currentPosition - originalStart));
+						double[] probabilities = mModel.Evaluate(context);
 						string bestOutcome = mModel.GetBestOutcome(probabilities);
 						
 						tokenProbability *= probabilities[mModel.GetOutcomeIndex(bestOutcome)];
@@ -193,14 +194,14 @@ namespace OpenNLP.Tools.Tokenize
 		internal static Util.Span[] Split(string input)
 		{
 			int tokenStart = - 1;
-            List<Util.Span> tokens = new List<Util.Span>();
+            var tokens = new List<Util.Span>();
 			bool isInToken = false;
 			
 			//gather up potential tokens
 			int endPosition = input.Length;
 			for (int currentChar = 0; currentChar < endPosition; currentChar++)
 			{
-				if (System.Char.IsWhiteSpace(input[currentChar]))
+				if (Char.IsWhiteSpace(input[currentChar]))
 				{
 					if (isInToken)
 					{
@@ -241,15 +242,15 @@ namespace OpenNLP.Tools.Tokenize
 
 		public static void Train(SharpEntropy.ITrainingEventReader eventReader, string outputFilename)
 		{
-			SharpEntropy.GisTrainer trainer = new SharpEntropy.GisTrainer(0.1);
+			var trainer = new SharpEntropy.GisTrainer(0.1);
 			trainer.TrainModel(100, new SharpEntropy.TwoPassDataIndexer(eventReader, 5));
-			SharpEntropy.GisModel tokenizeModel = new SharpEntropy.GisModel(trainer);
+			var tokenizeModel = new SharpEntropy.GisModel(trainer);
 			new SharpEntropy.IO.BinaryGisModelWriter().Persist(tokenizeModel, outputFilename);
 		}
 		
 		public static void Train(string input, string output)
 		{
-			System.IO.StreamReader dataReader = new System.IO.StreamReader(new System.IO.FileInfo(input).FullName);
+			var dataReader = new System.IO.StreamReader(new System.IO.FileInfo(input).FullName);
 			SharpEntropy.ITrainingEventReader eventReader = new TokenEventReader(dataReader);
 			Train(eventReader, output);
 		}		

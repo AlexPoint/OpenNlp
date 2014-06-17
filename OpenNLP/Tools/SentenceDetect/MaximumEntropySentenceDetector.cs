@@ -35,6 +35,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace OpenNLP.Tools.SentenceDetect
 {
@@ -274,7 +275,7 @@ namespace OpenNLP.Tools.SentenceDetect
 			SharpEntropy.ITrainingDataReader<string> dataReader;
 			System.IO.StreamReader streamReader;
 			
-			using (streamReader = new System.IO.StreamReader(inFile, System.Text.Encoding.UTF7)) 
+			using (streamReader = new StreamReader(inFile, System.Text.Encoding.UTF7))
 			{
 				dataReader = new SharpEntropy.PlainTextByLineDataReader(streamReader);
 				eventReader = new SentenceDetectionEventReader(dataReader, scanner);

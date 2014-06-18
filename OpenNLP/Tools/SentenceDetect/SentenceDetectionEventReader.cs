@@ -34,6 +34,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
+using System.Text;
 
 namespace OpenNLP.Tools.SentenceDetect
 {
@@ -47,12 +48,12 @@ namespace OpenNLP.Tools.SentenceDetect
 	/// </summary>
 	public class SentenceDetectionEventReader : SharpEntropy.ITrainingEventReader
 	{
-		private SharpEntropy.ITrainingDataReader<string> mDataReader;
+		private readonly SharpEntropy.ITrainingDataReader<string> mDataReader;
 		private string mNext;
 		private SentenceDetectionEvent mHead, mTail;
-        private SharpEntropy.IContextGenerator<Util.Pair<System.Text.StringBuilder, int>> mContextGenerator;
-		private System.Text.StringBuilder mBuffer = new System.Text.StringBuilder();
-		private IEndOfSentenceScanner mScanner;
+        private readonly SharpEntropy.IContextGenerator<Util.Pair<StringBuilder, int>> mContextGenerator;
+		private readonly StringBuilder mBuffer = new StringBuilder();
+		private readonly IEndOfSentenceScanner mScanner;
 		
 		/// <summary>
 		/// Creates a new <code>SentenceDetectionEventReader</code> instance.  A
@@ -60,7 +61,8 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// </summary>
 		/// <param name="dataReader">a <code>ITrainingDataReader</code> value
 		/// </param>
-		public SentenceDetectionEventReader(SharpEntropy.ITrainingDataReader<string> dataReader) : this(dataReader, new DefaultEndOfSentenceScanner(), new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters()))
+		public SentenceDetectionEventReader(SharpEntropy.ITrainingDataReader<string> dataReader) : 
+            this(dataReader, new DefaultEndOfSentenceScanner(), new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters()))
 		{
 		}
 		
@@ -68,11 +70,12 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// Class constructor which uses the EndOfSentenceScanner to locate
 		/// sentence endings.
 		/// </summary>
-		public SentenceDetectionEventReader(SharpEntropy.ITrainingDataReader<string> dataReader, IEndOfSentenceScanner scanner) : this(dataReader, scanner, new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters()))
+		public SentenceDetectionEventReader(SharpEntropy.ITrainingDataReader<string> dataReader, IEndOfSentenceScanner scanner) : 
+            this(dataReader, scanner, new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters()))
 		{
 		}
 
-        public SentenceDetectionEventReader(SharpEntropy.ITrainingDataReader<string> dataReader, IEndOfSentenceScanner scanner, SharpEntropy.IContextGenerator<Util.Pair<System.Text.StringBuilder, int>> contextGenerator)
+        public SentenceDetectionEventReader(SharpEntropy.ITrainingDataReader<string> dataReader, IEndOfSentenceScanner scanner, SharpEntropy.IContextGenerator<Util.Pair<StringBuilder, int>> contextGenerator)
 		{
 			mDataReader = dataReader;
 			mScanner = scanner;
@@ -101,7 +104,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		
 		private void AddNewEvents(string token)
 		{
-			System.Text.StringBuilder buffer = mBuffer;
+			StringBuilder buffer = mBuffer;
 			buffer.Append(token.Trim());
 			int sentenceEndPosition = buffer.Length - 1;
 			//add following word to stringbuilder
@@ -120,7 +123,7 @@ namespace OpenNLP.Tools.SentenceDetect
 			for (System.Collections.IEnumerator iterator = mScanner.GetPositions(buffer).GetEnumerator(); iterator.MoveNext(); )
 			{
 				var candidate = (int) iterator.Current;
-                var pair = new Util.Pair<System.Text.StringBuilder, int>(buffer, candidate);
+                var pair = new Util.Pair<StringBuilder, int>(buffer, candidate);
 				string type = (candidate == sentenceEndPosition) ? "T" : "F";
 				var sentenceEvent = new SentenceDetectionEvent(type, mContextGenerator.GetContext(pair));
 				

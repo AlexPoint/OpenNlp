@@ -200,9 +200,9 @@ namespace OpenNLP.Tools.SentenceDetect
 		{
 			double sentenceProbability = 1;
 			mSentenceProbs.Clear();
-			System.Text.StringBuilder buffer = new System.Text.StringBuilder(input);
+			var buffer = new System.Text.StringBuilder(input);
 			List<int> endersList = mScanner.GetPositions(input);
-			List<int> positions = new List<int>(endersList.Count);
+			var positions = new List<int>(endersList.Count);
 			
 			for (int currentEnder = 0, enderCount = endersList.Count, index = 0; currentEnder < enderCount; currentEnder++)
 			{
@@ -216,7 +216,7 @@ namespace OpenNLP.Tools.SentenceDetect
 					continue;
 				}
 
-                Util.Pair<System.Text.StringBuilder, int> pair = new Util.Pair<System.Text.StringBuilder, int>(buffer, candidate);
+                var pair = new Util.Pair<System.Text.StringBuilder, int>(buffer, candidate);
 				double[] probabilities = mModel.Evaluate(mContextGenerator.GetContext(pair));
 				string bestOutcome = mModel.GetBestOutcome(probabilities);
 				sentenceProbability *= probabilities[mModel.GetOutcomeIndex(bestOutcome)];

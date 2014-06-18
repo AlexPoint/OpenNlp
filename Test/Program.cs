@@ -13,12 +13,34 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            // read file
             var currentDirectory = Environment.CurrentDirectory + "/../../";
+
+            /*// read file
             var tokenizerTrainingFilePath = currentDirectory + "Input/tokenizer.train";
             var outputFilePath = currentDirectory + "Output/EnglishTok.nbin";
             
-            MaximumEntropyTokenizer.Train(tokenizerTrainingFilePath, outputFilePath);
+            MaximumEntropyTokenizer.Train(tokenizerTrainingFilePath, outputFilePath);*/
+
+            // detokenize
+            var inputs = new string[]
+            {
+                "- Harry's your sister. - Look, what exactly am I supposed to be doing here?",
+                "\"Piss off!\"",
+                "- Sorry Mrs. Hudson, I'll skip the tea. Off out. - Both of you?",
+                "I love playing half-life; that's just who I am!",
+            };
+
+            var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
+            var detokenizer = new DictionaryDetokenizer();
+
+            foreach (var input in inputs)
+            {
+                var tokens = tokenizer.Tokenize(input);
+                var output = detokenizer.Detokenize(tokens, "");
+                Console.WriteLine("input: " + input);
+                Console.WriteLine("tokens: "+ string.Join(", ", tokens));
+                Console.WriteLine("ouput: " + output);
+            }
 
             Console.WriteLine("OK");
             Console.ReadKey();

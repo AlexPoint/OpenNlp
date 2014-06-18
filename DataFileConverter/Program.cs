@@ -15,7 +15,7 @@ namespace DataFileConverter
         static void Main(string[] args)
         {
             var currentDirectory = Environment.CurrentDirectory + "/../../";
-            var gisModelFilePath = currentDirectory + "../Resources/Models/EnglishTok.nbin";
+            var gisModelFilePath = currentDirectory + "../Resources/Models/EnglishSD.nbin";
 
             var outputFilePath = currentDirectory + "Output/" + Path.GetFileNameWithoutExtension(gisModelFilePath) + ".txt";
 

@@ -35,18 +35,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace OpenNLP.Tools.SentenceDetect
 {
 	/// <summary> 
 	/// Generate event contexts for maxent decisions for sentence detection.
 	/// </summary>
-    public class SentenceDetectionContextGenerator : SharpEntropy.IContextGenerator<Util.Pair<System.Text.StringBuilder, int>>
+    public class SentenceDetectionContextGenerator : SharpEntropy.IContextGenerator<Util.Pair<StringBuilder, int>>
 	{		
-		private System.Text.StringBuilder mBuffer = new System.Text.StringBuilder();
-        private List<string> mCollectFeatures = new List<string>();
-		private Util.Set<string> mInducedAbbreviations;
-		private char[] mEndOfSentenceCharacters;
+		private readonly StringBuilder mBuffer = new StringBuilder();
+        private readonly List<string> mCollectFeatures = new List<string>();
+		private readonly Util.Set<string> mInducedAbbreviations;
+		private readonly char[] mEndOfSentenceCharacters;
 		
 		/// <summary>
 		/// Creates a new <code>SentenceDetectionContextGenerator</code> instance with
@@ -78,14 +79,14 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// Builds up the list of features, anchored around a position within the
 		/// StringBuilder. 
 		/// </summary>
-        public virtual string[] GetContext(Util.Pair<System.Text.StringBuilder, int> pair)
+        public virtual string[] GetContext(Util.Pair<StringBuilder, int> pair)
 		{
 			string prefix;				//string preceeding the eos character in the eos token. 
 			string previousToken;	//space delimited token preceding token containing eos character. 
 			string suffix;				//string following the eos character in the eos token. 
 			string nextToken;				//space delimited token following token containsing eos character. 
 
-            System.Text.StringBuilder buffer = pair.FirstValue;
+            StringBuilder buffer = pair.FirstValue;
 			int position = pair.SecondValue; //character offset of eos character in 
 
             //if (first is string[])
@@ -180,7 +181,7 @@ namespace OpenNLP.Tools.SentenceDetect
 			mBuffer.Length = 0;
 			if (prefix.Length > 0)
 			{
-				mCollectFeatures.Add(System.Convert.ToString(prefix.Length, System.Globalization.CultureInfo.InvariantCulture));
+				mCollectFeatures.Add(Convert.ToString(prefix.Length, System.Globalization.CultureInfo.InvariantCulture));
 				if (IsFirstUpper(prefix))
 				{
 					mCollectFeatures.Add("xcap");
@@ -261,7 +262,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// <returns>
 		/// The index which contains the nearest space.
 		/// </returns>
-		private static int PreviousSpaceIndex(System.Text.StringBuilder buffer, int seek)
+		private static int PreviousSpaceIndex(StringBuilder buffer, int seek)
 		{
 			seek--;
 			while (seek > 0)
@@ -292,13 +293,12 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// <returns>
 		/// The index which contains the nearest space.
 		/// </returns>
-		private static int NextSpaceIndex(System.Text.StringBuilder buffer, int seek, int lastIndex)
+		private static int NextSpaceIndex(StringBuilder buffer, int seek, int lastIndex)
 		{
 			seek++;
-			char currentChar;
-			while (seek < lastIndex)
+		    while (seek < lastIndex)
 			{
-				currentChar = buffer[seek];
+				char currentChar = buffer[seek];
 				if (currentChar == ' ' || currentChar == '\n')
 				{
 					while (buffer.Length > seek + 1 && buffer[seek + 1] == ' ')

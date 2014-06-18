@@ -267,6 +267,8 @@
     <Compile Include="Tools\SentenceDetect\SentenceDetectionEventReader.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Tokenize\DictionaryDetokenizer.cs" />
+    <Compile Include="Tools\Tokenize\IDetokenizer.cs" />
     <Compile Include="Tools\Tokenize\EnglishMaximumEntropyTokenizer.cs">
       <SubType>Code</SubType>
     </Compile>

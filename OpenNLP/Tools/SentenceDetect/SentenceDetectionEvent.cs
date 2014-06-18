@@ -43,19 +43,7 @@ namespace OpenNLP.Tools.SentenceDetect
 	/// </summary>
 	public class SentenceDetectionEvent : SharpEntropy.TrainingEvent
 	{
-		private SentenceDetectionEvent mNextEvent;
-		
-		internal SentenceDetectionEvent NextEvent
-		{
-			get
-			{
-				return mNextEvent;
-			}
-			set
-			{
-				mNextEvent = value;
-			}
-		}
+		internal SentenceDetectionEvent NextEvent { get; set; }
 
 		/// <summary> 
 		/// package access only

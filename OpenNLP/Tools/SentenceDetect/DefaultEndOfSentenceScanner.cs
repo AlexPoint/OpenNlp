@@ -70,7 +70,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		
 		public virtual List<int> GetPositions(char[] charBuffer)
 		{
-            List<int> positionList = new List<int>();
+            var positionList = new List<int>();
 			
 			for (int currentChar = 0; currentChar < charBuffer.Length; currentChar++)
 			{

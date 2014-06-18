@@ -63,6 +63,12 @@ namespace OpenNLP.Tools.Tokenize
         MERGE_BOTH,
 
         /// <summary>
+        /// The current token should be attached to the string on the left and the right sides
+        /// only if both are words (with letters)
+        /// </summary>
+        MERGE_BOTH_IF_SURROUNDED_BY_WORDS,
+
+        /// <summary>
         /// Attaches the token token to the right token on first occurrence, and
         /// to the token on the left side on the second occurrence.
         /// </summary>

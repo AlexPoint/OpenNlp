@@ -28,6 +28,9 @@ namespace Test
                 "\"Piss off!\"",
                 "- Sorry Mrs. Hudson, I'll skip the tea. Off out. - Both of you?",
                 "I love playing half-life; that's just who I am!",
+                "That's why I... have just begun to write a book.",
+                "And they lived happily ever after...",
+                "It's gonna be $1.5 sir."
             };
 
             var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");

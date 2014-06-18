@@ -18,15 +18,30 @@ namespace OpenNLP.Tools.Tokenize
         {
             _tokenToDetokenizationOperation = new Dictionary<string, DetokenizationOperation>()
             {
+                // Punctuation
                 {".", DetokenizationOperation.MERGE_TO_LEFT},
+                {"...", DetokenizationOperation.MERGE_TO_LEFT},
                 {",", DetokenizationOperation.MERGE_TO_LEFT},
                 {"!", DetokenizationOperation.MERGE_TO_LEFT},
                 {"?", DetokenizationOperation.MERGE_TO_LEFT},
                 {";", DetokenizationOperation.MERGE_TO_LEFT},
                 {"(", DetokenizationOperation.MERGE_TO_RIGHT},
                 {")", DetokenizationOperation.MERGE_TO_LEFT},
+                {"[", DetokenizationOperation.MERGE_TO_RIGHT},
+                {"]", DetokenizationOperation.MERGE_TO_LEFT},
                 {"\"", DetokenizationOperation.RIGHT_LEFT_MATCHING},
                 {"-", DetokenizationOperation.MERGE_BOTH},
+                // Contractions
+                {"'t", DetokenizationOperation.MERGE_TO_LEFT},
+                {"'m", DetokenizationOperation.MERGE_TO_LEFT},
+                {"'s", DetokenizationOperation.MERGE_TO_LEFT},
+                {"'re", DetokenizationOperation.MERGE_TO_LEFT},
+                {"'ve", DetokenizationOperation.MERGE_TO_LEFT},
+                {"'d", DetokenizationOperation.MERGE_TO_LEFT},
+                {"'ll", DetokenizationOperation.MERGE_TO_LEFT},
+                // Currencies
+                {"$", DetokenizationOperation.MERGE_TO_RIGHT},
+                {"€", DetokenizationOperation.MERGE_TO_LEFT},
             };
         }
 

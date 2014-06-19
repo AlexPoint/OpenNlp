@@ -34,14 +34,14 @@ namespace Test
             };
 
             var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
-            var detokenizer = new DictionaryDetokenizer();
+            var detokenizer = new RegexDictionaryDetokenizer();
 
             foreach (var input in inputs)
             {
                 var tokens = tokenizer.Tokenize(input);
-                var output = detokenizer.Detokenize(tokens, "");
+                var output = detokenizer.Detokenize(tokens);
                 Console.WriteLine("input: " + input);
-                Console.WriteLine("tokens: "+ string.Join(", ", tokens));
+                //Console.WriteLine("tokens: "+ string.Join(", ", tokens));
                 Console.WriteLine("ouput: " + output);
             }
 

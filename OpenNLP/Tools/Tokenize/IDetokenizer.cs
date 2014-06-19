@@ -23,11 +23,11 @@ namespace OpenNLP.Tools.Tokenize
     public interface IDetokenizer
     {
         /// <summary>
-        /// Detokenize the input tokens
+        /// Find the detokenization operations corresponding to the input tokens
         /// </summary>
         /// <param name="tokens">the tokens to detokenize</param>
         /// <returns>the merge operations to detokenize the input tokens</returns>
-        DetokenizationOperation[] Detokenize(string[] tokens);
+        DetokenizationOperation[] GetDetokenizationOperations(string[] tokens);
 
         /// <summary>
         /// Detokenize the input tokens into a String. Tokens which
@@ -37,7 +37,8 @@ namespace OpenNLP.Tools.Tokenize
         /// <param name="tokens"></param>
         /// <param name="splitMarker">the split marker or null</param>
         /// <returns></returns>
-        string Detokenize(string[] tokens, string splitMarker);
+        string Detokenize(string[] tokens, string splitMarker = "");
+
     }
 
     /// <summary>

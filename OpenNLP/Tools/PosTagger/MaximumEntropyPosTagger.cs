@@ -35,6 +35,9 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace OpenNLP.Tools.PosTagger
 {
@@ -45,35 +48,29 @@ namespace OpenNLP.Tools.PosTagger
 	/// </summary>
 	public class MaximumEntropyPosTagger : IPosTagger
 	{
+        private const int DefaultBeamSize = 3;
+
 		/// <summary>
 		/// The maximum entropy model to use to evaluate contexts.
 		/// </summary>
-		private SharpEntropy.IMaximumEntropyModel mPosModel;
+		private SharpEntropy.IMaximumEntropyModel _posModel;
 
 		/// <summary>
 		/// The feature context generator.
 		/// </summary>
-		private IPosContextGenerator mContextGenerator;
+		private IPosContextGenerator _contextGenerator;
 
 		/// <summary>
 		///Tag dictionary used for restricting words to a fixed set of tags.
 		///</summary>
-		private PosLookupList mDictionary;
+		private PosLookupList _dictionary;
 
-		/// <summary>
-		/// Says whether a filter should be used to check whether a tag assignment
-		/// is to a word outside of a closed class.
-		/// </summary>
-		private bool mUseClosedClassTagsFilter = false;
-
-		private const int mDefaultBeamSize = 3;
-		
-		/// <summary>
+	    /// <summary>
 		/// The size of the beam to be used in determining the best sequence of pos tags.
 		/// </summary>
-		private int mBeamSize;
+		private int _beamSize;
 
-		private Util.Sequence mBestSequence;
+		private Util.Sequence _bestSequence;
 
 		public virtual string NegativeOutcome
 		{
@@ -93,7 +90,7 @@ namespace OpenNLP.Tools.PosTagger
 		{
 			get
 			{
-				return mPosModel.OutcomeCount;
+				return _posModel.OutcomeCount;
 			}
 		}
 		
@@ -105,10 +102,10 @@ namespace OpenNLP.Tools.PosTagger
         /// </returns>
 		public virtual string[] AllTags()
 		{
-			string[] tags = new string[mPosModel.OutcomeCount];
-			for (int currentTag = 0; currentTag < mPosModel.OutcomeCount; currentTag++)
+			var tags = new string[_posModel.OutcomeCount];
+			for (int currentTag = 0; currentTag < _posModel.OutcomeCount; currentTag++)
 			{
-				tags[currentTag] = mPosModel.GetOutcomeName(currentTag);
+				tags[currentTag] = _posModel.GetOutcomeName(currentTag);
 			}
 			return tags;
 		}
@@ -117,11 +114,11 @@ namespace OpenNLP.Tools.PosTagger
 		{
 			get
 			{
-				return mPosModel;
+				return _posModel;
 			}
 			set
 			{
-				mPosModel = value;
+				_posModel = value;
 			}
 		}
 
@@ -129,11 +126,11 @@ namespace OpenNLP.Tools.PosTagger
 		{
 			get
 			{
-				return mContextGenerator;
+				return _contextGenerator;
 			}
 			set
 			{
-				mContextGenerator = value;
+				_contextGenerator = value;
 			}
 		}
 
@@ -141,39 +138,29 @@ namespace OpenNLP.Tools.PosTagger
 		{
 			get
 			{
-				return mDictionary;
+				return _dictionary;
 			}
 			set
 			{
-				mDictionary = value;
+				_dictionary = value;
 			}
 		}
 
-		/// <summary>
-		/// Says whether a filter should be used to check whether a tag assignment
-		/// is to a word outside of a closed class.
-		/// </summary>
-		protected internal bool UseClosedClassTagsFilter
-		{
-			get
-			{
-				return mUseClosedClassTagsFilter;
-			}
-			set
-			{
-				mUseClosedClassTagsFilter = value;
-			}
-		}
+	    /// <summary>
+	    /// Says whether a filter should be used to check whether a tag assignment
+	    /// is to a word outside of a closed class.
+	    /// </summary>
+	    protected internal bool UseClosedClassTagsFilter { get; set; }
 
-		protected internal int BeamSize
+	    protected internal int BeamSize
 		{
 			get
 			{
-				return mBeamSize;
+				return _beamSize;
 			}
 			set
 			{
-				mBeamSize = value;
+				_beamSize = value;
 			}
 		}
 
@@ -182,76 +169,72 @@ namespace OpenNLP.Tools.PosTagger
 		/// </summary>
 		internal Util.BeamSearch Beam;
 		
-		public MaximumEntropyPosTagger(SharpEntropy.IMaximumEntropyModel model) : this(model, new DefaultPosContextGenerator())
-		{
-		}
+        
+        // Constructors ------------------------
+
+		public MaximumEntropyPosTagger(SharpEntropy.IMaximumEntropyModel model) : 
+            this(model, new DefaultPosContextGenerator()){ }
 		
-		public MaximumEntropyPosTagger(SharpEntropy.IMaximumEntropyModel model, PosLookupList dictionary) : this(mDefaultBeamSize, model, new DefaultPosContextGenerator(), dictionary)
-		{
-		}
+		public MaximumEntropyPosTagger(SharpEntropy.IMaximumEntropyModel model, PosLookupList dictionary) : 
+            this(DefaultBeamSize, model, new DefaultPosContextGenerator(), dictionary){ }
 		
-		public MaximumEntropyPosTagger(SharpEntropy.IMaximumEntropyModel model, IPosContextGenerator contextGenerator) : this(mDefaultBeamSize, model, contextGenerator, null)
-		{
-		}
+		public MaximumEntropyPosTagger(SharpEntropy.IMaximumEntropyModel model, IPosContextGenerator contextGenerator) : 
+            this(DefaultBeamSize, model, contextGenerator, null){ }
 		
-		public MaximumEntropyPosTagger(SharpEntropy.IMaximumEntropyModel model, IPosContextGenerator contextGenerator, PosLookupList dictionary) : this(mDefaultBeamSize, model, contextGenerator, dictionary)
-		{
-		}
+		public MaximumEntropyPosTagger(SharpEntropy.IMaximumEntropyModel model, IPosContextGenerator contextGenerator, PosLookupList dictionary):
+            this(DefaultBeamSize, model, contextGenerator, dictionary){ }
 		
-		public MaximumEntropyPosTagger(int beamSize, SharpEntropy.IMaximumEntropyModel model, IPosContextGenerator contextGenerator, PosLookupList dictionary)
+        public MaximumEntropyPosTagger(int beamSize, SharpEntropy.IMaximumEntropyModel model, IPosContextGenerator contextGenerator, PosLookupList dictionary)
 		{
-			mBeamSize = beamSize;
-			mPosModel = model;
-			mContextGenerator = contextGenerator;
-			Beam = new PosBeamSearch(this, mBeamSize, contextGenerator, model);
-			mDictionary = dictionary;
+		    UseClosedClassTagsFilter = false;
+		    this._beamSize = beamSize;
+			_posModel = model;
+			this._contextGenerator = contextGenerator;
+			Beam = new PosBeamSearch(this, this._beamSize, contextGenerator, model);
+			_dictionary = dictionary;
 		}
-		
-		public virtual SharpEntropy.ITrainingEventReader GetEventReader(System.IO.TextReader reader)
+
+
+        // Methods ----------------------------
+
+		public virtual SharpEntropy.ITrainingEventReader GetEventReader(TextReader reader)
 		{
-			return new PosEventReader(reader, mContextGenerator);
-		}
-		
-		public virtual ArrayList Tag(ArrayList tokens)
-		{
-			mBestSequence = Beam.BestSequence(tokens, null);
-			return new ArrayList(mBestSequence.Outcomes);
+			return new PosEventReader(reader, _contextGenerator);
 		}
 		
 		public virtual string[] Tag(string[] tokens)
 		{
-            mBestSequence = Beam.BestSequence(new ArrayList(tokens), null);
-            return mBestSequence.Outcomes.ToArray();
+            _bestSequence = Beam.BestSequence(new ArrayList(tokens), null);
+            return _bestSequence.Outcomes.ToArray();
 		}
 		
 		public virtual void GetProbabilities(double[] probabilities)
 		{
-			mBestSequence.GetProbabilities(probabilities);
+			_bestSequence.GetProbabilities(probabilities);
 		}
 		
 		public virtual double[] GetProbabilities()
 		{
-			return mBestSequence.GetProbabilities();
+			return _bestSequence.GetProbabilities();
 		}
 		
-		public virtual string TagSentence(string sentence)
+		public virtual List<TaggedWord> TagSentence(string sentence)
 		{
-			ArrayList tokens = new ArrayList(sentence.Split());
-			ArrayList tags = Tag(tokens);
-			System.Text.StringBuilder tagBuffer = new System.Text.StringBuilder();
-			for (int currentTag = 0; currentTag < tags.Count; currentTag++)
-			{
-				tagBuffer.Append(tokens[currentTag] + "/" + tags[currentTag] + " ");
-			}
-			return tagBuffer.ToString().Trim();
+			var tokens = sentence.Split();
+			var tags = Tag(tokens);
+		    var taggedWords = Enumerable.Range(0, tags.Length)
+		        .Select(i => new TaggedWord(tokens[i], tags[i], i))
+		        .ToList();
+
+		    return taggedWords;
 		}
 		
-		public virtual void LocalEvaluate(SharpEntropy.IMaximumEntropyModel posModel, System.IO.StreamReader reader, out double accuracy, out double sentenceAccuracy)
+		public virtual void LocalEvaluate(SharpEntropy.IMaximumEntropyModel posModel, StreamReader reader, out double accuracy, out double sentenceAccuracy)
 		{
-			mPosModel = posModel;
+			this._posModel = posModel;
 			float total = 0, correct = 0, sentences = 0, sentencesCorrect = 0;
 			
-			System.IO.StreamReader sentenceReader = new System.IO.StreamReader(reader.BaseStream, System.Text.Encoding.UTF7);
+			var sentenceReader = new StreamReader(reader.BaseStream, System.Text.Encoding.UTF7);
 			string line;
 			
 			while ((object) (line = sentenceReader.ReadLine()) != null)
@@ -260,14 +243,14 @@ namespace OpenNLP.Tools.PosTagger
 				Util.Pair<ArrayList, ArrayList> annotatedPair = PosEventReader.ConvertAnnotatedString(line);
 				ArrayList words = annotatedPair.FirstValue;
 				ArrayList outcomes = annotatedPair.SecondValue;
-				ArrayList tags = new ArrayList(Beam.BestSequence(words, null).Outcomes);
+				var tags = new ArrayList(Beam.BestSequence(words, null).Outcomes);
 				
 				int count = 0;
 				bool isSentenceOK = true;
-				for (System.Collections.IEnumerator tagIndex = tags.GetEnumerator(); tagIndex.MoveNext(); count++)
+				for (IEnumerator tagIndex = tags.GetEnumerator(); tagIndex.MoveNext(); count++)
 				{
 					total++;
-					string tag = (string) tagIndex.Current;
+					var tag = (string) tagIndex.Current;
 					if (tag == (string)outcomes[count])
 					{
 						correct++;
@@ -287,60 +270,6 @@ namespace OpenNLP.Tools.PosTagger
 			sentenceAccuracy = sentencesCorrect / sentences;
 		}
 		
-		private class PosBeamSearch : Util.BeamSearch
-		{
-			private MaximumEntropyPosTagger mMaxentPosTagger;
-			
-			public PosBeamSearch(MaximumEntropyPosTagger posTagger, int size, IPosContextGenerator contextGenerator, SharpEntropy.IMaximumEntropyModel model) : base(size, contextGenerator, model)
-			{
-				mMaxentPosTagger = posTagger;
-			}
-			
-			public PosBeamSearch(MaximumEntropyPosTagger posTagger, int size, IPosContextGenerator contextGenerator, SharpEntropy.IMaximumEntropyModel model, int cacheSize) : base(size, contextGenerator, model, cacheSize)
-			{
-				mMaxentPosTagger = posTagger;
-			}
-
-			protected internal override bool ValidSequence(int index, object[] inputSequence, string[] outcomesSequence, string outcome) 
-			{
-				if (mMaxentPosTagger.TagDictionary == null) 
-				{
-					return true;
-				}
-				else 
-				{
-					string[] tags = mMaxentPosTagger.TagDictionary.GetTags(inputSequence[index].ToString());
-					if (tags == null) 
-					{
-						return true;
-					}
-					else 
-					{
-						return new ArrayList(tags).Contains(outcome);
-					}
-				}
-			}
-			protected internal override bool ValidSequence(int index, ArrayList inputSequence, Util.Sequence outcomesSequence, string outcome)
-			{
-				if (mMaxentPosTagger.mDictionary == null)
-				{
-					return true;
-				}
-				else
-				{
-					string[] tags = mMaxentPosTagger.mDictionary.GetTags(inputSequence[index].ToString());
-					if (tags == null)
-					{
-						return true;
-					}
-					else
-					{
-						return new ArrayList(tags).Contains(outcome);
-					}
-				}
-			}
-		}
-		
 		public virtual string[] GetOrderedTags(ArrayList words, ArrayList tags, int index)
 		{
 			return GetOrderedTags(words, tags, index, null);
@@ -348,8 +277,8 @@ namespace OpenNLP.Tools.PosTagger
 		
 		public virtual string[] GetOrderedTags(ArrayList words, ArrayList tags, int index, double[] tagProbabilities)
 		{
-			double[] probabilities = mPosModel.Evaluate(mContextGenerator.GetContext(index, words.ToArray(), (string[]) tags.ToArray(typeof(string)), null));
-			string[] orderedTags = new string[probabilities.Length];
+			double[] probabilities = _posModel.Evaluate(_contextGenerator.GetContext(index, words.ToArray(), (string[]) tags.ToArray(typeof(string)), null));
+			var orderedTags = new string[probabilities.Length];
 			for (int currentProbability = 0; currentProbability < probabilities.Length; currentProbability++)
 			{
 				int max = 0;
@@ -360,7 +289,7 @@ namespace OpenNLP.Tools.PosTagger
 						max = tagIndex;
 					}
 				}
-				orderedTags[currentProbability] = mPosModel.GetOutcomeName(max);
+				orderedTags[currentProbability] = _posModel.GetOutcomeName(max);
 				if (tagProbabilities != null)
 				{
 					tagProbabilities[currentProbability] = probabilities[max];
@@ -370,24 +299,19 @@ namespace OpenNLP.Tools.PosTagger
 			return orderedTags;
 		}
 		
+
+        // Utilities ---------------------------------
+
 		/// <summary>
 		/// Trains a POS tag maximum entropy model.
 		/// </summary>
-		/// <param name="eventStream">
-		/// Stream of training events
-		/// </param>
-		/// <param name="iterations">
-		/// number of training iterations to perform.
-		/// </param>
-		/// <param name="cut">
-		/// cutoff value to use for the data indexer.
-		/// </param>
-		/// <returns>
-		/// Trained GIS model.
-		/// </returns>
+		/// <param name="eventStream">Stream of training events</param>
+		/// <param name="iterations">number of training iterations to perform</param>
+		/// <param name="cut">cutoff value to use for the data indexer</param>
+		/// <returns>Trained GIS model</returns>
 		public static SharpEntropy.GisModel Train(SharpEntropy.ITrainingEventReader eventStream, int iterations, int cut)
 		{
-			SharpEntropy.GisTrainer trainer = new SharpEntropy.GisTrainer();
+			var trainer = new SharpEntropy.GisTrainer();
 			trainer.TrainModel(iterations, new SharpEntropy.TwoPassDataIndexer(eventStream, cut));
 			return new SharpEntropy.GisModel(trainer);
 		}
@@ -395,36 +319,88 @@ namespace OpenNLP.Tools.PosTagger
 		/// <summary>
 		/// Trains a POS tag maximum entropy model.
 		/// </summary>
-		/// <param name="trainingFile">
-		/// filepath to the training data.
-		/// </param>
-		/// <returns>
-		/// Trained GIS model.
-		/// </returns>
+		/// <param name="trainingFile">filepath to the training data</param>
+		/// <returns>Trained GIS model</returns>
 		public static SharpEntropy.GisModel TrainModel(string trainingFile)
 		{
 			return TrainModel(trainingFile, 100, 5);
 		}
 
 		/// <summary>
-		/// Trains a POS tag maximum entropy model.
+		/// Trains a POS tag maximum entropy model
 		/// </summary>
-		/// <param name="trainingFile">
-		/// filepath to the training data.
-		/// </param>
-		/// <param name="iterations">
-		/// number of training iterations to perform.
-		/// </param>
-		/// <param name="cutoff">
-		/// Cutoff value to use for the data indexer.
-		/// </param>
-		/// <returns>
-		/// Trained GIS model.
-		/// </returns>
+		/// <param name="trainingFile">filepath to the training data</param>
+		/// <param name="iterations">number of training iterations to perform</param>
+		/// <param name="cutoff">Cutoff value to use for the data indexer</param>
+		/// <returns>Trained GIS model</returns>
 		public static SharpEntropy.GisModel TrainModel(string trainingFile, int iterations, int cutoff)
 		{
 			SharpEntropy.ITrainingEventReader eventReader = new PosEventReader(new System.IO.StreamReader(trainingFile));
 			return Train(eventReader, iterations, cutoff);
 		}
+
+
+        // Inner classes ---------------------------
+        private class PosBeamSearch : Util.BeamSearch
+        {
+            private readonly MaximumEntropyPosTagger _maxentPosTagger;
+
+
+            // Constructors ---------------------
+
+            public PosBeamSearch(MaximumEntropyPosTagger posTagger, int size, IPosContextGenerator contextGenerator, SharpEntropy.IMaximumEntropyModel model) :
+                base(size, contextGenerator, model)
+            {
+                _maxentPosTagger = posTagger;
+            }
+
+            public PosBeamSearch(MaximumEntropyPosTagger posTagger, int size, IPosContextGenerator contextGenerator, SharpEntropy.IMaximumEntropyModel model, int cacheSize) :
+                base(size, contextGenerator, model, cacheSize)
+            {
+                _maxentPosTagger = posTagger;
+            }
+
+
+            // Methods ---------------------------
+
+            protected internal override bool ValidSequence(int index, object[] inputSequence, string[] outcomesSequence, string outcome)
+            {
+                if (_maxentPosTagger.TagDictionary == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    string[] tags = _maxentPosTagger.TagDictionary.GetTags(inputSequence[index].ToString());
+                    if (tags == null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return new ArrayList(tags).Contains(outcome);
+                    }
+                }
+            }
+            protected internal override bool ValidSequence(int index, ArrayList inputSequence, Util.Sequence outcomesSequence, string outcome)
+            {
+                if (_maxentPosTagger._dictionary == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    string[] tags = _maxentPosTagger._dictionary.GetTags(inputSequence[index].ToString());
+                    if (tags == null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return new ArrayList(tags).Contains(outcome);
+                    }
+                }
+            }
+        }
 	}
 }

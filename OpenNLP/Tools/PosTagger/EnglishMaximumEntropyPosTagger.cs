@@ -45,18 +45,20 @@ namespace OpenNLP.Tools.PosTagger
 	public class EnglishMaximumEntropyPosTagger : MaximumEntropyPosTagger
 	{
 		
-		public EnglishMaximumEntropyPosTagger(string modelFile, PosLookupList dictionary) : base(GetModel(modelFile), new DefaultPosContextGenerator(), dictionary)
-		{
-		}
-		
-		public EnglishMaximumEntropyPosTagger(string modelFile, string dictionary) : base(GetModel(modelFile), new DefaultPosContextGenerator(), new PosLookupList(dictionary))
-		{
-		}
+        // Constructors ----------
 
-		public EnglishMaximumEntropyPosTagger(string modelFile) : base(GetModel(modelFile), new DefaultPosContextGenerator())
-		{
-		}
+		public EnglishMaximumEntropyPosTagger(string modelFile, PosLookupList dictionary) : 
+            base(GetModel(modelFile), new DefaultPosContextGenerator(), dictionary){ }
 		
+		public EnglishMaximumEntropyPosTagger(string modelFile, string dictionary) : 
+            base(GetModel(modelFile), new DefaultPosContextGenerator(), new PosLookupList(dictionary)){ }
+
+		public EnglishMaximumEntropyPosTagger(string modelFile) : 
+            base(GetModel(modelFile), new DefaultPosContextGenerator()){ }
+		
+        
+        // Utilities ---------
+
 		private static SharpEntropy.IMaximumEntropyModel GetModel(string name)
 		{
 			return new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(name));

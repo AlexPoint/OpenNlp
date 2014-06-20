@@ -149,10 +149,10 @@ namespace OpenNLP.Tools.Chunker
 		/// </returns>
 		public string GetChunks(string data)
 		{
-			StringBuilder output = new StringBuilder();
+			new StringBuilder();
 			string[] tokenAndTags = data.Split(' ');
-			string[] tokens = new string[tokenAndTags.Length];
-			string[] tags = new string[tokenAndTags.Length];
+			var tokens = new string[tokenAndTags.Length];
+			var tags = new string[tokenAndTags.Length];
 			for (int currentTokenAndTag = 0, tokenAndTagCount = tokenAndTags.Length; currentTokenAndTag < tokenAndTagCount; currentTokenAndTag++)
 			{
 				string[] tokenAndTag = tokenAndTags[currentTokenAndTag].Split('/');

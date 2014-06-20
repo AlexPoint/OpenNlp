@@ -49,30 +49,28 @@ namespace OpenNLP.Tools.Tokenize
 	/// </summary>
 	public class MaximumEntropyTokenizer : ITokenizer
 	{
+        internal static Regex AlphaNumeric = new Regex("^[A-Za-z0-9]+$");
+
 		/// <summary>
 		/// the maximum entropy model to use to evaluate contexts.
 		/// </summary>
-		private SharpEntropy.IMaximumEntropyModel mModel;
+		private readonly SharpEntropy.IMaximumEntropyModel _model;
 		
 		/// <summary>
 		/// The context generator.
 		/// </summary>
-        private SharpEntropy.IContextGenerator<Util.Pair<string, int>> mContextGenerator;
-		
-		internal static Regex AlphaNumeric = new Regex("^[A-Za-z0-9]+$");
+        private readonly SharpEntropy.IContextGenerator<Util.Pair<string, int>> _contextGenerator;
 		
 		/// <summary>
-		/// optimization flag to skip alpha numeric tokens for further
-		/// tokenization 
+		/// Optimization flag to skip alpha numeric tokens for further tokenization 
 		/// </summary>
-		private bool mAlphaNumericOptimization;
+		private bool _mAlphaNumericOptimization;
 		
 		/// <summary>
-		/// list of probabilities for each token returned from call to
-		/// Tokenize() 
+		/// List of probabilities for each token returned from call to Tokenize() 
 		/// </summary>
-		private List<double> mTokenProbabilities;
-		private List<Util.Span> mNewTokens;
+		private readonly List<double> _tokenProbabilities;
+		private readonly List<Util.Span> _newTokens;
 
 		/// <summary>
 		/// Used to have the tokenizer ignore tokens which only contain alpha-numeric characters.
@@ -81,11 +79,11 @@ namespace OpenNLP.Tools.Tokenize
 		{
 			get
 			{
-				return mAlphaNumericOptimization;
+				return _mAlphaNumericOptimization;
 			}
 			set
 			{
-				mAlphaNumericOptimization = value;
+				_mAlphaNumericOptimization = value;
 			}
 		}
 		
@@ -95,11 +93,11 @@ namespace OpenNLP.Tools.Tokenize
 		/// </summary>
 		public MaximumEntropyTokenizer(SharpEntropy.IMaximumEntropyModel model)
 		{
-			mContextGenerator = new TokenContextGenerator();
-			mAlphaNumericOptimization = false;
-			mModel = model;
-            mNewTokens = new List<Util.Span>();
-			mTokenProbabilities = new List<double>(50);
+			_contextGenerator = new TokenContextGenerator();
+			_mAlphaNumericOptimization = false;
+			this._model = model;
+            _newTokens = new List<Util.Span>();
+			_tokenProbabilities = new List<double>(50);
 		}
 		
 		/// <summary> 
@@ -114,8 +112,8 @@ namespace OpenNLP.Tools.Tokenize
 		public virtual Util.Span[] TokenizePositions(string input)
 		{
 			Util.Span[] tokens = Split(input);
-			mNewTokens.Clear();
-			mTokenProbabilities.Clear();
+			_newTokens.Clear();
+			_tokenProbabilities.Clear();
 			
 			for (int currentToken = 0, tokenCount = tokens.Length; currentToken < tokenCount; currentToken++)
 			{
@@ -124,13 +122,13 @@ namespace OpenNLP.Tools.Tokenize
 				// Can't tokenize single characters
 				if (token.Length < 2)
 				{
-					mNewTokens.Add(tokenSpan);
-					mTokenProbabilities.Add(1.0);
+					_newTokens.Add(tokenSpan);
+					_tokenProbabilities.Add(1.0);
 				}
 				else if (AlphaNumericOptimization && AlphaNumeric.IsMatch(token))
 				{
-					mNewTokens.Add(tokenSpan);
-					mTokenProbabilities.Add(1.0);
+					_newTokens.Add(tokenSpan);
+					_tokenProbabilities.Add(1.0);
 				}
 				else
 				{
@@ -140,25 +138,25 @@ namespace OpenNLP.Tools.Tokenize
 					double tokenProbability = 1.0;
 					for (int currentPosition = originalStart + 1; currentPosition < endPosition; currentPosition++)
 					{
-					    var context = mContextGenerator.GetContext(new Util.Pair<string, int>(token, currentPosition - originalStart));
-						double[] probabilities = mModel.Evaluate(context);
-						string bestOutcome = mModel.GetBestOutcome(probabilities);
+					    var context = _contextGenerator.GetContext(new Util.Pair<string, int>(token, currentPosition - originalStart));
+						double[] probabilities = _model.Evaluate(context);
+						string bestOutcome = _model.GetBestOutcome(probabilities);
 						
-						tokenProbability *= probabilities[mModel.GetOutcomeIndex(bestOutcome)];
+						tokenProbability *= probabilities[_model.GetOutcomeIndex(bestOutcome)];
 						if (bestOutcome == TokenContextGenerator.SplitIndicator)
 						{
-							mNewTokens.Add(new Util.Span(startPosition, currentPosition));
-							mTokenProbabilities.Add(tokenProbability);
+							_newTokens.Add(new Util.Span(startPosition, currentPosition));
+							_tokenProbabilities.Add(tokenProbability);
 							startPosition = currentPosition;
 							tokenProbability = 1.0;
 						}
 					}
-					mNewTokens.Add(new Util.Span(startPosition, endPosition));
-					mTokenProbabilities.Add(tokenProbability);
+					_newTokens.Add(new Util.Span(startPosition, endPosition));
+					_tokenProbabilities.Add(tokenProbability);
 				}
 			}
 			
-			return mNewTokens.ToArray();
+			return _newTokens.ToArray();
 		}
 		
 		/// <summary> 
@@ -173,7 +171,7 @@ namespace OpenNLP.Tools.Tokenize
 		public virtual string[] Tokenize(string input)
 		{
 			Util.Span[] tokenSpans = TokenizePositions(input);
-			string[] tokens = new string[tokenSpans.Length];
+			var tokens = new string[tokenSpans.Length];
 			for (int currentToken = 0, tokenCount = tokens.Length; currentToken < tokenCount; currentToken++)
 			{
 				tokens[currentToken] = input.Substring(tokenSpans[currentToken].Start, (tokenSpans[currentToken].End) - (tokenSpans[currentToken].Start));
@@ -238,10 +236,13 @@ namespace OpenNLP.Tools.Tokenize
 		/// </returns>
 		public virtual double[] GetTokenProbabilities()
 		{
-            return mTokenProbabilities.ToArray();
+            return _tokenProbabilities.ToArray();
 		}
 
-		public static void Train(SharpEntropy.ITrainingEventReader eventReader, string outputFilename)
+
+        // Utilities --------------------------------------------
+
+		private static void Train(SharpEntropy.ITrainingEventReader eventReader, string outputFilename)
 		{
 			var trainer = new SharpEntropy.GisTrainer(0.1);
 			trainer.TrainModel(100, new SharpEntropy.TwoPassDataIndexer(eventReader, 5));
@@ -249,6 +250,10 @@ namespace OpenNLP.Tools.Tokenize
 			new SharpEntropy.IO.BinaryGisModelWriter().Persist(tokenizeModel, outputFilename);
 		}
 		
+        /// <summary>
+        /// Trains a tokenizer model from the "events" in the input file
+        /// and write the resulting gis model in the ouput file (as binary)
+        /// </summary>
 		public static void Train(string input, string output)
 		{
 			var dataReader = new StreamReader(new FileInfo(input).FullName);

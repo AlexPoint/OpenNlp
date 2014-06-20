@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace OpenNLP.Tools.PosTagger
 {
@@ -27,36 +28,15 @@ namespace OpenNLP.Tools.PosTagger
 	/// </summary>
 	public interface IPosTagger
 	{
-		/// <summary>
-		/// Assigns the sentence of tokens pos tags.
-		/// </summary>
-		/// <param name="tokens">
-		/// The sentence of tokens to be tagged.
-		/// </param>
-		/// <returns>
-		/// a list of pos tags for each token provided in sentence.
-		/// </returns>
-		ArrayList Tag(ArrayList tokens);
 			
-		/// <summary>
-		/// Assigns the sentence of tokens pos tags.</summary>
-		/// <param name="tokens">
-		/// The sentence of tokens to be tagged.
-		/// </param>
-		/// <returns>
-		/// an array of pos tags for each token provided in sentence.
-		/// </returns>
+		/// <summary>Assigns the sentence of tokens pos tags</summary>
+		/// <param name="tokens">The sentence of tokens to be tagged</param>
+		/// <returns>An array of pos tags for each token provided in sentence</returns>
 		string[] Tag(string[] tokens);
 			
-		/// <summary>
-		/// Assigns pos tags to the sentence of space-delimited tokens.
-		/// </summary>
-		/// <param name="sentence">
-		/// The sentence of space-delimited tokens to be tagged.
-		/// </param>
-		/// <returns>
-		/// a string of space-delimited pos tags for each token provided in sentence.
-		/// </returns>
-		string TagSentence(string sentence);
+		/// <summary> Assigns pos tags to the sentence of space-delimited tokens</summary>
+		/// <param name="sentence">The sentence of space-delimited tokens to be tagged</param>
+		/// <returns>A collection of tagged words (word + pos tag + index in sentence)</returns>
+		List<TaggedWord> TagSentence(string sentence);
 	}
 }

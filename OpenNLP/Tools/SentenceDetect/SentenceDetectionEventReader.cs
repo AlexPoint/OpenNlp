@@ -51,7 +51,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		private readonly SharpEntropy.ITrainingDataReader<string> mDataReader;
 		private string mNext;
 		private SentenceDetectionEvent mHead, mTail;
-        private readonly SharpEntropy.IContextGenerator<Util.Pair<StringBuilder, int>> mContextGenerator;
+        private readonly SharpEntropy.IContextGenerator<Tuple<StringBuilder, int>> mContextGenerator;
 		private readonly StringBuilder mBuffer = new StringBuilder();
 		private readonly IEndOfSentenceScanner mScanner;
 		
@@ -75,7 +75,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		{
 		}
 
-        public SentenceDetectionEventReader(SharpEntropy.ITrainingDataReader<string> dataReader, IEndOfSentenceScanner scanner, SharpEntropy.IContextGenerator<Util.Pair<StringBuilder, int>> contextGenerator)
+        public SentenceDetectionEventReader(SharpEntropy.ITrainingDataReader<string> dataReader, IEndOfSentenceScanner scanner, SharpEntropy.IContextGenerator<Tuple<StringBuilder, int>> contextGenerator)
 		{
 			mDataReader = dataReader;
 			mScanner = scanner;
@@ -123,7 +123,7 @@ namespace OpenNLP.Tools.SentenceDetect
 			for (System.Collections.IEnumerator iterator = mScanner.GetPositions(buffer).GetEnumerator(); iterator.MoveNext(); )
 			{
 				var candidate = (int) iterator.Current;
-                var pair = new Util.Pair<StringBuilder, int>(buffer, candidate);
+                var pair = new Tuple<StringBuilder, int>(buffer, candidate);
 				string type = (candidate == sentenceEndPosition) ? "T" : "F";
 				var sentenceEvent = new SentenceDetectionEvent(type, mContextGenerator.GetContext(pair));
 				

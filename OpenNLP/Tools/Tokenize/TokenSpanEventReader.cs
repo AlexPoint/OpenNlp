@@ -44,7 +44,7 @@ namespace OpenNLP.Tools.Tokenize
 	/// </summary>
 	public class TokenSpanEventReader : SharpEntropy.ITrainingEventReader
 	{
-        private static readonly SharpEntropy.IContextGenerator<Util.Pair<string, int>> mContextGenerator = new TokenContextGenerator();
+        private static readonly SharpEntropy.IContextGenerator<Tuple<string, int>> mContextGenerator = new TokenContextGenerator();
 		private List<SharpEntropy.TrainingEvent> mEvents;
 		private int mEventIndex;
 		private bool mSkipAlphanumerics;
@@ -112,12 +112,12 @@ namespace OpenNLP.Tools.Tokenize
 								int candidateStart = candidateSpan.Start;
 								for (int currentPosition = trainingTokenSpan.Start + 1; currentPosition < trainingTokenSpan.End; currentPosition++)
 								{
-                                    string[] context = mContextGenerator.GetContext(new Util.Pair<string, int>(candidateToken, currentPosition - candidateStart));
+                                    string[] context = mContextGenerator.GetContext(new Tuple<string, int>(candidateToken, currentPosition - candidateStart));
 									mEvents.Add(new SharpEntropy.TrainingEvent(TokenContextGenerator.NoSplitIndicator, context));
 								}
 								if (trainingTokenSpan.End != candidateSpan.End)
 								{
-                                    string[] context = mContextGenerator.GetContext(new Util.Pair<string, int>(candidateToken, trainingTokenSpan.End - candidateStart));
+                                    string[] context = mContextGenerator.GetContext(new Tuple<string, int>(candidateToken, trainingTokenSpan.End - candidateStart));
 									mEvents.Add(new SharpEntropy.TrainingEvent(TokenContextGenerator.SplitIndicator, context));
 								}
 							}

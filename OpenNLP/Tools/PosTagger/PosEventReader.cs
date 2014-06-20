@@ -60,40 +60,45 @@ namespace OpenNLP.Tools.PosTagger
 	/// </summary>
 	public class PosEventReader : SharpEntropy.ITrainingEventReader
 	{
-		private System.IO.TextReader mTextReader;
-		private IPosContextGenerator mContextGenerator;
-        private List<SharpEntropy.TrainingEvent> mEventList = new List<SharpEntropy.TrainingEvent>();
-		private int mCurrentEvent = 0;
+		private readonly System.IO.TextReader _textReader;
+		private readonly IPosContextGenerator _contextGenerator;
+        private readonly List<SharpEntropy.TrainingEvent> _eventList = new List<SharpEntropy.TrainingEvent>();
+		private int _currentEvent = 0;
 		
+        // Constructors ----------------
+
 		public PosEventReader(System.IO.TextReader data) : this(data, new DefaultPosContextGenerator())
 		{
 		}
 
 		public PosEventReader(System.IO.TextReader data, IPosContextGenerator contextGenerator)
 		{
-			mContextGenerator = contextGenerator;
-			mTextReader = data;
-			string nextLine = mTextReader.ReadLine();
+			_contextGenerator = contextGenerator;
+			_textReader = data;
+			string nextLine = _textReader.ReadLine();
 			if (nextLine != null)
 			{
 				AddEvents(nextLine);
 			}
 		}
 		
+        
+        // Methods ---------------------
+
 		public virtual bool HasNext()
 		{
-			return (mCurrentEvent < mEventList.Count);
+			return (_currentEvent < _eventList.Count);
 		}
 		
 		public virtual SharpEntropy.TrainingEvent ReadNextEvent()
 		{
-			SharpEntropy.TrainingEvent trainingEvent = mEventList[mCurrentEvent];
-			mCurrentEvent++;
-			if (mEventList.Count == mCurrentEvent)
+			SharpEntropy.TrainingEvent trainingEvent = _eventList[_currentEvent];
+			_currentEvent++;
+			if (_eventList.Count == _currentEvent)
 			{
-				mCurrentEvent = 0;
-				mEventList.Clear();
-				string nextLine = mTextReader.ReadLine();
+				_currentEvent = 0;
+				_eventList.Clear();
+				string nextLine = _textReader.ReadLine();
 				if (nextLine != null)
 				{
 					AddEvents(nextLine);
@@ -105,31 +110,31 @@ namespace OpenNLP.Tools.PosTagger
 		private void AddEvents(string line)
 		{
 			var linePair = ConvertAnnotatedString(line);
-			var tokens = linePair.FirstValue;
-			var outcomes = linePair.SecondValue;
+			var tokens = linePair.Item1;
+			var outcomes = linePair.Item2;
             var tags = new List<string>();
 					
 			for (int currentToken = 0; currentToken < tokens.Count; currentToken++)
 			{
-				string[] context = mContextGenerator.GetContext(currentToken, tokens.ToArray(), tags.ToArray(), null);
+				string[] context = _contextGenerator.GetContext(currentToken, tokens.ToArray(), tags.ToArray(), null);
 				var posTrainingEvent = new SharpEntropy.TrainingEvent(outcomes[currentToken], context);
 				tags.Add(outcomes[currentToken]);
-				mEventList.Add(posTrainingEvent);
+				_eventList.Add(posTrainingEvent);
 			}
 		}
 
-		private static Util.Pair<string, string> Split(string input)
+		private static Tuple<string, string> Split(string input)
 		{
 			int splitPosition = input.LastIndexOf("_");
 			if (splitPosition == -1)
 			{
 				Console.Out.WriteLine("There is a problem in your training data: " + input + " does not conform to the format WORD_TAG.");
-                return new Util.Pair<string, string>(input, "UNKNOWN");
+                return new Tuple<string, string>(input, "UNKNOWN");
 			}
-            return new Util.Pair<string, string>(input.Substring(0, (splitPosition) - (0)), input.Substring(splitPosition + 1));
+            return new Tuple<string, string>(input.Substring(0, (splitPosition) - (0)), input.Substring(splitPosition + 1));
 		}
 		
-		public static Util.Pair<List<string>, List<string>> ConvertAnnotatedString(string input)
+		public static Tuple<List<string>, List<string>> ConvertAnnotatedString(string input)
 		{
 			var tokens = new List<string>();
 			var outcomes = new List<string>();
@@ -137,12 +142,12 @@ namespace OpenNLP.Tools.PosTagger
 			string token = tokenizer.NextToken();
 			while (token != null)
 			{
-				Util.Pair<string, string> linePair = Split(token);
-				tokens.Add(linePair.FirstValue);
-				outcomes.Add(linePair.SecondValue);
+				Tuple<string, string> linePair = Split(token);
+				tokens.Add(linePair.Item1);
+				outcomes.Add(linePair.Item2);
 				token = tokenizer.NextToken();
 			}
-			return new Util.Pair<List<string>, List<string>>(tokens, outcomes);
+			return new Tuple<List<string>, List<string>>(tokens, outcomes);
 		}
 			
 //		[STAThread]

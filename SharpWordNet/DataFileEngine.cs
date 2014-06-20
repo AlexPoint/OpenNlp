@@ -276,7 +276,7 @@ namespace SharpWordNet
 			dataFile.BaseStream.Seek(synsetOffset, SeekOrigin.Begin);
 			string record = dataFile.ReadLine();
 			
-			Tokenizer tokenizer = new Tokenizer(record);
+			var tokenizer = new Tokenizer(record);
 			int offset = int.Parse(tokenizer.NextToken());
 			string lexicographerFile = mLexicographerFiles[int.Parse(tokenizer.NextToken())];
 			string synsetType = tokenizer.NextToken();
@@ -290,7 +290,7 @@ namespace SharpWordNet
 			}
 
 			int relationCount = int.Parse(tokenizer.NextToken());
-			Relation[] relations = new Relation[relationCount];
+			var relations = new Relation[relationCount];
 			for (int currentRelation = 0; currentRelation < relationCount; currentRelation++)
 			{
 				string relationTypeKey = tokenizer.NextToken();

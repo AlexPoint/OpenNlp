@@ -42,7 +42,7 @@ namespace OpenNLP.Tools.SentenceDetect
 	/// <summary> 
 	/// Generate event contexts for maxent decisions for sentence detection.
 	/// </summary>
-    public class SentenceDetectionContextGenerator : SharpEntropy.IContextGenerator<Util.Pair<StringBuilder, int>>
+    public class SentenceDetectionContextGenerator : SharpEntropy.IContextGenerator<Tuple<StringBuilder, int>>
 	{		
 		private readonly StringBuilder mBuffer = new StringBuilder();
         private readonly List<string> mCollectFeatures = new List<string>();
@@ -53,9 +53,8 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// Creates a new <code>SentenceDetectionContextGenerator</code> instance with
 		/// no induced abbreviations.
 		/// </summary>
-		public SentenceDetectionContextGenerator(char[] endOfSentenceCharacters) : this(new Util.Set<string>(), endOfSentenceCharacters)
-		{
-		}
+		public SentenceDetectionContextGenerator(char[] endOfSentenceCharacters):
+            this(new Util.Set<string>(), endOfSentenceCharacters){}
 		
 		/// <summary> 
 		/// Creates a new <code>SentenceDetectionContextGenerator</code> instance which uses
@@ -79,15 +78,15 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// Builds up the list of features, anchored around a position within the
 		/// StringBuilder. 
 		/// </summary>
-        public virtual string[] GetContext(Util.Pair<StringBuilder, int> pair)
+        public virtual string[] GetContext(Tuple<StringBuilder, int> pair)
 		{
 			string prefix;				//string preceeding the eos character in the eos token. 
 			string previousToken;	//space delimited token preceding token containing eos character. 
 			string suffix;				//string following the eos character in the eos token. 
 			string nextToken;				//space delimited token following token containsing eos character. 
 
-            StringBuilder buffer = pair.FirstValue;
-			int position = pair.SecondValue; //character offset of eos character in 
+            StringBuilder buffer = pair.Item1;
+			int position = pair.Item2; //character offset of eos character in 
 
             //if (first is string[])
             //{
@@ -110,7 +109,7 @@ namespace OpenNLP.Tools.SentenceDetect
             //else
             //{
             //    //compute previous, next, prefix and suffix strings and space previous, space next features and eos features. 
-            //    System.Text.StringBuilder buffer = (System.Text.StringBuilder)((Util.Pair)input).FirstValue;
+            //    System.Text.StringBuilder buffer = (System.Text.StringBuilder)((Tuple)input).FirstValue;
 			int lastIndex = buffer.Length - 1;
 		
 			// compute space previousToken and space next features.

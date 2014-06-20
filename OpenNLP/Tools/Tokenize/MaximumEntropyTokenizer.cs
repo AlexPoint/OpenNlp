@@ -59,7 +59,7 @@ namespace OpenNLP.Tools.Tokenize
 		/// <summary>
 		/// The context generator.
 		/// </summary>
-        private readonly SharpEntropy.IContextGenerator<Util.Pair<string, int>> _contextGenerator;
+        private readonly SharpEntropy.IContextGenerator<Tuple<string, int>> _contextGenerator;
 		
 		/// <summary>
 		/// Optimization flag to skip alpha numeric tokens for further tokenization 
@@ -138,7 +138,7 @@ namespace OpenNLP.Tools.Tokenize
 					double tokenProbability = 1.0;
 					for (int currentPosition = originalStart + 1; currentPosition < endPosition; currentPosition++)
 					{
-					    var context = _contextGenerator.GetContext(new Util.Pair<string, int>(token, currentPosition - originalStart));
+					    var context = _contextGenerator.GetContext(new Tuple<string, int>(token, currentPosition - originalStart));
 						double[] probabilities = _model.Evaluate(context);
 						string bestOutcome = _model.GetBestOutcome(probabilities);
 						

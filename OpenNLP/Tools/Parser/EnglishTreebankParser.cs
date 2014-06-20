@@ -45,8 +45,10 @@ namespace OpenNLP.Tools.Parser
 	/// </summary>
 	public sealed class EnglishTreebankParser
 	{
-	    readonly MaximumEntropyParser mParser;
-	    readonly Tokenize.EnglishMaximumEntropyTokenizer mTokenizer;
+	    readonly MaximumEntropyParser _parser;
+	    readonly Tokenize.EnglishMaximumEntropyTokenizer _tokenizer;
+
+        // Constructors ---------------------
 
 		public EnglishTreebankParser(string dataDirectory, bool useTagDictionary, bool useCaseSensitiveTagDictionary, int beamSize, double advancePercentage)
 		{
@@ -63,9 +65,9 @@ namespace OpenNLP.Tools.Parser
 			var chunker = new EnglishTreebankParserChunker(dataDirectory + "parser\\chunk.nbin");
 			var headRules = new EnglishHeadRules(dataDirectory + "parser\\head_rules");
 
-			mParser = new MaximumEntropyParser(buildModel, checkModel, posTagger, chunker, headRules, beamSize, advancePercentage);
+			_parser = new MaximumEntropyParser(buildModel, checkModel, posTagger, chunker, headRules, beamSize, advancePercentage);
 		
-			mTokenizer = new Tokenize.EnglishMaximumEntropyTokenizer(dataDirectory + "EnglishTok.nbin");
+			_tokenizer = new Tokenize.EnglishMaximumEntropyTokenizer(dataDirectory + "EnglishTok.nbin");
 
 		}
 		
@@ -85,137 +87,9 @@ namespace OpenNLP.Tools.Parser
 		{
 		}
 
-		private sealed class EnglishTreebankPosTagger : PosTagger.MaximumEntropyPosTagger, IParserTagger
-		{
-			private const int K = 10;
-			private readonly int mBeamSize;
 
-			public EnglishTreebankPosTagger(string modelFile) : this(modelFile, K, K)
-			{
-			}
-			
-			public EnglishTreebankPosTagger(string modelFile, int beamSize, int cacheSize) : base(beamSize, new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(modelFile)), new PosTagger.DefaultPosContextGenerator(cacheSize), null)
-			{
-				mBeamSize = beamSize;
-			}
+        // Methods ----------------------
 
-			public EnglishTreebankPosTagger(string modelFile, string tagDictionary, bool useCase): this(modelFile, K, tagDictionary, useCase, K)
-			{
-			}
-			
-			public EnglishTreebankPosTagger(string modelFile, int beamSize, string tagDictionary, bool useCase, int cacheSize) : base(beamSize, new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(modelFile)), new PosTagger.DefaultPosContextGenerator(cacheSize), new PosTagger.PosLookupList(tagDictionary, useCase))
-			{
-				mBeamSize = beamSize;
-			}
-
-			/*public Util.Sequence[] TopKSequences(ArrayList sentence)
-			{
-				return Beam.BestSequences(mBeamSize, sentence.ToArray(), null);
-			}*/
-			
-			public Util.Sequence[] TopKSequences(string[] sentence)
-			{
-				 return Beam.BestSequences(mBeamSize, sentence, null);
-			}
-		}
-		
-		private sealed class EnglishTreebankParserChunker : Chunker.MaximumEntropyChunker, IParserChunker
-		{
-			private const int K = 10;
-			private readonly int mBeamSize;
-			private readonly Dictionary<string, string> mContinueStartMap;
-    
-			public EnglishTreebankParserChunker(string modelFile) : this(modelFile, K, K)
-			{
-			}
-			
-			public EnglishTreebankParserChunker(string modelFile, int beamSize, int cacheSize) : base(new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(modelFile)), new ChunkContextGenerator(cacheSize), beamSize)
-			{
-                mContinueStartMap = new Dictionary<string, string>(Model.OutcomeCount);
-				for (int currentOutcome = 0, outcomeCount = Model.OutcomeCount; currentOutcome < outcomeCount; currentOutcome++) 
-				{
-					string outcome = Model.GetOutcomeName(currentOutcome);
-					if (outcome.StartsWith(MaximumEntropyParser.ContinuePrefix))
-					{
-						mContinueStartMap.Add(outcome, MaximumEntropyParser.StartPrefix + outcome.Substring(MaximumEntropyParser.ContinuePrefix.Length));
-					}
-				}
-				mBeamSize = beamSize;
-			}
-
-			/*public Util.Sequence[] TopKSequences(ArrayList sentence, ArrayList tags)
-			{
-				return Beam.BestSequences(mBeamSize, sentence.ToArray(), new object[]{tags});
-			}*/
-			
-			public Util.Sequence[] TopKSequences(string[] sentence, string[] tags, double minSequenceScore) 
-			{
-				return Beam.BestSequences(mBeamSize, sentence, new object[] {tags}, minSequenceScore);
-			}
-			
-			protected internal override bool ValidOutcome(string outcome, string[] tagList) 
-			{
-				if (mContinueStartMap.ContainsKey(outcome)) 
-				{
-					int lastTagIndex = tagList.Length - 1;
-					if (lastTagIndex == -1) 
-					{
-						return (false);
-					}
-					else 
-					{
-						string lastTag = tagList[lastTagIndex];
-						if (lastTag == outcome) 
-						{
-							return true;
-						}
-						if (lastTag == mContinueStartMap[outcome]) 
-						{
-							return true;
-						}
-						if (lastTag == MaximumEntropyParser.OtherOutcome)
-						{
-							return false;
-						}
-						return false;
-					}
-				}
-				return true;
-			}
-
-			protected internal override bool ValidOutcome(string outcome, Util.Sequence sequence)
-			{
-				if (mContinueStartMap.ContainsKey(outcome))
-				{
-					string[] tags = sequence.Outcomes.ToArray();
-					int lastTagIndex = tags.Length - 1;
-					if (lastTagIndex == - 1)
-					{
-						return false;
-					}
-					else
-					{
-						string lastTag = tags[lastTagIndex];
-						if (lastTag == outcome) 
-						{
-							return true;
-						}
-						if (lastTag == mContinueStartMap[outcome]) 
-						{
-							return true;
-						}
-						if (lastTag == MaximumEntropyParser.OtherOutcome)
-						{
-							return false;
-						}
-						return false;
-					}
-				}
-				return true;
-			}
-		}	
-		
-		
 		private string ConvertToken(string token)
 		{
 			switch (token)
@@ -235,14 +109,13 @@ namespace OpenNLP.Tools.Parser
 		
 		public string DoParse(string[] lines, int requestedParses)
 		{
-						
 			var parseStringBuilder = new System.Text.StringBuilder();
 
 			foreach (string line in lines)
 			{
 				var lineBuilder = new System.Text.StringBuilder();				
 			
-				string[] rawTokens = mTokenizer.Tokenize(line);
+				string[] rawTokens = _tokenizer.Tokenize(line);
 				var tokens = new ArrayList();
 				foreach (string rawToken in rawTokens)
 				{
@@ -252,7 +125,7 @@ namespace OpenNLP.Tools.Parser
 				}
 				if (lineBuilder.Length != 0)
 				{
-					string text = lineBuilder.ToString(0, lineBuilder.Length - 1).ToString();
+					string text = lineBuilder.ToString(0, lineBuilder.Length - 1);
 					var currentParse = new Parse(text, new Util.Span(0, text.Length), "INC", 1, null);
 					int start = 0;
 					
@@ -262,7 +135,7 @@ namespace OpenNLP.Tools.Parser
 						start += token.Length + 1;
 					}
 					
-					Parse[] parses = mParser.FullParse(currentParse, requestedParses);
+					Parse[] parses = _parser.FullParse(currentParse, requestedParses);
 					for (int currentParseIndex = 0, parseCount = parses.Length; currentParseIndex < parseCount; currentParseIndex++)
 					{
 						if (requestedParses > 1)
@@ -284,7 +157,7 @@ namespace OpenNLP.Tools.Parser
 		public Parse[] DoParse(string line, int requestedParses)
 		{			
 			var lineBuilder = new System.Text.StringBuilder();				
-			string[] rawTokens = mTokenizer.Tokenize(line);
+			string[] rawTokens = _tokenizer.Tokenize(line);
 			var tokens = new ArrayList();
 			foreach (string rawToken in rawTokens)
 			{
@@ -304,7 +177,7 @@ namespace OpenNLP.Tools.Parser
 					start += token.Length + 1;
 				}
 				
-				Parse[] parses = mParser.FullParse(currentParse, requestedParses);
+				Parse[] parses = _parser.FullParse(currentParse, requestedParses);
 				return parses;
 			}
 			else
@@ -322,5 +195,134 @@ namespace OpenNLP.Tools.Parser
 			}
 			return null;
 		}
+
+
+        // Inner classes ------------------------------
+        private sealed class EnglishTreebankPosTagger : PosTagger.MaximumEntropyPosTagger, IParserTagger
+        {
+            private const int K = 10;
+            private readonly int _beamSize;
+
+            // Constructors ---------------------------
+
+            public EnglishTreebankPosTagger(string modelFile, int beamSize = K, int cacheSize = K)
+                : base(beamSize, new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(modelFile)), new PosTagger.DefaultPosContextGenerator(cacheSize), null)
+            {
+                _beamSize = beamSize;
+            }
+
+            public EnglishTreebankPosTagger(string modelFile, string tagDictionary, bool useCase)
+                : this(modelFile, K, tagDictionary, useCase, K)
+            {
+            }
+
+            public EnglishTreebankPosTagger(string modelFile, int beamSize, string tagDictionary, bool useCase, int cacheSize)
+                : base(beamSize, new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(modelFile)), new PosTagger.DefaultPosContextGenerator(cacheSize), new PosTagger.PosLookupList(tagDictionary, useCase))
+            {
+                _beamSize = beamSize;
+            }
+
+            
+            // Methods ---------------------------------
+
+            public Util.Sequence[] TopKSequences(string[] sentence)
+            {
+                return Beam.BestSequences(_beamSize, sentence, null);
+            }
+        }
+
+        private sealed class EnglishTreebankParserChunker : Chunker.MaximumEntropyChunker, IParserChunker
+        {
+            private const int K = 10;
+            private readonly int _beamSize;
+            private readonly Dictionary<string, string> _continueStartMap;
+
+
+            // Constructors ------------------------
+
+            public EnglishTreebankParserChunker(string modelFile, int beamSize = K, int cacheSize = K) :
+                base(new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(modelFile)), new ChunkContextGenerator(cacheSize), beamSize)
+            {
+                _continueStartMap = new Dictionary<string, string>(Model.OutcomeCount);
+                for (int currentOutcome = 0, outcomeCount = Model.OutcomeCount; currentOutcome < outcomeCount; currentOutcome++)
+                {
+                    string outcome = Model.GetOutcomeName(currentOutcome);
+                    if (outcome.StartsWith(MaximumEntropyParser.ContinuePrefix))
+                    {
+                        _continueStartMap.Add(outcome, MaximumEntropyParser.StartPrefix + outcome.Substring(MaximumEntropyParser.ContinuePrefix.Length));
+                    }
+                }
+                _beamSize = beamSize;
+            }
+
+
+            // Methods -----------------------------
+
+            public Util.Sequence[] TopKSequences(string[] sentence, string[] tags, double minSequenceScore)
+            {
+                return Beam.BestSequences(_beamSize, sentence, new object[] { tags }, minSequenceScore);
+            }
+
+            protected internal override bool ValidOutcome(string outcome, string[] tagList)
+            {
+                if (_continueStartMap.ContainsKey(outcome))
+                {
+                    int lastTagIndex = tagList.Length - 1;
+                    if (lastTagIndex == -1)
+                    {
+                        return (false);
+                    }
+                    else
+                    {
+                        string lastTag = tagList[lastTagIndex];
+                        if (lastTag == outcome)
+                        {
+                            return true;
+                        }
+                        if (lastTag == _continueStartMap[outcome])
+                        {
+                            return true;
+                        }
+                        if (lastTag == MaximumEntropyParser.OtherOutcome)
+                        {
+                            return false;
+                        }
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            protected internal override bool ValidOutcome(string outcome, Util.Sequence sequence)
+            {
+                if (_continueStartMap.ContainsKey(outcome))
+                {
+                    string[] tags = sequence.Outcomes.ToArray();
+                    int lastTagIndex = tags.Length - 1;
+                    if (lastTagIndex == -1)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        string lastTag = tags[lastTagIndex];
+                        if (lastTag == outcome)
+                        {
+                            return true;
+                        }
+                        if (lastTag == _continueStartMap[outcome])
+                        {
+                            return true;
+                        }
+                        if (lastTag == MaximumEntropyParser.OtherOutcome)
+                        {
+                            return false;
+                        }
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
 	}
 }

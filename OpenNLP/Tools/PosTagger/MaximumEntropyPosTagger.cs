@@ -241,12 +241,12 @@ namespace OpenNLP.Tools.PosTagger
 			{
 				sentences++;
 				var annotatedPair = PosEventReader.ConvertAnnotatedString(line);
-				var words = annotatedPair.FirstValue;
-				var outcomes = annotatedPair.SecondValue;
+				var words = annotatedPair.Item1;
+				var outcomes = annotatedPair.Item2;
 				var tags = new ArrayList(Beam.BestSequence(words.ToArray(), null).Outcomes);
 				
 				int count = 0;
-				bool isSentenceOK = true;
+				bool isSentenceOk = true;
 				for (IEnumerator tagIndex = tags.GetEnumerator(); tagIndex.MoveNext(); count++)
 				{
 					total++;
@@ -257,10 +257,10 @@ namespace OpenNLP.Tools.PosTagger
 					}
 					else
 					{
-						isSentenceOK = false;
+						isSentenceOk = false;
 					}
 				}
-				if (isSentenceOK)
+				if (isSentenceOk)
 				{
 					sentencesCorrect++;
 				}

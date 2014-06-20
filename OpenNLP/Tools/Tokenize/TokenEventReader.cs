@@ -45,7 +45,7 @@ namespace OpenNLP.Tools.Tokenize
 	/// </summary>
 	public class TokenEventReader : SharpEntropy.ITrainingEventReader
 	{
-        private static readonly SharpEntropy.IContextGenerator<Util.Pair<string, int>> mContextGenerator = new TokenContextGenerator();
+        private static readonly SharpEntropy.IContextGenerator<Tuple<string, int>> mContextGenerator = new TokenContextGenerator();
 		private StreamReader mStreamReader;
         private List<SharpEntropy.TrainingEvent> mEventList = new List<SharpEntropy.TrainingEvent>();
 		private int mCurrentEvent = 0;
@@ -74,7 +74,7 @@ namespace OpenNLP.Tools.Tokenize
 					int lastIndex = buffer.Length - 1;
 					for (int index = 0; index < buffer.Length; index++)
 					{
-                        string[] context = mContextGenerator.GetContext(new Util.Pair<string, int>(buffer, index));
+                        string[] context = mContextGenerator.GetContext(new Tuple<string, int>(buffer, index));
 						if (index == lastIndex)
 						{
 							mEventList.Add(new SharpEntropy.TrainingEvent("T", context));

@@ -315,9 +315,6 @@
     <Compile Include="Tools\Util\ListHeap.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tools\Util\Pair.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Tools\Util\ReverseListIterator.cs" />
     <Compile Include="Tools\Util\Sequence.cs">
       <SubType>Code</SubType>

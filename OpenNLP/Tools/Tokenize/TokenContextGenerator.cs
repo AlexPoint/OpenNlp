@@ -41,7 +41,7 @@ namespace OpenNLP.Tools.Tokenize
 	/// <summary>
 	///  Generate events for maxent decisions for tokenization.
 	/// </summary>
-    public class TokenContextGenerator : SharpEntropy.IContextGenerator<Util.Pair<string, int>>
+    public class TokenContextGenerator : SharpEntropy.IContextGenerator<Tuple<string, int>>
 	{
 		public const string SplitIndicator = "T";
 		public const string NoSplitIndicator = "F";
@@ -51,12 +51,12 @@ namespace OpenNLP.Tools.Tokenize
 		/// which is a pair containing a string and and integer which
 		/// indicates the index of the position we are investigating.
 		/// </summary>
-        public virtual string[] GetContext(Util.Pair<string, int> pair)
+        public virtual string[] GetContext(Tuple<string, int> pair)
 		{
-            string data = pair.FirstValue;
-			int index = pair.SecondValue;
+            string data = pair.Item1;
+			int index = pair.Item2;
 
-            List<string> predicates = new List<string>();
+            var predicates = new List<string>();
 			predicates.Add("p=" + data.Substring(0, (index) - (0)));
 			predicates.Add("s=" + data.Substring(index));
 			if (index > 0)

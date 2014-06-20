@@ -43,7 +43,7 @@ namespace OpenNLP.Tools.Parser
 	/// </summary>
 	public interface IParserTagger : PosTagger.IPosTagger
 	{		
-		Util.Sequence[] TopKSequences(ArrayList sentence);	
+		/*Util.Sequence[] TopKSequences(ArrayList sentence);*/
 		Util.Sequence[] TopKSequences(string[] sentence);
 	}
 }

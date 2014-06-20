@@ -104,16 +104,16 @@ namespace OpenNLP.Tools.PosTagger
 
 		private void AddEvents(string line)
 		{
-			Util.Pair<ArrayList, ArrayList>  linePair = ConvertAnnotatedString(line);
-			ArrayList tokens = linePair.FirstValue;
-			ArrayList outcomes = linePair.SecondValue;
-            List<string> tags = new List<string>();
+			var linePair = ConvertAnnotatedString(line);
+			var tokens = linePair.FirstValue;
+			var outcomes = linePair.SecondValue;
+            var tags = new List<string>();
 					
 			for (int currentToken = 0; currentToken < tokens.Count; currentToken++)
 			{
 				string[] context = mContextGenerator.GetContext(currentToken, tokens.ToArray(), tags.ToArray(), null);
-				SharpEntropy.TrainingEvent posTrainingEvent = new SharpEntropy.TrainingEvent((string) outcomes[currentToken], context);
-				tags.Add((string)outcomes[currentToken]);
+				var posTrainingEvent = new SharpEntropy.TrainingEvent(outcomes[currentToken], context);
+				tags.Add(outcomes[currentToken]);
 				mEventList.Add(posTrainingEvent);
 			}
 		}
@@ -123,17 +123,17 @@ namespace OpenNLP.Tools.PosTagger
 			int splitPosition = input.LastIndexOf("_");
 			if (splitPosition == -1)
 			{
-				System.Console.Out.WriteLine("There is a problem in your training data: " + input + " does not conform to the format WORD_TAG.");
+				Console.Out.WriteLine("There is a problem in your training data: " + input + " does not conform to the format WORD_TAG.");
                 return new Util.Pair<string, string>(input, "UNKNOWN");
 			}
             return new Util.Pair<string, string>(input.Substring(0, (splitPosition) - (0)), input.Substring(splitPosition + 1));
 		}
 		
-		public static Util.Pair<ArrayList, ArrayList> ConvertAnnotatedString(string input)
+		public static Util.Pair<List<string>, List<string>> ConvertAnnotatedString(string input)
 		{
-			ArrayList tokens = new ArrayList();
-			ArrayList outcomes = new ArrayList();
-			Util.StringTokenizer tokenizer = new Util.StringTokenizer(input);
+			var tokens = new List<string>();
+			var outcomes = new List<string>();
+			var tokenizer = new Util.StringTokenizer(input);
 			string token = tokenizer.NextToken();
 			while (token != null)
 			{
@@ -142,7 +142,7 @@ namespace OpenNLP.Tools.PosTagger
 				outcomes.Add(linePair.SecondValue);
 				token = tokenizer.NextToken();
 			}
-			return new Util.Pair<ArrayList, ArrayList>(tokens, outcomes);
+			return new Util.Pair<List<string>, List<string>>(tokens, outcomes);
 		}
 			
 //		[STAThread]

@@ -44,20 +44,6 @@ namespace OpenNLP.Tools.NameFind
 	public interface INameFinder
 	{
 		/// <summary>
-		/// Generates name tags for the given sequence returning the result in a list.
-		/// </summary>
-		/// <param name="tokens">
-		/// a list of the tokens or words of the sequence.
-		/// </param>
-		/// <param name="previousTags">
-		/// a mapping between tokens and outcomes from previous sentences. 
-		/// </param>
-		/// <returns>
-		/// a list of chunk tags for each token in the sequence.
-		/// </returns>
-		ArrayList Find(ArrayList tokens, IDictionary previousTags);
-			
-		/// <summary>
 		/// Generates name tags for the given sequence returning the result in an array.
 		/// </summary>
 		/// <param name="tokens">
@@ -69,6 +55,6 @@ namespace OpenNLP.Tools.NameFind
 		/// <returns>
 		/// an array of chunk tags for each token in the sequence.
 		/// </returns>
-		string[] Find(object[] tokens, IDictionary previousTags);
+		string[] Find(string[] tokens, IDictionary previousTags);
 	}
 }

@@ -43,9 +43,9 @@ namespace OpenNLP.Tools.Chunker
 	/// </summary>
 	public class MaximumEntropyChunker : IChunker
 	{		
-		private Util.BeamSearch mBeam;
-		private Util.Sequence mBestSequence;
-		private SharpEntropy.IMaximumEntropyModel mModel; 
+		private readonly Util.BeamSearch _beam;
+		private Util.Sequence _bestSequence;
+		private readonly SharpEntropy.IMaximumEntropyModel _model;
 
 		/// <summary>
 		/// The beam used to search for sequences of chunk tag assignments.
@@ -54,7 +54,7 @@ namespace OpenNLP.Tools.Chunker
 		{
 			get
 			{
-				return mBeam;
+				return _beam;
 			}
 		}
 
@@ -65,86 +65,44 @@ namespace OpenNLP.Tools.Chunker
 		{
 			get
 			{
-				return mModel;
+				return _model;
 			}
 		}
 
-		/// <summary>
-		/// Creates a chunker using the specified model.
-		/// </summary>
-		/// <param name="model">
-		/// The maximum entropy model for this chunker.
-		/// </param>
-		public MaximumEntropyChunker(SharpEntropy.IMaximumEntropyModel model):this(model, new DefaultChunkerContextGenerator(), 10)
-		{
-		}
+		/// <summary>Creates a chunker using the specified model</summary>
+		/// <param name="model">The maximum entropy model for this chunker</param>
+		public MaximumEntropyChunker(SharpEntropy.IMaximumEntropyModel model):
+            this(model, new DefaultChunkerContextGenerator(), 10){}
 		
 		/// <summary>
 		/// Creates a chunker using the specified model and context generator.
 		/// </summary>
-		/// <param name="model">
-		/// The maximum entropy model for this chunker.
-		/// </param>
-		/// <param name="contextGenerator">
-		/// The context generator to be used by the specified model.
-		/// </param>
-		public MaximumEntropyChunker(SharpEntropy.IMaximumEntropyModel model, IChunkerContextGenerator contextGenerator):this(model, contextGenerator, 10)
-		{
-		}
+		/// <param name="model">The maximum entropy model for this chunker</param>
+		/// <param name="contextGenerator">The context generator to be used by the specified model</param>
+		public MaximumEntropyChunker(SharpEntropy.IMaximumEntropyModel model, IChunkerContextGenerator contextGenerator):
+            this(model, contextGenerator, 10){}
 		
 		/// <summary>
 		/// Creates a chunker using the specified model and context generator and decodes the
 		/// model using a beam search of the specified size.
 		/// </summary>
-		/// <param name="model">
-		/// The maximum entropy model for this chunker.
-		/// </param>
-		/// <param name="contextGenerator">
-		/// The context generator to be used by the specified model.
-		/// </param>
-		/// <param name="beamSize">
-		/// The size of the beam that should be used when decoding sequences.
-		/// </param>
+		/// <param name="model">The maximum entropy model for this chunker</param>
+		/// <param name="contextGenerator">The context generator to be used by the specified model</param>
+		/// <param name="beamSize">The size of the beam that should be used when decoding sequences</param>
 		public MaximumEntropyChunker(SharpEntropy.IMaximumEntropyModel model, IChunkerContextGenerator contextGenerator, int beamSize)
 		{
-			mBeam = new ChunkBeamSearch(this, beamSize, contextGenerator, model);
-			mModel = model;
+			_beam = new ChunkBeamSearch(this, beamSize, contextGenerator, model);
+			_model = model;
 		}
 		
-		/// <summary>
-		/// Performs a chunking operation.
-		/// </summary>
-		/// <param name="tokens">
-		/// ArrayList of tokens
-		/// </param>
-		/// <param name="tags">
-		/// ArrayList of tags corresponding to the tokens
-		/// </param>
-		/// <returns>
-		/// ArrayList of results, containing a value for each token, indicating the chunk that that token belongs to.
-		/// </returns>
-		public virtual ArrayList Chunk(ArrayList tokens, ArrayList tags)
+		/// <summary>Performs a chunking operation</summary>
+		/// <param name="tokens">Object array of tokens</param>
+		/// <param name="tags">String array of POS tags corresponding to the tokens in the object array</param>
+		/// <returns>String array containing a value for each token, indicating the chunk that that token belongs to</returns>
+		public virtual string[] Chunk(string[] tokens, string[] tags)
 		{
-			mBestSequence = mBeam.BestSequence(tokens, new object[] { (string[]) tags.ToArray(typeof(string)) });
-			return new ArrayList(mBestSequence.Outcomes);
-		}
-		
-		/// <summary>
-		/// Performs a chunking operation.
-		/// </summary>
-		/// <param name="tokens">
-		/// Object array of tokens
-		/// </param>
-		/// <param name="tags">
-		/// String array of POS tags corresponding to the tokens in the object array
-		/// </param>
-		/// <returns>
-		/// String array containing a value for each token, indicating the chunk that that token belongs to.
-		/// </returns>
-		public virtual string[] Chunk(object[] tokens, string[] tags)
-		{
-			mBestSequence = mBeam.BestSequence(new ArrayList(tokens), new object[]{tags});
-            return mBestSequence.Outcomes.ToArray();
+			_bestSequence = _beam.BestSequence(tokens, new object[]{tags});
+            return _bestSequence.Outcomes.ToArray();
 		}
 		
 		/// <summary>
@@ -155,10 +113,10 @@ namespace OpenNLP.Tools.Chunker
 		/// </returns>
 		public virtual string[] AllTags()
 		{
-			string[] tags = new string[mModel.OutcomeCount];
-			for (int currentTag = 0; currentTag < mModel.OutcomeCount; currentTag++)
+			var tags = new string[_model.OutcomeCount];
+			for (int currentTag = 0; currentTag < _model.OutcomeCount; currentTag++)
 			{
-				tags[currentTag] = mModel.GetOutcomeName(currentTag);
+				tags[currentTag] = _model.GetOutcomeName(currentTag);
 			}
 			return tags;
 		}
@@ -232,7 +190,7 @@ namespace OpenNLP.Tools.Chunker
 		/// </param>
 		public virtual void GetProbabilities(double[] probabilities)
 		{
-			mBestSequence.GetProbabilities(probabilities);
+			_bestSequence.GetProbabilities(probabilities);
 		}
 		
 		/// <summary>
@@ -245,7 +203,7 @@ namespace OpenNLP.Tools.Chunker
 		/// </returns>
 		public virtual double[] GetProbabilities()
 		{
-			return mBestSequence.GetProbabilities();
+			return _bestSequence.GetProbabilities();
 		}
 		
 		/// <summary>

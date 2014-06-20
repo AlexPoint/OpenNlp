@@ -41,7 +41,7 @@ namespace OpenNLP.Tools.NameFind
 	/// <summary>
 	/// Context generator for the name find tool.
 	/// </summary>
-	public interface INameContextGenerator : OpenNLP.Tools.Util.IBeamSearchContextGenerator
+	public interface INameContextGenerator : Util.IBeamSearchContextGenerator
 	{	
 		/// <summary>
 		/// Returns the contexts for chunking of the specified index.

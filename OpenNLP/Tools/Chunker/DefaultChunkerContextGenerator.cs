@@ -73,7 +73,7 @@ namespace OpenNLP.Tools.Chunker
 		{
 			object[] data = (object[]) input;
 			string[] outcomes = ((Util.Sequence) data[2]).Outcomes.ToArray();
-			return (GetContext(((int)data[0]), (object[])data[1], (string[])data[3], outcomes));
+			return (GetContext(((int)data[0]), (string[])data[1], (string[])data[3], outcomes));
 		}
 		
 		/// <summary>
@@ -95,7 +95,7 @@ namespace OpenNLP.Tools.Chunker
 		/// <returns>
 		/// An array of predictive contexts on which a model bases its decisions.
 		/// </returns>
-		public virtual string[] GetContext(int index, object[] sequence, string[] priorDecisions, object[] additionalContext) 
+		public virtual string[] GetContext(int index, string[] sequence, string[] priorDecisions, object[] additionalContext) 
 		{
 			return GetContext(index, sequence, (string[])additionalContext[0], priorDecisions); 
 		}  
@@ -118,7 +118,7 @@ namespace OpenNLP.Tools.Chunker
 		/// <returns>
 		/// An array of predictive contexts on which a model bases its decisions.
 		/// </returns>
-		public virtual string[] GetContext(int tokenIndex, object[] tokens, string[] tags, string[] predicates)
+		public virtual string[] GetContext(int tokenIndex, string[] tokens, string[] tags, string[] predicates)
 		{
             List<string> features = new List<string>(45);
 			//words in a 5-word window

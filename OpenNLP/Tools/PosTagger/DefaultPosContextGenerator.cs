@@ -71,7 +71,7 @@ namespace OpenNLP.Tools.PosTagger
 		public virtual string[] GetContext(object input)
 		{
 			object[] data = (object[]) input;
-			return GetContext(((int) data[0]), (object[]) data[1], (string[]) data[2], null);
+			return GetContext(((int) data[0]), (string[]) data[1], (string[]) data[2], null);
 		}
 		
 		protected internal static string[] GetPrefixes(string lex)
@@ -94,7 +94,7 @@ namespace OpenNLP.Tools.PosTagger
 			return suffixes;
 		}
 		
-		public virtual string[] GetContext(int index, object[] sequence, string[] priorDecisions, object[] additionalContext) 
+		public virtual string[] GetContext(int index, string[] sequence, string[] priorDecisions, object[] additionalContext) 
 		{
 			return GetContext(index, sequence, priorDecisions);
 		}
@@ -114,20 +114,20 @@ namespace OpenNLP.Tools.PosTagger
 		/// <returns>
 		/// The context for making a pos tag decision at the specified token index given the specified tokens and previous tags.
 		/// </returns>
-		public virtual string[] GetContext(int index, object[] tokens, string[] tags) 
+		public virtual string[] GetContext(int index, string[] tokens, string[] tags) 
 		{
-			string next, nextNext, lex, previous, previousPrevious;
-			string tagPrevious, tagPreviousPrevious;
-			tagPrevious = tagPreviousPrevious = null;
-			next = nextNext = lex = previous = previousPrevious = null;
+            string next, nextNext, lex, previous, previousPrevious;
+            string tagPrevious, tagPreviousPrevious;
+            tagPrevious = tagPreviousPrevious = null;
+            next = nextNext = lex = previous = previousPrevious = null;
 			
-			lex = tokens[index].ToString();
+			lex = tokens[index];
 			if (tokens.Length > index + 1) 
 			{
-				next = tokens[index + 1].ToString();
+				next = tokens[index + 1];
 				if (tokens.Length > index + 2)
 				{
-					nextNext = tokens[index + 2].ToString();
+					nextNext = tokens[index + 2];
 				}
 				else
 				{
@@ -141,13 +141,13 @@ namespace OpenNLP.Tools.PosTagger
 			
 			if (index - 1 >= 0) 
 			{
-				previous = tokens[index - 1].ToString();
-				tagPrevious = tags[index - 1].ToString();
+				previous = tokens[index - 1];
+				tagPrevious = tags[index - 1];
 
 				if (index - 2 >= 0) 
 				{
-					previousPrevious = tokens[index - 2].ToString();
-					tagPreviousPrevious = tags[index - 2].ToString();
+					previousPrevious = tokens[index - 2];
+					tagPreviousPrevious = tags[index - 2];
 				}
 				else
 				{
@@ -160,11 +160,11 @@ namespace OpenNLP.Tools.PosTagger
 			}
 			
 			string cacheKey = index.ToString(System.Globalization.CultureInfo.InvariantCulture) + tagPrevious + tagPreviousPrevious;
-			if (!(mContextsCache == null)) 
+			if (mContextsCache != null) 
 			{
 				if (mWordsKey == tokens)
 				{
-					string[] cachedContexts = (string[]) mContextsCache[cacheKey];    
+					var cachedContexts = (string[]) mContextsCache[cacheKey];    
 					if (cachedContexts != null) 
 					{
 						return cachedContexts;
@@ -178,7 +178,7 @@ namespace OpenNLP.Tools.PosTagger
 
 			}
 
-            List<string> eventList = new List<string>();
+            var eventList = new List<string>();
 			
 			// add the word itself
 			eventList.Add("w=" + lex);

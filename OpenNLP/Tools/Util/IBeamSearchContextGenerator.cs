@@ -60,6 +60,6 @@ namespace OpenNLP.Tools.Util
 		/// <returns>
 		/// the context for the specified position in the specified sequence.
 		/// </returns>
-		string[] GetContext(int index, object[] sequence, string[] priorDecisions, object[] additionalContext);
+		string[] GetContext(int index, string[] sequence, string[] priorDecisions, object[] additionalContext);
 	}
 }

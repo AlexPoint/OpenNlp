@@ -110,7 +110,7 @@ namespace OpenNLP.Tools.Util
 		/// <returns>
 		/// An array of the top ranked sequences of outcomes.
 		/// </returns>		
-		public Sequence[] BestSequences(int numSequences, object[] sequence, object[] additionalContext) 
+		public Sequence[] BestSequences(int numSequences, string[] sequence, object[] additionalContext) 
 		{
 			return BestSequences(numSequences, sequence, additionalContext, mZeroLog);
 		}
@@ -131,11 +131,11 @@ namespace OpenNLP.Tools.Util
 		/// <returns>
 		/// An array of the top ranked sequences of outcomes.
 		/// </returns>		
-		public virtual Sequence[] BestSequences(int numSequences, object[] sequence, object[] additionalContext, double minSequenceScore)
+		public virtual Sequence[] BestSequences(int numSequences, string[] sequence, object[] additionalContext, double minSequenceScore)
 		{
 			int sequenceCount = sequence.Length;
-            ListHeap<Sequence> previousHeap = new ListHeap<Sequence>(Size);
-            ListHeap<Sequence> nextHeap = new ListHeap<Sequence>(Size);
+            var previousHeap = new ListHeap<Sequence>(Size);
+            var nextHeap = new ListHeap<Sequence>(Size);
             ListHeap<Sequence> tempHeap;
 
 			previousHeap.Add(new Sequence());
@@ -145,7 +145,7 @@ namespace OpenNLP.Tools.Util
 			}
 			for (int currentSequence = 0; currentSequence < sequenceCount; currentSequence++)
 			{
-				int sz = System.Math.Min(Size, previousHeap.Size);
+				int sz = Math.Min(Size, previousHeap.Size);
 				int sc = 0;
 				for (; previousHeap.Size > 0 && sc < sz; sc++) 
 				{
@@ -183,7 +183,7 @@ namespace OpenNLP.Tools.Util
 						string outcomeName = Model.GetOutcomeName(currentScore);
 						if (ValidSequence(currentSequence, sequence, outcomes, outcomeName))
 						{
-							Sequence newSequence = new Sequence(topSequence, outcomeName, scores[currentScore]);
+							var newSequence = new Sequence(topSequence, outcomeName, scores[currentScore]);
 							if (newSequence.Score > minSequenceScore)
 							{
 								nextHeap.Add(newSequence);
@@ -197,7 +197,7 @@ namespace OpenNLP.Tools.Util
 							string outcomeName = Model.GetOutcomeName(currentScore);
 							if (ValidSequence(currentSequence, sequence, outcomes, outcomeName))
 							{
-								Sequence newSequence = new Sequence(topSequence, outcomeName, scores[currentScore]);
+								var newSequence = new Sequence(topSequence, outcomeName, scores[currentScore]);
 								if (newSequence.Score > minSequenceScore)
 								{
 									nextHeap.Add(newSequence);
@@ -213,8 +213,8 @@ namespace OpenNLP.Tools.Util
 				previousHeap = nextHeap;
 				nextHeap = tempHeap;
 			}
-			int topSequenceCount = System.Math.Min(numSequences, previousHeap.Size);
-			Sequence[] topSequences = new Sequence[topSequenceCount];
+			int topSequenceCount = Math.Min(numSequences, previousHeap.Size);
+			var topSequences = new Sequence[topSequenceCount];
 			int sequenceIndex = 0;
 			for (; sequenceIndex < topSequenceCount; sequenceIndex++) 
 			{
@@ -222,7 +222,7 @@ namespace OpenNLP.Tools.Util
 			}
 			return topSequences;
 		}
-
+        
 		/// <summary>
 		/// Returns the best sequence of outcomes based on model for this object.
 		/// </summary>
@@ -235,24 +235,7 @@ namespace OpenNLP.Tools.Util
 		/// <returns>
 		/// The top ranked sequence of outcomes.
 		/// </returns>
-		public virtual Sequence BestSequence(ArrayList sequence, object[] additionalContext)
-		{
-			return BestSequences(1, sequence.ToArray(), additionalContext)[0];
-		}
-  
-		/// <summary>
-		/// Returns the best sequence of outcomes based on model for this object.
-		/// </summary>
-		/// <param name="sequence">
-		/// The input sequence.
-		/// </param>
-		/// <param name="additionalContext">
-		/// An object[] of additional context.  This is passed to the context generator blindly with the assumption that the context are appropiate.
-		/// </param>
-		/// <returns>
-		/// The top ranked sequence of outcomes.
-		/// </returns>
-		public Sequence BestSequence(object[] sequence, object[] additionalContext) 
+		public Sequence BestSequence(string[] sequence, object[] additionalContext) 
 		{
 			return BestSequences(1, sequence, additionalContext, mZeroLog)[0];
 		}

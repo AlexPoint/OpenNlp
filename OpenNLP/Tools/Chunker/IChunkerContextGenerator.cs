@@ -45,6 +45,6 @@ namespace OpenNLP.Tools.Chunker
 		/// <returns>
 		/// An array of predictive contexts on which a model basis its decisions.
 		/// </returns>
-		string[] GetContext(int tokenIndex, object[] tokens, string[] tags, string[] previousDecisions);
+		string[] GetContext(int tokenIndex, string[] tokens, string[] tags, string[] previousDecisions);
 	}
 }

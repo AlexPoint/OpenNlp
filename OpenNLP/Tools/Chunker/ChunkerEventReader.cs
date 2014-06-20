@@ -130,7 +130,7 @@ namespace OpenNLP.Tools.Chunker
 				}
 			}
 			mEvents = new SharpEntropy.TrainingEvent[tokenList.Count];
-			object[] tokens = tokenList.ToArray();
+			string[] tokens = tokenList.ToArray();
 			string[] tags = tagList.ToArray();
 			string[] predicates = predicateList.ToArray();
 

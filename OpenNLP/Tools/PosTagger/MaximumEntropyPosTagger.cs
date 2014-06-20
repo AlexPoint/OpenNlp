@@ -204,7 +204,7 @@ namespace OpenNLP.Tools.PosTagger
 		
 		public virtual string[] Tag(string[] tokens)
 		{
-            _bestSequence = Beam.BestSequence(new ArrayList(tokens), null);
+            _bestSequence = Beam.BestSequence(tokens, null);
             return _bestSequence.Outcomes.ToArray();
 		}
 		
@@ -240,10 +240,10 @@ namespace OpenNLP.Tools.PosTagger
 			while ((object) (line = sentenceReader.ReadLine()) != null)
 			{
 				sentences++;
-				Util.Pair<ArrayList, ArrayList> annotatedPair = PosEventReader.ConvertAnnotatedString(line);
-				ArrayList words = annotatedPair.FirstValue;
-				ArrayList outcomes = annotatedPair.SecondValue;
-				var tags = new ArrayList(Beam.BestSequence(words, null).Outcomes);
+				var annotatedPair = PosEventReader.ConvertAnnotatedString(line);
+				var words = annotatedPair.FirstValue;
+				var outcomes = annotatedPair.SecondValue;
+				var tags = new ArrayList(Beam.BestSequence(words.ToArray(), null).Outcomes);
 				
 				int count = 0;
 				bool isSentenceOK = true;
@@ -270,14 +270,14 @@ namespace OpenNLP.Tools.PosTagger
 			sentenceAccuracy = sentencesCorrect / sentences;
 		}
 		
-		public virtual string[] GetOrderedTags(ArrayList words, ArrayList tags, int index)
+		public virtual string[] GetOrderedTags(List<string> words, List<string> tags, int index)
 		{
 			return GetOrderedTags(words, tags, index, null);
 		}
 		
-		public virtual string[] GetOrderedTags(ArrayList words, ArrayList tags, int index, double[] tagProbabilities)
+		public virtual string[] GetOrderedTags(List<string> words, List<string> tags, int index, double[] tagProbabilities)
 		{
-			double[] probabilities = _posModel.Evaluate(_contextGenerator.GetContext(index, words.ToArray(), (string[]) tags.ToArray(typeof(string)), null));
+			double[] probabilities = _posModel.Evaluate(_contextGenerator.GetContext(index, words.ToArray(), tags.ToArray(), null));
 			var orderedTags = new string[probabilities.Length];
 			for (int currentProbability = 0; currentProbability < probabilities.Length; currentProbability++)
 			{

@@ -62,7 +62,7 @@ namespace OpenNLP.Tools.NameFind
 		private Regex mCapPeriodPattern;
 		private Regex mInitialCapPattern;
 		
-		private Util.Cache mContextsCache;
+		private Cache mContextsCache;
 		private object mWordsKey;
 		private int mPreviousIndex = -1;
 		private List<string> mPreviousStaticFeatures;
@@ -118,9 +118,9 @@ namespace OpenNLP.Tools.NameFind
 			return (GetContext(index, tokens.ToArray(), predicates.ToArray(), previousTags));
 		}
 		
-		public virtual string[] GetContext(int index, object[] sequence, string[] priorDecisions, object[] additionalContext) 
+		public virtual string[] GetContext(int index, string[] sequence, string[] priorDecisions, object[] additionalContext) 
 		{
-			return (GetContext(index, (string[])sequence, priorDecisions, (IDictionary<string, string>) additionalContext[0]));
+			return GetContext(index, sequence, priorDecisions, (IDictionary<string, string>) additionalContext[0]);
 		}
 
 		/// <summary>

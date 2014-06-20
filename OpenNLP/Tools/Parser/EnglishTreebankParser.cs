@@ -108,10 +108,10 @@ namespace OpenNLP.Tools.Parser
 				mBeamSize = beamSize;
 			}
 
-			public Util.Sequence[] TopKSequences(ArrayList sentence)
+			/*public Util.Sequence[] TopKSequences(ArrayList sentence)
 			{
 				return Beam.BestSequences(mBeamSize, sentence.ToArray(), null);
-			}
+			}*/
 			
 			public Util.Sequence[] TopKSequences(string[] sentence)
 			{
@@ -143,10 +143,10 @@ namespace OpenNLP.Tools.Parser
 				mBeamSize = beamSize;
 			}
 
-			public Util.Sequence[] TopKSequences(ArrayList sentence, ArrayList tags)
+			/*public Util.Sequence[] TopKSequences(ArrayList sentence, ArrayList tags)
 			{
 				return Beam.BestSequences(mBeamSize, sentence.ToArray(), new object[]{tags});
-			}
+			}*/
 			
 			public Util.Sequence[] TopKSequences(string[] sentence, string[] tags, double minSequenceScore) 
 			{

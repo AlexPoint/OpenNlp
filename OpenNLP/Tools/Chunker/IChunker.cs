@@ -44,20 +44,6 @@ namespace OpenNLP.Tools.Chunker
 	public interface IChunker
 	{
 		/// <summary>
-		/// Generates chunk tags for the given sequence returning the result in a list.
-		/// </summary>
-		/// <param name="tokens">
-		/// a list of the tokens or words of the sequence.
-		/// </param>
-		/// <param name="tags">
-		/// a list of the pos tags of the sequence.
-		/// </param>
-		/// <returns>
-		/// a list of chunk tags for each token in the sequence.
-		/// </returns>
-		ArrayList Chunk(ArrayList tokens, ArrayList tags);
-			
-		/// <summary>
 		/// Generates chunk tags for the given sequence returning the result in an array.
 		/// </summary>
 		/// <param name="tokens">
@@ -69,6 +55,6 @@ namespace OpenNLP.Tools.Chunker
 		/// <returns>
 		/// an array of chunk tags for each token in the sequence.
 		/// </returns>
-		string[] Chunk(object[] tokens, string[] tags);
+		string[] Chunk(string[] tokens, string[] tags);
 	}
 }

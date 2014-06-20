@@ -53,15 +53,17 @@ namespace OpenNLP.Tools.NameFind
 		public const string Continue = "cont";
 		public const string Other = "other";
 		
+        
+        // Constructors ----------------------------------------------
+
 		/// <summary>
 		/// Creates a new name finder with the specified model.
 		/// </summary>
 		/// <param name="model">
 		/// The model to be used to find names.
 		/// </param>
-		public MaximumEntropyNameFinder(SharpEntropy.IMaximumEntropyModel model) : this(model, new DefaultNameContextGenerator(10), 10)
-		{
-		}
+		public MaximumEntropyNameFinder(SharpEntropy.IMaximumEntropyModel model):
+            this(model, new DefaultNameContextGenerator(10), 10){ }
 		
 		/// <summary>
 		/// Creates a new name finder with the specified model and context generator.
@@ -72,9 +74,8 @@ namespace OpenNLP.Tools.NameFind
 		/// <param name="contextGenerator">
 		/// The context generator to be used with this name finder.
 		/// </param>
-		public MaximumEntropyNameFinder(SharpEntropy.IMaximumEntropyModel model, INameContextGenerator contextGenerator) : this(model, contextGenerator, 10)
-		{
-		}
+		public MaximumEntropyNameFinder(SharpEntropy.IMaximumEntropyModel model, INameContextGenerator contextGenerator):
+            this(model, contextGenerator, 10){}
 		
 		/// <summary>
 		/// Creates a new name finder with the specified model and context generator.
@@ -94,18 +95,14 @@ namespace OpenNLP.Tools.NameFind
 			mContextGenerator = contextGenerator;
 			mBeam = new NameBeamSearch(this, beamSize, contextGenerator, model, beamSize);
 		}
+
+
+        // Methods --------------------------
 		
-		public virtual ArrayList Find(ArrayList tokens, IDictionary previousTags)
+		public virtual string[] Find(string[] tokens, IDictionary previousTags)
 		{
 			mBestSequence = mBeam.BestSequence(tokens, new object[]{previousTags});
-			return new ArrayList(mBestSequence.Outcomes);
-		}
-		
-		public virtual string[] Find(object[] tokens, IDictionary previousTags)
-		{
-			mBestSequence = mBeam.BestSequence(tokens, new object[]{previousTags});
-			ArrayList outcomes = new ArrayList(mBestSequence.Outcomes);
-			return (string[]) outcomes.ToArray(typeof(string));
+			return mBestSequence.Outcomes.ToArray();
 		}
 		
 		/// <summary>
@@ -137,42 +134,6 @@ namespace OpenNLP.Tools.NameFind
 				}
 			}
 			return true;
-		}
-		
-		/// <summary>
-		/// Implementation of the abstract beam search to allow the name finder to use the common beam search code. 
-		/// </summary>
-		private class NameBeamSearch : BeamSearch
-		{
-			private MaximumEntropyNameFinder mNameFinder;
-						
-			/// <summary>
-			/// Creates a beam seach of the specified size using the specified model with the specified context generator.
-			/// </summary>
-			/// <param name="nameFinder">
-			/// The associated MaximumEntropyNameFinder instance.
-			/// </param>
-			/// <param name="size">
-			/// The size of the beam.
-			/// </param>
-			/// <param name="contextGenerator">
-			/// The context generator used with the specified model.
-			/// </param>
-			/// <param name="model">
-			/// The model used to determine names.
-			/// </param>
-			/// <param name="beamSize">
-			/// The size of the beam to use in searching.
-			/// </param>
-			public NameBeamSearch(MaximumEntropyNameFinder nameFinder, int size, INameContextGenerator contextGenerator, SharpEntropy.IMaximumEntropyModel model, int beamSize) : base(size, contextGenerator, model, beamSize)
-			{
-				mNameFinder = nameFinder;
-			}
-			
-			protected internal override bool ValidSequence(int index, ArrayList sequence, Sequence outcomeSequence, string outcome)
-			{
-				return mNameFinder.ValidOutcome(outcome, outcomeSequence);
-			}
 		}
 		
 		/// <summary>
@@ -218,5 +179,46 @@ namespace OpenNLP.Tools.NameFind
 			SharpEntropy.ITrainingEventReader eventReader = new NameFinderEventReader(new SharpEntropy.PlainTextByLineDataReader(new System.IO.StreamReader(trainingFile)));
 			return Train(eventReader, iterations, cutoff);
 		}
+
+
+        // Inner classes --------------------
+
+        /// <summary>
+        /// Implementation of the abstract beam search to allow the name finder to use the common beam search code. 
+        /// </summary>
+        private class NameBeamSearch : BeamSearch
+        {
+            private readonly MaximumEntropyNameFinder _nameFinder;
+
+            /// <summary>
+            /// Creates a beam seach of the specified size using the specified model with the specified context generator.
+            /// </summary>
+            /// <param name="nameFinder">
+            /// The associated MaximumEntropyNameFinder instance.
+            /// </param>
+            /// <param name="size">
+            /// The size of the beam.
+            /// </param>
+            /// <param name="contextGenerator">
+            /// The context generator used with the specified model.
+            /// </param>
+            /// <param name="model">
+            /// The model used to determine names.
+            /// </param>
+            /// <param name="beamSize">
+            /// The size of the beam to use in searching.
+            /// </param>
+            public NameBeamSearch(MaximumEntropyNameFinder nameFinder, int size, INameContextGenerator contextGenerator, SharpEntropy.IMaximumEntropyModel model, int beamSize):
+                base(size, contextGenerator, model, beamSize)
+            {
+                _nameFinder = nameFinder;
+            }
+
+            protected internal override bool ValidSequence(int index, ArrayList sequence, Sequence outcomeSequence, string outcome)
+            {
+                return _nameFinder.ValidOutcome(outcome, outcomeSequence);
+            }
+        }
+		
 	}
 }

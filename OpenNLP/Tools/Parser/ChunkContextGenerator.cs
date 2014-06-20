@@ -66,7 +66,7 @@ namespace OpenNLP.Tools.Parser
 			return (GetContext(((int) data[0]), (string[]) data[1], (string[]) data[2], (string[]) data[3]));
 		}
 		
-		public virtual string[] GetContext(int index, object[] words, string[] previousDecisions, object[] additionalContext) 
+		public virtual string[] GetContext(int index, string[] words, string[] previousDecisions, object[] additionalContext) 
 		{
 			return(GetContext(index, words, (string[]) additionalContext[0], previousDecisions));
 		}
@@ -89,9 +89,9 @@ namespace OpenNLP.Tools.Parser
 		/// <returns>
 		/// An array of predictive contexts on which a model basis its decisions.
 		/// </returns>
-		public virtual string[] GetContext(int index, object[] words, string[] tags, string[] predicates)
+		public virtual string[] GetContext(int index, string[] words, string[] tags, string[] predicates)
 		{
-            List<string> features = new List<string>(19);
+            var features = new List<string>(19);
 			int currentTokenIndex = index;
 			int previousPreviousTokenIndex = currentTokenIndex - 2;
 			int previousTokenIndex = currentTokenIndex - 1;

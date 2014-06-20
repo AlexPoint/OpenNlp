@@ -43,7 +43,7 @@ namespace OpenNLP.Tools.Parser
 	/// </summary>
 	public interface IParserChunker : Chunker.IChunker
 	{
-		/// <summary>
+		/*/// <summary>
 		/// Returns the top k chunk sequences for the specified sentence with the specified pos-tags
 		/// </summary>
 		/// <param name="sentence">
@@ -55,7 +55,7 @@ namespace OpenNLP.Tools.Parser
 		/// <returns>
 		/// the top k chunk sequences for the specified sentence.
 		/// </returns>
-		Util.Sequence[] TopKSequences(ArrayList sentence, ArrayList tags);
+		Util.Sequence[] TopKSequences(ArrayList sentence, ArrayList tags);*/
 			
 		/// <summary>
 		/// Returns the top k chunk sequences for the specified sentence with the specified pos-tags

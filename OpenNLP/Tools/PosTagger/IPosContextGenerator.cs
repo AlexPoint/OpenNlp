@@ -43,6 +43,6 @@ namespace OpenNLP.Tools.PosTagger
 	/// </summary>	
 	public interface IPosContextGenerator : Util.IBeamSearchContextGenerator
 	{
-		new string[] GetContext(int position, object[] tokens, string[] previousTags, object[] additionalContext);
+		new string[] GetContext(int position, string[] tokens, string[] previousTags, object[] additionalContext);
 	}
 }

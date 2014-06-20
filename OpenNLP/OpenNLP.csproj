@@ -99,6 +99,7 @@
     <Compile Include="Tools\Chunker\ChunkerEventReader.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Chunker\Dechunker.cs" />
     <Compile Include="Tools\Chunker\DefaultChunkerContextGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -111,9 +112,11 @@
     <Compile Include="Tools\Chunker\IChunkerContextGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Chunker\IDechunker.cs" />
     <Compile Include="Tools\Chunker\MaximumEntropyChunker.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Chunker\RegexDictionaryDechunker.cs" />
     <Compile Include="Tools\Coreference\AbstractLinker.cs" />
     <Compile Include="Tools\Coreference\DefaultLinker.cs" />
     <Compile Include="Tools\Coreference\DiscourseElement.cs" />
@@ -279,7 +282,6 @@
     <Compile Include="Tools\Tokenize\MaximumEntropyTokenizer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tools\Tokenize\RegexDictionaryDetokenizer.cs" />
     <Compile Include="Tools\Tokenize\TokenContextGenerator.cs">
       <SubType>Code</SubType>
     </Compile>

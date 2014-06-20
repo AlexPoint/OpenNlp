@@ -4,27 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenNLP.Tools.Tokenize
+namespace OpenNLP.Tools.Chunker
 {
-    public abstract class Detokenizer:IDetokenizer
+    public abstract class Dechunker : IDechunker
     {
-        public abstract DetokenizationOperation[] GetDetokenizationOperations(string[] tokens);
+        public abstract DechunkOperation[] GetDechunkerOperations(string[] chunks);
 
-        public string Detokenize(string[] tokens, string splitMarker = "")
+        public string Dechunk(string[] chunks, string splitMarker = "")
         {
-            DetokenizationOperation[] operations = GetDetokenizationOperations(tokens);
+            DechunkOperation[] operations = GetDechunkerOperations(chunks);
 
-            if (tokens.Length != operations.Length)
+            if (chunks.Length != operations.Length)
             {
-                throw new ArgumentException("tokens and operations array must have same length: tokens=" +
-                                            tokens.Length + ", operations=" + operations.Length + "!");
+                throw new ArgumentException("chunks and operations array must have same length: chunks=" +
+                                            chunks.Length + ", operations=" + operations.Length + "!");
             }
 
             var untokenizedString = new StringBuilder();
-            for (int i = 0; i < tokens.Length; i++)
+            for (int i = 0; i < chunks.Length; i++)
             {
                 // attach token to string buffer
-                untokenizedString.Append(tokens[i]);
+                untokenizedString.Append(chunks[i]);
 
                 bool isAppendSpace;
                 bool isAppendSplitMarker;
@@ -37,15 +37,15 @@ namespace OpenNLP.Tools.Tokenize
                 }
                 // if next token move left, no space after this token,
                 // its safe to access next token
-                else if (operations[i + 1] == DetokenizationOperation.MERGE_TO_LEFT
-                            || operations[i + 1] == DetokenizationOperation.MERGE_BOTH)
+                else if (operations[i + 1] == DechunkOperation.MERGE_TO_LEFT
+                            || operations[i + 1] == DechunkOperation.MERGE_BOTH)
                 {
                     isAppendSpace = false;
                     isAppendSplitMarker = true;
                 }
                 // if this token is move right, no space
-                else if (operations[i] == DetokenizationOperation.MERGE_TO_RIGHT
-                            || operations[i] == DetokenizationOperation.MERGE_BOTH)
+                else if (operations[i] == DechunkOperation.MERGE_TO_RIGHT
+                            || operations[i] == DechunkOperation.MERGE_BOTH)
                 {
                     isAppendSpace = false;
                     isAppendSplitMarker = true;

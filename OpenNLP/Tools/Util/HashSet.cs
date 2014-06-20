@@ -28,9 +28,7 @@ namespace OpenNLP.Tools.Util
 		/// <summary>
 		/// Creates a new hash set collection.
 		/// </summary>
-		public HashSet()
-		{     
-		}
+		public HashSet(){}
 	       
 		/// <summary>
 		/// Creates a new hash set collection.
@@ -38,7 +36,7 @@ namespace OpenNLP.Tools.Util
 		/// <param name="collection">
 		/// The collection to initialize the hash set with.
 		/// </param>
-		public HashSet(ICollection<T> collection)
+		public HashSet(IEnumerable<T> collection)
 		{
 			this.AddRange(collection);
 		}
@@ -80,12 +78,11 @@ namespace OpenNLP.Tools.Util
 		public static Set<IDictionaryEnumerator> EntrySet(IDictionary hashtable)
 		{
 			IDictionaryEnumerator hashEnumerator = hashtable.GetEnumerator();
-            Set<IDictionaryEnumerator> hashSet = new Set<IDictionaryEnumerator>();
+            var hashSet = new Set<IDictionaryEnumerator>();
 			while(hashEnumerator.MoveNext())
 			{
-				Hashtable hash = new Hashtable();
-				hash.Add(hashEnumerator.Key, hashEnumerator.Value);
-				hashSet.Add(hash.GetEnumerator());
+				var hash = new Hashtable {{hashEnumerator.Key, hashEnumerator.Value}};
+			    hashSet.Add(hash.GetEnumerator());
 			}
 			return hashSet;
 		}

@@ -350,7 +350,7 @@ namespace OpenNLP.Tools.Parser
 		}
 		
 //		[STAThread]
-//		public static void  Main(System.String[] args)
+//		public static void  Main(System.string[] args)
 //		{
 //			if (args.Length == 0)
 //			{

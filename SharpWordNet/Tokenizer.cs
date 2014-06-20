@@ -23,24 +23,24 @@ namespace SharpWordNet
 	/// </summary>
 	public class Tokenizer
 	{
-		private string[] mTokens;
-		int mPosition;
+		private readonly string[] _tokens;
+		int _position;
 
 		public Tokenizer(string input, params char[] separators) 
 		{
-			mTokens = input.Split(separators);
-			mPosition = 0;
+			_tokens = input.Split(separators);
+			_position = 0;
 		}
 
 		public string NextToken()
 		{
-			while (mPosition < mTokens.Length)
+			while (_position < _tokens.Length)
 			{
-				if ((mTokens[mPosition].Length > 0))
+				if ((_tokens[_position].Length > 0))
 				{
-					return mTokens[mPosition++];
+					return _tokens[_position++];
 				}
-				mPosition++;
+				_position++;
 			}
 			return null;
 		}

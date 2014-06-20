@@ -82,15 +82,19 @@ namespace SharpEntropy.IO
 			mDataCommand.CommandText = "INSERT INTO Model values (?, ?)";
             mDataCommand.Parameters.Clear();
 
-            SQLiteParameter correctionConstantParameter = new SQLiteParameter();
-            correctionConstantParameter.DbType = DbType.Int32;
-            correctionConstantParameter.Value = correctionConstant;
-            mDataCommand.Parameters.Add(correctionConstantParameter);
+            var correctionConstantParameter = new SQLiteParameter
+            {
+                DbType = DbType.Int32, 
+                Value = correctionConstant
+            };
+		    mDataCommand.Parameters.Add(correctionConstantParameter);
 
-            SQLiteParameter correctionParameterParameter = new SQLiteParameter();
-            correctionParameterParameter.DbType = DbType.Double;
-            correctionParameterParameter.Value = correctionParameter;
-            mDataCommand.Parameters.Add(correctionParameterParameter);
+            var correctionParameterParameter = new SQLiteParameter
+            {
+                DbType = DbType.Double, 
+                Value = correctionParameter
+            };
+		    mDataCommand.Parameters.Add(correctionParameterParameter);
 
 			mDataCommand.ExecuteNonQuery();
 		}
@@ -100,12 +104,10 @@ namespace SharpEntropy.IO
             mDataCommand.CommandText = "INSERT INTO Outcome values (?, ?)";
             mDataCommand.Parameters.Clear();
 
-            SQLiteParameter idParameter = new SQLiteParameter();
-            idParameter.DbType = DbType.Int32;
+            var idParameter = new SQLiteParameter {DbType = DbType.Int32};
             mDataCommand.Parameters.Add(idParameter);
 
-            SQLiteParameter labelParameter = new SQLiteParameter();
-            labelParameter.DbType = DbType.String;
+            var labelParameter = new SQLiteParameter {DbType = DbType.String};
             mDataCommand.Parameters.Add(labelParameter);
 
             for (int currentOutcomeId = 0; currentOutcomeId < outcomeLabels.Length; currentOutcomeId++)
@@ -121,12 +123,10 @@ namespace SharpEntropy.IO
             mDataCommand.CommandText = "INSERT INTO Predicate values (?, ?)";
             mDataCommand.Parameters.Clear();
 
-            SQLiteParameter idParameter = new SQLiteParameter();
-            idParameter.DbType = DbType.Int32;
+            var idParameter = new SQLiteParameter {DbType = DbType.Int32};
             mDataCommand.Parameters.Add(idParameter);
 
-            SQLiteParameter nameParameter = new SQLiteParameter();
-            nameParameter.DbType = DbType.String;
+            var nameParameter = new SQLiteParameter {DbType = DbType.String};
             mDataCommand.Parameters.Add(nameParameter);
 
             for (int currentPredicate = 0; currentPredicate < predicates.Length; currentPredicate++)
@@ -139,27 +139,22 @@ namespace SharpEntropy.IO
 
         private void InsertPredicateParameters(int[][] outcomePatterns, PatternedPredicate[] predicates)
         {
-            int[] currentOutcomePattern;
-
             mDataCommand.CommandText = "INSERT INTO PredicateParameter values (?, ?, ?)";
             mDataCommand.Parameters.Clear();
 
-            SQLiteParameter predicateIdParameter = new SQLiteParameter();
-            predicateIdParameter.DbType = DbType.Int32;
+            var predicateIdParameter = new SQLiteParameter {DbType = DbType.Int32};
             mDataCommand.Parameters.Add(predicateIdParameter);
 
-            SQLiteParameter outcomeIdParameter = new SQLiteParameter();
-            outcomeIdParameter.DbType = DbType.Int32;
+            var outcomeIdParameter = new SQLiteParameter {DbType = DbType.Int32};
             mDataCommand.Parameters.Add(outcomeIdParameter);
 
-            SQLiteParameter predicateParameterParameter = new SQLiteParameter();
-            predicateParameterParameter.DbType = DbType.Double;
+            var predicateParameterParameter = new SQLiteParameter {DbType = DbType.Double};
             mDataCommand.Parameters.Add(predicateParameterParameter);
 
             for (int currentPredicate = 0; currentPredicate < predicates.Length; currentPredicate++)
             {
                 predicateIdParameter.Value = currentPredicate;
-                currentOutcomePattern = outcomePatterns[predicates[currentPredicate].OutcomePattern];
+                int[] currentOutcomePattern = outcomePatterns[predicates[currentPredicate].OutcomePattern];
                 for (int currentParameter = 0; currentParameter < predicates[currentPredicate].ParameterCount; currentParameter++)
                 {
                     outcomeIdParameter.Value = currentOutcomePattern[currentParameter + 1];

@@ -66,15 +66,15 @@ namespace OpenNLP.Tools.NameFind
 			for (int characterIndex = 0; characterIndex < inputLength; characterIndex++)
 			{
 				char c = input[characterIndex];
-				if (System.Char.IsWhiteSpace(c))
+				if (char.IsWhiteSpace(c))
 				{
 					charType = CharacterEnum.Whitespace;
 				}
-				else if (System.Char.IsLetter(c))
+				else if (char.IsLetter(c))
 				{
 					charType = CharacterEnum.Alphabetic;
 				}
-				else if (System.Char.IsDigit(c))
+				else if (char.IsDigit(c))
 				{
 					charType = CharacterEnum.Numeric;
 				}

@@ -680,7 +680,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			//  semantic categories
 			string w1 = np1.HeadTokenText.ToLower();
 			string w2 = np2.HeadTokenText.ToLower();
-			if (String.CompareOrdinal(w1, w2) < 0)
+			if (string.CompareOrdinal(w1, w2) < 0)
 			{
 				features.Add("ww=" + w1 + "," + w2);
 			}

@@ -152,7 +152,7 @@ namespace OpenNLP.Tools.Coreference
 				}
 				if (LinkerMode.Eval == mode)
 				{
-					//String[] names = {"Pronoun", "Proper", "Def-NP", "Is-a", "Plural Pronoun"};
+					//string[] names = {"Pronoun", "Proper", "Def-NP", "Is-a", "Plural Pronoun"};
 					//eval = new Evaluation(names);
 				}
                 MaximumEntropyResolver.SimilarityModel = SimilarityModel.TestModel(CoreferenceProjectName + "/sim");

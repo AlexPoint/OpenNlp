@@ -205,7 +205,7 @@ namespace SharpEntropy
 		/// Override to provide a succint summary of the ComparableEvent object.
 		/// </summary>
 		/// <returns>
-		/// String representation of the ComparableEvent object.
+		/// string representation of the ComparableEvent object.
 		/// </returns>
 		public override string ToString()
 		{

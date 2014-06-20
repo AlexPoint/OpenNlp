@@ -106,7 +106,7 @@ namespace SharpEntropy.IO
 		/// </remarks>
 		protected virtual void ReadModel()
 		{
-			mSpaces = new Char[] {' '}; //cached constant to improve performance
+			mSpaces = new char[] {' '}; //cached constant to improve performance
 			CheckModelType();
 			mCorrectionConstant = ReadCorrectionConstant();
 			mCorrectionParameter = ReadCorrectionParameter();
@@ -278,7 +278,7 @@ namespace SharpEntropy.IO
 		/// Returns the labels for all the outcomes in the model.
 		/// </summary>
 		/// <returns>
-		/// String array containing outcome labels.
+		/// string array containing outcome labels.
 		/// </returns>
 		public string[] GetOutcomeLabels()
 		{

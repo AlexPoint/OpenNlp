@@ -97,20 +97,16 @@ namespace OpenNLP.Tools.Chunker
 		
 		/// <summary>Performs a chunking operation</summary>
 		/// <param name="tokens">Object array of tokens</param>
-		/// <param name="tags">String array of POS tags corresponding to the tokens in the object array</param>
-		/// <returns>String array containing a value for each token, indicating the chunk that that token belongs to</returns>
+		/// <param name="tags">string array of POS tags corresponding to the tokens in the object array</param>
+		/// <returns>string array containing a value for each token, indicating the chunk that that token belongs to</returns>
 		public virtual string[] Chunk(string[] tokens, string[] tags)
 		{
 			_bestSequence = _beam.BestSequence(tokens, new object[]{tags});
             return _bestSequence.Outcomes.ToArray();
 		}
 		
-		/// <summary>
-		/// Gets a list of all the possible chunking tags.
-		/// </summary>
-		/// <returns>
-		/// String array, each entry containing a chunking tag.
-		/// </returns>
+		/// <summary>Gets a list of all the possible chunking tags</summary>
+		/// <returns>String array, each entry containing a chunking tag</returns>
 		public virtual string[] AllTags()
 		{
 			var tags = new string[_model.OutcomeCount];

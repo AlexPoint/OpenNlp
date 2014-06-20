@@ -169,7 +169,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		}
 		
 //		[STAThread]
-//		public static void  Main(System.String[] args)
+//		public static void  Main(System.string[] args)
 //		{
 //			EventStream es = new SDEventStream(new PlainTextByLineDataStream(new System.IO.StreamReader(System.Console.In)));
 //			while (es.hasNext())

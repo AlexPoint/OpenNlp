@@ -429,7 +429,7 @@ namespace OpenNLP.Tools.Coreference.Mention
         /// Object which provides head information.
 		/// </param>
 		/*
-		public MentionContext(Parse mentionParse, int mentionIndex, int mentionsInSentence, int mentionsInDocument, int sentenceIndex, String nameType, HeadFinder headFinder) {
+		public MentionContext(Parse mentionParse, int mentionIndex, int mentionsInSentence, int mentionsInDocument, int sentenceIndex, string nameType, HeadFinder headFinder) {
 		nounLocation = mentionIndex;
 		maxNounLocation = mentionsInDocument;
 		sentenceNumber = sentenceIndex;
@@ -483,18 +483,18 @@ namespace OpenNLP.Tools.Coreference.Mention
 		}
 		
 		/*
-		private static String[] getLemmas(MentionContext xec) {
+		private static string[] getLemmas(MentionContext xec) {
 		//TODO: Try multi-word lemmas first.
-		String word = xec.getHeadTokenText();
+		string word = xec.getHeadTokenText();
 		return DictionaryFactory.getDictionary().getLemmas(word,"NN");
 		}
 		
 		private static Set getSynsetSet(MentionContext xec) {
 		//System.err.println("getting synsets for mention:"+xec.toText());
 		Set synsetSet = new HashSet();
-		String[] lemmas = getLemmas(xec);
+		string[] lemmas = getLemmas(xec);
 		for (int li = 0; li < lemmas.length; li++) {
-		String[] synsets = DictionaryFactory.getDictionary().getParentSenseKeys(lemmas[li],"NN",0);
+		string[] synsets = DictionaryFactory.getDictionary().getParentSenseKeys(lemmas[li],"NN",0);
 		for (int si=0,sn=synsets.length;si<sn;si++) {
 		synsetSet.add(synsets[si]);
 		}

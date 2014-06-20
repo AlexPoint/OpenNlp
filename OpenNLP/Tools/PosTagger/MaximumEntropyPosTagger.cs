@@ -98,7 +98,7 @@ namespace OpenNLP.Tools.PosTagger
         /// Returns a list of all the possible POS tags predicted by this model.
         /// </summary>
         /// <returns>
-        /// String array of the possible POS tags.
+        /// string array of the possible POS tags.
         /// </returns>
 		public virtual string[] AllTags()
 		{

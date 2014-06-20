@@ -101,19 +101,19 @@ namespace OpenNLP.Tools.Tokenize
         private void AddCharPredicates(string key, char c, List<string> predicates)
 		{
 			predicates.Add(key + "=" + c);
-			if (System.Char.IsLetter(c))
+			if (char.IsLetter(c))
 			{
 				predicates.Add(key + "_alpha");
-				if (System.Char.IsUpper(c))
+				if (char.IsUpper(c))
 				{
 					predicates.Add(key + "_caps");
 				}
 			}
-			else if (System.Char.IsDigit(c))
+			else if (char.IsDigit(c))
 			{
 				predicates.Add(key + "_num");
 			}
-			else if (System.Char.IsWhiteSpace(c))
+			else if (char.IsWhiteSpace(c))
 			{
 				predicates.Add(key + "_ws");
 			}

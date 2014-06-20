@@ -108,29 +108,29 @@ namespace SharpEntropy
 			
 		/// <summary>
 		/// Return a string matching all the outcome names with all the
-		/// probabilities produced by the <code>eval(String[]
+		/// probabilities produced by the <code>eval(string[]
 		/// context)</code> method.
 		/// </summary>
 		/// <param name="outcomes">
 		/// A <code>double[]</code> as returned by the
-		/// <code>eval(String[] context)</code>
+		/// <code>eval(string[] context)</code>
 		/// method.
 		/// </param>
 		/// <returns>
-		/// String containing outcome names paired with the normalized
+		/// string containing outcome names paired with the normalized
 		/// probability (contained in the <code>double[] ocs</code>)
 		/// for each one.
 		/// </returns>
 		string GetAllOutcomes(double[] outcomes);
 			
 		/// <summary>
-		/// Gets the String name of the outcome associated with the supplied index
+		/// Gets the string name of the outcome associated with the supplied index
 		/// </summary>
 		/// <param name="index">
 		/// the index for which the name of the associated outcome is desired.
 		/// </param>
 		/// <returns> 
-		/// the String name of the outcome
+		/// the string name of the outcome
 		/// </returns>
 		string GetOutcomeName(int index);
 			
@@ -139,7 +139,7 @@ namespace SharpEntropy
 		/// outcome.
 		/// </summary>
 		/// <param name="outcome">
-		/// the String name of the outcome for which the
+		/// the string name of the outcome for which the
 		/// index is desired
 		/// </param>
 		/// <returns>

@@ -76,7 +76,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			{
 				//generate pronoun w/ referent features
 				MentionContext cec = entity.LastExtent;
-				//String gen = getPronounGender(pronoun);
+				//string gen = getPronounGender(pronoun);
                 features.AddRange(GetPronounMatchFeatures(mention, entity));
                 features.AddRange(GetContextFeatures(cec));
 				features.AddRange(GetDistanceFeatures(mention, entity));
@@ -110,7 +110,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				}
 				Iterator fset = featureSet.iterator();
 				while (fset.hasNext()) {
-				String f = (String) fset.next();
+				string f = (string) fset.next();
 				features.add(f);
 				}
 				*/
@@ -154,7 +154,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		}
 		
 		/*
-		public boolean definiteArticle(String tok, String tag) {
+		public boolean definiteArticle(string tok, string tag) {
 		tok = tok.toLowerCase();
 		if (tok.equals("the") || tok.equals("these")) {
 		//|| tok.equals("these") || tag.equals("PRP$")) {

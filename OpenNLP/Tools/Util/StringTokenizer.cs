@@ -32,7 +32,7 @@ namespace OpenNLP.Tools.Util
 		/// Initializes a new class instance with a specified string to process
 		/// </summary>
 		/// <param name="input">
-		/// String to tokenize
+		/// string to tokenize
 		/// </param>
 		public StringTokenizer(string input) : this(input, mDelimiters.ToCharArray())
 		{			

@@ -60,7 +60,7 @@ namespace SharpEntropy.IO
 		/// Implement as needed for the format the model is stored in.
 		/// </summary>
 		/// <param name="data">
-		/// String data to be written to storage.
+		/// string data to be written to storage.
 		/// </param>
 		protected abstract void WriteString(string data);
 
@@ -141,7 +141,7 @@ namespace SharpEntropy.IO
             Dictionary<string, PatternedPredicate> predicates = model.GetPredicates();
 			//build arrays of predicates and predicate names from the dictionary
 			mPredicates = new PatternedPredicate[predicates.Count];
-			string[] predicateNames = new String[predicates.Count];
+			string[] predicateNames = new string[predicates.Count];
 			predicates.Values.CopyTo(mPredicates, 0);
 			predicates.Keys.CopyTo(predicateNames, 0);
 			//give each PatternedPredicate in the array the name taken from the dictionary keys
@@ -156,7 +156,7 @@ namespace SharpEntropy.IO
 		/// <summary>
 		/// Writes the model type identifier at the beginning of the file.
 		/// </summary>
-		/// <param name="modelType">String identifying the model type.</param>
+		/// <param name="modelType">string identifying the model type.</param>
 		protected virtual void WriteModelType(string modelType)
 		{
 			WriteString(modelType);
@@ -183,7 +183,7 @@ namespace SharpEntropy.IO
 		/// <summary>
 		/// Writes the outcome labels to the file.
 		/// </summary>
-		/// <param name="outcomeLabels">String array of outcome labels.</param>
+		/// <param name="outcomeLabels">string array of outcome labels.</param>
 		protected virtual void WriteOutcomes(string[] outcomeLabels)
 		{
 			//write the number of outcomes

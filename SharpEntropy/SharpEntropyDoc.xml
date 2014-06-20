@@ -167,7 +167,7 @@
         <member name="T:SharpEntropy.BasicContextGenerator">
             <summary>
             Generate contexts for maxent decisions, assuming that the input
-            given to the GetContext() method is a String containing contextual
+            given to the GetContext() method is a string containing contextual
             predicates separated by spaces, e.g:
             <p>
             cp_1 cp_2 ... cp_n
@@ -197,9 +197,9 @@
             Builds up the list of contextual predicates given a string.
             </summary>
             <param name="input">
-            String with contextual predicates separated by spaces.
+            string with contextual predicates separated by spaces.
             </param>
-            <returns>String array of contextual predicates.</returns>
+            <returns>string array of contextual predicates.</returns>
         </member>
         <member name="T:SharpEntropy.BasicEventReader">
             <summary>
@@ -337,7 +337,7 @@
             Override to provide a succint summary of the ComparableEvent object.
             </summary>
             <returns>
-            String representation of the ComparableEvent object.
+            string representation of the ComparableEvent object.
             </returns>
         </member>
         <member name="P:SharpEntropy.ComparableEvent.Outcome">
@@ -427,29 +427,29 @@
         <member name="M:SharpEntropy.IMaximumEntropyModel.GetAllOutcomes(System.Double[])">
             <summary>
             Return a string matching all the outcome names with all the
-            probabilities produced by the <code>eval(String[]
+            probabilities produced by the <code>eval(string[]
             context)</code> method.
             </summary>
             <param name="outcomes">
             A <code>double[]</code> as returned by the
-            <code>eval(String[] context)</code>
+            <code>eval(string[] context)</code>
             method.
             </param>
             <returns>
-            String containing outcome names paired with the normalized
+            string containing outcome names paired with the normalized
             probability (contained in the <code>double[] ocs</code>)
             for each one.
             </returns>
         </member>
         <member name="M:SharpEntropy.IMaximumEntropyModel.GetOutcomeName(System.Int32)">
             <summary>
-            Gets the String name of the outcome associated with the supplied index
+            Gets the string name of the outcome associated with the supplied index
             </summary>
             <param name="index">
             the index for which the name of the associated outcome is desired.
             </param>
             <returns> 
-            the String name of the outcome
+            the string name of the outcome
             </returns>
         </member>
         <member name="M:SharpEntropy.IMaximumEntropyModel.GetOutcomeIndex(System.String)">
@@ -458,7 +458,7 @@
             outcome.
             </summary>
             <param name="outcome">
-            the String name of the outcome for which the
+            the string name of the outcome for which the
             index is desired
             </param>
             <returns>
@@ -537,11 +537,11 @@
             </summary>
             <param name="outcomes">
             A <code>double[]</code> as returned by the
-            <code>eval(String[] context)</code>
+            <code>eval(string[] context)</code>
             method.
             </param>
             <returns>
-            String containing outcome names paired with the normalized
+            string containing outcome names paired with the normalized
             probability (contained in the <code>double[] outcomes</code>)
             for each one.
             </returns>
@@ -643,7 +643,7 @@
         </member>
         <member name="M:SharpEntropy.IO.IGisModelReader.GetOutcomeLabels">
             <summary>
-            Returns the model's outcome labels as a String array.  This method should
+            Returns the model's outcome labels as a string array.  This method should
             usually only be accessed by GIS model writer classes via the GisModel class.
             </summary>
         </member>
@@ -1070,7 +1070,7 @@
             Returns the labels for all the outcomes in the model.
             </summary>
             <returns>
-            String array containing outcome labels.
+            string array containing outcome labels.
             </returns>
         </member>
         <member name="M:SharpEntropy.IO.GisModelReader.GetOutcomePatterns">
@@ -1209,7 +1209,7 @@
             Implement as needed for the format the model is stored in.
             </summary>
             <param name="data">
-            String data to be written to storage.
+            string data to be written to storage.
             </param>
         </member>
         <member name="M:SharpEntropy.IO.GisModelWriter.WriteInt32(System.Int32)">
@@ -1275,7 +1275,7 @@
             <summary>
             Writes the model type identifier at the beginning of the file.
             </summary>
-            <param name="modelType">String identifying the model type.</param>
+            <param name="modelType">string identifying the model type.</param>
         </member>
         <member name="M:SharpEntropy.IO.GisModelWriter.WriteCorrectionConstant(System.Int32)">
             <summary>
@@ -1293,7 +1293,7 @@
             <summary>
             Writes the outcome labels to the file.
             </summary>
-            <param name="outcomeLabels">String array of outcome labels.</param>
+            <param name="outcomeLabels">string array of outcome labels.</param>
         </member>
         <member name="M:SharpEntropy.IO.GisModelWriter.WritePredicates(SharpEntropy.GisModel)">
             <summary>

@@ -70,7 +70,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				}
 				Iterator fset = featureSet.iterator();
 				while (fset.hasNext()) {
-				String f = (String) fset.next();
+				string f = (string) fset.next();
 				features.add(f);
 				}
 				*/

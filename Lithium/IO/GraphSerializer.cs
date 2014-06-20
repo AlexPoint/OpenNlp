@@ -265,7 +265,7 @@ namespace Netron.Lithium
 			if(e==null)
 				return string.Empty;
 			else
-				return String.Format("e{0}",e.UID.ToString());
+				return string.Format("e{0}",e.UID.ToString());
 		}
 	
 		/// <summary>

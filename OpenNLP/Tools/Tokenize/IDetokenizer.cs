@@ -30,7 +30,7 @@ namespace OpenNLP.Tools.Tokenize
         DetokenizationOperation[] GetDetokenizationOperations(string[] tokens);
 
         /// <summary>
-        /// Detokenize the input tokens into a String. Tokens which
+        /// Detokenize the input tokens into a string. Tokens which
         /// are connected without a space inbetween can be separated by
         /// a split marker.
         /// </summary>

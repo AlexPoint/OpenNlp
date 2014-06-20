@@ -200,7 +200,7 @@ namespace OpenNLP.Tools.Tokenize
 			int endPosition = input.Length;
 			for (int currentChar = 0; currentChar < endPosition; currentChar++)
 			{
-				if (Char.IsWhiteSpace(input[currentChar]))
+				if (char.IsWhiteSpace(input[currentChar]))
 				{
 					if (isInToken)
 					{

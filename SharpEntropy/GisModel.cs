@@ -193,11 +193,11 @@ namespace SharpEntropy
 		/// </summary>
 		/// <param name="outcomes">
 		/// A <code>double[]</code> as returned by the
-		/// <code>eval(String[] context)</code>
+		/// <code>eval(string[] context)</code>
 		/// method.
 		/// </param>
 		/// <returns>
-		/// String containing outcome names paired with the normalized
+		/// string containing outcome names paired with the normalized
 		/// probability (contained in the <code>double[] outcomes</code>)
 		/// for each one.
 		/// </returns>

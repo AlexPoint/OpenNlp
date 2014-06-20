@@ -341,7 +341,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		return fixedNonReferentialProbability;
 		}
 		List lfeatures = getFeatures(ec, null);
-		String[] features = (String[]) lfeatures.toArray(new String[lfeatures.size()]);
+		string[] features = (string[]) lfeatures.toArray(new string[lfeatures.size()]);
 		
 		if (features == null) {
 		System.err.println("features=null in " + this);

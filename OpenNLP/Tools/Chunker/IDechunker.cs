@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Chunker
         DechunkOperation[] GetDechunkerOperations(string[] chunks);
 
         /// <summary>
-        /// Detokenize the input chunks into a String. Tokens which
+        /// Detokenize the input chunks into a string. Tokens which
         /// are connected without a space inbetween can be separated by
         /// a split marker.
         /// </summary>

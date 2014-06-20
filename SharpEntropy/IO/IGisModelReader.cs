@@ -48,7 +48,7 @@ namespace SharpEntropy.IO
 		}
 
 		/// <summary>
-		/// Returns the model's outcome labels as a String array.  This method should
+		/// Returns the model's outcome labels as a string array.  This method should
 		/// usually only be accessed by GIS model writer classes via the GisModel class.
 		/// </summary>
 		string[] GetOutcomeLabels();

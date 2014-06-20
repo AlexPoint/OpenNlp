@@ -150,8 +150,8 @@ namespace OpenNLP.Tools.Util
 				for (; previousHeap.Size > 0 && sc < sz; sc++) 
 				{
 					Sequence topSequence = previousHeap.Extract();
-					String[] outcomes = topSequence.Outcomes.ToArray();
-					String[] contexts = ContextGenerator.GetContext(currentSequence, sequence, outcomes, additionalContext);
+					string[] outcomes = topSequence.Outcomes.ToArray();
+					string[] contexts = ContextGenerator.GetContext(currentSequence, sequence, outcomes, additionalContext);
 					double[] scores;
 					if (mContextsCache != null) 
 					{

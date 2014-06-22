@@ -35,6 +35,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 
 namespace OpenNLP.Tools.Chunker
@@ -109,32 +110,44 @@ namespace OpenNLP.Tools.Chunker
 		/// <returns>
 		/// A string containing the formatted chunked sentence
 		/// </returns>
-		public string GetChunks(string[] tokens, string[] tags)
+		public List<SentenceChunk> GetChunks(string[] tokens, string[] tags)
 		{
-			var output = new StringBuilder();
+		    var results = new List<SentenceChunk>();
 
 			string[] chunks = Chunk(tokens, tags);
+            SentenceChunk currentSentenceChunk = null;
 			for (int currentChunk = 0, chunkCount = chunks.Length; currentChunk < chunkCount; currentChunk++)
 			{
-				if (currentChunk > 0 && !chunks[currentChunk].StartsWith("I-") && chunks[currentChunk - 1] != "O")
-				{
-					output.Append(" ]");
-				}
-				if (chunks[currentChunk].StartsWith("B-"))
-				{
-					output.Append(" [" + chunks[currentChunk].Substring(2));
-				}
-				
-				output.Append(" " + tokens[currentChunk] + "/" + tags[currentChunk]);
-			}
-			if (chunks[chunks.Length - 1] != "O")
-			{
-				output.Append(" ]");
-			}
-			//output.Append("\r\n");
+				if (chunks[currentChunk].StartsWith("B-") || chunks[currentChunk] == "O")
+                {
+                    if (currentSentenceChunk != null)
+	                {
+		                results.Add(currentSentenceChunk); 
+	                }
 
-			return output.ToString();
+                    var index = results.Count;
+                    if (chunks[currentChunk].Length > 2)
+                    {
+                        var tag = chunks[currentChunk].Substring(2);
+                        currentSentenceChunk = new SentenceChunk(tag, index);
+                    }
+                    else
+                    {
+                        currentSentenceChunk = new SentenceChunk(index);
+                    }
+				}
 
+                // in all cases add the tagged word
+			    var word = tokens[currentChunk];
+			    var wTag = tags[currentChunk];
+			    var wIndex = currentSentenceChunk.TaggedWords.Count;
+			    var taggedWord = new TaggedWord(word, wTag, wIndex);
+                currentSentenceChunk.TaggedWords.Add(taggedWord);
+			}
+            // add last chunk
+            results.Add(currentSentenceChunk);
+
+		    return results;
 		}
 
 		/// <summary>
@@ -147,9 +160,8 @@ namespace OpenNLP.Tools.Chunker
 		/// <returns>
 		/// A string containing the formatted chunked sentence
 		/// </returns>
-		public string GetChunks(string data)
+		public List<SentenceChunk> GetChunks(string data)
 		{
-			new StringBuilder();
 			string[] tokenAndTags = data.Split(' ');
 			var tokens = new string[tokenAndTags.Length];
 			var tags = new string[tokenAndTags.Length];

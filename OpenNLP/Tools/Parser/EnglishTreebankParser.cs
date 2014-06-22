@@ -71,21 +71,17 @@ namespace OpenNLP.Tools.Parser
 
 		}
 		
-		public EnglishTreebankParser(string dataDirectory) : this(dataDirectory, true, false, MaximumEntropyParser.DefaultBeamSize, MaximumEntropyParser.DefaultAdvancePercentage)
-		{
-		}
+		public EnglishTreebankParser(string dataDirectory):
+            this(dataDirectory, true, false, MaximumEntropyParser.DefaultBeamSize, MaximumEntropyParser.DefaultAdvancePercentage){}
   
-		public EnglishTreebankParser(string dataDirectory, bool useTagDictionary, bool useCaseSensitiveTagDictionary) : this(dataDirectory, useTagDictionary, useCaseSensitiveTagDictionary, MaximumEntropyParser.DefaultBeamSize, MaximumEntropyParser.DefaultAdvancePercentage)
-		{
-		}
+		public EnglishTreebankParser(string dataDirectory, bool useTagDictionary, bool useCaseSensitiveTagDictionary):
+            this(dataDirectory, useTagDictionary, useCaseSensitiveTagDictionary, MaximumEntropyParser.DefaultBeamSize, MaximumEntropyParser.DefaultAdvancePercentage){}
 
-		public EnglishTreebankParser(string dataDirectory, bool useTagDictionary, bool useCaseSensitiveTagDictionary, int beamSize) : this(dataDirectory, useTagDictionary, useCaseSensitiveTagDictionary, beamSize, MaximumEntropyParser.DefaultAdvancePercentage)
-		{
-		}
+		public EnglishTreebankParser(string dataDirectory, bool useTagDictionary, bool useCaseSensitiveTagDictionary, int beamSize):
+            this(dataDirectory, useTagDictionary, useCaseSensitiveTagDictionary, beamSize, MaximumEntropyParser.DefaultAdvancePercentage){}
 
-		public EnglishTreebankParser(string dataDirectory, bool useTagDictionary, bool useCaseSensitiveTagDictionary, double advancePercentage) : this(dataDirectory, useTagDictionary, useCaseSensitiveTagDictionary, MaximumEntropyParser.DefaultBeamSize, advancePercentage)
-		{
-		}
+		public EnglishTreebankParser(string dataDirectory, bool useTagDictionary, bool useCaseSensitiveTagDictionary, double advancePercentage):
+            this(dataDirectory, useTagDictionary, useCaseSensitiveTagDictionary, MaximumEntropyParser.DefaultBeamSize, advancePercentage){}
 
 
         // Methods ----------------------

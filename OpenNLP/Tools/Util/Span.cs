@@ -74,6 +74,9 @@ namespace OpenNLP.Tools.Util
 			End = endOfSpan;
 		}
 		
+        /// <summary>
+        /// Computes the length of the span (end - start)
+        /// </summary>
 		public virtual int Length()
 		{
 			return (End - Start);

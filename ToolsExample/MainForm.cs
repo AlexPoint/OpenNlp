@@ -356,7 +356,7 @@ namespace ToolsExample
 				mChunker = new OpenNLP.Tools.Chunker.EnglishTreebankChunker(mModelPath + "EnglishChunk.nbin");
 			}
 			
-			return mChunker.GetChunks(tokens, tags);
+			return string.Join(" ", mChunker.GetChunks(tokens, tags));
 		}
 
 		private OpenNLP.Tools.Parser.Parse ParseSentence(string sentence)

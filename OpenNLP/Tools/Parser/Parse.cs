@@ -63,85 +63,32 @@ namespace OpenNLP.Tools.Parser
 	public class Parse : ICloneable, IComparable
 	{
 		/// <summary>
-		/// The text string on which this parse is based.  This object is shared among all parses for the same sentence.
-		/// </summary>
-		private readonly string _text;
-
-		/// <summary>
-		/// The character offsets into the text for this constituent.
-		/// </summary>
-		private readonly Util.Span _span;
-
-		/// <summary>
-		/// The syntactic type of this parse.
-		/// </summary>
-		private string _type;
-
-		/// <summary>
 		/// The sub-constituents of this parse.
 		/// </summary>
 		private List<Parse> _parts;
-
-		/// <summary>
-		/// The head parse of this parse. A parse can be its own head.
-		/// </summary>
-		private Parse _head;
-
-		/// <summary>
-		/// The outcome assigned to this parse during cconstruction of its parent parse.
-		/// </summary>
-		private string _label;
-
-		/// <summary>
-		/// The parent parse of this parse. 
-		/// </summary>
-		private Parse _parent;
-		
-		/// <summary>
-		/// The probability associated with the syntactic type assigned to this parse.
-		/// </summary>
-		private double _probability;
 
 		/// <summary>
 		/// The string buffer used to track the derivation of this parse.
 		/// </summary>
 		private StringBuilder _derivation;
 		
-		#region property accessors and methods for manipulating properties
 
-		///<summary>
-		///Returns the text of the sentence over which this parse was formed.
-		///</summary>
-		public virtual string Text
-		{
-			get
-			{
-				return _text;
-			}
-		}
+		// property accessors and methods for manipulating properties -------
+
+        /// <summary>
+        /// The text string on which this parse is based.  This object is shared among all parses for the same sentence.
+        /// </summary>
+	    public virtual string Text{ get; private set; }
 		
-		///<summary>
-		///Returns the character offsets for this constituent.
-		///</summary>
-		public virtual Util.Span Span
-		{
-			get
-			{
-				return _span;
-			}
-		}
-		
-		public virtual string Type
-		{
-			get
-			{
-				return _type;
-			}
-			set
-			{
-				_type = value;
-			}
-		}
+		/// /// <summary>
+        /// The character offsets into the text for this constituent.
+        /// </summary>
+		public virtual Util.Span Span { get; private set; }
+
+        /// <summary>
+        /// The syntactic type of this parse.
+        /// </summary>
+		public virtual string Type { get; set; }
 
 		/// <summary>
 		/// The sub-constituents of this parse.
@@ -162,80 +109,85 @@ namespace OpenNLP.Tools.Parser
 			}
 		}
 
-		/// <summary>
-		/// Replaces the child at the specified index with a new child with the specified label. 
-		/// </summary>
-		/// <param name="index">
-		/// The index of the child to be replaced.
-		/// </param>
-		/// <param name="label">
-		/// The label to be assigned to the new child.
-		/// </param>
-		public void SetChild(int index, string label) 
-		{
-			Parse newChild = (Parse) (_parts[index]).Clone();
-			newChild.Label = label;
-			_parts[index] = newChild;
-		}
-    
-		/// <summary>
-		/// Returns the index of this specified child.
-		/// </summary>
-		/// <param name="child">
-		/// A child of this parse.
-		/// </param>
-		/// <returns>
-		/// the index of this specified child or -1 if the specified child is not a child of this parse.
-		/// </returns>
-		public int IndexOf(Parse child) 
-		{
-			return _parts.IndexOf(child);
-		}
+        /// <summary>
+        /// The head parse of this parse. A parse can be its own head.
+        /// </summary>
+		public virtual Parse Head { get; private set; }
+
+        /// <summary>
+        /// The outcome assigned to this parse during cconstruction of its parent parse.
+        /// </summary>
+		public virtual string Label { get; set; }
+
+        /// <summary>
+        /// The parent parse of this parse. 
+        /// </summary>
+		public virtual Parse Parent { get; set; }
+
+	    ///<summary>
+	    ///Returns the log of the product of the probability associated with all the decisions which formed this constituent.
+	    ///</summary>
+	    public virtual double Probability { get; private set; }
+        
+        public virtual string Derivation
+        {
+            get
+            {
+                return _derivation.ToString();
+            }
+        }
+
+        public virtual bool IsPosTag
+        {
+            get
+            {
+                return (_parts.Count == 1 && (_parts[0]).Type == MaximumEntropyParser.TokenNode);
+            }
+        }
+
+        ///<summary>Returns whether this parse is complete.</summary>
+        ///<returns>Returns true if the parse contains a single top-most node.</returns>
+        public virtual bool IsComplete
+        {
+            get
+            {
+                return (_parts.Count == 1);
+            }
+        }
+
+        // Methods ---------------------
+
+        /// <summary>
+        /// Replaces the child at the specified index with a new child with the specified label. 
+        /// </summary>
+        /// <param name="index">
+        /// The index of the child to be replaced.
+        /// </param>
+        /// <param name="label">
+        /// The label to be assigned to the new child.
+        /// </param>
+        public void SetChild(int index, string label)
+        {
+            var newChild = (Parse)(_parts[index]).Clone();
+            newChild.Label = label;
+            _parts[index] = newChild;
+        }
+
+        /// <summary>
+        /// Returns the index of this specified child.
+        /// </summary>
+        /// <param name="child">
+        /// A child of this parse.
+        /// </param>
+        /// <returns>
+        /// the index of this specified child or -1 if the specified child is not a child of this parse.
+        /// </returns>
+        public int IndexOf(Parse child)
+        {
+            return _parts.IndexOf(child);
+        }
 		
-		public virtual Parse Head
-		{
-			get
-			{
-				return _head;
-			}	
-		}
-
-		public virtual string Label
-		{
-			get
-			{
-				return _label;
-			}
-			set
-			{
-				_label = value;
-			}
-		}
-
-		public virtual Parse Parent
-		{
-			get
-			{
-				return _parent;
-			}
-			set
-			{
-				_parent = value;
-			}
-		}
-
-		///<summary>
-		///Returns the log of the product of the probability associated with all the decisions which formed this constituent.
-		///</summary>
-		public virtual double Probability
-		{
-			get
-			{
-				return _probability;
-			}
-		}
-		
-		///<summary>
+        ///<summary>
 		///Adds the specified probability log to this current log for this parse.
 		///</summary>
 		///<param name="logProbability">
@@ -243,16 +195,8 @@ namespace OpenNLP.Tools.Parser
 		///</param>
 		internal void AddProbability(double logProbability) 
 		{
-			_probability += logProbability;
+			Probability += logProbability;
 		}		
-
-		public virtual string Derivation
-		{
-			get
-			{
-				return _derivation.ToString();
-			}
-		}
 
 		internal void InitializeDerivationBuffer()
 		{
@@ -263,28 +207,9 @@ namespace OpenNLP.Tools.Parser
 		{
 			_derivation.Append(derivationData);
 		}
+        
 
-		public virtual bool IsPosTag
-		{
-			get
-			{
-				return (_parts.Count == 1 && (_parts[0]).Type == MaximumEntropyParser.TokenNode);
-			}
-		}
-
-		///<summary>Returns whether this parse is complete.</summary>
-		///<returns>Returns true if the parse contains a single top-most node.</returns>
-		public virtual bool IsComplete
-		{
-			get
-			{
-				return (_parts.Count == 1);
-			}
-		}
-
-#endregion
-
-		#region IClonable implementation
+		// IClonable implementation ---------------------------
 
 		public object Clone()
 		{
@@ -299,9 +224,8 @@ namespace OpenNLP.Tools.Parser
 			return (clonedParse);
 		}
 
-		#endregion
 
-		#region IComparable implementation
+		// IComparable implementation ------------------------
 
 		public virtual int CompareTo(object o)
 		{
@@ -322,34 +246,32 @@ namespace OpenNLP.Tools.Parser
 			return 0;
 		}
 
-		#endregion
 
-		#region constructors
+		// constructors -----------------------
 
 		public Parse(string parseText, Util.Span span, string type, double probability)
 		{
-			_text = parseText;
-			_span = span;
-			_type = type;
-			_probability = probability;
-			_head = this;
+            Text = parseText;
+			Span = span;
+			Type = type;
+			Probability = probability;
+			Head = this;
 			_parts = new List<Parse>();
-			_label = null;
-			_parent = null;
+			Label = null;
+			Parent = null;
 		}
 		
 		public Parse(string parseText, Util.Span span, string type, double probability, Parse head) : this(parseText, span, type, probability)
 		{
-			_head = head;
+			Head = head;
 		}
-				
-		#endregion
-
-		#region System.Object overrides
+			
+	
+		// System.Object overrides -------------------------
 
 		public override string ToString()
 		{
-			return _text.Substring(_span.Start, (_span.End) - (_span.Start));
+			return Text.Substring(Span.Start, Span.Length());
 		}
 		
         //public override bool Equals (Object o)
@@ -370,9 +292,7 @@ namespace OpenNLP.Tools.Parser
         //    return _probability.GetHashCode();
         //}  
 
-		#endregion
-
-		///<summary>
+        ///<summary>
 		///Returns the probability associated with the pos-tag sequence assigned to this parse.
 		///</summary>
 		///<returns>
@@ -384,7 +304,7 @@ namespace OpenNLP.Tools.Parser
 			if (_parts.Count == 1 && (_parts[0]).Type == MaximumEntropyParser.TokenNode)
 			{
 				//System.Console.Error.WriteLine(this + " " + mParseProbability);
-				return System.Math.Log(_probability);
+				return Math.Log(Probability);
 			}
 			else
 			{
@@ -414,15 +334,15 @@ namespace OpenNLP.Tools.Parser
 		///</param>
 		public virtual void Insert(Parse constituent)
 		{
-			Util.Span constituentSpan = constituent._span;
-			if (_span.Contains(constituentSpan))
+			Util.Span constituentSpan = constituent.Span;
+			if (Span.Contains(constituentSpan))
 			{
 				int currentPart;
 				int partCount = _parts.Count;
 				for (currentPart = 0; currentPart < partCount; currentPart++)
 				{
 					Parse subPart = _parts[currentPart];
-					Util.Span subPartSpan = subPart._span;
+					Util.Span subPartSpan = subPart.Span;
 					if (subPartSpan.Start > constituentSpan.End)
 					{
 						break;
@@ -457,27 +377,27 @@ namespace OpenNLP.Tools.Parser
 		///</summary>
 		public virtual string Show()
 		{
-			StringBuilder buffer = new StringBuilder();
-			int start = _span.Start;
-			if (_type != MaximumEntropyParser.TokenNode)
+			var buffer = new StringBuilder();
+			int start = Span.Start;
+			if (Type != MaximumEntropyParser.TokenNode)
 			{
 				buffer.Append("(");
-				buffer.Append(_type + " ");
+				buffer.Append(Type + " ");
 			}
 			
 			foreach (Parse childParse in _parts)
 			{
-				Util.Span childSpan = childParse._span;
+				Util.Span childSpan = childParse.Span;
 				if (start < childSpan.Start)
 				{
 					//System.Console.Out.WriteLine("pre " + start + " " + childSpan.Start);
-					buffer.Append(_text.Substring(start, (childSpan.Start) - (start)));
+					buffer.Append(Text.Substring(start, (childSpan.Start) - (start)));
 				}
 				buffer.Append(childParse.Show());
 				start = childSpan.End;
 			}
-			buffer.Append(_text.Substring(start, (_span.End) - (start)));
-			if (_type != MaximumEntropyParser.TokenNode)
+			buffer.Append(Text.Substring(start, Span.Length()));
+			if (Type != MaximumEntropyParser.TokenNode)
 			{
 				buffer.Append(")");
 			}
@@ -500,15 +420,11 @@ namespace OpenNLP.Tools.Parser
 					Parse currentParse = _parts[currentPart];
 					currentParse.UpdateHeads(rules);
 				}
-				_head = rules.GetHead(_parts.ToArray(), _type);
-				if (_head == null)
-				{
-					_head = this;
-				}
+				Head = rules.GetHead(_parts.ToArray(), Type) ?? this;
 			}
 			else
 			{
-				_head = this;
+				Head = this;
 			}
 		}
 		
@@ -520,8 +436,8 @@ namespace OpenNLP.Tools.Parser
 		/// </returns>
 		public virtual Parse[] GetTagNodes()
 		{
-            List<Parse> tags = new List<Parse>();
-            List<Parse> nodes = new List<Parse>(_parts);
+            var tags = new List<Parse>();
+            var nodes = new List<Parse>(_parts);
 			while (nodes.Count != 0)
 			{
 				Parse currentParse = nodes[0];
@@ -555,7 +471,7 @@ namespace OpenNLP.Tools.Parser
 			{
 				return this.Parent;
 			}
-            Util.HashSet<Parse> parents = new Util.HashSet<Parse>();
+            var parents = new Util.HashSet<Parse>();
 			Parse parentParse = this;
 			while (parentParse != null)
 			{
@@ -582,17 +498,18 @@ namespace OpenNLP.Tools.Parser
 			}
 		}
 
-		#region static methods used to create a Parse from a Penn Treebank parse string
+
+		// static methods used to create a Parse from a Penn Treebank parse string ----
 
 		/// <summary>
 		/// The pattern used to find the base constituent label of a Penn Treebank labeled constituent.
 		/// </summary>
-		private static Regex mTypePattern = new Regex("^([^ =-]+)");
+		private static readonly Regex TypePattern = new Regex("^([^ =-]+)", RegexOptions.Compiled);
 
 		/// <summary>
 		/// The pattern used to identify tokens in Penn Treebank labeled constituents.
 		/// </summary>
-		private static Regex mTokenPattern = new Regex("^[^ ()]+ ([^ ()]+)\\s*\\)");		
+		private static readonly Regex TokenPattern = new Regex("^[^ ()]+ ([^ ()]+)\\s*\\)", RegexOptions.Compiled);		
 
 		private static string GetType(string rest)
 		{
@@ -614,7 +531,7 @@ namespace OpenNLP.Tools.Parser
 			}
 			else
 			{
-				MatchCollection typeMatches = mTypePattern.Matches(rest);
+				MatchCollection typeMatches = TypePattern.Matches(rest);
 				if (typeMatches.Count > 0)
 				{
                     return typeMatches[0].Groups[1].Value;
@@ -625,7 +542,7 @@ namespace OpenNLP.Tools.Parser
 		
 		private static string GetToken(string rest)
 		{
-			MatchCollection tokenMatches = mTokenPattern.Matches(rest);
+			MatchCollection tokenMatches = TokenPattern.Matches(rest);
 			if (tokenMatches.Count > 0)
 			{
 				return tokenMatches[0].Groups[1].Value;
@@ -705,7 +622,6 @@ namespace OpenNLP.Tools.Parser
 			}
 			return rootParse;
 		}
-
-		#endregion		
+	
 	}
 }

@@ -39,6 +39,7 @@ namespace Test
             var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
             var chunker = new EnglishTreebankChunker(currentDirectory + "../Resources/Models/EnglishChunk.nbin");
             var dechunker = new RegexDictionaryDechunker();
+            var detokienizer = new DictionaryDetokenizer();
             var englishPosPath = currentDirectory + "../Resources/Models/EnglishPOS.nbin";
             var tagDictPath = currentDirectory + "../Resources/Models/Parser/tagdict";
             var posTagger = new EnglishMaximumEntropyPosTagger(englishPosPath, tagDictPath);
@@ -48,15 +49,18 @@ namespace Test
                 string[] tokens = tokenizer.Tokenize(input);
                 string[] tags = posTagger.Tag(tokens);
 
-                var chunksAsString = chunker.GetChunks(tokens, tags);
+                var chunks = chunker.GetChunks(tokens, tags);
                 
-                var chunks = chunksAsString.Split(new[] {'[', ']'})
+                /*var chunks = chunksAsString.Split(new[] {'[', ']'})
                     .Select(s => s.Trim(new[] {'[', ']', ' '}))
                     .SelectMany(s => s.Split(' '))
                     .Where(s => !string.IsNullOrEmpty(s) && s.Contains("/"))
                     .Select(s => s.Split('/').First())
-                    .ToArray();
-                var output = dechunker.Dechunk(chunks);
+                    .ToArray();*/
+                var chunksStrings =
+                    chunks.Select(ch => detokienizer.Detokenize(ch.TaggedWords.Select(tw => tw.Word).ToArray()))
+                        .ToArray();
+                var output = dechunker.Dechunk(chunksStrings);
                 Console.WriteLine("input: " + input);
                 Console.WriteLine("chunks: "+ string.Join(" | ", chunks));
                 Console.WriteLine("ouput: " + output);

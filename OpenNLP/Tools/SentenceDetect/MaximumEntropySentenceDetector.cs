@@ -46,27 +46,32 @@ namespace OpenNLP.Tools.SentenceDetect
 	/// </summary>
 	public class MaximumEntropySentenceDetector : ISentenceDetector
 	{
+        // Properties ---------------
+
 		/// <summary>
 		/// The maximum entropy model to use to evaluate contexts.
 		/// </summary>
-		private SharpEntropy.IMaximumEntropyModel mModel;
+		private readonly SharpEntropy.IMaximumEntropyModel _model;
 		
 		/// <summary>
 		/// The feature context generator.
 		/// </summary>
-        private SharpEntropy.IContextGenerator<Tuple<System.Text.StringBuilder, int>> mContextGenerator;
+        private readonly SharpEntropy.IContextGenerator<Tuple<System.Text.StringBuilder, int>> _contextGenerator;
 		
 		/// <summary>
 		/// The EndOfSentenceScanner to use when scanning for end of
 		/// sentence offsets.
 		/// </summary>
-		private IEndOfSentenceScanner mScanner;
+		private readonly IEndOfSentenceScanner _scanner;
 				
 		/// <summary>
 		/// The list of probabilities associated with each decision
 		/// </summary>
-		private List<double> mSentenceProbs;
+		private readonly List<double> _sentenceProbs;
 		
+        
+        // Constructors ------------------
+
 		/// <summary>
 		/// Constructor which takes a IMaximumEntropyModel and calls the three-arg
 		/// constructor with that model, a SentenceDetectionContextGenerator, and the
@@ -79,7 +84,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		public MaximumEntropySentenceDetector(SharpEntropy.IMaximumEntropyModel model):
             this(model, new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters()), new DefaultEndOfSentenceScanner())
 		{
-            mSentenceProbs = new List<double>(50);
+            _sentenceProbs = new List<double>(50);
 		}
 		
 		/// <summary>
@@ -95,10 +100,8 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// will use to turn strings into contexts for the model to
 		/// evaluate.
 		/// </param>
-        public MaximumEntropySentenceDetector(SharpEntropy.IMaximumEntropyModel model, SharpEntropy.IContextGenerator<Tuple<System.Text.StringBuilder, int>> contextGenerator)
-            : this(model, contextGenerator, new DefaultEndOfSentenceScanner())
-		{
-		}
+        public MaximumEntropySentenceDetector(SharpEntropy.IMaximumEntropyModel model, SharpEntropy.IContextGenerator<Tuple<System.Text.StringBuilder, int>> contextGenerator):
+            this(model, contextGenerator, new DefaultEndOfSentenceScanner()){}
 		
 		/// <summary> 
 		/// Creates a new <code>MaximumEntropySentenceDetector</code> instance.
@@ -116,9 +119,9 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// </param>
         public MaximumEntropySentenceDetector(SharpEntropy.IMaximumEntropyModel model, SharpEntropy.IContextGenerator<Tuple<System.Text.StringBuilder, int>> contextGenerator, IEndOfSentenceScanner scanner)
 		{
-			mModel = model;
-			mContextGenerator = contextGenerator;
-			mScanner = scanner;
+			_model = model;
+			_contextGenerator = contextGenerator;
+			_scanner = scanner;
 		}
 		
 		/// <summary>
@@ -132,7 +135,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// </returns>
 		public virtual double[] GetSentenceProbabilities()
 		{
-            return mSentenceProbs.ToArray();
+            return _sentenceProbs.ToArray();
 		}
 
 		/// <summary> 
@@ -153,7 +156,7 @@ namespace OpenNLP.Tools.SentenceDetect
 			}
 			
 			bool isLeftover = startsList[startsList.Length - 1] != input.Length;
-			string[] sentences = new string[isLeftover ? startsList.Length + 1 : startsList.Length];
+			var sentences = new string[isLeftover ? startsList.Length + 1 : startsList.Length];
 
 			sentences[0] = input.Substring(0, (startsList[0]) - (0));
 			for (int currentStart = 1; currentStart < startsList.Length; currentStart++)
@@ -200,9 +203,9 @@ namespace OpenNLP.Tools.SentenceDetect
 		public virtual int[] SentencePositionDetect(string input)
 		{
 			double sentenceProbability = 1;
-			mSentenceProbs.Clear();
+			_sentenceProbs.Clear();
 			var buffer = new System.Text.StringBuilder(input);
-			List<int> endersList = mScanner.GetPositions(input);
+			List<int> endersList = _scanner.GetPositions(input);
 			var positions = new List<int>(endersList.Count);
 			
 			for (int currentEnder = 0, enderCount = endersList.Count, index = 0; currentEnder < enderCount; currentEnder++)
@@ -218,15 +221,15 @@ namespace OpenNLP.Tools.SentenceDetect
 				}
 
                 var pair = new Tuple<System.Text.StringBuilder, int>(buffer, candidate);
-				double[] probabilities = mModel.Evaluate(mContextGenerator.GetContext(pair));
-				string bestOutcome = mModel.GetBestOutcome(probabilities);
-				sentenceProbability *= probabilities[mModel.GetOutcomeIndex(bestOutcome)];
+				double[] probabilities = _model.Evaluate(_contextGenerator.GetContext(pair));
+				string bestOutcome = _model.GetBestOutcome(probabilities);
+				sentenceProbability *= probabilities[_model.GetOutcomeIndex(bestOutcome)];
 				if (bestOutcome.Equals("T") && IsAcceptableBreak(input, index, cInt))
 				{
 					if (index != cInt)
 					{
 						positions.Add(GetFirstNonWhitespace(input, GetFirstWhitespace(input, cInt + 1)));//moIntegerPool.GetInteger(GetFirstNonWhitespace(input, GetFirstWhitespace(input, cInt + 1))));
-						mSentenceProbs.Add(probabilities[mModel.GetOutcomeIndex(bestOutcome)]);
+						_sentenceProbs.Add(probabilities[_model.GetOutcomeIndex(bestOutcome)]);
 					}
 					index = cInt + 1;
 				}
@@ -258,10 +261,13 @@ namespace OpenNLP.Tools.SentenceDetect
 		{
 			return true;
 		}
+
+
+        // Utilities ----------------------------
 		
 		public static SharpEntropy.GisModel TrainModel(SharpEntropy.ITrainingEventReader eventReader, int iterations, int cut)
 		{
-			SharpEntropy.GisTrainer trainer = new SharpEntropy.GisTrainer();
+			var trainer = new SharpEntropy.GisTrainer();
 			trainer.TrainModel(eventReader, iterations, cut);
 			return new SharpEntropy.GisModel(trainer);
 		}
@@ -272,16 +278,14 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// </summary>
 		public static SharpEntropy.GisModel TrainModel(string inFile, int iterations, int cut, IEndOfSentenceScanner scanner)
 		{
-			SharpEntropy.ITrainingEventReader eventReader;
-			SharpEntropy.ITrainingDataReader<string> dataReader;
-			System.IO.StreamReader streamReader;
+		    StreamReader streamReader;
 			
 			using (streamReader = new StreamReader(inFile, System.Text.Encoding.UTF7))
 			{
-				dataReader = new SharpEntropy.PlainTextByLineDataReader(streamReader);
-				eventReader = new SentenceDetectionEventReader(dataReader, scanner);
+				SharpEntropy.ITrainingDataReader<string> dataReader = new SharpEntropy.PlainTextByLineDataReader(streamReader);
+				SharpEntropy.ITrainingEventReader eventReader = new SentenceDetectionEventReader(dataReader, scanner);
 
-				SharpEntropy.GisTrainer trainer = new SharpEntropy.GisTrainer();
+				var trainer = new SharpEntropy.GisTrainer();
 				trainer.TrainModel(eventReader, iterations, cut);
 				return new SharpEntropy.GisModel(trainer);
 			}

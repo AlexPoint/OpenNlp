@@ -117,7 +117,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tools\Chunker\RegexDictionaryDechunker.cs" />
-    <Compile Include="Tools\SentenceChunk.cs" />
+    <Compile Include="Tools\Chunker\SentenceChunk.cs" />
     <Compile Include="Tools\Coreference\AbstractLinker.cs" />
     <Compile Include="Tools\Coreference\DefaultLinker.cs" />
     <Compile Include="Tools\Coreference\DiscourseElement.cs" />

@@ -42,32 +42,21 @@ namespace OpenNLP.Tools.Chunker
 	/// find flat structures based on sequence inputs such as noun phrases or named entities.
 	/// </summary>
 	public class MaximumEntropyChunker : IChunker
-	{		
-		private readonly Util.BeamSearch _beam;
+	{
 		private Util.Sequence _bestSequence;
-		private readonly SharpEntropy.IMaximumEntropyModel _model;
 
 		/// <summary>
 		/// The beam used to search for sequences of chunk tag assignments.
 		/// </summary>
-		protected internal Util.BeamSearch Beam
-		{
-			get
-			{
-				return _beam;
-			}
-		}
+		protected internal Util.BeamSearch Beam { get; private set; }
 
-		/// <summary>
-		/// The model used to assign chunk tags to a sequence of tokens.
-		/// </summary>
-		protected internal SharpEntropy.IMaximumEntropyModel Model
-		{
-			get
-			{
-				return _model;
-			}
-		}
+	    /// <summary>
+	    /// The model used to assign chunk tags to a sequence of tokens.
+	    /// </summary>
+	    protected internal SharpEntropy.IMaximumEntropyModel Model  { get; private set; }
+
+        
+        // Constructors ---------------
 
 		/// <summary>Creates a chunker using the specified model</summary>
 		/// <param name="model">The maximum entropy model for this chunker</param>
@@ -91,17 +80,20 @@ namespace OpenNLP.Tools.Chunker
 		/// <param name="beamSize">The size of the beam that should be used when decoding sequences</param>
 		public MaximumEntropyChunker(SharpEntropy.IMaximumEntropyModel model, IChunkerContextGenerator contextGenerator, int beamSize)
 		{
-			_beam = new ChunkBeamSearch(this, beamSize, contextGenerator, model);
-			_model = model;
+			Beam = new ChunkBeamSearch(this, beamSize, contextGenerator, model);
+			Model = model;
 		}
 		
+        
+        // Methods ----------------
+
 		/// <summary>Performs a chunking operation</summary>
 		/// <param name="tokens">Object array of tokens</param>
 		/// <param name="tags">string array of POS tags corresponding to the tokens in the object array</param>
 		/// <returns>string array containing a value for each token, indicating the chunk that that token belongs to</returns>
 		public virtual string[] Chunk(string[] tokens, string[] tags)
 		{
-			_bestSequence = _beam.BestSequence(tokens, new object[]{tags});
+			_bestSequence = Beam.BestSequence(tokens, new object[]{tags});
             return _bestSequence.Outcomes.ToArray();
 		}
 		
@@ -109,14 +101,15 @@ namespace OpenNLP.Tools.Chunker
 		/// <returns>String array, each entry containing a chunking tag</returns>
 		public virtual string[] AllTags()
 		{
-			var tags = new string[_model.OutcomeCount];
-			for (int currentTag = 0; currentTag < _model.OutcomeCount; currentTag++)
+			var tags = new string[Model.OutcomeCount];
+			for (int currentTag = 0; currentTag < Model.OutcomeCount; currentTag++)
 			{
-				tags[currentTag] = _model.GetOutcomeName(currentTag);
+				tags[currentTag] = Model.GetOutcomeName(currentTag);
 			}
 			return tags;
 		}
-		/// <summary>
+		
+        /// <summary>
 		/// This method determines wheter the outcome is valid for the preceding sequence.  
 		/// This can be used to implement constraints on what sequences are valid.  
 		/// </summary>
@@ -151,31 +144,7 @@ namespace OpenNLP.Tools.Chunker
 		{
 			return true;
 		}
-
-		/// <summary>
-		/// This class implements the abstract BeamSearch class to allow for the chunker to use
-		/// the common beam search code. 
-		/// </summary>
-		private class ChunkBeamSearch : Util.BeamSearch
-		{
-			private MaximumEntropyChunker mMaxentChunker;
-			
-			public ChunkBeamSearch(MaximumEntropyChunker maxentChunker, int size, IChunkerContextGenerator contextGenerator, SharpEntropy.IMaximumEntropyModel model):base(size, contextGenerator, model)
-			{
-				mMaxentChunker = maxentChunker;
-			}
-			
-			protected internal override bool ValidSequence(int index, ArrayList inputSequence, Util.Sequence outcomesSequence, string outcome)
-			{
-				return mMaxentChunker.ValidOutcome(outcome, outcomesSequence);
-			}
-    
-			protected internal override bool ValidSequence(int index, object[] inputSequence, string[] outcomesSequence, string outcome) 
-			{
-				return mMaxentChunker.ValidOutcome(outcome, outcomesSequence);
-			}
-		}
-		
+        
 		/// <summary>
 		/// Populates the specified array with the probabilities of the last decoded sequence.  The
 		/// sequence was determined based on the previous call to <code>chunk</code>.  The 
@@ -202,6 +171,9 @@ namespace OpenNLP.Tools.Chunker
 			return _bestSequence.GetProbabilities();
 		}
 		
+
+        // Utilities ---------------
+
 		/// <summary>
 		/// Trains the chunker.  Training file should be one word per line where each line consists of a
 		/// space-delimited triple of "word pos outcome".  Sentence breaks are indicated by blank lines.
@@ -240,5 +212,33 @@ namespace OpenNLP.Tools.Chunker
 			trainer.TrainModel(iterations, new SharpEntropy.TwoPassDataIndexer(eventReader, cutoff));
 			return new SharpEntropy.GisModel(trainer);
 		}
+
+
+        // Inner classes -----------
+
+        /// <summary>
+        /// This class implements the abstract BeamSearch class to allow for the chunker to use
+        /// the common beam search code. 
+        /// </summary>
+        private class ChunkBeamSearch : Util.BeamSearch
+        {
+            private readonly MaximumEntropyChunker _maxentChunker;
+
+            public ChunkBeamSearch(MaximumEntropyChunker maxentChunker, int size, IChunkerContextGenerator contextGenerator, SharpEntropy.IMaximumEntropyModel model)
+                : base(size, contextGenerator, model)
+            {
+                _maxentChunker = maxentChunker;
+            }
+
+            protected internal override bool ValidSequence(int index, ArrayList inputSequence, Util.Sequence outcomesSequence, string outcome)
+            {
+                return _maxentChunker.ValidOutcome(outcome, outcomesSequence);
+            }
+
+            protected internal override bool ValidSequence(int index, object[] inputSequence, string[] outcomesSequence, string outcome)
+            {
+                return _maxentChunker.ValidOutcome(outcome, outcomesSequence);
+            }
+        }
 	}
 }

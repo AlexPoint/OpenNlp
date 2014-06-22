@@ -38,7 +38,6 @@ using System;
 //using Pattern = java.util.regex.Pattern;
 using System.Text.RegularExpressions;
 using HeadFinder = OpenNLP.Tools.Coreference.Mention.IHeadFinder;
-using Mention = OpenNLP.Tools.Coreference.Mention.Mention;
 using MentionContext = OpenNLP.Tools.Coreference.Mention.MentionContext;
 using MentionFinder = OpenNLP.Tools.Coreference.Mention.IMentionFinder;
 namespace OpenNLP.Tools.Coreference
@@ -137,18 +136,12 @@ namespace OpenNLP.Tools.Coreference
 		/// <summary>
         /// The mention finder for this linker.  This can be used to get the mentions of a Parse.
         /// </summary>
-		MentionFinder MentionFinder
-		{
-			get;
-		}
+		MentionFinder MentionFinder{ get; }
 
 		/// <summary>
         /// The head finder associated with this linker.
         /// </summary>
-		HeadFinder HeadFinder
-		{
-			get;
-		}
+		HeadFinder HeadFinder { get; }
 		
 		/// <summary>
         /// Indicated that the specified mentions can be used to train this linker.

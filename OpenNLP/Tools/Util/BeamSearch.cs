@@ -43,14 +43,18 @@ namespace OpenNLP.Tools.Util
 	/// Ratnaparkhi (1998), PhD diss, Univ. of Pennsylvania. 
 	/// </summary>
 	public class BeamSearch
-	{
+    {
+        private const int ZeroLog = -100000;
+        private static readonly object[] EmptyAdditionalContext = new object[0];
+
 		internal SharpEntropy.IMaximumEntropyModel Model;
 		internal IBeamSearchContextGenerator ContextGenerator;
 		internal int Size;
-		private static object[] mEmptyAdditionalContext = new object[0];
-		private double[] mProbabilities;
-		private Cache mContextsCache;
-		private const int mZeroLog = -100000;
+		private readonly double[] _probabilities;
+		private readonly Cache _contextsCache;
+
+        
+        // Constructors -----------------
 
 		/// <summary>
 		/// Creates new search object.
@@ -64,9 +68,8 @@ namespace OpenNLP.Tools.Util
 		/// <param name="model">
 		/// the model for assigning probabilities to the sequence outcomes.
 		/// </param>
-		public BeamSearch(int size, IBeamSearchContextGenerator contextGenerator, SharpEntropy.IMaximumEntropyModel model) : this(size, contextGenerator, model, 0)
-		{
-		}
+		public BeamSearch(int size, IBeamSearchContextGenerator contextGenerator, SharpEntropy.IMaximumEntropyModel model):
+            this(size, contextGenerator, model, 0){}
 
 		/// <summary>
 		/// Creates new search object.
@@ -89,13 +92,16 @@ namespace OpenNLP.Tools.Util
 			ContextGenerator = contextGenerator;
 			Model = model;
 
-			mProbabilities = new double[model.OutcomeCount];
+			_probabilities = new double[model.OutcomeCount];
 			if (cacheSize > 0) 
 			{
-				mContextsCache = new Cache(cacheSize);
+				_contextsCache = new Cache(cacheSize);
 			}
 		}
 		
+
+        // Methods ------------------------
+
 		/// <summary>
 		/// Returns the best sequence of outcomes based on model for this object.</summary>
 		/// <param name="numSequences">
@@ -112,7 +118,7 @@ namespace OpenNLP.Tools.Util
 		/// </returns>		
 		public Sequence[] BestSequences(int numSequences, string[] sequence, object[] additionalContext) 
 		{
-			return BestSequences(numSequences, sequence, additionalContext, mZeroLog);
+			return BestSequences(numSequences, sequence, additionalContext, ZeroLog);
 		}
 
 		/// <summary>
@@ -141,7 +147,7 @@ namespace OpenNLP.Tools.Util
 			previousHeap.Add(new Sequence());
 			if (additionalContext == null)
 			{
-				additionalContext = mEmptyAdditionalContext;
+				additionalContext = EmptyAdditionalContext;
 			}
 			for (int currentSequence = 0; currentSequence < sequenceCount; currentSequence++)
 			{
@@ -153,18 +159,18 @@ namespace OpenNLP.Tools.Util
 					string[] outcomes = topSequence.Outcomes.ToArray();
 					string[] contexts = ContextGenerator.GetContext(currentSequence, sequence, outcomes, additionalContext);
 					double[] scores;
-					if (mContextsCache != null) 
+					if (_contextsCache != null) 
 					{
-						scores = (double[]) mContextsCache[contexts];
+						scores = (double[]) _contextsCache[contexts];
 						if (scores == null) 
 						{
-							scores = Model.Evaluate(contexts, mProbabilities);
-							mContextsCache[contexts] = scores;
+							scores = Model.Evaluate(contexts, _probabilities);
+							_contextsCache[contexts] = scores;
 						}
 					}
 					else 
 					{
-						scores = Model.Evaluate(contexts, mProbabilities);
+						scores = Model.Evaluate(contexts, _probabilities);
 					}
 
 					double[] tempScores = new double[scores.Length];
@@ -237,7 +243,7 @@ namespace OpenNLP.Tools.Util
 		/// </returns>
 		public Sequence BestSequence(string[] sequence, object[] additionalContext) 
 		{
-			return BestSequences(1, sequence, additionalContext, mZeroLog)[0];
+			return BestSequences(1, sequence, additionalContext, ZeroLog)[0];
 		}
 		
 		/// <summary>

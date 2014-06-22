@@ -10,6 +10,10 @@ namespace OpenNLP.Tools.Tokenize
     {
         public abstract DetokenizationOperation[] GetDetokenizationOperations(string[] tokens);
 
+        /// <summary>
+        /// Plugs back a list of tokens, split from the same sentence with a tokenizer
+        /// </summary>
+        /// <param name="splitMarker">A specific marker to insert between tokens</param>
         public string Detokenize(string[] tokens, string splitMarker = "")
         {
             DetokenizationOperation[] operations = GetDetokenizationOperations(tokens);

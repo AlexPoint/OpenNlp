@@ -15,9 +15,7 @@ namespace SharpEntropy.IO
 		private SQLiteTransaction mDataTransaction;
 		private SQLiteCommand mDataCommand;
 
-		public SqliteGisModelWriter()
-		{
-		}
+		public SqliteGisModelWriter(){}
 
 		/// <summary>
 		/// Takes a GIS model and a file and writes the model to that file.

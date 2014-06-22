@@ -51,22 +51,21 @@ namespace OpenNLP.Tools.Lang.English
 	/// </summary>
 	public class TreebankLinker : DefaultLinker
 	{
-        public TreebankLinker(string project) : base(project, LinkerMode.Test)
-        {
-        }
 
-		public TreebankLinker(string project, LinkerMode mode) : base(project, mode)
-		{
-		}
+        // Constructors ------------
+
+        public TreebankLinker(string project): base(project, LinkerMode.Test){ }
+
+		public TreebankLinker(string project, LinkerMode mode): base(project, mode){ }
 		
-		public TreebankLinker(string project, LinkerMode mode, bool useDiscourseModel) : base(project, mode, useDiscourseModel)
-		{
-		}
+		public TreebankLinker(string project, LinkerMode mode, bool useDiscourseModel): base(project, mode, useDiscourseModel){ }
 		
-		public TreebankLinker(string project, LinkerMode mode, bool useDiscourseModel, double fixedNonReferentialProbability) : base(project, mode, useDiscourseModel, fixedNonReferentialProbability)
-		{
-		}
+		public TreebankLinker(string project, LinkerMode mode, bool useDiscourseModel, double fixedNonReferentialProbability): 
+            base(project, mode, useDiscourseModel, fixedNonReferentialProbability){ }
 		
+
+        // Methods ----------------- 
+
 		protected internal override void InitializeMentionFinder()
 		{
             MentionFinder = PennTreebankMentionFinder.GetInstance(HeadFinder);

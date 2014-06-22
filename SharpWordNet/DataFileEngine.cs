@@ -210,16 +210,19 @@ namespace SharpWordNet
 			{
                 searchFile.DiscardBufferedData();
                 searchFile.BaseStream.Position = mid - 1;
-				if (mid!=1)
-                    while ((c = searchFile.Read()) != '\n' && c != -1)
-						;
+			    if (mid != 1)
+			    {
+                    while ((c = searchFile.Read()) != '\n' && c != -1) { }
+			    }
                 line = searchFile.ReadLine();
-				if (line==null)
-					return null;
+			    if (line == null)
+			    {
+                    return null;
+			    }
 				n = line.IndexOf(' ');
 				key = line.Substring(0,n);
 				key=key.Replace("-"," ").Replace("_"," ");
-				if (string.CompareOrdinal(key, searchKey)<0) 
+				if (string.CompareOrdinal(key, searchKey) < 0) 
 				{
 					top = mid;
 					diff = (bot - top)/2;
@@ -232,9 +235,11 @@ namespace SharpWordNet
 					mid = top + diff;
 				}
 			} while (key!=searchKey && diff!=0);
-			
-			if (key==searchKey)
-				return line;
+
+            if (key == searchKey)
+            {
+                return line;
+            }
 			return null;
 		}
 
@@ -279,6 +284,7 @@ namespace SharpWordNet
 			
 			var tokenizer = new Tokenizer(record);
 			int offset = int.Parse(tokenizer.NextToken());
+
 
 		    var nt = int.Parse(tokenizer.NextToken());
 			string lexicographerFile = _lexicographerFiles[nt];

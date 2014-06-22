@@ -15,6 +15,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
+using System.Linq;
 
 namespace SharpWordNet
 {
@@ -23,66 +24,33 @@ namespace SharpWordNet
 	/// </summary>
 	public class IndexWord
 	{
-		private string mLemma;
-		private string mPartOfSpeech;
-		private string[] mRelationTypes = null;
-		private int mTagSenseCount = 0;
-		private int[] mSynsetOffsets = null;
-			
-		public int[] SynsetOffsets
-		{
-			get
-			{
-				return mSynsetOffsets;
-			}
-		}
+        // Properties ------------------------
 
-        public string Lemma
-        {
-            get
-            {
-                return mLemma;
-            }
-        }
+        public string PartOfSpeech { get; private set; }
+			
+		public int[] SynsetOffsets { get; private set; }
+
+        public string Lemma { get; private set; }
 
         public int SenseCount
         {
-            get
-            {
-                if (mSynsetOffsets == null)
-                {
-                    return 0;
-                }
-                else
-                {
-                    return mSynsetOffsets.Length;
-                }
-            }
+            get { return this.SynsetOffsets != null ? this.SynsetOffsets.Count() : 0; }
         }
 
-		public int TagSenseCount
-		{
-			get
-			{
-				return mTagSenseCount;
-			}
-		}
+	    public int TagSenseCount { get; private set; }
 
-		public string[] RelationTypes
-		{
-			get
-			{
-				return mRelationTypes;
-			}
-		}
+		public string[] RelationTypes { get; private set; }
+
+
+        // Constructors --------------------
 
 		public IndexWord(string lemma, string partOfSpeech, string[] relationTypes, int[] synsetOffsets, int tagSenseCount)
 		{
-            mLemma = lemma;
-            mPartOfSpeech = partOfSpeech;
-            mRelationTypes = relationTypes;
-            mSynsetOffsets = synsetOffsets;
-            mTagSenseCount = tagSenseCount;
+            this.Lemma = lemma;
+            this.PartOfSpeech = partOfSpeech;
+            this.RelationTypes = relationTypes;
+            this.SynsetOffsets = synsetOffsets;
+            this.TagSenseCount = tagSenseCount;
 		}
 	}
 }

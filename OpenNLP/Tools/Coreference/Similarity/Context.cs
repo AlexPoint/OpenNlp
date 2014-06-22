@@ -43,75 +43,24 @@ namespace OpenNLP.Tools.Coreference.Similarity
     /// </summary>
     public class Context : Mention.Mention
 	{
-        private string mHeadTokenText;
         private string mHeadTokenTag;
-        private Util.Set<string> mSynsets;
         private object[] mTokens;
 
-        private int mHeadTokenIndex;
+        public virtual object[] Tokens { get; protected internal set; }
 
-        public virtual object[] Tokens
-		{
-			get
-			{
-				return mTokens;
-			}
-            protected internal set
-            {
-                mTokens = value;
-            }	
-		}
+		public virtual string HeadTokenText { get; protected internal set; }
 
-		public virtual string HeadTokenText
-		{
-			get
-			{
-				return mHeadTokenText;
-			}
-            protected internal set
-            {
-                mHeadTokenText = value;
-            }	
-		}
+		public virtual string HeadTokenTag { get; protected internal set; }
 
-		public virtual string HeadTokenTag
-		{
-			get
-			{
-				return mHeadTokenTag;
-			}
-            protected internal set
-            {
-                mHeadTokenTag = value;
-            }	
-		}
-
-		public virtual Util.Set<string> Synsets
-		{
-			get
-			{
-				return mSynsets;
-			}
-            protected internal set
-            {
-                mSynsets = value;
-            }
-		}
+		public virtual Util.Set<string> Synsets { get; protected internal set; }
 
         /// <summary>
         /// The token index in the head word of this mention.
         /// </summary>
-		public virtual int HeadTokenIndex
-		{
-			get
-			{
-				return mHeadTokenIndex;
-			}
-            protected internal set
-            {
-                mHeadTokenIndex = value;
-            }
-		}
+		public virtual int HeadTokenIndex { get; protected internal set; }
+
+
+        // Constructors --------------------
 
         public Context(Util.Span span, Util.Span headSpan, int entityId, Mention.IParse parse, string extentType, string nameType, Mention.IHeadFinder headFinder)
             : base(span, headSpan, entityId, parse, extentType, nameType)
@@ -122,10 +71,10 @@ namespace OpenNLP.Tools.Coreference.Similarity
         public Context(object[] tokens, string headToken, string headTag, string neType) : base(null, null, 1, null, null, neType)
 		{
 			mTokens = tokens;
-			mHeadTokenIndex = tokens.Length - 1;
-			mHeadTokenText = headToken;
+			this.HeadTokenIndex = tokens.Length - 1;
+			this.HeadTokenText = headToken;
 			mHeadTokenTag = headTag;
-			mSynsets = GetSynsetSet(this);
+			this.Synsets = GetSynsetSet(this);
 		}
 
         public Context(Mention.Mention mention, Mention.IHeadFinder headFinder) : base(mention)
@@ -137,24 +86,24 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		{
             Mention.IParse head = headFinder.GetLastHead(Parse);
 			List<Mention.IParse> tokenList = head.Tokens;
-			mHeadTokenIndex = headFinder.GetHeadIndex(head);
+			this.HeadTokenIndex = headFinder.GetHeadIndex(head);
             Mention.IParse headToken = headFinder.GetHeadToken(head);
             mTokens = tokenList.ToArray();
 			mHeadTokenTag = headToken.SyntacticType;
-			mHeadTokenText = headToken.ToString();
+			this.HeadTokenText = headToken.ToString();
 			if (mHeadTokenTag.StartsWith("NN") && !mHeadTokenTag.StartsWith("NNP"))
 			{
-				mSynsets = GetSynsetSet(this);
+				this.Synsets = GetSynsetSet(this);
 			}
 			else
 			{
-				mSynsets = new Util.HashSet<string>();
+				this.Synsets = new Util.HashSet<string>();
 			}
 		}
 
         public static Context[] ConstructContexts(Mention.Mention[] mentions, Mention.IHeadFinder headFinder)
 		{
-			Context[] contexts = new Context[mentions.Length];
+			var contexts = new Context[mentions.Length];
             for (int currentMention = 0; currentMention < mentions.Length; currentMention++)
 			{
                 contexts[currentMention] = new Context(mentions[currentMention], headFinder);
@@ -164,7 +113,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		
 		public override string ToString()
 		{
-			System.Text.StringBuilder output = new System.Text.StringBuilder();
+			var output = new System.Text.StringBuilder();
             for (int currentToken = 0; currentToken < mTokens.Length; currentToken++)
 			{
                 output.Append(mTokens[currentToken]).Append(" ");

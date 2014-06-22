@@ -48,14 +48,14 @@ namespace SharpWordNet
 
         public string[] GetBaseForms(string lemma, string partOfSpeech, MorphologicalProcessOperation morphologicalProcess)
         {
-            List<string> baseForms = new List<string>();
+            var baseForms = new List<string>();
             morphologicalProcess(lemma, partOfSpeech, baseForms);
             return baseForms.ToArray();
         }
 
         public string[] GetBaseForms(string lemma, string partOfSpeech, Morph.IOperation[] operations)
         {
-            List<string> baseForms = new List<string>();
+            var baseForms = new List<string>();
             foreach (Morph.IOperation operation in operations)
             {
                 operation.Execute(lemma, partOfSpeech, baseForms);
@@ -67,16 +67,47 @@ namespace SharpWordNet
         {
             if (mDefaultOperations == null)
             {
-                Dictionary<string, string[][]> suffixMap = new Dictionary<string, string[][]>();
-                suffixMap.Add("noun", new string[][] { new string[] { "s", "" }, new string[] { "ses", "s" }, new string[] { "xes", "x" }, new string[] { "zes", "z" }, new string[] { "ches", "ch" }, new string[] { "shes", "sh" }, new string[] { "men", "man" }, new string[] { "ies", "y" } });
-                suffixMap.Add("verb", new string[][] { new string[] { "s", "" }, new string[] { "ies", "y" }, new string[] { "es", "e" }, new string[] { "es", "" }, new string[] { "ed", "e" }, new string[] { "ed", "" }, new string[] { "ing", "e" }, new string[] { "ing", "" } });
-                suffixMap.Add("adjective", new string[][] { new string[] { "er", "" }, new string[] { "est", "" }, new string[] { "er", "e" }, new string[] { "est", "e" } });
-                Morph.DetachSuffixesOperation tokDso = new Morph.DetachSuffixesOperation(suffixMap);
-                tokDso.AddDelegate(Morph.DetachSuffixesOperation.Operations, new Morph.IOperation[] { new Morph.LookupIndexWordOperation(this), new Morph.LookupExceptionsOperation(this) });
-                Morph.TokenizerOperation tokOp = new Morph.TokenizerOperation(this, new string[] { " ", "-" });
-                tokOp.AddDelegate(Morph.TokenizerOperation.TokenOperations, new Morph.IOperation[] { new Morph.LookupIndexWordOperation(this), new Morph.LookupExceptionsOperation(this), tokDso });
-                Morph.DetachSuffixesOperation morphDso = new Morph.DetachSuffixesOperation(suffixMap);
-                morphDso.AddDelegate(Morph.DetachSuffixesOperation.Operations, new Morph.IOperation[] { new Morph.LookupIndexWordOperation(this), new Morph.LookupExceptionsOperation(this) });
+                var suffixMap = new Dictionary<string, string[][]>
+                {
+                    {
+                        "noun", new string[][]
+                        {
+                            new string[] {"s", ""}, new string[] {"ses", "s"}, new string[] {"xes", "x"},
+                            new string[] {"zes", "z"}, new string[] {"ches", "ch"}, new string[] {"shes", "sh"},
+                            new string[] {"men", "man"}, new string[] {"ies", "y"}
+                        }
+                    },
+                    {
+                        "verb", new string[][]
+                        {
+                            new string[] {"s", ""}, new string[] {"ies", "y"}, new string[] {"es", "e"},
+                            new string[] {"es", ""}, new string[] {"ed", "e"}, new string[] {"ed", ""},
+                            new string[] {"ing", "e"}, new string[] {"ing", ""}
+                        }
+                    },
+                    {
+                        "adjective", new string[][]
+                        {
+                            new string[] {"er", ""}, new string[] {"est", ""}, new string[] {"er", "e"},
+                            new string[] {"est", "e"}
+                        }
+                    }
+                };
+                var tokDso = new Morph.DetachSuffixesOperation(suffixMap);
+                tokDso.AddDelegate(Morph.DetachSuffixesOperation.Operations, new Morph.IOperation[]
+                {
+                    new Morph.LookupIndexWordOperation(this), new Morph.LookupExceptionsOperation(this)
+                });
+                var tokOp = new Morph.TokenizerOperation(this, new string[] { " ", "-" });
+                tokOp.AddDelegate(Morph.TokenizerOperation.TokenOperations, new Morph.IOperation[]
+                {
+                    new Morph.LookupIndexWordOperation(this), new Morph.LookupExceptionsOperation(this), tokDso
+                });
+                var morphDso = new Morph.DetachSuffixesOperation(suffixMap);
+                morphDso.AddDelegate(Morph.DetachSuffixesOperation.Operations, new Morph.IOperation[]
+                {
+                    new Morph.LookupIndexWordOperation(this), new Morph.LookupExceptionsOperation(this)
+                });
                 mDefaultOperations = new Morph.IOperation[] { new Morph.LookupExceptionsOperation(this), morphDso, tokOp };
             }
             return GetBaseForms(lemma, partOfSpeech, mDefaultOperations);

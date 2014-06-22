@@ -396,7 +396,7 @@ namespace OpenNLP.Tools.Parser
 				buffer.Append(childParse.Show());
 				start = childSpan.End;
 			}
-			buffer.Append(Text.Substring(start, Span.Length()));
+			buffer.Append(Text.Substring(start, this.Span.End - start));
 			if (Type != MaximumEntropyParser.TokenNode)
 			{
 				buffer.Append(")");

@@ -158,18 +158,18 @@ namespace OpenNLP.Tools.SentenceDetect
 			bool isLeftover = startsList[startsList.Length - 1] != input.Length;
 			var sentences = new string[isLeftover ? startsList.Length + 1 : startsList.Length];
 
-			sentences[0] = input.Substring(0, (startsList[0]) - (0));
+			sentences[0] = input.Substring(0, (startsList[0]) - (0)).Trim();
 			for (int currentStart = 1; currentStart < startsList.Length; currentStart++)
 			{
-				sentences[currentStart] = input.Substring(startsList[currentStart - 1], (startsList[currentStart]) - (startsList[currentStart - 1]));
+				sentences[currentStart] = input.Substring(startsList[currentStart - 1], (startsList[currentStart]) - (startsList[currentStart - 1])).Trim();
 			}
 			
 			if (isLeftover) 
 			{
-				sentences[sentences.Length - 1] = input.Substring(startsList[startsList.Length - 1]);
+                sentences[sentences.Length - 1] = input.Substring(startsList[startsList.Length - 1]).Trim();
 			}
 
-			return (sentences);
+			return sentences;
 		}
 		
 		private int GetFirstWhitespace(string input, int position) 

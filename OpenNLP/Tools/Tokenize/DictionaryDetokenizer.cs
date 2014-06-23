@@ -34,6 +34,7 @@ namespace OpenNLP.Tools.Tokenize
                 {"-", DetokenizationOperation.MERGE_BOTH_IF_SURROUNDED_BY_WORDS},
                 // Contractions
                 {"'t", DetokenizationOperation.MERGE_TO_LEFT},
+                {"n't", DetokenizationOperation.MERGE_TO_LEFT},
                 {"'m", DetokenizationOperation.MERGE_TO_LEFT},
                 {"'s", DetokenizationOperation.MERGE_TO_LEFT},
                 {"'re", DetokenizationOperation.MERGE_TO_LEFT},

@@ -13,16 +13,31 @@ namespace Test
 {
     class Program
     {
+        private static readonly string currentDirectory = Environment.CurrentDirectory + "/../../";
+
         static void Main(string[] args)
         {
-            var currentDirectory = Environment.CurrentDirectory + "/../../";
-
             /*// read file
             var tokenizerTrainingFilePath = currentDirectory + "Input/tokenizer.train";
             var outputFilePath = currentDirectory + "Output/EnglishTok.nbin";
-            
             MaximumEntropyTokenizer.Train(tokenizerTrainingFilePath, outputFilePath);*/
 
+            var input = "She didn't have a laptop, which means she did her business on her phone.";
+
+            var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
+            var detokienizer = new DictionaryDetokenizer();
+
+            Console.WriteLine("input: {0}", input);
+            var tokens = tokenizer.Tokenize(input);
+            var output = detokienizer.Detokenize(tokens);
+            Console.WriteLine("ouput: {0}", output);
+
+            Console.WriteLine("OK");
+            Console.ReadKey();
+        }
+
+        private void TestDechunk()
+        {
             // detokenize
             var inputs = new string[]
             {
@@ -50,25 +65,15 @@ namespace Test
                 string[] tags = posTagger.Tag(tokens);
 
                 var chunks = chunker.GetChunks(tokens, tags);
-                
-                /*var chunks = chunksAsString.Split(new[] {'[', ']'})
-                    .Select(s => s.Trim(new[] {'[', ']', ' '}))
-                    .SelectMany(s => s.Split(' '))
-                    .Where(s => !string.IsNullOrEmpty(s) && s.Contains("/"))
-                    .Select(s => s.Split('/').First())
-                    .ToArray();*/
-                var chunksStrings =
-                    chunks.Select(ch => detokienizer.Detokenize(ch.TaggedWords.Select(tw => tw.Word).ToArray()))
-                        .ToArray();
+                var chunksStrings = chunks
+                    .Select(ch => detokienizer.Detokenize(ch.TaggedWords.Select(tw => tw.Word).ToArray()))
+                    .ToArray();
                 var output = dechunker.Dechunk(chunksStrings);
                 Console.WriteLine("input: " + input);
-                Console.WriteLine("chunks: "+ string.Join(" | ", chunks));
+                Console.WriteLine("chunks: " + string.Join(" | ", chunks));
                 Console.WriteLine("ouput: " + output);
                 Console.WriteLine("--");
             }
-
-            Console.WriteLine("OK");
-            Console.ReadKey();
         }
     }
 }

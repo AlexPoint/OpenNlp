@@ -22,7 +22,7 @@ namespace Test
             var outputFilePath = currentDirectory + "Output/EnglishTok.nbin";
             MaximumEntropyTokenizer.Train(tokenizerTrainingFilePath, outputFilePath);*/
 
-            var input = "She didn't have a laptop, which means she did her business on her phone.";
+            /*var input = "She didn't have a laptop, which means she did her business on her phone.";
 
             var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
             var detokienizer = new DictionaryDetokenizer();
@@ -30,7 +30,13 @@ namespace Test
             Console.WriteLine("input: {0}", input);
             var tokens = tokenizer.Tokenize(input);
             var output = detokienizer.Detokenize(tokens);
-            Console.WriteLine("ouput: {0}", output);
+            Console.WriteLine("ouput: {0}", output);*/
+
+            var tokens = new List<string>() {"do", "n't", "commit"};
+            var detokenizer = new DictionaryDetokenizer();
+            var result = detokenizer.Detokenize(tokens.ToArray());
+
+            Console.WriteLine(result);
 
             Console.WriteLine("OK");
             Console.ReadKey();

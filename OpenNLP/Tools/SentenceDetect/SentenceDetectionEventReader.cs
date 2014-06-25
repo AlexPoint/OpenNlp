@@ -93,7 +93,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		{
 			SentenceDetectionEvent topEvent = _head;
 			_head = _head.NextEvent;
-			if (null == _head)
+			if (_head == null)
 			{
 				_tail = null;
 			}
@@ -104,7 +104,6 @@ namespace OpenNLP.Tools.SentenceDetect
 		{
 			StringBuilder buffer = _buffer;
 			buffer.Append(token.Trim());
-			int sentenceEndPosition = buffer.Length - 1;
 			//add following word to stringbuilder
 			if (_next != null && token.Length > 0)
 			{
@@ -114,10 +113,12 @@ namespace OpenNLP.Tools.SentenceDetect
 					// should maybe changes this so that it usually adds a space
 					// before the next sentence, but sometimes leaves no space.
 					buffer.Append(" ");
-					buffer.Append(_next.Substring(0, (positionAfterFirstWordInNext) - (0)));
+					buffer.Append(_next.Substring(0, positionAfterFirstWordInNext));
 				}
 			}
 
+            // only one sentence per token, so the end of sentence if at the very end of the token
+            int sentenceEndPosition = buffer.Length - 1;
 		    foreach (var candidate in _scanner.GetPositions(buffer))
 			{
                 var pair = new Tuple<StringBuilder, int>(buffer, candidate);

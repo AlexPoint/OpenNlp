@@ -48,8 +48,6 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// <summary> 
 		/// package access only
 		/// </summary>
-		internal SentenceDetectionEvent(string outcome, string[] context) : base(outcome, context)
-		{
-		}
+		internal SentenceDetectionEvent(string outcome, string[] context): base(outcome, context){}
 	}
 }

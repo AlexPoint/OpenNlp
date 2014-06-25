@@ -126,7 +126,7 @@ namespace SharpEntropy
 		private Dictionary<string, PatternedPredicate> mPredicates;
 		private int[][] mOutcomePatterns;
 
-		#region smoothing algorithm (unused)
+		// smoothing algorithm (unused) --------
 
 //		internal class UpdateParametersWithSmoothingProcedure : Trove.IIntDoubleProcedure
 //		{
@@ -170,9 +170,8 @@ namespace SharpEntropy
 //			}
 //		}
 
-		#endregion
 
-		#region training progress event
+		// training progress event -----------
 
 		/// <summary>
 		/// Used to provide informational messages regarding the
@@ -201,7 +200,6 @@ namespace SharpEntropy
 			OnTrainingProgress(new TrainingProgressEventArgs(message));
 		}
 
-		#endregion
 
 		// training options --------------
         

@@ -1841,14 +1841,6 @@
             based on Event.java, $Revision: 1.3 $, $Date: 2003/12/09 23:13:08 $
             </version>
         </member>
-        <member name="M:SharpEntropy.TrainingEvent.GetContext">
-            <summary>
-            Gets the context for this training event.
-            </summary>
-            <returns>
-            A string array of context values for this training event.
-            </returns>
-        </member>
         <member name="M:SharpEntropy.TrainingEvent.#ctor(System.String,System.String[])">
             <summary>
             Constructor for a training event.
@@ -1873,14 +1865,21 @@
             The outcome label for this training event.
             </summary>
         </member>
+        <member name="P:SharpEntropy.TrainingEvent.Context">
+            <summary>
+            The context for this training event.
+            </summary>
+            <returns>
+            A string array of context values for this training event.
+            </returns>
+        </member>
         <member name="T:SharpEntropy.TwoPassDataIndexer">
             <summary>
-            Collecting event and context counts by making two passes over the events.  The
-            first pass determines which contexts will be used by the model, and the
-            second pass creates the events in memory containing only the contexts which 
-            will be used.  This greatly reduces the amount of memory required for storing
-            the events.  During the first pass a temporary event file is created which
-            is read during the second pass.
+            Collecting event and context counts by making two passes over the events.
+            The first pass determines which contexts will be used by the model, and the second 
+            pass creates the events in memory containing only the contexts which will be used.
+            This greatly reduces the amount of memory required for storing the events.
+            During the first pass a temporary event file is created which is read during the second pass.
             </summary>
             /// <author>  
             Tom Morton

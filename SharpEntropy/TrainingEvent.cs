@@ -52,30 +52,18 @@ namespace SharpEntropy
 	/// </version>
 	public class TrainingEvent
 	{
-		private string mOutcome;
-		private string[] mContext;
-		
 		/// <summary>
 		/// The outcome label for this training event.
 		/// </summary>
-		virtual public string Outcome
-		{
-			get
-			{
-				return mOutcome;
-			}	
-		}
+		public string Outcome { get; private set; }
 
 		/// <summary>
-		/// Gets the context for this training event.
+		/// The context for this training event.
 		/// </summary>
 		/// <returns>
 		/// A string array of context values for this training event.
 		/// </returns>
-		virtual public string[] GetContext()
-		{
-			return mContext;
-		}
+		public string[] Context { get; private set; }
 
 		/// <summary>
 		/// Constructor for a training event.
@@ -88,8 +76,8 @@ namespace SharpEntropy
 		/// </param>
 		public TrainingEvent(string outcome, string[] context)
 		{
-			mOutcome = outcome;
-			mContext = context;
+			Outcome = outcome;
+			Context = context;
 		}
 		
 		/// <summary>
@@ -100,7 +88,7 @@ namespace SharpEntropy
 		/// </returns>
 		public override string ToString()
 		{
-			return mOutcome + " " + string.Join(", ", mContext);
+			return Outcome + " " + string.Join(", ", Context);
 		}
 	}
 }

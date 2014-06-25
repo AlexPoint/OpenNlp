@@ -36,16 +36,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace SharpEntropy
 {
 	/// <summary>
-	/// Collecting event and context counts by making two passes over the events.  The
-	/// first pass determines which contexts will be used by the model, and the
-	/// second pass creates the events in memory containing only the contexts which 
-	/// will be used.  This greatly reduces the amount of memory required for storing
-	/// the events.  During the first pass a temporary event file is created which
-	/// is read during the second pass.
+	/// Collecting event and context counts by making two passes over the events.
+	/// The first pass determines which contexts will be used by the model, and the second 
+	/// pass creates the events in memory containing only the contexts which will be used.
+	/// This greatly reduces the amount of memory required for storing the events.
+	/// During the first pass a temporary event file is created which is read during the second pass.
 	/// </summary>
 	/// /// <author>  
 	/// Tom Morton
@@ -63,9 +63,7 @@ namespace SharpEntropy
 		/// An ITrainingEventReader which contains the list of all the events
 		/// seen in the training data.
 		/// </param>
-		public TwoPassDataIndexer(ITrainingEventReader eventReader) : this(eventReader, 0)
-		{
-		}
+		public TwoPassDataIndexer(ITrainingEventReader eventReader): this(eventReader, 0){}
 		
 		/// <summary> 
 		/// Two argument constructor for TwoPassDataIndexer.
@@ -95,7 +93,7 @@ namespace SharpEntropy
 			
 			//NotifyProgress("\tIndexing...  ");
 			
-			using (FileEventReader fileEventReader = new FileEventReader(tempFile))
+			using (var fileEventReader = new FileEventReader(tempFile))
 			{
 				eventsToCompare = Index(eventCount, fileEventReader, predicateIndex);
 			}
@@ -132,18 +130,18 @@ namespace SharpEntropy
 		/// </param>
         private int ComputeEventCounts(ITrainingEventReader eventReader, string eventStoreFile, Dictionary<string, int> predicatesInOut, int cutoff)
 		{
-            Dictionary<string, int> counter = new Dictionary<string, int>();
+            var counter = new Dictionary<string, int>();
 			int predicateIndex = 0;
 			int eventCount = 0;
 
-			using (StreamWriter eventStoreWriter = new StreamWriter(eventStoreFile))
+			using (var eventStoreWriter = new StreamWriter(eventStoreFile))
 			{
 				while (eventReader.HasNext())
 				{
 					TrainingEvent currentTrainingEvent = eventReader.ReadNextEvent();
 					eventCount++;
 					eventStoreWriter.Write(FileEventReader.ToLine(currentTrainingEvent));
-					string[] eventContext = currentTrainingEvent.GetContext();
+					string[] eventContext = currentTrainingEvent.Context;
 					for (int currentPredicate = 0; currentPredicate < eventContext.Length; currentPredicate++)
 					{
 						if (!predicatesInOut.ContainsKey(eventContext[currentPredicate]))
@@ -170,14 +168,14 @@ namespace SharpEntropy
 
         private List<ComparableEvent> Index(int eventCount, ITrainingEventReader eventReader, Dictionary<string, int> predicateIndex)
 		{
-            Dictionary<string, int> outcomeMap = new Dictionary<string, int>();
+            var outcomeMap = new Dictionary<string, int>();
 			int outcomeCount = 0;
-            List<ComparableEvent> eventsToCompare = new List<ComparableEvent>(eventCount);
-            List<int> indexedContext = new List<int>();
+            var eventsToCompare = new List<ComparableEvent>(eventCount);
+            var indexedContext = new List<int>();
 			while (eventReader.HasNext())
 			{
 				TrainingEvent currentTrainingEvent = eventReader.ReadNextEvent();
-				string[] eventContext = currentTrainingEvent.GetContext();
+				string[] eventContext = currentTrainingEvent.Context;
 				ComparableEvent comparableEvent;
 				
 				int	outcomeId;
@@ -244,7 +242,7 @@ namespace SharpEntropy
 		{
 			string[] tokens = mCurrentLine.Split(mWhitespace);
 			string outcome = tokens[0];
-			string[] context = new string[tokens.Length - 1];
+			var context = new string[tokens.Length - 1];
 			Array.Copy(tokens, 1, context, 0, tokens.Length - 1);
 			
 			return (new TrainingEvent(outcome, context));
@@ -252,9 +250,9 @@ namespace SharpEntropy
 		
 		public static string ToLine(TrainingEvent eventToConvert)
 		{
-			System.Text.StringBuilder lineBuilder = new System.Text.StringBuilder();
+			var lineBuilder = new StringBuilder();
 			lineBuilder.Append(eventToConvert.Outcome);
-			string[] context = eventToConvert.GetContext();
+			string[] context = eventToConvert.Context;
 			for (int contextIndex = 0, contextLength = context.Length; contextIndex < contextLength; contextIndex++)
 			{
 				lineBuilder.Append(" " + context[contextIndex]);

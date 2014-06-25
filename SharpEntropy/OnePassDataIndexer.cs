@@ -121,14 +121,14 @@ namespace SharpEntropy
 		/// </returns>
         private List<TrainingEvent> ComputeEventCounts(ITrainingEventReader eventReader, Dictionary<string, int> predicatesInOut, int cutoff)
 		{
-            Dictionary<string, int> counter = new Dictionary<string, int>();
-            List<TrainingEvent> events = new List<TrainingEvent>();
+            var counter = new Dictionary<string, int>();
+            var events = new List<TrainingEvent>();
 			int predicateIndex = 0;
 			while (eventReader.HasNext())
 			{
 				TrainingEvent trainingEvent = eventReader.ReadNextEvent();
 				events.Add(trainingEvent);
-				string[] eventContext = trainingEvent.GetContext();
+				string[] eventContext = trainingEvent.Context;
 				for (int currentEventContext = 0; currentEventContext < eventContext.Length; currentEventContext++)
 				{
 					if (!predicatesInOut.ContainsKey(eventContext[currentEventContext]))
@@ -154,18 +154,18 @@ namespace SharpEntropy
 
         private List<ComparableEvent> Index(List<TrainingEvent> events, Dictionary<string, int> predicateIndex)
 		{
-            Dictionary<string, int> map = new Dictionary<string, int>();
+            var map = new Dictionary<string, int>();
 			
 			int eventCount = events.Count;
 			int outcomeCount = 0;
 
-            List<ComparableEvent> eventsToCompare = new List<ComparableEvent>(eventCount);
-            List<int> indexedContext = new List<int>();
+            var eventsToCompare = new List<ComparableEvent>(eventCount);
+            var indexedContext = new List<int>();
 			
 			for (int eventIndex = 0; eventIndex < eventCount; eventIndex++)
 			{
 				TrainingEvent currentTrainingEvent = events[eventIndex];
-				string[] eventContext = currentTrainingEvent.GetContext();
+				string[] eventContext = currentTrainingEvent.Context;
 				ComparableEvent comparableEvent;
 				
 				int outcomeIndex;

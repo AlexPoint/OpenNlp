@@ -609,14 +609,14 @@
         </member>
         <member name="P:SharpEntropy.GisModel.CorrectionConstant">
             <summary>
-            Provides the model's correction constant.  This property will usually only be needed by
-            GisModelWriters.
+            Provides the model's correction constant.
+            This property will usually only be needed by GisModelWriters.
             </summary>
         </member>
         <member name="P:SharpEntropy.GisModel.CorrectionParameter">
             <summary>
-            Provides the model's correction parameter.  This property will usually only be needed by
-            GisModelWriters.
+            Provides the model's correction parameter.
+            This property will usually only be needed by GisModelWriters.
             </summary>
         </member>
         <member name="T:SharpEntropy.GisTrainer">

@@ -203,12 +203,8 @@ namespace SharpEntropy
 
 		#endregion
 
-		#region training options
-
-		private bool mSimpleSmoothing = false;
-		private bool mUseSlackParameter = false;
-		private double mSmoothingObservation = 0.1;
-
+		// training options --------------
+        
     	/// <summary>
     	/// Sets whether this trainer will use smoothing while training the model.
 		/// This can improve model accuracy, though training will potentially take
@@ -219,59 +215,28 @@ namespace SharpEntropy
 		/// few outcomes, but performance degradation for those with large data
 		/// sets and lots of outcomes.
 		/// </remarks>
-		public virtual bool Smoothing
-		{
-			get
-			{
-				return mSimpleSmoothing;
-			}
-			set
-			{
-				mSimpleSmoothing = value;
-			}
-		}
+		public bool Smoothing { get; set; }
 
 		/// <summary>
 		/// Sets whether this trainer will use slack parameters while training the model.
 		/// </summary>
-		public virtual bool UseSlackParameter
-		{
-			get
-			{
-				return mUseSlackParameter;
-			}
-			set
-			{
-				mUseSlackParameter = value;
-			}
-		}
+		public bool UseSlackParameter { get; set; }
 
 		/// <summary>
 		/// If smoothing is in use, this value indicates the "number" of
 		/// times we want the trainer to imagine that it saw a feature that it
 		/// actually didn't see.  Defaulted to 0.1.
 		/// </summary>
-		virtual public double SmoothingObservation
-		{
-			get
-			{
-				return mSmoothingObservation;
-			}
-			set
-			{
-				mSmoothingObservation = value;
-			}
-			
-		}
+		public double SmoothingObservation { get; set; }
 		
 		/// <summary>
 		/// Creates a new <code>GisTrainer</code> instance.
 		/// </summary>
 		public GisTrainer()
 		{
-			mSimpleSmoothing = false;
-			mUseSlackParameter = false;
-			mSmoothingObservation = 0.1;
+			Smoothing = false;
+			UseSlackParameter = false;
+			SmoothingObservation = 0.1;
 		}
 
 		/// <summary>
@@ -282,9 +247,9 @@ namespace SharpEntropy
 		/// </param>
 		public GisTrainer(bool useSlackParameter)
 		{
-			mSimpleSmoothing = false;
-			mUseSlackParameter = useSlackParameter;
-			mSmoothingObservation = 0.1;
+			Smoothing = false;
+			UseSlackParameter = useSlackParameter;
+			SmoothingObservation = 0.1;
 		}
 
 		/// <summary>
@@ -297,9 +262,9 @@ namespace SharpEntropy
 		/// </param>
 		public GisTrainer(double smoothingObservation)
 		{
-			mSimpleSmoothing = true;
-			mUseSlackParameter = false;
-			mSmoothingObservation = smoothingObservation;
+			Smoothing = true;
+			UseSlackParameter = false;
+			SmoothingObservation = smoothingObservation;
 		}
 		
 		/// <summary>
@@ -315,14 +280,13 @@ namespace SharpEntropy
 		/// </param>
 		public GisTrainer(bool useSlackParameter, double smoothingObservation)
 		{
-			mSimpleSmoothing = true;
-			mUseSlackParameter = useSlackParameter;
-			mSmoothingObservation = smoothingObservation;
+			Smoothing = true;
+			UseSlackParameter = useSlackParameter;
+			SmoothingObservation = smoothingObservation;
 		}
 
-		#endregion
 
-		#region alternative TrainModel signatures
+		// alternative TrainModel signatures --------------
 
 		/// <summary>
 		/// Train a model using the GIS algorithm.
@@ -355,9 +319,8 @@ namespace SharpEntropy
 			TrainModel(iterations, new OnePassDataIndexer(eventReader, cutoff));
 		}
 		
-		#endregion
-
-		#region training algorithm
+		
+		// training algorithm -----------------------------
 
 		/// <summary>
 		/// Train a model using the GIS algorithm.
@@ -421,7 +384,7 @@ namespace SharpEntropy
 		    // A fake "observation" to cover features which are not detected in
 			// the data.  The default is to assume that we observed "1/10th" of a
 			// feature during training.
-			double smoothingObservation = mSmoothingObservation;
+			double smoothingObservation = SmoothingObservation;
 			
 			// Get the observed expectations of the features. Strictly speaking,
 			// we should divide the counts by the number of Tokens, but because of
@@ -436,7 +399,7 @@ namespace SharpEntropy
 		    for (mPredicateId = 0; mPredicateId < mPredicateCount; mPredicateId++)
 			{
 			    int activeOutcomeCount;
-			    if (mSimpleSmoothing)
+			    if (Smoothing)
 				{
 					activeOutcomeCount = mOutcomeCount;
 				}
@@ -466,7 +429,7 @@ namespace SharpEntropy
 						mObservedExpections[mPredicateId][currentOutcome] = Math.Log(predicateCounts[mPredicateId][mOutcomeId]);
 						currentOutcome++;
 					}
-					else if (mSimpleSmoothing)
+					else if (Smoothing)
 					{
 						mOutcomePatterns[mPredicateId][currentOutcome] = mOutcomeId;
 						mObservedExpections[mPredicateId][currentOutcome] = Math.Log(smoothingObservation);
@@ -476,7 +439,7 @@ namespace SharpEntropy
 			}
 			
 			// compute the expected value of correction
-			if (mUseSlackParameter) 
+			if (UseSlackParameter) 
 			{
 				int correctionFeatureValueSum = 0;
 				for (mTokenID = 0; mTokenID < mTokenCount; mTokenID++)
@@ -485,7 +448,7 @@ namespace SharpEntropy
 					{
 						mPredicateId = mContexts[mTokenID][currentContext];
 
-						if ((!mSimpleSmoothing) && predicateCounts[mPredicateId][mOutcomes[mTokenID]] == 0)
+						if ((!Smoothing) && predicateCounts[mPredicateId][mOutcomes[mTokenID]] == 0)
 						{
 							correctionFeatureValueSum += mNumTimesEventsSeen[mTokenID];
 						}
@@ -605,7 +568,7 @@ namespace SharpEntropy
 			for (int currentOutcomeId = 0; currentOutcomeId < mOutcomeCount; currentOutcomeId++)
 			{
 				outcomeSums[currentOutcomeId] = System.Math.Exp(outcomeSums[currentOutcomeId]);
-				if (mUseSlackParameter) 
+				if (UseSlackParameter) 
 				{
 					outcomeSums[currentOutcomeId] += ((1.0 - ((double) mFeatureCounts[currentOutcomeId] / mMaximumFeatureCount)) * mCorrectionParameter);
 				}
@@ -643,14 +606,14 @@ namespace SharpEntropy
                         outcomeId = mOutcomePatterns[mPredicateId][currentActiveOutcome];
                         mModelExpections[mPredicateId][currentActiveOutcome] += (mModelDistribution[outcomeId] * mNumTimesEventsSeen[mTokenID]);
 
-                        if (mUseSlackParameter)
+                        if (UseSlackParameter)
                         {
                             mCorrectionFeatureModifier += mModelDistribution[mOutcomeId] * mNumTimesEventsSeen[mTokenID];
                         }
                     }
                 }
 
-				if (mUseSlackParameter)
+				if (UseSlackParameter)
 				{
 					mCorrectionFeatureModifier += (mMaximumFeatureCount - mContexts[mTokenID].Length) * mNumTimesEventsSeen[mTokenID];
 				}
@@ -680,14 +643,14 @@ namespace SharpEntropy
 				for (int currentActiveOutcome = 0; currentActiveOutcome < mOutcomePatterns[mPredicateId].Length; currentActiveOutcome++)
 				{
 					outcomeId = mOutcomePatterns[mPredicateId][currentActiveOutcome];
-					mParameters[mPredicateId][currentActiveOutcome] += (mObservedExpections[mPredicateId][currentActiveOutcome] - System.Math.Log(mModelExpections[mPredicateId][currentActiveOutcome]));
+					mParameters[mPredicateId][currentActiveOutcome] += (mObservedExpections[mPredicateId][currentActiveOutcome] - Math.Log(mModelExpections[mPredicateId][currentActiveOutcome]));
 					mModelExpections[mPredicateId][currentActiveOutcome] = 0.0;// re-initialize to 0.0's
 				}
 			}
 
-			if (mCorrectionFeatureModifier > 0.0 && mUseSlackParameter)
+			if (mCorrectionFeatureModifier > 0.0 && UseSlackParameter)
 			{
-				mCorrectionParameter += (mCorrectionFeatureObservedExpectation - System.Math.Log(mCorrectionFeatureModifier));
+				mCorrectionParameter += (mCorrectionFeatureObservedExpectation - Math.Log(mCorrectionFeatureModifier));
 			}
 
 			NotifyProgress(". logLikelihood=" + logLikelihood + "\t" + ((double) numCorrect / eventCount));
@@ -747,9 +710,8 @@ namespace SharpEntropy
 			}
 		}
 
-		#endregion
-
-		#region IGisModelReader implementation
+        
+		// IGisModelReader implementation --------------------
 		
 		/// <summary>
 		/// The correction constant for the model produced as a result of training.
@@ -837,7 +799,7 @@ namespace SharpEntropy
 				}
 			}
 		}
-		#endregion
+		
 
 		private class OutcomePatternComparer : IComparer<int[]>
 		{

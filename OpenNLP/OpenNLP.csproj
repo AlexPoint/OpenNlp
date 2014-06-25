@@ -248,6 +248,7 @@
     <Compile Include="Tools\PosTagger\PosLookupListWriter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\SentenceDetect\CharactersSpecificEndOfSentenceScanner.cs" />
     <Compile Include="Tools\SentenceDetect\DefaultEndOfSentenceScanner.cs">
       <SubType>Code</SubType>
     </Compile>

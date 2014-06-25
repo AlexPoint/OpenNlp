@@ -31,15 +31,15 @@ namespace Test
             Console.WriteLine(result);*/
 
             // train model file
-            var inputFilePath = currentDirectory + "Input/setences.txt";
-            var outputFilePath = currentDirectory + "Output/" + Path.GetFileNameWithoutExtension(inputFilePath) + ".txt";
+            var inputFilePath = currentDirectory + "Input/sentences.train";
+            var outputFilePath = currentDirectory + "Output/" + Path.GetFileNameWithoutExtension(inputFilePath) + ".nbin";
             var iterations = 100;
             var cut = 5;
             var endOfSentenceScanner = new CharactersSpecificEndOfSentenceScanner();
             Console.WriteLine("Training model...");
             var model = MaximumEntropySentenceDetector.TrainModel(inputFilePath, iterations, cut, endOfSentenceScanner);
             Console.WriteLine("Writing output file '{0}'...", outputFilePath);
-            new PlainTextGisModelWriter().Persist(model, outputFilePath);
+            new BinaryGisModelWriter().Persist(model, outputFilePath);
             Console.WriteLine("Output file written.");
 
             Console.WriteLine("OK");

@@ -749,12 +749,9 @@
             Train a model using the GIS algorithm.
             </summary>
             <param name="eventReader">
-            The ITrainingEventReader holding the data on which this model
-            will be trained.
+            The ITrainingEventReader holding the data on which this model will be trained
             </param>
-            <param name="iterations">
-            The number of GIS iterations to perform.
-            </param>
+            <param name="iterations">The number of GIS iterations to perform</param>
             <param name="cutoff">
             The number of times a predicate must be seen in order
             to be relevant for training.
@@ -1806,25 +1803,15 @@
             <summary>
             Creates a training data reader for reading text lines from a file or other text stream.
             </summary>
-            <param name="dataSource">
-            StreamReader containing the source of the training data.
-            </param>
+            <param name="dataSource">StreamReader containing the source of the training data</param>
         </member>
         <member name="M:SharpEntropy.PlainTextByLineDataReader.NextToken">
-            <summary>
-            Gets the next text line from the training data.
-            </summary>
-            <returns>
-            Next text line from the training data.
-            </returns>
+            <summary>Gets the next text line from the training data</summary>
+            <returns>Next text line from the training data</returns>
         </member>
         <member name="M:SharpEntropy.PlainTextByLineDataReader.HasNext">
-            <summary>
-            Checks if there is any more training data.
-            </summary>
-            <returns>
-            true if there is more training data to be read.
-            </returns>
+            <summary>Checks if there is any more training data</summary>
+            <returns>true if there is more training data to be read</returns>
         </member>
         <member name="T:SharpEntropy.TrainingEvent">
             <summary>

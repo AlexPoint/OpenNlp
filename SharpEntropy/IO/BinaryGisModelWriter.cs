@@ -56,16 +56,14 @@ namespace SharpEntropy.IO
 	/// </version>
 	public class BinaryGisModelWriter : GisModelWriter
 	{
-		private Stream mOutput;
-		private byte[] mBuffer = new byte[7];
-		private System.Text.Encoding mEncoding = System.Text.Encoding.UTF8;
+		private Stream _output;
+		private byte[] _buffer = new byte[7];
+		private readonly System.Text.Encoding _encoding = System.Text.Encoding.UTF8;
 
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
-		public BinaryGisModelWriter()
-		{
-		}
+		public BinaryGisModelWriter(){}
 			
 		/// <summary>
 		/// Takes a GIS model and a file and
@@ -79,7 +77,7 @@ namespace SharpEntropy.IO
 		/// </param>
 		public void Persist(GisModel model, string fileName)
 		{
-			using (mOutput = new FileStream(fileName, FileMode.Create))
+			using (_output = new FileStream(fileName, FileMode.Create))
 			{
 				base.Persist(model);
 			}
@@ -97,7 +95,7 @@ namespace SharpEntropy.IO
 		/// </param>
 		public void Persist(GisModel model, Stream dataOutputStream)
 		{
-			using (mOutput = dataOutputStream)
+			using (_output = dataOutputStream)
 			{
 				base.Persist(model);
 			}
@@ -111,8 +109,8 @@ namespace SharpEntropy.IO
 		/// </param>
 		protected  override void WriteString(string data)
 		{
-			mOutput.WriteByte((byte)mEncoding.GetByteCount(data));
-			mOutput.Write(mEncoding.GetBytes(data), 0, mEncoding.GetByteCount(data));
+			_output.WriteByte((byte)_encoding.GetByteCount(data));
+			_output.Write(_encoding.GetBytes(data), 0, _encoding.GetByteCount(data));
 		}
 		
 		/// <summary>
@@ -123,8 +121,8 @@ namespace SharpEntropy.IO
 		/// </param>
 		protected override void WriteInt32(int data)
 		{
-			mBuffer = BitConverter.GetBytes(data);
-			mOutput.Write(mBuffer, 0, 4);
+			_buffer = BitConverter.GetBytes(data);
+			_output.Write(_buffer, 0, 4);
 		}
 		
 		/// <summary>
@@ -135,8 +133,8 @@ namespace SharpEntropy.IO
 		/// </param>
 		protected override void WriteDouble(double data)
 		{
-			mBuffer = BitConverter.GetBytes(data);
-			mOutput.Write(mBuffer, 0, 8);
+			_buffer = BitConverter.GetBytes(data);
+			_output.Write(_buffer, 0, 8);
 		}
 
 		/// <summary>

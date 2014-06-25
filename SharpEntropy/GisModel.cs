@@ -35,6 +35,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace SharpEntropy
 {
@@ -54,17 +55,15 @@ namespace SharpEntropy
 	public sealed class GisModel : IMaximumEntropyModel
 	{
 
-		private IO.IGisModelReader mReader;
+		private readonly IO.IGisModelReader _reader;
 
-		private string[] mOutcomeNames;
-		private double mCorrectionConstant;
-		private double mCorrectionParameter;
+		private readonly string[] _outcomeNames;
 		
-		private int mOutcomeCount;
-		private double mInitialProbability;
-		private double mCorrectionConstantInverse;
+		private readonly int _outcomeCount;
+		private readonly double _initialProbability;
+		private readonly double _correctionConstantInverse;
 		
-		private int[] mFeatureCounts;
+		private readonly int[] _featureCounts;
 		
 		/// <summary>
 		/// Constructor for a maximum entropy model trained using the
@@ -75,18 +74,18 @@ namespace SharpEntropy
 		/// </param>
 		public GisModel(IO.IGisModelReader reader)
 		{
-			mReader = reader;
-			mOutcomeNames = reader.GetOutcomeLabels();
-			mCorrectionConstant = (double)reader.CorrectionConstant;
-			mCorrectionParameter = reader.CorrectionParameter;
+			this._reader = reader;
+			_outcomeNames = reader.GetOutcomeLabels();
+			CorrectionConstant = reader.CorrectionConstant;
+			CorrectionParameter = reader.CorrectionParameter;
 			
-			mOutcomeCount = mOutcomeNames.Length;
-			mInitialProbability = System.Math.Log(1.0 / mOutcomeCount);
-			mCorrectionConstantInverse = 1.0 / mCorrectionConstant;
-			mFeatureCounts = new int[mOutcomeCount];
+			_outcomeCount = _outcomeNames.Length;
+			_initialProbability = Math.Log(1.0 / _outcomeCount);
+			_correctionConstantInverse = 1.0 / CorrectionConstant;
+			_featureCounts = new int[_outcomeCount];
 		}
 
-		#region implementation of IMaxentModel
+		// implementation of IMaxentModel -------
 
 		/// <summary>
 		/// Returns the number of outcomes for this model.
@@ -98,7 +97,7 @@ namespace SharpEntropy
 		{
 			get
 			{
-				return (mOutcomeCount);
+				return (_outcomeCount);
 			}
 			
 		}
@@ -116,7 +115,7 @@ namespace SharpEntropy
 		/// </returns>
 		public double[] Evaluate(string[] context)
 		{
-			return Evaluate(context, new double[mOutcomeCount]);
+			return Evaluate(context, new double[_outcomeCount]);
 		}
 
 		/// <summary>
@@ -139,25 +138,25 @@ namespace SharpEntropy
 		/// </returns>
 		public double[] Evaluate(string[] context, double[] outcomeSums)
 		{
-			for (int outcomeIndex = 0; outcomeIndex < mOutcomeCount; outcomeIndex++)
+			for (int outcomeIndex = 0; outcomeIndex < _outcomeCount; outcomeIndex++)
 			{
-				outcomeSums[outcomeIndex] = mInitialProbability;
-				mFeatureCounts[outcomeIndex] = 0;
+				outcomeSums[outcomeIndex] = _initialProbability;
+				_featureCounts[outcomeIndex] = 0;
 			}
 
-			for (int currentContext = 0;currentContext < context.Length; currentContext++)
+			foreach (string con in context)
 			{
-				mReader.GetPredicateData(context[currentContext], mFeatureCounts, outcomeSums);
+			    _reader.GetPredicateData(con, _featureCounts, outcomeSums);
 			}
-			
-			double normal = 0.0;
-			for (int outcomeIndex = 0;outcomeIndex < mOutcomeCount; outcomeIndex++)
+
+		    double normal = 0.0;
+			for (int outcomeIndex = 0;outcomeIndex < _outcomeCount; outcomeIndex++)
 			{
-				outcomeSums[outcomeIndex] = System.Math.Exp((outcomeSums[outcomeIndex] * mCorrectionConstantInverse) + ((1.0 -(mFeatureCounts[outcomeIndex] / mCorrectionConstant)) * mCorrectionParameter));
+				outcomeSums[outcomeIndex] = Math.Exp((outcomeSums[outcomeIndex] * _correctionConstantInverse) + ((1.0 - (_featureCounts[outcomeIndex] / CorrectionConstant)) * CorrectionParameter));
 				normal += outcomeSums[outcomeIndex];
 			}
 			
-			for (int outcomeIndex = 0; outcomeIndex < mOutcomeCount;outcomeIndex++)
+			for (int outcomeIndex = 0; outcomeIndex < _outcomeCount;outcomeIndex++)
 			{
 				outcomeSums[outcomeIndex] /= normal;
 			}
@@ -183,7 +182,7 @@ namespace SharpEntropy
 				{
 					bestOutcomeIndex = currentOutcome;
 				}
-			return mOutcomeNames[bestOutcomeIndex];
+			return _outcomeNames[bestOutcomeIndex];
 		}
 
 		/// <summary>
@@ -203,17 +202,17 @@ namespace SharpEntropy
 		/// </returns>
 		public string GetAllOutcomes(double[] outcomes)
 		{
-			if (outcomes.Length != mOutcomeNames.Length)
+			if (outcomes.Length != _outcomeNames.Length)
 			{
 				throw new ArgumentException("The double array sent as a parameter to GisModel.GetAllOutcomes() must not have been produced by this model.");
 			}
 			else
 			{
-				System.Text.StringBuilder outcomeInfo = new System.Text.StringBuilder(outcomes.Length * 2);
-				outcomeInfo.Append(mOutcomeNames[0]).Append("[").Append(outcomes[0].ToString("0.0000", System.Globalization.CultureInfo.CurrentCulture)).Append("]");
+				var outcomeInfo = new StringBuilder(outcomes.Length * 2);
+				outcomeInfo.Append(_outcomeNames[0]).Append("[").Append(outcomes[0].ToString("0.0000", System.Globalization.CultureInfo.CurrentCulture)).Append("]");
 				for (int currentOutcome = 1; currentOutcome < outcomes.Length; currentOutcome++)
 				{
-					outcomeInfo.Append("  ").Append(mOutcomeNames[currentOutcome]).Append("[").Append(outcomes[currentOutcome].ToString("0.0000", System.Globalization.CultureInfo.CurrentCulture)).Append("]");
+					outcomeInfo.Append("  ").Append(_outcomeNames[currentOutcome]).Append("[").Append(outcomes[currentOutcome].ToString("0.0000", System.Globalization.CultureInfo.CurrentCulture)).Append("]");
 				}
 				return outcomeInfo.ToString();
 			}
@@ -230,7 +229,7 @@ namespace SharpEntropy
 		/// </returns>
 		public string GetOutcomeName(int outcomeIndex)
 		{
-			return mOutcomeNames[outcomeIndex];
+			return _outcomeNames[outcomeIndex];
 		}
 
 		/// <summary> 
@@ -246,9 +245,9 @@ namespace SharpEntropy
 		/// </returns>
 		public int GetOutcomeIndex(string outcome)
 		{
-			for (int iCurrentOutcomeName = 0; iCurrentOutcomeName < mOutcomeNames.Length; iCurrentOutcomeName++)
+			for (int iCurrentOutcomeName = 0; iCurrentOutcomeName < _outcomeNames.Length; iCurrentOutcomeName++)
 			{
-				if (mOutcomeNames[iCurrentOutcomeName] == outcome)
+				if (_outcomeNames[iCurrentOutcomeName] == outcome)
 				{
 					return iCurrentOutcomeName;
 				}
@@ -266,7 +265,7 @@ namespace SharpEntropy
 		/// </returns>
         public Dictionary<string, PatternedPredicate> GetPredicates()
 		{
-			return mReader.GetPredicates();
+			return _reader.GetPredicates();
 		}
     
 		/// <summary>
@@ -278,7 +277,7 @@ namespace SharpEntropy
 		/// </returns>
 		public int[][] GetOutcomePatterns()
 		{
-			return mReader.GetOutcomePatterns();
+			return _reader.GetOutcomePatterns();
 		}
 
 		/// <summary>
@@ -291,33 +290,20 @@ namespace SharpEntropy
 		/// </returns>
 		public string[] GetOutcomeNames()
 		{
-			return mOutcomeNames;
+			return _outcomeNames;
 		}
 
 		/// <summary>
-		/// Provides the model's correction constant.  This property will usually only be needed by
-		/// GisModelWriters.
+		/// Provides the model's correction constant.
+		/// This property will usually only be needed by GisModelWriters.
 		/// </summary>
-		public int CorrectionConstant
-		{
-			get
-			{
-				return (int)mCorrectionConstant;
-			}
-		}
+		public int CorrectionConstant { get; private set; }
 
 		/// <summary>
-		/// Provides the model's correction parameter.  This property will usually only be needed by
-		/// GisModelWriters.
+		/// Provides the model's correction parameter.
+		/// This property will usually only be needed by GisModelWriters.
 		/// </summary>
-		public double CorrectionParameter
-		{
-			get
-			{
-				return mCorrectionParameter;
-			}
-		}
+		public double CorrectionParameter { get; private set; }
 
-		#endregion
 	}
 }

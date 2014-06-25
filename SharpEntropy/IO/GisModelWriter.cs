@@ -35,6 +35,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace SharpEntropy.IO
 {
@@ -141,7 +142,7 @@ namespace SharpEntropy.IO
             Dictionary<string, PatternedPredicate> predicates = model.GetPredicates();
 			//build arrays of predicates and predicate names from the dictionary
 			mPredicates = new PatternedPredicate[predicates.Count];
-			string[] predicateNames = new string[predicates.Count];
+			var predicateNames = new string[predicates.Count];
 			predicates.Values.CopyTo(mPredicates, 0);
 			predicates.Keys.CopyTo(predicateNames, 0);
 			//give each PatternedPredicate in the array the name taken from the dictionary keys
@@ -186,17 +187,17 @@ namespace SharpEntropy.IO
 		/// <param name="outcomeLabels">string array of outcome labels.</param>
 		protected virtual void WriteOutcomes(string[] outcomeLabels)
 		{
-			//write the number of outcomes
+		    //write the number of outcomes
 			WriteInt32(outcomeLabels.Length);
 			
 			//write each label
-			for (int currentOutcomeLabel = 0;currentOutcomeLabel < outcomeLabels.Length; currentOutcomeLabel++)
-			{
-				WriteString(outcomeLabels[currentOutcomeLabel]);
-			}
+		    foreach (string label in outcomeLabels)
+		    {
+		        WriteString(label);
+		    }
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Writes the predicate information to the model file.
 		/// </summary>
 		/// <param name="model">The GIS model to write the data from.</param>
@@ -217,57 +218,57 @@ namespace SharpEntropy.IO
 		/// </param>
 		protected void WriteOutcomePatterns(int[][] outcomePatterns)
 		{
-			//write the number of outcome patterns
+		    //write the number of outcome patterns
 			WriteInt32(outcomePatterns.Length);
 
 			//for each pattern
-			for (int currentOutcomePattern = 0; currentOutcomePattern < outcomePatterns.Length; currentOutcomePattern++)
-			{
-				//build a string with the pattern values separated by spaces
-				System.Text.StringBuilder outcomePatternBuilder = new System.Text.StringBuilder();
-				for (int currentOutcome = 0; currentOutcome < outcomePatterns[currentOutcomePattern].Length; currentOutcome++)
-				{
-					if (currentOutcome > 0)
-					{
-						outcomePatternBuilder.Append(" ");
-					}
-					outcomePatternBuilder.Append(outcomePatterns[currentOutcomePattern][currentOutcome]);
-				}
-				//write the string containing pattern values to the file
-				WriteString(outcomePatternBuilder.ToString());
-			}
+		    foreach (int[] pattern in outcomePatterns)
+		    {
+                //build a string with the pattern values separated by spaces
+		        var outcomePatternBuilder = new StringBuilder();
+		        for (int currentOutcome = 0; currentOutcome < pattern.Length; currentOutcome++)
+		        {
+		            if (currentOutcome > 0)
+		            {
+		                outcomePatternBuilder.Append(" ");
+		            }
+		            outcomePatternBuilder.Append(pattern[currentOutcome]);
+		        }
+		        //write the string containing pattern values to the file
+		        WriteString(outcomePatternBuilder.ToString());
+		    }
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Write the names of the predicates to the model file.
 		/// </summary>
 		protected void WritePredicateNames()
-		{
-			//write the number of predicates
+	    {
+	        //write the number of predicates
 			WriteInt32(mPredicates.Length);
 
 			//for each predicate, write its name to the file
-			for (int currentPredicate = 0; currentPredicate < mPredicates.Length; currentPredicate++)
-			{
-				WriteString(mPredicates[currentPredicate].Name);
-			}
-		}
+	        foreach (PatternedPredicate predicate in mPredicates)
+	        {
+	            WriteString(predicate.Name);
+	        }
+	    }
 
-		/// <summary>
+	    /// <summary>
 		/// Writes out the parameter values for all the predicates to the model file.
 		/// </summary>
 		protected void WriteParameters()
-		{
-			for (int currentPredicate = 0; currentPredicate < mPredicates.Length; currentPredicate++)
-			{
-				for (int currentParameter = 0; currentParameter < mPredicates[currentPredicate].ParameterCount; currentParameter++)
-				{
-					WriteDouble(mPredicates[currentPredicate].GetParameter(currentParameter));
-				}
-			}
-		}
+	    {
+	        foreach (PatternedPredicate predicate in mPredicates)
+	        {
+	            for (int currentParameter = 0; currentParameter < predicate.ParameterCount; currentParameter++)
+	            {
+	                WriteDouble(predicate.GetParameter(currentParameter));
+	            }
+	        }
+	    }
 
-		/// <summary>
+	    /// <summary>
 		/// Class to enable sorting PatternedPredicates into order based on the
 		/// outcome pattern index.
 		/// </summary>
@@ -277,9 +278,7 @@ namespace SharpEntropy.IO
 			/// <summary>
 			/// Default constructor.
 			/// </summary>
-			internal OutcomePatternIndexComparer()
-			{
-			}
+			internal OutcomePatternIndexComparer(){}
 
 			/// <summary>
 			/// Implementation of the IComparer interface.

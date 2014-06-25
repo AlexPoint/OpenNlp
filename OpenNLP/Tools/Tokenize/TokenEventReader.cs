@@ -45,18 +45,18 @@ namespace OpenNLP.Tools.Tokenize
 	/// </summary>
 	public class TokenEventReader : SharpEntropy.ITrainingEventReader
 	{
-        private static readonly SharpEntropy.IContextGenerator<Tuple<string, int>> mContextGenerator = new TokenContextGenerator();
-		private StreamReader mStreamReader;
-        private List<SharpEntropy.TrainingEvent> mEventList = new List<SharpEntropy.TrainingEvent>();
-		private int mCurrentEvent = 0;
+        private static readonly SharpEntropy.IContextGenerator<Tuple<string, int>> ContextGenerator = new TokenContextGenerator();
+		private readonly StreamReader _streamReader;
+        private readonly List<SharpEntropy.TrainingEvent> _eventList = new List<SharpEntropy.TrainingEvent>();
+		private int _currentEvent = 0;
 
 		/// <summary>
 		/// Class constructor.
 		/// </summary>
 		public TokenEventReader(StreamReader dataReader)
 		{
-			mStreamReader = dataReader;
-			string nextLine = mStreamReader.ReadLine();
+			_streamReader = dataReader;
+			string nextLine = _streamReader.ReadLine();
 			if (nextLine != null)
 			{
 				AddEvents(nextLine);
@@ -65,43 +65,36 @@ namespace OpenNLP.Tools.Tokenize
 		
 		private void AddEvents(string line)
 		{
-			string[] spacedTokens = line.Split(' ');
-			for (int currentToken = 0; currentToken < spacedTokens.Length; currentToken++)
-			{
-				string buffer = spacedTokens[currentToken];
-				if (MaximumEntropyTokenizer.AlphaNumeric.IsMatch(buffer))
-				{
-					int lastIndex = buffer.Length - 1;
-					for (int index = 0; index < buffer.Length; index++)
-					{
-                        string[] context = mContextGenerator.GetContext(new Tuple<string, int>(buffer, index));
-						if (index == lastIndex)
-						{
-							mEventList.Add(new SharpEntropy.TrainingEvent("T", context));
-						}
-						else
-						{
-							mEventList.Add(new SharpEntropy.TrainingEvent("F", context));
-						}
-					}
-				}
-			}
+		    string[] spacedTokens = line.Split(' ');
+		    foreach (string buffer in spacedTokens)
+		    {
+		        if (MaximumEntropyTokenizer.AlphaNumeric.IsMatch(buffer))
+		        {
+		            int lastIndex = buffer.Length - 1;
+		            for (int index = 0; index < buffer.Length; index++)
+		            {
+		                string[] context = ContextGenerator.GetContext(new Tuple<string, int>(buffer, index));
+		                var trainingEvent = new SharpEntropy.TrainingEvent(index == lastIndex ? "T" : "F", context);
+		                _eventList.Add(trainingEvent);
+		            }
+		        }
+		    }
 		}
 
-		public virtual bool HasNext()
+	    public virtual bool HasNext()
 		{
-			return (mCurrentEvent < mEventList.Count);
+			return (_currentEvent < _eventList.Count);
 		}
 		
 		public virtual SharpEntropy.TrainingEvent ReadNextEvent()
 		{
-			SharpEntropy.TrainingEvent trainingEvent = mEventList[mCurrentEvent];
-			mCurrentEvent++;
-			if (mEventList.Count == mCurrentEvent)
+			SharpEntropy.TrainingEvent trainingEvent = _eventList[_currentEvent];
+			_currentEvent++;
+			if (_eventList.Count == _currentEvent)
 			{
-				mCurrentEvent = 0;
-				mEventList.Clear();
-				string nextLine = mStreamReader.ReadLine();
+				_currentEvent = 0;
+				_eventList.Clear();
+				string nextLine = _streamReader.ReadLine();
 				if (nextLine != null)
 				{
 					AddEvents(nextLine);

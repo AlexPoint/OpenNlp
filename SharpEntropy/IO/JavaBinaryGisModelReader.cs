@@ -42,7 +42,7 @@ namespace SharpEntropy.IO
 	/// A reader for GIS models stored in the binary format produced by the java version
 	/// of MaxEnt.  This binary format stores data using big-endian values, which means
 	/// that the C# version must reverse the byte order of each value in turn, making it
-	/// less efficient.  Use only for compatibility with the java MaxEnt library.
+	/// less efficient. Use only for compatibility with the java MaxEnt library.
 	/// </summary>
 	/// <author> 
 	/// Jason Baldridge
@@ -55,10 +55,10 @@ namespace SharpEntropy.IO
 	/// </version>
 	public class JavaBinaryGisModelReader : GisModelReader
 	{
-		private Stream mInput;
-		private byte[] mBuffer;
-		private int mStringLength = 0;
-		private System.Text.Encoding mEncoding = System.Text.Encoding.UTF8;
+		private readonly Stream _input;
+		private readonly byte[] _buffer;
+		private int _stringLength = 0;
+		private readonly System.Text.Encoding _encoding = System.Text.Encoding.UTF8;
 
 		/// <summary>
 		/// Constructor which directly instantiates the Stream containing
@@ -68,9 +68,9 @@ namespace SharpEntropy.IO
 		/// </param>
 		public JavaBinaryGisModelReader(Stream dataInputStream)
 		{
-			using (mInput = dataInputStream)
+			using (_input = dataInputStream)
 			{
-				mBuffer = new byte[256];
+				_buffer = new byte[256];
 				base.ReadModel();
 			}
 		}
@@ -82,9 +82,9 @@ namespace SharpEntropy.IO
 		/// </param>
 		public JavaBinaryGisModelReader(string fileName)
 		{
-			using (mInput = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+			using (_input = new FileStream(fileName, FileMode.Open, FileAccess.Read))
 			{
-				mBuffer = new byte[256];
+				_buffer = new byte[256];
 				base.ReadModel();
 			}
 		}
@@ -94,9 +94,9 @@ namespace SharpEntropy.IO
 		/// </summary>
 		protected override int ReadInt32()
 		{
-			mInput.Read(mBuffer, 0, 4);
-			Array.Reverse(mBuffer, 0, 4);
-			return BitConverter.ToInt32(mBuffer, 0);
+			_input.Read(_buffer, 0, 4);
+			Array.Reverse(_buffer, 0, 4);
+			return BitConverter.ToInt32(_buffer, 0);
 		}
 		
 		/// <summary>
@@ -104,9 +104,9 @@ namespace SharpEntropy.IO
 		/// </summary>
 		protected override double ReadDouble()
 		{
-			mInput.Read(mBuffer, 0, 8);
-			Array.Reverse(mBuffer, 0, 8);
-			return BitConverter.ToDouble(mBuffer, 0);
+			_input.Read(_buffer, 0, 8);
+			Array.Reverse(_buffer, 0, 8);
+			return BitConverter.ToDouble(_buffer, 0);
 		}
 		
 		/// <summary>
@@ -115,9 +115,9 @@ namespace SharpEntropy.IO
 		protected override string ReadString()
 		{
 			//read string from binary file with UTF8 encoding
-			mStringLength = (mInput.ReadByte() * 256) + mInput.ReadByte();
-			mInput.Read(mBuffer, 0, mStringLength);
-			return mEncoding.GetString(mBuffer, 0, mStringLength);
+			_stringLength = (_input.ReadByte() * 256) + _input.ReadByte();
+			_input.Read(_buffer, 0, _stringLength);
+			return _encoding.GetString(_buffer, 0, _stringLength);
 		}
 	}
 }

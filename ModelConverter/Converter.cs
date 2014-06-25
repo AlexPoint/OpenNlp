@@ -40,7 +40,7 @@ namespace ModelConverter
 		{
 			try
 			{
-				BinaryGisModelWriter writer = new BinaryGisModelWriter();
+				var writer = new BinaryGisModelWriter();
 
 				foreach (string file in Directory.GetFiles(folder))
 				{

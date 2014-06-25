@@ -38,8 +38,8 @@ using System;
 namespace OpenNLP.Tools.SentenceDetect
 {
 	/// <summary>
-	/// A sentence detector which uses a model trained on English data (Wall Street
-	/// Journal text).
+	/// A sentence detector which uses a model trained on English data 
+	/// (Wall Street Journal text).
 	/// </summary>
 	public class EnglishMaximumEntropySentenceDetector : MaximumEntropySentenceDetector
 	{
@@ -47,8 +47,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// Constructor which loads the English sentence detection model
 		/// transparently.
 		/// </summary>
-		public EnglishMaximumEntropySentenceDetector(string name) : base(new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(name)))
-		{
-		}
+		public EnglishMaximumEntropySentenceDetector(string name): 
+            base(new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(name))){}
 	}
 }

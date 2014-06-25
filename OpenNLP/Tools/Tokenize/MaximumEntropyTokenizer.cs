@@ -49,7 +49,7 @@ namespace OpenNLP.Tools.Tokenize
 	/// </summary>
 	public class MaximumEntropyTokenizer : ITokenizer
 	{
-        internal static Regex AlphaNumeric = new Regex("^[A-Za-z0-9]+$");
+        internal static Regex AlphaNumeric = new Regex("^[A-Za-z0-9]+$", RegexOptions.Compiled);
 
 		/// <summary>
 		/// the maximum entropy model to use to evaluate contexts.
@@ -62,30 +62,15 @@ namespace OpenNLP.Tools.Tokenize
         private readonly SharpEntropy.IContextGenerator<Tuple<string, int>> _contextGenerator;
 		
 		/// <summary>
-		/// Optimization flag to skip alpha numeric tokens for further tokenization 
-		/// </summary>
-		private bool _mAlphaNumericOptimization;
-		
-		/// <summary>
 		/// List of probabilities for each token returned from call to Tokenize() 
 		/// </summary>
 		private readonly List<double> _tokenProbabilities;
 		private readonly List<Util.Span> _newTokens;
 
 		/// <summary>
-		/// Used to have the tokenizer ignore tokens which only contain alpha-numeric characters.
+        /// Optimization flag to skip alpha numeric tokens for further tokenization.
 		/// </summary>
-		virtual public bool AlphaNumericOptimization
-		{
-			get
-			{
-				return _mAlphaNumericOptimization;
-			}
-			set
-			{
-				_mAlphaNumericOptimization = value;
-			}
-		}
+		virtual public bool AlphaNumericOptimization { get; set; }
 		
 		/// <summary>
 		/// Class constructor which takes the string locations of the
@@ -94,21 +79,15 @@ namespace OpenNLP.Tools.Tokenize
 		public MaximumEntropyTokenizer(SharpEntropy.IMaximumEntropyModel model)
 		{
 			_contextGenerator = new TokenContextGenerator();
-			_mAlphaNumericOptimization = false;
+			AlphaNumericOptimization = false;
 			this._model = model;
             _newTokens = new List<Util.Span>();
 			_tokenProbabilities = new List<double>(50);
 		}
 		
-		/// <summary> 
-		/// Tokenizes the string.
-		/// </summary>
-		/// <param name="input">
-		/// The string to be tokenized.
-		/// </param>
-		/// <returns>
-		/// A span array containing individual tokens as elements.
-		/// </returns>
+		/// <summary>Tokenizes the string</summary>
+		/// <param name="input">The string to be tokenized</param>
+		/// <returns>A span array containing individual tokens as elements</returns>
 		public virtual Util.Span[] TokenizePositions(string input)
 		{
 			Util.Span[] tokens = Split(input);
@@ -159,15 +138,9 @@ namespace OpenNLP.Tools.Tokenize
 			return _newTokens.ToArray();
 		}
 		
-		/// <summary> 
-		/// Tokenize a string.
-		/// </summary>
-		/// <param name="input">
-		/// The string to be tokenized.
-		/// </param>
-		/// <returns>   
-		/// A string array containing individual tokens as elements.
-		/// </returns>
+		/// <summary>Tokenize a string</summary>
+		/// <param name="input">The string to be tokenized</param>
+		/// <returns>A string array containing individual tokens as elements</returns>
 		public virtual string[] Tokenize(string input)
 		{
 			Util.Span[] tokenSpans = TokenizePositions(input);
@@ -184,12 +157,8 @@ namespace OpenNLP.Tools.Tokenize
 		/// delimited token. Token strings can be constructed form these
 		/// spans as follows: input.Substring(span.Start, span.End);
 		/// </summary>
-		/// <param name="input">
-		/// string to tokenize.
-		/// </param>
-		/// <returns> 
-		/// Array of spans.
-		/// </returns>
+		/// <param name="input">string to tokenize</param>
+		/// <returns>Array of spans</returns>
 		internal static Util.Span[] Split(string input)
 		{
 			int tokenStart = - 1;

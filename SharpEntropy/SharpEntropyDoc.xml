@@ -1417,7 +1417,7 @@
             A reader for GIS models stored in the binary format produced by the java version
             of MaxEnt.  This binary format stores data using big-endian values, which means
             that the C# version must reverse the byte order of each value in turn, making it
-            less efficient.  Use only for compatibility with the java MaxEnt library.
+            less efficient. Use only for compatibility with the java MaxEnt library.
             </summary>
             <author> 
             Jason Baldridge

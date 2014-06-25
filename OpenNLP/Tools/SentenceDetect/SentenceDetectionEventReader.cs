@@ -35,25 +35,26 @@
 
 using System;
 using System.Text;
+using SharpEntropy;
 
 namespace OpenNLP.Tools.SentenceDetect
 {
 	/// <summary>
 	/// An implementation of ITrainingEventReader which assumes that it is receiving
-	/// its data as one (valid) sentence per token.  The default DataReader
-	/// to use with this class is PlainTextByLineDataReader, but you can
-	/// provide other types of ITrainingDataReaders if you wish to receive data from
-	/// sources other than plain text files; however, be sure that each
-	/// token your ITrainingDataReader returns is a valid sentence.
+	/// its data as one (valid) sentence per token. 
+	/// The default DataReader to use with this class is PlainTextByLineDataReader, 
+	/// but you can provide other types of ITrainingDataReaders if you wish 
+	/// to receive data from sources other than plain text files; 
+	/// however, be sure that each token your ITrainingDataReader returns is a valid sentence.
 	/// </summary>
-	public class SentenceDetectionEventReader : SharpEntropy.ITrainingEventReader
+	public class SentenceDetectionEventReader : ITrainingEventReader
 	{
-		private readonly SharpEntropy.ITrainingDataReader<string> mDataReader;
-		private string mNext;
-		private SentenceDetectionEvent mHead, mTail;
-        private readonly SharpEntropy.IContextGenerator<Tuple<StringBuilder, int>> mContextGenerator;
-		private readonly StringBuilder mBuffer = new StringBuilder();
-		private readonly IEndOfSentenceScanner mScanner;
+		private readonly ITrainingDataReader<string> _dataReader;
+		private string _next;
+		private SentenceDetectionEvent _head, _tail;
+        private readonly IContextGenerator<Tuple<StringBuilder, int>> _contextGenerator;
+		private readonly StringBuilder _buffer = new StringBuilder();
+		private readonly IEndOfSentenceScanner _scanner;
 		
 		/// <summary>
 		/// Creates a new <code>SentenceDetectionEventReader</code> instance.  A
@@ -61,84 +62,80 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// </summary>
 		/// <param name="dataReader">a <code>ITrainingDataReader</code> value
 		/// </param>
-		public SentenceDetectionEventReader(SharpEntropy.ITrainingDataReader<string> dataReader) : 
-            this(dataReader, new DefaultEndOfSentenceScanner(), new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters()))
-		{
-		}
+		public SentenceDetectionEventReader(ITrainingDataReader<string> dataReader): 
+            this(dataReader, new DefaultEndOfSentenceScanner(), new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters())){}
 		
 		/// <summary>
 		/// Class constructor which uses the EndOfSentenceScanner to locate
 		/// sentence endings.
 		/// </summary>
-		public SentenceDetectionEventReader(SharpEntropy.ITrainingDataReader<string> dataReader, IEndOfSentenceScanner scanner) : 
-            this(dataReader, scanner, new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters()))
-		{
-		}
+		public SentenceDetectionEventReader(ITrainingDataReader<string> dataReader, IEndOfSentenceScanner scanner) : 
+            this(dataReader, scanner, new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters())){}
 
-        public SentenceDetectionEventReader(SharpEntropy.ITrainingDataReader<string> dataReader, IEndOfSentenceScanner scanner, SharpEntropy.IContextGenerator<Tuple<StringBuilder, int>> contextGenerator)
+        public SentenceDetectionEventReader(ITrainingDataReader<string> dataReader, IEndOfSentenceScanner scanner, 
+            IContextGenerator<Tuple<StringBuilder, int>> contextGenerator)
 		{
-			mDataReader = dataReader;
-			mScanner = scanner;
-			mContextGenerator = contextGenerator;
-			if (mDataReader.HasNext())
+			_dataReader = dataReader;
+			_scanner = scanner;
+			_contextGenerator = contextGenerator;
+			if (_dataReader.HasNext())
 			{
-				string current = mDataReader.NextToken();
-				if (mDataReader.HasNext())
+				string current = _dataReader.NextToken();
+				if (_dataReader.HasNext())
 				{
-					mNext = mDataReader.NextToken();
+					_next = _dataReader.NextToken();
 				}
 				AddNewEvents(current);
 			}
 		}
 		
-		public virtual SharpEntropy.TrainingEvent ReadNextEvent()
+		public virtual TrainingEvent ReadNextEvent()
 		{
-			SentenceDetectionEvent topEvent = mHead;
-			mHead = mHead.NextEvent;
-			if (null == mHead)
+			SentenceDetectionEvent topEvent = _head;
+			_head = _head.NextEvent;
+			if (null == _head)
 			{
-				mTail = null;
+				_tail = null;
 			}
 			return topEvent;
 		}
 		
 		private void AddNewEvents(string token)
 		{
-			StringBuilder buffer = mBuffer;
+			StringBuilder buffer = _buffer;
 			buffer.Append(token.Trim());
 			int sentenceEndPosition = buffer.Length - 1;
 			//add following word to stringbuilder
-			if (mNext != null && token.Length > 0)
+			if (_next != null && token.Length > 0)
 			{
-				int positionAfterFirstWordInNext = mNext.IndexOf(" ");
+				int positionAfterFirstWordInNext = _next.IndexOf(" ");
 				if (positionAfterFirstWordInNext != - 1)
 				{
 					// should maybe changes this so that it usually adds a space
 					// before the next sentence, but sometimes leaves no space.
 					buffer.Append(" ");
-					buffer.Append(mNext.Substring(0, (positionAfterFirstWordInNext) - (0)));
+					buffer.Append(_next.Substring(0, (positionAfterFirstWordInNext) - (0)));
 				}
 			}
-			
-			for (System.Collections.IEnumerator iterator = mScanner.GetPositions(buffer).GetEnumerator(); iterator.MoveNext(); )
+
+		    foreach (var candidate in _scanner.GetPositions(buffer))
 			{
-				var candidate = (int) iterator.Current;
                 var pair = new Tuple<StringBuilder, int>(buffer, candidate);
 				string type = (candidate == sentenceEndPosition) ? "T" : "F";
-				var sentenceEvent = new SentenceDetectionEvent(type, mContextGenerator.GetContext(pair));
+				var sentenceEvent = new SentenceDetectionEvent(type, _contextGenerator.GetContext(pair));
 				
-				if (null != mTail)
+				if (null != _tail)
 				{
-					mTail.NextEvent = sentenceEvent;
-					mTail = sentenceEvent;
+					_tail.NextEvent = sentenceEvent;
+					_tail = sentenceEvent;
 				}
-				else if (null == mHead)
+				else if (null == _head)
 				{
-					mHead = sentenceEvent;
+					_head = sentenceEvent;
 				}
-				else if (null == mHead.NextEvent)
+				else if (null == _head.NextEvent)
 				{
-					mHead.NextEvent = mTail = sentenceEvent;
+					_head.NextEvent = _tail = sentenceEvent;
 				}
 			}
 			
@@ -147,25 +144,18 @@ namespace OpenNLP.Tools.SentenceDetect
 		
 		public virtual bool HasNext()
 		{
-			if (null != mHead)
+			if (_head != null)
 			{
 				return true;
 			}
-			
-			while (null == mHead && (object) mNext != null)
+
+            while (_head == null && _next != null)
 			{
-				string current = mNext;
-				if (mDataReader.HasNext())
-				{
-					mNext = (mDataReader.NextToken());
-				}
-				else
-				{
-					mNext = null;
-				}
+				string current = _next;
+				_next = _dataReader.HasNext() ? _dataReader.NextToken() : null;
 				AddNewEvents(current);
 			}
-			return (null != mHead);
+			return (_head != null);
 		}
 		
 //		[STAThread]

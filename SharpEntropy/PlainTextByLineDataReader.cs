@@ -54,43 +54,33 @@ namespace SharpEntropy
 	/// </version>
 	public class PlainTextByLineDataReader : ITrainingDataReader<string>
 	{
-		private StreamReader mDataReader;
-		private string mNextLine;
+		private readonly StreamReader _dataReader;
+		private string _nextLine;
 		
 		/// <summary>
 		/// Creates a training data reader for reading text lines from a file or other text stream.
 		/// </summary>
-		/// <param name="dataSource">
-		/// StreamReader containing the source of the training data.
-		/// </param>
+		/// <param name="dataSource">StreamReader containing the source of the training data</param>
 		public PlainTextByLineDataReader(StreamReader dataSource)
 		{
-			mDataReader = dataSource;
-			mNextLine = mDataReader.ReadLine();
+			_dataReader = dataSource;
+			_nextLine = _dataReader.ReadLine();
 		}
 		
-		/// <summary>
-		/// Gets the next text line from the training data.
-		/// </summary>
-		/// <returns>
-		/// Next text line from the training data.
-		/// </returns>
+		/// <summary>Gets the next text line from the training data</summary>
+		/// <returns>Next text line from the training data</returns>
 		public virtual string NextToken()
 		{
-			string currentLine = mNextLine;
-			mNextLine = mDataReader.ReadLine();
+			string currentLine = _nextLine;
+			_nextLine = _dataReader.ReadLine();
 			return currentLine;
 		}
 		
-		/// <summary>
-		/// Checks if there is any more training data.
-		/// </summary>
-		/// <returns>
-		/// true if there is more training data to be read.
-		/// </returns>
+		/// <summary>Checks if there is any more training data</summary>
+		/// <returns>true if there is more training data to be read</returns>
 		public virtual bool HasNext()
 		{
-			return (mNextLine != null);
+			return (_nextLine != null);
 		}
 	}
 }

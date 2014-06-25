@@ -36,6 +36,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using SharpEntropy;
 
 namespace OpenNLP.Tools.SentenceDetect
 {
@@ -272,22 +273,21 @@ namespace OpenNLP.Tools.SentenceDetect
 			return new SharpEntropy.GisModel(trainer);
 		}
 		
-		/// <summary> Use this training method if you wish to supply an end of
+		/// <summary>
+		/// Use this training method if you wish to supply an end of
 		/// sentence scanner which provides a different set of ending chars
-		/// other than the default ones.  They are "\\.|!|\\?|\\\"|\\)".
+		/// other than the default ones. They are "\\.|!|\\?|\\\"|\\)".
 		/// </summary>
-		public static SharpEntropy.GisModel TrainModel(string inFile, int iterations, int cut, IEndOfSentenceScanner scanner)
+		public static GisModel TrainModel(string inFile, int iterations, int cut, IEndOfSentenceScanner scanner)
 		{
-		    StreamReader streamReader;
-			
-			using (streamReader = new StreamReader(inFile, System.Text.Encoding.UTF7))
+			using (var streamReader = new StreamReader(inFile))
 			{
-				SharpEntropy.ITrainingDataReader<string> dataReader = new SharpEntropy.PlainTextByLineDataReader(streamReader);
-				SharpEntropy.ITrainingEventReader eventReader = new SentenceDetectionEventReader(dataReader, scanner);
+				ITrainingDataReader<string> dataReader = new PlainTextByLineDataReader(streamReader);
+				ITrainingEventReader eventReader = new SentenceDetectionEventReader(dataReader, scanner);
 
-				var trainer = new SharpEntropy.GisTrainer();
+				var trainer = new GisTrainer();
 				trainer.TrainModel(eventReader, iterations, cut);
-				return new SharpEntropy.GisModel(trainer);
+				return new GisModel(trainer);
 			}
 		}
 		

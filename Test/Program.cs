@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenNLP.Tools.Chunker;
 using OpenNLP.Tools.PosTagger;
+using OpenNLP.Tools.SentenceDetect;
 using OpenNLP.Tools.Tokenize;
 using SharpEntropy;
 using SharpEntropy.IO;
@@ -21,22 +23,24 @@ namespace Test
             var tokenizerTrainingFilePath = currentDirectory + "Input/tokenizer.train";
             var outputFilePath = currentDirectory + "Output/EnglishTok.nbin";
             MaximumEntropyTokenizer.Train(tokenizerTrainingFilePath, outputFilePath);*/
-
-            /*var input = "She didn't have a laptop, which means she did her business on her phone.";
-
-            var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
-            var detokienizer = new DictionaryDetokenizer();
-
-            Console.WriteLine("input: {0}", input);
-            var tokens = tokenizer.Tokenize(input);
-            var output = detokienizer.Detokenize(tokens);
-            Console.WriteLine("ouput: {0}", output);*/
-
-            var tokens = new List<string>() {"do", "n't", "commit"};
+            
+            // test detokenization
+            /*var tokens = new List<string>() {"do", "n't", "commit"};
             var detokenizer = new DictionaryDetokenizer();
             var result = detokenizer.Detokenize(tokens.ToArray());
+            Console.WriteLine(result);*/
 
-            Console.WriteLine(result);
+            // train model file
+            var inputFilePath = currentDirectory + "Input/setences.txt";
+            var outputFilePath = currentDirectory + "Output/" + Path.GetFileNameWithoutExtension(inputFilePath) + ".txt";
+            var iterations = 100;
+            var cut = 5;
+            var endOfSentenceScanner = new CharactersSpecificEndOfSentenceScanner();
+            Console.WriteLine("Training model...");
+            var model = MaximumEntropySentenceDetector.TrainModel(inputFilePath, iterations, cut, endOfSentenceScanner);
+            Console.WriteLine("Writing output file '{0}'...", outputFilePath);
+            new PlainTextGisModelWriter().Persist(model, outputFilePath);
+            Console.WriteLine("Output file written.");
 
             Console.WriteLine("OK");
             Console.ReadKey();

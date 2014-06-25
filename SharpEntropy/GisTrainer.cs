@@ -302,12 +302,9 @@ namespace SharpEntropy
 		/// Train a model using the GIS algorithm.
 		/// </summary>
 		/// <param name="eventReader">
-		/// The ITrainingEventReader holding the data on which this model
-		/// will be trained.
+		/// The ITrainingEventReader holding the data on which this model will be trained
 		/// </param>
-		/// <param name="iterations">
-		/// The number of GIS iterations to perform.
-		/// </param>
+		/// <param name="iterations">The number of GIS iterations to perform</param>
 		/// <param name="cutoff">
 		/// The number of times a predicate must be seen in order
 		/// to be relevant for training.

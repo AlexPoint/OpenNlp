@@ -41,22 +41,21 @@ namespace OpenNLP.Tools.SentenceDetect
 	/// <summary>
 	/// The default end of sentence scanner implements all of the
 	/// EndOfSentenceScanner methods in terms of the GetPositions(char[])
-	/// method.  It scans for
-	/// . ? ! "
+	/// method.
+	/// It scans for '.', '?', '!', '"'
 	/// </summary>
 	public class DefaultEndOfSentenceScanner : IEndOfSentenceScanner
-	{	
+	{
 		public static char[] GetEndOfSentenceCharacters()
 		{
 			return new char[]{'.', '?', '!'};
 		}
-		
-		/// <summary> 
-		/// Creates a new <code>DefaultEndOfSentenceScanner</code> instance.
-		/// </summary>
-		public DefaultEndOfSentenceScanner() : base()
-		{
-		}
+
+	    /// <summary> 
+	    /// Creates a new <code>DefaultEndOfSentenceScanner</code> instance.
+	    /// </summary>
+	    public DefaultEndOfSentenceScanner(){}
+        
 
         public virtual List<int> GetPositions(string input)
 		{

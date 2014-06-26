@@ -35,6 +35,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenNLP.Tools.Coreference.Similarity
 {
@@ -44,16 +45,16 @@ namespace OpenNLP.Tools.Coreference.Similarity
 	/// </summary>
 	public class SimilarityModel : ITestSimilarityModel, ITrainSimilarityModel
 	{
-        private string mModelName;
-        private string mModelExtension = ".nbin";
-        private SharpEntropy.IMaximumEntropyModel mTestModel;
-        private List<SharpEntropy.TrainingEvent> mEvents;
-        private int mSameIndex;
-        private const string mSame = "same";
-        private const string mDifferent = "diff";
-        private bool mDebugOn = false;
+        private readonly string ModelName;
+	    private const string ModelExtension = ".nbin";
+	    private readonly SharpEntropy.IMaximumEntropyModel _testModel;
+        private readonly List<SharpEntropy.TrainingEvent> _events;
+        private readonly int _sameIndex;
+        private const string Same = "same";
+        private const string Different = "diff";
+	    private const bool DebugOn = false;
 
-        public static ITestSimilarityModel TestModel(string name)
+	    public static ITestSimilarityModel TestModel(string name)
         {
             return new SimilarityModel(name, false);
         }
@@ -65,38 +66,37 @@ namespace OpenNLP.Tools.Coreference.Similarity
 
         private SimilarityModel(string modelName, bool train)
         {
-            mModelName = modelName;
+            ModelName = modelName;
             if (train)
             {
-                mEvents = new List<SharpEntropy.TrainingEvent>();
+                _events = new List<SharpEntropy.TrainingEvent>();
             }
             else
             {
-                mTestModel = new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(modelName + mModelExtension));
-                mSameIndex = mTestModel.GetOutcomeIndex(mSame);
+                _testModel = new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(modelName + ModelExtension));
+                _sameIndex = _testModel.GetOutcomeIndex(Same);
             }
         }
 
 		public virtual void SetExtents(Context[] extents)
 		{
-            Util.HashList<int, Context> entities = new Util.HashList<int, Context>();
-			/** Extents which are not in a coreference chain. */
-            List<Context> singletons = new List<Context>();
-            List<Context> allExtents = new List<Context>();
+            var entities = new Util.HashList<int, Context>();
+			// Extents which are not in a coreference chain.
+            var singletons = new List<Context>();
+            var allExtents = new List<Context>();
 			//populate data structures
-			for (int extentIndex = 0; extentIndex < extents.Length; extentIndex++)
+			foreach (Context currentExtent in extents)
 			{
-				Context currentExtent = extents[extentIndex];
-				//System.err.println("SimilarityModel: setExtents: ec("+ec.getId()+") "+ec.getNameType()+" "+ec);
-				if (currentExtent.Id == -1)
-				{
-					singletons.Add(currentExtent);
-				}
-				else
-				{
-					entities.Put(currentExtent.Id, currentExtent);
-				}
-				allExtents.Add(currentExtent);
+			    //System.err.println("SimilarityModel: setExtents: ec("+ec.getId()+") "+ec.getNameType()+" "+ec);
+			    if (currentExtent.Id == -1)
+			    {
+			        singletons.Add(currentExtent);
+			    }
+			    else
+			    {
+			        entities.Put(currentExtent.Id, currentExtent);
+			    }
+			    allExtents.Add(currentExtent);
 			}
 			
 			int allExtentsIndex = 0;
@@ -137,7 +137,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 							allExtentsIndex = (allExtentsIndex + 1) % allExtents.Count;
 							if (!exclusionSet.Contains(compareEntityContext))
 							{
-								if (mDebugOn)
+								if (DebugOn)
 								{
 									System.Console.Error.WriteLine(firstEntityContext.ToString() + " " + string.Join(",", entityNameSet.ToArray()) + " " + compareEntityContext.ToString() + " " + nameSets[compareEntityContext.Id]);
 								}
@@ -157,13 +157,13 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			{
 				List<string> features = GetFeatures(firstNounPhrase, secondNounPhrase);
 				//System.err.println(SAME+" "+np1.headTokenText+" ("+np1.id+") -> "+np2.headTokenText+" ("+np2.id+") "+feats);
-                mEvents.Add(new SharpEntropy.TrainingEvent(mSame, features.ToArray()));
+                _events.Add(new SharpEntropy.TrainingEvent(Same, features.ToArray()));
 			}
 			else
 			{
                 List<string> features = GetFeatures(firstNounPhrase, secondNounPhrase);
 				//System.err.println(DIFF+" "+np1.headTokenText+" ("+np1.id+") -> "+np2.headTokenText+" ("+np2.id+") "+feats);
-                mEvents.Add(new SharpEntropy.TrainingEvent(mDifferent, features.ToArray()));
+                _events.Add(new SharpEntropy.TrainingEvent(Different, features.ToArray()));
 			}
 		}
 		
@@ -176,7 +176,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		/// <returns> 
         /// A set containing the head words of the sepecified mentions.
 		/// </returns>
-		private Util.Set<string> ConstructHeadSet(List<Context> mentions)
+		private Util.Set<string> ConstructHeadSet(IEnumerable<Context> mentions)
 		{
 			Util.Set<string> headSet = new Util.HashSet<string>();
             foreach (Context currentContext in mentions)
@@ -186,31 +186,17 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			return headSet;
 		}
 
-        private bool HasSameHead(Util.Set<string> entityHeadSet, Util.Set<string> candidateHeadSet)
-		{
-			foreach (string currentHead in entityHeadSet)
-            {
-				if (candidateHeadSet.Contains(currentHead))
-				{
-					return true;
-				}
-			}
-			return false;
-		}
+        private bool HasSameHead(IEnumerable<string> entityHeadSet, Util.Set<string> candidateHeadSet)
+        {
+            return entityHeadSet.Any(candidateHeadSet.Contains);
+        }
 
-        private bool HasSameNameType(Util.Set<string> entityNameSet, Util.Set<string> candidateNameSet)
-		{
-            foreach (string currentName in entityNameSet)
-            {
-                if (candidateNameSet.Contains(currentName))
-                {
-                    return true;
-                }
-            }
-            return false;
-		}
+	    private bool HasSameNameType(IEnumerable<string> entityNameSet, Util.Set<string> candidateNameSet)
+	    {
+	        return entityNameSet.Any(candidateNameSet.Contains);
+	    }
 
-        private bool HasSuperClass(List<Context> entityContexts, List<Context> candidateContexts)
+	    private bool HasSuperClass(IEnumerable<Context> entityContexts, List<Context> candidateContexts)
 		{
 			foreach (Context currentEntityContext in entityContexts)
 			{
@@ -248,7 +234,8 @@ namespace OpenNLP.Tools.Coreference.Similarity
         /// A set of mentions for all the entities which might be semantically compatible 
 		/// with entity indicated by the specified key. 
 		/// </returns>
-		 private Util.Set<Context> ConstructExclusionSet(int entityKey, Util.HashList<int, Context> entities, Dictionary<int, Util.Set<string>> headSets, Dictionary<int, Util.Set<string>> nameSets, List<Context> singletons)
+		 private Util.Set<Context> ConstructExclusionSet(int entityKey, Util.HashList<int, Context> entities, 
+             Dictionary<int, Util.Set<string>> headSets, Dictionary<int, Util.Set<string>> nameSets, IEnumerable<Context> singletons)
 		{
 			Util.Set<Context> exclusionSet = new Util.HashSet<Context>();
             Util.Set<string> entityHeadSet = headSets[entityKey];
@@ -283,7 +270,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			}
 
 			//singles
-			List<Context> singles = new List<Context>(1);
+			var singles = new List<Context>(1);
 			foreach (Context currentSingleton in singletons)
 			{
 				singles.Clear();
@@ -320,7 +307,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		/// </returns>
         private Dictionary<int, Util.Set<string>> ConstructHeadSets(Util.HashList<int, Context> entities)
 		{
-			Dictionary<int, Util.Set<string>> headSets = new Dictionary<int, Util.Set<string>>();
+			var headSets = new Dictionary<int, Util.Set<string>>();
 			foreach (int key in entities.Keys)
             {
 				List<Context> entityContexts = entities[key];
@@ -338,7 +325,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		/// <returns>
         /// A set of name types assigned to the specified mentions.
 		/// </returns>
-        private Util.Set<string> ConstructNameSet(List<Context> mentions)
+        private Util.Set<string> ConstructNameSet(IEnumerable<Context> mentions)
 		{
 			Util.Set<string> nameSet = new Util.HashSet<string>();
 			foreach (Context currentContext in mentions)
@@ -362,7 +349,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		/// </returns>
         private Dictionary<int, Util.Set<string>> ConstructNameSets(Util.HashList<int, Context> entities)
 		{
-			Dictionary<int, Util.Set<string>> nameSets = new Dictionary<int, Util.Set<string>>();
+			var nameSets = new Dictionary<int, Util.Set<string>>();
 			foreach (int key in entities.Keys)
             {
 				List<Context> entityContexts = entities[key];
@@ -425,33 +412,29 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		public virtual double AreCompatible(Context firstMention, Context secondMention)
 		{
 			List<string> features = GetFeatures(firstMention, secondMention);
-            if (mDebugOn)
+            if (DebugOn)
             {
-                System.Console.Error.WriteLine("SimilarityModel.compatible: feats=" + string.Join(",", features.ToArray()));
+                Console.Error.WriteLine("SimilarityModel.compatible: feats=" + string.Join(",", features.ToArray()));
             }
-            return mTestModel.Evaluate(features.ToArray())[mSameIndex];
+            return _testModel.Evaluate(features.ToArray())[_sameIndex];
 		}
 		
-		/// <summary> 
-        /// Train a model based on the previously supplied evidence.
-        /// </summary>
-		/// <seealso cref="setExtents(Context[])">
-		/// </seealso>
+		/// <summary>Train a model based on the previously supplied evidence</summary>
 		public virtual void TrainModel()
 		{
-			if (mDebugOn)
+			if (DebugOn)
 			{
-				System.IO.StreamWriter writer = new System.IO.StreamWriter(mModelName + ".events", false, System.Text.Encoding.Default);
-				foreach (SharpEntropy.TrainingEvent trainingEvent in mEvents)
+				var writer = new System.IO.StreamWriter(ModelName + ".events", false, System.Text.Encoding.Default);
+				foreach (SharpEntropy.TrainingEvent trainingEvent in _events)
                 {
-					writer.Write(trainingEvent.ToString() + "\n");
+					writer.Write(trainingEvent + "\n");
 				}
 				writer.Close();
 			}
 
-            SharpEntropy.GisTrainer trainer = new SharpEntropy.GisTrainer();
-            trainer.TrainModel(new Util.CollectionEventReader(mEvents), 100, 10);
-            new SharpEntropy.IO.BinaryGisModelWriter().Persist(new SharpEntropy.GisModel(trainer), mModelName + mModelExtension);
+            var trainer = new SharpEntropy.GisTrainer();
+            trainer.TrainModel(new Util.CollectionEventReader(_events), 100, 10);
+            new SharpEntropy.IO.BinaryGisModelWriter().Persist(new SharpEntropy.GisModel(trainer), ModelName + ModelExtension);
 		}
 		
 		private bool IsName(Context nounPhrase)
@@ -474,13 +457,15 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			return nounPhrase.HeadTokenTag == "CD";
 		}
 		
-		private List<string> GetNameCommonFeatures(Context name, Context common)
+		private IEnumerable<string> GetNameCommonFeatures(Context name, Context common)
 		{
             Util.Set<string> synsets = common.Synsets;
-            List<string> features = new List<string>(2 + synsets.Count);
-            features.Add("nn=" + name.NameType + "," + common.NameType);
-            features.Add("nw=" + name.NameType + "," + common.HeadTokenText.ToLower());
-			foreach (string synset in synsets)
+            var features = new List<string>(2 + synsets.Count)
+            {
+                "nn=" + name.NameType + "," + common.NameType,
+                "nw=" + name.NameType + "," + common.HeadTokenText.ToLower()
+            };
+		    foreach (string synset in synsets)
 			{
                 features.Add("ns=" + name.NameType + "," + synset);
 			}
@@ -491,25 +476,30 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			return features;
 		}
 		
-		private List<string> GetNameNumberFeatures(Context name, Context number)
+		private IEnumerable<string> GetNameNumberFeatures(Context name, Context number)
 		{
-            List<string> features = new List<string>(2);
-            features.Add("nt=" + name.NameType + "," + number.HeadTokenTag);
-            features.Add("nn=" + name.NameType + "," + number.NameType);
-			return features;
+            var features = new List<string>(2)
+            {
+                "nt=" + name.NameType + "," + number.HeadTokenTag,
+                "nn=" + name.NameType + "," + number.NameType
+            };
+		    return features;
 		}
 
-        private List<string> GetNamePronounFeatures(Context name, Context pronoun)
+        private IEnumerable<string> GetNamePronounFeatures(Context name, Context pronoun)
 		{
-            List<string> features = new List<string>(2);
-            features.Add("nw=" + name.NameType + "," + pronoun.HeadTokenText.ToLower());
-            features.Add("ng=" + name.NameType + "," + Resolver.AbstractResolver.GetPronounGender(pronoun.HeadTokenText.ToLower()));
-			return features;
+            var features = new List<string>(2)
+            {
+                "nw=" + name.NameType + "," + pronoun.HeadTokenText.ToLower(),
+                "ng=" + name.NameType + "," +
+                Resolver.AbstractResolver.GetPronounGender(pronoun.HeadTokenText.ToLower())
+            };
+            return features;
 		}
 
-        private List<string> GetCommonPronounFeatures(Context common, Context pronoun)
+        private IEnumerable<string> GetCommonPronounFeatures(Context common, Context pronoun)
 		{
-            List<string> features = new List<string>();
+            var features = new List<string>();
             Util.Set<string> synsets = common.Synsets;
 			string pronounText = pronoun.HeadTokenText.ToLower();
             string genderText = Resolver.AbstractResolver.GetPronounGender(pronounText);
@@ -522,9 +512,9 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			return features;
 		}
 
-        private List<string> GetCommonNumberFeatures(Context common, Context number)
+        private IEnumerable<string> GetCommonNumberFeatures(Context common, Context number)
 		{
-            List<string> features = new List<string>();
+            var features = new List<string>();
             Util.Set<string> synsets = common.Synsets;
 			foreach (string synset in synsets)
             {
@@ -535,9 +525,9 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			return features;
 		}
 
-        private List<string> GetNumberPronounFeatures(Context number, Context pronoun)
+        private IEnumerable<string> GetNumberPronounFeatures(Context number, Context pronoun)
 		{
-            List<string> features = new List<string>();
+            var features = new List<string>();
 			string pronounText = pronoun.HeadTokenText.ToLower();
             string genderText = Resolver.AbstractResolver.GetPronounGender(pronounText);
 			features.Add("wt=" + pronounText + "," + number.HeadTokenTag);
@@ -547,9 +537,9 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			return features;
 		}
 
-        private List<string> GetNameNameFeatures(Context name1, Context name2)
+        private IEnumerable<string> GetNameNameFeatures(Context name1, Context name2)
 		{
-            List<string> features = new List<string>(1);
+            var features = new List<string>(1);
             if (name1.NameType == null && name2.NameType == null)
 			{
                 features.Add("nn=" + name1.NameType + "," + name2.NameType);
@@ -583,9 +573,9 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			return features;
 		}
 
-        private List<string> GetCommonCommonFeatures(Context common1, Context common2)
+        private IEnumerable<string> GetCommonCommonFeatures(Context common1, Context common2)
 		{
-            List<string> features = new List<string>();
+            var features = new List<string>();
 			Util.Set<string> synsets1 = common1.Synsets;
             Util.Set<string> synsets2 = common2.Synsets;
 			
@@ -657,27 +647,19 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			return features;
 		}
 		
-		private List<string> GetPronounPronounFeatures(Context pronoun1, Context pronoun2)
+		private IEnumerable<string> GetPronounPronounFeatures(Context pronoun1, Context pronoun2)
 		{
-            List<string> features = new List<string>();
+            var features = new List<string>();
             string firstGender = Resolver.AbstractResolver.GetPronounGender(pronoun1.HeadTokenText);
             string secondGender = Resolver.AbstractResolver.GetPronounGender(pronoun2.HeadTokenText);
-			if (firstGender == secondGender)
-			{
-				features.Add("sameGender");
-			}
-			else
-			{
-				features.Add("diffGender");
-			}
-			return features;
+		    features.Add(firstGender == secondGender ? "sameGender" : "diffGender");
+		    return features;
 		}
 		
 		private List<string> GetFeatures(Context np1, Context np2)
 		{
-            List<string> features = new List<string>();
-			features.Add("default");
-			//  semantic categories
+            var features = new List<string> {"default"};
+		    //  semantic categories
 			string w1 = np1.HeadTokenText.ToLower();
 			string w2 = np2.HeadTokenText.ToLower();
 			if (string.CompareOrdinal(w1, w2) < 0)
@@ -790,7 +772,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		//Usage: SimilarityModel modelName < tiger/NN bear/NN
         public static string SimilarityMain(string modelName, string line)
 		{
-			SimilarityModel model = new SimilarityModel(modelName, false);
+			var model = new SimilarityModel(modelName, false);
 			//Context.wn = new WordNet(System.getProperty("WNHOME"), true);
 			//Context.morphy = new Morphy(Context.wn);
 			

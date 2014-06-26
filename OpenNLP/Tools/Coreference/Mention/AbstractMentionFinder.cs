@@ -388,7 +388,7 @@ namespace OpenNLP.Tools.Coreference.Mention
 			return mentions.ToArray();
 		}
 		
-		/// <summary> 
+		/*/// <summary> 
         /// Adds a mention for the non-treebank-labeled possesive noun phrases.  
         /// </summary>
 		/// <param name="possesiveNounPhrase">
@@ -397,28 +397,28 @@ namespace OpenNLP.Tools.Coreference.Mention
 		/// <param name="mentions">
         /// The list of mentions into which a new mention can be added. 
 		/// </param>
-        //private void AddPossessiveMentions(IParse possessiveNounPhrase, List<Mention> mentions)
-        //{
-        //    List<IParse> kids = possessiveNounPhrase.SyntacticChildren;
-        //    if (kids.Count > 1)
-        //    {
-        //        IParse firstToken = kids[1];
-        //        if (firstToken.IsToken && firstToken.SyntacticType != "POS")
-        //        {
-        //            IParse lastToken = kids[kids.Count - 1];
-        //            if (lastToken.IsToken)
-        //            {
-        //                Util.Span extentSpan = new Util.Span(firstToken.Span.Start, lastToken.Span.End);
-        //                Mention extent = new Mention(extentSpan, extentSpan, - 1, null, null);
-        //                mentions.Add(extent);
-        //            }
-        //            else
-        //            {
-        //                System.Console.Error.WriteLine("AbstractMentionFinder.AddPossessiveMentions: odd parse structure: " + possessiveNounPhrase);
-        //            }
-        //        }
-        //    }
-        //}
+        private void AddPossessiveMentions(IParse possessiveNounPhrase, List<Mention> mentions)
+        {
+            List<IParse> kids = possessiveNounPhrase.SyntacticChildren;
+            if (kids.Count > 1)
+            {
+                IParse firstToken = kids[1];
+                if (firstToken.IsToken && firstToken.SyntacticType != "POS")
+                {
+                    IParse lastToken = kids[kids.Count - 1];
+                    if (lastToken.IsToken)
+                    {
+                        var extentSpan = new Util.Span(firstToken.Span.Start, lastToken.Span.End);
+                        var extent = new Mention(extentSpan, extentSpan, - 1, null, null);
+                        mentions.Add(extent);
+                    }
+                    else
+                    {
+                        Console.Error.WriteLine("AbstractMentionFinder.AddPossessiveMentions: odd parse structure: " + possessiveNounPhrase);
+                    }
+                }
+            }
+        }*/
 		
 		private void CollectPrenominalNamedEntities(IParse nounPhrase, List<Mention> extents)
 		{

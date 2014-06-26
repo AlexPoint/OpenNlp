@@ -43,21 +43,21 @@ namespace OpenNLP.Tools.Coreference.Similarity
     /// </summary>
     public class Context : Mention.Mention
 	{
-        private string mHeadTokenTag;
-        private object[] mTokens;
+        private string _headTokenTag;
+        private object[] _tokens;
 
-        public virtual object[] Tokens { get; protected internal set; }
+        public object[] Tokens { get; protected internal set; }
 
-		public virtual string HeadTokenText { get; protected internal set; }
+		public string HeadTokenText { get; protected internal set; }
 
-		public virtual string HeadTokenTag { get; protected internal set; }
+		public string HeadTokenTag { get; protected internal set; }
 
-		public virtual Util.Set<string> Synsets { get; protected internal set; }
+		public Util.Set<string> Synsets { get; protected internal set; }
 
         /// <summary>
         /// The token index in the head word of this mention.
         /// </summary>
-		public virtual int HeadTokenIndex { get; protected internal set; }
+		public int HeadTokenIndex { get; protected internal set; }
 
 
         // Constructors --------------------
@@ -70,10 +70,10 @@ namespace OpenNLP.Tools.Coreference.Similarity
 
         public Context(object[] tokens, string headToken, string headTag, string neType) : base(null, null, 1, null, null, neType)
 		{
-			mTokens = tokens;
+			_tokens = tokens;
 			this.HeadTokenIndex = tokens.Length - 1;
 			this.HeadTokenText = headToken;
-			mHeadTokenTag = headTag;
+			_headTokenTag = headTag;
 			this.Synsets = GetSynsetSet(this);
 		}
 
@@ -88,10 +88,10 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			List<Mention.IParse> tokenList = head.Tokens;
 			this.HeadTokenIndex = headFinder.GetHeadIndex(head);
             Mention.IParse headToken = headFinder.GetHeadToken(head);
-            mTokens = tokenList.ToArray();
-			mHeadTokenTag = headToken.SyntacticType;
+            _tokens = tokenList.ToArray();
+			_headTokenTag = headToken.SyntacticType;
 			this.HeadTokenText = headToken.ToString();
-			if (mHeadTokenTag.StartsWith("NN") && !mHeadTokenTag.StartsWith("NNP"))
+			if (_headTokenTag.StartsWith("NN") && !_headTokenTag.StartsWith("NNP"))
 			{
 				this.Synsets = GetSynsetSet(this);
 			}
@@ -114,11 +114,11 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		public override string ToString()
 		{
 			var output = new System.Text.StringBuilder();
-            for (int currentToken = 0; currentToken < mTokens.Length; currentToken++)
-			{
-                output.Append(mTokens[currentToken]).Append(" ");
-			}
-            return output.ToString();
+            foreach (object token in _tokens)
+            {
+                output.Append(token).Append(" ");
+            }
+		    return output.ToString();
 		}
 		
 		public static Context ParseContext(string word)
@@ -143,14 +143,14 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			string[] lemmas = GetLemmas(context);
             Mention.IDictionary dictionary = Mention.DictionaryFactory.GetDictionary();
 			//System.err.println(lemmas.length+" lemmas for "+c.headToken);
-			for (int currentLemma = 0; currentLemma < lemmas.Length; currentLemma++)
+			foreach (string lemma in lemmas)
 			{
-				synsetSet.Add(dictionary.GetSenseKey(lemmas[currentLemma], "NN", 0));
-				string[] synsets = dictionary.GetParentSenseKeys(lemmas[currentLemma], "NN", 0);
-				for (int currentSynset = 0, sn = synsets.Length; currentSynset < sn; currentSynset++)
-				{
-					synsetSet.Add(synsets[currentSynset]);
-				}
+			    synsetSet.Add(dictionary.GetSenseKey(lemma, "NN", 0));
+			    string[] synsets = dictionary.GetParentSenseKeys(lemma, "NN", 0);
+			    for (int currentSynset = 0, sn = synsets.Length; currentSynset < sn; currentSynset++)
+			    {
+			        synsetSet.Add(synsets[currentSynset]);
+			    }
 			}
 			return synsetSet;
 		}

@@ -24,9 +24,9 @@ namespace OpenNLP.Tools.Util
 	/// </summary>
 	public class StringTokenizer
 	{
-		private const string mDelimiters = " \t\n\r";	//The tokenizer uses the default delimiter set: the space character, the tab character, the newline character, and the carriage-return character	
-		private string[] mTokens;
-		int mPosition;
+		private const string Delimiters = " \t\n\r";	//The tokenizer uses the default delimiter set: the space character, the tab character, the newline character, and the carriage-return character	
+		private readonly string[] _tokens;
+		int _position;
 
 		/// <summary>
 		/// Initializes a new class instance with a specified string to process
@@ -34,29 +34,25 @@ namespace OpenNLP.Tools.Util
 		/// <param name="input">
 		/// string to tokenize
 		/// </param>
-		public StringTokenizer(string input) : this(input, mDelimiters.ToCharArray())
-		{			
-		}
+		public StringTokenizer(string input) : this(input, Delimiters.ToCharArray()){}
 
-		public StringTokenizer(string input, string separators) : this(input, separators.ToCharArray())
-		{
-		}
+		public StringTokenizer(string input, string separators): this(input, separators.ToCharArray()){}
 
 		public StringTokenizer(string input, params char[] separators) 
 		{
-			mTokens = input.Split(separators);
-			mPosition = 0;
+			_tokens = input.Split(separators);
+			_position = 0;
 		}
 
 		public string NextToken()
 		{
-			while (mPosition < mTokens.Length)
+			while (_position < _tokens.Length)
 			{
-				if ((mTokens[mPosition].Length > 0))
+				if ((_tokens[_position].Length > 0))
 				{
-					return mTokens[mPosition++];
+					return _tokens[_position++];
 				}
-				mPosition++;
+				_position++;
 			}
 			return null;
 		}

@@ -29,12 +29,12 @@ namespace OpenNLP.Tools.Util
 	public class TreeHeap<T> : IHeap<T>
 	{
 		
-		private SortedSet<T> mTree;
+		private readonly SortedSet<T> _tree;
 		
 		/// <summary> Creates a new tree heap.</summary>
 		public TreeHeap()
 		{
-			mTree = new TreeSet<T>();
+			_tree = new TreeSet<T>();
 		}
 		
 		/// <summary>
@@ -45,52 +45,73 @@ namespace OpenNLP.Tools.Util
 		/// </param>
 		public TreeHeap(int size)
 		{
-			mTree = new TreeSet<T>();
+			_tree = new TreeSet<T>();
 		}
 		
+        /// <summary>
+        /// Pops the first element of the tree
+        /// </summary>
 		public virtual T Extract()
 		{
-			T extracted = mTree.First();
-			mTree.Remove(extracted);
+			T extracted = _tree.First();
+			_tree.Remove(extracted);
 			return extracted;
 		}
 		
+        /// <summary>
+        /// Returns the first element of the tree
+        /// </summary>
 		public virtual T Top
 		{
 			get
 			{
-				return mTree.First();
+				return _tree.First();
 			}
 		}
 		
+        /// <summary>
+        /// Adds an element to the tree
+        /// </summary>
 		public virtual void Add(T input)
 		{
-			mTree.Add(input);
+			_tree.Add(input);
 		}
 		
+        /// <summary>
+        /// Sorts the tree
+        /// </summary>
 		public void Sort()
 		{
-			mTree.Sort();
+			_tree.Sort();
 		}
 
+        /// <summary>
+        /// Returns the size of the tree
+        /// </summary>
 		public virtual int Size
 		{
 			get
 			{
-				return mTree.Count;
+				return _tree.Count;
 			}
 		}
 		
+        /// <summary>
+        /// Clears the tree
+        /// </summary>
 		public virtual void Clear()
 		{
-			mTree.Clear();
+			_tree.Clear();
 		}
 
+        /// <summary>
+        /// Returns if the tree is empty
+        /// </summary>
 		public virtual bool IsEmpty
 		{
 			get
 			{
-				return mTree.IsEmpty();
+				return _tree.IsEmpty();
 			}
 		}
 	}

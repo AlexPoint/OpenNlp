@@ -42,32 +42,17 @@ namespace OpenNLP.Tools.Coreference
     /// </summary>
 	public class DiscourseEntity : DiscourseElement
 	{
-        private string mCategory;
-        private OpenNLP.Tools.Util.Set<string> mSynsets;
-        private Similarity.GenderEnum mGender;
-        private double mGenderProbability;
-        private Similarity.NumberEnum mNumber;
-        private double mNumberProbability;
+        private Util.Set<string> mSynsets;
 		
 		/// <summary>
         /// The semantic category of this entity.  This field is used to associated named-entity categories with an entity.
         /// </summary>
-		public virtual string Category
-		{
-			get
-			{
-				return mCategory;
-			}
-			set
-			{
-				mCategory = value;
-			}
-		}
+		public string Category { get; set; }
 
 		/// <summary>
         /// The set of synsets associated with this entity.
         /// </summary>
-		public virtual Util.Set<string> Synsets
+		public Util.Set<string> Synsets
 		{
 			get
 			{
@@ -78,62 +63,22 @@ namespace OpenNLP.Tools.Coreference
 		/// <summary>
         /// The gender associated with this entity.
         /// </summary>
-		public virtual Similarity.GenderEnum Gender
-		{
-			get
-			{
-				return mGender;
-			}
-			set
-			{
-				mGender = value;
-			}
-		}
+		public Similarity.GenderEnum Gender { get; set; }
 
 		/// <summary>
         /// The probability for the gender associated with this entity.
         /// </summary>
-		public virtual double GenderProbability
-		{
-			get
-			{
-				return mGenderProbability;
-			}
-			set
-			{
-				mGenderProbability = value;
-			}	
-		}
+		public double GenderProbability { get; set; }
 
-		// <summary>
+		/// <summary>
         /// The number associated with this entity.
         /// </summary>
-        public virtual Similarity.NumberEnum Number
-		{
-			get
-			{
-				return mNumber;
-			}
-			set
-			{
-				mNumber = value;
-			}	
-		}
+        public Similarity.NumberEnum Number { get; set; }
 
 		/// <summary>
         /// The probability for the number associated with this entity.
         /// </summary>
-		public virtual double NumberProbability
-		{
-			get
-			{
-				return mNumberProbability;
-			}
-			set
-			{
-				mNumberProbability = value;
-			}
-		}
+		public double NumberProbability { get; set; }
 		
 		/// <summary>
         /// Creates a new entity based on the specified mention and its specified gender and number properties.
@@ -153,12 +98,13 @@ namespace OpenNLP.Tools.Coreference
 		/// <param name="numberProbability">
         /// The probability that the specified number is correct.
 		/// </param>
-        public DiscourseEntity(Mention.MentionContext mention, Similarity.GenderEnum gender, double genderProbability, Similarity.NumberEnum number, double numberProbability) : base(mention)
+        public DiscourseEntity(Mention.MentionContext mention, Similarity.GenderEnum gender, double genderProbability, 
+            Similarity.NumberEnum number, double numberProbability) : base(mention)
 		{
-			mGender = gender;
-			mGenderProbability = genderProbability;
-			mNumber = number;
-			mNumberProbability = numberProbability;
+			Gender = gender;
+			GenderProbability = genderProbability;
+			Number = number;
+			NumberProbability = numberProbability;
 		}
 		
 		/// <summary>
@@ -169,8 +115,8 @@ namespace OpenNLP.Tools.Coreference
 		/// </param>
         public DiscourseEntity(Mention.MentionContext mention) : base(mention)
 		{
-            mGender = Similarity.GenderEnum.Unknown;
-            mNumber = Similarity.NumberEnum.Unknown;
+            Gender = Similarity.GenderEnum.Unknown;
+            Number = Similarity.NumberEnum.Unknown;
 		}
 	}
 }

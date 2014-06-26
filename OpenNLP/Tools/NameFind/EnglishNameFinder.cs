@@ -252,15 +252,9 @@ namespace OpenNLP.Tools.NameFind
 			return output.ToString();
 		}
 		
-		/// <summary>
-		/// Adds sgml style name tags to the specified input string and outputs this information.
-		/// </summary>
-		/// <param name="models">
-		/// The model names for the name finders to be used.
-		/// </param>
-		/// <param name="input">
-		/// The input.
-		/// </param>
+		/// <summary>Adds sgml style name tags to the specified input string and outputs this information</summary>
+		/// <param name="models">The model names for the name finders to be used</param>
+		/// <param name="line">The input</param>
 		private string ProcessText(string[] models, string line)
 		{
 			var output = new System.Text.StringBuilder();

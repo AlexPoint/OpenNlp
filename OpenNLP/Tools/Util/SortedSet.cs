@@ -56,22 +56,22 @@ namespace OpenNLP.Tools.Util
 			return enumerator.Current;
 		}
 	 
-		/// <summary>
+		/*/// <summary>
 		/// Returns a view of elements until the specified element.
 		/// </summary>
 		/// <returns>
 		/// Returns a sorted set of elements that are strictly less than the specified element.
 		/// </returns>
-        //public virtual SortedSet<T> HeadSet(T toElement)
-        //{
-        //    SortedSet<T> sortedSet = new SortedSet<T>();
-        //    IEnumerator<T> enumerator = this.GetEnumerator();
-        //    while((enumerator.MoveNext() && ((enumerator.Current.ToString().CompareTo(toElement.ToString())) < 0)))
-        //    {
-        //        sortedSet.Add(enumerator.Current);
-        //    }
-        //    return sortedSet;
-        //}
+        public virtual SortedSet<T> HeadSet(T toElement)
+        {
+            var sortedSet = new SortedSet<T>();
+            IEnumerator<T> enumerator = this.GetEnumerator();
+            while((enumerator.MoveNext() && ((enumerator.Current.ToString().CompareTo(toElement.ToString())) < 0)))
+            {
+                sortedSet.Add(enumerator.Current);
+            }
+            return sortedSet;
+        }*/
 	 
 		/// <summary>
 		/// Returns the last element of the set.
@@ -91,38 +91,38 @@ namespace OpenNLP.Tools.Util
 			return element;
 		}
 	 
-		/// <summary>
+		/*/// <summary>
 		/// Returns a view of elements from the specified element.
 		/// </summary>
 		/// <returns>
 		/// Returns a sorted set of elements that are greater or equal to the specified element.
 		/// </returns>
-        //public virtual SortedSet<T> TailSet(T fromElement)
-        //{
-        //    SortedSet<T> sortedSet = new SortedSet<T>();
-        //    IEnumerator<T> enumerator = this.GetEnumerator();
-        //    while((enumerator.MoveNext() && (!(enumerator.Current.ToString().CompareTo(fromElement.ToString())) < 0)))
-        //    {
-        //        sortedSet.Add(enumerator.Current);
-        //    }
-        //    return sortedSet;
-        //}
+        public virtual SortedSet<T> TailSet(T fromElement)
+        {
+            var sortedSet = new SortedSet<T>();
+            IEnumerator<T> enumerator = this.GetEnumerator();
+            while((enumerator.MoveNext() && (!(enumerator.Current.ToString().CompareTo(fromElement.ToString())) < 0)))
+            {
+                sortedSet.Add(enumerator.Current);
+            }
+            return sortedSet;
+        }*/
 	 
-		/// <summary>
+		/*/// <summary>
 		/// Returns a view of elements between the specified elements.
 		/// </summary>
 		/// <returns>
 		/// Returns a sorted set of elements from the first specified element to the second specified element.
 		/// </returns>
-        //public virtual SortedSet<T> SubSet(T fromElement, T toElement)
-        //{
-        //    SortedSet<T> sortedSet = new SortedSet<T>();
-        //    IEnumerator<T> enumerator = this.GetEnumerator();
-        //    while((enumerator.MoveNext() && ((!(enumerator.Current.ToString().CompareTo(fromElement.ToString())) < 0))) && (!(enumerator.Current.ToString().CompareTo(toElement.ToString())) > 0))
-        //    {
-        //        sortedSet.Add(enumerator.Current);
-        //    }
-        //    return sortedSet;
-        //}
+        public virtual SortedSet<T> SubSet(T fromElement, T toElement)
+        {
+            var sortedSet = new SortedSet<T>();
+            IEnumerator<T> enumerator = this.GetEnumerator();
+            while((enumerator.MoveNext() && ((!(enumerator.Current.ToString().CompareTo(fromElement.ToString())) < 0))) && (!(enumerator.Current.ToString().CompareTo(toElement.ToString())) > 0))
+            {
+                sortedSet.Add(enumerator.Current);
+            }
+            return sortedSet;
+        }*/
 	}
 }

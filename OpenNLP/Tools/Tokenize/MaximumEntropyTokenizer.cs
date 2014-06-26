@@ -55,12 +55,12 @@ namespace OpenNLP.Tools.Tokenize
 		/// <summary>
 		/// the maximum entropy model to use to evaluate contexts.
 		/// </summary>
-		private readonly SharpEntropy.IMaximumEntropyModel _model;
+		private readonly IMaximumEntropyModel _model;
 		
 		/// <summary>
 		/// The context generator.
 		/// </summary>
-        private readonly SharpEntropy.IContextGenerator<Tuple<string, int>> _contextGenerator;
+        private readonly IContextGenerator<Tuple<string, int>> _contextGenerator;
 		
 		/// <summary>
 		/// List of probabilities for each token returned from call to Tokenize() 
@@ -71,13 +71,13 @@ namespace OpenNLP.Tools.Tokenize
 		/// <summary>
         /// Optimization flag to skip alpha numeric tokens for further tokenization.
 		/// </summary>
-		virtual public bool AlphaNumericOptimization { get; set; }
+		public bool AlphaNumericOptimization { get; set; }
 		
 		/// <summary>
 		/// Class constructor which takes the string locations of the
 		/// information which the maxent model needs.
 		/// </summary>
-		public MaximumEntropyTokenizer(SharpEntropy.IMaximumEntropyModel model)
+		public MaximumEntropyTokenizer(IMaximumEntropyModel model)
 		{
 			_contextGenerator = new TokenContextGenerator();
 			AlphaNumericOptimization = false;

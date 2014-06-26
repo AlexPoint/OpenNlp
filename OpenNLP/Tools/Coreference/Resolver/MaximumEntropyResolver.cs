@@ -236,7 +236,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 					{
 						_candidateProbabilities[entityIndex] = _model.Evaluate(features)[_sameIndex];
 					}
-					catch (IndexOutOfRangeException e)
+					catch (IndexOutOfRangeException)
 					{
 						_candidateProbabilities[entityIndex] = 0;
 					}

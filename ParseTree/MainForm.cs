@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
@@ -15,17 +16,17 @@ namespace ParseTree
 	/// <summary>
 	/// Summary description for Form1.
 	/// </summary>
-	public class MainForm : System.Windows.Forms.Form
+	public class MainForm : Form
 	{
-		private System.ComponentModel.IContainer components;
-		private System.Windows.Forms.TextBox txtInput;
-		private Netron.Lithium.LithiumControl lithiumControl;
-		private System.Windows.Forms.Button btnParse;
+		private IContainer _components;
+		private TextBox _txtInput;
+		private LithiumControl _lithiumControl;
+		private Button _btnParse;
 
-		private string mModelPath;
+		private readonly string _modelPath;
 
-		private EnglishTreebankParser mParser;
-		private Parse mParse;
+		private EnglishTreebankParser _parser;
+		private Parse _parse;
 
 		public MainForm()
 		{
@@ -33,10 +34,10 @@ namespace ParseTree
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-			lithiumControl.Width = this.ClientRectangle.Width;
-			lithiumControl.Height = this.ClientRectangle.Height - lithiumControl.Top;
+			_lithiumControl.Width = this.ClientRectangle.Width;
+			_lithiumControl.Height = this.ClientRectangle.Height - _lithiumControl.Top;
 
-            mModelPath = ConfigurationManager.AppSettings["MaximumEntropyModelDirectory"];
+            _modelPath = ConfigurationManager.AppSettings["MaximumEntropyModelDirectory"];
 		}
 
 		/// <summary>
@@ -46,9 +47,9 @@ namespace ParseTree
 		{
 			if( disposing )
 			{
-				if (components != null) 
+				if (_components != null) 
 				{
-					components.Dispose();
+					_components.Dispose();
 				}
 			}
 			base.Dispose( disposing );
@@ -61,58 +62,58 @@ namespace ParseTree
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.lithiumControl = new Netron.Lithium.LithiumControl();
-			this.txtInput = new System.Windows.Forms.TextBox();
-			this.btnParse = new System.Windows.Forms.Button();
+			this._lithiumControl = new Netron.Lithium.LithiumControl();
+			this._txtInput = new System.Windows.Forms.TextBox();
+			this._btnParse = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
-			// lithiumControl
+			// _lithiumControl
 			// 
-			this.lithiumControl.Anchor = (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this._lithiumControl.Anchor = (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 				| System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right);
-			this.lithiumControl.AutoScroll = true;
-			this.lithiumControl.AutoScrollMinSize = new System.Drawing.Size(-2147483547, -2147483547);
-			this.lithiumControl.BackColor = System.Drawing.SystemColors.Window;
-			this.lithiumControl.BranchHeight = 70;
-			this.lithiumControl.ConnectionType = Netron.Lithium.ConnectionType.Default;
-			this.lithiumControl.LayoutDirection = Netron.Lithium.TreeDirection.Vertical;
-			this.lithiumControl.LayoutEnabled = true;
-			this.lithiumControl.Location = new System.Drawing.Point(0, 48);
-			this.lithiumControl.Name = "lithiumControl";
-			this.lithiumControl.Size = new System.Drawing.Size(200, 352);
-			this.lithiumControl.TabIndex = 0;
-			this.lithiumControl.Text = "lithiumControl";
-			this.lithiumControl.WordSpacing = 20;
+			this._lithiumControl.AutoScroll = true;
+			this._lithiumControl.AutoScrollMinSize = new System.Drawing.Size(-2147483547, -2147483547);
+			this._lithiumControl.BackColor = System.Drawing.SystemColors.Window;
+			this._lithiumControl.BranchHeight = 70;
+			this._lithiumControl.ConnectionType = Netron.Lithium.ConnectionType.Default;
+			this._lithiumControl.LayoutDirection = Netron.Lithium.TreeDirection.Vertical;
+			this._lithiumControl.LayoutEnabled = true;
+			this._lithiumControl.Location = new System.Drawing.Point(0, 48);
+			this._lithiumControl.Name = "_lithiumControl";
+			this._lithiumControl.Size = new System.Drawing.Size(200, 352);
+			this._lithiumControl.TabIndex = 0;
+			this._lithiumControl.Text = "_lithiumControl";
+			this._lithiumControl.WordSpacing = 20;
 			// 
-			// txtInput
+			// _txtInput
 			// 
-			this.txtInput.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this._txtInput.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right);
-			this.txtInput.Location = new System.Drawing.Point(8, 16);
-			this.txtInput.Name = "txtInput";
-			this.txtInput.Size = new System.Drawing.Size(568, 20);
-			this.txtInput.TabIndex = 1;
-			this.txtInput.Text = "A rare black squirrel has become a regular visitor to a suburban garden.";
-			this.txtInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtInput_KeyPress);
+			this._txtInput.Location = new System.Drawing.Point(8, 16);
+			this._txtInput.Name = "_txtInput";
+			this._txtInput.Size = new System.Drawing.Size(568, 20);
+			this._txtInput.TabIndex = 1;
+			this._txtInput.Text = "A rare black squirrel has become a regular visitor to a suburban garden.";
+			this._txtInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtInput_KeyPress);
 			// 
-			// btnParse
+			// _btnParse
 			// 
-			this.btnParse.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
-			this.btnParse.Location = new System.Drawing.Point(584, 16);
-			this.btnParse.Name = "btnParse";
-			this.btnParse.TabIndex = 2;
-			this.btnParse.Text = "Parse";
-			this.btnParse.Click += new System.EventHandler(this.btnParse_Click);
+			this._btnParse.Anchor = (System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right);
+			this._btnParse.Location = new System.Drawing.Point(584, 16);
+			this._btnParse.Name = "_btnParse";
+			this._btnParse.TabIndex = 2;
+			this._btnParse.Text = "Parse";
+			this._btnParse.Click += new System.EventHandler(this.btnParse_Click);
 			// 
 			// Form1
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(664, 478);
 			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.btnParse,
-																		  this.txtInput,
-																		  this.lithiumControl});
+																		  this._btnParse,
+																		  this._txtInput,
+																		  this._lithiumControl});
 			this.Name = "Form1";
 			this.Text = "OpenNLP Parser Demo";
 			this.ResumeLayout(false);
@@ -131,12 +132,12 @@ namespace ParseTree
 
 		
 
-		private void btnParse_Click(object sender, System.EventArgs e)
+		private void btnParse_Click(object sender, EventArgs e)
 		{
 			ShowParse();						
 		}
 
-		private void AddChildNodes(ShapeBase currentShape, Parse[] childParses)
+		private void AddChildNodes(ShapeBase currentShape, IEnumerable<Parse> childParses)
 		{
 			foreach (Parse childParse in childParses)
 			{
@@ -167,44 +168,44 @@ namespace ParseTree
 
 		private void ShowParse()
 		{
-			if (txtInput.Text.Length == 0)
+			if (_txtInput.Text.Length == 0)
 			{
 				return;
 			}
 
 			//prepare the UI
-			txtInput.Enabled = false;
-			btnParse.Enabled = false;
+			_txtInput.Enabled = false;
+			_btnParse.Enabled = false;
 			this.Cursor = Cursors.WaitCursor;
 
-			lithiumControl.NewDiagram();
+			_lithiumControl.NewDiagram();
 
 			//do the parsing
-			if (mParser == null)
+			if (_parser == null)
 			{
-				mParser = new EnglishTreebankParser(mModelPath, true, false);
+				_parser = new EnglishTreebankParser(_modelPath, true, false);
 			}
-			mParse = mParser.DoParse(txtInput.Text);
+			_parse = _parser.DoParse(_txtInput.Text);
 			
-			if (mParse.Type == MaximumEntropyParser.TopNode)
+			if (_parse.Type == MaximumEntropyParser.TopNode)
 			{
-				mParse = mParse.GetChildren()[0];
+				_parse = _parse.GetChildren()[0];
 			}
 
 			//display the parse result
-			ShapeBase root = this.lithiumControl.Root;
-			root.Text = mParse.Type;
+			ShapeBase root = this._lithiumControl.Root;
+			root.Text = _parse.Type;
 			root.Visible = true;
 
-			AddChildNodes(root, mParse.GetChildren());
+			AddChildNodes(root, _parse.GetChildren());
 			root.Expand();
 
-			this.lithiumControl.DrawTree();
+			this._lithiumControl.DrawTree();
 
 			//restore the UI
 			this.Cursor = Cursors.Default;
-			txtInput.Enabled = true;
-			btnParse.Enabled = true;
+			_txtInput.Enabled = true;
+			_btnParse.Enabled = true;
 		}
 
 		private void txtInput_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)

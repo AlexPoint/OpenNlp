@@ -6,10 +6,24 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Chunker
 {
+    /// <summary>
+    /// Abstract class implementing the Dechunk operation which plugs backs
+    /// chunks given a collection of DechunkOperations
+    /// </summary>
     public abstract class Dechunker : IDechunker
     {
+        /// <summary>
+        /// Computes the collection of DechunkOperations to glue back
+        /// the collection of chunks given in input.
+        /// </summary>
         public abstract DechunkOperation[] GetDechunkerOperations(string[] chunks);
 
+        /// <summary>
+        /// Glues back together a collection of chunks
+        /// </summary>
+        /// <param name="chunks">A collection of chunks</param>
+        /// <param name="splitMarker">The marker to insert between chunks</param>
+        /// <returns>The chunks glued together in a string</returns>
         public string Dechunk(string[] chunks, string splitMarker = "")
         {
             DechunkOperation[] operations = GetDechunkerOperations(chunks);

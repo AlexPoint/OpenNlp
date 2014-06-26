@@ -6,13 +6,21 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Tokenize
 {
-    public abstract class Detokenizer:IDetokenizer
+    /// <summary>
+    /// An abstract for Detokenizers implementing the Detokenize method
+    /// gluing back together tokens given a collection of DetokenizationOperations.
+    /// </summary>
+    public abstract class Detokenizer: IDetokenizer
     {
+        /// <summary>
+        /// Computes a collection of detokenization operations given a collection of tokens.
+        /// </summary>
         public abstract DetokenizationOperation[] GetDetokenizationOperations(string[] tokens);
 
         /// <summary>
         /// Plugs back a list of tokens, split from the same sentence with a tokenizer
         /// </summary>
+        /// <param name="tokens">The collection of tokens</param>
         /// <param name="splitMarker">A specific marker to insert between tokens</param>
         public string Detokenize(string[] tokens, string splitMarker = "")
         {

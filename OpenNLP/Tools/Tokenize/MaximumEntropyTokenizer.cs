@@ -148,15 +148,14 @@ namespace OpenNLP.Tools.Tokenize
 			var tokens = new string[tokenSpans.Length];
 			for (int currentToken = 0, tokenCount = tokens.Length; currentToken < tokenCount; currentToken++)
 			{
-				tokens[currentToken] = input.Substring(tokenSpans[currentToken].Start, (tokenSpans[currentToken].End) - (tokenSpans[currentToken].Start));
+				tokens[currentToken] = input.Substring(tokenSpans[currentToken].Start, tokenSpans[currentToken].Length());
 			}
 			return tokens;
 		}
 		
 		/// <summary>
-		/// Constructs a list of Span objects, one for each whitespace
-		/// delimited token. Token strings can be constructed form these
-		/// spans as follows: input.Substring(span.Start, span.End);
+		/// Constructs a list of Span objects, one for each whitespace delimited token.
+		/// Token strings can be constructed form these spans as follows: input.Substring(span.Start, span.Length());
 		/// </summary>
 		/// <param name="input">string to tokenize</param>
 		/// <returns>Array of spans</returns>
@@ -235,7 +234,7 @@ namespace OpenNLP.Tools.Tokenize
 	        foreach (var inputFile in inputFiles)
 	        {
 	            var dataReader = new StreamReader(inputFile);
-	            var eventReader = new TokenEventReader(dataReader);
+	            var eventReader = new TokenEventReader(dataReader, '|');
 
                 trainer.TrainModel(iterations, new TwoPassDataIndexer(eventReader, cut));
 	        }

@@ -36,12 +36,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace OpenNLP.Tools.Tokenize
 {
 	/// <summary>
 	/// Generate event contexts for maxent decisions for tokenization detection.
-	/// This is currently not used.
 	/// </summary>
 	public class TokenEventReader : SharpEntropy.ITrainingEventReader
 	{
@@ -49,12 +49,13 @@ namespace OpenNLP.Tools.Tokenize
 		private readonly StreamReader _streamReader;
         private readonly List<SharpEntropy.TrainingEvent> _eventList = new List<SharpEntropy.TrainingEvent>();
 		private int _currentEvent = 0;
+	    private char _tokenSeparator;
+		
+        // Constructors ---------------
 
-		/// <summary>
-		/// Class constructor.
-		/// </summary>
-		public TokenEventReader(StreamReader dataReader)
+		public TokenEventReader(StreamReader dataReader, char tokenSeparator)
 		{
+		    _tokenSeparator = tokenSeparator;
 			_streamReader = dataReader;
 			string nextLine = _streamReader.ReadLine();
 			if (nextLine != null)
@@ -62,21 +63,28 @@ namespace OpenNLP.Tools.Tokenize
 				AddEvents(nextLine);
 			}
 		}
+
+        // Methods --------------------
 		
 		private void AddEvents(string line)
 		{
-		    string[] spacedTokens = line.Split(' ');
-		    foreach (string buffer in spacedTokens)
+		    string[] wordsWithSeparatorToken = line.Split(' ');
+		    foreach (string wordWithSeparatorToken in wordsWithSeparatorToken)
 		    {
-		        if (MaximumEntropyTokenizer.AlphaNumeric.IsMatch(buffer))
+		        var parts = wordWithSeparatorToken.Split(_tokenSeparator);
+		        var indicesOfSeparators = new List<int>();
+		        for (var i = 1; i < parts.Length; i++)
 		        {
-		            int lastIndex = buffer.Length - 1;
-		            for (int index = 0; index < buffer.Length; index++)
-		            {
-		                string[] context = ContextGenerator.GetContext(new Tuple<string, int>(buffer, index));
-		                var trainingEvent = new SharpEntropy.TrainingEvent(index == lastIndex ? "T" : "F", context);
-		                _eventList.Add(trainingEvent);
-		            }
+		            var indexOfSeparator = parts.Where((p, index) => index < i).Sum(p => p.Length);
+                    indicesOfSeparators.Add(indexOfSeparator);
+		        }
+
+		        var word = string.Join("", parts);
+		        for (int index = 0; index < word.Length; index++)
+		        {
+		            string[] context = ContextGenerator.GetContext(new Tuple<string, int>(word, index));
+		            var trainingEvent = new SharpEntropy.TrainingEvent(indicesOfSeparators.Contains(index) ? "T" : "F", context);
+		            _eventList.Add(trainingEvent);
 		        }
 		    }
 		}

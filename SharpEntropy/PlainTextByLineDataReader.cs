@@ -58,7 +58,7 @@ namespace SharpEntropy
 		private string _nextLine;
 		
 		/// <summary>
-		/// Creates a training data reader for reading text lines from a file or other text stream.
+		/// Creates a training data reader for reading text lines from a file or other text stream
 		/// </summary>
 		/// <param name="dataSource">StreamReader containing the source of the training data</param>
 		public PlainTextByLineDataReader(StreamReader dataSource)

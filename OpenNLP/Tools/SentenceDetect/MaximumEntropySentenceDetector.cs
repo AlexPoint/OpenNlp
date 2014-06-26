@@ -52,12 +52,12 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// <summary>
 		/// The maximum entropy model to use to evaluate contexts.
 		/// </summary>
-		private readonly SharpEntropy.IMaximumEntropyModel _model;
+		private readonly IMaximumEntropyModel _model;
 		
 		/// <summary>
 		/// The feature context generator.
 		/// </summary>
-        private readonly SharpEntropy.IContextGenerator<Tuple<System.Text.StringBuilder, int>> _contextGenerator;
+        private readonly IContextGenerator<Tuple<System.Text.StringBuilder, int>> _contextGenerator;
 		
 		/// <summary>
 		/// The EndOfSentenceScanner to use when scanning for end of
@@ -82,7 +82,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// The MaxentModel which this SentenceDetectorME will use to
 		/// evaluate end-of-sentence decisions.
 		/// </param>
-		public MaximumEntropySentenceDetector(SharpEntropy.IMaximumEntropyModel model):
+		public MaximumEntropySentenceDetector(IMaximumEntropyModel model):
             this(model, new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters()), new DefaultEndOfSentenceScanner())
 		{
             _sentenceProbs = new List<double>(50);
@@ -101,7 +101,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// will use to turn strings into contexts for the model to
 		/// evaluate.
 		/// </param>
-        public MaximumEntropySentenceDetector(SharpEntropy.IMaximumEntropyModel model, SharpEntropy.IContextGenerator<Tuple<System.Text.StringBuilder, int>> contextGenerator):
+        public MaximumEntropySentenceDetector(IMaximumEntropyModel model, IContextGenerator<Tuple<System.Text.StringBuilder, int>> contextGenerator):
             this(model, contextGenerator, new DefaultEndOfSentenceScanner()){}
 		
 		/// <summary> 
@@ -118,7 +118,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// <param name="scanner">the EndOfSentenceScanner which this MaximumEntropySentenceDetector
 		/// will use to locate end of sentence indexes.
 		/// </param>
-        public MaximumEntropySentenceDetector(SharpEntropy.IMaximumEntropyModel model, SharpEntropy.IContextGenerator<Tuple<System.Text.StringBuilder, int>> contextGenerator, IEndOfSentenceScanner scanner)
+        public MaximumEntropySentenceDetector(IMaximumEntropyModel model, IContextGenerator<Tuple<System.Text.StringBuilder, int>> contextGenerator, IEndOfSentenceScanner scanner)
 		{
 			_model = model;
 			_contextGenerator = contextGenerator;
@@ -266,11 +266,18 @@ namespace OpenNLP.Tools.SentenceDetect
 
         // Utilities ----------------------------
 		
-		public static SharpEntropy.GisModel TrainModel(SharpEntropy.ITrainingEventReader eventReader, int iterations, int cut)
+		/// <summary>
+		/// Trains a new model for a sentence detector.
+		/// </summary>
+		/// <param name="eventReader">The event reader</param>
+		/// <param name="iterations">The number of iterations for a same event</param>
+		/// <param name="cut">The minimum nb of occurences to be statistically significant</param>
+		/// <returns>The newly created model</returns>
+		public static GisModel TrainModel(ITrainingEventReader eventReader, int iterations, int cut)
 		{
-			var trainer = new SharpEntropy.GisTrainer();
+			var trainer = new GisTrainer();
 			trainer.TrainModel(eventReader, iterations, cut);
-			return new SharpEntropy.GisModel(trainer);
+			return new GisModel(trainer);
 		}
 		
 		/// <summary>
@@ -280,15 +287,6 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// </summary>
 		public static GisModel TrainModel(string inFile, int iterations, int cut, IEndOfSentenceScanner scanner)
 		{
-			/*using (var streamReader = new StreamReader(inFile))
-			{
-				ITrainingDataReader<string> dataReader = new PlainTextByLineDataReader(streamReader);
-				ITrainingEventReader eventReader = new SentenceDetectionEventReader(dataReader, scanner);
-
-				var trainer = new GisTrainer();
-				trainer.TrainModel(eventReader, iterations, cut);
-				return new GisModel(trainer);
-			}*/
 		    return TrainModel(new List<string>() {inFile}, iterations, cut, scanner);
 		}
 

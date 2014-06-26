@@ -34,8 +34,10 @@
 //Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using SharpEntropy.IO;
 
 namespace OpenNLP.Tools.Coreference.Resolver
 {
@@ -58,114 +60,58 @@ namespace OpenNLP.Tools.Coreference.Resolver
         /// </summary>
 		public const string Default = "default";
 		
-		private static readonly Regex mEndsWithPeriod = new Regex("\\.$", RegexOptions.Compiled);
-		private double mMinimumSimilarityProbability = 0.60;
-		
-		private string mSimilarityCompatible = "sim.compatible";
-		private string mSimilarityIncompatible = "sim.incompatible";
-		private string mSimilarityUnknown = "sim.unknown";
-		
-		private string mNumberCompatible = "num.compatible";
-		private string mNumberIncompatible = "num.incompatible";
-		private string mNumberUnknown = "num.unknown";
-		
-		private string mGenderCompatible = "gen.compatible";
-		private string mGenderIncompatible = "gen.incompatible";
-		private string mGenderUnknown = "gen.unknown";
-		
-		private static bool mDebugOn = false;
-        private static Similarity.ITestSimilarityModel mSimilarityModel = null;
+		private static readonly Regex EndsWithPeriod = new Regex("\\.$", RegexOptions.Compiled);
+	    private const double MinimumSimilarityProbability = 0.60;
 
-		private string mModelName;
-        private SharpEntropy.IMaximumEntropyModel mModel;
-		private double[] mCandidateProbabilities;
-		private int mSameIndex;
-		private ResolverMode mResolverMode;
-		private List<SharpEntropy.TrainingEvent> mEvents;
+	    private const string SimilarityCompatible = "sim.compatible";
+		private const string SimilarityIncompatible = "sim.incompatible";
+		private const string SimilarityUnknown = "sim.unknown";
+		
+		private const string NumberCompatible = "num.compatible";
+	    private const string NumberIncompatible = "num.incompatible";
+	    private const string NumberUnknown = "num.unknown";
 
-        private bool mPreferFirstReferent;
-        private bool mPairedSampleSelection;
-        private bool mUseSameModelForNonRef;
-        private INonReferentialResolver mNonReferentialResolver;
+	    private const string GenderCompatible = "gen.compatible";
+	    private const string GenderIncompatible = "gen.incompatible";
+	    private const string GenderUnknown = "gen.unknown";
 
-        private const string mModelExtension = ".nbin";
+	    private const bool DebugOn = false;
 
-        public static Similarity.ITestSimilarityModel SimilarityModel
-        {
-            get
-            {
-                return mSimilarityModel;
-            }
-            set
-            {
-                mSimilarityModel = value;
-            }
-        }
+		private readonly string _modelName;
+        private readonly SharpEntropy.IMaximumEntropyModel _model;
+		private readonly double[] _candidateProbabilities;
+		private readonly int _sameIndex;
+		private readonly ResolverMode _resolverMode;
+		private readonly List<SharpEntropy.TrainingEvent> _events;
+        
+        private const string ModelExtension = ".nbin";
+
+        public static Similarity.ITestSimilarityModel SimilarityModel { get; set; }
 
 		/// <summary>
         /// When true, this designates that the resolver should use the first referent encountered which it
 		/// more preferable than non-reference.  When false, all non-excluded referents within this resolver's range
 		/// are considered. 
 		/// </summary>
-        protected internal bool PreferFirstReferent
-        {
-            get
-            {
-                return mPreferFirstReferent;
-            }
-            set
-            {
-                mPreferFirstReferent = value;
-            }
-        }
+        protected internal bool PreferFirstReferent { get; set; }
 
 		/// <summary>
         /// When true, this designates that training should consist of a single positive and a single negative example
 		/// (when possible) for each mention. 
 		/// </summary>
-        protected internal bool PairedSampleSelection
-        {
-            get
-            {
-                return mPairedSampleSelection;
-            }
-            set
-            {
-                mPairedSampleSelection = value;
-            }
-        }
+        protected internal bool PairedSampleSelection { get; set; }
 		
 		/// <summary>
         /// When true, this designates that the same maximum entropy model should be used non-reference
 		/// events (the pairing of a mention and the "null" reference) as is used for potentially 
 		/// referential pairs.  When false a seperate model is created for these events.  
 		/// </summary>
-        protected internal bool UseSameModelForNonRef
-        {
-            get
-            {
-                return mUseSameModelForNonRef;
-            }
-            set
-            {
-                mUseSameModelForNonRef = value;
-            }
-        }
+        protected internal bool UseSameModelForNonRef { get; set; }
         
 		/// <summary>
         /// The model for computing non-referential probabilities.
         /// </summary>
-        protected internal INonReferentialResolver NonReferentialResolver
-        {
-            get
-            {
-                return mNonReferentialResolver;
-            }
-            set
-            {
-                mNonReferentialResolver = value;
-            }
-        }
+        protected internal INonReferentialResolver NonReferentialResolver { get; set; }
 		
 		/// <summary>
         /// Creates a maximum-entropy-based resolver which will look the specified number of entities back
@@ -178,7 +124,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		/// </param>
 		protected MaximumEntropyResolver(int numberOfEntitiesBack, bool preferFirstReferent) : base(numberOfEntitiesBack)
 		{
-			mPreferFirstReferent = preferFirstReferent;
+			PreferFirstReferent = preferFirstReferent;
 		}
 		
 		/// <summary>
@@ -206,27 +152,28 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		/// <param name="nonReferentialResolver">
         /// Determines how likly it is that this entity is non-referential.
 		/// </param>
-		protected MaximumEntropyResolver(string modelDirectory, string name, ResolverMode mode, int numberOfEntitiesBack, bool preferFirstReferent, INonReferentialResolver nonReferentialResolver):base(numberOfEntitiesBack)
+		protected MaximumEntropyResolver(string modelDirectory, string name, ResolverMode mode, int numberOfEntitiesBack, bool preferFirstReferent, 
+            INonReferentialResolver nonReferentialResolver): base(numberOfEntitiesBack)
 		{
-			mPreferFirstReferent = preferFirstReferent;
-			mNonReferentialResolver = nonReferentialResolver;
-			mResolverMode = mode;
-			mModelName = modelDirectory + "/" + name;
-			if (mResolverMode == ResolverMode.Test)
+			PreferFirstReferent = preferFirstReferent;
+			NonReferentialResolver = nonReferentialResolver;
+			_resolverMode = mode;
+			_modelName = modelDirectory + "/" + name;
+			if (_resolverMode == ResolverMode.Test)
 			{
-			    mModel = new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(mModelName + mModelExtension));
-				mSameIndex = mModel.GetOutcomeIndex(Same);
+			    _model = new SharpEntropy.GisModel(new BinaryGisModelReader(_modelName + ModelExtension));
+				_sameIndex = _model.GetOutcomeIndex(Same);
 			}
-			else if (mResolverMode == ResolverMode.Train)
+			else if (_resolverMode == ResolverMode.Train)
 			{
-                mEvents = new List<SharpEntropy.TrainingEvent>();
+                _events = new List<SharpEntropy.TrainingEvent>();
 			}
 			else
 			{
-				System.Console.Error.WriteLine("Unknown mode: " + mResolverMode);
+				Console.Error.WriteLine("Unknown mode: " + _resolverMode);
 			}
 			//add one for non-referent possibility
-			mCandidateProbabilities = new double[GetNumberEntitiesBack() + 1];
+			_candidateProbabilities = new double[GetNumberEntitiesBack() + 1];
 		}
 		
 		/// <summary>
@@ -246,28 +193,24 @@ namespace OpenNLP.Tools.Coreference.Resolver
         /// The number of entities back in the text that this resolver will look
 		/// for a referent.
 		/// </param>
-		protected MaximumEntropyResolver(string modelDirectory, string modelName, ResolverMode mode, int numberEntitiesBack) : this(modelDirectory, modelName, mode, numberEntitiesBack, false)
-		{
-		}
+		protected MaximumEntropyResolver(string modelDirectory, string modelName, ResolverMode mode, int numberEntitiesBack): 
+            this(modelDirectory, modelName, mode, numberEntitiesBack, false){}
 
-        protected MaximumEntropyResolver(string modelDirectory, string modelName, ResolverMode mode, int numberEntitiesBack, INonReferentialResolver nonReferentialResolver) : this(modelDirectory, modelName, mode, numberEntitiesBack, false, nonReferentialResolver)
-		{
-		}
+        protected MaximumEntropyResolver(string modelDirectory, string modelName, ResolverMode mode, int numberEntitiesBack, INonReferentialResolver nonReferentialResolver):
+            this(modelDirectory, modelName, mode, numberEntitiesBack, false, nonReferentialResolver){}
 		
-		protected MaximumEntropyResolver(string modelDirectory, string modelName, ResolverMode mode, int numberEntitiesBack, bool preferFirstReferent) : this(modelDirectory, modelName, mode, numberEntitiesBack, preferFirstReferent, new DefaultNonReferentialResolver(modelDirectory, modelName, mode))
-		{
-		}
+		protected MaximumEntropyResolver(string modelDirectory, string modelName, ResolverMode mode, int numberEntitiesBack, bool preferFirstReferent):
+            this(modelDirectory, modelName, mode, numberEntitiesBack, preferFirstReferent, new DefaultNonReferentialResolver(modelDirectory, modelName, mode)){}
 		
-		protected MaximumEntropyResolver(string modelDirectory, string modelName, ResolverMode mode, int numberEntitiesBack, bool preferFirstReferent, double nonReferentialProbability) : this(modelDirectory, modelName, mode, numberEntitiesBack, preferFirstReferent, new FixedNonReferentialResolver(nonReferentialProbability))
-		{
-		}
+		protected MaximumEntropyResolver(string modelDirectory, string modelName, ResolverMode mode, int numberEntitiesBack, bool preferFirstReferent, double nonReferentialProbability):
+            this(modelDirectory, modelName, mode, numberEntitiesBack, preferFirstReferent, new FixedNonReferentialResolver(nonReferentialProbability)){}
 		
         public override DiscourseEntity Resolve(Mention.MentionContext expression, DiscourseModel discourseModel)
 		{
 			DiscourseEntity discourseEntity;
 			int entityIndex = 0;
-			double nonReferentialProbability = mNonReferentialResolver.GetNonReferentialProbability(expression);
-			if (mDebugOn)
+			double nonReferentialProbability = NonReferentialResolver.GetNonReferentialProbability(expression);
+			if (DebugOn)
 			{
 				System.Console.Error.WriteLine(this.ToString() + ".resolve: " + expression.ToText() + " -> " + "null " + nonReferentialProbability);
 			}
@@ -280,10 +223,10 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				}
 				if (IsExcluded(expression, discourseEntity))
 				{
-					mCandidateProbabilities[entityIndex] = 0;
-					if (mDebugOn)
+					_candidateProbabilities[entityIndex] = 0;
+					if (DebugOn)
 					{
-						System.Console.Error.WriteLine("excluded " + this.ToString() + ".resolve: " + expression.ToText() + " -> " + discourseEntity + " " + mCandidateProbabilities[entityIndex]);
+						Console.Error.WriteLine("excluded " + this.ToString() + ".resolve: " + expression.ToText() + " -> " + discourseEntity + " " + _candidateProbabilities[entityIndex]);
 					}
 				}
 				else
@@ -291,30 +234,30 @@ namespace OpenNLP.Tools.Coreference.Resolver
                     string[] features = GetFeatures(expression, discourseEntity).ToArray();
                     try
 					{
-						mCandidateProbabilities[entityIndex] = mModel.Evaluate(features)[mSameIndex];
+						_candidateProbabilities[entityIndex] = _model.Evaluate(features)[_sameIndex];
 					}
-					catch (System.IndexOutOfRangeException e)
+					catch (IndexOutOfRangeException e)
 					{
-						mCandidateProbabilities[entityIndex] = 0;
+						_candidateProbabilities[entityIndex] = 0;
 					}
-					if (mDebugOn)
+					if (DebugOn)
 					{
-						System.Console.Error.WriteLine(this + ".resolve: " + expression.ToText() + " -> " + discourseEntity + " (" + expression.GetGender() + "," + discourseEntity.Gender + ") " + mCandidateProbabilities[entityIndex] + " " + string.Join(",", features)); //SupportClass.CollectionToString(lfeatures));
+						Console.Error.WriteLine(this + ".resolve: " + expression.ToText() + " -> " + discourseEntity + " (" + expression.GetGender() + "," + discourseEntity.Gender + ") " + _candidateProbabilities[entityIndex] + " " + string.Join(",", features)); //SupportClass.CollectionToString(lfeatures));
 					}
 				}
-				if (mPreferFirstReferent && mCandidateProbabilities[entityIndex] > nonReferentialProbability)
+				if (PreferFirstReferent && _candidateProbabilities[entityIndex] > nonReferentialProbability)
 				{
 					entityIndex++; //update for nonRef assignment
 					break;
 				}
 			}
-			mCandidateProbabilities[entityIndex] = nonReferentialProbability;
+			_candidateProbabilities[entityIndex] = nonReferentialProbability;
 			
 			// find max
 			int maximumCandidateIndex = 0;
 			for (int currentCandidate = 1; currentCandidate <= entityIndex; currentCandidate++)
 			{
-				if (mCandidateProbabilities[currentCandidate] > mCandidateProbabilities[maximumCandidateIndex])
+				if (_candidateProbabilities[currentCandidate] > _candidateProbabilities[maximumCandidateIndex])
 				{
 					maximumCandidateIndex = currentCandidate;
 				}
@@ -386,7 +329,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
         public override DiscourseEntity Retain(Mention.MentionContext mention, DiscourseModel discourseModel)
 		{
 			//System.err.println(this+".retain("+ec+") "+mode);
-			if (mResolverMode == ResolverMode.Train)
+			if (_resolverMode == ResolverMode.Train)
 			{
 				DiscourseEntity discourseEntity = null;
 				bool referentFound = false;
@@ -422,30 +365,30 @@ namespace OpenNLP.Tools.Coreference.Resolver
 						List<string> features = GetFeatures(mention, currentDiscourseEntity);
 						
 						//add Event to Model
-						if (mDebugOn)
+						if (DebugOn)
 						{
 							System.Console.Error.WriteLine(this + ".retain: " + mention.Id + " " + mention.ToText() + " -> " + entityMention.Id + " " + currentDiscourseEntity);
 						}
 						if (mention.Id != - 1 && entityMention.Id == mention.Id)
 						{
 							referentFound = true;
-                            mEvents.Add(new SharpEntropy.TrainingEvent(Same, features.ToArray()));
+                            _events.Add(new SharpEntropy.TrainingEvent(Same, features.ToArray()));
 							discourseEntity = currentDiscourseEntity;
 							//System.err.println("MaxentResolver.retain: resolved at "+ei);
 							Distances.Add(entityIndex);
 						}
-						else if (!mPairedSampleSelection || (!nonReferentFound && useAsDifferentExample))
+						else if (!PairedSampleSelection || (!nonReferentFound && useAsDifferentExample))
 						{
 							nonReferentFound = true;
-                            mEvents.Add(new SharpEntropy.TrainingEvent(Diff, features.ToArray()));
+                            _events.Add(new SharpEntropy.TrainingEvent(Diff, features.ToArray()));
 						}
 						//}
 					}
-					if (mPairedSampleSelection && referentFound && nonReferentFound)
+					if (PairedSampleSelection && referentFound && nonReferentFound)
 					{
 						break;
 					}
-					if (mPreferFirstReferent && referentFound)
+					if (PreferFirstReferent && referentFound)
 					{
 						break;
 					}
@@ -453,7 +396,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				// doesn't refer to anything
 				if (hasReferentialCandidate)
 				{
-					mNonReferentialResolver.AddEvent(mention);
+					NonReferentialResolver.AddEvent(mention);
 				}
 				return discourseEntity;
 			}
@@ -497,14 +440,14 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		
 		public override void Train()
 		{
-			if (mResolverMode == ResolverMode.Train)
+			if (_resolverMode == ResolverMode.Train)
 			{
-				if (mDebugOn)
+				if (DebugOn)
 				{
 					System.Console.Error.WriteLine(this.ToString() + " referential");
-                    using (System.IO.StreamWriter writer = new System.IO.StreamWriter(mModelName + ".events", false, System.Text.Encoding.Default))
+                    using (var writer = new System.IO.StreamWriter(_modelName + ".events", false, System.Text.Encoding.Default))
                     {
-                        foreach (SharpEntropy.TrainingEvent e in mEvents)
+                        foreach (SharpEntropy.TrainingEvent e in _events)
                         {
                             writer.Write(e.ToString() + "\n");
                         }
@@ -512,48 +455,48 @@ namespace OpenNLP.Tools.Coreference.Resolver
                     }
 				}
 
-                SharpEntropy.GisTrainer trainer = new SharpEntropy.GisTrainer();
-                trainer.TrainModel(new Util.CollectionEventReader(mEvents), 100, 10);
-                new SharpEntropy.IO.BinaryGisModelWriter().Persist(new SharpEntropy.GisModel(trainer), mModelName + mModelExtension);
+                var trainer = new SharpEntropy.GisTrainer();
+                trainer.TrainModel(new Util.CollectionEventReader(_events), 100, 10);
+                new BinaryGisModelWriter().Persist(new SharpEntropy.GisModel(trainer), _modelName + ModelExtension);
                 
-				mNonReferentialResolver.Train();
+				NonReferentialResolver.Train();
 			}
 		}
 
         private string GetSemanticCompatibilityFeature(Mention.MentionContext entityContext, DiscourseEntity discourseEntity)
 		{
-			if (mSimilarityModel != null)
+			if (SimilarityModel != null)
 			{
 				double best = 0;
                 foreach (Mention.MentionContext checkEntityContext in discourseEntity.Mentions)
 				{
-					double sim = mSimilarityModel.AreCompatible(entityContext, checkEntityContext);
-					if (mDebugOn)
+					double sim = SimilarityModel.AreCompatible(entityContext, checkEntityContext);
+					if (DebugOn)
 					{
-						System.Console.Error.WriteLine("MaxentResolver.GetSemanticCompatibilityFeature: sem-compat " + sim + " " + entityContext.ToText() + " " + checkEntityContext.ToText());
+						Console.Error.WriteLine("MaxentResolver.GetSemanticCompatibilityFeature: sem-compat " + sim + " " + entityContext.ToText() + " " + checkEntityContext.ToText());
 					}
 					if (sim > best)
 					{
 						best = sim;
 					}
 				}
-				if (best > mMinimumSimilarityProbability)
+				if (best > MinimumSimilarityProbability)
 				{
-					return mSimilarityCompatible;
+					return SimilarityCompatible;
 				}
-				else if (best > (1 - mMinimumSimilarityProbability))
+				else if (best > (1 - MinimumSimilarityProbability))
 				{
-					return mSimilarityUnknown;
+					return SimilarityUnknown;
 				}
 				else
 				{
-					return mSimilarityIncompatible;
+					return SimilarityIncompatible;
 				}
 			}
 			else
 			{
-				System.Console.Error.WriteLine("MaxentResolver: Uninitialized Semantic Model");
-				return mSimilarityUnknown;
+				Console.Error.WriteLine("MaxentResolver: Uninitialized Semantic Model");
+				return SimilarityUnknown;
 			}
 		}
 
@@ -563,15 +506,15 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			//System.err.println("getGenderCompatibility: mention="+ec.getGender()+" entity="+eg);
             if (entityGender == Similarity.GenderEnum.Unknown || entityContext.GetGender() == Similarity.GenderEnum.Unknown)
 			{
-				return mGenderUnknown;
+				return GenderUnknown;
 			}
 			else if (entityContext.GetGender() == entityGender)
 			{
-				return mGenderCompatible;
+				return GenderCompatible;
 			}
 			else
 			{
-				return mGenderIncompatible;
+				return GenderIncompatible;
 			}
 		}
 
@@ -580,15 +523,15 @@ namespace OpenNLP.Tools.Coreference.Resolver
             Similarity.NumberEnum entityNumber = discourseEntity.Number;
             if (entityNumber == Similarity.NumberEnum.Unknown || entityContext.GetNumber() == Similarity.NumberEnum.Unknown)
 			{
-				return mNumberUnknown;
+				return NumberUnknown;
 			}
 			else if (entityContext.GetNumber() == entityNumber)
 			{
-				return mNumberCompatible;
+				return NumberCompatible;
 			}
 			else
 			{
-				return mNumberIncompatible;
+				return NumberIncompatible;
 			}
 		}
 		
@@ -604,20 +547,20 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		/// <returns> 
         /// list of features indicating whether the specified mention and the specified entity are compatible.
 		/// </returns>
-        private List<string> GetCompatibilityFeatures(Mention.MentionContext mention, DiscourseEntity entity)
+        private IEnumerable<string> GetCompatibilityFeatures(Mention.MentionContext mention, DiscourseEntity entity)
 		{
-            List<string> compatibilityFeatures = new List<string>();
+            var compatibilityFeatures = new List<string>();
 			string semanticCompatibilityFeature = GetSemanticCompatibilityFeature(mention, entity);
 			compatibilityFeatures.Add(semanticCompatibilityFeature);
 			string genderCompatibilityFeature = GetGenderCompatibilityFeature(mention, entity);
 			compatibilityFeatures.Add(genderCompatibilityFeature);
 			string numberCompatibilityFeature = GetNumberCompatibilityFeature(mention, entity);
 			compatibilityFeatures.Add(numberCompatibilityFeature);
-			if (semanticCompatibilityFeature == mSimilarityCompatible && genderCompatibilityFeature == mGenderCompatible && numberCompatibilityFeature == mNumberCompatible)
+			if (semanticCompatibilityFeature == SimilarityCompatible && genderCompatibilityFeature == GenderCompatible && numberCompatibilityFeature == NumberCompatible)
 			{
 				compatibilityFeatures.Add("all.compatible");
 			}
-			else if (semanticCompatibilityFeature == mSimilarityIncompatible || genderCompatibilityFeature == mGenderIncompatible || numberCompatibilityFeature == mNumberIncompatible)
+			else if (semanticCompatibilityFeature == SimilarityIncompatible || genderCompatibilityFeature == GenderIncompatible || numberCompatibilityFeature == NumberIncompatible)
 			{
 				compatibilityFeatures.Add("some.incompatible");
 			}
@@ -635,11 +578,11 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		/// </returns>
         public static List<string> GetContextFeatures(Mention.MentionContext mention)
 		{
-            List<string> features = new List<string>();
+            var features = new List<string>();
 			if (mention.PreviousToken != null)
 			{
 				features.Add("pt=" + mention.PreviousToken.SyntacticType);
-				features.Add("pw=" + mention.PreviousToken.ToString());
+				features.Add("pw=" + mention.PreviousToken);
 			}
 			else
 			{
@@ -649,7 +592,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			if (mention.NextToken != null)
 			{
 				features.Add("nt=" + mention.NextToken.SyntacticType);
-				features.Add("nw=" + mention.NextToken.ToString());
+				features.Add("nw=" + mention.NextToken);
 			}
 			else
 			{
@@ -659,7 +602,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			if (mention.NextTokenBasal != null)
 			{
 				features.Add("bnt=" + mention.NextTokenBasal.SyntacticType);
-				features.Add("bnw=" + mention.NextTokenBasal.ToString());
+				features.Add("bnw=" + mention.NextTokenBasal);
 			}
 			else
 			{
@@ -759,7 +702,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		/// </returns>
         protected internal virtual List<string> GetDistanceFeatures(Mention.MentionContext mention, DiscourseEntity entity)
 		{
-            List<string> features = new List<string>();
+            var features = new List<string>();
             Mention.MentionContext currentEntityContext = entity.LastExtent;
 			int entityDistance = mention.NounPhraseDocumentIndex - currentEntityContext.NounPhraseDocumentIndex;
 			int sentenceDistance = mention.SentenceNumber - currentEntityContext.SentenceNumber;
@@ -785,7 +728,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		
 		private Dictionary<string, string> GetPronounFeatureMap(string pronoun)
 		{
-            Dictionary<string, string> pronounMap = new Dictionary<string, string>();
+            var pronounMap = new Dictionary<string, string>();
 			if (Linker.MalePronounPattern.IsMatch(pronoun))
 			{
 				pronounMap["gender"] = "male";
@@ -1018,21 +961,21 @@ namespace OpenNLP.Tools.Coreference.Resolver
 
         private string ExcludedTheMentionString(Mention.MentionContext entityContext)
 		{
-			System.Text.StringBuilder output = new System.Text.StringBuilder();
+			var output = new StringBuilder();
 			bool first = true;
 			object[] mentionTokens = entityContext.Tokens;
-			for (int tokenIndex = 0; tokenIndex < mentionTokens.Length; tokenIndex++)
+			foreach (object tokenObj in mentionTokens)
 			{
-				string token = mentionTokens[tokenIndex].ToString();
-				if (token != "the" && token != "The" && token != "THE")
-				{
-					if (!first)
-					{
-						output.Append(" ");
-					}
-					output.Append(token);
-					first = false;
-				}
+			    string token = tokenObj.ToString();
+			    if (token != "the" && token != "The" && token != "THE")
+			    {
+			        if (!first)
+			        {
+			            output.Append(" ");
+			        }
+			        output.Append(token);
+			        first = false;
+			    }
 			}
 			return output.ToString();
 		}
@@ -1113,10 +1056,10 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		/// </returns>
         public static List<string> GetWordFeatures(Mention.IParse token)
 		{
-            List<string> wordFeatures = new List<string>();
+            var wordFeatures = new List<string>();
 			string word = token.ToString().ToLower();
 			string wordFeature = string.Empty;
-			if (mEndsWithPeriod.IsMatch(word))
+			if (EndsWithPeriod.IsMatch(word))
 			{
                 wordFeature = @",endWithPeriod";
             }

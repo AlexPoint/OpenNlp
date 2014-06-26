@@ -35,8 +35,10 @@
 
 using System;
 //UPGRADE_TODO: The type 'java.util.regex.Pattern' could not be found. If it was not included in the conversion, there may be compiler issues. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1262'"
+using System.Collections;
+using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
-using DiscourseEntity = OpenNLP.Tools.Coreference.DiscourseEntity;
 using MentionContext = OpenNLP.Tools.Coreference.Mention.MentionContext;
 using System.Collections.Generic;
 namespace OpenNLP.Tools.Coreference.Resolver
@@ -47,26 +49,26 @@ namespace OpenNLP.Tools.Coreference.Resolver
 	{
 		
 		//UPGRADE_NOTE: Final was removed from the declaration of 'initialCaps '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-		private static readonly Regex initialCaps = new Regex("^[A-Z]", RegexOptions.Compiled);
-		private static System.Collections.IDictionary acroMap;
-		private static bool acroMapLoaded = false;
+		private static readonly Regex InitialCaps = new Regex("^[A-Z]", RegexOptions.Compiled);
+		private static IDictionary _acroMap;
+		private static bool _acroMapLoaded = false;
 		
 		public ProperNounResolver(string projectName, ResolverMode mode):base(projectName, "pnmodel", mode, 500)
 		{
-			if (!acroMapLoaded)
+			if (!_acroMapLoaded)
 			{
 				initAcronyms(projectName + "/acronyms");
-				acroMapLoaded = true;
+				_acroMapLoaded = true;
 			}
 			ShowExclusions = false;
 		}
 		
 		public ProperNounResolver(string projectName, ResolverMode mode, INonReferentialResolver nonReferentialResolver):base(projectName, "pnmodel", mode, 500, nonReferentialResolver)
 		{
-			if (!acroMapLoaded)
+			if (!_acroMapLoaded)
 			{
 				initAcronyms(projectName + "/acronyms");
-				acroMapLoaded = true;
+				_acroMapLoaded = true;
 			}
 			ShowExclusions = false;
 		}
@@ -79,10 +81,10 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		private void  initAcronyms(string name)
 		{
 			//UPGRADE_TODO: Class 'java.util.HashMap' was converted to 'System.Collections.Hashtable' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073_javautilHashMap'"
-			acroMap = new System.Collections.Hashtable(15000);
+			_acroMap = new Hashtable(15000);
 			try
 			{
-				System.IO.StreamReader str;
+				StreamReader str;
 				//if (MaxentResolver.loadAsResource())
 				//{
 					//UPGRADE_TODO: The differences in the expected value  of parameters for constructor 'java.io.BufferedReader.BufferedReader'  may cause compilation errors.  "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1092'"
@@ -95,37 +97,37 @@ namespace OpenNLP.Tools.Coreference.Resolver
 					//UPGRADE_TODO: The differences in the expected value  of parameters for constructor 'java.io.BufferedReader.BufferedReader'  may cause compilation errors.  "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1092'"
 					//UPGRADE_WARNING: At least one expression was used more than once in the target code. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1181'"
 					//UPGRADE_TODO: Constructor 'java.io.FileReader.FileReader' was converted to 'System.IO.StreamReader' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073'"
-					str = new System.IO.StreamReader(new System.IO.StreamReader(name, System.Text.Encoding.Default).BaseStream, new System.IO.StreamReader(name, System.Text.Encoding.Default).CurrentEncoding);
+					str = new StreamReader(new StreamReader(name, Encoding.Default).BaseStream, new StreamReader(name, Encoding.Default).CurrentEncoding);
 				//}
 				//System.err.println("Reading acronyms database: " + file + " ");
 				string line;
 				while (null != (line = str.ReadLine()))
 				{
-					Util.StringTokenizer st = new Util.StringTokenizer(line, "\t");
+					var st = new Util.StringTokenizer(line, "\t");
 					string acro = st.NextToken();
 					string full = st.NextToken();
-					Util.Set<string> exSet = (Util.Set<string>) acroMap[acro];
+					var exSet = (Util.Set<string>) _acroMap[acro];
 					if (exSet == null)
 					{
 						//UPGRADE_TODO: Class 'java.util.HashSet' was converted to 'SupportClass.HashSetSupport' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073_javautilHashSet'"
 						exSet = new Util.HashSet<string>();
-						acroMap[acro] = exSet;
+						_acroMap[acro] = exSet;
 					}
 					exSet.Add(full);
-					exSet = (Util.Set<string>) acroMap[full];
+					exSet = (Util.Set<string>) _acroMap[full];
 					if (exSet == null)
 					{
 						//UPGRADE_TODO: Class 'java.util.HashSet' was converted to 'SupportClass.HashSetSupport' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073_javautilHashSet'"
 						exSet = new Util.HashSet<string>();
-						acroMap[full] = exSet;
+						_acroMap[full] = exSet;
 					}
 					exSet.Add(acro);
 				}
 			}
-			catch (System.IO.IOException e)
+			catch (IOException e)
 			{
 				//UPGRADE_TODO: The equivalent in .NET for method 'java.lang.Throwable.toString' may return a different value. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1043'"
-				System.Console.Error.WriteLine("ProperNounResolver.initAcronyms: Acronym Database not found: " + e);
+				Console.Error.WriteLine("ProperNounResolver.initAcronyms: Acronym Database not found: " + e);
 			}
 		}
 		
@@ -135,7 +137,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
             {
 				//use first extent which is propername
 				string xecHeadTag = xec.HeadTokenTag;
-				if (xecHeadTag.StartsWith("NNP") || initialCaps.IsMatch(xec.HeadTokenText))
+				if (xecHeadTag.StartsWith("NNP") || InitialCaps.IsMatch(xec.HeadTokenText))
 				{
 					return xec;
 				}
@@ -146,7 +148,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		
 		private bool isAcronym(string ecStrip, string xecStrip)
 		{
-			Util.Set<string> exSet = (Util.Set<string>) acroMap[ecStrip];
+			var exSet = (Util.Set<string>) _acroMap[ecStrip];
 			if (exSet != null && exSet.Contains(xecStrip))
 			{
 				return true;
@@ -163,9 +165,8 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			{
 				if (isAcronym(ecStrip, xecStrip))
 				{
-                    List<string> features = new List<string>(1);
-					features.Add("knownAcronym");
-					return features;
+                    var features = new List<string>(1) {"knownAcronym"};
+				    return features;
 				}
 			}
 			return new List<string>();

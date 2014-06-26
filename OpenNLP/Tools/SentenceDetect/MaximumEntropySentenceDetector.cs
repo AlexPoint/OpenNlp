@@ -280,7 +280,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// </summary>
 		public static GisModel TrainModel(string inFile, int iterations, int cut, IEndOfSentenceScanner scanner)
 		{
-			using (var streamReader = new StreamReader(inFile))
+			/*using (var streamReader = new StreamReader(inFile))
 			{
 				ITrainingDataReader<string> dataReader = new PlainTextByLineDataReader(streamReader);
 				ITrainingEventReader eventReader = new SentenceDetectionEventReader(dataReader, scanner);
@@ -288,8 +288,27 @@ namespace OpenNLP.Tools.SentenceDetect
 				var trainer = new GisTrainer();
 				trainer.TrainModel(eventReader, iterations, cut);
 				return new GisModel(trainer);
-			}
+			}*/
+		    return TrainModel(new List<string>() {inFile}, iterations, cut, scanner);
 		}
+
+        public static GisModel TrainModel(IEnumerable<string> files, int iterations, int cut, IEndOfSentenceScanner scanner)
+        {
+            var trainer = new GisTrainer();
+
+            foreach (var file in files)
+            {
+                using (var streamReader = new StreamReader(file))
+                {
+                    ITrainingDataReader<string> dataReader = new PlainTextByLineDataReader(streamReader);
+                    ITrainingEventReader eventReader = new SentenceDetectionEventReader(dataReader, scanner);
+
+                    trainer.TrainModel(eventReader, iterations, cut);
+                }
+            }
+
+            return new GisModel(trainer);
+        }
 		
 	}
 }

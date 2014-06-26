@@ -126,17 +126,17 @@ namespace OpenNLP.Tools.SentenceDetect
                 var pair = new Tuple<StringBuilder, int>(buffer, candidate);
 				string type = (candidate == sentenceEndPosition) ? "T" : "F";
 				var sentenceEvent = new SentenceDetectionEvent(type, _contextGenerator.GetContext(pair));
-				
-				if (null != _tail)
+
+                if (_tail != null)
 				{
 					_tail.NextEvent = sentenceEvent;
 					_tail = sentenceEvent;
 				}
-				else if (null == _head)
+                else if (_head == null)
 				{
 					_head = sentenceEvent;
 				}
-				else if (null == _head.NextEvent)
+				else if (_head.NextEvent == null)
 				{
 					_head.NextEvent = _tail = sentenceEvent;
 				}

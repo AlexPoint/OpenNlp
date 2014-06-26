@@ -52,14 +52,14 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		{
 			ShowExclusions = false;
 			//predicativePattern = Pattern.compile("^(,|am|are|is|was|were|--)$");
-			predicativePattern = new Regex("^(,|--)$");
+			predicativePattern = new Regex("^(,|--)$", RegexOptions.Compiled);
 		}
 
         public IsAResolver(string projectName, ResolverMode mode, INonReferentialResolver nonReferentialResolver) : base(projectName, "/imodel", mode, 20, nonReferentialResolver)
 		{
 			ShowExclusions = false;
 			//predicativePattern = Pattern.compile("^(,|am|are|is|was|were|--)$");
-            predicativePattern = new Regex("^(,|--)$");
+            predicativePattern = new Regex("^(,|--)$", RegexOptions.Compiled);
 		}
 		
 		public override bool CanResolve(MentionContext context)

@@ -47,7 +47,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 	{
 		
 		//UPGRADE_NOTE: Final was removed from the declaration of 'initialCaps '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-		private static readonly Regex initialCaps = new Regex("^[A-Z]");
+		private static readonly Regex initialCaps = new Regex("^[A-Z]", RegexOptions.Compiled);
 		private static System.Collections.IDictionary acroMap;
 		private static bool acroMapLoaded = false;
 		

@@ -58,7 +58,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
         /// </summary>
 		public const string Default = "default";
 		
-		private static readonly Regex mEndsWithPeriod = new Regex("\\.$");
+		private static readonly Regex mEndsWithPeriod = new Regex("\\.$", RegexOptions.Compiled);
 		private double mMinimumSimilarityProbability = 0.60;
 		
 		private string mSimilarityCompatible = "sim.compatible";

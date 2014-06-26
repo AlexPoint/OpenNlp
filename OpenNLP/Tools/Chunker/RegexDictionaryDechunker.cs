@@ -21,13 +21,13 @@ namespace OpenNLP.Tools.Chunker
             _regexToDechunkOperation = new Dictionary<Regex, DechunkOperation>()
             {
                 // starts with punctuation, apostrophe, ), ] or € symbol --> merge to left
-                {new Regex(@"^[\.,\!\?;\)\]'€]+"), DechunkOperation.MERGE_TO_LEFT},
+                {new Regex(@"^[\.,\!\?;\)\]'€]+", RegexOptions.Compiled), DechunkOperation.MERGE_TO_LEFT},
                 // starts with (, [ r $ --> merge to right
-                {new Regex(@"^[\(\[$]+"), DechunkOperation.MERGE_TO_RIGHT},
+                {new Regex(@"^[\(\[$]+", RegexOptions.Compiled), DechunkOperation.MERGE_TO_RIGHT},
                 // behavior before/after " depends on the " occurences before/after
-                {new Regex(@"^\""+$"), DechunkOperation.RIGHT_LEFT_MATCHING},
+                {new Regex(@"^\""+$", RegexOptions.Compiled), DechunkOperation.RIGHT_LEFT_MATCHING},
                 // '-' --> merge both only if two words on both sides
-                {new Regex(@"^-$"), DechunkOperation.MERGE_BOTH_IF_SURROUNDED_BY_WORDS},
+                {new Regex(@"^-$", RegexOptions.Compiled), DechunkOperation.MERGE_BOTH_IF_SURROUNDED_BY_WORDS},
             };
         }
 
@@ -40,8 +40,8 @@ namespace OpenNLP.Tools.Chunker
 
         // Methods ----------------------------------------------------
 
-        private static readonly Regex EndByWordRegex = new Regex(@"\w+$");
-        private static readonly Regex StartByWordRegex = new Regex(@"^\w+");
+        private static readonly Regex EndByWordRegex = new Regex(@"\w+$", RegexOptions.Compiled);
+        private static readonly Regex StartByWordRegex = new Regex(@"^\w+", RegexOptions.Compiled);
 
 
         public override DechunkOperation[] GetDechunkerOperations(string[] chunks)

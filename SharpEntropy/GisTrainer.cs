@@ -781,18 +781,21 @@ namespace SharpEntropy
 		/// </param>
 		public void GetPredicateData(string predicateLabel, int[] featureCounts, double[] outcomeSums)
 		{
-			PatternedPredicate predicate = (PatternedPredicate)mPredicates[predicateLabel];
-			if (predicate != null)
-			{
-				int[] activeOutcomes = mOutcomePatterns[predicate.OutcomePattern];
-					
-				for (int currentActiveOutcome = 1; currentActiveOutcome < activeOutcomes.Length; currentActiveOutcome++)
-				{
-					int outcomeIndex = activeOutcomes[currentActiveOutcome];
-					featureCounts[outcomeIndex]++;
-					outcomeSums[outcomeIndex] += predicate.GetParameter(currentActiveOutcome - 1);
-				}
-			}
+            if (mPredicates.ContainsKey(predicateLabel))
+            {
+                PatternedPredicate predicate = mPredicates[predicateLabel];
+                if (predicate != null)
+                {
+                    int[] activeOutcomes = mOutcomePatterns[predicate.OutcomePattern];
+
+                    for (int currentActiveOutcome = 1; currentActiveOutcome < activeOutcomes.Length; currentActiveOutcome++)
+                    {
+                        int outcomeIndex = activeOutcomes[currentActiveOutcome];
+                        featureCounts[outcomeIndex]++;
+                        outcomeSums[outcomeIndex] += predicate.GetParameter(currentActiveOutcome - 1);
+                    }
+                } 
+            }
 		}
 		
 

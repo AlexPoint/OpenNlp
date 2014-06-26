@@ -78,10 +78,9 @@ namespace SharpEntropy
 		/// </param>
 		public TwoPassDataIndexer(ITrainingEventReader eventReader, int cutoff)
 		{
-            Dictionary<string, int> predicateIndex;
-			List<ComparableEvent> eventsToCompare;
+		    List<ComparableEvent> eventsToCompare;
 
-            predicateIndex = new Dictionary<string, int>();
+            var predicateIndex = new Dictionary<string, int>();
 			//NotifyProgress("Indexing events using cutoff of " + cutoff + "\n");
 			
 			//NotifyProgress("\tComputing event counts...  ");
@@ -228,7 +227,7 @@ namespace SharpEntropy
 
 		public FileEventReader(string fileName)
 		{
-			mReader = new StreamReader(fileName, System.Text.Encoding.UTF7);
+			mReader = new StreamReader(fileName, Encoding.UTF7);
 			mWhitespace = new char[] {'\t', '\n', '\r', ' '};
 		}
 		

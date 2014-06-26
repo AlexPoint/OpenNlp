@@ -37,6 +37,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using SharpEntropy;
 
 namespace OpenNLP.Tools.Tokenize
 {
@@ -210,24 +211,35 @@ namespace OpenNLP.Tools.Tokenize
 
 
         // Utilities --------------------------------------------
-
-		private static void Train(SharpEntropy.ITrainingEventReader eventReader, string outputFilename)
-		{
-			var trainer = new SharpEntropy.GisTrainer(0.1);
-			trainer.TrainModel(100, new SharpEntropy.TwoPassDataIndexer(eventReader, 5));
-			var tokenizeModel = new SharpEntropy.GisModel(trainer);
-			new SharpEntropy.IO.BinaryGisModelWriter().Persist(tokenizeModel, outputFilename);
-		}
-		
+        
         /// <summary>
         /// Trains a tokenizer model from the "events" in the input file
         /// and write the resulting gis model in the ouput file (as binary)
         /// </summary>
-		public static void Train(string input, string output)
-		{
-			var dataReader = new StreamReader(new FileInfo(input).FullName);
-			SharpEntropy.ITrainingEventReader eventReader = new TokenEventReader(dataReader);
-			Train(eventReader, output);
-		}		
+		public static GisModel Train(string input, int iterations, int cut)
+        {
+            return Train(new List<string>() {input}, iterations, cut);
+        }
+
+	    /// <summary>
+	    /// Trains a tokenizer model from input files well formatted for
+	    /// a token event reader.
+	    /// </summary>
+	    /// <param name="inputFiles">The collection of training input files</param>
+	    /// <param name="iterations">The number of iterations to run when training the model</param>
+	    /// <param name="cut">The minimum nb of occurences for statistical relevancy in the trained model</param>
+	    /// <returns>The freshly trained GisModel</returns>
+	    public static GisModel Train(IEnumerable<string> inputFiles, int iterations, int cut)
+	    {
+	        var trainer = new GisTrainer(0.1);
+	        foreach (var inputFile in inputFiles)
+	        {
+	            var dataReader = new StreamReader(inputFile);
+	            var eventReader = new TokenEventReader(dataReader);
+
+                trainer.TrainModel(iterations, new TwoPassDataIndexer(eventReader, cut));
+	        }
+            return new GisModel(trainer);
+	    }
 	}
 }

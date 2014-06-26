@@ -267,20 +267,6 @@ namespace OpenNLP.Tools.SentenceDetect
         // Utilities ----------------------------
 		
 		/// <summary>
-		/// Trains a new model for a sentence detector.
-		/// </summary>
-		/// <param name="eventReader">The event reader</param>
-		/// <param name="iterations">The number of iterations for a same event</param>
-		/// <param name="cut">The minimum nb of occurences to be statistically significant</param>
-		/// <returns>The newly created model</returns>
-		public static GisModel TrainModel(ITrainingEventReader eventReader, int iterations, int cut)
-		{
-			var trainer = new GisTrainer();
-			trainer.TrainModel(eventReader, iterations, cut);
-			return new GisModel(trainer);
-		}
-		
-		/// <summary>
 		/// Use this training method if you wish to supply an end of
 		/// sentence scanner which provides a different set of ending chars
 		/// other than the default ones. They are "\\.|!|\\?|\\\"|\\)".

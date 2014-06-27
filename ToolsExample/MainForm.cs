@@ -13,23 +13,23 @@ namespace ToolsExample
 	/// <summary>
 	/// Summary description for Form1.
 	/// </summary>
-	public class MainForm : System.Windows.Forms.Form
+	public class MainForm : Form
 	{
-		private System.Windows.Forms.Button btnParse;
-		private System.Windows.Forms.Button btnPOSTag;
-		private System.Windows.Forms.Button btnChunk;
-		private System.Windows.Forms.Button btnTokenize;
-		private System.Windows.Forms.Button btnNameFind;
+		private Button btnParse;
+		private Button btnPOSTag;
+		private Button btnChunk;
+		private Button btnTokenize;
+		private Button btnNameFind;
         private Button btnGender;
         private Button btnSimilarity;
         private Button btnCoreference;
-		private System.Windows.Forms.TextBox txtOut;
-		private System.Windows.Forms.Button btnSplit;
-		private System.Windows.Forms.TextBox txtIn;
+		private TextBox txtOut;
+		private Button btnSplit;
+		private TextBox txtIn;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.Container components = null;
+		private Container components = null;
 
 		private string mModelPath;
 

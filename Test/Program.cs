@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -30,7 +31,7 @@ namespace Test
             var result = detokenizer.Detokenize(tokens.ToArray());
             Console.WriteLine(result);*/
 
-            // train model file
+            /*// train model file
             var inputFilePath = currentDirectory + "Input/sentences.train";
             var outputFilePath = currentDirectory + "Output/" + Path.GetFileNameWithoutExtension(inputFilePath) + ".nbin";
             var iterations = 100;
@@ -40,7 +41,15 @@ namespace Test
             var model = MaximumEntropySentenceDetector.TrainModel(inputFilePath, iterations, cut, endOfSentenceScanner);
             Console.WriteLine("Writing output file '{0}'...", outputFilePath);
             new BinaryGisModelWriter().Persist(model, outputFilePath);
-            Console.WriteLine("Output file written.");
+            Console.WriteLine("Output file written.");*/
+
+            // tokenize tests
+            var modelPath = currentDirectory + "../Resources/Models/";
+            var tokenizer = new EnglishMaximumEntropyTokenizer(modelPath + "EnglishTok.nbin");
+
+            var input = "It was built of a bright brick throughout; its skyline was fantastic, and even its ground plan was wild.";
+            var tokens = tokenizer.Tokenize(input);
+            Console.WriteLine(string.Join(" | ", tokens));
 
             Console.WriteLine("OK");
             Console.ReadKey();

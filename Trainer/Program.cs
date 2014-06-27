@@ -18,22 +18,19 @@ namespace Trainer
         {
             var tokenizeTrainingFileDirectory = currentDirectory + "Input/Tokenize/";
             // train tokenizer
-            var iterations = 50;
-            var cut = 2;
+            var iterations = 10;
+            var cut = 1;
             var allTrainingFiles = Directory.GetFiles(tokenizeTrainingFileDirectory);
 
             Console.WriteLine("Starting training...");
             var model = MaximumEntropyTokenizer.Train(allTrainingFiles, iterations, cut);
 
+            // tests
+            Console.WriteLine("Running tests...");
             var tokenizer = new MaximumEntropyTokenizer(model);
             var tests = new List<string>()
             {
-                "Dealers said the day's action was featureless outside some response to sterling's early weakness against the mark, " +
-                "and fears that Wall Street might open lower after its strong leap forward Thursday.",
-                "They added that market-makers were largely sidelined after aggressively supporting the market Thursday in their quest to cover internal shortages of FT-SE 100 shares.",
-                "Interest may remain limited into tomorrow's U.K. trade figures, which the market will be watching closely " +
-                "to see if there is any improvement after disappointing numbers in the previous two months.",
-                "The key corporate news of the day was that British Airways decided to withdraw from a management-led bid for UAL Corp., the parent of United Airlines."
+                "It was built of a bright brick throughout; its skyline was fantastic, and even its ground plan was wild.",
             };
             foreach (var test in tests)
             {
@@ -41,6 +38,12 @@ namespace Trainer
                 var tokens = tokenizer.Tokenize(test);
                 Console.WriteLine(string.Join("|", tokens));
             }
+
+            // Persisting model
+            Console.WriteLine("Persisting model");
+            var outputFilePath = currentDirectory + "Output/Tokenize.nbin";
+            Console.WriteLine("Persisting model in file '{0}'", outputFilePath);
+            new BinaryGisModelWriter().Persist(model, outputFilePath);
 
             Console.WriteLine("OK");
             Console.ReadKey();

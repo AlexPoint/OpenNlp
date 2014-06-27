@@ -48,7 +48,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Input\SentenceDetection\" />
+    <Folder Include="Input\" />
     <Folder Include="Output\SentenceDetection\" />
   </ItemGroup>
   <ItemGroup>

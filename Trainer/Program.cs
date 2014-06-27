@@ -21,9 +21,61 @@ namespace Trainer
             // train tokenizer
             const char splitMarker = '|';
 
-            foreach (var iterations in new List<int>(){1,5,10,20})
+            var iterations = 20;
+            var cut = 1;
+            var allTrainingFiles = Directory.GetFiles(tokenizeTrainingFileDirectory);
+
+            Console.WriteLine("Starting training...");
+            var model = MaximumEntropyTokenizer.Train(allTrainingFiles, iterations, cut);
+            var tokenizer = new MaximumEntropyTokenizer(model);
+
+            // test data
+            var trainingLines = new List<string>();
+            foreach (var trainingFile in allTrainingFiles)
             {
-                foreach (var cut in new List<int>(){1,2,5})
+                trainingLines.AddRange(File.ReadAllLines(trainingFile));
+            }
+            var testData = new List<TokenizerTestData>();
+            foreach (var trainingLine in trainingLines)
+            {
+                var testDataPoint = new TokenizerTestData(trainingLine, splitMarker.ToString());
+                testData.Add(testDataPoint);
+            }
+            var results = tokenizer.RunAgainstTestData(testData);
+            Console.WriteLine("Accuracy of model iteration={0}, cut={1}: {2}", iterations, cut, results.GetAccuracy());
+
+            /*// tests
+            Console.WriteLine("Running tests...");
+            var tokenizer = new MaximumEntropyTokenizer(model);
+            var tests = new List<string>()
+            {
+                "It was built of a bright brick throughout; its skyline was fantastic, and even its ground plan was wild.",
+            };
+            foreach (var test in tests)
+            {
+                Console.WriteLine(test);
+                var tokens = tokenizer.Tokenize(test);
+                Console.WriteLine(string.Join("|", tokens));
+            }*/
+
+            // Persisting model
+            var outputFilePath = CurrentDirectory + "Output/Tokenize.nbin";
+            Console.WriteLine("Persisting model in file '{0}'", outputFilePath);
+            new BinaryGisModelWriter().Persist(model, outputFilePath);
+
+            Console.WriteLine("OK");
+            Console.ReadKey();
+        }
+
+        private static void OptimizeTokenizerTraining()
+        {
+            var tokenizeTrainingFileDirectory = CurrentDirectory + "Input/Tokenize/";
+            // train tokenizer
+            const char splitMarker = '|';
+
+            foreach (var iterations in new List<int>() { 1, 5, 10, 20 })
+            {
+                foreach (var cut in new List<int>() { 1, 2, 5 })
                 {
                     //var iterations = 10;
                     //var cut = 1;
@@ -49,29 +101,8 @@ namespace Trainer
                     Console.WriteLine("Accuracy of model iteration={0}, cut={1}: {2}", iterations, cut, results.GetAccuracy());
                 }
             }
-
-            /*// tests
-            Console.WriteLine("Running tests...");
-            var tokenizer = new MaximumEntropyTokenizer(model);
-            var tests = new List<string>()
-            {
-                "It was built of a bright brick throughout; its skyline was fantastic, and even its ground plan was wild.",
-            };
-            foreach (var test in tests)
-            {
-                Console.WriteLine(test);
-                var tokens = tokenizer.Tokenize(test);
-                Console.WriteLine(string.Join("|", tokens));
-            }*/
-
-            // Persisting model
-            /*var outputFilePath = currentDirectory + "Output/Tokenize.nbin";
-            Console.WriteLine("Persisting model in file '{0}'", outputFilePath);
-            new BinaryGisModelWriter().Persist(model, outputFilePath);*/
-
-            Console.WriteLine("OK");
-            Console.ReadKey();
         }
+
 
         private static void OptimizeSentenceDetectionTraining()
         {

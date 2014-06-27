@@ -6,26 +6,51 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenNLP.Tools.SentenceDetect;
 using OpenNLP.Tools.Tokenize;
+using OpenNLP.Tools.Util;
 using SharpEntropy.IO;
 
 namespace Trainer
 {
     class Program
     {
-        private static readonly string currentDirectory = Environment.CurrentDirectory + "/../../";
+        private static readonly string CurrentDirectory = Environment.CurrentDirectory + "/../../";
 
         static void Main(string[] args)
         {
-            var tokenizeTrainingFileDirectory = currentDirectory + "Input/Tokenize/";
+            var tokenizeTrainingFileDirectory = CurrentDirectory + "Input/Tokenize/";
             // train tokenizer
-            var iterations = 10;
-            var cut = 1;
-            var allTrainingFiles = Directory.GetFiles(tokenizeTrainingFileDirectory);
+            const char splitMarker = '|';
 
-            Console.WriteLine("Starting training...");
-            var model = MaximumEntropyTokenizer.Train(allTrainingFiles, iterations, cut);
+            foreach (var iterations in new List<int>(){1,5,10,20})
+            {
+                foreach (var cut in new List<int>(){1,2,5})
+                {
+                    //var iterations = 10;
+                    //var cut = 1;
+                    var allTrainingFiles = Directory.GetFiles(tokenizeTrainingFileDirectory);
 
-            // tests
+                    Console.WriteLine("Starting training...");
+                    var model = MaximumEntropyTokenizer.Train(allTrainingFiles, iterations, cut);
+                    var tokenizer = new MaximumEntropyTokenizer(model);
+
+                    // test data
+                    var trainingLines = new List<string>();
+                    foreach (var trainingFile in allTrainingFiles)
+                    {
+                        trainingLines.AddRange(File.ReadAllLines(trainingFile));
+                    }
+                    var testData = new List<TokenizerTestData>();
+                    foreach (var trainingLine in trainingLines)
+                    {
+                        var testDataPoint = new TokenizerTestData(trainingLine, splitMarker.ToString());
+                        testData.Add(testDataPoint);
+                    }
+                    var results = tokenizer.RunAgainstTestData(testData);
+                    Console.WriteLine("Accuracy of model iteration={0}, cut={1}: {2}", iterations, cut, results.GetAccuracy());
+                }
+            }
+
+            /*// tests
             Console.WriteLine("Running tests...");
             var tokenizer = new MaximumEntropyTokenizer(model);
             var tests = new List<string>()
@@ -37,13 +62,12 @@ namespace Trainer
                 Console.WriteLine(test);
                 var tokens = tokenizer.Tokenize(test);
                 Console.WriteLine(string.Join("|", tokens));
-            }
+            }*/
 
             // Persisting model
-            Console.WriteLine("Persisting model");
-            var outputFilePath = currentDirectory + "Output/Tokenize.nbin";
+            /*var outputFilePath = currentDirectory + "Output/Tokenize.nbin";
             Console.WriteLine("Persisting model in file '{0}'", outputFilePath);
-            new BinaryGisModelWriter().Persist(model, outputFilePath);
+            new BinaryGisModelWriter().Persist(model, outputFilePath);*/
 
             Console.WriteLine("OK");
             Console.ReadKey();
@@ -52,7 +76,7 @@ namespace Trainer
         private static void OptimizeSentenceDetectionTraining()
         {
             // all directories in Input folder
-            var inputFolderPath = currentDirectory + "Input/";
+            var inputFolderPath = CurrentDirectory + "Input/";
             var allDirectories = Directory.GetDirectories(inputFolderPath);
             Console.WriteLine("Pick the model to train:");
             for (var i = 0; i < allDirectories.Length; i++)
@@ -114,7 +138,7 @@ namespace Trainer
             }
 
             // Persit model
-            var outputFilePath = currentDirectory + "Output/" + Path.GetFileName(directory) + ".nbin";
+            var outputFilePath = CurrentDirectory + "Output/" + Path.GetFileName(directory) + ".nbin";
             Console.WriteLine("Persisting model for iteration={0} and cut={1} to file '{2}'...", bestIterationValue, bestCutValue, outputFilePath);
             var bestModel = MaximumEntropySentenceDetector.TrainModel(allTrainFiles, bestIterationValue, bestCutValue, endOfSentenceScanner);
             new BinaryGisModelWriter().Persist(bestModel, outputFilePath);

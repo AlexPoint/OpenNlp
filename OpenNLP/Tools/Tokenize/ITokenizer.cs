@@ -34,6 +34,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
+using System.Collections.Generic;
 
 namespace OpenNLP.Tools.Tokenize
 {
@@ -55,16 +56,19 @@ namespace OpenNLP.Tools.Tokenize
 		/// </returns>
 		string[] Tokenize(string input);
 			
-		/// <summary> 
-		/// Tokenize a string.
-		/// </summary>
-		/// <param name="input">
-		/// The string to be tokenized.
-		/// </param>
+		/// <summary>Tokenize a string</summary>
+		/// <param name="input">The string to be tokenized</param>
 		/// <returns>
 		/// The Span[] with the spans (offsets into input) for each
 		/// token as the individuals array elements.
 		/// </returns>
 		Util.Span[] TokenizePositions(string input);
+
+        /// <summary>
+        /// Tests the current Tokenizer on a given set of test data.
+        /// The test data is composed of sentences associated to the collection
+        /// of spans delimitating the different tokens.
+        /// </summary>
+	    TokenizationTestResults RunAgainstTestData(List<TokenizerTestData> inputsAndAssociatedTokens);
 	}
 }

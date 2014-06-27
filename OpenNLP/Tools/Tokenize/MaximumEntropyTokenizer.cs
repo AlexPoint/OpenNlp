@@ -36,7 +36,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
+using OpenNLP.Tools.Util;
 using SharpEntropy;
 
 namespace OpenNLP.Tools.Tokenize
@@ -66,7 +68,7 @@ namespace OpenNLP.Tools.Tokenize
 		/// List of probabilities for each token returned from call to Tokenize() 
 		/// </summary>
 		private readonly List<double> _tokenProbabilities;
-		private readonly List<Util.Span> _newTokens;
+		private readonly List<Span> _newTokens;
 
 		/// <summary>
         /// Optimization flag to skip alpha numeric tokens for further tokenization.
@@ -82,22 +84,22 @@ namespace OpenNLP.Tools.Tokenize
 			_contextGenerator = new TokenContextGenerator();
 			AlphaNumericOptimization = false;
 			this._model = model;
-            _newTokens = new List<Util.Span>();
+            _newTokens = new List<Span>();
 			_tokenProbabilities = new List<double>(50);
 		}
 		
 		/// <summary>Tokenizes the string</summary>
 		/// <param name="input">The string to be tokenized</param>
 		/// <returns>A span array containing individual tokens as elements</returns>
-		public virtual Util.Span[] TokenizePositions(string input)
+		public virtual Span[] TokenizePositions(string input)
 		{
-			Util.Span[] tokens = Split(input);
+			var tokens = Split(input);
 			_newTokens.Clear();
 			_tokenProbabilities.Clear();
 			
 			for (int currentToken = 0, tokenCount = tokens.Length; currentToken < tokenCount; currentToken++)
 			{
-				Util.Span tokenSpan = tokens[currentToken];
+				var tokenSpan = tokens[currentToken];
 				string token = input.Substring(tokenSpan.Start, (tokenSpan.End) - (tokenSpan.Start));
 				// Can't tokenize single characters
 				if (token.Length < 2)
@@ -125,26 +127,26 @@ namespace OpenNLP.Tools.Tokenize
 						tokenProbability *= probabilities[_model.GetOutcomeIndex(bestOutcome)];
 						if (bestOutcome == TokenContextGenerator.SplitIndicator)
 						{
-							_newTokens.Add(new Util.Span(startPosition, currentPosition));
+							_newTokens.Add(new Span(startPosition, currentPosition));
 							_tokenProbabilities.Add(tokenProbability);
 							startPosition = currentPosition;
 							tokenProbability = 1.0;
 						}
 					}
-					_newTokens.Add(new Util.Span(startPosition, endPosition));
+					_newTokens.Add(new Span(startPosition, endPosition));
 					_tokenProbabilities.Add(tokenProbability);
 				}
 			}
 			
 			return _newTokens.ToArray();
 		}
-		
-		/// <summary>Tokenize a string</summary>
+
+	    /// <summary>Tokenize a string</summary>
 		/// <param name="input">The string to be tokenized</param>
 		/// <returns>A string array containing individual tokens as elements</returns>
 		public virtual string[] Tokenize(string input)
 		{
-			Util.Span[] tokenSpans = TokenizePositions(input);
+			Span[] tokenSpans = TokenizePositions(input);
 			var tokens = new string[tokenSpans.Length];
 			for (int currentToken = 0, tokenCount = tokens.Length; currentToken < tokenCount; currentToken++)
 			{
@@ -159,10 +161,10 @@ namespace OpenNLP.Tools.Tokenize
 		/// </summary>
 		/// <param name="input">string to tokenize</param>
 		/// <returns>Array of spans</returns>
-		internal static Util.Span[] Split(string input)
+		internal static Span[] Split(string input)
 		{
 			int tokenStart = - 1;
-            var tokens = new List<Util.Span>();
+            var tokens = new List<Span>();
 			bool isInToken = false;
 			
 			//gather up potential tokens
@@ -173,7 +175,7 @@ namespace OpenNLP.Tools.Tokenize
 				{
 					if (isInToken)
 					{
-						tokens.Add(new Util.Span(tokenStart, currentChar));
+						tokens.Add(new Span(tokenStart, currentChar));
 						isInToken = false;
 						tokenStart = - 1;
 					}
@@ -189,7 +191,7 @@ namespace OpenNLP.Tools.Tokenize
 			}
 			if (isInToken)
 			{
-				tokens.Add(new Util.Span(tokenStart, endPosition));
+				tokens.Add(new Span(tokenStart, endPosition));
 			}
 			return tokens.ToArray();
 		}
@@ -209,15 +211,37 @@ namespace OpenNLP.Tools.Tokenize
 		}
 
 
+        public TokenizationTestResults RunAgainstTestData(List<TokenizerTestData> dataPoints)
+        {
+            var result = new TokenizationTestResults();
+
+            foreach (var dataPoint in dataPoints)
+            {
+                var sentence = dataPoint.GetCleanSentence();
+                var computedPositions = TokenizePositions(sentence);
+                var correctPositions = dataPoint.GetSpans();
+
+                var nbOfCorrectTokenizations = computedPositions.Intersect(correctPositions).Count();
+                var nbOfIncorrectTokenizations = correctPositions.Except(computedPositions).Count();
+                // count the number of tokens due to whitespaces (not relevant for the accuracy of the model)
+                var nbOfWhiteSpaceTokens = dataPoint.GetNumberOfWhitespaceOccurencesInSentence() + 1;
+                result.NbOfCorrectTokenizations += Math.Max(nbOfCorrectTokenizations - nbOfWhiteSpaceTokens, 0);
+                result.NbOfIncorrectTokenizations += nbOfIncorrectTokenizations;
+            }
+
+            return result;
+        }
+
+
         // Utilities --------------------------------------------
         
         /// <summary>
         /// Trains a tokenizer model from the "events" in the input file
         /// and write the resulting gis model in the ouput file (as binary)
         /// </summary>
-		public static GisModel Train(string input, int iterations, int cut)
+		public static GisModel Train(string input, int iterations, int cut, char splitMarker = '|')
         {
-            return Train(new List<string>() {input}, iterations, cut);
+            return Train(new List<string>() {input}, iterations, cut, splitMarker);
         }
 
 	    /// <summary>
@@ -227,14 +251,15 @@ namespace OpenNLP.Tools.Tokenize
 	    /// <param name="inputFiles">The collection of training input files</param>
 	    /// <param name="iterations">The number of iterations to run when training the model</param>
 	    /// <param name="cut">The minimum nb of occurences for statistical relevancy in the trained model</param>
+	    /// <param name="splitMarker">The character indicating a split in the files</param>
 	    /// <returns>The freshly trained GisModel</returns>
-	    public static GisModel Train(IEnumerable<string> inputFiles, int iterations, int cut)
+        public static GisModel Train(IEnumerable<string> inputFiles, int iterations, int cut, char splitMarker = '|')
 	    {
 	        var trainer = new GisTrainer(0.1);
 	        foreach (var inputFile in inputFiles)
 	        {
 	            var dataReader = new StreamReader(inputFile);
-	            var eventReader = new TokenEventReader(dataReader, '|');
+	            var eventReader = new TokenEventReader(dataReader, splitMarker);
 
                 trainer.TrainModel(iterations, new TwoPassDataIndexer(eventReader, cut));
 	        }

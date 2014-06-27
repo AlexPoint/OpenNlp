@@ -292,6 +292,8 @@
     <Compile Include="Tools\Tokenize\TokenEventReader.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Tokenize\TokenizationTestResults.cs" />
+    <Compile Include="Tools\Tokenize\TokenizerTestData.cs" />
     <Compile Include="Tools\Tokenize\TokenSpanEventReader.cs">
       <SubType>Code</SubType>
     </Compile>

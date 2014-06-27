@@ -49,7 +49,7 @@ namespace OpenNLP.Tools.Util
 		/// <returns> 
 		/// the start of a span.
 		/// </returns>
-		public virtual int Start { get; private set; }
+		public int Start { get; private set; }
 
 		/// <summary>
 		/// Return the end of a span.
@@ -57,7 +57,7 @@ namespace OpenNLP.Tools.Util
 		/// <returns> 
 		/// the end of a span.
 		/// </returns>
-		public virtual int End{ get; private set; }
+		public int End{ get; private set; }
 
 
 	    /// <summary>Constructs a new Span object.
@@ -77,7 +77,7 @@ namespace OpenNLP.Tools.Util
         /// <summary>
         /// Computes the length of the span (end - start)
         /// </summary>
-		public virtual int Length()
+		public int Length()
 		{
 			return (End - Start);
 		}
@@ -92,10 +92,21 @@ namespace OpenNLP.Tools.Util
 		/// <returns>
 		/// true if the specified span is contained by this span; false otherwise. 
 		/// </returns>
-		public virtual bool Contains(Span span)
+		public bool Contains(Span span)
 		{
 			return (Start <= span.Start && span.End <= End);
 		}
+
+        /// <summary>
+        /// Returns true if the specified span is contained stritly by this span,
+        /// ie if the current start if strictly less than the input span's start
+        /// OR if the current end if strictly greater than the input span's end.
+        /// </summary>
+	    public bool ContainsStrictly(Span span)
+	    {
+	        return this.Contains(span)
+	               && (Start < span.Start || span.End < End);
+	    }
 		
 		/// <summary>
 		/// Returns true if the specified span intersects with this span.

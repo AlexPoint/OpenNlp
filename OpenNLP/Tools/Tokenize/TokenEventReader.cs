@@ -84,50 +84,6 @@ namespace OpenNLP.Tools.Tokenize
 		        for (int index = 0; index < word.Length; index++)
 		        {
 		            string[] context = ContextGenerator.GetContext(new Tuple<string, int>(word, index));
-                    /*/*
-                     * 		[0]	"p=fanta"	string
-		                    [1]	"s=stic,"	string
-		                    [2]	"p1=a"	string
-		                    [3]	"p1_alpha"	string
-		                    [4]	"p1f1=as"	string
-		                    [5]	"p2=t"	string
-		                    [6]	"p2_alpha"	string
-		                    [7]	"p21=ta"	string
-		                    [8]	"f1=s"	string
-		                    [9]	"f1_alpha"	string
-		                    [10]	"f2=t"	string
-		                    [11]	"f2_alpha"	string
-		                    [12]	"f12=st"	string
-                     * #1#
-		            var debugContext = new[]
-		            {
-		                "p=fanta", "s=stic,", "p1=a", "p1_alpha", "p1f1=as", "p2=t", "p2_alpha",
-		                "p21=ta", "f1=s", "f1_alpha", "f2=t", "f2_alpha", "f12=st"
-		            };
-		            if (debugContext.Intersect(context).Count() == 8)
-		            {
-		                Console.WriteLine("8");
-		            }
-                    if (debugContext.Intersect(context).Count() == 9)
-                    {
-                        Console.WriteLine("9");
-                    }
-                    if (debugContext.Intersect(context).Count() == 10)
-                    {
-                        Console.WriteLine("10");
-                    }
-                    if (debugContext.Intersect(context).Count() == 11)
-                    {
-                        Console.WriteLine("11");
-                    }
-                    if (debugContext.Intersect(context).Count() == 12)
-                    {
-                        Console.WriteLine("12");
-                    }
-                    if (debugContext.Intersect(context).Count() == 13)
-                    {
-                        Console.WriteLine("13");
-                    }*/
 
 		            var outcome = indicesOfSeparators.Contains(index) ? "T" : "F";
                     var trainingEvent = new SharpEntropy.TrainingEvent(outcome, context);

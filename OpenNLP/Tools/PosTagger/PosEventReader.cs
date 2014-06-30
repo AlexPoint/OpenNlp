@@ -67,9 +67,8 @@ namespace OpenNLP.Tools.PosTagger
 		
         // Constructors ----------------
 
-		public PosEventReader(System.IO.TextReader data) : this(data, new DefaultPosContextGenerator())
-		{
-		}
+		public PosEventReader(System.IO.TextReader data):
+            this(data, new DefaultPosContextGenerator()){}
 
 		public PosEventReader(System.IO.TextReader data, IPosContextGenerator contextGenerator)
 		{

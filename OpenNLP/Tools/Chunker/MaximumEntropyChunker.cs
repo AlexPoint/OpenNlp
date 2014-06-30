@@ -113,15 +113,9 @@ namespace OpenNLP.Tools.Chunker
 		/// This method determines wheter the outcome is valid for the preceding sequence.  
 		/// This can be used to implement constraints on what sequences are valid.  
 		/// </summary>
-		/// <param name="outcome">
-		/// The outcome.
-		/// </param>
-		/// <param name="sequence">
-		/// The preceding sequence of outcomes assignments. 
-		/// </param>
-		/// <returns>
-		/// true if the outcome is valid for the sequence, false otherwise.
-		/// </returns>
+		/// <param name="outcome">The outcome</param>
+		/// <param name="sequence">The preceding sequence of outcomes assignments</param>
+		/// <returns>true if the outcome is valid for the sequence, false otherwise</returns>
 		protected internal virtual bool ValidOutcome(string outcome, Util.Sequence sequence)
 		{
 			return true;
@@ -131,15 +125,9 @@ namespace OpenNLP.Tools.Chunker
 		/// This method determines wheter the outcome is valid for the preceeding sequence.  
 		/// This can be used to implement constraints on what sequences are valid.  
 		/// </summary>
-		/// <param name="outcome">
-		/// The outcome.
-		/// </param>
-		/// <param name="sequence">
-		/// The preceding sequence of outcomes assignments. 
-		/// </param>
-		/// <returns>
-		/// true if the outcome is valid for the sequence, false otherwise.
-		/// </returns>
+		/// <param name="outcome">The outcome</param>
+		/// <param name="sequence">The preceding sequence of outcomes assignments</param>
+		/// <returns>true if the outcome is valid for the sequence, false otherwise</returns>
 		protected internal virtual bool ValidOutcome(string outcome, string[] sequence) 
 		{
 			return true;
@@ -175,40 +163,34 @@ namespace OpenNLP.Tools.Chunker
         // Utilities ---------------
 
 		/// <summary>
-		/// Trains the chunker.  Training file should be one word per line where each line consists of a
-		/// space-delimited triple of "word pos outcome".  Sentence breaks are indicated by blank lines.
+		/// Trains the chunker.
+		/// Training file should be one word per line where each line consists of a
+		/// space-delimited triple of "word pos outcome".
+		/// Sentence breaks are indicated by blank lines.
 		/// </summary>
-		/// <param name="eventReader">
-		/// The chunker event reader.
-		/// </param>
-		/// <returns>
-		/// Trained model.
-		/// </returns>
+		/// <param name="eventReader">The chunker event reader</param>
+		/// <returns>Trained model</returns>
 		public static SharpEntropy.GisModel Train(SharpEntropy.ITrainingEventReader eventReader)
 		{
 			return Train(eventReader, 100, 5);
 		}
 
 		/// <summary>
-		/// Trains the chunker.  Training file should be one word per line where each line consists of a
-		/// space-delimited triple of "word pos outcome".  Sentence breaks are indicated by blank lines.
+		/// Trains the chunker.
+		/// Training file should be one word per line where each line consists of a
+		/// space-delimited triple of "word pos outcome".
+		/// Sentence breaks are indicated by blank lines.
 		/// </summary>
-		/// <param name="eventReader">
-		/// The chunker event reader.
-		/// </param>
-		/// <param name="iterations">
-		/// The number of iterations to perform.
-		/// </param>
+		/// <param name="eventReader">The chunker event reader</param>
+		/// <param name="iterations">The number of iterations to perform</param>
 		/// <param name="cutoff">
 		/// The number of times a predicate must be seen in order
 		/// to be relevant for training.
 		/// </param>
-		/// <returns>
-		/// Trained model.
-		/// </returns>
+		/// <returns>Trained model</returns>
 		public static SharpEntropy.GisModel Train(SharpEntropy.ITrainingEventReader eventReader, int iterations, int cutoff)
 		{
-			SharpEntropy.GisTrainer trainer = new SharpEntropy.GisTrainer();
+			var trainer = new SharpEntropy.GisTrainer();
 			trainer.TrainModel(iterations, new SharpEntropy.TwoPassDataIndexer(eventReader, cutoff));
 			return new SharpEntropy.GisModel(trainer);
 		}

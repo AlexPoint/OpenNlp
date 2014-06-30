@@ -56,36 +56,18 @@ namespace OpenNLP.Tools.Util
         
         // Constructors -----------------
 
-		/// <summary>
-		/// Creates new search object.
-		/// </summary>
-		/// <param name="size">
-		/// The size of the beam (k).
-		/// </param>
-		/// <param name="contextGenerator">
-		/// the context generator for the model. 
-		/// </param>
-		/// <param name="model">
-		/// the model for assigning probabilities to the sequence outcomes.
-		/// </param>
+		/// <summary>Creates new search object</summary>
+		/// <param name="size">The size of the beam (k)</param>
+		/// <param name="contextGenerator">the context generator for the model</param>
+		/// <param name="model">the model for assigning probabilities to the sequence outcomes</param>
 		public BeamSearch(int size, IBeamSearchContextGenerator contextGenerator, SharpEntropy.IMaximumEntropyModel model):
             this(size, contextGenerator, model, 0){}
 
-		/// <summary>
-		/// Creates new search object.
-		/// </summary>
-		/// <param name="size">
-		/// The size of the beam (k).
-		/// </param>
-		/// <param name="contextGenerator">
-		/// the context generator for the model. 
-		/// </param>
-		/// <param name="model">
-		/// the model for assigning probabilities to the sequence outcomes.
-		/// </param>
-		/// <param name="cacheSize">
-		/// size of the cache to use for performance.
-		/// </param>
+		/// <summary>Creates new search object</summary>
+		/// <param name="size">The size of the beam (k)</param>
+		/// <param name="contextGenerator">the context generator for the model</param>
+		/// <param name="model">the model for assigning probabilities to the sequence outcomes</param>
+		/// <param name="cacheSize">size of the cache to use for performance</param>
 		public BeamSearch(int size, IBeamSearchContextGenerator contextGenerator, SharpEntropy.IMaximumEntropyModel model, int cacheSize)
 		{
 			Size = size;
@@ -103,19 +85,15 @@ namespace OpenNLP.Tools.Util
         // Methods ------------------------
 
 		/// <summary>
-		/// Returns the best sequence of outcomes based on model for this object.</summary>
-		/// <param name="numSequences">
-		/// The maximum number of sequences to be returned.
-		/// </param>
-		/// <param name="sequence">
-		/// The input sequence.
-		/// </param>
+		/// Returns the best sequence of outcomes based on model for this object.
+		/// </summary>
+		/// <param name="numSequences">The maximum number of sequences to be returned</param>
+		/// <param name="sequence">The input sequence</param>
 		/// <param name="additionalContext">
-		/// An object[] of additional context.  This is passed to the context generator blindly with the assumption that the context are appropiate.
+		/// An object[] of additional context.
+		/// This is passed to the context generator blindly with the assumption that the context are appropiate.
 		/// </param>
-		/// <returns>
-		/// An array of the top ranked sequences of outcomes.
-		/// </returns>		
+		/// <returns>An array of the top ranked sequences of outcomes</returns>		
 		public Sequence[] BestSequences(int numSequences, string[] sequence, object[] additionalContext) 
 		{
 			return BestSequences(numSequences, sequence, additionalContext, ZeroLog);
@@ -123,20 +101,13 @@ namespace OpenNLP.Tools.Util
 
 		/// <summary>
 		/// Returns the best sequence of outcomes based on model for this object.</summary>
-		/// <param name="numSequences">
-		/// The maximum number of sequences to be returned.
-		/// </param>
-		/// <param name="sequence">
-		/// The input sequence.
-		/// </param>
+		/// <param name="numSequences">The maximum number of sequences to be returned</param>
+		/// <param name="sequence">The input sequence</param>
 		/// <param name="additionalContext">
 		/// An object[] of additional context.  This is passed to the context generator blindly with the assumption that the context are appropiate.
 		/// </param>
-		/// <param name="minSequenceScore">
-		/// A lower bound on the score of a returned sequence.</param> 
-		/// <returns>
-		/// An array of the top ranked sequences of outcomes.
-		/// </returns>		
+		/// <param name="minSequenceScore">A lower bound on the score of a returned sequence</param>
+		/// <returns>An array of the top ranked sequences of outcomes</returns>		
 		public virtual Sequence[] BestSequences(int numSequences, string[] sequence, object[] additionalContext, double minSequenceScore)
 		{
 			int sequenceCount = sequence.Length;
@@ -173,7 +144,7 @@ namespace OpenNLP.Tools.Util
 						scores = Model.Evaluate(contexts, _probabilities);
 					}
 
-					double[] tempScores = new double[scores.Length];
+					var tempScores = new double[scores.Length];
 					Array.Copy(scores, tempScores, scores.Length);
 					
 					Array.Sort(tempScores);
@@ -232,15 +203,12 @@ namespace OpenNLP.Tools.Util
 		/// <summary>
 		/// Returns the best sequence of outcomes based on model for this object.
 		/// </summary>
-		/// <param name="sequence">
-		/// The input sequence.
-		/// </param>
+		/// <param name="sequence">The input sequence</param>
 		/// <param name="additionalContext">
-		/// An object[] of additional context.  This is passed to the context generator blindly with the assumption that the context are appropiate.
+		/// An object[] of additional context.
+		/// This is passed to the context generator blindly with the assumption that the context are appropiate.
 		/// </param>
-		/// <returns>
-		/// The top ranked sequence of outcomes.
-		/// </returns>
+		/// <returns>The top ranked sequence of outcomes</returns>
 		public Sequence BestSequence(string[] sequence, object[] additionalContext) 
 		{
 			return BestSequences(1, sequence, additionalContext, ZeroLog)[0];
@@ -251,21 +219,11 @@ namespace OpenNLP.Tools.Util
 		/// This is used to restrict invalid sequences such as thoses used in start/continue tag-based chunking 
 		/// or could be used to implement tag dictionary restrictions.
 		/// </summary>
-		/// <param name="index">
-		/// The index in the input sequence for which the new outcome is being proposed.
-		/// </param>
-		/// <param name="inputSequence">
-		/// The input sequnce.
-		/// </param>
-		/// <param name="outcomesSequence">
-		/// The outcomes so far in this sequence.
-		/// </param>
-		/// <param name="outcome">
-		/// The next proposed outcome for the outcomes sequence.
-		/// </param>
-		/// <returns>
-		/// true if the sequence would still be valid with the new outcome, false otherwise.
-		/// </returns>
+		/// <param name="index">The index in the input sequence for which the new outcome is being proposed</param>
+		/// <param name="inputSequence">The input sequnce</param>
+		/// <param name="outcomesSequence">The outcomes so far in this sequence</param>
+		/// <param name="outcome">The next proposed outcome for the outcomes sequence</param>
+		/// <returns>true if the sequence would still be valid with the new outcome, false otherwise</returns>
 		protected internal virtual bool ValidSequence(int index, ArrayList inputSequence, Sequence outcomesSequence, string outcome)
 		{
 			return true;
@@ -276,21 +234,11 @@ namespace OpenNLP.Tools.Util
 		/// This is used to restrict invalid sequences such as thoses used in start/continure tag-based chunking 
 		/// or could be used to implement tag dictionary restrictions.
 		/// </summary>
-		/// <param name="index">
-		/// The index in the input sequence for which the new outcome is being proposed.
-		/// </param>
-		/// <param name="inputSequence">
-		/// The input sequnce.
-		/// </param>
-		/// <param name="outcomesSequence">
-		/// The outcomes so far in this sequence.
-		/// </param>
-		/// <param name="outcome">
-		/// The next proposed outcome for the outcomes sequence.
-		/// </param>
-		/// <returns>
-		/// true if the sequence would still be valid with the new outcome, false otherwise.
-		/// </returns>
+		/// <param name="index">The index in the input sequence for which the new outcome is being proposed</param>
+		/// <param name="inputSequence">The input sequnce</param>
+		/// <param name="outcomesSequence">The outcomes so far in this sequence</param>
+		/// <param name="outcome">The next proposed outcome for the outcomes sequence</param>
+		/// <returns>true if the sequence would still be valid with the new outcome, false otherwise</returns>
 		protected internal virtual bool ValidSequence(int index, object[] inputSequence, string[] outcomesSequence, string outcome) 
 		{
 			return true;

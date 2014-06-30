@@ -47,37 +47,35 @@ namespace OpenNLP.Tools.PosTagger
 		protected internal const string SentenceEnd = "*SE*";
 		protected internal const string SentenceBeginning = "*SB*";
 
-		private const int mPrefixLength = 4;
-		private const int mSuffixLength = 4;
+		private const int PrefixLength = 4;
+		private const int SuffixLength = 4;
 		
-		private static Regex mHasCapitalRegex = new Regex("[A-Z]");
-		private static Regex mHasNumericRegex = new Regex("[0-9]");
+		private static readonly Regex HasCapitalRegex = new Regex("[A-Z]", RegexOptions.Compiled);
+		private static readonly Regex HasNumericRegex = new Regex("[0-9]", RegexOptions.Compiled);
 		
-		private Util.Cache mContextsCache;
-		private object mWordsKey;
+		private readonly Util.Cache _contextsCache;
+		private object _wordsKey;
 
-		public DefaultPosContextGenerator() : this(0)
-		{
-		}
+		public DefaultPosContextGenerator() : this(0){}
 		
 		public DefaultPosContextGenerator(int cacheSize) 
 		{
 			if (cacheSize > 0) 
 			{
-				mContextsCache = new Util.Cache(cacheSize);
+				_contextsCache = new Util.Cache(cacheSize);
 			}
 		}
 
 		public virtual string[] GetContext(object input)
 		{
-			object[] data = (object[]) input;
+			var data = (object[]) input;
 			return GetContext(((int) data[0]), (string[]) data[1], (string[]) data[2], null);
 		}
 		
 		protected internal static string[] GetPrefixes(string lex)
 		{
-			string[] prefixes = new string[mPrefixLength];
-			for (int currentPrefix = 0; currentPrefix < mPrefixLength; currentPrefix++)
+			var prefixes = new string[PrefixLength];
+			for (int currentPrefix = 0; currentPrefix < PrefixLength; currentPrefix++)
 			{
 				prefixes[currentPrefix] = lex.Substring(0, (System.Math.Min(currentPrefix + 1, lex.Length)) - (0));
 			}
@@ -86,8 +84,8 @@ namespace OpenNLP.Tools.PosTagger
 		
 		protected internal static string[] GetSuffixes(string lex)
 		{
-			string[] suffixes = new string[mSuffixLength];
-			for (int currentSuffix = 0; currentSuffix < mSuffixLength; currentSuffix++)
+			var suffixes = new string[SuffixLength];
+			for (int currentSuffix = 0; currentSuffix < SuffixLength; currentSuffix++)
 			{
 				suffixes[currentSuffix] = lex.Substring(System.Math.Max(lex.Length - currentSuffix - 1, 0));
 			}
@@ -160,11 +158,11 @@ namespace OpenNLP.Tools.PosTagger
 			}
 			
 			string cacheKey = index.ToString(System.Globalization.CultureInfo.InvariantCulture) + tagPrevious + tagPreviousPrevious;
-			if (mContextsCache != null) 
+			if (_contextsCache != null) 
 			{
-				if (mWordsKey == tokens)
+				if (_wordsKey == tokens)
 				{
-					var cachedContexts = (string[]) mContextsCache[cacheKey];    
+					var cachedContexts = (string[]) _contextsCache[cacheKey];    
 					if (cachedContexts != null) 
 					{
 						return cachedContexts;
@@ -172,8 +170,8 @@ namespace OpenNLP.Tools.PosTagger
 				}
 				else 
 				{
-					mContextsCache.Clear();
-					mWordsKey = tokens;
+					_contextsCache.Clear();
+					_wordsKey = tokens;
 				}
 
 			}
@@ -196,17 +194,17 @@ namespace OpenNLP.Tools.PosTagger
 				eventList.Add("pre=" + prefixes[currentPrefix]);
 			}
 			// see if the word has any special characters
-			if (lex.IndexOf((char) '-') != - 1)
+			if (lex.IndexOf('-') != - 1)
 			{
 				eventList.Add("h");
 			}
 			
-			if (mHasCapitalRegex.IsMatch(lex)) 
+			if (HasCapitalRegex.IsMatch(lex)) 
 			{
 				eventList.Add("c");
 			}
 			
-			if (mHasNumericRegex.IsMatch(lex))
+			if (HasNumericRegex.IsMatch(lex))
 			{
 				eventList.Add("d");
 			}
@@ -239,9 +237,9 @@ namespace OpenNLP.Tools.PosTagger
 			}
 
 			string[] contexts = eventList.ToArray();
-			if (mContextsCache != null) 
+			if (_contextsCache != null) 
 			{
-				mContextsCache[cacheKey] = contexts;
+				_contextsCache[cacheKey] = contexts;
 			}
 			return contexts;
 		}

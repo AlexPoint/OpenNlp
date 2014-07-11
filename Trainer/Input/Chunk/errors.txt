@@ -1,3 +1,13 @@
 That's not right.
 -> [NP That/DT] [VP 's/VBZ] [not/RB] [ADJP right/RB] [./.]
 -> group not's and not in same group
+
+I've still got questions.
+-> "'ve" and "got" not in the same verbal group
+
+No, you didn't. - The left one. - Lucky guess
+-> "do" and "n't" not in the same verbal group
+-> problem with sentence splitting too
+
+So let's work together.
+-> "let" detected as simple past

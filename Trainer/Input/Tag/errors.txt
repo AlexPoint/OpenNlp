@@ -1,0 +1,2 @@
+"Sam carefully repaired the car."
+--> "repaired" detected as VBN (past participle), instead of VBD (past tense)

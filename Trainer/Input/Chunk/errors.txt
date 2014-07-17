@@ -11,3 +11,6 @@ No, you didn't. - The left one. - Lucky guess
 
 So let's work together.
 -> "let" detected as simple past
+
+She's got an umbrella in her pocket but it's dry and unused.
+-> "'s" and "got" are not in the same chunk

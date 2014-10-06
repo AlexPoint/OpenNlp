@@ -43,7 +43,6 @@ namespace OpenNLP.Tools.Coreference.Similarity
     /// </summary>
     public class Context : Mention.Mention
 	{
-        private string _headTokenTag;
         private object[] _tokens;
 
         public object[] Tokens { get; protected internal set; }
@@ -73,7 +72,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			_tokens = tokens;
 			this.HeadTokenIndex = tokens.Length - 1;
 			this.HeadTokenText = headToken;
-			_headTokenTag = headTag;
+			this.HeadTokenTag = headTag;
 			this.Synsets = GetSynsetSet(this);
 		}
 
@@ -89,9 +88,9 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			this.HeadTokenIndex = headFinder.GetHeadIndex(head);
             Mention.IParse headToken = headFinder.GetHeadToken(head);
             _tokens = tokenList.ToArray();
-			_headTokenTag = headToken.SyntacticType;
+			this.HeadTokenTag = headToken.SyntacticType;
 			this.HeadTokenText = headToken.ToString();
-			if (_headTokenTag.StartsWith("NN") && !_headTokenTag.StartsWith("NNP"))
+			if (this.HeadTokenTag.StartsWith("NN") && !this.HeadTokenTag.StartsWith("NNP"))
 			{
 				this.Synsets = GetSynsetSet(this);
 			}

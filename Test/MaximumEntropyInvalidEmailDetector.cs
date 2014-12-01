@@ -46,6 +46,9 @@ namespace Test
 		    _contextGenerator = new InvalidEmailDetectionContextGenerator();
 		    _model = model;
 		}
+
+        public MaximumEntropyInvalidEmailDetector(string name)
+            : this(new GisModel(new SharpEntropy.IO.BinaryGisModelReader(name))){}
 		
 		
 
@@ -77,7 +80,7 @@ namespace Test
             var context = _contextGenerator.GetContext(email);
             double[] probabilities = _model.Evaluate(context);
 
-		    return probabilities.First();
+		    return probabilities.Last();
 		}
 		
 		

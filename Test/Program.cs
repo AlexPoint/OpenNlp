@@ -62,6 +62,43 @@ namespace Test
             new BinaryGisModelWriter().Persist(model, outputFilePath);
             Console.WriteLine("Output file written.");
 
+            // test trained model
+            var results = new List<Tuple<string, bool, double>>();
+            var invalidEmailDetector = new MaximumEntropyInvalidEmailDetector(outputFilePath);
+            var allLines = File.ReadAllLines(inputFilePath);
+            foreach (var line in allLines)
+            {
+                var parts = line.Split('\t');
+                var email = parts.First();
+                var isInvalid = parts.Last() == "1";
+                
+                var invalidProbability = invalidEmailDetector.Detect(email);
+                //var moreLikelyThanAverageToBeInvalid = invalidProbability*100 > 24.97;
+                results.Add(new Tuple<string, bool, double>(email, isInvalid, invalidProbability));
+            }
+
+            var nbOfEmailsSent = 0;
+            var nbOfEmailsSentWhichWouldBounce = 0;
+            foreach (var result in results.OrderBy(tup => tup.Item3))
+            {
+                if (nbOfEmailsSentWhichWouldBounce < 25)
+                {
+                    nbOfEmailsSent++;
+                    if (result.Item2) { nbOfEmailsSentWhichWouldBounce++; }
+                }
+                Console.WriteLine("{0} ({1})", result.Item1, result.Item2 ? "INVALID": "OK");
+            }
+
+            Console.WriteLine("Email that could have been sent: {0}", nbOfEmailsSent);
+            /*var nbOfSamples = results.Count;
+            Console.WriteLine("Nb of samples: {0}", nbOfSamples);
+            var nbOfCorrectResults = results.Count(tup => tup.Item2 == tup.Item3);
+            Console.WriteLine("Nb of correct results: {0}", nbOfCorrectResults);
+            var nbOfNotDetected = results.Count(tup => tup.Item2 && !tup.Item3);
+            Console.WriteLine("Nb of not detected: {0}", nbOfNotDetected);
+            var nbOfFalsePositive = results.Count(tup => !tup.Item2 && tup.Item3);
+            Console.WriteLine("Nb of false positive: {0}", nbOfFalsePositive);*/
+
             Console.WriteLine("OK");
             Console.ReadKey();
         }

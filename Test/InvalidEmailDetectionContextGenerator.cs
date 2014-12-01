@@ -11,6 +11,7 @@ namespace Test
     public class InvalidEmailDetectionContextGenerator: IContextGenerator<string>
     {
         private readonly Regex _vowelsRegex = new Regex("[aeiouy]+", RegexOptions.Compiled);
+        private readonly Regex _digitsRegex = new Regex("\\d+", RegexOptions.Compiled);
 
         public string[] GetContext(string input)
         {
@@ -29,9 +30,26 @@ namespace Test
             // nb of different characters
             var nbOfDifferentCharacters = rootPart.ToCharArray().Distinct().Count();
             results.Add("nbdiff=" + nbOfDifferentCharacters);
+            // percent of distinct characters
+            var percentOfDistinctCharacters = ((nbOfDifferentCharacters*100)/(5*nbOfCharacters))*5;//only 5 in 5
+            results.Add("perDistChar="+ percentOfDistinctCharacters);
+
             // has vowels
             var hasVowels = _vowelsRegex.IsMatch(rootPart);
             results.Add("hVow=" + hasVowels);
+            // has digits
+            var hasDigits = _digitsRegex.IsMatch(rootPart);
+            results.Add("hDig=" + hasDigits);
+            // contains '.'
+            var hasDot = rootPart.Contains(".");
+            results.Add("hDot=" + hasDot);
+            // contains '_'
+            var hasUnderscore = rootPart.Contains("_");
+            results.Add("hUnders=" + hasUnderscore);
+            // contains '-'
+            var hasDash = rootPart.Contains("-");
+            results.Add("hDash=" + hasDash);
+
             // repeated n-grams
             for (var i = 2; i <= 3; i++)
             {

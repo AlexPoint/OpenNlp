@@ -36,6 +36,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using SharpEntropy;
 
 namespace OpenNLP.Tools.SentenceDetect
@@ -205,7 +206,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		{
 			double sentenceProbability = 1;
 			_sentenceProbs.Clear();
-			var buffer = new System.Text.StringBuilder(input);
+			var buffer = new StringBuilder(input);
 			List<int> endersList = _scanner.GetPositions(input);
 			var positions = new List<int>(endersList.Count);
 			
@@ -221,7 +222,7 @@ namespace OpenNLP.Tools.SentenceDetect
 					continue;
 				}
 
-                var pair = new Tuple<System.Text.StringBuilder, int>(buffer, candidate);
+                var pair = new Tuple<StringBuilder, int>(buffer, candidate);
 				double[] probabilities = _model.Evaluate(_contextGenerator.GetContext(pair));
 				string bestOutcome = _model.GetBestOutcome(probabilities);
 				sentenceProbability *= probabilities[_model.GetOutcomeIndex(bestOutcome)];

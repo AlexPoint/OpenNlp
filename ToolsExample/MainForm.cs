@@ -15,31 +15,31 @@ namespace ToolsExample
 	/// </summary>
 	public class MainForm : Form
 	{
-		private Button btnParse;
-		private Button btnPOSTag;
-		private Button btnChunk;
-		private Button btnTokenize;
-		private Button btnNameFind;
-        private Button btnGender;
-        private Button btnSimilarity;
-        private Button btnCoreference;
-		private TextBox txtOut;
-		private Button btnSplit;
-		private TextBox txtIn;
+		private Button _btnParse;
+		private Button _btnPosTag;
+		private Button _btnChunk;
+		private Button _btnTokenize;
+		private Button _btnNameFind;
+        private Button _btnGender;
+        private Button _btnSimilarity;
+        private Button _btnCoreference;
+		private TextBox _txtOut;
+		private Button _btnSplit;
+		private TextBox _txtIn;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private Container components = null;
+		private readonly Container _components = null;
 
-		private string mModelPath;
+		private readonly string _modelPath;
 
-		private OpenNLP.Tools.SentenceDetect.MaximumEntropySentenceDetector mSentenceDetector;
-		private OpenNLP.Tools.Tokenize.EnglishMaximumEntropyTokenizer mTokenizer;
-		private OpenNLP.Tools.PosTagger.EnglishMaximumEntropyPosTagger mPosTagger;
-		private OpenNLP.Tools.Chunker.EnglishTreebankChunker mChunker;
-        private OpenNLP.Tools.Parser.EnglishTreebankParser mParser;
-		private OpenNLP.Tools.NameFind.EnglishNameFinder mNameFinder;
-        private OpenNLP.Tools.Lang.English.TreebankLinker mCoreferenceFinder;
+		private OpenNLP.Tools.SentenceDetect.MaximumEntropySentenceDetector _sentenceDetector;
+		private OpenNLP.Tools.Tokenize.EnglishMaximumEntropyTokenizer _tokenizer;
+		private OpenNLP.Tools.PosTagger.EnglishMaximumEntropyPosTagger _posTagger;
+		private OpenNLP.Tools.Chunker.EnglishTreebankChunker _chunker;
+        private OpenNLP.Tools.Parser.EnglishTreebankParser _parser;
+		private OpenNLP.Tools.NameFind.EnglishNameFinder _nameFinder;
+        private OpenNLP.Tools.Lang.English.TreebankLinker _coreferenceFinder;
 
 		public MainForm()
 		{
@@ -48,7 +48,7 @@ namespace ToolsExample
 			//
 			InitializeComponent();
 
-			mModelPath = ConfigurationManager.AppSettings["MaximumEntropyModelDirectory"];
+			_modelPath = ConfigurationManager.AppSettings["MaximumEntropyModelDirectory"];
 		}
 
 		/// <summary>
@@ -58,9 +58,9 @@ namespace ToolsExample
 		{
 			if( disposing )
 			{
-				if (components != null) 
+				if (_components != null) 
 				{
-					components.Dispose();
+					_components.Dispose();
 				}
 			}
 			base.Dispose( disposing );
@@ -74,139 +74,139 @@ namespace ToolsExample
 		private void InitializeComponent()
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.btnParse = new System.Windows.Forms.Button();
-            this.btnPOSTag = new System.Windows.Forms.Button();
-            this.btnChunk = new System.Windows.Forms.Button();
-            this.btnTokenize = new System.Windows.Forms.Button();
-            this.btnNameFind = new System.Windows.Forms.Button();
-            this.txtOut = new System.Windows.Forms.TextBox();
-            this.btnSplit = new System.Windows.Forms.Button();
-            this.txtIn = new System.Windows.Forms.TextBox();
-            this.btnGender = new System.Windows.Forms.Button();
-            this.btnSimilarity = new System.Windows.Forms.Button();
-            this.btnCoreference = new System.Windows.Forms.Button();
+            this._btnParse = new System.Windows.Forms.Button();
+            this._btnPosTag = new System.Windows.Forms.Button();
+            this._btnChunk = new System.Windows.Forms.Button();
+            this._btnTokenize = new System.Windows.Forms.Button();
+            this._btnNameFind = new System.Windows.Forms.Button();
+            this._txtOut = new System.Windows.Forms.TextBox();
+            this._btnSplit = new System.Windows.Forms.Button();
+            this._txtIn = new System.Windows.Forms.TextBox();
+            this._btnGender = new System.Windows.Forms.Button();
+            this._btnSimilarity = new System.Windows.Forms.Button();
+            this._btnCoreference = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnParse
             // 
-            this.btnParse.Location = new System.Drawing.Point(360, 104);
-            this.btnParse.Name = "btnParse";
-            this.btnParse.Size = new System.Drawing.Size(75, 23);
-            this.btnParse.TabIndex = 21;
-            this.btnParse.Text = "Parse";
-            this.btnParse.Click += new System.EventHandler(this.btnParse_Click);
+            this._btnParse.Location = new System.Drawing.Point(360, 104);
+            this._btnParse.Name = "_btnParse";
+            this._btnParse.Size = new System.Drawing.Size(75, 23);
+            this._btnParse.TabIndex = 21;
+            this._btnParse.Text = "Parse";
+            this._btnParse.Click += new System.EventHandler(this.btnParse_Click);
             // 
             // btnPOSTag
             // 
-            this.btnPOSTag.Location = new System.Drawing.Point(184, 104);
-            this.btnPOSTag.Name = "btnPOSTag";
-            this.btnPOSTag.Size = new System.Drawing.Size(75, 23);
-            this.btnPOSTag.TabIndex = 20;
-            this.btnPOSTag.Text = "POS tag";
-            this.btnPOSTag.Click += new System.EventHandler(this.btnPOSTag_Click);
+            this._btnPosTag.Location = new System.Drawing.Point(184, 104);
+            this._btnPosTag.Name = "_btnPosTag";
+            this._btnPosTag.Size = new System.Drawing.Size(75, 23);
+            this._btnPosTag.TabIndex = 20;
+            this._btnPosTag.Text = "POS tag";
+            this._btnPosTag.Click += new System.EventHandler(this.btnPOSTag_Click);
             // 
             // btnChunk
             // 
-            this.btnChunk.Location = new System.Drawing.Point(272, 104);
-            this.btnChunk.Name = "btnChunk";
-            this.btnChunk.Size = new System.Drawing.Size(75, 23);
-            this.btnChunk.TabIndex = 19;
-            this.btnChunk.Text = "Chunk";
-            this.btnChunk.Click += new System.EventHandler(this.btnChunk_Click);
+            this._btnChunk.Location = new System.Drawing.Point(272, 104);
+            this._btnChunk.Name = "_btnChunk";
+            this._btnChunk.Size = new System.Drawing.Size(75, 23);
+            this._btnChunk.TabIndex = 19;
+            this._btnChunk.Text = "Chunk";
+            this._btnChunk.Click += new System.EventHandler(this.btnChunk_Click);
             // 
             // btnTokenize
             // 
-            this.btnTokenize.Location = new System.Drawing.Point(96, 104);
-            this.btnTokenize.Name = "btnTokenize";
-            this.btnTokenize.Size = new System.Drawing.Size(75, 23);
-            this.btnTokenize.TabIndex = 18;
-            this.btnTokenize.Text = "Tokenize";
-            this.btnTokenize.Click += new System.EventHandler(this.btnTokenize_Click);
+            this._btnTokenize.Location = new System.Drawing.Point(96, 104);
+            this._btnTokenize.Name = "_btnTokenize";
+            this._btnTokenize.Size = new System.Drawing.Size(75, 23);
+            this._btnTokenize.TabIndex = 18;
+            this._btnTokenize.Text = "Tokenize";
+            this._btnTokenize.Click += new System.EventHandler(this.btnTokenize_Click);
             // 
             // btnNameFind
             // 
-            this.btnNameFind.Location = new System.Drawing.Point(448, 104);
-            this.btnNameFind.Name = "btnNameFind";
-            this.btnNameFind.Size = new System.Drawing.Size(75, 23);
-            this.btnNameFind.TabIndex = 16;
-            this.btnNameFind.Text = "Find Names";
-            this.btnNameFind.Click += new System.EventHandler(this.btnNameFind_Click);
+            this._btnNameFind.Location = new System.Drawing.Point(448, 104);
+            this._btnNameFind.Name = "_btnNameFind";
+            this._btnNameFind.Size = new System.Drawing.Size(75, 23);
+            this._btnNameFind.TabIndex = 16;
+            this._btnNameFind.Text = "Find Names";
+            this._btnNameFind.Click += new System.EventHandler(this.btnNameFind_Click);
             // 
             // txtOut
             // 
-            this.txtOut.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this._txtOut.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtOut.Location = new System.Drawing.Point(8, 136);
-            this.txtOut.Multiline = true;
-            this.txtOut.Name = "txtOut";
-            this.txtOut.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtOut.Size = new System.Drawing.Size(784, 400);
-            this.txtOut.TabIndex = 15;
-            this.txtOut.WordWrap = false;
+            this._txtOut.Location = new System.Drawing.Point(8, 136);
+            this._txtOut.Multiline = true;
+            this._txtOut.Name = "_txtOut";
+            this._txtOut.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this._txtOut.Size = new System.Drawing.Size(784, 400);
+            this._txtOut.TabIndex = 15;
+            this._txtOut.WordWrap = false;
             // 
             // btnSplit
             // 
-            this.btnSplit.Location = new System.Drawing.Point(8, 104);
-            this.btnSplit.Name = "btnSplit";
-            this.btnSplit.Size = new System.Drawing.Size(75, 23);
-            this.btnSplit.TabIndex = 14;
-            this.btnSplit.Text = "Split";
-            this.btnSplit.Click += new System.EventHandler(this.btnSplit_Click);
+            this._btnSplit.Location = new System.Drawing.Point(8, 104);
+            this._btnSplit.Name = "_btnSplit";
+            this._btnSplit.Size = new System.Drawing.Size(75, 23);
+            this._btnSplit.TabIndex = 14;
+            this._btnSplit.Text = "Split";
+            this._btnSplit.Click += new System.EventHandler(this.btnSplit_Click);
             // 
             // txtIn
             // 
-            this.txtIn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this._txtIn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtIn.Location = new System.Drawing.Point(8, 8);
-            this.txtIn.Multiline = true;
-            this.txtIn.Name = "txtIn";
-            this.txtIn.Size = new System.Drawing.Size(784, 88);
-            this.txtIn.TabIndex = 13;
-            this.txtIn.Text = resources.GetString("txtIn.Text");
+            this._txtIn.Location = new System.Drawing.Point(8, 8);
+            this._txtIn.Multiline = true;
+            this._txtIn.Name = "_txtIn";
+            this._txtIn.Size = new System.Drawing.Size(784, 88);
+            this._txtIn.TabIndex = 13;
+            this._txtIn.Text = resources.GetString("txtIn.Text");
             // 
             // btnGender
             // 
-            this.btnGender.Location = new System.Drawing.Point(539, 104);
-            this.btnGender.Name = "btnGender";
-            this.btnGender.Size = new System.Drawing.Size(75, 23);
-            this.btnGender.TabIndex = 22;
-            this.btnGender.Text = "Gender";
-            this.btnGender.Click += new System.EventHandler(this.btnGender_Click);
+            this._btnGender.Location = new System.Drawing.Point(539, 104);
+            this._btnGender.Name = "_btnGender";
+            this._btnGender.Size = new System.Drawing.Size(75, 23);
+            this._btnGender.TabIndex = 22;
+            this._btnGender.Text = "Gender";
+            this._btnGender.Click += new System.EventHandler(this.btnGender_Click);
             // 
             // btnSimilarity
             // 
-            this.btnSimilarity.Location = new System.Drawing.Point(627, 104);
-            this.btnSimilarity.Name = "btnSimilarity";
-            this.btnSimilarity.Size = new System.Drawing.Size(75, 23);
-            this.btnSimilarity.TabIndex = 23;
-            this.btnSimilarity.Text = "Similarity";
-            this.btnSimilarity.Click += new System.EventHandler(this.btnSimilarity_Click);
+            this._btnSimilarity.Location = new System.Drawing.Point(627, 104);
+            this._btnSimilarity.Name = "_btnSimilarity";
+            this._btnSimilarity.Size = new System.Drawing.Size(75, 23);
+            this._btnSimilarity.TabIndex = 23;
+            this._btnSimilarity.Text = "Similarity";
+            this._btnSimilarity.Click += new System.EventHandler(this.btnSimilarity_Click);
             // 
             // btnCoreference
             // 
-            this.btnCoreference.Location = new System.Drawing.Point(717, 104);
-            this.btnCoreference.Name = "btnCoreference";
-            this.btnCoreference.Size = new System.Drawing.Size(75, 23);
-            this.btnCoreference.TabIndex = 24;
-            this.btnCoreference.Text = "Coreference";
-            this.btnCoreference.Click += new System.EventHandler(this.btnCoreference_Click);
+            this._btnCoreference.Location = new System.Drawing.Point(717, 104);
+            this._btnCoreference.Name = "_btnCoreference";
+            this._btnCoreference.Size = new System.Drawing.Size(75, 23);
+            this._btnCoreference.TabIndex = 24;
+            this._btnCoreference.Text = "Coreference";
+            this._btnCoreference.Click += new System.EventHandler(this.btnCoreference_Click);
             // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(800, 542);
-            this.Controls.Add(this.btnCoreference);
-            this.Controls.Add(this.btnSimilarity);
-            this.Controls.Add(this.btnGender);
-            this.Controls.Add(this.btnParse);
-            this.Controls.Add(this.btnPOSTag);
-            this.Controls.Add(this.btnChunk);
-            this.Controls.Add(this.btnTokenize);
-            this.Controls.Add(this.btnNameFind);
-            this.Controls.Add(this.txtOut);
-            this.Controls.Add(this.btnSplit);
-            this.Controls.Add(this.txtIn);
+            this.Controls.Add(this._btnCoreference);
+            this.Controls.Add(this._btnSimilarity);
+            this.Controls.Add(this._btnGender);
+            this.Controls.Add(this._btnParse);
+            this.Controls.Add(this._btnPosTag);
+            this.Controls.Add(this._btnChunk);
+            this.Controls.Add(this._btnTokenize);
+            this.Controls.Add(this._btnNameFind);
+            this.Controls.Add(this._txtOut);
+            this.Controls.Add(this._btnSplit);
+            this.Controls.Add(this._txtIn);
             this.Name = "MainForm";
             this.Text = "OpenNLP Tools Example";
             this.ResumeLayout(false);
@@ -228,16 +228,16 @@ namespace ToolsExample
 
 		private void btnSplit_Click(object sender, EventArgs e)
 		{		
-			string[] sentences = SplitSentences(txtIn.Text);
+			string[] sentences = SplitSentences(_txtIn.Text);
 			
-			txtOut.Text = string.Join("\r\n\r\n", sentences);
+			_txtOut.Text = string.Join("\r\n\r\n", sentences);
 		}
 
 		private void btnTokenize_Click(object sender, EventArgs e)
 		{
 			var output = new StringBuilder();
 
-			string[] sentences = SplitSentences(txtIn.Text);
+			string[] sentences = SplitSentences(_txtIn.Text);
 
 			foreach(string sentence in sentences)
 			{
@@ -245,14 +245,14 @@ namespace ToolsExample
 				output.Append(string.Join(" | ", tokens)).Append("\r\n\r\n");
 			}
 
-			txtOut.Text = output.ToString();
+			_txtOut.Text = output.ToString();
 		}
 
 		private void btnPOSTag_Click(object sender, EventArgs e)
 		{
 			var output = new StringBuilder();
 
-			string[] sentences = SplitSentences(txtIn.Text);
+			string[] sentences = SplitSentences(_txtIn.Text);
 
 			foreach(string sentence in sentences)
 			{
@@ -267,14 +267,14 @@ namespace ToolsExample
 				output.Append("\r\n\r\n");
 			}
 
-			txtOut.Text = output.ToString();
+			_txtOut.Text = output.ToString();
 		}
 
 		private void btnChunk_Click(object sender, EventArgs e)
 		{
 			var output = new StringBuilder();
 
-			string[] sentences = SplitSentences(txtIn.Text);
+			string[] sentences = SplitSentences(_txtIn.Text);
 
 			foreach(string sentence in sentences)
 			{
@@ -284,35 +284,35 @@ namespace ToolsExample
 				output.Append(ChunkSentence(tokens, tags)).Append("\r\n\r\n");
 			}
 
-			txtOut.Text = output.ToString();
+			_txtOut.Text = output.ToString();
 		}
 
 		private void btnParse_Click(object sender, EventArgs e)
 		{
 			var output = new StringBuilder();
 
-			string[] sentences = SplitSentences(txtIn.Text);
+			string[] sentences = SplitSentences(_txtIn.Text);
 
 			foreach(string sentence in sentences)
 			{
 				output.Append(ParseSentence(sentence).Show()).Append("\r\n\r\n");
 			}
 
-			txtOut.Text = output.ToString();
+			_txtOut.Text = output.ToString();
 		}
 
 		private void btnNameFind_Click(object sender, EventArgs e)
 		{
 			var output = new StringBuilder();
 
-			string[] sentences = SplitSentences(txtIn.Text);
+			string[] sentences = SplitSentences(_txtIn.Text);
 
 			foreach(string sentence in sentences)
 			{
                 output.Append(FindNames(sentence)).Append("\r\n");
 			}
 
-			txtOut.Text = output.ToString();
+			_txtOut.Text = output.ToString();
 		}
 
 		#endregion
@@ -321,81 +321,81 @@ namespace ToolsExample
 
 		private string[] SplitSentences(string paragraph)
 		{
-			if (mSentenceDetector == null)
+			if (_sentenceDetector == null)
 			{
-				mSentenceDetector = new OpenNLP.Tools.SentenceDetect.EnglishMaximumEntropySentenceDetector(mModelPath + "EnglishSD.nbin");
+				_sentenceDetector = new OpenNLP.Tools.SentenceDetect.EnglishMaximumEntropySentenceDetector(_modelPath + "EnglishSD.nbin");
 			}
 
-			return mSentenceDetector.SentenceDetect(paragraph);
+			return _sentenceDetector.SentenceDetect(paragraph);
 		}
 
 		private string[] TokenizeSentence(string sentence)
 		{
-			if (mTokenizer == null)
+			if (_tokenizer == null)
 			{
-				mTokenizer = new OpenNLP.Tools.Tokenize.EnglishMaximumEntropyTokenizer(mModelPath + "EnglishTok.nbin");
+				_tokenizer = new OpenNLP.Tools.Tokenize.EnglishMaximumEntropyTokenizer(_modelPath + "EnglishTok.nbin");
 			}
 
-			return mTokenizer.Tokenize(sentence);
+			return _tokenizer.Tokenize(sentence);
 		}
 
 		private string[] PosTagTokens(string[] tokens)
 		{
-			if (mPosTagger == null)
+			if (_posTagger == null)
 			{
-				mPosTagger = new OpenNLP.Tools.PosTagger.EnglishMaximumEntropyPosTagger(mModelPath + "EnglishPOS.nbin", mModelPath + @"\Parser\tagdict");
+				_posTagger = new OpenNLP.Tools.PosTagger.EnglishMaximumEntropyPosTagger(_modelPath + "EnglishPOS.nbin", _modelPath + @"\Parser\tagdict");
 			}
 
-			return mPosTagger.Tag(tokens);
+			return _posTagger.Tag(tokens);
 		}
 
 		private string ChunkSentence(string[] tokens, string[] tags)
 		{
-			if (mChunker == null)
+			if (_chunker == null)
 			{
-				mChunker = new OpenNLP.Tools.Chunker.EnglishTreebankChunker(mModelPath + "EnglishChunk.nbin");
+				_chunker = new OpenNLP.Tools.Chunker.EnglishTreebankChunker(_modelPath + "EnglishChunk.nbin");
 			}
 			
-			return string.Join(" ", mChunker.GetChunks(tokens, tags));
+			return string.Join(" ", _chunker.GetChunks(tokens, tags));
 		}
 
 		private OpenNLP.Tools.Parser.Parse ParseSentence(string sentence)
 		{
-			if (mParser == null)
+			if (_parser == null)
 			{
-				mParser = new OpenNLP.Tools.Parser.EnglishTreebankParser(mModelPath, true, false);
+				_parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(_modelPath, true, false);
 			}
 
-			return mParser.DoParse(sentence);
+			return _parser.DoParse(sentence);
 		}
 
 		private string FindNames(string sentence)
 		{
-			if (mNameFinder == null)
+			if (_nameFinder == null)
 			{
-				mNameFinder = new OpenNLP.Tools.NameFind.EnglishNameFinder(mModelPath + "namefind\\");
+				_nameFinder = new OpenNLP.Tools.NameFind.EnglishNameFinder(_modelPath + "namefind\\");
 			}
 
 			var models = new[] {"date", "location", "money", "organization", "percentage", "person", "time"};
-			return mNameFinder.GetNames(models, sentence);
+			return _nameFinder.GetNames(models, sentence);
 		}
 
         private string FindNames(OpenNLP.Tools.Parser.Parse sentenceParse)
         {
-            if (mNameFinder == null)
+            if (_nameFinder == null)
             {
-                mNameFinder = new OpenNLP.Tools.NameFind.EnglishNameFinder(mModelPath + "namefind\\");
+                _nameFinder = new OpenNLP.Tools.NameFind.EnglishNameFinder(_modelPath + "namefind\\");
             }
 
             var models = new[] { "date", "location", "money", "organization", "percentage", "person", "time" };
-            return mNameFinder.GetNames(models, sentenceParse);
+            return _nameFinder.GetNames(models, sentenceParse);
         }
 
         private string IdentifyCoreferents(IEnumerable<string> sentences)
         {
-            if (mCoreferenceFinder == null)
+            if (_coreferenceFinder == null)
             {
-                mCoreferenceFinder = new OpenNLP.Tools.Lang.English.TreebankLinker(mModelPath + "coref");
+                _coreferenceFinder = new OpenNLP.Tools.Lang.English.TreebankLinker(_modelPath + "coref");
             }
 
             var parsedSentences = new List<OpenNLP.Tools.Parser.Parse>();
@@ -405,7 +405,7 @@ namespace ToolsExample
                 OpenNLP.Tools.Parser.Parse sentenceParse = ParseSentence(sentence);
                 parsedSentences.Add(sentenceParse);
             }
-            return mCoreferenceFinder.GetCoreferenceParse(parsedSentences.ToArray());
+            return _coreferenceFinder.GetCoreferenceParse(parsedSentences.ToArray());
         }
 
 		#endregion
@@ -414,7 +414,7 @@ namespace ToolsExample
         {
             StringBuilder output = new StringBuilder();
 
-            string[] sentences = SplitSentences(txtIn.Text);
+            string[] sentences = SplitSentences(_txtIn.Text);
             
             foreach (string sentence in sentences)
             {
@@ -430,18 +430,18 @@ namespace ToolsExample
 
                 output.Append(posTaggedSentence);
                 output.Append("\r\n");
-                output.Append(OpenNLP.Tools.Coreference.Similarity.GenderModel.GenderMain(mModelPath + "coref\\gen", posTaggedSentence));
+                output.Append(OpenNLP.Tools.Coreference.Similarity.GenderModel.GenderMain(_modelPath + "coref\\gen", posTaggedSentence));
                 output.Append("\r\n\r\n");
             }
 
-            txtOut.Text = output.ToString();
+            _txtOut.Text = output.ToString();
         }
 
         private void btnSimilarity_Click(object sender, EventArgs e)
         {
             var output = new StringBuilder();
 
-            string[] sentences = SplitSentences(txtIn.Text);
+            string[] sentences = SplitSentences(_txtIn.Text);
 
             foreach (string sentence in sentences)
             {
@@ -457,18 +457,18 @@ namespace ToolsExample
 
                 output.Append(posTaggedSentence);
                 output.Append("\r\n");
-                output.Append(OpenNLP.Tools.Coreference.Similarity.SimilarityModel.SimilarityMain(mModelPath + "coref\\sim", posTaggedSentence));
+                output.Append(OpenNLP.Tools.Coreference.Similarity.SimilarityModel.SimilarityMain(_modelPath + "coref\\sim", posTaggedSentence));
                 output.Append("\r\n\r\n");
             }
 
-            txtOut.Text = output.ToString();
+            _txtOut.Text = output.ToString();
         }
 
         private void btnCoreference_Click(object sender, EventArgs e)
         {
-            string[] sentences = SplitSentences(txtIn.Text);
+            string[] sentences = SplitSentences(_txtIn.Text);
 
-            txtOut.Text = IdentifyCoreferents(sentences);
+            _txtOut.Text = IdentifyCoreferents(sentences);
         }
 		
 	}

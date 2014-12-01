@@ -43,13 +43,24 @@ namespace Test
             new BinaryGisModelWriter().Persist(model, outputFilePath);
             Console.WriteLine("Output file written.");*/
 
-            // tokenize tests
+            /*// tokenize tests
             var modelPath = currentDirectory + "../Resources/Models/";
             var tokenizer = new EnglishMaximumEntropyTokenizer(modelPath + "EnglishTok.nbin");
 
             var input = "It was built of a bright brick throughout; its skyline was fantastic, and even its ground plan was wild.";
             var tokens = tokenizer.Tokenize(input);
-            Console.WriteLine(string.Join(" | ", tokens));
+            Console.WriteLine(string.Join(" | ", tokens));*/
+
+            // invalid email detection
+            var inputFilePath = currentDirectory + "Input/invalidEmailDetection.train";
+            var outputFilePath = currentDirectory + "Output/" + Path.GetFileNameWithoutExtension(inputFilePath) + ".nbin";
+            var iterations = 100;
+            var cut = 5;
+            Console.WriteLine("Training model...");
+            var model = MaximumEntropyInvalidEmailDetector.TrainModel(inputFilePath, iterations, cut);
+            Console.WriteLine("Writing output file '{0}'...", outputFilePath);
+            new BinaryGisModelWriter().Persist(model, outputFilePath);
+            Console.WriteLine("Output file written.");
 
             Console.WriteLine("OK");
             Console.ReadKey();

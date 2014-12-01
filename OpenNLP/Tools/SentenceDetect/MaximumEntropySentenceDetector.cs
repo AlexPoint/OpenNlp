@@ -58,7 +58,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// <summary>
 		/// The feature context generator.
 		/// </summary>
-        private readonly IContextGenerator<Tuple<System.Text.StringBuilder, int>> _contextGenerator;
+        private readonly IContextGenerator<Tuple<StringBuilder, int>> _contextGenerator;
 		
 		/// <summary>
 		/// The EndOfSentenceScanner to use when scanning for end of
@@ -102,7 +102,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// will use to turn strings into contexts for the model to
 		/// evaluate.
 		/// </param>
-        public MaximumEntropySentenceDetector(IMaximumEntropyModel model, IContextGenerator<Tuple<System.Text.StringBuilder, int>> contextGenerator):
+        public MaximumEntropySentenceDetector(IMaximumEntropyModel model, IContextGenerator<Tuple<StringBuilder, int>> contextGenerator):
             this(model, contextGenerator, new DefaultEndOfSentenceScanner()){}
 		
 		/// <summary> 
@@ -119,7 +119,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// <param name="scanner">the EndOfSentenceScanner which this MaximumEntropySentenceDetector
 		/// will use to locate end of sentence indexes.
 		/// </param>
-        public MaximumEntropySentenceDetector(IMaximumEntropyModel model, IContextGenerator<Tuple<System.Text.StringBuilder, int>> contextGenerator, IEndOfSentenceScanner scanner)
+        public MaximumEntropySentenceDetector(IMaximumEntropyModel model, IContextGenerator<Tuple<StringBuilder, int>> contextGenerator, IEndOfSentenceScanner scanner)
 		{
 			_model = model;
 			_contextGenerator = contextGenerator;

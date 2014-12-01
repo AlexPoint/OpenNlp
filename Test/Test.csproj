@@ -42,6 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InvalidEmailDetectionContextGenerator.cs" />
+    <Compile Include="InvalidEmailDetectionEvent.cs" />
+    <Compile Include="InvalidEmailDetectionEventReader.cs" />
+    <Compile Include="MaximumEntropyInvalidEmailDetector.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

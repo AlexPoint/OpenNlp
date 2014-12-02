@@ -32,6 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="InvalidEmailDetector">
+      <HintPath>..\packages\InvalidEmailDetector.1.0.0\lib\net45\InvalidEmailDetector.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenNLP, Version=1.0.5273.32243, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OpenNLP.1.0.0\lib\net45\OpenNLP.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -42,21 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InvalidEmailDetectionContextGenerator.cs" />
-    <Compile Include="InvalidEmailDetectionEvent.cs" />
-    <Compile Include="InvalidEmailDetectionEventReader.cs" />
-    <Compile Include="MaximumEntropyInvalidEmailDetector.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenNLP\OpenNLP.csproj">
-      <Project>{B70185DF-81FD-4417-914F-7C90E65E7D9F}</Project>
-      <Name>OpenNLP</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SharpEntropy\SharpEntropy.csproj">
       <Project>{BF0BF8B0-1894-4EDF-BF51-F370B063797E}</Project>
       <Name>SharpEntropy</Name>

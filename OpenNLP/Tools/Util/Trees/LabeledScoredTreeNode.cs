@@ -181,7 +181,7 @@ namespace OpenNLP.Tools.Util.Trees
   //@Override
   public String nodeString() {
     StringBuilder buff = new StringBuilder();
-    buff.Append(super.nodeString());
+    buff.Append(base.nodeString());
     if ( ! double.IsNaN(p_score)) {
       buff.Append(" [").Append((-p_score).ToString(nf)).Append("]");
     }

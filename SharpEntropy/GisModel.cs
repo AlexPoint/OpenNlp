@@ -99,7 +99,6 @@ namespace SharpEntropy
 			{
 				return (_outcomeCount);
 			}
-			
 		}
 
 		/// <summary> 

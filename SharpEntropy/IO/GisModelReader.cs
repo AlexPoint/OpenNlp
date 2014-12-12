@@ -52,14 +52,13 @@ namespace SharpEntropy.IO
 	/// </version>
 	public abstract class GisModelReader : IGisModelReader
 	{
-		private char[] mSpaces;
-	
-		private int mCorrectionConstant;
-		private double mCorrectionParameter;
-		private string[] mOutcomeLabels;
-		private int[][] mOutcomePatterns;
-		private int mPredicateCount;
-		private Dictionary<string, PatternedPredicate> mPredicates;
+		private char[] _spaces;
+		private int _correctionConstant;
+		private double _correctionParameter;
+		private string[] _outcomeLabels;
+		private int[][] _outcomePatterns;
+		private int _predicateCount;
+		private Dictionary<string, PatternedPredicate> _predicates;
 
 		/// <summary>
 		/// The number of predicates contained in the model.
@@ -68,12 +67,11 @@ namespace SharpEntropy.IO
 		{
 			get
 			{
-				return mPredicateCount;
+				return _predicateCount;
 			}
 		}
 
-		#region read data from the model file
-		/// <summary>
+        /// <summary>
 		/// Retrieve a model from disk.
 		/// 
 		/// <p>This method delegates to worker methods for each part of this 
@@ -106,12 +104,12 @@ namespace SharpEntropy.IO
 		/// </remarks>
 		protected virtual void ReadModel()
 		{
-			mSpaces = new char[] {' '}; //cached constant to improve performance
+			_spaces = new char[] {' '}; //cached constant to improve performance
 			CheckModelType();
-			mCorrectionConstant = ReadCorrectionConstant();
-			mCorrectionParameter = ReadCorrectionParameter();
-			mOutcomeLabels = ReadOutcomes();
-			ReadPredicates(out mOutcomePatterns, out mPredicates);
+			_correctionConstant = ReadCorrectionConstant();
+			_correctionParameter = ReadCorrectionParameter();
+			_outcomeLabels = ReadOutcomes();
+			ReadPredicates(out _outcomePatterns, out _predicates);
 		}
 	
 		/// <summary>
@@ -149,7 +147,7 @@ namespace SharpEntropy.IO
 		protected virtual string[] ReadOutcomes()
 		{
 			int outcomeCount = ReadInt32();
-			string[] outcomeLabels = new string[outcomeCount];
+			var outcomeLabels = new string[outcomeCount];
 			for (int currentLabel = 0; currentLabel < outcomeCount; currentLabel++)
 			{
 				outcomeLabels[currentLabel] = ReadString();
@@ -177,16 +175,16 @@ namespace SharpEntropy.IO
 			//get the number of outcome patterns (that is, the number of unique combinations of outcomes in the model)
 			int outcomePatternCount = ReadInt32();
 			//initialize an array of outcome patterns.  Each outcome pattern is itself an array of integers
-			int[][] outcomePatterns = new int[outcomePatternCount][];
+			var outcomePatterns = new int[outcomePatternCount][];
 			//for each outcome pattern
 			for (int currentOutcomePattern = 0; currentOutcomePattern < outcomePatternCount; currentOutcomePattern++)
 			{
 				//read a space delimited string from the model file containing the information for the integer array.
 				//The first value in the integer array is the number of predicates related to this outcome pattern; the
 				//other values make up the outcome IDs for this pattern.
-				string[] tokens = ReadString().Split(mSpaces);
+				string[] tokens = ReadString().Split(_spaces);
 				//convert this string to the array of integers required for the pattern
-				int[] patternData = new int[tokens.Length];
+				var patternData = new int[tokens.Length];
 				for (int currentPatternValue = 0; currentPatternValue < tokens.Length; currentPatternValue++) 
 				{
 					patternData[currentPatternValue] = int.Parse(tokens[currentPatternValue], System.Globalization.CultureInfo.InvariantCulture);
@@ -201,9 +199,9 @@ namespace SharpEntropy.IO
 		/// </summary>
 		protected virtual string[] ReadPredicateLabels()
 		{
-			mPredicateCount = ReadInt32();
-			string[] predicateLabels = new string[mPredicateCount];
-			for (int currentPredicate = 0; currentPredicate < mPredicateCount; currentPredicate++)
+			_predicateCount = ReadInt32();
+			var predicateLabels = new string[_predicateCount];
+			for (int currentPredicate = 0; currentPredicate < _predicateCount; currentPredicate++)
 			{
 				predicateLabels[currentPredicate] = ReadString();
 			}
@@ -215,14 +213,14 @@ namespace SharpEntropy.IO
 		/// </summary>
         protected virtual Dictionary<string, PatternedPredicate> ReadParameters(int[][] outcomePatterns, string[] predicateLabels)
 		{
-            Dictionary<string, PatternedPredicate> predicates = new Dictionary<string, PatternedPredicate>(predicateLabels.Length);
+            var predicates = new Dictionary<string, PatternedPredicate>(predicateLabels.Length);
 			int parameterIndex = 0;
 	
 			for (int currentOutcomePattern = 0; currentOutcomePattern < outcomePatterns.Length; currentOutcomePattern++)
 			{
 				for (int currentOutcomeInfo = 0; currentOutcomeInfo < outcomePatterns[currentOutcomePattern][0]; currentOutcomeInfo++)
 				{
-					double[] parameters = new double[outcomePatterns[currentOutcomePattern].Length - 1];
+					var parameters = new double[outcomePatterns[currentOutcomePattern].Length - 1];
 					for (int currentParameter = 0; currentParameter < outcomePatterns[currentOutcomePattern].Length - 1; currentParameter++)
 					{
 						parameters[currentParameter] = ReadDouble();
@@ -249,9 +247,6 @@ namespace SharpEntropy.IO
 		/// </summary>
 		protected abstract string ReadString();
 
-#endregion
-
-		#region implement IGisModelReader
 		/// <summary>
 		/// The model's correction constant.
 		/// </summary>
@@ -259,7 +254,7 @@ namespace SharpEntropy.IO
 		{
 			get
 			{
-				return mCorrectionConstant;
+				return _correctionConstant;
 			}
 		}
 	
@@ -270,7 +265,7 @@ namespace SharpEntropy.IO
 		{
 			get
 			{
-				return mCorrectionParameter;
+				return _correctionParameter;
 			}
 		}
 	
@@ -282,7 +277,7 @@ namespace SharpEntropy.IO
 		/// </returns>
 		public string[] GetOutcomeLabels()
 		{
-			return mOutcomeLabels;
+			return _outcomeLabels;
 		}
 	
 		/// <summary>
@@ -294,7 +289,7 @@ namespace SharpEntropy.IO
 		/// </returns>
 		public int[][] GetOutcomePatterns()
 		{
-			return mOutcomePatterns;
+			return _outcomePatterns;
 		}
 
 		/// <summary>
@@ -306,7 +301,7 @@ namespace SharpEntropy.IO
 		/// </returns>
         public Dictionary<string, PatternedPredicate> GetPredicates()
 		{
-			return mPredicates;
+			return _predicates;
 		}
 
 		/// <summary>
@@ -327,10 +322,10 @@ namespace SharpEntropy.IO
 		/// </param>
 		public virtual void GetPredicateData(string predicateLabel, int[] featureCounts, double[] outcomeSums)
 		{
-            if (mPredicates.ContainsKey(predicateLabel))
+            if (_predicates.ContainsKey(predicateLabel))
             {
-			    PatternedPredicate predicate = mPredicates[predicateLabel];
-				int[] activeOutcomes = mOutcomePatterns[predicate.OutcomePattern];
+			    PatternedPredicate predicate = _predicates[predicateLabel];
+				int[] activeOutcomes = _outcomePatterns[predicate.OutcomePattern];
 					
 				for (int currentActiveOutcome = 1; currentActiveOutcome < activeOutcomes.Length; currentActiveOutcome++)
 				{
@@ -340,8 +335,6 @@ namespace SharpEntropy.IO
 				}
 			}
 		}
-	
-#endregion
 	
 	}
 }

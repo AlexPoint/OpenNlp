@@ -52,6 +52,18 @@ namespace Test
             var tokens = tokenizer.Tokenize(input);
             Console.WriteLine(string.Join(" | ", tokens));*/
 
+
+            // detect tokenization issues
+            var pathToFile = currentDirectory + "Input/tokenizerIssues.txt";
+            var modelPath = currentDirectory + "../Resources/Models/";
+            var tokenizer = new EnglishMaximumEntropyTokenizer(modelPath + "EnglishTok.nbin");
+            var allLines = File.ReadAllLines(pathToFile);
+            foreach (var line in allLines)
+            {
+                var tokens = tokenizer.Tokenize(line);
+                Console.WriteLine(string.Join(" | ", tokens));
+            }
+
             Console.WriteLine("===========");
             Console.WriteLine("OK");
             Console.ReadKey();

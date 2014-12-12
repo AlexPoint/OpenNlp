@@ -309,12 +309,23 @@
     <Compile Include="Tools\Util\HashSet.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\HasWord.cs" />
     <Compile Include="Tools\Util\IBeamSearchContextGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tools\Util\IHeap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\IntPair.cs" />
+    <Compile Include="Tools\Util\IntQuadruple.cs" />
+    <Compile Include="Tools\Util\IntTriple.cs" />
+    <Compile Include="Tools\Util\IntTuple.cs" />
+    <Compile Include="Tools\Util\IntUni.cs" />
+    <Compile Include="Tools\Util\IOUtils.cs" />
+    <Compile Include="Tools\Util\Ling\Label.cs" />
+    <Compile Include="Tools\Util\Ling\Labeled.cs" />
+    <Compile Include="Tools\Util\Ling\LabelFactory.cs" />
+    <Compile Include="Tools\Util\Ling\Scored.cs" />
     <Compile Include="Tools\Util\ListHeap.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -339,6 +350,15 @@
     <Compile Include="Tools\Util\TreeSet.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\Trees\EnglishGrammaticalRelations.cs" />
+    <Compile Include="Tools\Util\Trees\GrammaticalRelation.cs" />
+    <Compile Include="Tools\Util\Trees\GrammaticalStructure.cs" />
+    <Compile Include="Tools\Util\Trees\HeadFinder.cs" />
+    <Compile Include="Tools\Util\Trees\Tree.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Util\Trees\TRegex\TregexPatternCompiler.cs" />
+    <Compile Include="Tools\Util\Trees\TypedDependency.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpEntropy\SharpEntropy.csproj">
@@ -348,6 +368,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tools\Parser\Common\" />
+    <Folder Include="Tools\Parser\LexParser\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

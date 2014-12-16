@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenNLP.Tools.Util.International.Morph;
+//using OpenNLP.Tools.Util.International.Morph;
 using OpenNLP.Tools.Util.Process;
 
 namespace OpenNLP.Tools.Util.Trees
@@ -368,7 +368,7 @@ namespace OpenNLP.Tools.Util.Trees
    *  @return A TreeReaderFactory suitable for general purpose use
    *  with this language/treebank.
    */
-   TreeReaderFactory treeReaderFactory();
+   //TreeReaderFactory treeReaderFactory();
 
   /** Return a TokenizerFactory for Trees of this language/treebank.
    *
@@ -397,6 +397,6 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return A language-specific MorphoFeatureSpecification
    */
-   /*abstract*/ MorphoFeatureSpecification morphFeatureSpec();
+   /*abstract*/ //MorphoFeatureSpecification morphFeatureSpec();
     }
 }

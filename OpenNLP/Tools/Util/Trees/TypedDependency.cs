@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
@@ -18,56 +19,56 @@ namespace OpenNLP.Tools.Util.Trees
   // a time when you could call typedDependenciesCollapsed() and it
   // would change the GrammaticalStructure because of the way that
   // object mutated its TypedDependency objects.
-  private GrammaticalRelation reln;
-  private IndexedWord gov;
-  private IndexedWord dep;
-  private bool extra; // = false; // to code whether the dependency preserves the tree structure or not
+  private GrammaticalRelation preln;
+  private IndexedWord pgov;
+  private IndexedWord pdep;
+  private bool pextra; // = false; // to code whether the dependency preserves the tree structure or not
   // cdm: todo: remove this field and use typing on reln?  Expand implementation of SEMANTIC_DEPENDENT
 
   public TypedDependency(GrammaticalRelation reln, IndexedWord gov, IndexedWord dep) {
-    this.reln = reln;
-    this.gov = gov;
-    this.dep = dep;
+    this.preln = reln;
+    this.pgov = gov;
+    this.pdep = dep;
   }
 
   public TypedDependency(TypedDependency other) {
-    this.reln = other.reln;
-    this.gov = other.gov;
-    this.dep = other.dep;
-    this.extra = other.extra;
+    this.preln = other.reln();
+    this.pgov = other.gov();
+    this.pdep = other.dep();
+    this.pextra = other.extra();
   }
 
   public GrammaticalRelation reln() {
-    return reln;
+    return preln;
   }
 
   public void setGov(IndexedWord gov) {
-    this.gov = gov;
+    this.pgov = gov;
   }
 
   public void setDep(IndexedWord dep) {
-    this.dep = dep;
+    this.pdep = dep;
   }
 
 
   public IndexedWord gov() {
-    return gov;
+    return pgov;
   }
 
   public IndexedWord dep() {
-    return dep;
+    return pdep;
   }
 
   public bool extra() {
-    return extra;
+    return pextra;
   }
 
   public void setReln(GrammaticalRelation reln) {
-    this.reln = reln;
+    this.preln = reln;
   }
 
   public void setExtra() {
-    this.extra = true;
+    this.pextra = true;
   }
 
   //@SuppressWarnings({"RedundantIfStatement"})
@@ -81,13 +82,13 @@ namespace OpenNLP.Tools.Util.Trees
     }
     /*final*/ TypedDependency typedDep = (TypedDependency) o;
 
-    if (reln != null ? !reln.Equals(typedDep.reln) : typedDep.reln != null) {
+    if (preln != null ? !preln.Equals(typedDep.reln()) : typedDep.reln() != null) {
       return false;
     }
-    if (gov != null ? !gov.Equals(typedDep.gov) : typedDep.gov != null) {
+    if (pgov != null ? !pgov.Equals(typedDep.gov()) : typedDep.gov() != null) {
       return false;
     }
-    if (dep != null ? !dep.Equals(typedDep.dep) : typedDep.dep != null) {
+    if (pdep != null ? !pdep.Equals(typedDep.dep()) : typedDep.dep() != null) {
       return false;
     }
 
@@ -96,20 +97,20 @@ namespace OpenNLP.Tools.Util.Trees
 
   //@Override
   public override int GetHashCode() {
-    int result = (reln != null ? reln.GetHashCode() : 17);
-    result = 29 * result + (gov != null ? gov.GetHashCode() : 0);
-    result = 29 * result + (dep != null ? dep.GetHashCode() : 0);
+    int result = (preln != null ? preln.GetHashCode() : 17);
+    result = 29 * result + (pgov != null ? pgov.GetHashCode() : 0);
+    result = 29 * result + (pdep != null ? pdep.GetHashCode() : 0);
     return result;
   }
 
   //@Override
-  public override String ToString() {
+  /*public override String ToString() {
     return toString(CoreLabel.OutputFormat.VALUE_INDEX);
   }
 
   public String toString(CoreLabel.OutputFormat format) {
-    return reln + "(" + gov.toString(format) + ", " + dep.toString(format) + ")";
-  }
+    return preln + "(" + pgov.toString(format) + ", " + pdep.toString(format) + ")";
+  }*/
 
   public int CompareTo(TypedDependency tdArg) {
     IndexedWord depArg = tdArg.dep();
@@ -133,7 +134,7 @@ namespace OpenNLP.Tools.Util.Trees
     }
 
     // dependent and governor indices equal, the relation decides
-    return this.reln().compareTo(tdArg.reln());
+    return this.reln().CompareTo(tdArg.reln());
   }
     }
 }

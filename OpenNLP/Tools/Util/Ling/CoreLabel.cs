@@ -65,12 +65,11 @@ namespace OpenNLP.Tools.Util.Ling
    * @param label Basis for this label
    */
   //@SuppressWarnings("unchecked")
-  public CoreLabel(Label label) {
-    super(0);
+  public CoreLabel(Label label):base(0){
     if (label is CoreMap) {
       CoreMap cl = (CoreMap) label;
       setCapacity(cl.size());
-      foreach(Class key : cl.keySet()) {
+      foreach(Class key in cl.keySet()) {
         set(key, cl.get(key));
       }
     } else {
@@ -91,8 +90,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param keys Array of Strings that are class names
    * @param values Array of values (as String)
    */
-  public CoreLabel(String[] keys, String[] values) {
-    super(keys.length);
+  public CoreLabel(String[] keys, String[] values):base(keys.Length){
     //this.map = new ArrayCoreMap();
     initFromStrings(keys, values);
   }
@@ -102,17 +100,17 @@ namespace OpenNLP.Tools.Util.Ling
    * Class that all "generic" annotations extend.
    * This allows you to read in arbitrary values from a file as features, for example.
    */
-  public static interface GenericAnnotation<T> extends CoreAnnotation<T> {  }
+  /*public static interface GenericAnnotation<T> extends CoreAnnotation<T> {  }
   //Unchecked is below because eclipse can't handle the level of type inference if we correctly parameterize GenericAnnotation with String
   @SuppressWarnings("unchecked")
   public static readonly Map<String, Class<? extends GenericAnnotation>> genericKeys = Generics.newHashMap();
   @SuppressWarnings("unchecked")
-  public static readonly Map<Class<? extends GenericAnnotation>, String> genericValues = Generics.newHashMap();
+  public static readonly Map<Class<? extends GenericAnnotation>, String> genericValues = Generics.newHashMap();*/
 
 
-  @SuppressWarnings("unchecked")
+  //@SuppressWarnings("unchecked")
   private void initFromStrings(String[] keys, String[] values) {
-    foreach(int i = 0; i < Math.min(keys.length, values.length); i++) {
+    for(int i = 0; i < Math.Min(keys.length, values.length); i++) {
       String key = keys[i];
       String value = values[i];
       KeyLookup lookup = AnnotationLookup.getCoreKey(key);
@@ -233,7 +231,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public LabelFactory labelFactory() {
     return CoreLabel.factory();
   }
@@ -250,7 +248,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return "" if the key is not in the map or has the value <code>null</code>
    *     and the String value of the key otherwise
    */
-  @Override
+  //@Override
   public <KEY extends Key<String>> String getString(Class<KEY> key) {
     String value = get(key);
     if (value == null) {

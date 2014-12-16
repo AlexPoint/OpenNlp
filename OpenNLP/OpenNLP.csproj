@@ -305,6 +305,7 @@
     </Compile>
     <Compile Include="Tools\Util\CollectionEventStream.cs" />
     <Compile Include="Tools\Util\CountedSet.cs" />
+    <Compile Include="Tools\Util\Filters.cs" />
     <Compile Include="Tools\Util\HashList.cs" />
     <Compile Include="Tools\Util\HashSet.cs">
       <SubType>Code</SubType>
@@ -313,22 +314,11 @@
     <Compile Include="Tools\Util\IBeamSearchContextGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\IdentityDictionary.cs" />
     <Compile Include="Tools\Util\IHeap.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tools\Util\International\Morph\MorphoFeatures.cs" />
-    <Compile Include="Tools\Util\International\Morph\MorphoFeatureSpecification.cs" />
-    <Compile Include="Tools\Util\IntPair.cs" />
-    <Compile Include="Tools\Util\IntQuadruple.cs" />
-    <Compile Include="Tools\Util\IntTriple.cs" />
-    <Compile Include="Tools\Util\IntTuple.cs" />
-    <Compile Include="Tools\Util\IntUni.cs" />
-    <Compile Include="Tools\Util\IOUtils.cs" />
-    <Compile Include="Tools\Util\Ling\CoreLabel.cs" />
-    <Compile Include="Tools\Util\Ling\Label.cs" />
-    <Compile Include="Tools\Util\Ling\Labeled.cs" />
-    <Compile Include="Tools\Util\Ling\LabelFactory.cs" />
-    <Compile Include="Tools\Util\Ling\Scored.cs" />
+    <Compile Include="Tools\Util\Ling\IndexedWord.cs" />
     <Compile Include="Tools\Util\ListHeap.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -351,34 +341,29 @@
     <Compile Include="Tools\Util\StringTokenizer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tools\Util\TreeHeap.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Tools\Util\TreeSet.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\Trees\AbstractCollinsHeadFinder.cs" />
     <Compile Include="Tools\Util\Trees\AbstractTreebankLanguagePack.cs" />
+    <Compile Include="Tools\Util\Trees\CollinsHeadFinder.cs" />
     <Compile Include="Tools\Util\Trees\EnglishGrammaticalRelations.cs" />
+    <Compile Include="Tools\Util\Trees\EnglishGrammaticalStructure.cs" />
+    <Compile Include="Tools\Util\Trees\EnglishGrammaticalStructureFactory.cs" />
+    <Compile Include="Tools\Util\Trees\EnglishPatterns.cs" />
     <Compile Include="Tools\Util\Trees\GrammaticalRelation.cs" />
     <Compile Include="Tools\Util\Trees\GrammaticalStructure.cs" />
     <Compile Include="Tools\Util\Trees\GrammaticalStructureFactory.cs" />
     <Compile Include="Tools\Util\Trees\HeadFinder.cs" />
-    <Compile Include="Tools\Util\Trees\LabeledScoredTreeFactory.cs" />
-    <Compile Include="Tools\Util\Trees\LabeledScoredTreeNode.cs" />
+    <Compile Include="Tools\Util\Trees\ModCollinsHeadFinder.cs" />
     <Compile Include="Tools\Util\Trees\PennTreebankLanguagePack.cs" />
-    <Compile Include="Tools\Util\Trees\PennTreeReaderFactory.cs" />
-    <Compile Include="Tools\Util\Trees\SimpleTree.cs" />
-    <Compile Include="Tools\Util\Trees\SimpleTreeFactory.cs" />
-    <Compile Include="Tools\Util\Trees\Tree.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Tools\Util\Trees\TreebankLanguagePack.cs" />
-    <Compile Include="Tools\Util\Trees\TreeFactory.cs" />
-    <Compile Include="Tools\Util\Trees\TreeNormalizer.cs" />
-    <Compile Include="Tools\Util\Trees\TreeReader.cs" />
-    <Compile Include="Tools\Util\Trees\TreeReaderFactory.cs" />
-    <Compile Include="Tools\Util\Trees\TreeTokenizerFactory.cs" />
+    <Compile Include="Tools\Util\Trees\SemanticHeadFinder.cs" />
+    <Compile Include="Tools\Util\Trees\Tree.cs" />
+    <Compile Include="Tools\Util\Trees\TRegex\TregexMatcher.cs" />
+    <Compile Include="Tools\Util\Trees\TRegex\TregexParseException.cs" />
+    <Compile Include="Tools\Util\Trees\TRegex\TregexPattern.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\TregexPatternCompiler.cs" />
+    <Compile Include="Tools\Util\Trees\TRegex\VariableStrings.cs" />
     <Compile Include="Tools\Util\Trees\TypedDependency.cs" />
   </ItemGroup>
   <ItemGroup>

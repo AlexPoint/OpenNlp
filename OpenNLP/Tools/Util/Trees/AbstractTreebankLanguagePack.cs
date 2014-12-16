@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenNLP.Tools.Util.International.Morph;
 using OpenNLP.Tools.Util.Process;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    public abstract class AbstractTreebankLanguagePack: TreebankLanguagePack
+    public abstract class AbstractTreebankLanguagePack/*: TreebankLanguagePack*/
     {
         /**
    * So changed versions deserialize correctly.
    */
-  private static readonly long serialVersionUID = -6506749780512708352L;
+  //private static readonly long serialVersionUID = -6506749780512708352L;
 
 
   //Grammatical function parameters
@@ -35,9 +34,7 @@ namespace OpenNLP.Tools.Util.Trees
   /**
    * Gives a handle to the TreebankLanguagePack.
    */
-  public AbstractTreebankLanguagePack():
-    this(DEFAULT_GF_CHAR){
-  }
+  public AbstractTreebankLanguagePack():this(DEFAULT_GF_CHAR){}
 
 
   /**
@@ -97,7 +94,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public bool isPunctuationTag(String str) {
-    return punctTagStringAcceptFilter.test(str);
+    return punctTagStringAcceptFilter()(str);
   }
 
 
@@ -111,7 +108,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public bool isPunctuationWord(String str) {
-    return punctWordStringAcceptFilter.test(str);
+    return punctWordStringAcceptFilter()(str);
   }
 
 
@@ -123,7 +120,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public bool isSentenceFinalPunctuationTag(String str) {
-    return sFPunctTagStringAcceptFilter.test(str);
+    return sFPunctTagStringAcceptFilter()(str);
   }
 
 
@@ -139,7 +136,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public bool isEvalBIgnoredPunctuationTag(String str) {
-    return eIPunctTagStringAcceptFilter.test(str);
+    return eIPunctTagStringAcceptFilter()(str);
   }
 
 
@@ -151,7 +148,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public Predicate<String> punctuationTagAcceptFilter() {
-    return punctTagStringAcceptFilter;
+    return punctTagStringAcceptFilter();
   }
 
 
@@ -163,7 +160,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public Predicate<String> punctuationTagRejectFilter() {
-    return Filters.notFilter(punctTagStringAcceptFilter);
+    return Filters.notFilter(punctTagStringAcceptFilter());
   }
 
 
@@ -177,7 +174,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public Predicate<String> punctuationWordAcceptFilter() {
-    return punctWordStringAcceptFilter;
+    return punctWordStringAcceptFilter();
   }
 
 
@@ -191,7 +188,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public Predicate<String> punctuationWordRejectFilter() {
-    return Filters.notFilter(punctWordStringAcceptFilter);
+    return Filters.notFilter(punctWordStringAcceptFilter());
   }
 
 
@@ -203,7 +200,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public Predicate<String> sentenceFinalPunctuationTagAcceptFilter() {
-    return sFPunctTagStringAcceptFilter;
+    return sFPunctTagStringAcceptFilter();
   }
 
 
@@ -219,7 +216,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public Predicate<String> evalBIgnoredPunctuationTagAcceptFilter() {
-    return eIPunctTagStringAcceptFilter;
+    return eIPunctTagStringAcceptFilter();
   }
 
 
@@ -234,7 +231,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public Predicate<String> evalBIgnoredPunctuationTagRejectFilter() {
-    return Filters.notFilter(eIPunctTagStringAcceptFilter);
+    return Filters.notFilter(eIPunctTagStringAcceptFilter());
   }
 
 
@@ -273,8 +270,8 @@ namespace OpenNLP.Tools.Util.Trees
    * label.  That is, if category is "NP-LGS", it returns 2.
    * This routine assumes category != null.
    * This routine returns 0 iff the String is of length 0.
-   * This routine always returns a number &lt;= category.Length, and
-   * so it is safe to pass it as an argument to category.Substring().
+   * This routine always returns a number &lt;= category.length(), and
+   * so it is safe to pass it as an argument to category.substring().
    * <p>
    * NOTE: the routine should never allow the first character of a label
    * to be taken as the annotation introducing character, because in the
@@ -301,7 +298,7 @@ namespace OpenNLP.Tools.Util.Trees
           sawAtZero = false;
         } else {
           // still skip past identical ones for weird negra-penn "---CJ" (should we just delete it?)
-          // if (i + 1 < leng && category.CharAt(i + 1) == ch) {
+          // if (i + 1 < leng && category.charAt(i + 1) == ch) {
             // keep looping
           // } else {
           break;
@@ -355,12 +352,12 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The String->String Function object
    */
   //@Override
-  public Func<String,String> getBasicCategoryFunction() {
+  /*public Func<String,String> getBasicCategoryFunction() {
     return new BasicCategoryStringFunction(this);
-  }
+  }*/
 
 
-  private static class BasicCategoryStringFunction /*implements Function<String,String>, Serializable*/ {
+  /*private static class BasicCategoryStringFunction implements Function<String,String>, Serializable {
 
     private static readonly long serialVersionUID = 1L;
 
@@ -371,14 +368,14 @@ namespace OpenNLP.Tools.Util.Trees
     }
 
     //@Override
-    public String apply(String input) {
-      return tlp.basicCategory(input);
+    public String apply(String in) {
+      return tlp.basicCategory(in);
     }
 
-  }
+  }*/
 
 
-  private static class CategoryAndFunctionStringFunction /*implements Function<String,String>, Serializable*/ {
+  /*private static class CategoryAndFunctionStringFunction implements Function<String,String>, Serializable {
 
     private static readonly long serialVersionUID = 1L;
 
@@ -389,11 +386,11 @@ namespace OpenNLP.Tools.Util.Trees
     }
 
     //@Override
-    public String apply(String input) {
-      return tlp.categoryAndFunction(input);
+    public String apply(String in) {
+      return tlp.categoryAndFunction(in);
     }
 
-  }
+  }*/
 
 
   /**
@@ -415,10 +412,10 @@ namespace OpenNLP.Tools.Util.Trees
       return null;
     }
     String catFunc = category;
-    int i = LastIndexOfNumericTag(catFunc);
+    int i = lastIndexOfNumericTag(catFunc);
     while (i >= 0) {
       catFunc = catFunc.Substring(0, i);
-      i = LastIndexOfNumericTag(catFunc);
+      i = lastIndexOfNumericTag(catFunc);
     }
     return catFunc;
   }
@@ -427,7 +424,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Returns the index within this string of the last occurrence of a
    * isLabelAnnotationIntroducingCharacter which is followed by only
    * digits, corresponding to a numeric tag at the end of the string.
-   * Example: <code>LastIndexOfNumericTag("NP-TMP-1") returns
+   * Example: <code>lastIndexOfNumericTag("NP-TMP-1") returns
    * 6</code>.
    *
    * @param category A String category
@@ -435,7 +432,7 @@ namespace OpenNLP.Tools.Util.Trees
    *     isLabelAnnotationIntroducingCharacter which is followed by only
    *     digits
    */
-  private int LastIndexOfNumericTag(String category) {
+  private int lastIndexOfNumericTag(String category) {
     if (category == null) {
       return -1;
     }
@@ -465,9 +462,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The String->String Function object
    */
   //@Override
-  public Func<String,String> getCategoryAndFunctionFunction() {
+  /*public Func<String,String> getCategoryAndFunctionFunction() {
     return new CategoryAndFunctionStringFunction(this);
-  }
+  }*/
 
 
   /**
@@ -496,7 +493,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public bool isStartSymbol(String str) {
-    return startSymbolAcceptFilter.test(str);
+    return startSymbolAcceptFilter()(str);
   }
 
 
@@ -507,9 +504,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The filter
    */
   //@Override
-  public Predicate<String> startSymbolAcceptFilter() {
+  /*public Predicate<String> startSymbolAcceptFilter() {
     return startSymbolAcceptFilter;
-  }
+  }*/
 
 
   /**
@@ -536,16 +533,30 @@ namespace OpenNLP.Tools.Util.Trees
     return ssyms[0];
   }
 
+        private Predicate<string> punctTagStringAcceptFilter()
+        {
+            return Filters.collectionAcceptFilter(punctuationTags());
+        }
 
-  private readonly Predicate<String> punctTagStringAcceptFilter = Filters.collectionAcceptFilter(punctuationTags());
+        private Predicate<String> punctWordStringAcceptFilter()
+        {
+            return Filters.collectionAcceptFilter(punctuationWords());
+        }
 
-  private readonly Predicate<String> punctWordStringAcceptFilter = Filters.collectionAcceptFilter(punctuationWords());
+        private Predicate<String> sFPunctTagStringAcceptFilter()
+        {
+            return Filters.collectionAcceptFilter(sentenceFinalPunctuationTags());
+        }
 
-  private readonly Predicate<String> sFPunctTagStringAcceptFilter = Filters.collectionAcceptFilter(sentenceFinalPunctuationTags());
+        private Predicate<String> eIPunctTagStringAcceptFilter()
+        {
+            return Filters.collectionAcceptFilter(evalBIgnoredPunctuationTags());
+        }
 
-  private readonly Predicate<String> eIPunctTagStringAcceptFilter = Filters.collectionAcceptFilter(evalBIgnoredPunctuationTags());
-
-  private readonly Predicate<String> startSymbolAcceptFilter = Filters.collectionAcceptFilter(startSymbols());
+        private Predicate<String> startSymbolAcceptFilter()
+        {
+            return Filters.collectionAcceptFilter(startSymbols());
+        }
 
   /**
    * Return a tokenizer which might be suitable for tokenizing text that
@@ -555,9 +566,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A tokenizer
    */
   //@Override
-  public TokenizerFactory<HasWord> getTokenizerFactory() {
+  /*public TokenizerFactory<? extends HasWord> getTokenizerFactory() {
     return WhitespaceTokenizer.factory(false);
-  }
+  }*/
 
   /**
    * Return a GrammaticalStructureFactory suitable for this language/treebank.
@@ -567,7 +578,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public GrammaticalStructureFactory grammaticalStructureFactory() {
-    throw new InvalidOperationException("No GrammaticalStructureFactory defined for " + getClass().getName());
+    throw new InvalidOperationException("No GrammaticalStructureFactory defined for " /*+ getClass().getName()*/);
   }
 
   /**
@@ -609,22 +620,22 @@ namespace OpenNLP.Tools.Util.Trees
 
   /** {@inheritDoc} */
   //@Override
-  public TreeReaderFactory treeReaderFactory() {
+  /*public TreeReaderFactory treeReaderFactory() {
     return new PennTreeReaderFactory();
-  }
+  }*/
 
   /** {@inheritDoc} */
   //@Override
-  public TokenizerFactory<Tree> treeTokenizerFactory() {
+  /*public TokenizerFactory<Tree> treeTokenizerFactory() {
     return new TreeTokenizerFactory(treeReaderFactory());
-  }
+  }*/
 
   /**
    * Returns a morphological feature specification for words in this language.
    */
   //@Override
-  public MorphoFeatureSpecification morphFeatureSpec() {
+  /*public MorphoFeatureSpecification morphFeatureSpec() {
     return null;
-  }
+  }*/
     }
 }

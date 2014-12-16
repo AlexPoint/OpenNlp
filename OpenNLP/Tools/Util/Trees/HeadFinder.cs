@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
 {
+    /**
+ * An interface for finding the "head" daughter of a phrase structure tree.
+ * This could potentially be any sense of "head", but has mainly been used
+ * to find the lexical head for lexicalized PCFG parsing.
+ *
+ * @author Christopher Manning
+ */
     public interface HeadFinder
     {
         /**
@@ -32,6 +39,6 @@ namespace OpenNLP.Tools.Util.Trees
          * @return The daughter tree that is the head.  This will always be
          *     non-null. An Exception will be thrown if no head can be determined.
          */
-        Tree determineHead(Tree t, Tree parent);
+        Tree determineHead(Tree t,Tree parent);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Parser;
 
 namespace OpenNLP.Tools.Util.Trees
 {
@@ -14,6 +15,6 @@ namespace OpenNLP.Tools.Util.Trees
    * @param t the tree to analyze
    * @return a GrammaticalStructure based on the tree
    */
-        GrammaticalStructure newGrammaticalStructure(Tree t);
+        GrammaticalStructure newGrammaticalStructure(Parse t);
     }
 }

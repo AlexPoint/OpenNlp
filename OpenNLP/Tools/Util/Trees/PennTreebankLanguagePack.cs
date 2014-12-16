@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    public class PennTreebankLanguagePack
+    public class PennTreebankLanguagePack:AbstractTreebankLanguagePack
     {
         /**
    * Gives a handle to the TreebankLanguagePack
@@ -15,15 +15,15 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
 
-  private static final String[] pennPunctTags = {"''", "``", "-LRB-", "-RRB-", ".", ":", ","};
+  private static readonly String[] pennPunctTags = {"''", "``", "-LRB-", "-RRB-", ".", ":", ","};
 
-  private static final String[] pennSFPunctTags = {"."};
+  private static readonly String[] pennSFPunctTags = {"."};
 
-  private static final String[] collinsPunctTags = {"''", "``", ".", ":", ","};
+  private static readonly String[] collinsPunctTags = {"''", "``", ".", ":", ","};
 
-  private static final String[] pennPunctWords = {"''", "'", "``", "`", "-LRB-", "-RRB-", "-LCB-", "-RCB-", ".", "?", "!", ",", ":", "-", "--", "...", ";"};
+  private static readonly String[] pennPunctWords = {"''", "'", "``", "`", "-LRB-", "-RRB-", "-LCB-", "-RCB-", ".", "?", "!", ",", ":", "-", "--", "...", ";"};
 
-  private static final String[] pennSFPunctWords = {".", "!", "?"};
+  private static readonly String[] pennSFPunctWords = {".", "!", "?"};
 
 
   /**
@@ -34,12 +34,12 @@ namespace OpenNLP.Tools.Util.Trees
    * printing out lexicalized dependencies.  Note that ] ought to be
    * unnecessary, since it would end the annotation, not start it.
    */
-  private static final char[] annotationIntroducingChars = {'-', '=', '|', '#', '^', '~', '_', '['};
+  private static readonly char[] annotationIntroducingChars = {'-', '=', '|', '#', '^', '~', '_', '['};
 
   /**
    * This is valid for "BobChrisTreeNormalizer" conventions only.
    */
-  private static final String[] pennStartSymbols = {"ROOT", "TOP"};
+  private static readonly String[] pennStartSymbols = {"ROOT", "TOP"};
 
 
   /**
@@ -47,8 +47,8 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The punctuation tags
    */
-  @Override
-  public String[] punctuationTags() {
+  //@Override
+  public override String[] punctuationTags() {
     return pennPunctTags;
   }
 
@@ -58,30 +58,30 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The punctuation words
    */
-  @Override
-  public String[] punctuationWords() {
+  //@Override
+  public override String[] punctuationWords() {
     return pennPunctWords;
   }
 
 
   /**
-   * Returns a String array of sentence final punctuation tags for this
+   * Returns a String array of sentence readonly punctuation tags for this
    * treebank/language.
    *
-   * @return The sentence final punctuation tags
+   * @return The sentence readonly punctuation tags
    */
-  @Override
-  public String[] sentenceFinalPunctuationTags() {
+  //@Override
+  public override String[] sentenceFinalPunctuationTags() {
     return pennSFPunctTags;
   }
 
   /**
-   * Returns a String array of sentence final punctuation words for this
+   * Returns a String array of sentence readonly punctuation words for this
    * treebank/language.
    *
-   * @return The sentence final punctuation tags
+   * @return The sentence readonly punctuation tags
    */
-  @Override
+  //@Override
   public String[] sentenceFinalPunctuationWords() {
     return pennSFPunctWords;
   }
@@ -95,7 +95,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return Whether this is a EVALB-ignored punctuation tag
    */
-  @Override
+  //@Override
   public String[] evalBIgnoredPunctuationTags() {
     return collinsPunctTags;
   }
@@ -111,7 +111,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return An array of characters that set off label name suffixes
    */
-  @Override
+  //@Override
   public char[] labelAnnotationIntroducingCharacters() {
     return annotationIntroducingChars;
   }
@@ -122,8 +122,8 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The start symbols
    */
-  @Override
-  public String[] startSymbols() {
+  //@Override
+  public override String[] startSymbols() {
     return pennStartSymbols;
   }
 
@@ -132,16 +132,16 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return A tokenizer
    */
-  @Override
-  public TokenizerFactory<CoreLabel> getTokenizerFactory() {
+  //@Override
+  /*public TokenizerFactory<CoreLabel> getTokenizerFactory() {
     return PTBTokenizer.coreLabelFactory();
-  }
+  }*/
 
   /**
    * Returns the extension of treebank files for this treebank.
    * This is "mrg".
    */
-  @Override
+  //@Override
   public String treebankFileExtension() {
     return "mrg";
   }
@@ -151,7 +151,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return A GrammaticalStructure suitable for this language/treebank.
    */
-  @Override
+  //@Override
   public GrammaticalStructureFactory grammaticalStructureFactory() {
     return new EnglishGrammaticalStructureFactory();
   }
@@ -163,37 +163,37 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return A GrammaticalStructure suitable for this language/treebank.
    */
-  @Override
-  public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<String> puncFilter) {
+  //@Override
+  /*public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<String> puncFilter) {
     return new EnglishGrammaticalStructureFactory(puncFilter);
-  }
+  }*/
 
-  @Override
-  public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<String> puncFilter, HeadFinder hf) {
+  //@Override
+  /*public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<String> puncFilter, HeadFinder hf) {
     return new EnglishGrammaticalStructureFactory(puncFilter, hf);
-  }
+  }*/
 
-  @Override
-  public boolean supportsGrammaticalStructures() {
+  //@Override
+  public bool supportsGrammaticalStructures() {
     return true;
   }
 
   /** {@inheritDoc} */
-  @Override
-  public HeadFinder headFinder() {
+  //@Override
+  /*public HeadFinder headFinder() {
     return new ModCollinsHeadFinder(this);
-  }
+  }*/
 
   /** {@inheritDoc} */
-  @Override
-  public HeadFinder typedDependencyHeadFinder() {
+  //@Override
+  /*public HeadFinder typedDependencyHeadFinder() {
     return new SemanticHeadFinder(this, true);
-  }
+  }*/
 
 
   /** Prints a few aspects of the TreebankLanguagePack, just for debugging.
    */
-  public static void main(String[] args) {
+  /*public static void main(String[] args) {
     TreebankLanguagePack tlp = new PennTreebankLanguagePack();
     System.out.println("Start symbol: " + tlp.startSymbol());
     String start = tlp.startSymbol();
@@ -202,8 +202,8 @@ namespace OpenNLP.Tools.Util.Trees
     for (String str : strs) {
       System.out.println("String: " + str + " basic: " + tlp.basicCategory(str) + " basicAndFunc: " + tlp.categoryAndFunction(str));
     }
-  }
+  }*/
 
-  private static final long serialVersionUID = 9081305982861675328L;
+  private static readonly long serialVersionUID = 9081305982861675328L;
     }
 }

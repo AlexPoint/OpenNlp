@@ -115,7 +115,7 @@ namespace OpenNLP.Tools.Parser
 		public virtual Parse Head { get; private set; }
 
         /// <summary>
-        /// The outcome assigned to this parse during cconstruction of its parent parse.
+        /// The outcome assigned to this parse during construction of its parent parse.
         /// </summary>
 		public virtual string Label { get; set; }
 
@@ -213,7 +213,7 @@ namespace OpenNLP.Tools.Parser
 
 		public object Clone()
 		{
-			Parse clonedParse = (Parse)base.MemberwiseClone();
+			var clonedParse = (Parse)base.MemberwiseClone();
 				
 			clonedParse._parts = new List<Parse>(_parts);
 			if (_derivation != null)
@@ -234,7 +234,7 @@ namespace OpenNLP.Tools.Parser
 				throw new ArgumentException("A Parse object is required for comparison.");
 			}
 
-			Parse testParse = (Parse) o;
+			var testParse = (Parse) o;
 			if (this.Probability > testParse.Probability)
 			{
 				return - 1;

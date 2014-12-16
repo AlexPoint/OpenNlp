@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
@@ -107,16 +108,22 @@ namespace OpenNLP.Tools.Util.Trees
     return reln;
   }
 
-  private static Dictionary<String, SoftReference<GrammaticalRelation>> valueOfCache = new Dictionary<string, SoftReference<GrammaticalRelation>>();
+  private static Dictionary<String, GrammaticalRelation> valueOfCache = new Dictionary<string, GrammaticalRelation>();
   public static GrammaticalRelation valueOf(String s) {
-    GrammaticalRelation value = null;
+      if (!valueOfCache.ContainsKey(s))
+      {
+          var value = valueOf(Language.English, s);
+          valueOfCache.Add(s, value);
+      }
+      return valueOfCache[s];
+    /*GrammaticalRelation value = null;
     SoftReference<GrammaticalRelation> possiblyCachedValue = valueOfCache[s);
     if (possiblyCachedValue != null) { value = possiblyCachedValue[); }
     if (value == null) {
       value = valueOf(Language.English, s);
       valueOfCache.Add(s, new SoftReference<GrammaticalRelation>(value));
     }
-    return value;
+    return value;*/
   }
 
   /**
@@ -142,7 +149,7 @@ namespace OpenNLP.Tools.Util.Trees
   private readonly GrammaticalRelation parent;
   private readonly List<GrammaticalRelation> children = new List<GrammaticalRelation>();
   // a regexp for node values at which this relation can hold
-  private readonly Pattern sourcePattern;
+  private readonly Regex sourcePattern;
   private readonly List<TregexPattern> targetPatterns = new List<TregexPattern>();
   private readonly String specific; // to hold the specific prep or conjunction associated with the grammatical relation
 
@@ -167,11 +174,11 @@ namespace OpenNLP.Tools.Util.Trees
     }
 
     if (sourcePattern != null) {
-      try {
-        this.sourcePattern = Pattern.compile(sourcePattern);
-      } catch (java.util.regex.PatternSyntaxException e) {
+      /*try {*/
+        this.sourcePattern = new Regex(sourcePattern, RegexOptions.Compiled);
+      /*} catch (java.util.regex.PatternSyntaxException e) {
         throw new RuntimeException("Bad pattern: " + sourcePattern);
-      }
+      }*/
     } else {
       this.sourcePattern = null;
     }

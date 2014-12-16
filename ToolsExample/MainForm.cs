@@ -295,7 +295,8 @@ namespace ToolsExample
 
 			foreach(string sentence in sentences)
 			{
-				output.Append(ParseSentence(sentence).Show()).Append("\r\n\r\n");
+			    var parse = ParseSentence(sentence);
+				output.Append(parse.Show()).Append("\r\n\r\n");
 			}
 
 			_txtOut.Text = output.ToString();

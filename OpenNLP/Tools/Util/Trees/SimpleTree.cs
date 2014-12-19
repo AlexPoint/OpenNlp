@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Parser;
 using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
@@ -40,7 +41,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param daughterTreesList list of daughter trees to construct.
    */
   public SimpleTree(Label label, List<Tree> daughterTreesList) {
-    setChildren(daughterTreesList);
+    setChildren(daughterTreesList.ToArray());
   }
 
 
@@ -49,7 +50,7 @@ namespace OpenNLP.Tools.Util.Trees
    * if it is a leaf.
    */
   //@Override
-  public override Tree[] children() {
+  public Tree[] children() {
     return daughterTrees;
   }
 
@@ -85,7 +86,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a factory to produce simple (unlabelled) trees
    */
   //@Override
-  public override TreeFactory treeFactory() {
+  public TreeFactory treeFactory() {
     return TreeFactoryHolder.tf;
   }
 

@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public EnglishGrammaticalStructure(Parse t, Predicate<String> puncFilter, HeadFinder hf, bool threadSafe) :
             base((new CoordinationTransformer(hf)).transformTree(t.Clone()),
-            EnglishGrammaticalRelations.values(threadSafe), threadSafe ? EnglishGrammaticalRelations.valuesLock() : null,
+            EnglishGrammaticalRelations.Values(threadSafe), threadSafe ? EnglishGrammaticalRelations.valuesLock() : null,
             hf, puncFilter)
         {
             // the tree is normalized (for index and functional tag stripping) inside CoordinationTransformer

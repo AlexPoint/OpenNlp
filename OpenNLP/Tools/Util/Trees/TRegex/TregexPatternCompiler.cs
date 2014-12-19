@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OpenNLP.Tools.Parser;
 
@@ -18,8 +19,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   private readonly Func<String,String> basicCatFunction;
   private readonly HeadFinder headFinder;
 
-  private readonly List<Pair<String, String>> macros =
-    new List<Pair<String, String>>();
+  private readonly List<Tuple<String, String>> macros =
+    new List<Tuple<String, String>>();
 
   public static readonly TregexPatternCompiler defaultCompiler =
     new TregexPatternCompiler();
@@ -75,7 +76,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    *                  of a String.replaceAll()
    */
   public void addMacro(String original, String replacement) {
-    macros.Add(new Pair<String, String>(original, replacement));
+    macros.Add(new Tuple<String, String>(original, replacement));
   }
 
 
@@ -94,18 +95,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @throws TregexParseException If the expression is syntactically invalid
    */
   public TregexPattern compile(String tregex) {
-    foreach (Pair<String, String> macro in macros) {
-      tregex = tregex.replaceAll(macro.first(), macro.second());
+    foreach (Tuple<String, String> macro in macros) {
+      //tregex = tregex.replaceAll(macro.first(), macro.second());
+        tregex = Regex.Replace(tregex, macro.Item1, macro.Item2);
     }
     TregexPattern pattern;
     try {
       TregexParser parser = new TregexParser(new StringReader(tregex + '\n'),
                                              basicCatFunction, headFinder);
       pattern = parser.Root();
-    } catch (TokenMgrError tme) {
-      throw new TregexParseException("Could not parse " + tregex, tme);
+    } catch (TokenMgrException tme) {
+      throw new TregexParseException("Could not parse " + tregex/*, tme*/);
     } catch (ParseException e) {
-      throw new TregexParseException("Could not parse " + tregex, e);
+      throw new TregexParseException("Could not parse " + tregex/*, e*/);
     }
     pattern.setPatternString(tregex);
     return pattern;

@@ -14,6 +14,15 @@ namespace OpenNLP.Tools.Util.Trees
     public class Tree
     {
         private Parse parse;
+        /**
+   * A leaf node should have a zero-length array for its
+   * children. For efficiency, classes can use this array as a
+   * return value for children() for leaf nodes if desired.
+   * This can also be used elsewhere when you want an empty Tree array.
+   */
+  public static readonly Tree[] EMPTY_TREE_ARRAY = new Tree[0];
+
+        public Tree() { }
 
         // TODO: build SP Tree from an OpenNlp Parse object
         public Tree(Parse p)
@@ -71,7 +80,11 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return A factory to produce Trees
    */
-        public TreeFactory treeFactory();
+
+        public TreeFactory treeFactory()
+        {
+            return new SimpleTreeFactory();
+        }
 
         /**
    * Returns the label associated with the current node, or null

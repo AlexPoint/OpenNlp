@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
@@ -39,15 +41,20 @@ namespace OpenNLP.Tools.Util
   private static readonly int INITIAL_CAPACITY = 4;
 
   /** Array of keys */
-  private /*Class<? extends Key<?>>*/object[] keys;
+  private /*Class<? extends Key<?>>*/Key<object>[] keys;
 
   /** Array of values */
   private Object[] values;
 
   /** Total number of elements actually in keys,values */
-  private int size; // = 0;
+        public int psize { get; private set; }
 
-  /**
+        public int size()
+        {
+            return psize;
+        }
+
+        /**
    * Default constructor - initializes with default initial annotation
    * capacity of 4.
    */
@@ -60,7 +67,7 @@ namespace OpenNLP.Tools.Util
    * @param capacity Initial capacity of object in key,value pairs
    */
   public ArrayCoreMap(int capacity) {
-    keys = ErasureUtils.uncheckedCast(new Class[capacity]);
+    keys = new Key<object>[capacity];
     values = new Object[capacity];
     // size starts at 0
   }
@@ -70,9 +77,9 @@ namespace OpenNLP.Tools.Util
    * @param other The ArrayCoreMap to copy. It may not be null.
    */
   public ArrayCoreMap(ArrayCoreMap other) {
-    size = other.size;
-    keys = Arrays.copyOf(other.keys, size);
-    values = Arrays.copyOf(other.values, size);
+    psize = other.psize;
+    keys = other.keys.Take(psize).ToArray();
+    values = other.values.Take(psize).ToArray();
   }
 
   /**
@@ -81,16 +88,16 @@ namespace OpenNLP.Tools.Util
    */
   //@SuppressWarnings("unchecked")
   public ArrayCoreMap(CoreMap other) {
-    Set<Class<?>> otherKeys = other.keySet();
+    /*Set<Class<?>>*/var otherKeys = other.keySet();
 
-    size = otherKeys.size();
-    keys = new Class[size];
-    values = new Object[size];
+    psize = otherKeys.Count;
+    keys = new Key<object>[psize];
+    values = new Object[psize];
 
     int i = 0;
-    foreach (Class key in otherKeys) {
+    foreach (var key in otherKeys) {
       this.keys[i] = key;
-      this.values[i] = other.get(key);
+      this.values[i] = other[key];
       i++;
     }
   }
@@ -100,13 +107,13 @@ namespace OpenNLP.Tools.Util
    */
   //@Override
   //@SuppressWarnings("unchecked")
-  public <VALUE> VALUE get(Class<? extends Key<VALUE>> key) {
-    for (int i = 0; i < size; i++) {
+  public /*<VALUE> VALUE*/T get<T>(/*Class<? extends Key<VALUE>>*/Key<T> key) {
+    for (int i = 0; i < psize; i++) {
       if (key == keys[i]) {
-        return (VALUE)values[i];
+        return (T)values[i];
       }
     }
-    return null;
+    return default(T);
   }
 
 
@@ -115,8 +122,8 @@ namespace OpenNLP.Tools.Util
    * {@inheritDoc}
    */
   //@Override
-  public <VALUE> boolean has(Class<? extends Key<VALUE>> key) {
-    for (int i = 0; i < size; i++) {
+  public /*<VALUE>*/ bool has<T>(/*Class<? extends Key<VALUE>>*/Key<T> key) {
+    for (int i = 0; i < psize; i++) {
       if (keys[i] == key) {
         return true;
       }
@@ -130,12 +137,12 @@ namespace OpenNLP.Tools.Util
    */
   //@Override
   //@SuppressWarnings("unchecked")
-  public <VALUE> VALUE set(Class<? extends Key<VALUE>> key, VALUE value) {
+  public /*<VALUE> VALUE*/T set<T>(/*Class<? extends Key<VALUE>>*/Key<T> key, T value) {
 
     // search array for existing value to replace
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < psize; i++) {
       if (keys[i] == key) {
-        VALUE rv = (VALUE)values[i];
+        T rv = (T)values[i];
         values[i] = value;
         return rv;
       }
@@ -143,29 +150,29 @@ namespace OpenNLP.Tools.Util
     // not found in arrays, add to end ...
 
     // increment capacity of arrays if necessary
-    if (size >= keys.length) {
-      int capacity = keys.length + (keys.length < 16 ? 4: 8);
-      Class[] newKeys = new Class[capacity];
+    if (psize >= keys.Length) {
+      int capacity = keys.Length + (keys.Length < 16 ? 4: 8);
+      Key<object>[] newKeys = new Key<object>[capacity];
       Object[] newValues = new Object[capacity];
-      System.arraycopy(keys, 0, newKeys, 0, size);
-      System.arraycopy(values, 0, newValues, 0, size);
+      Array.Copy(keys, 0, newKeys, 0, psize);
+      Array.Copy(values, 0, newValues, 0, psize);
       keys = newKeys;
       values = newValues;
     }
 
     // store value
-    keys[size] = key;
-    values[size] = value;
-    size++;
+    keys[psize] = key;
+    values[psize] = value;
+    psize++;
 
-    return null;
+    return default(T);
   }
 
   /**
    * {@inheritDoc}
    */
   //@Override
-  public Set<Class<?>> keySet() {
+  /*public Set<Class<?>> keySet() {
 
     return new AbstractSet<Class<?>>() {
       //@Override
@@ -174,7 +181,7 @@ namespace OpenNLP.Tools.Util
           private int i; // = 0;
 
           //@Override
-          public boolean hasNext() {
+          public bool hasNext() {
             return i < size;
           }
 
@@ -200,36 +207,36 @@ namespace OpenNLP.Tools.Util
         return size;
       }
     };
-  }
+  }*/
 
   /**
    * {@inheritDoc}
    */
   //@Override
   //@SuppressWarnings("unchecked")
-  public <VALUE> VALUE remove(Class<? extends Key<VALUE>> key) {
+  public /*<VALUE> VALUE*/T remove<T>(/*Class<? extends Key<VALUE>>*/Key<T> key) {
 
     Object rv = null;
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < psize; i++) {
       if (keys[i] == key) {
         rv = values[i];
-        if (i < size - 1) {
-          System.arraycopy(keys,   i+1, keys,   i, size-(i+1));
-          System.arraycopy(values, i+1, values, i, size-(i+1));
+        if (i < psize - 1) {
+          Array.Copy(keys,   i+1, keys,   i, psize-(i+1));
+          Array.Copy(values, i+1, values, i, psize-(i+1));
         }
-        size--;
+        psize--;
         break;
       }
     }
-    return (VALUE)rv;
+    return (T)rv;
   }
 
   /**
    * {@inheritDoc}
    */
   //@Override
-  public <VALUE> boolean containsKey(Class<? extends Key<VALUE>> key) {
-    for (int i = 0; i < size; i++) {
+  public /*<VALUE>*/ bool containsKey<T>(/*Class<? extends Key<VALUE>>*/Key<T> key) {
+    for (int i = 0; i < psize; i++) {
       if (keys[i] == key) {
         return true;
       }
@@ -243,23 +250,23 @@ namespace OpenNLP.Tools.Util
    * currently stored stored in this object.
    */
   public void compact() {
-    if (keys.length > size) {
-      Class[] newKeys = new Class[size];
-      Object[] newValues = new Object[size];
-      System.arraycopy(keys, 0, newKeys, 0, size);
-      System.arraycopy(values, 0, newValues, 0, size);
-      keys = ErasureUtils.uncheckedCast(newKeys);
+    if (keys.Length > psize) {
+      Key<object>[] newKeys = new Key<object>[psize];
+      Object[] newValues = new Object[psize];
+      Array.Copy(keys, 0, newKeys, 0, psize);
+      Array.Copy(values, 0, newValues, 0, psize);
+      keys = /*ErasureUtils.uncheckedCast(*/newKeys/*)*/;
       values = newValues;
     }
   }
 
   public void setCapacity(int newSize) {
-    if (size > newSize) { throw new RuntimeException("You cannot set capacity to smaller than the current size."); }
-    Class[] newKeys = new Class[newSize];
+    if (psize > newSize) { throw new SystemException("You cannot set capacity to smaller than the current size."); }
+    Key<object>[] newKeys = new Key<object>[newSize];
     Object[] newValues = new Object[newSize];
-    System.arraycopy(keys, 0, newKeys, 0, size);
-    System.arraycopy(values, 0, newValues, 0, size);
-    keys = ErasureUtils.uncheckedCast(newKeys);
+    Array.Copy(keys, 0, newKeys, 0, psize);
+    Array.Copy(values, 0, newValues, 0, psize);
+    keys = /*ErasureUtils.uncheckedCast(*/newKeys/*)*/;
     values = newValues;
   }
 
@@ -268,9 +275,9 @@ namespace OpenNLP.Tools.Util
    * @return The number of elements in this map.
    */
   //@Override
-  public int size() {
+  /*public int size() {
     return size;
-  }
+  }*/
 
   /**
    * Keeps track of which ArrayCoreMaps have had toString called on
@@ -281,10 +288,10 @@ namespace OpenNLP.Tools.Util
    * to null for that particular thread.
    */
   private static readonly ThreadLocal<IdentityHashSet<CoreMap>> toStringCalled =
-          new ThreadLocal<IdentityHashSet<CoreMap>>() {
+          new ThreadLocal<IdentityHashSet<CoreMap>>() {/*
             //@Override protected IdentityHashSet<CoreMap> initialValue() {
               return new IdentityHashSet<CoreMap>();
-            }
+            }*/
           };
 
   /** Prints a full dump of a CoreMap. This method is robust to
@@ -294,8 +301,8 @@ namespace OpenNLP.Tools.Util
    */
   //@Override
   public String toString() {
-    IdentityHashSet<CoreMap> calledSet = toStringCalled.get();
-    boolean createdCalledSet = calledSet.isEmpty();
+    IdentityHashSet<CoreMap> calledSet = toStringCalled.Value;
+    bool createdCalledSet = calledSet.isEmpty();
 
     if (calledSet.contains(this)) {
       return "[...]";
@@ -304,44 +311,44 @@ namespace OpenNLP.Tools.Util
     calledSet.add(this);
 
     StringBuilder s = new StringBuilder("[");
-    for (int i = 0; i < size; i++) {
-      s.append(keys[i].getSimpleName());
-      s.append('=');
-      s.append(values[i]);
-      if (i < size-1) {
-        s.append(' ');
+    for (int i = 0; i < psize; i++) {
+      s.Append(keys[i].getSimpleName());
+      s.Append('=');
+      s.Append(values[i]);
+      if (i < psize-1) {
+        s.Append(' ');
       }
     }
-    s.append(']');
+    s.Append(']');
 
     if (createdCalledSet) {
-      toStringCalled.remove();
+      toStringCalled.Dispose();/*remove();*/
     } else {
       // Remove the object from the already called set so that
       // potential later calls in this object graph have something
       // more description than [...]
       calledSet.remove(this);
     }
-    return s.toString();
+    return s.ToString();
   }
 
   /**
    * {@inheritDoc}
    */
   //@Override
-  public String toShorterString(String... what) {
+  public String toShorterString(String[] what) {
     StringBuilder s = new StringBuilder("[");
-    for (int i = 0; i < size; i++) {
-      String name = keys[i].getSimpleName();
-      int annoIdx = name.lastIndexOf("Annotation");
+    for (int i = 0; i < psize; i++) {
+      String name = keys[i].GetType().Name/*.getSimpleName()*/;
+      int annoIdx = name.LastIndexOf("Annotation");
       if (annoIdx >= 0) {
-        name = name.substring(0, annoIdx);
+        name = name.Substring(0, annoIdx);
       }
-      boolean include;
-      if (what.length > 0) {
+      bool include;
+      if (what.Length > 0) {
         include = false;
-        for (String item : what) {
-          if (item.equals(name)) {
+        foreach (String item in what) {
+          if (item.Equals(name)) {
             include = true;
             break;
           }
@@ -350,16 +357,16 @@ namespace OpenNLP.Tools.Util
         include = true;
       }
       if (include) {
-        if (s.length() > 1) {
-          s.append(' ');
+        if (s.Length > 1) {
+          s.Append(' ');
         }
-        s.append(name);
-        s.append('=');
-        s.append(values[i]);
+        s.Append(name);
+        s.Append('=');
+        s.Append(values[i]);
       }
     }
-    s.append(']');
-    return s.toString();
+    s.Append(']');
+    return s.ToString();
   }
 
   /** This gives a very short String representation of a CoreMap
@@ -375,7 +382,7 @@ namespace OpenNLP.Tools.Util
    *  @return Brief string where the field values are just separated by a
    *     character. If the string contains spaces, it is wrapped in "{...}".
    */
-  public String toShortString(String... what) {
+  public String toShortString(String[] what) {
     return toShortString('/', what);
   }
 
@@ -393,19 +400,19 @@ namespace OpenNLP.Tools.Util
    *  @return Brief string where the field values are just separated by a
    *     character. If the string contains spaces, it is wrapped in "{...}".
    */
-  public String toShortString(char separator, String... what) {
+  public String toShortString(char separator, String[] what) {
     StringBuilder s = new StringBuilder();
-    for (int i = 0; i < size; i++) {
-      boolean include;
-      if (what.length > 0) {
-        String name = keys[i].getSimpleName();
-        int annoIdx = name.lastIndexOf("Annotation");
+    for (int i = 0; i < psize; i++) {
+      bool include;
+      if (what.Length > 0) {
+        String name = keys[i].GetType().Name/*.getSimpleName()*/;
+        int annoIdx = name.LastIndexOf("Annotation");
         if (annoIdx >= 0) {
-          name = name.substring(0, annoIdx);
+          name = name.Substring(0, annoIdx);
         }
         include = false;
-        for (String item : what) {
-          if (item.equals(name)) {
+        foreach (String item in what) {
+          if (item.Equals(name)) {
             include = true;
             break;
           }
@@ -414,14 +421,14 @@ namespace OpenNLP.Tools.Util
         include = true;
       }
       if (include) {
-        if (s.length() > 0) {
-          s.append(separator);
+        if (s.Length > 0) {
+          s.Append(separator);
         }
-        s.append(values[i]);
+        s.Append(values[i]);
       }
     }
-    String answer = s.toString();
-    if (answer.indexOf(' ') < 0) {
+    String answer = s.ToString();
+    if (answer.IndexOf(' ') < 0) {
       return answer;
     } else {
       return '{' + answer + '}';
@@ -436,8 +443,8 @@ namespace OpenNLP.Tools.Util
    * track of its own state.  When a call to toString is about to
    * return, this is reset to null for that particular thread.
    */
-  private static readonly ThreadLocal<TwoDimensionalMap<CoreMap, CoreMap, Boolean>> equalsCalled =
-          new ThreadLocal<TwoDimensionalMap<CoreMap, CoreMap, Boolean>>();
+  private static readonly ThreadLocal<Dictionary<Tuple<CoreMap, CoreMap>, Boolean>> equalsCalled =
+          new ThreadLocal<Dictionary<Tuple<CoreMap, CoreMap>, Boolean>>();
 
 
   /**
@@ -445,17 +452,17 @@ namespace OpenNLP.Tools.Util
    */
   //@SuppressWarnings("unchecked")
   //@Override
-  public boolean equals(Object obj) {
-    if (!(obj instanceof CoreMap)) {
+  public bool equals(Object obj) {
+    if (!(obj is CoreMap)) {
       return false;
     }
 
-    if (obj instanceof HashableCoreMap) {
+    if (obj is HashableCoreMap) {
       // overridden behavior for HashableCoreMap
-      return obj.equals(this);
+      return obj.Equals(this);
     }
 
-    if (obj instanceof ArrayCoreMap) {
+    if (obj is ArrayCoreMap) {
       // specialized equals for ArrayCoreMap
       return equals((ArrayCoreMap)obj);
     }
@@ -465,10 +472,10 @@ namespace OpenNLP.Tools.Util
 
     // general equality
     CoreMap other = (CoreMap)obj;
-    if ( ! this.keySet().equals(other.keySet())) {
+    if ( ! this.keySet().Equals(other.keySet())) {
       return false;
     }
-    for (Class key : this.keySet()) {
+    foreach (Class key in this.keySet()) {
       if (!other.has(key)) {
         return false;
       }
@@ -482,7 +489,7 @@ namespace OpenNLP.Tools.Util
         return false;
       }
 
-      if ( ! thisV.equals(otherV)) {
+      if ( ! thisV.Equals(otherV)) {
         return false;
       }
     }
@@ -491,12 +498,12 @@ namespace OpenNLP.Tools.Util
   }
 
 
-  private boolean equals(ArrayCoreMap other) {
-    TwoDimensionalMap<CoreMap, CoreMap, Boolean> calledMap = equalsCalled.get();
-    boolean createdCalledMap = (calledMap == null);
+  private bool equals(ArrayCoreMap other) {
+    Dictionary<Tuple<CoreMap, CoreMap>, Boolean> calledMap = equalsCalled.Value;
+    bool createdCalledMap = (calledMap == null);
     if (createdCalledMap) {
-      calledMap = TwoDimensionalMap.identityHashMap();
-      equalsCalled.set(calledMap);
+      calledMap = new Dictionary<Tuple<CoreMap, CoreMap>, bool>();
+      equalsCalled.Value = calledMap;
     }
 
     // Note that for the purposes of recursion, we assume the two maps
@@ -510,17 +517,17 @@ namespace OpenNLP.Tools.Util
     if (calledMap.contains(this, other)) {
       return true;
     }
-    boolean result = true;
+    bool result = true;
     calledMap.put(this, other, true);
     calledMap.put(other, this, true);
 
-    if (this.size != other.size) {
+    if (this.size != other.psize) {
       result = false;
     } else {
-    for (int i = 0; i < this.size; i++) {
+    for (int i = 0; i < this.psize; i++) {
       // test if other contains this key,value pair
-      boolean matched = false;
-      for (int j = 0; j < other.size; j++) {
+      bool matched = false;
+      for (int j = 0; j < other.psize; j++) {
         if (this.keys[i] == other.keys[j]) {
           if ((this.values[i] == null && other.values[j] != null) ||
               (this.values[i] != null && other.values[j] == null)) {
@@ -529,7 +536,7 @@ namespace OpenNLP.Tools.Util
           }
 
           if ((this.values[i] == null && other.values[j] == null) ||
-              (this.values[i].equals(other.values[j]))) {
+              (this.values[i].Equals(other.values[j]))) {
             matched = true;
             break;
           }
@@ -544,7 +551,7 @@ namespace OpenNLP.Tools.Util
     }
 
     if (createdCalledMap) {
-      equalsCalled.set(null);
+      equalsCalled.Value = null;
     }
     return result;
   }
@@ -568,11 +575,11 @@ namespace OpenNLP.Tools.Util
    */
   //@Override
   public int hashCode() {
-    IdentityHashSet<CoreMap> calledSet = hashCodeCalled.get();
-    boolean createdCalledSet = (calledSet == null);
+    IdentityHashSet<CoreMap> calledSet = hashCodeCalled.Value;
+    bool createdCalledSet = (calledSet == null);
     if (createdCalledSet) {
       calledSet = new IdentityHashSet<CoreMap>();
-      hashCodeCalled.set(calledSet);
+      hashCodeCalled.Value = calledSet;
     }
 
     if (calledSet.contains(this)) {
@@ -583,13 +590,13 @@ namespace OpenNLP.Tools.Util
 
     int keysCode = 0;
     int valuesCode = 0;
-    for (int i = 0; i < size; i++) {
-      keysCode += (i < keys.length && values[i] != null ? keys[i].hashCode() : 0);
-      valuesCode += (i < values.length && values[i] != null ? values[i].hashCode() : 0);
+    for (int i = 0; i < psize; i++) {
+      keysCode += (i < keys.Length && values[i] != null ? keys[i].GetHashCode() : 0);
+      valuesCode += (i < values.Length && values[i] != null ? values[i].GetHashCode() : 0);
     }
 
     if (createdCalledSet) {
-      hashCodeCalled.set(null);
+      hashCodeCalled.Value = null;
     } else {
       // Remove the object after processing is complete so that if
       // there are multiple instances of this CoreMap in the overall
@@ -613,10 +620,10 @@ namespace OpenNLP.Tools.Util
    * @param out Stream to write to
    * @throws IOException If IO error
    */
-  private void writeObject(ObjectOutputStream out) throws IOException {
+  /*private void writeObject(ObjectOutputStream out) throws IOException {
     compact();
     out.defaultWriteObject();
-  }
+  }*/
 
   // TODO: make prettyLog work in the situation of loops
   // in the object graph
@@ -626,7 +633,7 @@ namespace OpenNLP.Tools.Util
    */
   //@Override
   //@SuppressWarnings("unchecked")
-  public void prettyLog(RedwoodChannels channels, String description) {
+  /*public void prettyLog(RedwoodChannels channels, String description) {
     Redwood.startTrack(description);
 
     // sort keys by class name
@@ -645,6 +652,6 @@ namespace OpenNLP.Tools.Util
       }
     }
     Redwood.endTrack(description);
-  }
+  }*/
     }
 }

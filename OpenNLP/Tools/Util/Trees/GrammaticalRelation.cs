@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Util.Trees.TRegex;
 
 namespace OpenNLP.Tools.Util.Trees
 {
@@ -187,14 +188,14 @@ namespace OpenNLP.Tools.Util.Trees
       try {
         TregexPattern p = tregexCompiler.compile(pattern);
         this.targetPatterns.Add(p);
-      } catch (edu.stanford.nlp.trees.tregex.TregexParseException pe) {
-        throw new RuntimeException("Bad pattern: " + pattern, pe);
+      } catch (TregexParseException pe) {
+        throw new SystemException("Bad pattern: " + pattern, pe);
       }
     }
 
-    Dictionary<String, GrammaticalRelation> sToR = stringsToRelations[language);
+    Dictionary<String, GrammaticalRelation> sToR = stringsToRelations[language];
     if (sToR == null) {
-      sToR = Generics.newHashMap();
+      sToR = new Dictionary<string, GrammaticalRelation>();
       stringsToRelations.Add(language, sToR);
     }
       if (sToR.ContainsKey(ToString()))
@@ -239,7 +240,7 @@ namespace OpenNLP.Tools.Util.Trees
                              GrammaticalRelation parent,
                              String sourcePattern,
                              TregexPatternCompiler tregexCompiler,
-                             String... targetPatterns):
+                             String[] targetPatterns):
     this(language, shortName, longName, parent, sourcePattern, tregexCompiler, targetPatterns, null){
   }
 
@@ -271,7 +272,7 @@ namespace OpenNLP.Tools.Util.Trees
    *  @param root The root of the Tree
    *  @return A Collection of dependent nodes to which t bears this GR
    */
-  public ICollection<TreeGraphNode> getRelatedNodes(TreeGraphNode t, TreeGraphNode root, HeadFinder headFinder) {
+  /*public ICollection<TreeGraphNode> getRelatedNodes(TreeGraphNode t, TreeGraphNode root, HeadFinder headFinder) {
     Set<TreeGraphNode> nodeList = new HashSet<TreeGraphNode>();
     foreach(TregexPattern p in targetPatterns) {    // cdm: I deleted: && nodeList.isEmpty()
       // Initialize the TregexMatcher with the HeadFinder so that we
@@ -291,11 +292,11 @@ namespace OpenNLP.Tools.Util.Trees
               continue;
             System.err.println("  node " + nodeName + ": " + m.getNode(nodeName));
           }
-        }*/
+        }#1#
       }
     }
     return nodeList;
-  }
+  }*/
 
   /** Returns <code>true</code> iff the value of <code>Tree</code>
    *  node <code>t</code> matches the <code>sourcePattern</code> for
@@ -306,7 +307,7 @@ namespace OpenNLP.Tools.Util.Trees
   public bool isApplicable(Tree t) {
     // System.err.println("Testing whether " + sourcePattern + " matches " + ((TreeGraphNode) t).toOneLineString());
     return (sourcePattern != null) && (t.value() != null) &&
-             sourcePattern.matcher(t.value()).matches();
+             sourcePattern.IsMatch(t.value())/*matcher(t.value()).matches()*/;
   }
 
   /** Returns whether this is equal to or an ancestor of gr in the grammatical relations hierarchy. */
@@ -434,7 +435,7 @@ namespace OpenNLP.Tools.Util.Trees
    * relations in an array.  For another, it would be cleaner to have
    * subclasses for the English and Chinese relations
    */
-  protected Object readResolve() /*throws ObjectStreamException*/ {
+  /*protected Object readResolve() /*throws ObjectStreamException#1# {
     switch (language) {
     case Any: {
       if (shortName.Equals(GOVERNOR.shortName)) {
@@ -485,7 +486,7 @@ namespace OpenNLP.Tools.Util.Trees
       throw new Exception("Unknown language " + language);
     }
     }
-  }
+  }*/
 
   /**
    * Returns the parent of this <code>GrammaticalRelation</code>.

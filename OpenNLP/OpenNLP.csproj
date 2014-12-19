@@ -297,7 +297,6 @@
     <Compile Include="Tools\Tokenize\TokenSpanEventReader.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tools\Util\ArrayCoreMap.cs" />
     <Compile Include="Tools\Util\BeamSearch.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -305,7 +304,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tools\Util\CollectionEventStream.cs" />
-    <Compile Include="Tools\Util\CoreMap.cs" />
     <Compile Include="Tools\Util\CountedSet.cs" />
     <Compile Include="Tools\Util\Filters.cs" />
     <Compile Include="Tools\Util\HashList.cs" />
@@ -320,7 +318,6 @@
     <Compile Include="Tools\Util\IHeap.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tools\Util\Ling\CoreLabel.cs" />
     <Compile Include="Tools\Util\Ling\HasCategory.cs" />
     <Compile Include="Tools\Util\Ling\HasContext.cs" />
     <Compile Include="Tools\Util\Ling\HasIndex.cs" />
@@ -371,7 +368,11 @@
     <Compile Include="Tools\Util\Trees\ModCollinsHeadFinder.cs" />
     <Compile Include="Tools\Util\Trees\PennTreebankLanguagePack.cs" />
     <Compile Include="Tools\Util\Trees\SemanticHeadFinder.cs" />
+    <Compile Include="Tools\Util\Trees\SimpleTree.cs" />
+    <Compile Include="Tools\Util\Trees\SimpleTreeFactory.cs" />
     <Compile Include="Tools\Util\Trees\Tree.cs" />
+    <Compile Include="Tools\Util\Trees\TreeFactory.cs" />
+    <Compile Include="Tools\Util\Trees\TRegex\TokenMgrException.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\TregexMatcher.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\TregexParseException.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\TregexPattern.cs" />

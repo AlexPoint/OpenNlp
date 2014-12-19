@@ -32,13 +32,15 @@ namespace OpenNLP.Tools.Util.Ling
    */
   public static readonly IndexedWord NO_WORD = new IndexedWord(null, -1, -1);
 
-  private readonly CoreLabel label;
+  //private readonly CoreLabel label;
+  private readonly Dictionary<object, object> label;
 
   /**
    * Default constructor; uses {@link CoreLabel} default constructor
    */
   public IndexedWord() {
-    label = new CoreLabel();
+    //label = new CoreLabel();
+    label = new Dictionary<object, object>();
   }
 
 
@@ -49,7 +51,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @param w A Label to initialize this IndexedWord from
    */
-  public IndexedWord(Label w) {
+  /*public IndexedWord(Label w) {
     if (w is CoreLabel) {
       this.label = (CoreLabel) w;
     } else {
@@ -58,7 +60,7 @@ namespace OpenNLP.Tools.Util.Ling
         label.setWord(label.value());
       }
     }
-  }
+  }*/
 
   /**
    * Construct an IndexedWord from a CoreLabel just as for a CoreMap.
@@ -68,9 +70,9 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @param w A Label to initialize this IndexedWord from
    */
-  public IndexedWord(CoreLabel w) {
+  /*public IndexedWord(CoreLabel w) {
     label = w;
-  }
+  }*/
 
   /**
    * Constructor for setting docID, sentenceIndex, and
@@ -80,12 +82,16 @@ namespace OpenNLP.Tools.Util.Ling
    * @param sentenceIndex The sentence number in the document (normally 0-based)
    * @param index The index of the word in the sentence (normally 0-based)
    */
-  /*public IndexedWord(String docID, int sentenceIndex, int index) {
-    label = new CoreLabel();
-    label.set(CoreAnnotations.DocIDAnnotation.class, docID);
+  public IndexedWord(String docID, int sentenceIndex, int index) {
+    label = new Dictionary<object, object>();
+    //label = new CoreLabel();
+    /*label.set(CoreAnnotations.DocIDAnnotation.class, docID);
     label.set(CoreAnnotations.SentenceIndexAnnotation.class, sentenceIndex);
-    label.set(CoreAnnotations.IndexAnnotation.class, index);
-  }*/
+    label.set(CoreAnnotations.IndexAnnotation.class, index);*/
+      label.Add(/*CoreAnnotations.*/"DocIDAnnotation"/*.class*/, docID);
+    label.Add(/*CoreAnnotations.*/"SentenceIndexAnnotation"/*.class*/, sentenceIndex);
+    label.Add(/*CoreAnnotations.*/"IndexAnnotation"/*.class*/, index);
+  }
 
   public IndexedWord makeCopy(int count) {
     CoreLabel labelCopy = new CoreLabel(label);
@@ -97,7 +103,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * TODO: would be nice to get rid of this.  Only used in two places in RTE.  
    */
-  public CoreLabel backingLabel() { return label; }
+  //public CoreLabel backingLabel() { return label; }
 
   /*public <VALUE> VALUE get(Class<? extends TypesafeMap.Key<VALUE>> key) {
     return label.get(key);
@@ -128,7 +134,8 @@ namespace OpenNLP.Tools.Util.Ling
   }*/
 
   public int size() {
-    return label.size();
+    //return label.size();
+    return label.Count;
   }
 
   //@Override

@@ -6,7 +6,25 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
-    public class CoreLabel
+    /**
+ * A CoreLabel represents a single word with ancillary information
+ * attached using CoreAnnotations.  If the proper annotations are set,
+ * the CoreLabel also provides convenient methods to access tags,
+ * lemmas, etc.
+ * <p>
+ * A CoreLabel is a Map from keys (which are Class objects) to values,
+ * whose type is determined by the key.  That is, it is a heterogeneous
+ * typesafe Map (see Josh Bloch, Effective Java, 2nd edition).
+ * <p>
+ * The CoreLabel class in particular bridges the gap between old-style JavaNLP
+ * Labels and the new CoreMap infrastructure.  Instances of this class can be
+ * used (almost) anywhere that the now-defunct FeatureLabel family could be
+ * used.  This data structure is backed by an {@link ArrayCoreMap}.
+ *
+ * @author dramage
+ * @author rafferty
+ */
+    public class CoreLabel: HasWord, HasTag, HasCategory, HasLemma, HasContext, HasIndex, HasOffset
     {
         private static readonly long serialVersionUID = 2L;
 
@@ -49,11 +67,11 @@ namespace OpenNLP.Tools.Util.Ling
    * @param label The CoreMap to copy
    */
   //@SuppressWarnings({"unchecked"})
-  public CoreLabel(CoreMap label):base(label.size()){
+  /*public CoreLabel(CoreMap label):base(label.size()){
     foreach(Class key in label.keySet()) {
       set(key, label.get(key));
     }
-  }
+  }*/
 
   /**
    * Returns a new CoreLabel instance based on the contents of the given
@@ -118,7 +136,7 @@ namespace OpenNLP.Tools.Util.Ling
       //now work with the key we got above
       if (lookup == null) {
         if (key != null) {
-          throw new UnsupportedOperationException("Unknown key " + key);
+          throw new InvalidOperationException("Unknown key " + key);
         }
 
         // It used to be that the following code let you put unknown keys
@@ -168,21 +186,21 @@ namespace OpenNLP.Tools.Util.Ling
   }
 
 
-  private static class CoreLabelFactory implements LabelFactory {
+  private /*static*/ class CoreLabelFactory: LabelFactory {
 
-    @Override
+    //@Override
     public Label newLabel(String labelStr) {
       CoreLabel label = new CoreLabel();
       label.setValue(labelStr);
       return label;
     }
 
-    @Override
+    //@Override
     public Label newLabel(String labelStr, int options) {
       return newLabel(labelStr);
     }
 
-    @Override
+    //@Override
     public Label newLabel(Label oldLabel) {
       if (oldLabel is CoreLabel) {
         return new CoreLabel((CoreLabel)oldLabel);
@@ -210,9 +228,9 @@ namespace OpenNLP.Tools.Util.Ling
       }
     }
 
-    @Override
+    //@Override
     public Label newLabelFromString(String encodedLabelStr) {
-      throw new UnsupportedOperationException("This code branch left blank" +
+      throw new InvalidOperationException("This code branch left blank" +
       " because we do not understand what this method should do.");
     }
 
@@ -268,15 +286,15 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setFromString(String labelStr) {
-    throw new UnsupportedOperationException("Cannot set from string");
+    throw new InvalidOperationException("Cannot set from string");
   }
 
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public readonly void setValue(String value) {
     set(CoreAnnotations.ValueAnnotation.class, value);
   }
@@ -284,7 +302,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public readonly String value() {
     return get(CoreAnnotations.ValueAnnotation.class);
   }
@@ -293,7 +311,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Set the word value for the label.  Also, clears the lemma, since
    * that may have changed if the word changed.
    */
-  @Override
+  //@Override
   public void setWord(String word) {
     String originalWord = get(CoreAnnotations.TextAnnotation.class);
     set(CoreAnnotations.TextAnnotation.class, word);
@@ -307,7 +325,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public String word() {
     return get(CoreAnnotations.TextAnnotation.class);
   }
@@ -315,7 +333,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setTag(String tag) {
     set(CoreAnnotations.PartOfSpeechAnnotation.class, tag);
   }
@@ -323,7 +341,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public String tag() {
     return get(CoreAnnotations.PartOfSpeechAnnotation.class);
   }
@@ -331,7 +349,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setCategory(String category) {
     set(CoreAnnotations.CategoryAnnotation.class, category);
   }
@@ -339,7 +357,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public String category() {
     return get(CoreAnnotations.CategoryAnnotation.class);
   }
@@ -347,7 +365,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setAfter(String after) {
     set(CoreAnnotations.AfterAnnotation.class, after);
   }
@@ -355,7 +373,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public String after() {
     return getString(CoreAnnotations.AfterAnnotation.class);
   }
@@ -363,7 +381,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setBefore(String before) {
     set(CoreAnnotations.BeforeAnnotation.class, before);
   }
@@ -372,7 +390,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public String before() {
     return getString(CoreAnnotations.BeforeAnnotation.class);
   }
@@ -380,7 +398,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setOriginalText(String originalText) {
     set(CoreAnnotations.OriginalTextAnnotation.class, originalText);
   }
@@ -388,7 +406,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public String originalText() {
     return getString(CoreAnnotations.OriginalTextAnnotation.class);
   }
@@ -396,7 +414,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public String docID() {
     return get(CoreAnnotations.DocIDAnnotation.class);
   }
@@ -404,9 +422,9 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setDocID(String docID) {
-    set(CoreAnnotations.DocIDAnnotation.class, docID);
+    //set(CoreAnnotations.DocIDAnnotation.class, docID);
   }
 
   /**
@@ -425,7 +443,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public String lemma() {
     return get(CoreAnnotations.LemmaAnnotation.class);
   }
@@ -433,7 +451,7 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setLemma(String lemma) {
     set(CoreAnnotations.LemmaAnnotation.class, lemma);
   }
@@ -561,7 +579,7 @@ namespace OpenNLP.Tools.Util.Ling
    * <p/>
    * Map is printed in alphabetical order of keys.
    */
-  @SuppressWarnings("unchecked")
+  //@SuppressWarnings("unchecked")
   public String toString(OutputFormat format) {
     StringBuilder buf = new StringBuilder();
     switch(format) {

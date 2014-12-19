@@ -6,6 +6,28 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
+    /**
+ * Something that implements the <code>Label</code> interface can act as a
+ * constituent, node, or word label with linguistic attributes.
+ * A <code>Label</code> is required to have a "primary" <code>String</code>
+ * <code>value()</code> (although this may be null).  This is referred to as
+ * its <code>value</code>.
+ * <p>
+ * Implementations of Label split into two groups with
+ * respect to equality. Classes that extend ValueLabel define equality
+ * solely in terms of String equality of its value (secondary facets may be
+ * present but are ignored for purposes of equality), and have equals and
+ * compareTo defined across all subclasses of ValueLabel. This behavior
+ * should not be changed. Other classes that implement Label define equality only
+ * with their own type and require all fields of the type to be equal.
+ * <p>
+ * A subclass that extends another Label class <i>should</i> override
+ * the definition of <code>labelFactory()</code>, since the contract for
+ * this method is that it should return a factory for labels of the
+ * exact same object type.
+
+ * @author Christopher Manning
+ */
     public interface Label
     {
         /**

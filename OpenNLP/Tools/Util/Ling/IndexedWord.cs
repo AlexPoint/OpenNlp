@@ -6,6 +6,23 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
+    /**
+ * This class is mainly for use with RTE in terms of the methods it provides,
+ * but on a more general level, it provides a {@link CoreLabel} that uses its
+ * DocIDAnnotation, SentenceIndexAnnotation, and IndexAnnotation to implement
+ * Comparable/compareTo, hashCode, and equals.  This means no other annotations,
+ * including the identity of the word, are taken into account when using these
+ * methods.
+ * <br>
+ * The actual implementation is to wrap a <code>CoreLabel<code/>.
+ * This avoids breaking the <code>equals()</code> and
+ * <code>hashCode()</code> contract and also avoids expensive copying
+ * when used to represent the same data as the original
+ * <code>CoreLabel</code>.
+ *
+ * @author rafferty
+ *
+ */
     public class IndexedWord:IComparable<IndexedWord>
     {
         private static readonly long serialVersionUID = 3739633991145239829L;
@@ -63,12 +80,12 @@ namespace OpenNLP.Tools.Util.Ling
    * @param sentenceIndex The sentence number in the document (normally 0-based)
    * @param index The index of the word in the sentence (normally 0-based)
    */
-  public IndexedWord(String docID, int sentenceIndex, int index) {
+  /*public IndexedWord(String docID, int sentenceIndex, int index) {
     label = new CoreLabel();
     label.set(CoreAnnotations.DocIDAnnotation.class, docID);
     label.set(CoreAnnotations.SentenceIndexAnnotation.class, sentenceIndex);
     label.set(CoreAnnotations.IndexAnnotation.class, index);
-  }
+  }*/
 
   public IndexedWord makeCopy(int count) {
     CoreLabel labelCopy = new CoreLabel(label);
@@ -82,7 +99,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   public CoreLabel backingLabel() { return label; }
 
-  public <VALUE> VALUE get(Class<? extends TypesafeMap.Key<VALUE>> key) {
+  /*public <VALUE> VALUE get(Class<? extends TypesafeMap.Key<VALUE>> key) {
     return label.get(key);
   }
 
@@ -108,7 +125,7 @@ namespace OpenNLP.Tools.Util.Ling
 
   public Set<Class<?>> keySet() {
     return label.keySet();
-  }
+  }*/
 
   public int size() {
     return label.size();
@@ -255,7 +272,7 @@ namespace OpenNLP.Tools.Util.Ling
     if (myInd == null) {
       if (otherInd != null)
       return false;
-    } else if ( ! myInd.equals(otherInd)) {
+    } else if ( ! myInd.Equals(otherInd)) {
       return false;
     }
     int mySentInd = get(CoreAnnotations.SentenceIndexAnnotation.class);
@@ -263,7 +280,7 @@ namespace OpenNLP.Tools.Util.Ling
     if (mySentInd == null) {
       if (otherSentInd != null)
       return false;
-    } else if ( ! mySentInd.equals(otherSentInd)) {
+    } else if ( ! mySentInd.Equals(otherSentInd)) {
       return false;
     }
     String myDocID = getString(CoreAnnotations.DocIDAnnotation.class);
@@ -271,7 +288,7 @@ namespace OpenNLP.Tools.Util.Ling
     if (myDocID == null) {
       if (otherDocID != null)
       return false;
-    } else if ( ! myDocID.equals(otherDocID)) {
+    } else if ( ! myDocID.Equals(otherDocID)) {
       return false;
     }
     if (copyCount() != otherWord.copyCount()) {
@@ -325,19 +342,19 @@ namespace OpenNLP.Tools.Util.Ling
    *  @return Whether this is less than w or not in the ordering
    */
   public int CompareTo(IndexedWord w) {
-    if (this.equals(IndexedWord.NO_WORD)) {
-      if (w.equals(IndexedWord.NO_WORD)) {
+    if (this.Equals(IndexedWord.NO_WORD)) {
+      if (w.Equals(IndexedWord.NO_WORD)) {
         return 0;
       } else {
         return -1;
       }
     }
-    if (w.equals(IndexedWord.NO_WORD)) {
+    if (w.Equals(IndexedWord.NO_WORD)) {
       return 1;
     }
 
     String docID = this.getString(CoreAnnotations.DocIDAnnotation.class);
-    int docComp = docID.compareTo(w.getString(CoreAnnotations.DocIDAnnotation.class));
+    int docComp = docID.CompareTo(w.getString(CoreAnnotations.DocIDAnnotation.class));
     if (docComp != 0) return docComp;
 
     int sentComp = sentIndex() - w.sentIndex();
@@ -352,21 +369,21 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * Returns the value-tag of this label.
    */
-  @Override
-  public String toString() {
-    return label.toString(CoreLabel.OutputFormat.VALUE_TAG);
+  //@Override
+  public override String ToString() {
+    return label.ToString(CoreLabel.OutputFormat.VALUE_TAG);
   }
 
   public String toString(CoreLabel.OutputFormat format) {
-    return label.toString(format);
+    return label.ToString(format);
   }
 
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setFromString(String labelStr) {
-    throw new UnsupportedOperationException("Cannot set from string");
+    throw new InvalidOperationException("Cannot set from string");
   }
 
 

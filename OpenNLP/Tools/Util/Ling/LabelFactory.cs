@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
+    /**
+ * A <code>LabelFactory</code> object acts as a factory for creating
+ * objects of class <code>Label</code>, or some descendant class.
+ * It can also make Labels from Strings, optionally with options.
+ *
+ * @author Christopher Manning
+ * @version 2000/12/25
+ */
     public interface LabelFactory
     {
         /**

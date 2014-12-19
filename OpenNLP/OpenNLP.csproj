@@ -297,6 +297,7 @@
     <Compile Include="Tools\Tokenize\TokenSpanEventReader.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\ArrayCoreMap.cs" />
     <Compile Include="Tools\Util\BeamSearch.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -304,6 +305,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tools\Util\CollectionEventStream.cs" />
+    <Compile Include="Tools\Util\CoreMap.cs" />
     <Compile Include="Tools\Util\CountedSet.cs" />
     <Compile Include="Tools\Util\Filters.cs" />
     <Compile Include="Tools\Util\HashList.cs" />
@@ -318,7 +320,17 @@
     <Compile Include="Tools\Util\IHeap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\Ling\CoreLabel.cs" />
+    <Compile Include="Tools\Util\Ling\HasCategory.cs" />
+    <Compile Include="Tools\Util\Ling\HasContext.cs" />
+    <Compile Include="Tools\Util\Ling\HasIndex.cs" />
+    <Compile Include="Tools\Util\Ling\HasLemma.cs" />
+    <Compile Include="Tools\Util\Ling\HasOffset.cs" />
+    <Compile Include="Tools\Util\Ling\HasTag.cs" />
+    <Compile Include="Tools\Util\Ling\HasWord.cs" />
     <Compile Include="Tools\Util\Ling\IndexedWord.cs" />
+    <Compile Include="Tools\Util\Ling\Label.cs" />
+    <Compile Include="Tools\Util\Ling\LabelFactory.cs" />
     <Compile Include="Tools\Util\ListHeap.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -341,6 +353,7 @@
     <Compile Include="Tools\Util\StringTokenizer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\StringUtils.cs" />
     <Compile Include="Tools\Util\TreeSet.cs">
       <SubType>Code</SubType>
     </Compile>

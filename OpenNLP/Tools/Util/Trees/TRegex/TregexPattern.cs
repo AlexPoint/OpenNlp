@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OpenNLP.Tools.Parser;
 
@@ -356,8 +357,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     return opt;
   }
 
-  public abstract TregexMatcher matcher(Parse root, Parse tree,
-                                 IdentityDictionary<Parse, Parse> nodesToParents,
+  public abstract TregexMatcher matcher(Tree root, Tree tree,
+                                 IdentityDictionary<Tree, Tree> nodesToParents,
                                  Dictionary<String, Tree> namesToNodes,
                                  VariableStrings variableStrings,
                                  HeadFinder headFinder);
@@ -464,27 +465,28 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   }*/
 
 
-  private static final Pattern codePattern = Pattern.compile("([0-9]+):([0-9]+)");
+  private static readonly Regex codePattern = new Regex("([0-9]+):([0-9]+)", RegexOptions.Compiled);
 
-  private static void extractSubtrees(List<String> codeStrings, String treeFile) {
-    List<Pair<Integer,Integer>> codes = new ArrayList<Pair<Integer,Integer>>();
-    for(String s : codeStrings) {
-      Matcher m = codePattern.matcher(s);
-      if(m.matches())
-        codes.add(new Pair<Integer,Integer>(Integer.parseInt(m.group(1)),Integer.parseInt(m.group(2))));
-      else
-        throw new SystemException("Error: illegal node code " + s);
+  /*private static void extractSubtrees(List<String> codeStrings, String treeFile) {
+    List<Tuple<int,int>> codes = new List<Tuple<int,int>>();
+    foreach(String s in codeStrings) {
+      //Matcher m = codePattern.matcher(s);
+        var match = codePattern.Match(s);
+        if (match.Success)
+            codes.Add(new Tuple<int, int>(int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value)));
+        else
+            throw new SystemException("Error: illegal node code " + s);
     }
     TreeReaderFactory trf = new TRegexTreeReaderFactory();
     MemoryTreebank treebank = new MemoryTreebank(trf);
     treebank.loadPath(treeFile,null, true);
-    for (Pair<Integer,Integer> code : codes) {
-      Tree t = treebank.get(code.first()-1);
-      t.getNodeNumber(code.second()).pennPrint();
+    foreach (Tuple<int,int> code in codes) {
+      Tree t = treebank.get(code.Item1 - 1);
+      t.getNodeNumber(code.Item2).pennPrint();
     }
-  }
+  }*/
 
-        private static TreeReaderFactory getTreeReaderFactory(String treeReaderFactoryClassName) {
+        /*private static TreeReaderFactory getTreeReaderFactory(String treeReaderFactoryClassName) {
     TreeReaderFactory trf = new TRegexTreeReaderFactory();
     if (treeReaderFactoryClassName != null) {
       try {
@@ -496,10 +498,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     return trf;
   }
 
-  private static Treebank treebank; // used by main method, must be accessible
+  private static Treebank treebank; // used by main method, must be accessible*/
 
   // not thread-safe, but only used by TregexPattern's main method
-  private static class TRegexTreeVisitor implements TreeVisitor {
+  /*private static class TRegexTreeVisitor: TreeVisitor {
 
     private static bool printNumMatchesToStdOut = false;
     static bool printNonMatchingTrees = false;
@@ -511,12 +513,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     static bool oneMatchPerRootNode = false;
     static bool reportTreeNumbers = false;
 
-    static TreePrint tp;
-    private PrintWriter pw;
+    //static TreePrint tp;
+    //private PrintWriter pw;
 
     int treeNumber = 0;
 
-    private final TregexPattern p;
+    private readonly TregexPattern p;
     String[] handles;
     int numMatches;
 
@@ -601,20 +603,20 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
       return numMatches;
     }
 
-  } // end class TRegexTreeVisitor
+  } // end class TRegexTreeVisitor*/
 
-  private static final long serialVersionUID = 5060298043763944913L;
+  private static readonly long serialVersionUID = 5060298043763944913L;
 
 
-  public static class TRegexTreeReaderFactory implements TreeReaderFactory {
+  /*public static class TRegexTreeReaderFactory: TreeReaderFactory {
 
-    private final TreeNormalizer tn;
+    private readonly TreeNormalizer tn;
 
     public TRegexTreeReaderFactory() {
       this(new TreeNormalizer() {
         /**
          *
-         */
+         #1#
         private static final long serialVersionUID = -2998972954089638189L;
 
         @Override
@@ -632,10 +634,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
       this.tn = tn;
     }
 
-    public TreeReader newTreeReader(Reader in) {
-      return new PennTreeReader(new BufferedReader(in), new LabeledScoredTreeFactory(), tn);
+    public TreeReader newTreeReader(Reader input) {
+      return new PennTreeReader(new BufferedReader(input), new LabeledScoredTreeFactory(), tn);
     }
 
-  } // end class TRegexTreeReaderFactory
+  } // end class TRegexTreeReaderFactory*/
     }
 }

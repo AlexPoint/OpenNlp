@@ -297,6 +297,7 @@
     <Compile Include="Tools\Tokenize\TokenSpanEventReader.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\ArrayCoreMap.cs" />
     <Compile Include="Tools\Util\BeamSearch.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -304,8 +305,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tools\Util\CollectionEventStream.cs" />
+    <Compile Include="Tools\Util\CoreMap.cs" />
     <Compile Include="Tools\Util\CountedSet.cs" />
     <Compile Include="Tools\Util\Filters.cs" />
+    <Compile Include="Tools\Util\HashableCoreMap.cs" />
     <Compile Include="Tools\Util\HashList.cs" />
     <Compile Include="Tools\Util\HashSet.cs">
       <SubType>Code</SubType>
@@ -315,9 +318,19 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tools\Util\IdentityDictionary.cs" />
+    <Compile Include="Tools\Util\IdentityHashSet.cs" />
     <Compile Include="Tools\Util\IHeap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\IntPair.cs" />
+    <Compile Include="Tools\Util\IntQuadruple.cs" />
+    <Compile Include="Tools\Util\IntTriple.cs" />
+    <Compile Include="Tools\Util\IntTuple.cs" />
+    <Compile Include="Tools\Util\IntUni.cs" />
+    <Compile Include="Tools\Util\Ling\AbstractCoreLabel.cs" />
+    <Compile Include="Tools\Util\Ling\CoreAnnotation.cs" />
+    <Compile Include="Tools\Util\Ling\CoreAnnotations.cs" />
+    <Compile Include="Tools\Util\Ling\CoreLabel.cs" />
     <Compile Include="Tools\Util\Ling\HasCategory.cs" />
     <Compile Include="Tools\Util\Ling\HasContext.cs" />
     <Compile Include="Tools\Util\Ling\HasIndex.cs" />
@@ -379,6 +392,7 @@
     <Compile Include="Tools\Util\Trees\TRegex\TregexPatternCompiler.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\VariableStrings.cs" />
     <Compile Include="Tools\Util\Trees\TypedDependency.cs" />
+    <Compile Include="Tools\Util\TypesafeMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpEntropy\SharpEntropy.csproj">

@@ -24,7 +24,7 @@ namespace OpenNLP.Tools.Util.Ling
  * @author dramage
  * @author rafferty
  */
-    public class CoreLabel: HasWord, HasTag, HasCategory, HasLemma, HasContext, HasIndex, HasOffset
+    public class CoreLabel: AbstractCoreLabel, HasWord, HasTag, HasCategory, HasLemma, HasContext, HasIndex, HasOffset
     {
         private static readonly long serialVersionUID = 2L;
 

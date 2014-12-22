@@ -371,6 +371,7 @@
     <Compile Include="Tools\Util\Trees\AbstractTreebankLanguagePack.cs" />
     <Compile Include="Tools\Util\Trees\CollinsHeadFinder.cs" />
     <Compile Include="Tools\Util\Trees\CoordinationTransformer.cs" />
+    <Compile Include="Tools\Util\Trees\CopulaHeadFinder.cs" />
     <Compile Include="Tools\Util\Trees\DateTreeTransformer.cs" />
     <Compile Include="Tools\Util\Trees\DependencyTreeTransformer.cs" />
     <Compile Include="Tools\Util\Trees\EnglishGrammaticalRelations.cs" />

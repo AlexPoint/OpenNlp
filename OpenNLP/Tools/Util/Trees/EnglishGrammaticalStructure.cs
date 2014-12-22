@@ -21,7 +21,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @param t Parse tree to make grammatical structure from
    */
-        public EnglishGrammaticalStructure(Parse t):
+        public EnglishGrammaticalStructure(Tree t):
             this(t, new PennTreebankLanguagePack().punctuationWordRejectFilter()){}
 
         /**
@@ -30,7 +30,7 @@ namespace OpenNLP.Tools.Util.Trees
          * @param t Parse tree to make grammatical structure from
          * @param puncFilter Filter to remove punctuation dependencies
          */
-        public EnglishGrammaticalStructure(Parse t, Predicate<String> puncFilter):
+        public EnglishGrammaticalStructure(Tree t, Predicate<String> puncFilter):
             this(t, puncFilter, new SemanticHeadFinder(true), true){
         }
 
@@ -41,7 +41,7 @@ namespace OpenNLP.Tools.Util.Trees
          * @param puncFilter Filter to remove punctuation dependencies
          * @param hf HeadFinder to use when building it
          */
-        public EnglishGrammaticalStructure(Parse t, Predicate<String> puncFilter, HeadFinder hf):
+        public EnglishGrammaticalStructure(Tree t, Predicate<String> puncFilter, HeadFinder hf):
             this(t, puncFilter, hf, true){
         }
 
@@ -61,8 +61,8 @@ namespace OpenNLP.Tools.Util.Trees
          *          threads
          */
 
-        public EnglishGrammaticalStructure(Parse t, Predicate<String> puncFilter, HeadFinder hf, bool threadSafe) :
-            base((new CoordinationTransformer(hf)).transformTree(t.Clone()),
+        public EnglishGrammaticalStructure(Tree t, Predicate<String> puncFilter, HeadFinder hf, bool threadSafe) :
+            base((new CoordinationTransformer(hf)).transformTree(t.deepCopy()),
             EnglishGrammaticalRelations.Values(threadSafe), threadSafe ? EnglishGrammaticalRelations.valuesLock() : null,
             hf, puncFilter)
         {

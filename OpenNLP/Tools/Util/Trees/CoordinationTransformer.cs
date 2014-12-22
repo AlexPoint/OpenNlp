@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Util.Ling;
 using OpenNLP.Tools.Util.Trees.TRegex;
+using OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon;
 
 namespace OpenNLP.Tools.Util.Trees
 {
@@ -352,7 +354,7 @@ namespace OpenNLP.Tools.Util.Trees
 
       // if stuff after (like "soya or maize oil and vegetables")
       // we need to put the tree in another tree
-      if (!ccPositions.isEmpty()) {
+      if (ccPositions.Any()) {
         bool comma = false;
         int index = ccPositions[0];
         /*if (VERBOSE) {System.err.println("more CC index " +  index);}s*/
@@ -404,7 +406,7 @@ namespace OpenNLP.Tools.Util.Trees
       }
     }
     // DT a CC b c -> DT (a CC b) c
-    else if (ccIndex == 2 && ccSiblings[0].value().StartsWith("DT") && !ccSiblings[ccIndex - 1].value().Equals("NNS") && (ccSiblings.Length == 5 || (!ccPositions.isEmpty() && ccPositions.get(0) == 5))) {
+    else if (ccIndex == 2 && ccSiblings[0].value().StartsWith("DT") && !ccSiblings[ccIndex - 1].value().Equals("NNS") && (ccSiblings.Length == 5 || (ccPositions.Any() && ccPositions[0] == 5))) {
       String head = getHeadTag(ccSiblings[ccIndex - 1]);
       //create a new tree to be inserted as second child of t (after the determiner
       Tree child = tf.newTreeNode(lf.newLabel(head), null);
@@ -430,8 +432,8 @@ namespace OpenNLP.Tools.Util.Trees
       String head = getHeadTag(ccSiblings[ccIndex - 1]);
       Tree child = tf.newTreeNode(lf.newLabel(head), null);
 
-      for (int i = ccIndex - 3; i < ccIndex + 2; i++) {
-        child.addChild(ccSiblings[i]);
+      for (int j = ccIndex - 3; j < ccIndex + 2; j++) {
+        child.addChild(ccSiblings[j]);
       }
       /*if (VERBOSE) { if (child.numChildren() == 0) { System.out.println("Youch! No child children"); } }*/
 
@@ -470,7 +472,7 @@ namespace OpenNLP.Tools.Util.Trees
 
       // handle the case of a preconjunct (either, both, neither)
       Tree first = ccSiblings[0];
-      String leaf = first.firstChild().value().toLowerCase();
+      String leaf = first.firstChild().value().ToLower();
       if (leaf.Equals("either") || leaf.Equals("neither") || leaf.Equals("both")) {
         preconj = true;
         indexBegin = 1;

@@ -1465,7 +1465,7 @@ namespace OpenNLP.Tools.Util.Trees
   private static readonly ReadOnlyCollection<GrammaticalRelation> synchronizedValues = 
       new ReadOnlyCollection<GrammaticalRelation>(values);
   private static readonly ReadOnlyCollection<GrammaticalRelation> unmodifiableSynchronizedValues =new ReadOnlyCollection<GrammaticalRelation>(values);
-  //public static readonly ReadWriteLock valuesLock = new ReentrantReadWriteLock();
+  public static readonly ReadWriteLock valuesLock = new ReentrantReadWriteLock();
 
   // Map from English GrammaticalRelation short names to their corresponding
   // GrammaticalRelation objects
@@ -1483,9 +1483,9 @@ namespace OpenNLP.Tools.Util.Trees
       return unmodifiableValues;
   }
 
-  /*public static List<GrammaticalRelation> values(bool threadSafe) {
+  public static ICollection<GrammaticalRelation> Values(bool threadSafe) {
     return threadSafe? unmodifiableSynchronizedValues : unmodifiableValues;
-  }*/
+  }
 
   /*public static Lock valuesLock() {
     return valuesLock.readLock();

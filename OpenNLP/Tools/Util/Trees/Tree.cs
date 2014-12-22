@@ -31,6 +31,71 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
+   * Finds the heads of the tree.  This code assumes that the label
+   * does store and return sensible values for the category, word, and tag.
+   * It will be a no-op otherwise.  The tree is modified.  The routine
+   * assumes the Tree has word leaves and tag preterminals, and copies
+   * their category to word and tag respectively, if they have a null
+   * value.
+   *
+   * @param hf The headfinding algorithm to use
+   */
+        public void percolateHeads(HeadFinder hf) {
+    Label nodeLabel = label();
+    if (isLeaf()) {
+      // Sanity check: word() is usually set by the TreeReader.
+      if (nodeLabel is HasWord) {
+        HasWord w = (HasWord) nodeLabel;
+        if (w.word() == null) {
+          w.setWord(nodeLabel.value());
+        }
+      }
+
+    } else {
+      foreach (Tree kid in children()) {
+        kid.percolateHeads(hf);
+      }
+
+      /*final*/ Tree head = hf.determineHead(this);
+      if (head != null) {
+        /*final*/ Label headLabel = head.label();
+
+        // Set the head tag.
+        String headTag = (headLabel is HasTag) ? ((HasTag) headLabel).tag() : null;
+        if (headTag == null && head.isLeaf()) {
+          // below us is a leaf
+          headTag = nodeLabel.value();
+        }
+
+        // Set the head word
+        String headWord = (headLabel is HasWord) ? ((HasWord) headLabel).word() : null;
+        if (headWord == null && head.isLeaf()) {
+          // below us is a leaf
+          // this might be useful despite case for leaf above in
+          // case the leaf label type doesn't support word()
+          headWord = headLabel.value();
+        }
+
+        // Set the head index
+        int headIndex = (headLabel is HasIndex) ? ((HasIndex) headLabel).index() : -1;
+
+        if (nodeLabel is HasWord) {
+          ((HasWord) nodeLabel).setWord(headWord);
+        }
+        if (nodeLabel is HasTag) {
+          ((HasTag) nodeLabel).setTag(headTag);
+        }
+        if (nodeLabel is HasIndex && headIndex >= 0) {
+          ((HasIndex) nodeLabel).setIndex(headIndex);
+        }
+
+      } else {
+        //System.err.println("Head is null: " + this);
+      }
+    }
+  }
+
+        /**
    * Makes a deep copy of not only the Tree structure but of the labels as well.
    * Uses the TreeFactory of the root node given by treeFactory().
    * Assumes that your labels give a non-null labelFactory().

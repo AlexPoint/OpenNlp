@@ -18,7 +18,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     this.child = p;
   }
 
-  void setRoot(TsurgeonPatternRoot root) {
+  public void setRoot(TsurgeonPatternRoot root) {
     child.setRoot(root);
   }
 
@@ -44,7 +44,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
       this.childMatcher = location.child.matcher(newNodeNames, coindexer);
     }
 
-    Tuple<Tree,int> evaluate(Tree tree, TregexMatcher tregex) {
+    public Tuple<Tree,int> evaluate(Tree tree, TregexMatcher tregex) {
       int newIndex = -1;
       Tree parent = null;
       Tree relativeNode = childMatcher.evaluate(tree, tregex);

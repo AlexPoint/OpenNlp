@@ -22,6 +22,7 @@ namespace OpenNLP.Tools.Util
  *  @author Bill MacCartney
  */
     public class IdentityHashSet<T>:Set<T>
+        where T:class
     {
         // todo: The Java bug database notes that "From 1.6, an identity hash set can be created by Collections.newSetFromMap(new IdentityHashMap())."
 

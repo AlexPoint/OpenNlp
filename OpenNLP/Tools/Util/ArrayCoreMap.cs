@@ -41,7 +41,7 @@ namespace OpenNLP.Tools.Util
   private static readonly int INITIAL_CAPACITY = 4;
 
   /** Array of keys */
-  private /*Class<? extends Key<?>>*/Key<object>[] keys;
+  private /*Class<? extends Key<?>>*/Type[] keys;
 
   /** Array of values */
   private Object[] values;
@@ -67,7 +67,7 @@ namespace OpenNLP.Tools.Util
    * @param capacity Initial capacity of object in key,value pairs
    */
   public ArrayCoreMap(int capacity) {
-    keys = new Key<object>[capacity];
+    keys = new Type[capacity];
     values = new Object[capacity];
     // size starts at 0
   }
@@ -91,13 +91,13 @@ namespace OpenNLP.Tools.Util
     /*Set<Class<?>>*/var otherKeys = other.keySet();
 
     psize = otherKeys.Count;
-    keys = new Key<object>[psize];
+    keys = new Type[psize];
     values = new Object[psize];
 
     int i = 0;
     foreach (var key in otherKeys) {
       this.keys[i] = key;
-      this.values[i] = other[key];
+      this.values[i] = other.get(key);
       i++;
     }
   }
@@ -107,13 +107,13 @@ namespace OpenNLP.Tools.Util
    */
   //@Override
   //@SuppressWarnings("unchecked")
-  public /*<VALUE> VALUE*/T get<T>(/*Class<? extends Key<VALUE>>*/Key<T> key) {
+  public /*<VALUE> VALUE*/object get(/*Class<? extends Key<VALUE>>*/Type key) {
     for (int i = 0; i < psize; i++) {
       if (key == keys[i]) {
-        return (T)values[i];
+        return values[i];
       }
     }
-    return default(T);
+    return default(object);
   }
 
 
@@ -122,7 +122,7 @@ namespace OpenNLP.Tools.Util
    * {@inheritDoc}
    */
   //@Override
-  public /*<VALUE>*/ bool has<T>(/*Class<? extends Key<VALUE>>*/Key<T> key) {
+  public /*<VALUE>*/ bool has(/*Class<? extends Key<VALUE>>*/Type key) {
     for (int i = 0; i < psize; i++) {
       if (keys[i] == key) {
         return true;
@@ -137,12 +137,12 @@ namespace OpenNLP.Tools.Util
    */
   //@Override
   //@SuppressWarnings("unchecked")
-  public /*<VALUE> VALUE*/T set<T>(/*Class<? extends Key<VALUE>>*/Key<T> key, T value) {
+  public /*<VALUE> VALUE*/object set(/*Class<? extends Key<VALUE>>*/Type key, object value) {
 
     // search array for existing value to replace
     for (int i = 0; i < psize; i++) {
       if (keys[i] == key) {
-        T rv = (T)values[i];
+        object rv = values[i];
         values[i] = value;
         return rv;
       }
@@ -152,7 +152,7 @@ namespace OpenNLP.Tools.Util
     // increment capacity of arrays if necessary
     if (psize >= keys.Length) {
       int capacity = keys.Length + (keys.Length < 16 ? 4: 8);
-      Key<object>[] newKeys = new Key<object>[capacity];
+      Type[] newKeys = new Type[capacity];
       Object[] newValues = new Object[capacity];
       Array.Copy(keys, 0, newKeys, 0, psize);
       Array.Copy(values, 0, newValues, 0, psize);
@@ -165,16 +165,17 @@ namespace OpenNLP.Tools.Util
     values[psize] = value;
     psize++;
 
-    return default(T);
+    return default(object);
   }
 
   /**
    * {@inheritDoc}
    */
   //@Override
-  /*public Set<Class<?>> keySet() {
+  public Set<Type> keySet() {
+      return new Set<Type>(keys);
 
-    return new AbstractSet<Class<?>>() {
+    /*return new AbstractSet<Class<?>>() {
       //@Override
       public Iterator<Class<?>> iterator() {
         return new Iterator<Class<?>>() {
@@ -206,15 +207,15 @@ namespace OpenNLP.Tools.Util
       public int size() {
         return size;
       }
-    };
-  }*/
+    };*/
+  }
 
   /**
    * {@inheritDoc}
    */
   //@Override
   //@SuppressWarnings("unchecked")
-  public /*<VALUE> VALUE*/T remove<T>(/*Class<? extends Key<VALUE>>*/Key<T> key) {
+  public /*<VALUE> VALUE*/object remove(/*Class<? extends Key<VALUE>>*/Type key) {
 
     Object rv = null;
     for (int i = 0; i < psize; i++) {
@@ -228,14 +229,14 @@ namespace OpenNLP.Tools.Util
         break;
       }
     }
-    return (T)rv;
+    return rv;
   }
 
   /**
    * {@inheritDoc}
    */
   //@Override
-  public /*<VALUE>*/ bool containsKey<T>(/*Class<? extends Key<VALUE>>*/Key<T> key) {
+  public /*<VALUE>*/ bool containsKey(/*Class<? extends Key<VALUE>>*/Type key) {
     for (int i = 0; i < psize; i++) {
       if (keys[i] == key) {
         return true;
@@ -251,7 +252,7 @@ namespace OpenNLP.Tools.Util
    */
   public void compact() {
     if (keys.Length > psize) {
-      Key<object>[] newKeys = new Key<object>[psize];
+      Type[] newKeys = new Type[psize];
       Object[] newValues = new Object[psize];
       Array.Copy(keys, 0, newKeys, 0, psize);
       Array.Copy(values, 0, newValues, 0, psize);
@@ -262,7 +263,7 @@ namespace OpenNLP.Tools.Util
 
   public void setCapacity(int newSize) {
     if (psize > newSize) { throw new SystemException("You cannot set capacity to smaller than the current size."); }
-    Key<object>[] newKeys = new Key<object>[newSize];
+    Type[] newKeys = new Type[newSize];
     Object[] newValues = new Object[newSize];
     Array.Copy(keys, 0, newKeys, 0, psize);
     Array.Copy(values, 0, newValues, 0, psize);
@@ -312,7 +313,7 @@ namespace OpenNLP.Tools.Util
 
     StringBuilder s = new StringBuilder("[");
     for (int i = 0; i < psize; i++) {
-      s.Append(keys[i].getSimpleName());
+      s.Append(keys[i].Name);
       s.Append('=');
       s.Append(values[i]);
       if (i < psize-1) {
@@ -475,7 +476,7 @@ namespace OpenNLP.Tools.Util
     if ( ! this.keySet().Equals(other.keySet())) {
       return false;
     }
-    foreach (Class key in this.keySet()) {
+    foreach (var key in this.keySet()) {
       if (!other.has(key)) {
         return false;
       }
@@ -514,14 +515,14 @@ namespace OpenNLP.Tools.Util
     // will unwind with false if any one equality check returns false.
     // TODO: since we only ever keep "true", we would rather use a
     // TwoDimensionalSet, but no such thing exists
-    if (calledMap.contains(this, other)) {
+    if (calledMap.ContainsKey(new Tuple<CoreMap, CoreMap>(this, other))) {
       return true;
     }
     bool result = true;
-    calledMap.put(this, other, true);
-    calledMap.put(other, this, true);
+    calledMap.Add(new Tuple<CoreMap, CoreMap>(this, other), true);
+    calledMap.Add(new Tuple<CoreMap, CoreMap>(other, this), true);
 
-    if (this.size != other.psize) {
+    if (this.psize != other.psize) {
       result = false;
     } else {
     for (int i = 0; i < this.psize; i++) {

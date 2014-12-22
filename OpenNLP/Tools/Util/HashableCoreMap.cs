@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util
     public class HashableCoreMap:ArrayCoreMap
     {
         /** Set of immutable keys */
-  private readonly Set<Key<object>> immutableKeys;
+        private readonly Set<Type> immutableKeys;
   
   /** Pre-computed hashcode */
   private readonly int hashcode;
@@ -25,20 +25,21 @@ namespace OpenNLP.Tools.Util
    * for the immutable, hashable keys as provided in the given map.
    */
   //@SuppressWarnings("unchecked")
-  public HashableCoreMap(Map<Class<? extends TypesafeMap.Key<?>>,Object> hashkey) {
+  public HashableCoreMap(Dictionary<Type, Object> hashkey)
+  {
     int keyHashcode = 0;
     int valueHashcode = 0;
     
-    for (Map.Entry<Class<? extends TypesafeMap.Key<?>>,Object> entry : hashkey.entrySet()) {
+    foreach (/*Map.Entry<Class<? extends TypesafeMap.Key<?>>,Object>*/var entry in hashkey/*.entrySet()*/) {
       // NB it is important to compose these hashcodes in an order-independent
       // way, so we just add them all here.
-      keyHashcode += entry.getKey().hashCode();
-      valueHashcode += entry.getValue().hashCode();
+      keyHashcode += /*entry.getKey().hashCode()*/entry.Key.GetHashCode();
+      valueHashcode += /*entry.getValue().hashCode()*/entry.Value.GetHashCode();
       
-      base.set((Class) entry.getKey(), entry.getValue());
+      base.set(/*(Class)*/ entry.Key, entry.Value);
     }
-    
-    this.immutableKeys = hashkey.keySet();
+
+    this.immutableKeys = new Set<Type>(hashkey.Keys);
     this.hashcode = keyHashcode * 31 + valueHashcode;
   }
   
@@ -48,12 +49,12 @@ namespace OpenNLP.Tools.Util
    * the immutable, hashable keys used by hashcode and equals.
    */
   //@SuppressWarnings("unchecked")
-  public HashableCoreMap<T>(ArrayCoreMap other, Set<Key<T>> hashkey):base(other) {
+  /*public HashableCoreMap<T>(ArrayCoreMap other, Set<Key<T>> hashkey):base(other) {
         
     int keyHashcode = 0;
     int valueHashcode = 0;
     
-    for (Key<T> key : hashkey) {
+    foreach (Key<T> key in hashkey) {
       // NB it is important to compose these hashcodes in an order-independent
       // way, so we just add them all here.
       keyHashcode += key.hashCode();
@@ -62,7 +63,7 @@ namespace OpenNLP.Tools.Util
     
     this.immutableKeys = hashkey;
     this.hashcode = keyHashcode * 31 + valueHashcode;
-  }
+  }*/
   
   /**
    * Sets the value associated with the given key; if the the key is one
@@ -72,11 +73,12 @@ namespace OpenNLP.Tools.Util
    *   immutable, hashable key.
    */
   //@Override
-  public /*<VALUE> VALUE*/T set<T>(Key<T> key, T value) {
+  public /*<VALUE> VALUE*/Object set(Type key, Object value)
+  {
     
-    if (immutableKeys.contains(key)) {
+    if (immutableKeys.Contains(key)) {
       throw new HashableCoreMapException("Attempt to change value " +
-      		"of immutable field "+key.getSimpleName());
+      		"of immutable field "+key.GetType().Name);
     }
     
     return base.set(key, value);
@@ -101,11 +103,12 @@ namespace OpenNLP.Tools.Util
   public bool equals(Object o) {
     if (o is HashableCoreMap) {
       HashableCoreMap other = (HashableCoreMap) o;
-      if (!other.immutableKeys.equals(this.immutableKeys)) {
+      if (!other.immutableKeys.Equals(this.immutableKeys)) {
         return false;
       }
-      foreach (Key<object> key in immutableKeys) {
-        if (!this.get((Class)key).Equals(other.get((Class)key))) {
+      foreach (Type key in immutableKeys)
+      {
+        if (!this.get(/*(Class)*/key).Equals(other.get(/*(Class)*/key))) {
           return false;
         }
       }

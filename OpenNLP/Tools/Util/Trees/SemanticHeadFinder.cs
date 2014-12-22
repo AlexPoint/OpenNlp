@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Util.Ling;
 using OpenNLP.Tools.Util.Trees.TRegex;
 
 namespace OpenNLP.Tools.Util.Trees
@@ -245,26 +246,26 @@ namespace OpenNLP.Tools.Util.Trees
     TregexPattern.compile("CONJP < (CC <: /^(?i:and)$/ [ ($+ (RB=head <: /^(?i:yet)$/)) | ($+ (ADVP=head <: (RB <: /^(?i:yet)$/))) ])"),
   };
 
-  //static readonly TregexPattern noVerbOverTempTregex = TregexPattern.compile("/^VP/ < NP-TMP !< /^V/ !< NNP|NN|NNPS|NNS|NP|JJ|ADJP|S");
+  static readonly TregexPattern noVerbOverTempTregex = TregexPattern.compile("/^VP/ < NP-TMP !< /^V/ !< NNP|NN|NNPS|NNS|NP|JJ|ADJP|S");
 
   /**
    * We use this to avoid making a -TMP or -ADV the head of a copular phrase.
    * For example, in the sentence "It is hands down the best dessert ...",
    * we want to avoid using "hands down" as the head.
    */
-  /*static readonly Predicate<Tree> REMOVE_TMP_AND_ADV = tree -> {
+  static readonly Predicate<Tree> REMOVE_TMP_AND_ADV = tree => {
     if (tree == null)
       return false;
     Label label = tree.label();
     if (label == null)
       return false;
-    if (label.value().contains("-TMP") || label.value().contains("-ADV"))
+    if (label.value().Contains("-TMP") || label.value().Contains("-ADV"))
       return false;
-    if (label.value().startsWith("VP") && noVerbOverTempTregex.matcher(tree).matches()) {
+    if (label.value().StartsWith("VP") && noVerbOverTempTregex.matcher(tree).matches()) {
       return false;
     }
     return true;
-  };*/
+  };
 
   /**
    * Determine which daughter of the current parse tree is the
@@ -277,7 +278,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   protected Tree determineNonTrivialHead(Tree t, Tree parent) {
-    String motherCat = tlp.basicCategory(t.label());
+    String motherCat = tlp.basicCategory(t.label().value());
 
     /*if (DEBUG) {
       System.err.println("At " + motherCat + ", my parent is " + parent);
@@ -316,12 +317,12 @@ namespace OpenNLP.Tools.Util.Trees
       Tree[] kids = t.children();
       // try to find if there is an auxiliary verb
 
-      if (DEBUG) {
+      /*if (DEBUG) {
         System.err.println("Semantic head finder: at VP");
         System.err.println("Class is " + t.getClass().getName());
         t.pennPrint(System.err);
         //System.err.println("hasVerbalAuxiliary = " + hasVerbalAuxiliary(kids, verbalAuxiliaries));
-      }
+      }*/
 
       // looks for auxiliaries
       if (hasVerbalAuxiliary(kids, verbalAuxiliaries, true) || hasPassiveProgressiveAuxiliary(kids)) {
@@ -331,12 +332,13 @@ namespace OpenNLP.Tools.Util.Trees
         // But maybe doing ADJP is fine!
         String[] how = { "left", "VP", "ADJP" };
         if (tmpFilteredChildren == null) {
-          tmpFilteredChildren = ArrayUtils.filter(kids, REMOVE_TMP_AND_ADV);
+          //tmpFilteredChildren = ArrayUtils.filter(kids, REMOVE_TMP_AND_ADV);
+          tmpFilteredChildren = kids.Where(k => REMOVE_TMP_AND_ADV(k)).ToArray();
         }
         Tree pti = traverseLocate(tmpFilteredChildren, how, false);
-        if (DEBUG) {
+        /*if (DEBUG) {
           System.err.println("Determined head (case 1) for " + t.value() + " is: " + pti);
-        }
+        }*/
         if (pti != null) {
           return pti;
         // } else {
@@ -357,16 +359,17 @@ namespace OpenNLP.Tools.Util.Trees
         }
         // Avoid undesirable heads by filtering them from the list of potential children
         if (tmpFilteredChildren == null) {
-          tmpFilteredChildren = ArrayUtils.filter(kids, REMOVE_TMP_AND_ADV);
+          //tmpFilteredChildren = ArrayUtils.filter(kids, REMOVE_TMP_AND_ADV);
+          tmpFilteredChildren = kids.Where(k => REMOVE_TMP_AND_ADV(k)).ToArray();
         }
         Tree pti = traverseLocate(tmpFilteredChildren, how, false);
         // In SQ, only allow an NP to become head if there is another one to the left (then it's probably predicative)
-        if (motherCat.Equals("SQ") && pti != null && pti.label() != null && pti.label().value().startsWith("NP")) {
+        if (motherCat.Equals("SQ") && pti != null && pti.label() != null && pti.label().value().StartsWith("NP")) {
             bool foundAnotherNp = false;
-            for (Tree kid : kids) {
+            foreach (Tree kid in kids) {
               if (kid == pti) {
                 break;
-              } else if (kid.label() != null && kid.label().value().startsWith("NP")) {
+              } else if (kid.label() != null && kid.label().value().StartsWith("NP")) {
                 foundAnotherNp = true;
                 break;
               }
@@ -376,23 +379,23 @@ namespace OpenNLP.Tools.Util.Trees
           }
         }
 
-        if (DEBUG) {
+        /*if (DEBUG) {
           System.err.println("Determined head (case 2) for " + t.value() + " is: " + pti);
-        }
+        }s*/
         if (pti != null) {
           return pti;
         } else {
-          if (DEBUG) {
+          /*if (DEBUG) {
             System.err.println("------");
             System.err.println("SemanticHeadFinder failed to reassign head for");
             t.pennPrint(System.err);
             System.err.println("------");
-          }
+          }*/
         }
       }
     }
 
-    Tree hd = super.determineNonTrivialHead(t, parent);
+    Tree hd = base.determineNonTrivialHead(t, parent);
 
     /* ----
     // This should now be handled at the AbstractCollinsHeadFinder level, so see if we can comment this out
@@ -418,9 +421,9 @@ namespace OpenNLP.Tools.Util.Trees
     }
     */
 
-    if (DEBUG) {
+    /*if (DEBUG) {
       System.err.println("Determined head (case 3) for " + t.value() + " is: " + hd);
-    }
+    }*/
     return hd;
   }
 
@@ -431,9 +434,9 @@ namespace OpenNLP.Tools.Util.Trees
    *
    */
   private bool isExistential(Tree t, Tree parent) {
-    if (DEBUG) {
+    /*if (DEBUG) {
       System.err.println("isExistential: " + t + ' ' + parent);
-    }
+    }*/
     bool toReturn = false;
     String motherCat = tlp.basicCategory(t.label().value());
     // affirmative case
@@ -441,10 +444,10 @@ namespace OpenNLP.Tools.Util.Trees
       //take t and the sisters
       Tree[] kids = parent.children();
       // iterate over the sisters before t and checks if existential
-      for (Tree kid : kids) {
+      foreach (Tree kid in kids) {
         if (!kid.value().Equals("VP")) {
           List<Label> tags = kid.preTerminalYield();
-          for (Label tag : tags) {
+          foreach (Label tag in tags) {
             if (tag.value().Equals("EX")) {
               toReturn = true;
             }
@@ -455,14 +458,14 @@ namespace OpenNLP.Tools.Util.Trees
       }
     }
     // question case
-    else if (motherCat.startsWith("SQ") && parent != null) {
+    else if (motherCat.StartsWith("SQ") && parent != null) {
       //take the daughters
       Tree[] kids = parent.children();
       // iterate over the daughters and checks if existential
-      for (Tree kid : kids) {
-        if (!kid.value().startsWith("VB")) {//not necessary to look into the verb
+      foreach (Tree kid in kids) {
+        if (!kid.value().StartsWith("VB")) {//not necessary to look into the verb
           List<Label> tags = kid.preTerminalYield();
-          for (Label tag : tags) {
+          foreach (Label tag in tags) {
             if (tag.value().Equals("EX")) {
               toReturn = true;
             }
@@ -471,9 +474,9 @@ namespace OpenNLP.Tools.Util.Trees
       }
     }
 
-    if (DEBUG) {
+    /*if (DEBUG) {
       System.err.println("decision " + toReturn);
-    }
+    }*/
 
     return toReturn;
   }
@@ -490,21 +493,21 @@ namespace OpenNLP.Tools.Util.Trees
       return false;
     }
     bool toReturn = false;
-    if (t.value().startsWith("SQ")) {
+    if (t.value().StartsWith("SQ")) {
       if (parent != null && parent.value().Equals("SBARQ")) {
         Tree[] kids = parent.children();
-        for (Tree kid : kids) {
+        foreach (Tree kid in kids) {
           // looks for a WH.*
-          if (kid.value().startsWith("WH")) {
+          if (kid.value().StartsWith("WH")) {
             toReturn = true;
           }
         }
       }
     }
 
-    if (DEBUG) {
+    /*if (DEBUG) {
       System.err.println("in isWH, decision: " + toReturn + " for node " + t);
-    }
+    }s*/
 
     return toReturn;
   }
@@ -513,7 +516,7 @@ namespace OpenNLP.Tools.Util.Trees
     if (preterminal.isPreTerminal()) {
       Label kidLabel = preterminal.label();
       String tag = null;
-      if (kidLabel instanceof HasTag) {
+      if (kidLabel is HasTag) {
         tag = ((HasTag) kidLabel).tag();
       }
       if (tag == null) {
@@ -521,21 +524,21 @@ namespace OpenNLP.Tools.Util.Trees
       }
       Label wordLabel = preterminal.firstChild().label();
       String word = null;
-      if (wordLabel instanceof HasWord) {
+      if (wordLabel is HasWord) {
         word = ((HasWord) wordLabel).word();
       }
       if (word == null) {
         word = wordLabel.value();
       }
 
-      if (DEBUG) {
+      /*if (DEBUG) {
         System.err.println("Checking " + preterminal.value() + " head is " + word + '/' + tag);
-      }
-      String lcWord = word.toLowerCase();
-      if (allowJustTagMatch && unambiguousAuxiliaryTags.contains(tag) || verbalTags.contains(tag) && verbalSet.contains(lcWord)) {
-        if (DEBUG) {
+      }*/
+      String lcWord = word.ToLower();
+      if (allowJustTagMatch && unambiguousAuxiliaryTags.Contains(tag) || verbalTags.Contains(tag) && verbalSet.Contains(lcWord)) {
+        /*if (DEBUG) {
           System.err.println("isAuxiliary found desired type of aux");
-        }
+        }*/
         return true;
       }
     }
@@ -555,42 +558,42 @@ namespace OpenNLP.Tools.Util.Trees
 
   // now overly complex so it deals with coordinations.  Maybe change this class to use tregrex?
   private bool hasPassiveProgressiveAuxiliary(Tree[] kids) {
-    if (DEBUG) {
+    /*if (DEBUG) {
       System.err.println("Checking for passive/progressive auxiliary");
-    }
+    }*/
     bool foundPassiveVP = false;
     bool foundPassiveAux = false;
-    for (Tree kid : kids) {
-      if (DEBUG) {
+    foreach (Tree kid in kids) {
+      /*if (DEBUG) {
         System.err.println("  checking in " + kid);
-      }
+      }*/
       if (isVerbalAuxiliary(kid, passiveAuxiliaries, false)) {
           foundPassiveAux = true;
       } else if (kid.isPhrasal()) {
         Label kidLabel = kid.label();
         String cat = null;
-        if (kidLabel instanceof HasCategory) {
+        if (kidLabel is HasCategory) {
           cat = ((HasCategory) kidLabel).category();
         }
         if (cat == null) {
           cat = kid.value();
         }
-        if ( ! cat.startsWith("VP")) {
+        if ( ! cat.StartsWith("VP")) {
           continue;
         }
-        if (DEBUG) {
+        /*if (DEBUG) {
           System.err.println("hasPassiveProgressiveAuxiliary found VP");
-        }
+        }*/
         Tree[] kidkids = kid.children();
         bool foundParticipleInVp = false;
-        for (Tree kidkid : kidkids) {
-          if (DEBUG) {
+        foreach (Tree kidkid in kidkids) {
+          /*if (DEBUG) {
             System.err.println("  hasPassiveProgressiveAuxiliary examining " + kidkid);
-          }
+          }*/
           if (kidkid.isPreTerminal()) {
             Label kidkidLabel = kidkid.label();
             String tag = null;
-            if (kidkidLabel instanceof HasTag) {
+            if (kidkidLabel is HasTag) {
               tag = ((HasTag) kidkidLabel).tag();
             }
             if (tag == null) {
@@ -599,35 +602,35 @@ namespace OpenNLP.Tools.Util.Trees
             // we allow in VBD because of frequent tagging mistakes
             if ("VBN".Equals(tag) || "VBG".Equals(tag) || "VBD".Equals(tag)) {
               foundPassiveVP = true;
-              if (DEBUG) {
+              /*if (DEBUG) {
                 System.err.println("hasPassiveAuxiliary found VBN/VBG/VBD VP");
-              }
+              }*/
               break;
             } else if ("CC".Equals(tag) && foundParticipleInVp) {
               foundPassiveVP = true;
-              if (DEBUG) {
+              /*if (DEBUG) {
                 System.err.println("hasPassiveAuxiliary [coordination] found (VP (VP[VBN/VBG/VBD] CC");
-              }
+              }*/
               break;
             }
           } else if (kidkid.isPhrasal()) {
             String catcat = null;
-            if (kidLabel instanceof HasCategory) {
+            if (kidLabel is HasCategory) {
               catcat = ((HasCategory) kidLabel).category();
             }
             if (catcat == null) {
               catcat = kid.value();
             }
             if ("VP".Equals(catcat)) {
-              if (DEBUG) {
+              /*if (DEBUG) {
                 System.err.println("hasPassiveAuxiliary found (VP (VP)), recursing");
-              }
+              }*/
               foundParticipleInVp = vpContainsParticiple(kidkid);
             } else if (("CONJP".Equals(catcat) || "PRN".Equals(catcat)) && foundParticipleInVp) { // occasionally get PRN in CONJ-like structures
               foundPassiveVP = true;
-              if (DEBUG) {
+              /*if (DEBUG) {
                 System.err.println("hasPassiveAuxiliary [coordination] found (VP (VP[VBN/VBG/VBD] CONJP");
-              }
+              }*/
               break;
             }
           }
@@ -637,30 +640,30 @@ namespace OpenNLP.Tools.Util.Trees
         break;
       }
     } // end for (Tree kid : kids)
-    if (DEBUG) {
+    /*if (DEBUG) {
       System.err.println("hasPassiveProgressiveAuxiliary returns " + (foundPassiveAux && foundPassiveVP));
-    }
+    }*/
     return foundPassiveAux && foundPassiveVP;
   }
 
   private static bool vpContainsParticiple(Tree t) {
-    for (Tree kid : t.children()) {
-      if (DEBUG) {
+    foreach (Tree kid in t.children()) {
+      /*if (DEBUG) {
         System.err.println("vpContainsParticiple examining " + kid);
-      }
+      }*/
       if (kid.isPreTerminal()) {
         Label kidLabel = kid.label();
         String tag = null;
-        if (kidLabel instanceof HasTag) {
+        if (kidLabel is HasTag) {
           tag = ((HasTag) kidLabel).tag();
         }
         if (tag == null) {
           tag = kid.value();
         }
         if ("VBN".Equals(tag) || "VBG".Equals(tag) || "VBD".Equals(tag)) {
-          if (DEBUG) {
+          /*if (DEBUG) {
             System.err.println("vpContainsParticiple found VBN/VBG/VBD VP");
-          }
+          }*/
           return true;
         }
       }
@@ -682,20 +685,20 @@ namespace OpenNLP.Tools.Util.Trees
    *      by a word in verbalSet
    */
   private bool hasVerbalAuxiliary(Tree[] kids, Set<String> verbalSet, bool allowTagOnlyMatch) {
-    if (DEBUG) {
+    /*if (DEBUG) {
       System.err.println("Checking for verbal auxiliary");
-    }
-    for (Tree kid : kids) {
-      if (DEBUG) {
+    }*/
+    foreach (Tree kid in kids) {
+      /*if (DEBUG) {
         System.err.println("  checking in " + kid);
-      }
+      }*/
       if (isVerbalAuxiliary(kid, verbalSet, allowTagOnlyMatch)) {
         return true;
       }
     }
-    if (DEBUG) {
+    /*if (DEBUG) {
       System.err.println("hasVerbalAuxiliary returns false");
-    }
+    }*/
     return false;
   }
 

@@ -24,7 +24,7 @@ namespace OpenNLP.Tools.Util.Ling
  * @author dramage
  * @author rafferty
  */
-    public class CoreLabel: AbstractCoreLabel, HasWord, HasTag, HasCategory, HasLemma, HasContext, HasIndex, HasOffset
+    public class CoreLabel: ArrayCoreMap, AbstractCoreLabel, HasWord, HasTag, HasCategory, HasLemma, HasContext, HasIndex, HasOffset
     {
         private static readonly long serialVersionUID = 2L;
 
@@ -67,11 +67,11 @@ namespace OpenNLP.Tools.Util.Ling
    * @param label The CoreMap to copy
    */
   //@SuppressWarnings({"unchecked"})
-  /*public CoreLabel(CoreMap label):base(label.size()){
-    foreach(Class key in label.keySet()) {
+  public CoreLabel(CoreMap label):base(label.size()){
+    foreach(var key in label.keySet()) {
       set(key, label.get(key));
     }
-  }*/
+  }
 
   /**
    * Returns a new CoreLabel instance based on the contents of the given
@@ -87,7 +87,7 @@ namespace OpenNLP.Tools.Util.Ling
     if (label is CoreMap) {
       CoreMap cl = (CoreMap) label;
       setCapacity(cl.size());
-      foreach(Class key in cl.keySet()) {
+      foreach(var key in cl.keySet()) {
         set(key, cl.get(key));
       }
     } else {
@@ -108,10 +108,10 @@ namespace OpenNLP.Tools.Util.Ling
    * @param keys Array of Strings that are class names
    * @param values Array of values (as String)
    */
-  public CoreLabel(String[] keys, String[] values):base(keys.Length){
+  /*public CoreLabel(String[] keys, String[] values):base(keys.Length){
     //this.map = new ArrayCoreMap();
     initFromStrings(keys, values);
-  }
+  }*/
 
 
   /**
@@ -127,8 +127,8 @@ namespace OpenNLP.Tools.Util.Ling
 
 
   //@SuppressWarnings("unchecked")
-  private void initFromStrings(String[] keys, String[] values) {
-    for(int i = 0; i < Math.Min(keys.length, values.length); i++) {
+  /*private void initFromStrings(String[] keys, String[] values) {
+    for(int i = 0; i < Math.Min(keys.Length, values.Length); i++) {
       String key = keys[i];
       String value = values[i];
       KeyLookup lookup = AnnotationLookup.getCoreKey(key);
@@ -164,7 +164,7 @@ namespace OpenNLP.Tools.Util.Ling
       } else {
         try {
           Class<?> valueClass = AnnotationLookup.getValueType(lookup.coreKey);
-          if(valueClass.equals(String.class)) {
+          if(valueClass.Equals(String.class)) {
             this.set(lookup.coreKey, values[i]);
           } else if(valueClass == Integer.class) {
             this.set(lookup.coreKey, Integer.parseInt(values[i]));
@@ -183,7 +183,7 @@ namespace OpenNLP.Tools.Util.Ling
         }
       }
     }
-  }
+  }*/
 
 
   private /*static*/ class CoreLabelFactory: LabelFactory {
@@ -267,8 +267,8 @@ namespace OpenNLP.Tools.Util.Ling
    *     and the String value of the key otherwise
    */
   //@Override
-  public <KEY extends Key<String>> String getString(Class<KEY> key) {
-    String value = get(key);
+  public /*<KEY extends Key<String>>*/ String getString(Type key) {
+    String value = (string)get(key);
     if (value == null) {
       return "";
     }
@@ -295,16 +295,16 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
   //@Override
-  public readonly void setValue(String value) {
-    set(CoreAnnotations.ValueAnnotation.class, value);
+  public void setValue(String value) {
+    set(typeof(CoreAnnotations.ValueAnnotation), value);
   }
 
   /**
    * {@inheritDoc}
    */
   //@Override
-  public readonly String value() {
-    return get(CoreAnnotations.ValueAnnotation.class);
+  public String value() {
+    return (String)get(typeof(CoreAnnotations.ValueAnnotation));
   }
 
   /**
@@ -313,12 +313,12 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public void setWord(String word) {
-    String originalWord = get(CoreAnnotations.TextAnnotation.class);
-    set(CoreAnnotations.TextAnnotation.class, word);
+    String originalWord = (String)get(typeof(CoreAnnotations.TextAnnotation));
+    set(typeof(CoreAnnotations.TextAnnotation), word);
     // pado feb 09: if you change the word, delete the lemma.
     // gabor dec 2012: check if there was a real change -- this remove is actually rather expensive if it gets called a lot
-    if (word != null && !word.equals(originalWord) && containsKey(CoreAnnotations.LemmaAnnotation.class)) {
-      remove(CoreAnnotations.LemmaAnnotation.class);
+    if (word != null && !word.Equals(originalWord) && containsKey(typeof(CoreAnnotations.LemmaAnnotation))) {
+      remove(typeof(CoreAnnotations.LemmaAnnotation));
     }
   }
 
@@ -327,7 +327,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public String word() {
-    return get(CoreAnnotations.TextAnnotation.class);
+    return (String)get(typeof(CoreAnnotations.TextAnnotation));
   }
 
   /**
@@ -335,7 +335,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public void setTag(String tag) {
-    set(CoreAnnotations.PartOfSpeechAnnotation.class, tag);
+    set(typeof(CoreAnnotations.PartOfSpeechAnnotation), tag);
   }
 
   /**
@@ -343,7 +343,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public String tag() {
-    return get(CoreAnnotations.PartOfSpeechAnnotation.class);
+    return (String)get(typeof(CoreAnnotations.PartOfSpeechAnnotation));
   }
 
   /**
@@ -351,7 +351,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public void setCategory(String category) {
-    set(CoreAnnotations.CategoryAnnotation.class, category);
+    set(typeof(CoreAnnotations.CategoryAnnotation), category);
   }
 
   /**
@@ -359,7 +359,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public String category() {
-    return get(CoreAnnotations.CategoryAnnotation.class);
+    return (String)get(typeof(CoreAnnotations.CategoryAnnotation));
   }
 
   /**
@@ -367,7 +367,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public void setAfter(String after) {
-    set(CoreAnnotations.AfterAnnotation.class, after);
+    set(typeof(CoreAnnotations.AfterAnnotation), after);
   }
 
   /**
@@ -375,7 +375,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public String after() {
-    return getString(CoreAnnotations.AfterAnnotation.class);
+    return getString(typeof(CoreAnnotations.AfterAnnotation));
   }
 
   /**
@@ -383,7 +383,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public void setBefore(String before) {
-    set(CoreAnnotations.BeforeAnnotation.class, before);
+    set(typeof(CoreAnnotations.BeforeAnnotation), before);
   }
 
 
@@ -392,7 +392,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public String before() {
-    return getString(CoreAnnotations.BeforeAnnotation.class);
+    return getString(typeof(CoreAnnotations.BeforeAnnotation));
   }
 
   /**
@@ -400,7 +400,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public void setOriginalText(String originalText) {
-    set(CoreAnnotations.OriginalTextAnnotation.class, originalText);
+    set(typeof(CoreAnnotations.OriginalTextAnnotation), originalText);
   }
 
   /**
@@ -408,7 +408,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public String originalText() {
-    return getString(CoreAnnotations.OriginalTextAnnotation.class);
+    return getString(typeof(CoreAnnotations.OriginalTextAnnotation));
   }
 
   /**
@@ -416,7 +416,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public String docID() {
-    return get(CoreAnnotations.DocIDAnnotation.class);
+    return (String)get(typeof(CoreAnnotations.DocIDAnnotation));
   }
 
   /**
@@ -433,11 +433,11 @@ namespace OpenNLP.Tools.Util.Ling
    * @return String the word value for the label
    */
   public String ner() {
-    return get(CoreAnnotations.NamedEntityTagAnnotation.class);
+    return (String)get(typeof(CoreAnnotations.NamedEntityTagAnnotation));
   }
 
   public void setNER(String ner) {
-    set(CoreAnnotations.NamedEntityTagAnnotation.class, ner);
+    set(typeof(CoreAnnotations.NamedEntityTagAnnotation), ner);
   }
 
   /**
@@ -445,7 +445,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public String lemma() {
-    return get(CoreAnnotations.LemmaAnnotation.class);
+    return (String)get(typeof(CoreAnnotations.LemmaAnnotation));
   }
 
   /**
@@ -453,16 +453,16 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public void setLemma(String lemma) {
-    set(CoreAnnotations.LemmaAnnotation.class, lemma);
+    set(typeof(CoreAnnotations.LemmaAnnotation), lemma);
   }
 
 
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public int index() {
-    Integer n = get(CoreAnnotations.IndexAnnotation.class);
+    int n = (int)get(typeof(CoreAnnotations.IndexAnnotation));
     if(n == null)
       return -1;
     return n;
@@ -471,17 +471,17 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setIndex(int index) {
-    set(CoreAnnotations.IndexAnnotation.class, index);
+    set(typeof(CoreAnnotations.IndexAnnotation), index);
   }
 
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public int sentIndex() {
-    Integer n = get(CoreAnnotations.SentenceIndexAnnotation.class);
+    int n = (int)get(typeof(CoreAnnotations.SentenceIndexAnnotation));
     if(n == null)
       return -1;
     return n;
@@ -490,17 +490,17 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setSentIndex(int sentIndex) {
-    set(CoreAnnotations.SentenceIndexAnnotation.class, sentIndex);
+    set(typeof(CoreAnnotations.SentenceIndexAnnotation), sentIndex);
   }
 
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public int beginPosition() {
-    Integer i = get(CoreAnnotations.CharacterOffsetBeginAnnotation.class);
+    int i = (int)get(typeof(CoreAnnotations.CharacterOffsetBeginAnnotation));
     if(i != null) return i;
     return -1;
   }
@@ -508,9 +508,9 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public int endPosition() {
-    Integer i = get(CoreAnnotations.CharacterOffsetEndAnnotation.class);
+    int i = (int)get(typeof(CoreAnnotations.CharacterOffsetEndAnnotation));
     if(i != null) return i;
     return -1;
   }
@@ -518,28 +518,28 @@ namespace OpenNLP.Tools.Util.Ling
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setBeginPosition(int beginPos) {
-    set(CoreAnnotations.CharacterOffsetBeginAnnotation.class, beginPos);
+    set(typeof(CoreAnnotations.CharacterOffsetBeginAnnotation), beginPos);
   }
 
   /**
    * {@inheritDoc}
    */
-  @Override
+  //@Override
   public void setEndPosition(int endPos) {
-    set(CoreAnnotations.CharacterOffsetEndAnnotation.class, endPos);
+    set(typeof(CoreAnnotations.CharacterOffsetEndAnnotation), endPos);
   }
 
   public int copyCount() {
-    Integer copy = get(CoreAnnotations.CopyAnnotation.class);
+    int copy = (int)get(typeof(CoreAnnotations.CopyAnnotation));
     if (copy == null)
       return 0;
     return copy;
   }
 
   public void setCopyCount(int count) {
-    set(CoreAnnotations.CopyAnnotation.class, count);
+    set(typeof(CoreAnnotations.CopyAnnotation), count);
   }
 
   /**
@@ -553,10 +553,10 @@ namespace OpenNLP.Tools.Util.Ling
 
   public static readonly OutputFormat DEFAULT_FORMAT = OutputFormat.VALUE_INDEX;
 
-  @Override
-  public String toString() {
+  //@Override
+  /*public String toString() {
     return toString(DEFAULT_FORMAT);
-  }
+  }*/
 
   /**
    * Returns a formatted string representing this label.  The
@@ -580,66 +580,66 @@ namespace OpenNLP.Tools.Util.Ling
    * Map is printed in alphabetical order of keys.
    */
   //@SuppressWarnings("unchecked")
-  public String toString(OutputFormat format) {
+  /*public String toString(OutputFormat format) {
     StringBuilder buf = new StringBuilder();
     switch(format) {
     case VALUE:
-      buf.append(value());
+      buf.Append(value());
       break;
     case MAP: {
       Map map2 = new TreeMap();
       for(Class key : this.keySet()) {
         map2.put(key.getName(), get(key));
       }
-      buf.append(map2);
+      buf.Append(map2);
       break;
     }
     case VALUE_MAP: {
-      buf.append(value());
+      buf.Append(value());
       Map map2 = new TreeMap(asClassComparator);
       for(Class key : this.keySet()) {
         map2.put(key, get(key));
       }
       map2.remove(CoreAnnotations.ValueAnnotation.class);
-      buf.append(map2);
+      buf.Append(map2);
       break;
     }
     case VALUE_INDEX: {
-      buf.append(value());
+      buf.Append(value());
       Integer index = this.get(CoreAnnotations.IndexAnnotation.class);
       if (index != null) {
-        buf.append('-').append((index).intValue());
+        buf.Append('-').Append((index).intValue());
       }
-      buf.append(toPrimes());
+      buf.Append(toPrimes());
       break;
     }
     case VALUE_TAG: {
-      buf.append(value());
-      buf.append(toPrimes());
+      buf.Append(value());
+      buf.Append(toPrimes());
       String tag = tag();
       if (tag != null) {
-        buf.append(TAG_SEPARATOR).append(tag);
+        buf.Append(TAG_SEPARATOR).Append(tag);
       }
       break;
     }
     case VALUE_TAG_INDEX: {
-      buf.append(value());
+      buf.Append(value());
       String tag = tag();
       if (tag != null) {
-        buf.append(TAG_SEPARATOR).append(tag);
+        buf.Append(TAG_SEPARATOR).Append(tag);
       }
       Integer index = this.get(CoreAnnotations.IndexAnnotation.class);
       if (index != null) {
-        buf.append('-').append((index).intValue());
+        buf.Append('-').Append((index).intValue());
       }
-      buf.append(toPrimes());
+      buf.Append(toPrimes());
       break;
     }
     case VALUE_INDEX_MAP: {
-      buf.append(value());
+      buf.Append(value());
       Integer index = this.get(CoreAnnotations.IndexAnnotation.class);
       if (index != null) {
-        buf.append('-').append((index).intValue());
+        buf.Append('-').Append((index).intValue());
       }
       Map<String,Object> map2 = new TreeMap<String,Object>();
       for(Class key : this.keySet()) {
@@ -654,38 +654,38 @@ namespace OpenNLP.Tools.Util.Ling
       map2.remove("IndexAnnotation");
       map2.remove("ValueAnnotation");
       if (!map2.isEmpty()) {
-        buf.append(map2);
+        buf.Append(map2);
       }
       break;
     }
     case WORD:
       // TODO: we should unify word() and value()
-      buf.append(word());
+      buf.Append(word());
       break;
     case WORD_INDEX: {
-      buf.append(this.get(CoreAnnotations.TextAnnotation.class));
+      buf.Append(this.get(CoreAnnotations.TextAnnotation.class));
       Integer index = this.get(CoreAnnotations.IndexAnnotation.class);
       if (index != null) {
-        buf.append('-').append((index).intValue());
+        buf.Append('-').Append((index).intValue());
       }
-      buf.append(toPrimes());
+      buf.Append(toPrimes());
       break;
     }
     default:
       throw new IllegalArgumentException("Unknown format " + format);
     }
     return buf.toString();
-  }
+  }*/
 
   public String toPrimes() {
     return StringUtils.repeat('\'', copyCount());
   }
 
-  private static readonly Comparator<Class<?>> asClassComparator = new Comparator<Class<?>>() {
+  /*private static readonly Comparator<Class<?>> asClassComparator = new Comparator<Class<?>>() {
     @Override
     public int compare(Class<?> o1, Class<?> o2) {
       return o1.getName().compareTo(o2.getName());
     }
-  };
+  };*/
     }
 }

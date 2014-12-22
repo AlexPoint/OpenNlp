@@ -14,9 +14,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
  */
     public abstract class TsurgeonPattern
     {
-        static readonly TsurgeonPattern[] EMPTY_TSURGEON_PATTERN_ARRAY = new TsurgeonPattern[0];
+        public static readonly TsurgeonPattern[] EMPTY_TSURGEON_PATTERN_ARRAY = new TsurgeonPattern[0];
 
-  readonly String label;
+  public readonly String label;
   public readonly TsurgeonPattern[] children;
 
   TsurgeonPattern root; // TODO: can remove?

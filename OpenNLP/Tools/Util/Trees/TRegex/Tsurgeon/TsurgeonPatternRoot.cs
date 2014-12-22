@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * If one of the children is a CoindexNodes (or something else that
    * wants coindexing), it can call this at the time of setRoot()
    */
-  void setCoindexes() {
+  public void setCoindexes() {
     coindexes = true;
   }
 

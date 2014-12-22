@@ -70,7 +70,7 @@ namespace OpenNLP.Tools.Util.Trees
    * if it is a leaf.
    */
   //@Override
-  public override Tree[] children() {
+  public Tree[] children() {
     return daughterTrees;
   }
 
@@ -141,7 +141,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a factory to produce labeled, scored trees
    */
   //@Override
-  public override TreeFactory treeFactory() {
+  public TreeFactory treeFactory() {
     LabelFactory lf = (label() == null) ? CoreLabel.factory() : label().labelFactory();
     return new LabeledScoredTreeFactory(lf);
   }

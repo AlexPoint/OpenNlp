@@ -19,36 +19,36 @@ namespace OpenNLP.Tools.Util
    * Returns true if the map contains the given key.
    * todo [cdm 2014]: This is synonymous with containsKey(), but used less, so we should just eliminate it.
    */
-  bool has<T>(Key<T> key);
+  bool has(Type key);
 
   /**
    * Returns the value associated with the given key or null if
    * none is provided.
    */
-  T get<T>(Key<T> key);
+  object get(Type key);
 
   /**
    * Associates the given value with the given type for future calls
    * to get.  Returns the value removed or null if no value was present.
    */
-  T set<T>(Key<T> key, T value);
+  object set(Type key, object value);
 
   /**
    * Removes the given key from the map, returning the value removed.
    */
-  T remove<T>(Key<T> key);
+  object remove(Type key);
 
   /**
    * Collection of keys currently held in this map.  Some implementations may
    * have the returned set be immutable.
    */
-  Set<T> keySet<T>();
+  Set<Type> keySet();
   //public Set<Class<? extends Key<?>>> keySet();
 
   /**
    * Returns true if contains the given key.
    */
-  bool containsKey<T>(Key<T> key);
+  bool containsKey(Type key);
 
   /**
    * Returns the number of keys in the map.

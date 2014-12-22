@@ -31,6 +31,242 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
+   * Makes a deep copy of not only the Tree structure but of the labels as well.
+   * Uses the TreeFactory of the root node given by treeFactory().
+   * Assumes that your labels give a non-null labelFactory().
+   * (Added by Aria Haghighi.)
+   *
+   * @return A deep copy of the tree structure and its labels
+   */
+  public Tree deepCopy() {
+    return deepCopy(treeFactory());
+  }
+
+
+  /**
+   * Makes a deep copy of not only the Tree structure but of the labels as well.
+   * The new tree will have nodes made by the given TreeFactory.
+   * Each Label is copied using the labelFactory() returned
+   * by the corresponding node's label.
+   * It assumes that your labels give non-null labelFactory.
+   * (Added by Aria Haghighi.)
+   *
+   * @param tf The TreeFactory used to make all nodes in the copied
+   *           tree structure
+   * @return A Tree that is a deep copy of the tree structure and
+   *         Labels of the original tree.
+   */
+  public Tree deepCopy(TreeFactory tf) {
+    return deepCopy(tf, label().labelFactory());
+  }
+
+
+  /**
+   * Makes a deep copy of not only the Tree structure but of the labels as well.
+   * Each tree is copied with the given TreeFactory.
+   * Each Label is copied using the given LabelFactory.
+   * That is, the tree and label factories can transform the nature of the
+   * data representation.
+   *
+   * @param tf The TreeFactory used to make all nodes in the copied
+   *           tree structure
+   * @param lf The LabelFactory used to make all nodes in the copied
+   *           tree structure
+   * @return A Tree that is a deep copy of the tree structure and
+   *         Labels of the original tree.
+   */
+
+  //@SuppressWarnings({"unchecked"})
+  public Tree deepCopy(TreeFactory tf, LabelFactory lf) {
+    Label lab = lf.newLabel(label());
+    if (isLeaf()) {
+      return tf.newLeaf(lab);
+    }
+    Tree[] kids = children();
+    // NB: The below list may not be of type Tree but TreeGraphNode, so we leave it untyped
+    var newKids = new List<Tree>();
+    foreach (Tree kid in kids) {
+      newKids.Add(kid.deepCopy(tf, lf));
+    }
+    return tf.newTreeNode(lab, newKids);
+  }
+        
+        /**
+         * insert <code>dtr</code> after <code>position</code> existing
+         * daughters in <code>this</code>.
+         */
+        public void insertDtr(Tree dtr, int position)
+        {
+            Tree[] kids = children();
+            if (position > kids.Length)
+            {
+                throw new ArgumentException("Can't insert tree after the " + position + "th daughter in " + this + "; only " + kids.Length + " daughters exist!");
+            }
+            Tree[] newKids = new Tree[kids.Length + 1];
+            int i = 0;
+            for (; i < position; i++)
+            {
+                newKids[i] = kids[i];
+            }
+            newKids[i] = dtr;
+            for (; i < kids.Length; i++)
+            {
+                newKids[i + 1] = kids[i];
+            }
+            setChildren(newKids);
+        }
+
+        /**
+   * Returns true if <code>this</code> dominates the Tree passed in
+   * as an argument.  Object equality (==) rather than .equals() is used
+   * to determine domination.
+   * t.dominates(t) returns false.
+   */
+        public bool dominates(Tree t)
+        {
+            List<Tree> dPath = dominationPath(t);
+            return dPath != null && dPath.Count > 1;
+        }
+
+        /**
+   * Sets the label associated with the current node, if there is one.
+   * The default implementation ignores the label.
+   *
+   * @param label The label
+   */
+  //@Override
+  public void setLabel(Label label) {
+    // a noop
+  }
+
+  /**
+* Gets the yield of the tree.  The <code>Label</code> of all leaf nodes
+* is returned
+* as a list ordered by the natural left to right order of the
+* leaves.  Null values, if any, are inserted into the list like any
+* other value.
+*
+* @return a <code>List</code> of the data in the tree's leaves.
+*/
+  public List<Label> yield()
+  {
+      return yield(new List<Label>());
+  }
+
+  /**
+   * Gets the yield of the tree.  The <code>Label</code> of all leaf nodes
+   * is returned
+   * as a list ordered by the natural left to right order of the
+   * leaves.  Null values, if any, are inserted into the list like any
+   * other value.
+   * <p><i>Implementation notes:</i> c. 2003: This has been rewritten to thread, so only one List
+   * is used. 2007: This method was duplicated to start to give type safety to Sentence.
+   * This method will now make a Word for any Leaf which does not itself implement HasWord, and
+   * put the Word into the Sentence, so the Sentence elements MUST implement HasWord.
+   *
+   * @param y The list in which the yield of the tree will be placed.
+   *          Normally, this will be empty when the routine is called, but
+   *          if not, the new yield is added to the end of the list.
+   * @return a <code>List</code> of the data in the tree's leaves.
+   */
+  public List<Label> yield(List<Label> y) {
+    if (isLeaf()) {
+      y.Add(label());
+
+    } else {
+      Tree[] kids = children();
+      foreach (Tree kid in kids) {
+        kid.yield(y);
+      }
+    }
+    return y;
+  }
+
+
+  /**
+   * Adds the tree t at the index position among the daughters.  Note
+   * that this method will throw an {@link ArrayIndexOutOfBoundsException} if
+   * the daughter index is too big for the list of daughters.
+   *
+   * @param i the index position at which to add the new daughter
+   * @param t the new daughter
+   */
+  public void addChild(int i, Tree t)
+  {
+      Tree[] kids = children();
+      Tree[] newKids = new Tree[kids.Length + 1];
+      if (i != 0)
+      {
+          Array.Copy(kids, 0, newKids, 0, i);
+      }
+      newKids[i] = t;
+      if (i != kids.Length)
+      {
+          Array.Copy(kids, i, newKids, i + 1, kids.Length - i);
+      }
+      setChildren(newKids);
+  }
+
+  /**
+   * Adds the tree t at the last index position among the daughters.
+   *
+   * @param t the new daughter
+   */
+  public void addChild(Tree t)
+  {
+      addChild(children().Length, t);
+  }
+
+        /**
+         * Returns the path of nodes leading down to a dominated node,
+         * including <code>this</code> and the dominated node itself.
+         * Returns null if t is not dominated by <code>this</code>.  Object
+         * equality (==) is the relevant criterion.
+         * t.dominationPath(t) returns null.
+         */
+        public List<Tree> dominationPath(Tree t)
+        {
+            //Tree[] result = dominationPathHelper(t, 0);
+            Tree[] result = dominationPath(t, 0);
+            if (result == null)
+            {
+                return null;
+            }
+            return result.ToList();
+        }
+
+        private Tree[] dominationPathHelper(Tree t, int depth)
+        {
+            Tree[] kids = children();
+            for (int i = kids.Length - 1; i >= 0; i--)
+            {
+                Tree t1 = kids[i];
+                if (t1 == null)
+                {
+                    return null;
+                }
+                Tree[] result;
+                if ((result = t1.dominationPath(t, depth + 1)) != null)
+                {
+                    result[depth] = this;
+                    return result;
+                }
+            }
+            return null;
+        }
+
+        private Tree[] dominationPath(Tree t, int depth)
+        {
+            if (this == t)
+            {
+                Tree[] result = new Tree[depth + 1];
+                result[depth] = this;
+                return result;
+            }
+            return dominationPathHelper(t, depth);
+        }
+
+        /**
    * Says whether a node is a leaf.  Can be used on an arbitrary
    * <code>Tree</code>.  Being a leaf is defined as having no
    * children.  This must be implemented as returning a zero-length
@@ -87,6 +323,152 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
+   * Set the children of this node to be the children given in the
+   * array.  This is an <b>optional</b> operation; by default it is
+   * unsupported.  Note for subclasses that if there are no
+   * children, the children() method must return a Tree[] array of
+   * length 0.  This class provides a
+   * {@code EMPTY_TREE_ARRAY} canonical zero-length Tree[] array
+   * to represent zero children, but it is <i>not</i> required that
+   * leaf nodes use this particular zero-length array to represent
+   * a leaf node.
+   *
+   * @param children The array of children, each a <code>Tree</code>
+   * @see #setChildren(List)
+   */
+  public void setChildren(Tree[] children) {
+    throw new InvalidOperationException();
+  }
+
+
+  /**
+   * Set the children of this tree node to the given list.  This
+   * method is implemented in the <code>Tree</code> class by
+   * converting the <code>List</code> into a tree array and calling
+   * the array-based method.  Subclasses which use a
+   * <code>List</code>-based representation of tree children should
+   * override this method.  This implementation allows the case
+   * that the <code>List</code> is <code>null</code>: it yields a
+   * node with no children (represented by a canonical zero-length
+   * children() array).
+   *
+   * @param childTreesList A list of trees to become children of the node.
+   *          This method does not retain the List that you pass it (copying
+   *          is done), but it will retain the individual children (they are
+   *          not copied).
+   * @see #setChildren(Tree[])
+   */
+  public void setChildren(List<Tree> childTreesList) {
+    if (childTreesList == null || !childTreesList.Any()) {
+      setChildren(EMPTY_TREE_ARRAY);
+    } else {
+      Tree[] childTrees = childTreesList.ToArray();
+      setChildren(childTrees);
+    }
+  }
+
+  /**
+* Replaces the <code>i</code>th child of <code>this</code> with the tree t.
+* Note
+* that this method will throw an {@link ArrayIndexOutOfBoundsException} if
+* the child index is too big for the list of children.
+*
+* @param i The index position at which to replace the child
+* @param t The new child
+* @return The tree that was previously the ith d
+*/
+  public Tree setChild(int i, Tree t)
+  {
+      Tree[] kids = children();
+      Tree old = kids[i];
+      kids[i] = t;
+      return old;
+  }
+
+  /**
+* Destructively removes the child at some daughter index and returns it.
+* Note
+* that this method will throw an {@link ArrayIndexOutOfBoundsException} if
+* the daughter index is too big for the list of daughters.
+*
+* @param i The daughter index
+* @return The tree at that daughter index
+*/
+  public Tree removeChild(int i)
+  {
+      Tree[] kids = children();
+      Tree kid = kids[i];
+      Tree[] newKids = new Tree[kids.Length - 1];
+      for (int j = 0; j < newKids.Length; j++)
+      {
+          if (j < i)
+          {
+              newKids[j] = kids[j];
+          }
+          else
+          {
+              newKids[j] = kids[j + 1];
+          }
+      }
+      setChildren(newKids);
+      return kid;
+  }
+
+        /**
+   * Get the set of all subtrees inside the tree by returning a tree
+   * rooted at each node.  These are <i>not</i> copies, but all share
+   * structure.  The tree is regarded as a subtree of itself.
+   * <p/>
+   * <i>Note:</i> If you only want to form this Set so that you can
+   * iterate over it, it is more efficient to simply use the Tree class's
+   * own <code>iterator() method. This will iterate over the exact same
+   * elements (but perhaps/probably in a different order).
+   *
+   * @return the <code>Set</code> of all subtrees in the tree.
+   */
+  public Set<Tree> subTrees() {
+    return new HashSet<Tree>(subTrees(new HashSet<Tree>()));
+  }
+
+  /**
+   * Get the list of all subtrees inside the tree by returning a tree
+   * rooted at each node.  These are <i>not</i> copies, but all share
+   * structure.  The tree is regarded as a subtree of itself.
+   * <p/>
+   * <i>Note:</i> If you only want to form this Collection so that you can
+   * iterate over it, it is more efficient to simply use the Tree class's
+   * own <code>iterator() method. This will iterate over the exact same
+   * elements (but perhaps/probably in a different order).
+   *
+   * @return the <code>List</code> of all subtrees in the tree.
+   */
+  public List<Tree> subTreeList() {
+    return subTrees(new List<Tree>()).ToList();
+  }
+
+
+  /**
+   * Add the set of all subtrees inside a tree (including the tree itself)
+   * to the given <code>Collection</code>.
+   * <p/>
+   * <i>Note:</i> If you only want to form this Collection so that you can
+   * iterate over it, it is more efficient to simply use the Tree class's
+   * own <code>iterator() method. This will iterate over the exact same
+   * elements (but perhaps/probably in a different order).
+   *
+   * @param n A collection of nodes to which the subtrees will be added.
+   * @return The collection parameter with the subtrees added.
+   */
+  public /*<T extends Collection<Tree>>*/ ICollection<Tree> subTrees(ICollection<Tree> n) {
+    n.Add(this);
+    Tree[] kids = children();
+    foreach (Tree kid in kids) {
+      kid.subTrees(n);
+    }
+    return n;
+  }
+
+        /**
    * Returns the label associated with the current node, or null
    * if there is no label.  The default implementation always
    * returns {@code null}.
@@ -94,9 +476,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The label of the node
    */
         //@Override
-        public string label()
+        public Label label()
         {
-            return parse.Label;
+            return new CoreLabel(parse.Label);
             //return null;
         }
 
@@ -139,6 +521,73 @@ namespace OpenNLP.Tools.Util.Trees
         {
             return new TreeIterator(this);
         }
+
+        /**
+         * Return whether this node is a phrasal node or not.  A phrasal node
+         * is defined to be a node which is not a leaf or a preterminal.
+         * Worded positively, this means that it must have two or more children,
+         * or one child that is not a leaf.
+         *
+         * @return <code>true</code> if the node is phrasal;
+         *         <code>false</code> otherwise
+         */
+        public bool isPhrasal()
+        {
+            Tree[] kids = children();
+            return !(kids == null || kids.Length == 0 || (kids.Length == 1 && kids[0].isLeaf()));
+        }
+
+        /**
+   * Returns the first child of a tree, or <code>null</code> if none.
+   *
+   * @return The first child
+   */
+        public Tree firstChild()
+        {
+            Tree[] kids = children();
+            if (kids.Length == 0)
+            {
+                return null;
+            }
+            return kids[0];
+        }
+
+        /**
+   * Gets the preterminal yield (i.e., tags) of the tree.  All data in
+   * preterminal nodes is returned as a list ordered by the natural left to
+   * right order of the tree.  Null values, if any, are inserted into the
+   * list like any other value.  Pre-leaves are nodes of height 1.
+   *
+   * @return a {@code List} of the data in the tree's pre-leaves.
+   */
+        public List<Label> preTerminalYield()
+        {
+            return preTerminalYield(new List<Label>());
+        }
+
+        /**
+   * Gets the preterminal yield (i.e., tags) of the tree.  All data in
+   * preleaf nodes is returned as a list ordered by the natural left to
+   * right order of the tree.  Null values, if any, are inserted into the
+   * list like any other value.  Pre-leaves are nodes of height 1.
+   *
+   * @param y The list in which the preterminals of the tree will be
+   *          placed. Normally, this will be empty when the routine is called,
+   *          but if not, the new yield is added to the end of the list.
+   * @return a <code>List</code> of the data in the tree's pre-leaves.
+   */
+        public List<Label> preTerminalYield(List<Label> y) {
+    if (isPreTerminal()) {
+      y.Add(label());
+    } else {
+      Tree[] kids = children();
+      foreach (Tree kid in kids) {
+        kid.preTerminalYield(y);
+      }
+    }
+    return y;
+  }
+
 
         public void setValue(String value)
         {
@@ -234,6 +683,75 @@ namespace OpenNLP.Tools.Util.Trees
         public List<Tree> getChildrenAsList()
         {
             return new List<Tree>(children());
+        }
+
+        /**
+   * Finds the depth of the tree.  The depth is defined as the length
+   * of the longest path from this node to a leaf node.  Leaf nodes
+   * have depth zero.  POS tags have depth 1. Phrasal nodes have
+   * depth &gt;= 2.
+   *
+   * @return the depth
+   */
+        public int depth() {
+    if (isLeaf()) {
+      return 0;
+    }
+    int maxDepth = 0;
+    Tree[] kids = children();
+    foreach (Tree kid in kids) {
+      int curDepth = kid.depth();
+      if (curDepth > maxDepth) {
+        maxDepth = curDepth;
+      }
+    }
+    return maxDepth + 1;
+  }
+
+        /**
+         * Finds the distance from this node to the specified node.
+         * return -1 if this is not an ancestor of node.
+         *
+         * @param node A subtree contained in this tree
+         * @return the depth
+         */
+        public int depth(Tree node)
+        {
+            Tree p = node.parent(this);
+            if (this == node) { return 0; }
+            if (p == null) { return -1; }
+            int depth = 1;
+            while (this != p)
+            {
+                p = p.parent(this);
+                depth++;
+            }
+            return depth;
+        }
+
+        /**
+   * Return the child at some daughter index.  The children are numbered
+   * starting with an index of 0.
+   *
+   * @param i The daughter index
+   * @return The tree at that daughter index
+   */
+        public Tree getChild(int i)
+        {
+            Tree[] kids = children();
+            return kids[i];
+        }
+
+        /**
+   *  Returns the value of the nodes label as a String.  This is done by
+   *  calling <code>toString()</code> on the value, if it exists. Otherwise,
+   *  an empty string is returned.
+   *
+   *  @return The label of a tree node as a String
+   */
+        public String nodeString()
+        {
+            return (value() == null) ? "" : value();
         }
     }
 

@@ -16,6 +16,6 @@ namespace OpenNLP.Tools.Util.Ling
 
   void setOriginalText(String originalText);
 
-  String getString<Key>(Key<String> key);
+  String getString(Type key);
     }
 }

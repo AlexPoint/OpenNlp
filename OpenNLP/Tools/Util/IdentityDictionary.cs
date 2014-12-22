@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
 {
-    public class IdentityDictionary<T1,T2>: Dictionary<T1, T2>
+    public class IdentityDictionary<T1, T2> : Dictionary<T1, T2>
+        where T1 : class
     {
         public IdentityDictionary ():base(new IdentityEqualityComparer<T1>()){}
     }

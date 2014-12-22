@@ -9,73 +9,73 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     public abstract class TsurgeonParserConstants
     {
         /** End of File. */
-        int EOF = 0;
+        public const int EOF = 0;
         /** RegularExpression Id. */
-        int OPEN_BRACKET = 5;
+        public const int OPEN_BRACKET = 5;
         /** RegularExpression Id. */
-        int IF = 6;
+        public const int IF = 6;
         /** RegularExpression Id. */
-        int NOT = 7;
+        public const int NOT = 7;
         /** RegularExpression Id. */
-        int EXISTS = 8;
+        public const int EXISTS = 8;
         /** RegularExpression Id. */
-        int DELETE = 9;
+        public const int DELETE = 9;
         /** RegularExpression Id. */
-        int PRUNE = 10;
+        public const int PRUNE = 10;
         /** RegularExpression Id. */
-        int RELABEL = 11;
+        public const int RELABEL = 11;
         /** RegularExpression Id. */
-        int EXCISE = 12;
+        public const int EXCISE = 12;
         /** RegularExpression Id. */
-        int INSERT = 13;
+        public const int INSERT = 13;
         /** RegularExpression Id. */
-        int MOVE = 14;
+        public const int MOVE = 14;
         /** RegularExpression Id. */
-        int REPLACE = 15;
+        public const int REPLACE = 15;
         /** RegularExpression Id. */
-        int CREATE_SUBTREE = 16;
+        public const int CREATE_SUBTREE = 16;
         /** RegularExpression Id. */
-        int ADJOIN = 17;
+        public const int ADJOIN = 17;
         /** RegularExpression Id. */
-        int ADJOIN_TO_HEAD = 18;
+        public const int ADJOIN_TO_HEAD = 18;
         /** RegularExpression Id. */
-        int ADJOIN_TO_FOOT = 19;
+        public const int ADJOIN_TO_FOOT = 19;
         /** RegularExpression Id. */
-        int COINDEX = 20;
+        public const int COINDEX = 20;
         /** RegularExpression Id. */
-        int NAME = 21;
+        public const int NAME = 21;
         /** RegularExpression Id. */
-        int CLOSE_BRACKET = 22;
+        public const int CLOSE_BRACKET = 22;
         /** RegularExpression Id. */
-        int SELECTION = 23;
+        public const int SELECTION = 23;
         /** RegularExpression Id. */
-        int GENERAL_RELABEL = 24;
+        public const int GENERAL_RELABEL = 24;
         /** RegularExpression Id. */
-        int IDENTIFIER = 25;
+        public const int IDENTIFIER = 25;
         /** RegularExpression Id. */
-        int LOCATION_RELATION = 26;
+        public const int LOCATION_RELATION = 26;
         /** RegularExpression Id. */
-        int REGEX = 27;
+        public const int REGEX = 27;
         /** RegularExpression Id. */
-        int QUOTEX = 28;
+        public const int QUOTEX = 28;
         /** RegularExpression Id. */
-        int HASH_INTEGER = 29;
+        public const int HASH_INTEGER = 29;
         /** RegularExpression Id. */
-        int TREE_NODE_TERMINAL_LABEL = 30;
+        public const int TREE_NODE_TERMINAL_LABEL = 30;
         /** RegularExpression Id. */
-        int TREE_NODE_NONTERMINAL_LABEL = 31;
+        public const int TREE_NODE_NONTERMINAL_LABEL = 31;
         /** RegularExpression Id. */
-        int CLOSE_PAREN = 32;
+        public const int CLOSE_PAREN = 32;
 
         /** Lexical state. */
-        int OPERATION = 0;
+        public const int OPERATION = 0;
         /** Lexical state. */
-        int CONDITIONAL = 1;
+        public const int CONDITIONAL = 1;
         /** Lexical state. */
-        int DEFAULT = 2;
+        public const int DEFAULT = 2;
 
         /** Literal token values. */
-        String[] tokenImage = {
+        public String[] tokenImage = {
     "<EOF>",
     "\" \"",
     "\"\\r\"",

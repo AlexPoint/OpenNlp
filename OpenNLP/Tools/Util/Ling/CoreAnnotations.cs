@@ -762,7 +762,7 @@ namespace OpenNLP.Tools.Util.Ling
    */
   public class TagLabelAnnotation : CoreAnnotation<Label> {
     public Type getType() {
-      return Label.class;
+      return typeof(Label);
     }
   }
 
@@ -1080,11 +1080,11 @@ namespace OpenNLP.Tools.Util.Ling
     }
   }
 
-  public class NeighborsAnnotation : CoreAnnotation<List<Tuple<WordLemmaTag, String>>> {
+  /*public class NeighborsAnnotation : CoreAnnotation<List<Tuple<WordLemmaTag, String>>> {
     public Type getType() {
       return typeof(List<Tuple<WordLemmaTag, String>>);
     }
-  }
+  }*/
 
   public class ContextsAnnotation : CoreAnnotation<List<Tuple<String, String>>> {
     public Type getType() {
@@ -1093,9 +1093,10 @@ namespace OpenNLP.Tools.Util.Ling
   }
 
   public class DependentsAnnotation :
-  CoreAnnotation<List<Pair<Triple<String, String, String>, String>>> {
-    public Type getType() {
-      return ErasureUtils.uncheckedCast(List.class);
+  CoreAnnotation<List<Tuple<Tuple<String, String, String>, String>>> {
+    public Type getType()
+    {
+        return typeof (List<Tuple<Tuple<String, String, String>, String>>);
     }
   }
 
@@ -1584,18 +1585,18 @@ namespace OpenNLP.Tools.Util.Ling
    * used in dcoref.
    * to store premarked entity mentions.
    */
-  public class MentionTokenAnnotation : CoreAnnotation<MultiTokenTag> {
+  /*public class MentionTokenAnnotation : CoreAnnotation<MultiTokenTag> {
     public Type getType() {
-      return MultiTokenTag.class;
+      return typeof(MultiTokenTag);
     }
-  }
+  }*/
 
   /**
    * used in incremental DAG parser
    */
-  public class LeftChildrenNodeAnnotation : CoreAnnotation<SortedSet<Pair<CoreLabel, String>>> {
+  public class LeftChildrenNodeAnnotation : CoreAnnotation<SortedSet<Tuple<CoreLabel, String>>> {
     public Type getType() {
-      return ErasureUtils.uncheckedCast(SortedSet.class);
+      return typeof(SortedSet<Tuple<CoreLabel, String>>);
     }
   }
 

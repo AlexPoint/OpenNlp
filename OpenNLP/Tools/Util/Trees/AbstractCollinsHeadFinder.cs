@@ -202,7 +202,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
   protected Tree determineNonTrivialHead(Tree t, Tree parent) {
     Tree theHead = null;
-    String motherCat = tlp.basicCategory(t.label()/*.value()*/);
+    String motherCat = tlp.basicCategory(t.label().value());
     if (motherCat.StartsWith("@")) {
       motherCat = motherCat.Substring(1);
     }
@@ -320,7 +320,7 @@ namespace OpenNLP.Tools.Util.Trees
   private int findLeftHead(Tree[] daughterTrees, String[] how) {
     for (int i = 1; i < how.Length; i++) {
       for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++) {
-        String childCat = tlp.basicCategory(daughterTrees[headIdx].label()/*.value()*/);
+        String childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
         if (how[i].Equals(childCat)) {
           return headIdx;
         }
@@ -331,7 +331,7 @@ namespace OpenNLP.Tools.Util.Trees
 
   private int findLeftDisHead(Tree[] daughterTrees, String[] how) {
     for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++) {
-      String childCat = tlp.basicCategory(daughterTrees[headIdx].label()/*.value()*/);
+      String childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
       for (int i = 1; i < how.Length; i++) {
         if (how[i].Equals(childCat)) {
           return headIdx;
@@ -343,7 +343,7 @@ namespace OpenNLP.Tools.Util.Trees
 
   private int findLeftExceptHead(Tree[] daughterTrees, String[] how) {
     for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++) {
-      String childCat = tlp.basicCategory(daughterTrees[headIdx].label()/*.value()*/);
+      String childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
       bool found = true;
       for (int i = 1; i < how.Length; i++) {
         if (how[i].Equals(childCat)) {
@@ -360,7 +360,7 @@ namespace OpenNLP.Tools.Util.Trees
   private int findRightHead(Tree[] daughterTrees, String[] how) {
     for (int i = 1; i < how.Length; i++) {
       for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--) {
-        String childCat = tlp.basicCategory(daughterTrees[headIdx].label()/*.value()*/);
+        String childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
         if (how[i].Equals(childCat)) {
           return headIdx;
         }
@@ -372,7 +372,7 @@ namespace OpenNLP.Tools.Util.Trees
   // from right, but search for any of the categories, not by category in turn
   private int findRightDisHead(Tree[] daughterTrees, String[] how) {
     for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--) {
-      String childCat = tlp.basicCategory(daughterTrees[headIdx].label()/*.value()*/);
+      String childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
       for (int i = 1; i < how.Length; i++) {
         if (how[i].Equals(childCat)) {
           return headIdx;
@@ -384,7 +384,7 @@ namespace OpenNLP.Tools.Util.Trees
 
   private int findRightExceptHead(Tree[] daughterTrees, String[] how) {
     for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--) {
-      String childCat = tlp.basicCategory(daughterTrees[headIdx].label()/*.value()*/);
+      String childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
       bool found = true;
       for (int i = 1; i < how.Length; i++) {
         if (how[i].Equals(childCat)) {

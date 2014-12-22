@@ -352,27 +352,28 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The String->String Function object
    */
   //@Override
-  /*public Func<String,String> getBasicCategoryFunction() {
+  public BasicCategoryStringFunction getBasicCategoryFunction()
+  {
     return new BasicCategoryStringFunction(this);
-  }*/
+  }
 
 
-  /*private static class BasicCategoryStringFunction implements Function<String,String>, Serializable {
+  public class BasicCategoryStringFunction /*:Func<String,String>, Serializables*/ {
 
     private static readonly long serialVersionUID = 1L;
 
-    private TreebankLanguagePack tlp;
+    private AbstractTreebankLanguagePack tlp;
 
-    BasicCategoryStringFunction(TreebankLanguagePack tlp) {
+    public BasicCategoryStringFunction(AbstractTreebankLanguagePack tlp) {
       this.tlp = tlp;
     }
 
     //@Override
-    public String apply(String in) {
-      return tlp.basicCategory(in);
+    public String apply(String input) {
+      return tlp.basicCategory(input);
     }
 
-  }*/
+  }
 
 
   /*private static class CategoryAndFunctionStringFunction implements Function<String,String>, Serializable {

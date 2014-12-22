@@ -446,13 +446,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
   }*/
 
 
-  private static String removeComments(String line) {
+  /*private static String removeComments(String line) {
     Matcher m = commentPattern.matcher(line);
     line = m.replaceFirst("");
     Matcher m1 = escapedCommentCharacterPattern.matcher(line);
     line = m1.replaceAll(commentIntroducingCharacter);
     return line;
-  }
+  }*/
 
 
   /**
@@ -579,7 +579,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     } catch(ParseException e) {
       throw new TsurgeonParseException("Error parsing Tsurgeon expression: " +
                                        operationString, e);
-    } catch(TokenMgrError e) {
+    } catch(TokenMgrException e) {
       throw new TsurgeonParseException("Error parsing Tsurgeon expression: " +
                                        operationString, e);
     }

@@ -10,10 +10,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     public class AuxiliaryTree
     {
         private readonly String originalTreeString;
-  readonly Tree tree;
-  Tree foot;
+  public readonly Tree tree;
+  public Tree foot;
   private readonly IdentityDictionary<Tree,String> nodesToNames; // no one else should be able to get this one.
-  private readonly Dictionary<String,Tree> namesToNodes; // this one has a getter.
+  private readonly Dictionary<String,Tree> pnamesToNodes; // this one has a getter.
 
 
   public AuxiliaryTree(Tree tree, bool mustHaveFoot) {
@@ -23,7 +23,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     if (foot == null && mustHaveFoot) {
       throw new TsurgeonParseException("Error -- no foot node found for " + originalTreeString);
     }
-      namesToNodes = new Dictionary<String, Tree>();
+      pnamesToNodes = new Dictionary<String, Tree>();
     nodesToNames = new IdentityDictionary<Tree, string>();
     initializeNamesNodesMaps(tree);
   }
@@ -32,12 +32,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     this.originalTreeString = originalTreeString;
     this.tree = tree;
     this.foot = foot;
-    this.namesToNodes = namesToNodes;
+    this.pnamesToNodes = namesToNodes;
     nodesToNames = null;
   }
 
   public Dictionary<String, Tree> namesToNodes() {
-    return namesToNodes;
+    return pnamesToNodes;
   }
 
   //@Override
@@ -87,7 +87,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     }
 
     if (nodesToNames.ContainsKey(node))
-      newNamesToNodes.put(nodesToNames.get(node),clone);
+      newNamesToNodes.Add(nodesToNames[node],clone);
 
     return new Tuple<Tree,Tree>(clone,newFoot);
   }
@@ -130,9 +130,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
   private static Tree findFootNodeHelper(Tree t) {
     Tree foundDtr = null;
     if (t.isLeaf()) {
-      Matcher m = footNodeLabelPattern.matcher(t.label().value());
-      if (m.matches()) {
-        t.label().setValue(m.group(1));
+      var match = footNodeLabelPattern.Match(t.label().value());
+      if (match.Success) {
+        t.label().setValue(match.Groups[1].Value);
         return t;
       } else {
         return null;
@@ -142,14 +142,16 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
       Tree thisFoundDtr = findFootNodeHelper(child);
       if (thisFoundDtr != null) {
         if (foundDtr != null) {
-          throw new TsurgeonParseException("Error -- two foot nodes in subtree" + t.toString());
+          throw new TsurgeonParseException("Error -- two foot nodes in subtree" + t.ToString());
         } else {
           foundDtr = thisFoundDtr;
         }
       }
     }
-    Matcher m = escapedFootNodeCharacter.matcher(t.label().value());
-    t.label().setValue(m.replaceAll(footNodeCharacter));
+    /*Matcher m = escapedFootNodeCharacter.matcher(t.label().value());
+    t.label().setValue(m.replaceAll(footNodeCharacter));*/
+      var newS = escapedFootNodeCharacter.Replace(t.label().value(), footNodeCharacter);
+      t.label().setValue(newS);
     return foundDtr;
   }
 
@@ -174,18 +176,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    */
   private void initializeNamesNodesMaps(Tree t) {
     foreach (Tree node in t.subTreeList()) {
-      Matcher m = namePattern.matcher(node.label().value());
-      if (m.find()) {
-        namesToNodes.put(m.group(2), node);
-        nodesToNames.put(node, m.group(2));
-        node.label().setValue(m.group(1));
+      var m = namePattern.Match(node.label().value());
+      if (m.Success) {
+        pnamesToNodes.Add(m.Groups[2].Value, node);
+        nodesToNames.Add(node, m.Groups[2].Value);
+        node.label().setValue(m.Groups[1].Value);
       }
       node.label().setValue(unescape(node.label().value()));
     }
   }
 
   static String unescape(String input) {
-    return input.replaceAll("\\\\(.)", "$1");
+    return input.Replace("\\\\(.)", "$1");
   }
     }
 }

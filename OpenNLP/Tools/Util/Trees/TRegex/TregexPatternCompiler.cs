@@ -11,12 +11,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 {
     public class TregexPatternCompiler
     {
-        static readonly Func<String, String> DEFAULT_BASIC_CAT_FUNCTION =
+        static readonly AbstractTreebankLanguagePack.BasicCategoryStringFunction DEFAULT_BASIC_CAT_FUNCTION =
     new PennTreebankLanguagePack().getBasicCategoryFunction();
 
   static readonly HeadFinder DEFAULT_HEAD_FINDER = new CollinsHeadFinder();
 
-  private readonly Func<String,String> basicCatFunction;
+  private readonly AbstractTreebankLanguagePack.BasicCategoryStringFunction basicCatFunction;
   private readonly HeadFinder headFinder;
 
   private readonly List<Tuple<String, String>> macros =
@@ -34,7 +34,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    *
    * @param basicCatFunction the function mapping Strings to Strings
    */
-  public TregexPatternCompiler(Func<String,String> basicCatFunction):
+  public TregexPatternCompiler(AbstractTreebankLanguagePack.BasicCategoryStringFunction basicCatFunction) :
     this(DEFAULT_HEAD_FINDER, basicCatFunction){
   }
 
@@ -54,7 +54,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @param basicCatFunction The function mapping Strings to Strings
    */
   public TregexPatternCompiler(HeadFinder headFinder,
-                               Func<String,String> basicCatFunction) {
+                               AbstractTreebankLanguagePack.BasicCategoryStringFunction basicCatFunction)
+  {
     this.headFinder = headFinder;
     this.basicCatFunction = basicCatFunction;
   }

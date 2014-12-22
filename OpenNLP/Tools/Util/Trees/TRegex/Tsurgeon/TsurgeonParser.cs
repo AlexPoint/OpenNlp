@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,12 +8,12 @@ using OpenNLP.Tools.Parser;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
-    public class TsurgeonParser:TsurgeonParserTreeConstants
+    public class TsurgeonParser : TsurgeonParserTreeConstants
     {
         protected JJTTsurgeonParserState jjtree = new JJTTsurgeonParserState();
-  //private TreeFactory treeFactory = new LabeledScoredTreeFactory();
+        private TreeFactory treeFactory = new LabeledScoredTreeFactory();
 
-  /*public static void main(String[] args) {
+        /*public static void main(String[] args) {
     System.out.println("Reading from standard input...");
     TsurgeonParser t = new TsurgeonParser(System.in);
     try {
@@ -28,914 +29,1381 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
 // TODO: this is wasteful in terms of creating TsurgeonPatternRoot.
 // Should separate that out into another production
-  public TsurgeonPatternRoot Root() /*throws ParseException*/ {/*@bgen(jjtree) Root */
-  SimpleNode jjtn000 = new SimpleNode(JJTROOT);
-  bool jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);Token name;
-  TsurgeonPattern result;
-  List<TsurgeonPattern> results = null;
-    try {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case DELETE:
-      case PRUNE:
-      case RELABEL:
-      case EXCISE:
-      case INSERT:
-      case MOVE:
-      case REPLACE:
-      case CREATE_SUBTREE:
-      case ADJOIN:
-      case ADJOIN_TO_HEAD:
-      case ADJOIN_TO_FOOT:
-      case COINDEX:{
-        result = Operation();
-jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-{if ("" != null) return new TsurgeonPatternRoot(result);}
-        break;
-        }
-      default:
-        jj_la1[1] = jj_gen;
-        if (jj_2_1(2)) {
-          jj_consume_token(IF);
-          jj_consume_token(EXISTS);
-          name = jj_consume_token(NAME);
-          result = Root();
-jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-{if ("" != null) return new TsurgeonPatternRoot(new IfExistsNode(name.image, false, result.children));}
-        } else if (jj_2_2(2)) {
-          jj_consume_token(IF);
-          jj_consume_token(NOT);
-          jj_consume_token(EXISTS);
-          name = jj_consume_token(NAME);
-          result = Root();
-jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-{if ("" != null) return new TsurgeonPatternRoot(new IfExistsNode(name.image, true, result.children));}
-        } else {
-          switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-          case OPEN_BRACKET:{
-            label_1:
-            while (true) {
-              jj_consume_token(OPEN_BRACKET);
-              result = Root();
-              jj_consume_token(CLOSE_BRACKET);
-if (results == null) {
-        results = Generics.newArrayList();
-      }
-      foreach (TsurgeonPattern child in result.children) {
-        results.Add(child);
-      }
-              switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-              case OPEN_BRACKET:{
-                ;
-                break;
+        public TsurgeonPatternRoot Root() /*throws ParseException*/
+        {
+/*@bgen(jjtree) Root */
+            SimpleNode jjtn000 = new SimpleNode(JJTROOT);
+            bool jjtc000 = true;
+            jjtree.openNodeScope(jjtn000);
+            Token name;
+            TsurgeonPattern result;
+            List<TsurgeonPattern> results = null;
+            try
+            {
+                switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                {
+                    case DELETE:
+                    case PRUNE:
+                    case RELABEL:
+                    case EXCISE:
+                    case INSERT:
+                    case MOVE:
+                    case REPLACE:
+                    case CREATE_SUBTREE:
+                    case ADJOIN:
+                    case ADJOIN_TO_HEAD:
+                    case ADJOIN_TO_FOOT:
+                    case COINDEX:
+                    {
+                        result = Operation();
+                        jjtree.closeNodeScope(jjtn000, true);
+                        jjtc000 = false;
+                        {
+                            if ("" != null) return new TsurgeonPatternRoot(result);
+                        }
+                        break;
+                    }
+                    default:
+                        jj_la1[1] = jj_gen;
+                        if (jj_2_1(2))
+                        {
+                            jj_consume_token(IF);
+                            jj_consume_token(EXISTS);
+                            name = jj_consume_token(NAME);
+                            result = Root();
+                            jjtree.closeNodeScope(jjtn000, true);
+                            jjtc000 = false;
+                            {
+                                if ("" != null)
+                                    return new TsurgeonPatternRoot(new IfExistsNode(name.image, false, result.children));
+                            }
+                        }
+                        else if (jj_2_2(2))
+                        {
+                            jj_consume_token(IF);
+                            jj_consume_token(NOT);
+                            jj_consume_token(EXISTS);
+                            name = jj_consume_token(NAME);
+                            result = Root();
+                            jjtree.closeNodeScope(jjtn000, true);
+                            jjtc000 = false;
+                            {
+                                if ("" != null)
+                                    return new TsurgeonPatternRoot(new IfExistsNode(name.image, true, result.children));
+                            }
+                        }
+                        else
+                        {
+                            switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                            {
+                                case OPEN_BRACKET:
+                                {
+                                    label_1:
+                                    while (true)
+                                    {
+                                        jj_consume_token(OPEN_BRACKET);
+                                        result = Root();
+                                        jj_consume_token(CLOSE_BRACKET);
+                                        if (results == null)
+                                        {
+                                            results = new List<TsurgeonPattern>();
+                                        }
+                                        foreach (TsurgeonPattern child in result.children)
+                                        {
+                                            results.Add(child);
+                                        }
+                                        switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                                        {
+                                            case OPEN_BRACKET:
+                                            {
+                                                ;
+                                                break;
+                                            }
+                                            default:
+                                                jj_la1[0] = jj_gen;
+                                                goto post_label_1;
+                                        }
+                                    }
+                                post_label_1:
+                                    {
+                                        jjtree.closeNodeScope(jjtn000, true);
+                                    jjtc000 = false;
+                                    TsurgeonPattern[] array = new TsurgeonPattern[results.Count];
+                                    {
+                                        if ("" != null) return new TsurgeonPatternRoot(results.ToArray());
+                                    }
+                                    break;
+                                    }
+                                }
+                                default:
+                                    jj_la1[2] = jj_gen;
+                                    jj_consume_token(-1);
+                                    throw new ParseException();
+                            }
+                        }
                 }
-              default:
-                jj_la1[0] = jj_gen;
-                break label_1;
-              }
             }
-jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-TsurgeonPattern[] array = new TsurgeonPattern[results.size()];
-    {if ("" != null) return new TsurgeonPatternRoot(results.toArray(array));}
-            break;
+            catch (Exception jjte000)
+            {
+                if (jjtc000)
+                {
+                    jjtree.clearNodeScope(jjtn000);
+                    jjtc000 = false;
+                }
+                else
+                {
+                    jjtree.popNode();
+                }
+                if (jjte000 is SystemException)
+                {
+                    {
+                        if (true) throw (SystemException) jjte000;
+                    }
+                }
+                if (jjte000 is ParseException)
+                {
+                    {
+                        if (true) throw (ParseException) jjte000;
+                    }
+                }
+                {
+                    if (true) throw (Exception) jjte000;
+                }
             }
-          default:
-            jj_la1[2] = jj_gen;
-            jj_consume_token(-1);
-            throw new ParseException();
-          }
+            finally
+            {
+                if (jjtc000)
+                {
+                    jjtree.closeNodeScope(jjtn000, true);
+                }
+            }
+            //throw new Error("Missing return statement in function");
         }
-      }
-    } catch (Throwable jjte000) {
-if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 is RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 is ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-    throw new Error("Missing return statement in function");
-  }
 
-  public TsurgeonPattern Operation() /*throws ParseException*/ {/*@bgen(jjtree) Operation */
-  SimpleNode jjtn000 = new SimpleNode(JJTOPERATION);
-  bool jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);TsurgeonPattern child1;
-  TsurgeonPattern child2 = null;
-  Token newLabel = null;
-  TreeLocation loc = null;
-  Token operatorToken;
-  AuxiliaryTree tree = null;
-  List<AuxiliaryTree> treeList = null;
-  List<TsurgeonPattern> nodeSelections = null;
-  Token regex;
-  Token hash_int;
-    try {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case DELETE:{
-        operatorToken = jj_consume_token(DELETE);
-        nodeSelections = NodeSelectionList(new ArrayList<TsurgeonPattern>());
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new DeleteNode(nodeSelections);}
-        break;
-        }
-      case PRUNE:{
-        operatorToken = jj_consume_token(PRUNE);
-        nodeSelections = NodeSelectionList(new ArrayList<TsurgeonPattern>());
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new PruneNode(nodeSelections);}
-        break;
-        }
-      case EXCISE:{
-        operatorToken = jj_consume_token(EXCISE);
-        child1 = NodeSelection();
-        child2 = NodeSelection();
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new ExciseNode(child1,child2);}
-        break;
-        }
-      default:
-        jj_la1[3] = jj_gen;
-        if (jj_2_3(3)) {
-          operatorToken = jj_consume_token(RELABEL);
-          child1 = NodeSelection();
-          newLabel = jj_consume_token(IDENTIFIER);
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new RelabelNode(child1,newLabel.image);}
-        } else if (jj_2_4(3)) {
-          operatorToken = jj_consume_token(RELABEL);
-          child1 = NodeSelection();
-          newLabel = jj_consume_token(QUOTEX);
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new RelabelNode(child1, newLabel.image);}
-        } else if (jj_2_5(3)) {
-          operatorToken = jj_consume_token(RELABEL);
-          child1 = NodeSelection();
-          regex = jj_consume_token(REGEX);
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new RelabelNode(child1, regex.image);}
-        } else if (jj_2_6(3)) {
-          operatorToken = jj_consume_token(RELABEL);
-          child1 = NodeSelection();
-          newLabel = jj_consume_token(GENERAL_RELABEL);
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new RelabelNode(child1, newLabel.image);}
-        } else if (jj_2_7(3)) {
-          operatorToken = jj_consume_token(REPLACE);
-          child1 = NodeSelection();
-          child2 = NodeSelection();
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new ReplaceNode(child1,child2);}
-        } else if (jj_2_8(3)) {
-          operatorToken = jj_consume_token(REPLACE);
-          child1 = NodeSelection();
-          treeList = TreeList(false);
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new ReplaceNode(child1,treeList);}
-        } else {
-          switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-          case MOVE:{
-            operatorToken = jj_consume_token(MOVE);
-            child1 = NodeSelection();
-            loc = Location();
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new MoveNode(child1, loc);}
-            break;
+        public TsurgeonPattern Operation() /*throws ParseException*/
+        {
+/*@bgen(jjtree) Operation */
+            SimpleNode jjtn000 = new SimpleNode(JJTOPERATION);
+            bool jjtc000 = true;
+            jjtree.openNodeScope(jjtn000);
+            TsurgeonPattern child1;
+            TsurgeonPattern child2 = null;
+            Token newLabel = null;
+            TreeLocation loc = null;
+            Token operatorToken;
+            AuxiliaryTree tree = null;
+            List<AuxiliaryTree> treeList = null;
+            List<TsurgeonPattern> nodeSelections = null;
+            Token regex;
+            Token hash_int;
+            try
+            {
+                switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                {
+                    case DELETE:
+                    {
+                        operatorToken = jj_consume_token(DELETE);
+                        nodeSelections = NodeSelectionList(new List<TsurgeonPattern>());
+                        jjtree.closeNodeScope(jjtn000, true);
+                        jjtc000 = false;
+                        {
+                            if ("" != null) return new DeleteNode(nodeSelections);
+                        }
+                        break;
+                    }
+                    case PRUNE:
+                    {
+                        operatorToken = jj_consume_token(PRUNE);
+                        nodeSelections = NodeSelectionList(new List<TsurgeonPattern>());
+                        jjtree.closeNodeScope(jjtn000, true);
+                        jjtc000 = false;
+                        {
+                            if ("" != null) return new PruneNode(nodeSelections);
+                        }
+                        break;
+                    }
+                    case EXCISE:
+                    {
+                        operatorToken = jj_consume_token(EXCISE);
+                        child1 = NodeSelection();
+                        child2 = NodeSelection();
+                        jjtree.closeNodeScope(jjtn000, true);
+                        jjtc000 = false;
+                        {
+                            if ("" != null) return new ExciseNode(child1, child2);
+                        }
+                        break;
+                    }
+                    default:
+                        jj_la1[3] = jj_gen;
+                        if (jj_2_3(3))
+                        {
+                            operatorToken = jj_consume_token(RELABEL);
+                            child1 = NodeSelection();
+                            newLabel = jj_consume_token(IDENTIFIER);
+                            jjtree.closeNodeScope(jjtn000, true);
+                            jjtc000 = false;
+                            {
+                                if ("" != null) return new RelabelNode(child1, newLabel.image);
+                            }
+                        }
+                        else if (jj_2_4(3))
+                        {
+                            operatorToken = jj_consume_token(RELABEL);
+                            child1 = NodeSelection();
+                            newLabel = jj_consume_token(QUOTEX);
+                            jjtree.closeNodeScope(jjtn000, true);
+                            jjtc000 = false;
+                            {
+                                if ("" != null) return new RelabelNode(child1, newLabel.image);
+                            }
+                        }
+                        else if (jj_2_5(3))
+                        {
+                            operatorToken = jj_consume_token(RELABEL);
+                            child1 = NodeSelection();
+                            regex = jj_consume_token(REGEX);
+                            jjtree.closeNodeScope(jjtn000, true);
+                            jjtc000 = false;
+                            {
+                                if ("" != null) return new RelabelNode(child1, regex.image);
+                            }
+                        }
+                        else if (jj_2_6(3))
+                        {
+                            operatorToken = jj_consume_token(RELABEL);
+                            child1 = NodeSelection();
+                            newLabel = jj_consume_token(GENERAL_RELABEL);
+                            jjtree.closeNodeScope(jjtn000, true);
+                            jjtc000 = false;
+                            {
+                                if ("" != null) return new RelabelNode(child1, newLabel.image);
+                            }
+                        }
+                        else if (jj_2_7(3))
+                        {
+                            operatorToken = jj_consume_token(REPLACE);
+                            child1 = NodeSelection();
+                            child2 = NodeSelection();
+                            jjtree.closeNodeScope(jjtn000, true);
+                            jjtc000 = false;
+                            {
+                                if ("" != null) return new ReplaceNode(child1, new []{child2});
+                            }
+                        }
+                        else if (jj_2_8(3))
+                        {
+                            operatorToken = jj_consume_token(REPLACE);
+                            child1 = NodeSelection();
+                            treeList = TreeList(false);
+                            jjtree.closeNodeScope(jjtn000, true);
+                            jjtc000 = false;
+                            {
+                                if ("" != null) return new ReplaceNode(child1, treeList);
+                            }
+                        }
+                        else
+                        {
+                            switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                            {
+                                case MOVE:
+                                {
+                                    operatorToken = jj_consume_token(MOVE);
+                                    child1 = NodeSelection();
+                                    loc = Location();
+                                    jjtree.closeNodeScope(jjtn000, true);
+                                    jjtc000 = false;
+                                    {
+                                        if ("" != null) return new MoveNode(child1, loc);
+                                    }
+                                    break;
+                                }
+                                default:
+                                    jj_la1[4] = jj_gen;
+                                    if (jj_2_9(3))
+                                    {
+                                        operatorToken = jj_consume_token(INSERT);
+                                        child1 = NodeSelection();
+                                        loc = Location();
+                                        jjtree.closeNodeScope(jjtn000, true);
+                                        jjtc000 = false;
+                                        {
+                                            if ("" != null) return new InsertNode(child1, loc);
+                                        }
+                                    }
+                                    else if (jj_2_10(3))
+                                    {
+                                        operatorToken = jj_consume_token(INSERT);
+                                        tree = TreeRoot(false);
+                                        loc = Location();
+                                        jjtree.closeNodeScope(jjtn000, true);
+                                        jjtc000 = false;
+                                        {
+                                            if ("" != null) return new InsertNode(tree, loc);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                                        {
+                                            case CREATE_SUBTREE:
+                                            {
+                                                operatorToken = jj_consume_token(CREATE_SUBTREE);
+                                                tree = TreeRoot(false);
+                                                nodeSelections = NodeSelectionList(new List<TsurgeonPattern>());
+                                                jjtree.closeNodeScope(jjtn000, true);
+                                                jjtc000 = false;
+                                                if (nodeSelections.Count == 1)
+                                                {
+                                                    {
+                                                        if ("" != null)
+                                                            return new CreateSubtreeNode(nodeSelections[0], tree);
+                                                    }
+                                                }
+                                                else if (nodeSelections.Count == 2)
+                                                {
+                                                    {
+                                                        if ("" != null)
+                                                            return new CreateSubtreeNode(nodeSelections[0],
+                                                                nodeSelections[1], tree);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    {
+                                                        if (true)
+                                                            throw new ParseException(
+                                                                "Illegal number of nodes given to createSubtree (" +
+                                                                nodeSelections.Count + ")");
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                            case ADJOIN:
+                                            {
+                                                operatorToken = jj_consume_token(ADJOIN);
+                                                tree = TreeRoot(true);
+                                                child1 = NodeSelection();
+                                                jjtree.closeNodeScope(jjtn000, true);
+                                                jjtc000 = false;
+                                                {
+                                                    if ("" != null) return new AdjoinNode(tree, child1);
+                                                }
+                                                break;
+                                            }
+                                            case ADJOIN_TO_HEAD:
+                                            {
+                                                operatorToken = jj_consume_token(ADJOIN_TO_HEAD);
+                                                tree = TreeRoot(true);
+                                                child1 = NodeSelection();
+                                                jjtree.closeNodeScope(jjtn000, true);
+                                                jjtc000 = false;
+                                                {
+                                                    if ("" != null) return new AdjoinToHeadNode(tree, child1);
+                                                }
+                                                break;
+                                            }
+                                            case ADJOIN_TO_FOOT:
+                                            {
+                                                operatorToken = jj_consume_token(ADJOIN_TO_FOOT);
+                                                tree = TreeRoot(true);
+                                                child1 = NodeSelection();
+                                                jjtree.closeNodeScope(jjtn000, true);
+                                                jjtc000 = false;
+                                                {
+                                                    if ("" != null) return new AdjoinToFootNode(tree, child1);
+                                                }
+                                                break;
+                                            }
+                                            case COINDEX:
+                                            {
+                                                operatorToken = jj_consume_token(COINDEX);
+                                                nodeSelections = NodeSelectionList(new List<TsurgeonPattern>());
+                                                jjtree.closeNodeScope(jjtn000, true);
+                                                jjtc000 = false;
+                                                {
+                                                    if ("" != null)
+                                                        return
+                                                            new CoindexNodes(nodeSelections.ToArray());
+                                                }
+                                                break;
+                                            }
+                                            default:
+                                                jj_la1[5] = jj_gen;
+                                                jj_consume_token(-1);
+                                                throw new ParseException();
+                                        }
+                                    }
+                            }
+                        }
+                }
             }
-          default:
-            jj_la1[4] = jj_gen;
-            if (jj_2_9(3)) {
-              operatorToken = jj_consume_token(INSERT);
-              child1 = NodeSelection();
-              loc = Location();
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new InsertNode(child1, loc);}
-            } else if (jj_2_10(3)) {
-              operatorToken = jj_consume_token(INSERT);
-              tree = TreeRoot(false);
-              loc = Location();
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new InsertNode(tree, loc);}
-            } else {
-              switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-              case CREATE_SUBTREE:{
-                operatorToken = jj_consume_token(CREATE_SUBTREE);
-                tree = TreeRoot(false);
-                nodeSelections = NodeSelectionList(new ArrayList<TsurgeonPattern>());
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-if (nodeSelections.size() == 1) {
-        {if ("" != null) return new CreateSubtreeNode(nodeSelections.get(0), tree);}
-      } else if (nodeSelections.size() == 2) {
-        {if ("" != null) return new CreateSubtreeNode(nodeSelections.get(0), nodeSelections.get(1), tree);}
-      } else {
-        {if (true) throw new ParseException("Illegal number of nodes given to createSubtree (" + nodeSelections.size() + ")");}
-      }
-                break;
+            catch (Exception jjte000)
+            {
+                if (jjtc000)
+                {
+                    jjtree.clearNodeScope(jjtn000);
+                    jjtc000 = false;
                 }
-              case ADJOIN:{
-                operatorToken = jj_consume_token(ADJOIN);
-                tree = TreeRoot(true);
-                child1 = NodeSelection();
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new AdjoinNode(tree, child1);}
-                break;
+                else
+                {
+                    jjtree.popNode();
                 }
-              case ADJOIN_TO_HEAD:{
-                operatorToken = jj_consume_token(ADJOIN_TO_HEAD);
-                tree = TreeRoot(true);
-                child1 = NodeSelection();
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new AdjoinToHeadNode(tree, child1);}
-                break;
+                if (jjte000 is SystemException)
+                {
+                    {
+                        if (true) throw (SystemException) jjte000;
+                    }
                 }
-              case ADJOIN_TO_FOOT:{
-                operatorToken = jj_consume_token(ADJOIN_TO_FOOT);
-                tree = TreeRoot(true);
-                child1 = NodeSelection();
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new AdjoinToFootNode(tree, child1);}
-                break;
+                if (jjte000 is ParseException)
+                {
+                    {
+                        if (true) throw (ParseException) jjte000;
+                    }
                 }
-              case COINDEX:{
-                operatorToken = jj_consume_token(COINDEX);
-                nodeSelections = NodeSelectionList(new ArrayList<TsurgeonPattern>());
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new CoindexNodes(nodeSelections.toArray(new TsurgeonPattern[] {}));}
-                break;
+                {
+                    if (true) throw (Exception) jjte000;
                 }
-              default:
-                jj_la1[5] = jj_gen;
-                jj_consume_token(-1);
-                throw new ParseException();
-              }
             }
-          }
+            finally
+            {
+                if (jjtc000)
+                {
+                    jjtree.closeNodeScope(jjtn000, true);
+                }
+            }
+            //throw new Error("Missing return statement in function");
         }
-      }
-    } catch (Throwable jjte000) {
-if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 is RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 is ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-    throw new Error("Missing return statement in function");
-  }
 
-  readonly public TreeLocation Location() throws ParseException {/*@bgen(jjtree) Location */
-  SimpleNode jjtn000 = new SimpleNode(JJTLOCATION);
-  bool jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);Token rel;
-  TsurgeonPattern child;
-    try {
-      rel = jj_consume_token(LOCATION_RELATION);
-      child = NodeSelection();
-jjtree.closeNodeScope(jjtn000, true);
-     jjtc000 = false;
-{if ("" != null) return new TreeLocation(rel.image, child);}
-    } catch (Throwable jjte000) {
-if (jjtc000) {
-     jjtree.clearNodeScope(jjtn000);
-     jjtc000 = false;
-   } else {
-     jjtree.popNode();
-   }
-   if (jjte000 is RuntimeException) {
-     {if (true) throw (RuntimeException)jjte000;}
-   }
-   if (jjte000 is ParseException) {
-     {if (true) throw (ParseException)jjte000;}
-   }
-   {if (true) throw (Error)jjte000;}
-    } finally {
-if (jjtc000) {
-     jjtree.closeNodeScope(jjtn000, true);
-   }
-    }
-    throw new Error("Missing return statement in function");
-  }
-
-  readonly public List<TsurgeonPattern> NodeSelectionList(List<TsurgeonPattern> l) throws ParseException {/*@bgen(jjtree) NodeSelectionList */
-  SimpleNode jjtn000 = new SimpleNode(JJTNODESELECTIONLIST);
-  bool jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);TsurgeonPattern result;
-    try {
-      result = NodeSelection();
-l.Add(result);
-      label_2:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-        case IDENTIFIER:{
-          ;
-          break;
-          }
-        default:
-          jj_la1[6] = jj_gen;
-          break label_2;
+        public TreeLocation Location() /*throws ParseException*/
+        {
+/*@bgen(jjtree) Location */
+            SimpleNode jjtn000 = new SimpleNode(JJTLOCATION);
+            bool jjtc000 = true;
+            jjtree.openNodeScope(jjtn000);
+            Token rel;
+            TsurgeonPattern child;
+            try
+            {
+                rel = jj_consume_token(LOCATION_RELATION);
+                child = NodeSelection();
+                jjtree.closeNodeScope(jjtn000, true);
+                jjtc000 = false;
+                {
+                    if ("" != null) return new TreeLocation(rel.image, child);
+                }
+            }
+            catch (Exception jjte000)
+            {
+                if (jjtc000)
+                {
+                    jjtree.clearNodeScope(jjtn000);
+                    jjtc000 = false;
+                }
+                else
+                {
+                    jjtree.popNode();
+                }
+                if (jjte000 is SystemException)
+                {
+                    {
+                        if (true) throw (SystemException) jjte000;
+                    }
+                }
+                if (jjte000 is ParseException)
+                {
+                    {
+                        if (true) throw (ParseException) jjte000;
+                    }
+                }
+                {
+                    if (true) throw (Exception) jjte000;
+                }
+            }
+            finally
+            {
+                if (jjtc000)
+                {
+                    jjtree.closeNodeScope(jjtn000, true);
+                }
+            }
+            //throw new Error("Missing return statement in function");
         }
-        result = NodeSelection();
-l.Add(result);
-      }
-jjtree.closeNodeScope(jjtn000, true);
-     jjtc000 = false;
-{if ("" != null) return l;}
-    } catch (Throwable jjte000) {
-if (jjtc000) {
-     jjtree.clearNodeScope(jjtn000);
-     jjtc000 = false;
-   } else {
-     jjtree.popNode();
-   }
-   if (jjte000 is RuntimeException) {
-     {if (true) throw (RuntimeException)jjte000;}
-   }
-   if (jjte000 is ParseException) {
-     {if (true) throw (ParseException)jjte000;}
-   }
-   {if (true) throw (Error)jjte000;}
-    } finally {
-if (jjtc000) {
-     jjtree.closeNodeScope(jjtn000, true);
-   }
-    }
-    throw new Error("Missing return statement in function");
-  }
+
+        /*readonly*/
+
+        public List<TsurgeonPattern> NodeSelectionList(List<TsurgeonPattern> l) /*throws ParseException*/
+        {
+/*@bgen(jjtree) NodeSelectionList */
+            SimpleNode jjtn000 = new SimpleNode(JJTNODESELECTIONLIST);
+            bool jjtc000 = true;
+            jjtree.openNodeScope(jjtn000);
+            TsurgeonPattern result;
+            try
+            {
+                result = NodeSelection();
+                l.Add(result);
+                //label_2:
+                while (true)
+                {
+                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                    {
+                        case IDENTIFIER:
+                        {
+                            ;
+                            break;
+                        }
+                        default:
+                            jj_la1[6] = jj_gen;
+                            //break label_2;
+                            goto post_label_2;
+                    }
+                    result = NodeSelection();
+                    l.Add(result);
+                }
+                post_label_2:
+                {
+                    jjtree.closeNodeScope(jjtn000, true);
+                    jjtc000 = false;
+                    {
+                        if ("" != null) return l;
+                    }
+                }
+            }
+            catch (Exception jjte000)
+            {
+                if (jjtc000)
+                {
+                    jjtree.clearNodeScope(jjtn000);
+                    jjtc000 = false;
+                }
+                else
+                {
+                    jjtree.popNode();
+                }
+                if (jjte000 is SystemException)
+                {
+                    {
+                        if (true) throw (SystemException) jjte000;
+                    }
+                }
+                if (jjte000 is ParseException)
+                {
+                    {
+                        if (true) throw (ParseException) jjte000;
+                    }
+                }
+                {
+                    if (true) throw (Exception) jjte000;
+                }
+            }
+            finally
+            {
+                if (jjtc000)
+                {
+                    jjtree.closeNodeScope(jjtn000, true);
+                }
+            }
+            //throw new Error("Missing return statement in function");
+        }
 
 // TODO: what does this next comment mean?
 // we'll also put in a way to use a SELECTION with a list of nodes.
-  readonly public TsurgeonPattern NodeSelection() throws ParseException {/*@bgen(jjtree) NodeSelection */
-  SimpleNode jjtn000 = new SimpleNode(JJTNODESELECTION);
-  bool jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);TsurgeonPattern result;
-    try {
-      result = NodeName();
-jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-{if ("" != null) return result;}
-    } catch (Throwable jjte000) {
-if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 is RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 is ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-    throw new Error("Missing return statement in function");
-  }
+        /*readonly*/
 
-  readonly public TsurgeonPattern NodeName() throws ParseException {/*@bgen(jjtree) NodeName */
-  SimpleNode jjtn000 = new SimpleNode(JJTNODENAME);
-  bool jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);Token t;
-    try {
-      t = jj_consume_token(IDENTIFIER);
-jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-{if ("" != null) return new FetchNode(t.image);}
-    } finally {
-if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-    throw new Error("Missing return statement in function");
-  }
-
-  readonly public List<AuxiliaryTree> TreeList(bool requiresFoot) throws ParseException {/*@bgen(jjtree) TreeList */
-  SimpleNode jjtn000 = new SimpleNode(JJTTREELIST);
-  bool jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);List<AuxiliaryTree> trees = Generics.newArrayList();
-  AuxiliaryTree tree;
-    try {
-      tree = TreeRoot(requiresFoot);
-trees.Add(tree);
-      label_3:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-        case IDENTIFIER:
-        case TREE_NODE_TERMINAL_LABEL:
-        case TREE_NODE_NONTERMINAL_LABEL:{
-          ;
-          break;
-          }
-        default:
-          jj_la1[7] = jj_gen;
-          break label_3;
+        public TsurgeonPattern NodeSelection() /*throws ParseException*/
+        {
+/*@bgen(jjtree) NodeSelection */
+            SimpleNode jjtn000 = new SimpleNode(JJTNODESELECTION);
+            bool jjtc000 = true;
+            jjtree.openNodeScope(jjtn000);
+            TsurgeonPattern result;
+            try
+            {
+                result = NodeName();
+                jjtree.closeNodeScope(jjtn000, true);
+                jjtc000 = false;
+                {
+                    if ("" != null) return result;
+                }
+            }
+            catch (Exception jjte000)
+            {
+                if (jjtc000)
+                {
+                    jjtree.clearNodeScope(jjtn000);
+                    jjtc000 = false;
+                }
+                else
+                {
+                    jjtree.popNode();
+                }
+                if (jjte000 is SystemException)
+                {
+                    {
+                        if (true) throw (SystemException) jjte000;
+                    }
+                }
+                if (jjte000 is ParseException)
+                {
+                    {
+                        if (true) throw (ParseException) jjte000;
+                    }
+                }
+                {
+                    if (true) throw (Exception) jjte000;
+                }
+            }
+            finally
+            {
+                if (jjtc000)
+                {
+                    jjtree.closeNodeScope(jjtn000, true);
+                }
+            }
+            //throw new Error("Missing return statement in function");
         }
-        tree = TreeRoot(requiresFoot);
-trees.Add(tree);
-      }
-jjtree.closeNodeScope(jjtn000, true);
-     jjtc000 = false;
-{if ("" != null) return trees;}
-    } catch (Throwable jjte000) {
-if (jjtc000) {
-     jjtree.clearNodeScope(jjtn000);
-     jjtc000 = false;
-   } else {
-     jjtree.popNode();
-   }
-   if (jjte000 is RuntimeException) {
-     {if (true) throw (RuntimeException)jjte000;}
-   }
-   if (jjte000 is ParseException) {
-     {if (true) throw (ParseException)jjte000;}
-   }
-   {if (true) throw (Error)jjte000;}
-    } finally {
-if (jjtc000) {
-     jjtree.closeNodeScope(jjtn000, true);
-   }
-    }
-    throw new Error("Missing return statement in function");
-  }
+
+        /*readonly */
+
+        public TsurgeonPattern NodeName() /*throws ParseException */
+        {
+/*@bgen(jjtree) NodeName */
+            SimpleNode jjtn000 = new SimpleNode(JJTNODENAME);
+            bool jjtc000 = true;
+            jjtree.openNodeScope(jjtn000);
+            Token t;
+            try
+            {
+                t = jj_consume_token(IDENTIFIER);
+                jjtree.closeNodeScope(jjtn000, true);
+                jjtc000 = false;
+                {
+                    if ("" != null) return new FetchNode(t.image);
+                }
+            }
+            finally
+            {
+                if (jjtc000)
+                {
+                    jjtree.closeNodeScope(jjtn000, true);
+                }
+            }
+            //throw new Error("Missing return statement in function");
+        }
+
+        /*readonly */
+
+        public List<AuxiliaryTree> TreeList(bool requiresFoot) /*throws ParseException */
+        {
+/*@bgen(jjtree) TreeList */
+            SimpleNode jjtn000 = new SimpleNode(JJTTREELIST);
+            bool jjtc000 = true;
+            jjtree.openNodeScope(jjtn000);
+            List<AuxiliaryTree> trees = new List<AuxiliaryTree>();
+            AuxiliaryTree tree;
+            try
+            {
+                tree = TreeRoot(requiresFoot);
+                trees.Add(tree);
+                //label_3:
+                while (true)
+                {
+                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                    {
+                        case IDENTIFIER:
+                        case TREE_NODE_TERMINAL_LABEL:
+                        case TREE_NODE_NONTERMINAL_LABEL:
+                        {
+                            ;
+                            break;
+                        }
+                        default:
+                            jj_la1[7] = jj_gen;
+                            //break label_3;
+                            goto post_label_3;
+                    }
+                    tree = TreeRoot(requiresFoot);
+                    trees.Add(tree);
+                }
+                post_label_3:
+                {
+                    jjtree.closeNodeScope(jjtn000, true);
+                    jjtc000 = false;
+                    {
+                        if ("" != null) return trees;
+                    }
+                }
+            }
+            catch (Exception jjte000)
+            {
+                if (jjtc000)
+                {
+                    jjtree.clearNodeScope(jjtn000);
+                    jjtc000 = false;
+                }
+                else
+                {
+                    jjtree.popNode();
+                }
+                if (jjte000 is SystemException)
+                {
+                    {
+                        if (true) throw (SystemException) jjte000;
+                    }
+                }
+                if (jjte000 is ParseException)
+                {
+                    {
+                        if (true) throw (ParseException) jjte000;
+                    }
+                }
+                {
+                    if (true) throw (Exception) jjte000;
+                }
+            }
+            finally
+            {
+                if (jjtc000)
+                {
+                    jjtree.closeNodeScope(jjtn000, true);
+                }
+            }
+            //throw new Error("Missing return statement in function");
+        }
 
 // the argument says whether there must be a foot node on the aux tree.
-  readonly public AuxiliaryTree TreeRoot(bool requiresFoot) throws ParseException {/*@bgen(jjtree) TreeRoot */
-  SimpleNode jjtn000 = new SimpleNode(JJTTREEROOT);
-  bool jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);Tree t;
-    try {
-      t = TreeNode();
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return new AuxiliaryTree(t,requiresFoot);}
-    } catch (Throwable jjte000) {
-if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 is RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 is ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-    throw new Error("Missing return statement in function");
-  }
+        /*readonly*/
 
-  readonly public Tree TreeNode() throws ParseException {/*@bgen(jjtree) TreeNode */
- SimpleNode jjtn000 = new SimpleNode(JJTTREENODE);
- bool jjtc000 = true;
- jjtree.openNodeScope(jjtn000);Token label;
- List<Tree> dtrs = null;
-    try {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case TREE_NODE_NONTERMINAL_LABEL:{
-        label = jj_consume_token(TREE_NODE_NONTERMINAL_LABEL);
-        dtrs = TreeDtrs(new ArrayList<Tree>());
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return treeFactory.newTreeNode(label.image.substring(1),dtrs);}
-        break;
+        public AuxiliaryTree TreeRoot(bool requiresFoot) /*throws ParseException */
+        {
+/*@bgen(jjtree) TreeRoot */
+            SimpleNode jjtn000 = new SimpleNode(JJTTREEROOT);
+            bool jjtc000 = true;
+            jjtree.openNodeScope(jjtn000);
+            Tree t;
+            try
+            {
+                t = TreeNode();
+                jjtree.closeNodeScope(jjtn000, true);
+                jjtc000 = false;
+                {
+                    if ("" != null) return new AuxiliaryTree(t, requiresFoot);
+                }
+            }
+            catch (Exception jjte000)
+            {
+                if (jjtc000)
+                {
+                    jjtree.clearNodeScope(jjtn000);
+                    jjtc000 = false;
+                }
+                else
+                {
+                    jjtree.popNode();
+                }
+                if (jjte000 is SystemException)
+                {
+                    {
+                        if (true) throw (SystemException) jjte000;
+                    }
+                }
+                if (jjte000 is ParseException)
+                {
+                    {
+                        if (true) throw (ParseException) jjte000;
+                    }
+                }
+                {
+                    if (true) throw (Exception) jjte000;
+                }
+            }
+            finally
+            {
+                if (jjtc000)
+                {
+                    jjtree.closeNodeScope(jjtn000, true);
+                }
+            }
+            //throw new Error("Missing return statement in function");
         }
-      case TREE_NODE_TERMINAL_LABEL:{
-        label = jj_consume_token(TREE_NODE_TERMINAL_LABEL);
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return treeFactory.newTreeNode(label.image,new ArrayList<Tree>());}
-        break;
+
+        /*readonly*/
+
+        public Tree TreeNode() /*throws ParseException */
+        {
+/*@bgen(jjtree) TreeNode */
+            SimpleNode jjtn000 = new SimpleNode(JJTTREENODE);
+            bool jjtc000 = true;
+            jjtree.openNodeScope(jjtn000);
+            Token label;
+            List<Tree> dtrs = null;
+            try
+            {
+                switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                {
+                    case TREE_NODE_NONTERMINAL_LABEL:
+                    {
+                        label = jj_consume_token(TREE_NODE_NONTERMINAL_LABEL);
+                        dtrs = TreeDtrs(new List<Tree>());
+                        jjtree.closeNodeScope(jjtn000, true);
+                        jjtc000 = false;
+                        {
+                            if ("" != null) return treeFactory.newTreeNode(label.image.Substring(1), dtrs);
+                        }
+                        break;
+                    }
+                    case TREE_NODE_TERMINAL_LABEL:
+                    {
+                        label = jj_consume_token(TREE_NODE_TERMINAL_LABEL);
+                        jjtree.closeNodeScope(jjtn000, true);
+                        jjtc000 = false;
+                        {
+                            if ("" != null) return treeFactory.newTreeNode(label.image, new List<Tree>());
+                        }
+                        break;
+                    }
+                    case IDENTIFIER:
+                    {
+                        label = jj_consume_token(IDENTIFIER);
+                        jjtree.closeNodeScope(jjtn000, true);
+                        jjtc000 = false;
+                        {
+                            if ("" != null) return treeFactory.newTreeNode(label.image, new List<Tree>());
+                        }
+                        break;
+                    }
+                    default:
+                        jj_la1[8] = jj_gen;
+                        jj_consume_token(-1);
+                        throw new ParseException();
+                }
+            }
+            catch (Exception jjte000)
+            {
+                if (jjtc000)
+                {
+                    jjtree.clearNodeScope(jjtn000);
+                    jjtc000 = false;
+                }
+                else
+                {
+                    jjtree.popNode();
+                }
+                if (jjte000 is SystemException)
+                {
+                    {
+                        if (true) throw (SystemException) jjte000;
+                    }
+                }
+                if (jjte000 is ParseException)
+                {
+                    {
+                        if (true) throw (ParseException) jjte000;
+                    }
+                }
+                {
+                    if (true) throw (Exception) jjte000;
+                }
+            }
+            finally
+            {
+                if (jjtc000)
+                {
+                    jjtree.closeNodeScope(jjtn000, true);
+                }
+            }
+            //throw new Error("Missing return statement in function");
         }
-      case IDENTIFIER:{
-        label = jj_consume_token(IDENTIFIER);
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-{if ("" != null) return treeFactory.newTreeNode(label.image,new ArrayList<Tree>());}
-        break;
+
+        /*readonly*/
+
+        public List<Tree> TreeDtrs(List<Tree> dtrs) /*throws ParseException */
+        {
+/*@bgen(jjtree) TreeDtrs */
+            SimpleNode jjtn000 = new SimpleNode(JJTTREEDTRS);
+            bool jjtc000 = true;
+            jjtree.openNodeScope(jjtn000);
+            Tree tree;
+            try
+            {
+                switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                {
+                    case IDENTIFIER:
+                    case TREE_NODE_TERMINAL_LABEL:
+                    case TREE_NODE_NONTERMINAL_LABEL:
+                    {
+                        tree = TreeNode();
+                        TreeDtrs(dtrs);
+                        jjtree.closeNodeScope(jjtn000, true);
+                        jjtc000 = false;
+                        dtrs.Insert(0, tree);
+                        {
+                            if ("" != null) return dtrs;
+                        }
+                        break;
+                    }
+                    case CLOSE_PAREN:
+                    {
+                        jj_consume_token(CLOSE_PAREN);
+                        jjtree.closeNodeScope(jjtn000, true);
+                        jjtc000 = false;
+                        {
+                            if ("" != null) return dtrs;
+                        }
+                        break;
+                    }
+                    default:
+                        jj_la1[9] = jj_gen;
+                        jj_consume_token(-1);
+                        throw new ParseException();
+                }
+            }
+            catch (Exception jjte000)
+            {
+                if (jjtc000)
+                {
+                    jjtree.clearNodeScope(jjtn000);
+                    jjtc000 = false;
+                }
+                else
+                {
+                    jjtree.popNode();
+                }
+                if (jjte000 is SystemException)
+                {
+                    {
+                        if (true) throw (SystemException) jjte000;
+                    }
+                }
+                if (jjte000 is ParseException)
+                {
+                    {
+                        if (true) throw (ParseException) jjte000;
+                    }
+                }
+                {
+                    if (true) throw (Exception) jjte000;
+                }
+            }
+            finally
+            {
+                if (jjtc000)
+                {
+                    jjtree.closeNodeScope(jjtn000, true);
+                }
+            }
+            //throw new Error("Missing return statement in function");
         }
-      default:
-        jj_la1[8] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    } catch (Throwable jjte000) {
-if (jjtc000) {
-     jjtree.clearNodeScope(jjtn000);
-     jjtc000 = false;
-   } else {
-     jjtree.popNode();
-   }
-   if (jjte000 is RuntimeException) {
-     {if (true) throw (RuntimeException)jjte000;}
-   }
-   if (jjte000 is ParseException) {
-     {if (true) throw (ParseException)jjte000;}
-   }
-   {if (true) throw (Error)jjte000;}
-    } finally {
-if (jjtc000) {
-     jjtree.closeNodeScope(jjtn000, true);
-   }
-    }
-    throw new Error("Missing return statement in function");
-  }
 
-  readonly public List<Tree> TreeDtrs(List<Tree> dtrs) throws ParseException {/*@bgen(jjtree) TreeDtrs */
-  SimpleNode jjtn000 = new SimpleNode(JJTTREEDTRS);
-  bool jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);Tree tree;
-    try {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case IDENTIFIER:
-      case TREE_NODE_TERMINAL_LABEL:
-      case TREE_NODE_NONTERMINAL_LABEL:{
-        tree = TreeNode();
-        TreeDtrs(dtrs);
-jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-dtrs.Add(0,tree); {if ("" != null) return dtrs;}
-        break;
+        private bool jj_2_1(int xla)
+        {
+            jj_la = xla;
+            jj_lastpos = jj_scanpos = token;
+            try
+            {
+                return !jj_3_1();
+            }
+            catch (LookaheadSuccess ls)
+            {
+                return true;
+            }
+            finally
+            {
+                jj_save(0, xla);
+            }
         }
-      case CLOSE_PAREN:{
-        jj_consume_token(CLOSE_PAREN);
-jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-{if ("" != null) return dtrs;}
-        break;
+
+        private bool jj_2_2(int xla)
+        {
+            jj_la = xla;
+            jj_lastpos = jj_scanpos = token;
+            try
+            {
+                return !jj_3_2();
+            }
+            catch (LookaheadSuccess ls)
+            {
+                return true;
+            }
+            finally
+            {
+                jj_save(1, xla);
+            }
         }
-      default:
-        jj_la1[9] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    } catch (Throwable jjte000) {
-if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 is RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 is ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-    throw new Error("Missing return statement in function");
-  }
 
-  private bool jj_2_1(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_1(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(0, xla); }
-  }
+        private bool jj_2_3(int xla)
+        {
+            jj_la = xla;
+            jj_lastpos = jj_scanpos = token;
+            try
+            {
+                return !jj_3_3();
+            }
+            catch (LookaheadSuccess ls)
+            {
+                return true;
+            }
+            finally
+            {
+                jj_save(2, xla);
+            }
+        }
 
-  private bool jj_2_2(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_2(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(1, xla); }
-  }
+        private bool jj_2_4(int xla)
+        {
+            jj_la = xla;
+            jj_lastpos = jj_scanpos = token;
+            try
+            {
+                return !jj_3_4();
+            }
+            catch (LookaheadSuccess ls)
+            {
+                return true;
+            }
+            finally
+            {
+                jj_save(3, xla);
+            }
+        }
 
-  private bool jj_2_3(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_3(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(2, xla); }
-  }
+        private bool jj_2_5(int xla)
+        {
+            jj_la = xla;
+            jj_lastpos = jj_scanpos = token;
+            try
+            {
+                return !jj_3_5();
+            }
+            catch (LookaheadSuccess ls)
+            {
+                return true;
+            }
+            finally
+            {
+                jj_save(4, xla);
+            }
+        }
 
-  private bool jj_2_4(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_4(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(3, xla); }
-  }
+        private bool jj_2_6(int xla)
+        {
+            jj_la = xla;
+            jj_lastpos = jj_scanpos = token;
+            try
+            {
+                return !jj_3_6();
+            }
+            catch (LookaheadSuccess ls)
+            {
+                return true;
+            }
+            finally
+            {
+                jj_save(5, xla);
+            }
+        }
 
-  private bool jj_2_5(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_5(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(4, xla); }
-  }
+        private bool jj_2_7(int xla)
+        {
+            jj_la = xla;
+            jj_lastpos = jj_scanpos = token;
+            try
+            {
+                return !jj_3_7();
+            }
+            catch (LookaheadSuccess ls)
+            {
+                return true;
+            }
+            finally
+            {
+                jj_save(6, xla);
+            }
+        }
 
-  private bool jj_2_6(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_6(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(5, xla); }
-  }
+        private bool jj_2_8(int xla)
+        {
+            jj_la = xla;
+            jj_lastpos = jj_scanpos = token;
+            try
+            {
+                return !jj_3_8();
+            }
+            catch (LookaheadSuccess ls)
+            {
+                return true;
+            }
+            finally
+            {
+                jj_save(7, xla);
+            }
+        }
 
-  private bool jj_2_7(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_7(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(6, xla); }
-  }
+        private bool jj_2_9(int xla)
+        {
+            jj_la = xla;
+            jj_lastpos = jj_scanpos = token;
+            try
+            {
+                return !jj_3_9();
+            }
+            catch (LookaheadSuccess ls)
+            {
+                return true;
+            }
+            finally
+            {
+                jj_save(8, xla);
+            }
+        }
 
-  private bool jj_2_8(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_8(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(7, xla); }
-  }
+        private bool jj_2_10(int xla)
+        {
+            jj_la = xla;
+            jj_lastpos = jj_scanpos = token;
+            try
+            {
+                return !jj_3_10();
+            }
+            catch (LookaheadSuccess ls)
+            {
+                return true;
+            }
+            finally
+            {
+                jj_save(9, xla);
+            }
+        }
 
-  private bool jj_2_9(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_9(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(8, xla); }
-  }
+        private bool jj_3R_15()
+        {
+            if (jj_scan_token(CLOSE_PAREN)) return true;
+            return false;
+        }
 
-  private bool jj_2_10(int xla)
- {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_10(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(9, xla); }
-  }
+        private bool jj_3R_8()
+        {
+            if (jj_scan_token(IDENTIFIER)) return true;
+            return false;
+        }
 
-  private bool jj_3R_15()
- {
-    if (jj_scan_token(CLOSE_PAREN)) return true;
-    return false;
-  }
+        private bool jj_3R_14()
+        {
+            if (jj_3R_9()) return true;
+            return false;
+        }
 
-  private bool jj_3R_8()
- {
-    if (jj_scan_token(IDENTIFIER)) return true;
-    return false;
-  }
+        private bool jj_3R_13()
+        {
+            Token xsp;
+            xsp = jj_scanpos;
+            if (jj_3R_14())
+            {
+                jj_scanpos = xsp;
+                if (jj_3R_15()) return true;
+            }
+            return false;
+        }
 
-  private bool jj_3R_14()
- {
-    if (jj_3R_9()) return true;
-    return false;
-  }
+        private bool jj_3R_4()
+        {
+            if (jj_3R_8()) return true;
+            return false;
+        }
 
-  private bool jj_3R_13()
- {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3R_14()) {
-    jj_scanpos = xsp;
-    if (jj_3R_15()) return true;
-    }
-    return false;
-  }
+        private bool jj_3R_12()
+        {
+            if (jj_scan_token(IDENTIFIER)) return true;
+            return false;
+        }
 
-  private bool jj_3R_4()
- {
-    if (jj_3R_8()) return true;
-    return false;
-  }
+        private bool jj_3_10()
+        {
+            if (jj_scan_token(INSERT)) return true;
+            if (jj_3R_7()) return true;
+            if (jj_3R_6()) return true;
+            return false;
+        }
 
-  private bool jj_3R_12()
- {
-    if (jj_scan_token(IDENTIFIER)) return true;
-    return false;
-  }
+        private bool jj_3R_11()
+        {
+            if (jj_scan_token(TREE_NODE_TERMINAL_LABEL)) return true;
+            return false;
+        }
 
-  private bool jj_3_10()
- {
-    if (jj_scan_token(INSERT)) return true;
-    if (jj_3R_7()) return true;
-    if (jj_3R_6()) return true;
-    return false;
-  }
+        private bool jj_3_9()
+        {
+            if (jj_scan_token(INSERT)) return true;
+            if (jj_3R_4()) return true;
+            if (jj_3R_6()) return true;
+            return false;
+        }
 
-  private bool jj_3R_11()
- {
-    if (jj_scan_token(TREE_NODE_TERMINAL_LABEL)) return true;
-    return false;
-  }
+        private bool jj_3R_9()
+        {
+            Token xsp;
+            xsp = jj_scanpos;
+            if (jj_3R_10())
+            {
+                jj_scanpos = xsp;
+                if (jj_3R_11())
+                {
+                    jj_scanpos = xsp;
+                    if (jj_3R_12()) return true;
+                }
+            }
+            return false;
+        }
 
-  private bool jj_3_9()
- {
-    if (jj_scan_token(INSERT)) return true;
-    if (jj_3R_4()) return true;
-    if (jj_3R_6()) return true;
-    return false;
-  }
+        private bool jj_3R_10()
+        {
+            if (jj_scan_token(TREE_NODE_NONTERMINAL_LABEL)) return true;
+            if (jj_3R_13()) return true;
+            return false;
+        }
 
-  private bool jj_3R_9()
- {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3R_10()) {
-    jj_scanpos = xsp;
-    if (jj_3R_11()) {
-    jj_scanpos = xsp;
-    if (jj_3R_12()) return true;
-    }
-    }
-    return false;
-  }
+        private bool jj_3_8()
+        {
+            if (jj_scan_token(REPLACE)) return true;
+            if (jj_3R_4()) return true;
+            if (jj_3R_5()) return true;
+            return false;
+        }
 
-  private bool jj_3R_10()
- {
-    if (jj_scan_token(TREE_NODE_NONTERMINAL_LABEL)) return true;
-    if (jj_3R_13()) return true;
-    return false;
-  }
+        private bool jj_3_7()
+        {
+            if (jj_scan_token(REPLACE)) return true;
+            if (jj_3R_4()) return true;
+            if (jj_3R_4()) return true;
+            return false;
+        }
 
-  private bool jj_3_8()
- {
-    if (jj_scan_token(REPLACE)) return true;
-    if (jj_3R_4()) return true;
-    if (jj_3R_5()) return true;
-    return false;
-  }
+        private bool jj_3R_7()
+        {
+            if (jj_3R_9()) return true;
+            return false;
+        }
 
-  private bool jj_3_7()
- {
-    if (jj_scan_token(REPLACE)) return true;
-    if (jj_3R_4()) return true;
-    if (jj_3R_4()) return true;
-    return false;
-  }
+        private bool jj_3_2()
+        {
+            if (jj_scan_token(IF)) return true;
+            if (jj_scan_token(NOT)) return true;
+            return false;
+        }
 
-  private bool jj_3R_7()
- {
-    if (jj_3R_9()) return true;
-    return false;
-  }
+        private bool jj_3_6()
+        {
+            if (jj_scan_token(RELABEL)) return true;
+            if (jj_3R_4()) return true;
+            if (jj_scan_token(GENERAL_RELABEL)) return true;
+            return false;
+        }
 
-  private bool jj_3_2()
- {
-    if (jj_scan_token(IF)) return true;
-    if (jj_scan_token(NOT)) return true;
-    return false;
-  }
+        private bool jj_3_1()
+        {
+            if (jj_scan_token(IF)) return true;
+            if (jj_scan_token(EXISTS)) return true;
+            return false;
+        }
 
-  private bool jj_3_6()
- {
-    if (jj_scan_token(RELABEL)) return true;
-    if (jj_3R_4()) return true;
-    if (jj_scan_token(GENERAL_RELABEL)) return true;
-    return false;
-  }
+        private bool jj_3_5()
+        {
+            if (jj_scan_token(RELABEL)) return true;
+            if (jj_3R_4()) return true;
+            if (jj_scan_token(REGEX)) return true;
+            return false;
+        }
 
-  private bool jj_3_1()
- {
-    if (jj_scan_token(IF)) return true;
-    if (jj_scan_token(EXISTS)) return true;
-    return false;
-  }
+        private bool jj_3_4()
+        {
+            if (jj_scan_token(RELABEL)) return true;
+            if (jj_3R_4()) return true;
+            if (jj_scan_token(QUOTEX)) return true;
+            return false;
+        }
 
-  private bool jj_3_5()
- {
-    if (jj_scan_token(RELABEL)) return true;
-    if (jj_3R_4()) return true;
-    if (jj_scan_token(REGEX)) return true;
-    return false;
-  }
+        private bool jj_3R_6()
+        {
+            if (jj_scan_token(LOCATION_RELATION)) return true;
+            return false;
+        }
 
-  private bool jj_3_4()
- {
-    if (jj_scan_token(RELABEL)) return true;
-    if (jj_3R_4()) return true;
-    if (jj_scan_token(QUOTEX)) return true;
-    return false;
-  }
+        private bool jj_3_3()
+        {
+            if (jj_scan_token(RELABEL)) return true;
+            if (jj_3R_4()) return true;
+            if (jj_scan_token(IDENTIFIER)) return true;
+            return false;
+        }
 
-  private bool jj_3R_6()
- {
-    if (jj_scan_token(LOCATION_RELATION)) return true;
-    return false;
-  }
+        private bool jj_3R_5()
+        {
+            if (jj_3R_7()) return true;
+            return false;
+        }
 
-  private bool jj_3_3()
- {
-    if (jj_scan_token(RELABEL)) return true;
-    if (jj_3R_4()) return true;
-    if (jj_scan_token(IDENTIFIER)) return true;
-    return false;
-  }
+        /** Generated Token Manager. */
+        public TsurgeonParserTokenManager token_source;
+        private SimpleCharStream jj_input_stream;
+        /** Current token. */
+        public Token token;
+        /** Next token. */
+        public Token jj_nt;
+        private int jj_ntk;
+        private Token jj_scanpos, jj_lastpos;
+        private int jj_la;
+        private int jj_gen;
+        private readonly int[] jj_la1 = new int[10];
+        private static int[] jj_la1_0;
+        private static int[] jj_la1_1;
 
-  private bool jj_3R_5()
- {
-    if (jj_3R_7()) return true;
-    return false;
-  }
+        /*private static 
+        {
+            jj_la1_init_0();
+            jj_la1_init_1();
+        }*/
 
-  /** Generated Token Manager. */
-  public TsurgeonParserTokenManager token_source;
-  SimpleCharStream jj_input_stream;
-  /** Current token. */
-  public Token token;
-  /** Next token. */
-  public Token jj_nt;
-  private int jj_ntk;
-  private Token jj_scanpos, jj_lastpos;
-  private int jj_la;
-  private int jj_gen;
-  readonly private int[] jj_la1 = new int[10];
-  static private int[] jj_la1_0;
-  static private int[] jj_la1_1;
-  static {
-      jj_la1_init_0();
-      jj_la1_init_1();
-   }
-   private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x20,0x1ffe00,0x20,0x1600,0x4000,0x1f0000,0x2000000,0xc2000000,0xc2000000,0xc2000000,};
-   }
-   private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1,};
-   }
-  readonly private JJCalls[] jj_2_rtns = new JJCalls[10];
-  private bool jj_rescan = false;
-  private int jj_gc = 0;
+        /*private static void jj_la1_init_0()
+        {
+            jj_la1_0 = new int[]
+            {0x20, 0x1ffe00, 0x20, 0x1600, 0x4000, 0x1f0000, 0x2000000, 0xc2000000, 0xc2000000, 0xc2000000,};
+        }*/
 
-  /** Constructor with InputStream. */
-  public TsurgeonParser(java.io.InputStream stream) {
-     this(stream, null);
-  }
-  /** Constructor with InputStream and supplied encoding */
-  public TsurgeonParser(java.io.InputStream stream, String encoding) {
-    try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+        private static void jj_la1_init_1()
+        {
+            jj_la1_1 = new int[] {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1,};
+        }
+
+        private readonly JJCalls[] jj_2_rtns = new JJCalls[10];
+        private bool jj_rescan = false;
+        private int jj_gc = 0;
+
+        /** Constructor with InputStream. */
+        public TsurgeonParser(/*java.io.InputStream*/Stream stream):
+     this(stream, null){}
+
+        /** Constructor with InputStream and supplied encoding */
+        public TsurgeonParser(/*java.io.InputStream*/Stream stream, String encoding) {
+            try
+            {
+                jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1);
+            } catch(/*java.io.UnsupportedEncodingException*/Exception e) { throw new SystemException(e.Message); }
     token_source = new TsurgeonParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
     for (int i = 0; i < 10; i++) jj_la1[i] = -1;
-    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
+    for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
-  /** Reinitialise. */
-  public void ReInit(java.io.InputStream stream) {
+        /** Reinitialise. */
+        /*public void ReInit(java.io.InputStream stream) {
      ReInit(stream, null);
-  }
-  /** Reinitialise. */
-  public void ReInit(java.io.InputStream stream, String encoding) {
-    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+  }*/
+        /** Reinitialise. */
+        /*public void ReInit(java.io.InputStream stream, String encoding) {
+    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new SystemException(e); }
     token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -943,21 +1411,21 @@ if (jjtc000) {
     jj_gen = 0;
     for (int i = 0; i < 10; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
-  }
+  }*/
 
-  /** Constructor. */
-  public TsurgeonParser(java.io.Reader stream) {
+        /** Constructor. */
+        public TsurgeonParser(/*java.io.Reader*/TextReader stream) {
     jj_input_stream = new SimpleCharStream(stream, 1, 1);
     token_source = new TsurgeonParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
     for (int i = 0; i < 10; i++) jj_la1[i] = -1;
-    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
+    for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
-  /** Reinitialise. */
-  public void ReInit(java.io.Reader stream) {
+        /** Reinitialise. */
+        /*public void ReInit(java.io.Reader stream) {
     jj_input_stream.ReInit(stream, 1, 1);
     token_source.ReInit(jj_input_stream);
     token = new Token();
@@ -966,20 +1434,20 @@ if (jjtc000) {
     jj_gen = 0;
     for (int i = 0; i < 10; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
-  }
+  }*/
 
-  /** Constructor with generated Token Manager. */
-  public TsurgeonParser(TsurgeonParserTokenManager tm) {
+        /** Constructor with generated Token Manager. */
+        /*public TsurgeonParser(TsurgeonParserTokenManager tm) {
     token_source = tm;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
     for (int i = 0; i < 10; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
-  }
+  }*/
 
-  /** Reinitialise. */
-  public void ReInit(TsurgeonParserTokenManager tm) {
+        /** Reinitialise. */
+        /*public void ReInit(TsurgeonParserTokenManager tm) {
     token_source = tm;
     token = new Token();
     jj_ntk = -1;
@@ -987,201 +1455,305 @@ if (jjtc000) {
     jj_gen = 0;
     for (int i = 0; i < 10; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
-  }
+  }s*/
 
-  private Token jj_consume_token(int kind) throws ParseException {
-    Token oldToken;
-    if ((oldToken = token).next != null) token = token.next;
-    else token = token.next = token_source.getNextToken();
-    jj_ntk = -1;
-    if (token.kind == kind) {
-      jj_gen++;
-      if (++jj_gc > 100) {
-        jj_gc = 0;
-        for (int i = 0; i < jj_2_rtns.length; i++) {
-          JJCalls c = jj_2_rtns[i];
-          while (c != null) {
-            if (c.gen < jj_gen) c.first = null;
-            c = c.next;
-          }
+        private Token jj_consume_token(int kind) /*throws ParseException*/
+        {
+            Token oldToken;
+            if ((oldToken = token).next != null) token = token.next;
+            else token = token.next = token_source.getNextToken();
+            jj_ntk = -1;
+            if (token.kind == kind)
+            {
+                jj_gen++;
+                if (++jj_gc > 100)
+                {
+                    jj_gc = 0;
+                    for (int i = 0; i < jj_2_rtns.Length; i++)
+                    {
+                        JJCalls c = jj_2_rtns[i];
+                        while (c != null)
+                        {
+                            if (c.gen < jj_gen) c.first = null;
+                            c = c.next;
+                        }
+                    }
+                }
+                return token;
+            }
+            token = oldToken;
+            jj_kind = kind;
+            throw generateParseException();
         }
-      }
-      return token;
-    }
-    token = oldToken;
-    jj_kind = kind;
-    throw generateParseException();
-  }
 
-  @SuppressWarnings("serial")
-  static private readonly class LookaheadSuccess extends java.lang.Error { }
-  readonly private LookaheadSuccess jj_ls = new LookaheadSuccess();
-  private bool jj_scan_token(int kind) {
-    if (jj_scanpos == jj_lastpos) {
-      jj_la--;
-      if (jj_scanpos.next == null) {
-        jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.getNextToken();
-      } else {
-        jj_lastpos = jj_scanpos = jj_scanpos.next;
-      }
-    } else {
-      jj_scanpos = jj_scanpos.next;
-    }
-    if (jj_rescan) {
-      int i = 0; Token tok = token;
-      while (tok != null && tok != jj_scanpos) { i++; tok = tok.next; }
-      if (tok != null) jj_add_error_token(kind, i);
-    }
-    if (jj_scanpos.kind != kind) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;
-    return false;
-  }
+        //@SuppressWarnings("serial")
+        private sealed class LookaheadSuccess : SystemException
+        {
+        }
+
+        private readonly LookaheadSuccess jj_ls = new LookaheadSuccess();
+
+        private bool jj_scan_token(int kind)
+        {
+            if (jj_scanpos == jj_lastpos)
+            {
+                jj_la--;
+                if (jj_scanpos.next == null)
+                {
+                    jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.getNextToken();
+                }
+                else
+                {
+                    jj_lastpos = jj_scanpos = jj_scanpos.next;
+                }
+            }
+            else
+            {
+                jj_scanpos = jj_scanpos.next;
+            }
+            if (jj_rescan)
+            {
+                int i = 0;
+                Token tok = token;
+                while (tok != null && tok != jj_scanpos)
+                {
+                    i++;
+                    tok = tok.next;
+                }
+                if (tok != null) jj_add_error_token(kind, i);
+            }
+            if (jj_scanpos.kind != kind) return true;
+            if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;
+            return false;
+        }
 
 
 /** Get the next Token. */
-  readonly public Token getNextToken() {
-    if (token.next != null) token = token.next;
-    else token = token.next = token_source.getNextToken();
-    jj_ntk = -1;
-    jj_gen++;
-    return token;
-  }
+        /*readonly*/
+
+        public Token getNextToken()
+        {
+            if (token.next != null) token = token.next;
+            else token = token.next = token_source.getNextToken();
+            jj_ntk = -1;
+            jj_gen++;
+            return token;
+        }
 
 /** Get the specific Token. */
-  readonly public Token getToken(int index) {
-    Token t = token;
-    for (int i = 0; i < index; i++) {
-      if (t.next != null) t = t.next;
-      else t = t.next = token_source.getNextToken();
-    }
-    return t;
-  }
+        /*readonly*/
 
-  private int jj_ntk_f() {
-    if ((jj_nt=token.next) == null)
-      return (jj_ntk = (token.next=token_source.getNextToken()).kind);
-    else
-      return (jj_ntk = jj_nt.kind);
-  }
-
-  private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
-  private int[] jj_expentry;
-  private int jj_kind = -1;
-  private int[] jj_lasttokens = new int[100];
-  private int jj_endpos;
-
-  private void jj_add_error_token(int kind, int pos) {
-    if (pos >= 100) return;
-    if (pos == jj_endpos + 1) {
-      jj_lasttokens[jj_endpos++] = kind;
-    } else if (jj_endpos != 0) {
-      jj_expentry = new int[jj_endpos];
-      for (int i = 0; i < jj_endpos; i++) {
-        jj_expentry[i] = jj_lasttokens[i];
-      }
-      jj_entries_loop: for (java.util.Iterator<?> it = jj_expentries.iterator(); it.hasNext();) {
-        int[] oldentry = (int[])(it.next());
-        if (oldentry.length == jj_expentry.length) {
-          for (int i = 0; i < jj_expentry.length; i++) {
-            if (oldentry[i] != jj_expentry[i]) {
-              continue jj_entries_loop;
+        /*public Token getToken(int index)
+        {
+            Token t = token;
+            for (int i = 0; i < index; i++)
+            {
+                if (t.next != null) t = t.next;
+                else t = t.next = token_source.getNextToken();
             }
-          }
-          jj_expentries.Add(jj_expentry);
-          break jj_entries_loop;
+            return t;
+        }*/
+
+        private int jj_ntk_f()
+        {
+            if ((jj_nt = token.next) == null)
+                return (jj_ntk = (token.next = token_source.getNextToken()).kind);
+            else
+                return (jj_ntk = jj_nt.kind);
         }
-      }
-      if (pos != 0) jj_lasttokens[(jj_endpos = pos) - 1] = kind;
-    }
-  }
 
-  /** Generate ParseException. */
-  public ParseException generateParseException() {
-    jj_expentries.clear();
-    bool[] la1tokens = new bool[33];
-    if (jj_kind >= 0) {
-      la1tokens[jj_kind] = true;
-      jj_kind = -1;
-    }
-    for (int i = 0; i < 10; i++) {
-      if (jj_la1[i] == jj_gen) {
-        for (int j = 0; j < 32; j++) {
-          if ((jj_la1_0[i] & (1<<j)) != 0) {
-            la1tokens[j] = true;
-          }
-          if ((jj_la1_1[i] & (1<<j)) != 0) {
-            la1tokens[32+j] = true;
-          }
+        private List<int[]> jj_expentries = new List<int[]>();
+        private int[] jj_expentry;
+        private int jj_kind = -1;
+        private int[] jj_lasttokens = new int[100];
+        private int jj_endpos;
+
+        private void jj_add_error_token(int kind, int pos)
+        {
+            if (pos >= 100) return;
+            if (pos == jj_endpos + 1)
+            {
+                jj_lasttokens[jj_endpos++] = kind;
+            }
+            else if (jj_endpos != 0)
+            {
+                jj_expentry = new int[jj_endpos];
+                for (int i = 0; i < jj_endpos; i++)
+                {
+                    jj_expentry[i] = jj_lasttokens[i];
+                }
+                /*jj_entries_loop:
+                for (java.util.Iterator < ? > it = jj_expentries.iterator();
+                it.hasNext();)*/
+                foreach (var jjExpentry in jj_expentries)
+                {
+                    //int[] oldentry = (int[]) (it.next());
+                    int[] oldentry = jjExpentry;
+                    if (oldentry.Length == jj_expentry.Length)
+                    {
+                        for (int i = 0; i < jj_expentry.Length; i++)
+                        {
+                            if (oldentry[i] != jj_expentry[i])
+                            {
+                                //continue jj_entries_loop;
+                                goto post_jj_entries_loop;
+                            }
+                        }
+                        jj_expentries.Add(jj_expentry);
+                        //break jj_entries_loop;
+                        goto post_jj_entries_loop;
+                    }
+                }
+                post_jj_entries_loop:
+                {
+                    if (pos != 0) jj_lasttokens[(jj_endpos = pos) - 1] = kind;
+                }
+            }
         }
-      }
-    }
-    for (int i = 0; i < 33; i++) {
-      if (la1tokens[i]) {
-        jj_expentry = new int[1];
-        jj_expentry[0] = i;
-        jj_expentries.Add(jj_expentry);
-      }
-    }
-    jj_endpos = 0;
-    jj_rescan_token();
-    jj_add_error_token(0, 0);
-    int[][] exptokseq = new int[jj_expentries.size()][];
-    for (int i = 0; i < jj_expentries.size(); i++) {
-      exptokseq[i] = jj_expentries.get(i);
-    }
-    return new ParseException(token, exptokseq, tokenImage);
-  }
 
-  /** Enable tracing. */
-  readonly public void enable_tracing() {
-  }
+        /** Generate ParseException. */
 
-  /** Disable tracing. */
-  readonly public void disable_tracing() {
-  }
-
-  private void jj_rescan_token() {
-    jj_rescan = true;
-    for (int i = 0; i < 10; i++) {
-    try {
-      JJCalls p = jj_2_rtns[i];
-      do {
-        if (p.gen > jj_gen) {
-          jj_la = p.arg; jj_lastpos = jj_scanpos = p.first;
-          switch (i) {
-            case 0: jj_3_1(); break;
-            case 1: jj_3_2(); break;
-            case 2: jj_3_3(); break;
-            case 3: jj_3_4(); break;
-            case 4: jj_3_5(); break;
-            case 5: jj_3_6(); break;
-            case 6: jj_3_7(); break;
-            case 7: jj_3_8(); break;
-            case 8: jj_3_9(); break;
-            case 9: jj_3_10(); break;
-          }
+        public ParseException generateParseException()
+        {
+            jj_expentries.Clear();
+            bool[] la1tokens = new bool[33];
+            if (jj_kind >= 0)
+            {
+                la1tokens[jj_kind] = true;
+                jj_kind = -1;
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                if (jj_la1[i] == jj_gen)
+                {
+                    for (int j = 0; j < 32; j++)
+                    {
+                        if ((jj_la1_0[i] & (1 << j)) != 0)
+                        {
+                            la1tokens[j] = true;
+                        }
+                        if ((jj_la1_1[i] & (1 << j)) != 0)
+                        {
+                            la1tokens[32 + j] = true;
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < 33; i++)
+            {
+                if (la1tokens[i])
+                {
+                    jj_expentry = new int[1];
+                    jj_expentry[0] = i;
+                    jj_expentries.Add(jj_expentry);
+                }
+            }
+            jj_endpos = 0;
+            jj_rescan_token();
+            jj_add_error_token(0, 0);
+            int[][] exptokseq = new int[jj_expentries.Count][];
+            for (int i = 0; i < jj_expentries.Count; i++)
+            {
+                exptokseq[i] = jj_expentries[i];
+            }
+            return new ParseException(token, exptokseq, tokenImage);
         }
-        p = p.next;
-      } while (p != null);
-      } catch(LookaheadSuccess ls) { }
-    }
-    jj_rescan = false;
-  }
 
-  private void jj_save(int index, int xla) {
-    JJCalls p = jj_2_rtns[index];
-    while (p.gen > jj_gen) {
-      if (p.next == null) { p = p.next = new JJCalls(); break; }
-      p = p.next;
-    }
-    p.gen = jj_gen + xla - jj_la; p.first = token; p.arg = xla;
-  }
+        /** Enable tracing. */
+        /*readonly*/
 
-  static readonly class JJCalls {
-    int gen;
-    Token first;
-    int arg;
-    JJCalls next;
-  }
+        public void enable_tracing()
+        {
+        }
+
+        /** Disable tracing. */
+        /*readonly */
+
+        public void disable_tracing()
+        {
+        }
+
+        private void jj_rescan_token()
+        {
+            jj_rescan = true;
+            for (int i = 0; i < 10; i++)
+            {
+                try
+                {
+                    JJCalls p = jj_2_rtns[i];
+                    do
+                    {
+                        if (p.gen > jj_gen)
+                        {
+                            jj_la = p.arg;
+                            jj_lastpos = jj_scanpos = p.first;
+                            switch (i)
+                            {
+                                case 0:
+                                    jj_3_1();
+                                    break;
+                                case 1:
+                                    jj_3_2();
+                                    break;
+                                case 2:
+                                    jj_3_3();
+                                    break;
+                                case 3:
+                                    jj_3_4();
+                                    break;
+                                case 4:
+                                    jj_3_5();
+                                    break;
+                                case 5:
+                                    jj_3_6();
+                                    break;
+                                case 6:
+                                    jj_3_7();
+                                    break;
+                                case 7:
+                                    jj_3_8();
+                                    break;
+                                case 8:
+                                    jj_3_9();
+                                    break;
+                                case 9:
+                                    jj_3_10();
+                                    break;
+                            }
+                        }
+                        p = p.next;
+                    } while (p != null);
+                }
+                catch (LookaheadSuccess ls)
+                {
+                }
+            }
+            jj_rescan = false;
+        }
+
+        private void jj_save(int index, int xla)
+        {
+            JJCalls p = jj_2_rtns[index];
+            while (p.gen > jj_gen)
+            {
+                if (p.next == null)
+                {
+                    p = p.next = new JJCalls();
+                    break;
+                }
+                p = p.next;
+            }
+            p.gen = jj_gen + xla - jj_la;
+            p.first = token;
+            p.arg = xla;
+        }
+
+        private class JJCalls
+        {
+            public int gen;
+            public Token first;
+            public int arg;
+            public JJCalls next;
+        }
     }
 }

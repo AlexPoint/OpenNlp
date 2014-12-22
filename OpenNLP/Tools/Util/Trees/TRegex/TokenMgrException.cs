@@ -22,7 +22,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   /**
    * Lexical error occurred.
    */
-  static readonly int LEXICAL_ERROR = 0;
+  public static readonly int LEXICAL_ERROR = 0;
 
   /**
    * An attempt was made to create a second instance of a static token manager.
@@ -32,7 +32,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   /**
    * Tried to change to an invalid lexical state.
    */
-  static readonly int INVALID_LEXICAL_STATE = 2;
+  public static readonly int INVALID_LEXICAL_STATE = 2;
 
   /**
    * Detected (and bailed out of) an infinite loop in the token manager.

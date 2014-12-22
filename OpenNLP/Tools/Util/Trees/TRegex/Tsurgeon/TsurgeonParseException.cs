@@ -13,8 +13,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
   public TsurgeonParseException(String message):base(message) {
   }
 
-  /*public TsurgeonParseException(String message, Throwable cause) {
-    super(message, cause);
-  }*/
+  public TsurgeonParseException(String message, Exception cause):base(message, cause){}
     }
 }

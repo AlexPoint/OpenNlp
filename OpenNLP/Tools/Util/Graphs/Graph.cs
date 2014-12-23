@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,14 +69,14 @@ namespace OpenNLP.Tools.Util.Graphs
          * for undirected graph, it is just the neighbors
          * @param vertex
          */
-        Set<V> getParents(V vertex);
+        ReadOnlyCollection<V> getParents(V vertex);
 
         /**
          * for undirected graph, it is just the neighbors
          * @param vertex
          */
 
-        Set<V> getChildren(V vertex);
+        ReadOnlyCollection<V> getChildren(V vertex);
 
         Set<V> getNeighbors(V v);
 
@@ -97,7 +98,7 @@ namespace OpenNLP.Tools.Util.Graphs
 
         bool isNeighbor(V source, V dest);
 
-        Set<V> getAllVertices();
+        ReadOnlyCollection<V> getAllVertices();
 
         List<E> getAllEdges();
 
@@ -112,7 +113,7 @@ namespace OpenNLP.Tools.Util.Graphs
          */
         void removeZeroDegreeNodes();
 
-        List<E> getEdges(V source, V dest);
+        ReadOnlyCollection<E> getEdges(V source, V dest);
 
 
         /**

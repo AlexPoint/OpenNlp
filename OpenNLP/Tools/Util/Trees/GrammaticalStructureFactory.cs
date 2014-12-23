@@ -15,6 +15,6 @@ namespace OpenNLP.Tools.Util.Trees
    * @param t the tree to analyze
    * @return a GrammaticalStructure based on the tree
    */
-        GrammaticalStructure newGrammaticalStructure(Parse t);
+        GrammaticalStructure newGrammaticalStructure(Tree t);
     }
 }

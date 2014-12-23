@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -272,7 +273,7 @@ namespace OpenNLP.Tools.Util.Trees
    *  @param root The root of the Tree
    *  @return A Collection of dependent nodes to which t bears this GR
    */
-  /*public ICollection<TreeGraphNode> getRelatedNodes(TreeGraphNode t, TreeGraphNode root, HeadFinder headFinder) {
+  public ICollection<TreeGraphNode> getRelatedNodes(TreeGraphNode t, TreeGraphNode root, HeadFinder headFinder) {
     Set<TreeGraphNode> nodeList = new HashSet<TreeGraphNode>();
     foreach(TregexPattern p in targetPatterns) {    // cdm: I deleted: && nodeList.isEmpty()
       // Initialize the TregexMatcher with the HeadFinder so that we
@@ -282,7 +283,7 @@ namespace OpenNLP.Tools.Util.Trees
       while (m.findAt(t)) {
         TreeGraphNode target = (TreeGraphNode) m.getNode("target");
         if (target == null) {
-          throw new AssertionError("Expression has no target: " + p);
+          throw new InvalidDataException("Expression has no target: " + p);
         }
         nodeList.Add(target);
         /*if (DEBUG) {
@@ -292,11 +293,11 @@ namespace OpenNLP.Tools.Util.Trees
               continue;
             System.err.println("  node " + nodeName + ": " + m.getNode(nodeName));
           }
-        }#1#
+        }*/
       }
     }
     return nodeList;
-  }*/
+  }
 
   /** Returns <code>true</code> iff the value of <code>Tree</code>
    *  node <code>t</code> matches the <code>sourcePattern</code> for

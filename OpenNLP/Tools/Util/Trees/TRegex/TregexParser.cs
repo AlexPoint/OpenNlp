@@ -63,7 +63,7 @@ if (nodes.size() == 1) {
     } else {
       {if ("" != null) return new CoordinationPattern(nodes, false);}
     }
-    throw new Error("Missing return statement in function");
+    throw new Exception("Missing return statement in function");
   }
 
 // passing arguments down the tree - in this case the relation that
@@ -93,7 +93,7 @@ if (nodes.size() == 1) {
       throw new ParseException();
     }
 {if ("" != null) return node;}
-    throw new Error("Missing return statement in function");
+    throw new Exception("Missing return statement in function");
   }
 
   /*final */public DescriptionPattern SubNode(Relation r) /*throws ParseException*/ {

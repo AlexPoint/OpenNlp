@@ -311,7 +311,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   private bool opt = false;
   private String patternString;
 
-  void negate() {
+  public void negate() {
     neg = true;
     if (opt) {
       throw new SystemException("Node cannot be both negated and optional.");
@@ -342,18 +342,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   }*/
 
   // package private constructor
-  TregexPattern() {
+  public TregexPattern() {
   }
 
   public abstract List<TregexPattern> getChildren();
 
   public abstract String localString();
 
-  bool isNegated() {
+  public bool isNegated() {
     return neg;
   }
 
-  bool isOptional() {
+  public bool isOptional() {
     return opt;
   }
 

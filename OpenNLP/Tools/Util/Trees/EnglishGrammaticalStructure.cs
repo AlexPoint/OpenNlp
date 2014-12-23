@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public EnglishGrammaticalStructure(Tree t, Predicate<String> puncFilter, HeadFinder hf, bool threadSafe) :
             base((new CoordinationTransformer(hf)).transformTree(t.deepCopy()),
-            EnglishGrammaticalRelations.Values(threadSafe), threadSafe ? EnglishGrammaticalRelations.valuesLock() : null,
+            EnglishGrammaticalRelations.Values(threadSafe), threadSafe ? EnglishGrammaticalRelations.valuesLock : null,
             hf, puncFilter)
         {
             // the tree is normalized (for index and functional tag stripping) inside CoordinationTransformer
@@ -105,7 +105,7 @@ namespace OpenNLP.Tools.Util.Trees
    * </dl>
    */
   //@Override
-  protected override void collapseDependencies(List<TypedDependency> list, bool CCprocess, bool includeExtras) {
+  protected void collapseDependencies(List<TypedDependency> list, bool CCprocess, bool includeExtras) {
     /*if (DEBUG) {
       printListSorted("collapseDependencies: CCproc: " + CCprocess + " includeExtras: " + includeExtras, list);
     }*/
@@ -1692,7 +1692,7 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   //@Override
-  protected override void collapseDependenciesTree(List<TypedDependency> list) {
+  protected void collapseDependenciesTree(List<TypedDependency> list) {
     collapseDependencies(list, false, false);
   }
 

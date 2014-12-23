@@ -14,19 +14,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
  */
     public abstract class TregexMatcher
     {
-        readonly Tree root;
+        public readonly Tree root;
   Tree tree;
-  IdentityDictionary<Tree, Tree> nodesToParents;
-  readonly Dictionary<String, Tree> namesToNodes;
-  readonly VariableStrings variableStrings;
+  public IdentityDictionary<Tree, Tree> nodesToParents;
+  public readonly Dictionary<String, Tree> namesToNodes;
+  public readonly VariableStrings variableStrings;
 
   // these things are used by "find"
   TreeIterator findIterator;
   Tree findCurrent;
 
-  readonly HeadFinder headFinder;
+  public readonly HeadFinder headFinder;
 
-  TregexMatcher(Tree root, Tree tree, IdentityDictionary<Tree, Tree> nodesToParents, Dictionary<String, Tree> namesToNodes, VariableStrings variableStrings, HeadFinder headFinder) {
+  public TregexMatcher(Tree root, Tree tree, IdentityDictionary<Tree, Tree> nodesToParents, Dictionary<String, Tree> namesToNodes, VariableStrings variableStrings, HeadFinder headFinder) {
     this.root = root;
     this.tree = tree;
     this.nodesToParents = nodesToParents;
@@ -52,7 +52,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    *
    * @param tree The tree to start searching on
    */
-  void resetChildIter(Tree tree) {
+  public void resetChildIter(Tree tree) {
     this.tree = tree;
     resetChildIter();
   }
@@ -60,7 +60,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   /**
    * Resets the matcher to restart search for matching subexpressions
    */
-  void resetChildIter() {
+  public void resetChildIter() {
   }
 
   /**
@@ -170,18 +170,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     return namesToNodes.Keys.ToList();
   }
 
-  /*Tree getParent(Tree node) {
+  public Tree getParent(Tree node) {
     if (node is HasParent) {
       return node.parent();
     }
     if (nodesToParents == null) {
-      nodesToParents = new IdentityDictionary<Tree, Tree>();<Tree, Tree>();
+      nodesToParents = new IdentityDictionary<Tree, Tree>();
     }
     if (nodesToParents.Count == 0) {
       fillNodesToParents(root, null);
     }
     return nodesToParents[node];
-  }*/
+  }
 
   private void fillNodesToParents(Tree node, Tree parent) {
     nodesToParents.Add(node, parent);
@@ -190,7 +190,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     }
   }
 
-  Tree getRoot() {
+  public Tree getRoot() {
     return root;
   }
 

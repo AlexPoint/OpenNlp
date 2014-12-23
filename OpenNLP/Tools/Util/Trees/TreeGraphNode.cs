@@ -175,7 +175,7 @@ namespace OpenNLP.Tools.Util.Trees
   /**
    * Set the index for the current node.
    */
-  protected void setIndex(int index) {
+  public void setIndex(int index) {
     plabel.setIndex(index);
   }
 
@@ -474,7 +474,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param indentLevel how many levels to indent (0 for root node)
    * @return <code>String</code> representation of this subtree
    */
-  /*public String toPrettyString(int indentLevel) {
+  public String toPrettyString(int indentLevel) {
     StringBuilder buf = new StringBuilder("\n");
     for (int i = 0; i < indentLevel; i++) {
       buf.Append("  ");
@@ -489,7 +489,7 @@ namespace OpenNLP.Tools.Util.Trees
       buf.Append(')');
     }
     return buf.ToString();
-  }*/
+  }
 
   /**
    * Returns a <code>String</code> representation of this node and

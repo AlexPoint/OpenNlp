@@ -29,6 +29,22 @@ namespace OpenNLP.Tools.Util.Trees
         {
             parse = p;
         }
+        
+
+        /**
+         * Returns the last child of a tree, or <code>null</code> if none.
+         *
+         * @return The last child
+         */
+        public Tree lastChild()
+        {
+            Tree[] kids = children();
+            if (kids.Length == 0)
+            {
+                return null;
+            }
+            return kids[kids.Length - 1];
+        }
 
         /**
    * Finds the heads of the tree.  This code assumes that the label

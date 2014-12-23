@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -554,9 +555,9 @@ namespace OpenNLP.Tools.Util.Ling
   public static readonly OutputFormat DEFAULT_FORMAT = OutputFormat.VALUE_INDEX;
 
   //@Override
-  /*public String toString() {
+  public String toString() {
     return toString(DEFAULT_FORMAT);
-  }*/
+  }
 
   /**
    * Returns a formatted string representing this label.  The
@@ -580,112 +581,120 @@ namespace OpenNLP.Tools.Util.Ling
    * Map is printed in alphabetical order of keys.
    */
   //@SuppressWarnings("unchecked")
-  /*public String toString(OutputFormat format) {
+  public String toString(OutputFormat format) {
     StringBuilder buf = new StringBuilder();
     switch(format) {
-    case VALUE:
+    case OutputFormat.VALUE:
       buf.Append(value());
       break;
-    case MAP: {
-      Map map2 = new TreeMap();
-      for(Class key : this.keySet()) {
-        map2.put(key.getName(), get(key));
+    case OutputFormat.MAP: {
+      Dictionary<String, object> map2 = new Dictionary<string, object>();
+      foreach(var key in this.keySet()) {
+        map2.Add(key.Name, get(key));
       }
       buf.Append(map2);
       break;
     }
-    case VALUE_MAP: {
+    case OutputFormat.VALUE_MAP: {
       buf.Append(value());
-      Map map2 = new TreeMap(asClassComparator);
-      for(Class key : this.keySet()) {
-        map2.put(key, get(key));
+      Dictionary<Type, object> map2 = new Dictionary<Type, object>(asClassComparator);
+      foreach(var key in this.keySet()) {
+        map2.Add(key, get(key));
       }
-      map2.remove(CoreAnnotations.ValueAnnotation.class);
+      map2.Remove(typeof(CoreAnnotations.ValueAnnotation));
       buf.Append(map2);
       break;
     }
-    case VALUE_INDEX: {
+    case OutputFormat.VALUE_INDEX: {
       buf.Append(value());
-      Integer index = this.get(CoreAnnotations.IndexAnnotation.class);
+      int index = (int)this.get(typeof(CoreAnnotations.IndexAnnotation));
       if (index != null) {
-        buf.Append('-').Append((index).intValue());
+        buf.Append('-').Append(index);
       }
       buf.Append(toPrimes());
       break;
     }
-    case VALUE_TAG: {
+    case OutputFormat.VALUE_TAG: {
       buf.Append(value());
       buf.Append(toPrimes());
-      String tag = tag();
-      if (tag != null) {
-        buf.Append(TAG_SEPARATOR).Append(tag);
+      String ltag = tag();
+      if (ltag != null) {
+        buf.Append(TAG_SEPARATOR).Append(ltag);
       }
       break;
     }
-    case VALUE_TAG_INDEX: {
+    case OutputFormat.VALUE_TAG_INDEX: {
       buf.Append(value());
-      String tag = tag();
-      if (tag != null) {
-        buf.Append(TAG_SEPARATOR).Append(tag);
+      String ltag = tag();
+      if (ltag != null) {
+        buf.Append(TAG_SEPARATOR).Append(ltag);
       }
-      Integer index = this.get(CoreAnnotations.IndexAnnotation.class);
+      int index = (int)this.get(typeof(CoreAnnotations.IndexAnnotation));
       if (index != null) {
-        buf.Append('-').Append((index).intValue());
+        buf.Append('-').Append(index);
       }
       buf.Append(toPrimes());
       break;
     }
-    case VALUE_INDEX_MAP: {
+    case OutputFormat.VALUE_INDEX_MAP: {
       buf.Append(value());
-      Integer index = this.get(CoreAnnotations.IndexAnnotation.class);
+      int index = (int)this.get(typeof(CoreAnnotations.IndexAnnotation));
       if (index != null) {
-        buf.Append('-').Append((index).intValue());
+        buf.Append('-').Append(index);
       }
-      Map<String,Object> map2 = new TreeMap<String,Object>();
-      for(Class key : this.keySet()) {
-        String cls = key.getName();
+      Dictionary<String,Object> map2 = new Dictionary<String,Object>();
+      foreach(var key in this.keySet()) {
+        String cls = key.Name;
         // special shortening of all the Annotation classes
-        int idx = cls.indexOf('$');
+        int idx = cls.IndexOf('$');
         if (idx >= 0) {
-          cls = cls.substring(idx + 1);
+          cls = cls.Substring(idx + 1);
         }
-        map2.put(cls, this.get(key));
+        map2.Add(cls, this.get(key));
       }
-      map2.remove("IndexAnnotation");
-      map2.remove("ValueAnnotation");
-      if (!map2.isEmpty()) {
+      map2.Remove("IndexAnnotation");
+      map2.Remove("ValueAnnotation");
+      if (map2.Any()) {
         buf.Append(map2);
       }
       break;
     }
-    case WORD:
+    case OutputFormat.WORD:
       // TODO: we should unify word() and value()
       buf.Append(word());
       break;
-    case WORD_INDEX: {
-      buf.Append(this.get(CoreAnnotations.TextAnnotation.class));
-      Integer index = this.get(CoreAnnotations.IndexAnnotation.class);
+    case OutputFormat.WORD_INDEX: {
+      buf.Append(this.get(typeof(CoreAnnotations.TextAnnotation)));
+      int index = (int)this.get(typeof(CoreAnnotations.IndexAnnotation));
       if (index != null) {
-        buf.Append('-').Append((index).intValue());
+        buf.Append('-').Append(index);
       }
       buf.Append(toPrimes());
       break;
     }
     default:
-      throw new IllegalArgumentException("Unknown format " + format);
+      throw new InvalidDataException("Unknown format " + format);
     }
-    return buf.toString();
-  }*/
+    return buf.ToString();
+  }
 
   public String toPrimes() {
     return StringUtils.repeat('\'', copyCount());
   }
 
-  /*private static readonly Comparator<Class<?>> asClassComparator = new Comparator<Class<?>>() {
-    @Override
-    public int compare(Class<?> o1, Class<?> o2) {
-      return o1.getName().compareTo(o2.getName());
-    }
-  };*/
+        private class NameComparer : IEqualityComparer<Type>
+        {
+            public bool Equals(Type x, Type y)
+            {
+                return x.Name.Equals(y.Name);
+            }
+
+            public int GetHashCode(Type obj)
+            {
+                return obj.Name.GetHashCode();
+            }
+        }
+
+  private static readonly IEqualityComparer<Type> asClassComparator = new NameComparer();
     }
 }

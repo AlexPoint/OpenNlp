@@ -26,7 +26,7 @@ namespace OpenNLP.Tools.Util.Trees
    * within a given root, as defined by the size of the yield of all
    * material preceding <i>t</i>.
    */
-  /*public static int leftEdge(Tree t, Tree root)
+  public static int leftEdge(Tree t, Tree root)
   {
       var i = 0;
     if (leftEdge(t, root, i)) {
@@ -37,12 +37,12 @@ namespace OpenNLP.Tools.Util.Trees
     }
   }
 
-  static bool leftEdge(Tree t, Tree t1, MutableInteger i) {
+  static bool leftEdge(Tree t, Tree t1, int i) {
     if (t == t1) {
       return true;
     } else if (t1.isLeaf()) {
-      int j = t1.yield().size(); // so that empties don't add size
-      i.set(i.intValue() + j);
+      int j = t1.yield().Count; // so that empties don't add size
+      i = i + j;
       return false;
     } else {
       foreach (Tree kid in t1.children()) {
@@ -59,23 +59,23 @@ namespace OpenNLP.Tools.Util.Trees
    * <i>t</i> within a given root, as defined by the size of the yield
    * of all material preceding <i>t</i> plus all the material
    * contained in <i>t</i>.
-   #1#
+   */
   public static int rightEdge(Tree t, Tree root) {
-    MutableInteger i = new MutableInteger(root.yield().size());
+    var i = root.yield().Count;
     if (rightEdge(t, root, i)) {
-      return i.intValue();
+      return i;
     } else {
       throw new SystemException("Tree is not a descendant of root.");
 //      return root.yield().size() + 1;
     }
   }
 
-  static bool rightEdge(Tree t, Tree t1, MutableInteger i) {
+  static bool rightEdge(Tree t, Tree t1, int i) {
     if (t == t1) {
       return true;
     } else if (t1.isLeaf()) {
-      int j = t1.yield().size(); // so that empties don't add size
-      i.set(i.intValue() - j);
+      int j = t1.yield().Count; // so that empties don't add size
+      i = i - j;
       return false;
     } else {
       Tree[] kids = t1.children();
@@ -92,8 +92,8 @@ namespace OpenNLP.Tools.Util.Trees
   /**
    * Returns a lexicalized Tree whose Labels are CategoryWordTag
    * instances, all corresponds to the input tree.
-   #1#
-  public static Tree lexicalize(Tree t, HeadFinder hf) {
+   */
+  /*public static Tree lexicalize(Tree t, HeadFinder hf) {
     Function<Tree,Tree> a =
       TreeFunctions.getLabeledTreeToCategoryWordTagTreeFunction();
     Tree t1 = a.apply(t);

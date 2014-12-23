@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,9 +29,8 @@ namespace OpenNLP.Tools.Util.Graphs
   readonly MapFactory<V, Dictionary<V, List<E>>> outerMapFactory;
   readonly MapFactory<V, List<E>> innerMapFactory;
 
-  public DirectedMultiGraph() {
-    this(MapFactory.<V, Dictionary<V, List<E>>>hashMapFactory(), MapFactory.<V, List<E>>hashMapFactory());
-  }
+  public DirectedMultiGraph():
+      this(MapFactory<V, Dictionary<V, List<E>>>.hashMapFactory<V, Dictionary<V, List<E>>>(), MapFactory<V, List<E>>.hashMapFactory<V, List<E>>()){}
 
   public DirectedMultiGraph(MapFactory<V, Dictionary<V, List<E>>> outerMapFactory, MapFactory<V, List<E>> innerMapFactory) {
     this.outerMapFactory = outerMapFactory;
@@ -73,9 +74,9 @@ namespace OpenNLP.Tools.Util.Graphs
   public bool equals(Object that) {
     if (that == this)
       return true;
-    if (!(that is DirectedMultiGraph))
+    if (!(that is DirectedMultiGraph<V,E>))
       return false;
-    return outgoingEdges.Equals(((DirectedMultiGraph<?, ?>) that).outgoingEdges);
+    return outgoingEdges.Equals(((DirectedMultiGraph<V, E>) that).outgoingEdges);
   }
 
   /**
@@ -172,10 +173,10 @@ namespace OpenNLP.Tools.Util.Graphs
     bool foundIn = incomingEdges.ContainsKey(dest) && incomingEdges[dest].ContainsKey(source) &&
         incomingEdges[dest][source].Remove(data);
     if (foundOut && !foundIn) {
-      throw new AssertionError("Edge found in outgoing but not incoming");
+      throw new InvalidDataException("Edge found in outgoing but not incoming");
     }
     if (foundIn && !foundOut) {
-      throw new AssertionError("Edge found in incoming but not outgoing");
+      throw new InvalidDataException("Edge found in incoming but not outgoing");
     }
     // TODO: cut down the number of .get calls
     if (outgoingEdges.ContainsKey(source) && (!outgoingEdges[source].ContainsKey(dest) || outgoingEdges[source][dest].Count == 0)) {
@@ -230,7 +231,7 @@ namespace OpenNLP.Tools.Util.Graphs
     if (!outgoingEdges.ContainsKey(v)) { //noinspection unchecked
       return new List<E>();
     }
-    return CollectionUtils.flatten(outgoingEdges[v].Values);
+    return outgoingEdges[v].Values.SelectMany(l => l).ToList();
   }
 
   //@Override
@@ -238,7 +239,7 @@ namespace OpenNLP.Tools.Util.Graphs
     if (!incomingEdges.ContainsKey(v)) { //noinspection unchecked
       return new List<E>();
     }
-    return CollectionUtils.flatten(incomingEdges[v].Values);
+    return incomingEdges[v].Values.SelectMany(l => l).ToList();
   }
 
   //@Override
@@ -253,19 +254,19 @@ namespace OpenNLP.Tools.Util.Graphs
   }
 
   //@Override
-  public Set<V> getParents(V vertex) {
+  public ReadOnlyCollection<V> getParents(V vertex) {
     Dictionary<V, List<E>> parentMap = incomingEdges[vertex];
     if (parentMap == null)
       return null;
-    return Collections.unmodifiableSet(parentMap.keySet());
+    return new ReadOnlyCollection<V>(parentMap.Keys.ToList());
   }
 
   //@Override
-  public Set<V> getChildren(V vertex) {
+  public ReadOnlyCollection<V> getChildren(V vertex) {
     Dictionary<V, List<E>> childMap = outgoingEdges[vertex];
     if (childMap == null)
       return null;
-    return Collections.unmodifiableSet(childMap.keySet());
+    return new ReadOnlyCollection<V>(childMap.Keys.ToList());
   }
 
   /**
@@ -276,8 +277,8 @@ namespace OpenNLP.Tools.Util.Graphs
   //@Override
   public Set<V> getNeighbors(V v) {
     // TODO: pity we have to copy the sets... is there a combination set?
-    Set<V> children = getChildren(v);
-    Set<V> parents = getParents(v);
+    ReadOnlyCollection<V> children = getChildren(v);
+    ReadOnlyCollection<V> parents = getParents(v);
 
     if (children == null && parents == null)
       return null;
@@ -325,8 +326,8 @@ namespace OpenNLP.Tools.Util.Graphs
   }
 
   //@Override
-  public Set<V> getAllVertices() {
-    return Collections.unmodifiableSet(outgoingEdges.keySet());
+  public ReadOnlyCollection<V> getAllVertices() {
+    return new ReadOnlyCollection<V>(outgoingEdges.Keys.ToList());
   }
 
   //@Override
@@ -367,16 +368,16 @@ namespace OpenNLP.Tools.Util.Graphs
   }
 
   //@Override
-  public List<E> getEdges(V source, V dest) {
+  public ReadOnlyCollection<E> getEdges(V source, V dest) {
     Dictionary<V, List<E>> childrenMap = outgoingEdges[source];
     if (childrenMap == null) {
-      return new List<E>();
+      return new ReadOnlyCollection<E>(new E[]{});
     }
     List<E> edges = childrenMap[dest];
     if (edges == null) {
-      return new List<E>();
+      return new ReadOnlyCollection<E>(new E[]{});
     }
-    return Collections.unmodifiableList(edges);
+    return new ReadOnlyCollection<E>(edges);
   }
 
   /**
@@ -421,12 +422,12 @@ namespace OpenNLP.Tools.Util.Graphs
       return new List<E>();
 
     List<E> path = new List<E>();
-    Iterator<V> nodeIterator = nodes.iterator();
-    V previous = nodeIterator.next();
-    while (nodeIterator.hasNext()) {
-      V next = nodeIterator.next();
-      E connection = null;
-      List<E> edges = getEdges(previous, next);
+    var nodeIterator = nodes.GetEnumerator();
+    V previous = nodeIterator.Current;
+    while (nodeIterator.MoveNext()) {
+      V next = nodeIterator.Current;
+      E connection = default(E);
+      var edges = getEdges(previous, next);
       if (edges.Count == 0 && !directionSensitive) {
         edges = getEdges(next, previous);
       }
@@ -449,7 +450,7 @@ namespace OpenNLP.Tools.Util.Graphs
     int result = 0;
     Dictionary<V, List<E>> incoming = incomingEdges[vertex];
     foreach (List<E> edges in incoming.Values) {
-      result += edges.Count);
+      result += edges.Count;
     }
     return result;
   }
@@ -472,7 +473,7 @@ namespace OpenNLP.Tools.Util.Graphs
     return ConnectedComponents.getConnectedComponents(this);
   }
 
-  public Iterator<E> incomingEdgeIterator(readonly V vertex) {
+  /*public Iterator<E> incomingEdgeIterator(readonly V vertex) {
     return new EdgeIterator<V, E>(incomingEdges, vertex);
   }
 
@@ -494,9 +495,9 @@ namespace OpenNLP.Tools.Util.Graphs
 
   public Iterable<E> edgeIterable() {
     return () -> new EdgeIterator<V, E>(DirectedMultiGraph.this);
-  }
+  }*/
 
-  static class EdgeIterator<V, E> : Iterator<E> {
+  /*static class EdgeIterator<V, E> : Iterator<E> {
     private Iterator<Dictionary<V, List<E>>> vertexIterator;
     private Iterator<List<E>> connectionIterator;
     private Iterator<E> edgeIterator;
@@ -548,7 +549,7 @@ namespace OpenNLP.Tools.Util.Graphs
     public void remove() {
       edgeIterator.Remove();
     }
-  }
+  }*/
 
   /**
    * Cast this multi-graph as a map from vertices, to the outgoing data along edges out of those vertices.

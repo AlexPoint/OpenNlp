@@ -327,6 +327,7 @@
     <Compile Include="Tools\Util\IHeap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\Interner.cs" />
     <Compile Include="Tools\Util\IntPair.cs" />
     <Compile Include="Tools\Util\IntQuadruple.cs" />
     <Compile Include="Tools\Util\IntTriple.cs" />
@@ -411,13 +412,18 @@
     <Compile Include="Tools\Util\Trees\TreeGraphNodeFactory.cs" />
     <Compile Include="Tools\Util\Trees\Trees.cs" />
     <Compile Include="Tools\Util\Trees\TreeTransformer.cs" />
+    <Compile Include="Tools\Util\Trees\TRegex\CoordinationPattern.cs" />
+    <Compile Include="Tools\Util\Trees\TRegex\DescriptionPattern.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\ParseException.cs" />
+    <Compile Include="Tools\Util\Trees\TRegex\Relation.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\SimpleCharStream.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\Token.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\TokenMgrException.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\TregexMatcher.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\TregexParseException.cs" />
+    <Compile Include="Tools\Util\Trees\TRegex\TregexParser.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\TregexParserConstants.cs" />
+    <Compile Include="Tools\Util\Trees\TRegex\TregexParserTokenManager.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\TregexPattern.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\TregexPatternCompiler.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\Tsurgeon\AdjoinNode.cs" />

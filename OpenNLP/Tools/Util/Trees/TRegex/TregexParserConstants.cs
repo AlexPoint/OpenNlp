@@ -13,29 +13,29 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     public abstract class TregexParserConstants
     {
         /** End of File. */
-        int EOF = 0;
+        public const int EOF = 0;
         /** RegularExpression Id. */
-        int RELATION = 4;
+        public const int RELATION = 4;
         /** RegularExpression Id. */
-        int MULTI_RELATION = 5;
+        public const int MULTI_RELATION = 5;
         /** RegularExpression Id. */
-        int REL_W_STR_ARG = 6;
+        public const int REL_W_STR_ARG = 6;
         /** RegularExpression Id. */
-        int NUMBER = 7;
+        public const int NUMBER = 7;
         /** RegularExpression Id. */
-        int IDENTIFIER = 8;
+        public const int IDENTIFIER = 8;
         /** RegularExpression Id. */
-        int BLANK = 9;
+        public const int BLANK = 9;
         /** RegularExpression Id. */
-        int REGEX = 10;
+        public const int REGEX = 10;
         /** RegularExpression Id. */
-        int VARNAME = 11;
+        public const int VARNAME = 11;
 
         /** Lexical state. */
-        int DEFAULT = 0;
+        public const int DEFAULT = 0;
 
         /** Literal token values. */
-        String[] tokenImage = {
+        protected String[] tokenImage = {
     "<EOF>",
     "\" \"",
     "\"\\r\"",

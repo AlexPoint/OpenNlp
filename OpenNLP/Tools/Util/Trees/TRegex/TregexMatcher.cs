@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     public abstract class TregexMatcher
     {
         public readonly Tree root;
-  Tree tree;
+  public Tree tree;
   public IdentityDictionary<Tree, Tree> nodesToParents;
   public readonly Dictionary<String, Tree> namesToNodes;
   public readonly VariableStrings variableStrings;

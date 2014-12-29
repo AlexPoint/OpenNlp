@@ -318,7 +318,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     }
   }
 
-  void makeOptional() {
+  public void makeOptional() {
     opt = true;
     if (neg) {
       throw new SystemException("Node cannot be both negated and optional.");
@@ -430,7 +430,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   }
 
   /** Only used by the TregexPatternCompiler to set the pattern. Pseudo-final. */
-  void setPatternString(String patternString) {
+  public void setPatternString(String patternString) {
     this.patternString = patternString;
   }
 

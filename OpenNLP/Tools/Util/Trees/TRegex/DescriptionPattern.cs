@@ -11,7 +11,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     public class DescriptionPattern: TregexPattern
     {
         enum DescriptionMode {
-    PATTERN, STRINGS, EXACT, ANYTHING
+    PATTERN, STRINGS, EXACT, ANYTHING, NOTHING
   }
 
   private readonly Relation rel;
@@ -196,7 +196,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         throw new InvalidDataException("Illegal description pattern.  Does not describe a node or link/name a variable");
       }
       stringDesc = " ";
-      descriptionMode = null;
+      descriptionMode = DescriptionMode.NOTHING;
       descPattern = null;
       exactMatch = null;
       stringFilter = null;
@@ -293,7 +293,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   // class?  There seems to be no reason for such a thing.
   // cdm: agree: It seems like it should just be a non-static inner class.  Try this and check it works....
   private /*static*/ class DescriptionMatcher : TregexMatcher {
-    private Iterator<Tree> treeNodeMatchCandidateIterator;
+    private IEnumerator<Tree> treeNodeMatchCandidateIterator;
     private readonly DescriptionPattern myNode;
 
     // a DescriptionMatcher only has a single child; if it is the left
@@ -358,15 +358,16 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
       if (treeNodeMatchCandidateIterator == null) {
         treeNodeMatchCandidateIterator = myNode.rel.searchNodeIterator(tree, this);
       }
-      while (treeNodeMatchCandidateIterator.hasNext()) {
-        nextTreeNodeMatchCandidate = treeNodeMatchCandidateIterator.next();
+        var success = treeNodeMatchCandidateIterator.MoveNext();
+      while (success) {
+        nextTreeNodeMatchCandidate = treeNodeMatchCandidateIterator.Current;
         if (myNode.descriptionMode == null) {
           // this is a backreference or link
           if (myNode.isLink) {
             Tree otherTree = namesToNodes[myNode.linkedName];
             if (otherTree != null) {
-              String otherValue = myNode.basicCatFunction == null ? otherTree.value() : myNode.basicCatFunction.apply(otherTree.value());
-              String myValue = myNode.basicCatFunction == null ? nextTreeNodeMatchCandidate.value() : myNode.basicCatFunction.apply(nextTreeNodeMatchCandidate.value());
+              String otherValue = myNode.basicCatFunction == null ? otherTree.value() : myNode.basicCatFunction(otherTree.value());
+              String myValue = myNode.basicCatFunction == null ? nextTreeNodeMatchCandidate.value() : myNode.basicCatFunction(nextTreeNodeMatchCandidate.value());
               if (otherValue.Equals(myValue)) {
                 finished = false;
                 break;
@@ -433,6 +434,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             break;
           }
         }
+          success = treeNodeMatchCandidateIterator.MoveNext();
       }
       if (!finished) { // I successfully matched.
         resetChild(); // reset my unique TregexMatcher child based on the Tree node I successfully matched at.

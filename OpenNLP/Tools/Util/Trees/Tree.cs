@@ -559,7 +559,9 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public Label label()
         {
-            return new CoreLabel(parse.Label);
+            var labFact = new StringLabelFactory();
+            var lab = labFact.newLabelFromString(parse.Label);
+            return new CoreLabel(lab);
             //return null;
         }
 

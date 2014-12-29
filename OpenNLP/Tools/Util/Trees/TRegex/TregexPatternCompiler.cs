@@ -11,10 +11,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 {
     public class TregexPatternCompiler
     {
-        static readonly AbstractTreebankLanguagePack.BasicCategoryStringFunction DEFAULT_BASIC_CAT_FUNCTION =
+        public static readonly AbstractTreebankLanguagePack.BasicCategoryStringFunction DEFAULT_BASIC_CAT_FUNCTION =
     new PennTreebankLanguagePack().getBasicCategoryFunction();
 
-  static readonly HeadFinder DEFAULT_HEAD_FINDER = new CollinsHeadFinder();
+  public static readonly HeadFinder DEFAULT_HEAD_FINDER = new CollinsHeadFinder();
 
   private readonly AbstractTreebankLanguagePack.BasicCategoryStringFunction basicCatFunction;
   private readonly HeadFinder headFinder;
@@ -103,7 +103,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     TregexPattern pattern;
     try {
       TregexParser parser = new TregexParser(new StringReader(tregex + '\n'),
-                                             basicCatFunction, headFinder);
+                                             basicCatFunction.apply, headFinder);
       pattern = parser.Root();
     } catch (TokenMgrException tme) {
       throw new TregexParseException("Could not parse " + tregex/*, tme*/);

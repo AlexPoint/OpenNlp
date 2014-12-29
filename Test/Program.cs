@@ -5,12 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using InvalidEmailDetector.src;
 using OpenNLP.Tools.Chunker;
 using OpenNLP.Tools.PosTagger;
 using OpenNLP.Tools.SentenceDetect;
 using OpenNLP.Tools.Tokenize;
 using OpenNLP.Tools.Util.Trees;
+using OpenNLP.Tools.Util.Trees.TRegex;
 using SharpEntropy;
 using SharpEntropy.IO;
 
@@ -66,7 +66,7 @@ namespace Test
             }*/
 
             // parsing
-            var sentence = "This is a test.";
+            /*var sentence = "This is a test.";
             var modelPath = currentDirectory + "../Resources/Models/";
 			var parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(modelPath, true, false);
             var parse = parser.DoParse(sentence);
@@ -80,8 +80,19 @@ namespace Test
             foreach (var dep in dependencies)
             {
                 Console.WriteLine(dep);
-            }
+            }*/
 
+            var charStream = "CONJP < (CC <: /^(?i:but|and)$/ $+ (RB=head <: /^(?i:not)$/))";
+            var reader = new StringReader(charStream);
+            var stream = new SimpleCharStream(reader);
+            Console.WriteLine(charStream);
+            var c = stream.readChar();
+            while (c != default(char))
+            {
+                Console.WriteLine(c);
+                c = stream.readChar();
+            }
+            
             Console.WriteLine("===========");
             Console.WriteLine("OK");
             Console.ReadKey();

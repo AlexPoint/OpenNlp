@@ -226,7 +226,7 @@ namespace OpenNLP.Tools.Util.Trees
 
   // Note: The first two SBARQ patterns only work when the SQ
   // structure has already been removed in CoordinationTransformer.
-  static readonly TregexPattern[] headOfCopulaTregex = {
+  /*static readonly TregexPattern[] headOfCopulaTregex = {
     // Matches phrases such as "what is wrong"
     TregexPattern.compile("SBARQ < (WHNP $++ (/^VB/ < " + EnglishPatterns.copularWordRegex + " $++ ADJP=head))"),
 
@@ -238,7 +238,7 @@ namespace OpenNLP.Tools.Util.Trees
     // Actually somewhat limited in scope, this detects "Tuesday it is",
     // "Such a great idea this was", etc
     TregexPattern.compile("SINV < (NP=head $++ (NP $++ (VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + "))))"),
-  };
+  };*/
 
   static readonly TregexPattern[] headOfConjpTregex = {
     TregexPattern.compile("CONJP < (CC <: /^(?i:but|and)$/ $+ (RB=head <: /^(?i:not)$/))"),
@@ -300,6 +300,19 @@ namespace OpenNLP.Tools.Util.Trees
 
     if (motherCat.Equals("SBARQ") || motherCat.Equals("SINV")) {
       if (!makeCopulaHead) {
+          var headOfCopulaTregex = new TregexPattern[] {
+            // Matches phrases such as "what is wrong"
+            TregexPattern.compile("SBARQ < (WHNP $++ (/^VB/ < " + EnglishPatterns.copularWordRegex + " $++ ADJP=head))"),
+
+            // matches WHNP $+ VB<copula $+ NP
+            // for example, "Who am I to judge?"
+            // !$++ ADJP matches against "Why is the dog pink?"
+            TregexPattern.compile("SBARQ < (WHNP=head $++ (/^VB/ < " + EnglishPatterns.copularWordRegex + " $+ NP !$++ ADJP))"),
+
+            // Actually somewhat limited in scope, this detects "Tuesday it is",
+            // "Such a great idea this was", etc
+            TregexPattern.compile("SINV < (NP=head $++ (NP $++ (VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + "))))"),
+          };
         foreach (TregexPattern pattern in headOfCopulaTregex) {
           TregexMatcher matcher = pattern.matcher(t);
           if (matcher.matchesAt(t)) {

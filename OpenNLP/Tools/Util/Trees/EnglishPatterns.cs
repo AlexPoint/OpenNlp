@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    public class EnglishPatterns
+    public static class EnglishPatterns
     {
         public static readonly String timeWordRegex =
     "/^(?i:Mondays?|Tuesdays?|Wednesdays?|Thursdays?|Fridays?|Saturdays?|Sundays?|years?|months?|weeks?|days?|mornings?|evenings?|nights?|January|Jan\\.|February|Feb\\.|March|Mar\\.|April|Apr\\.|May|June|July|August|Aug\\.|September|Sept\\.|October|Oct\\.|November|Nov\\.|December|Dec\\.|today|yesterday|tomorrow|spring|summer|fall|autumn|winter)$/";
@@ -59,6 +59,6 @@ namespace OpenNLP.Tools.Util.Trees
 
   public static readonly Regex RELATIVIZING_WORD_PATTERN = new Regex(RELATIVIZING_WORD_REGEX, RegexOptions.Compiled);
 
-  private EnglishPatterns() {} // static constants
+  //private EnglishPatterns() {} // static constants
     }
 }

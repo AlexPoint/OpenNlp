@@ -10,6 +10,7 @@ using OpenNLP.Tools.Chunker;
 using OpenNLP.Tools.PosTagger;
 using OpenNLP.Tools.SentenceDetect;
 using OpenNLP.Tools.Tokenize;
+using OpenNLP.Tools.Util.Trees;
 using SharpEntropy;
 using SharpEntropy.IO;
 
@@ -54,7 +55,7 @@ namespace Test
 
 
             // detect tokenization issues
-            var pathToFile = currentDirectory + "Input/tokenizerIssues.txt";
+            /*var pathToFile = currentDirectory + "Input/tokenizerIssues.txt";
             var modelPath = currentDirectory + "../Resources/Models/";
             var tokenizer = new EnglishMaximumEntropyTokenizer(modelPath + "EnglishTok.nbin");
             var allLines = File.ReadAllLines(pathToFile);
@@ -62,6 +63,23 @@ namespace Test
             {
                 var tokens = tokenizer.Tokenize(line);
                 Console.WriteLine(string.Join(" | ", tokens));
+            }*/
+
+            // parsing
+            var sentence = "This is a test.";
+            var modelPath = currentDirectory + "../Resources/Models/";
+			var parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(modelPath, true, false);
+            var parse = parser.DoParse(sentence);
+            // Extract dependencies from lexical tree
+            var tlp = new PennTreebankLanguagePack();
+            var gsf = tlp.grammaticalStructureFactory();
+            var tree = new Tree(parse);
+            var gs = gsf.newGrammaticalStructure(tree);
+            var dependencies = gs.mtypedDependencies();
+
+            foreach (var dep in dependencies)
+            {
+                Console.WriteLine(dep);
             }
 
             Console.WriteLine("===========");

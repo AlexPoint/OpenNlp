@@ -206,14 +206,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return jjMoveNfa_0(state, pos + 1);
         }
 
-        private static readonly ulong[] jjbitVec0 =
+        private static readonly long[] jjbitVec0 =
         {
-            0xfffffffffffffffeL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL
+            unchecked((long)0xfffffffffffffffeL), unchecked((long)0xffffffffffffffffL), unchecked((long)0xffffffffffffffffL), unchecked((long)0xffffffffffffffffL)
         };
 
-        private static readonly ulong[] jjbitVec2 =
+        private static readonly long[] jjbitVec2 =
         {
-            0x0L, 0x0L, 0xffffffffffffffffL, 0xffffffffffffffffL
+            0x0L, 0x0L, unchecked((long)0xffffffffffffffffL), unchecked((long)0xffffffffffffffffL)
         };
 
         private int jjMoveNfa_0(int startState, int curPos)
@@ -229,7 +229,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     ReInitRounds();
                 if (curChar < 64)
                 {
-                    ulong l = (ulong) 1L << curChar;
+                    var l = 1L << curChar;
                     do
                     {
                         switch (jjstateSet[--i])
@@ -397,7 +397,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                 }
                                 break;
                             case 10:
-                                if ((0xffff7fffffffdbffL & l) != 0L)
+                                if ((unchecked((long)0xffff7fffffffdbffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(0, 2);
                                 }
@@ -559,7 +559,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 else if (curChar < 128)
                 {
-                    ulong l = (ulong) 1L << (curChar & 077);
+                    var l = 1L << (curChar & 077);
                     do
                     {
                         switch (jjstateSet[--i])
@@ -570,7 +570,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                     kind = 4;
                                 break;
                             case 0:
-                                if ((0x87ffffff57fffffeL & l) != 0L)
+                                if ((unchecked((long)0x87ffffff57fffffeL) & l) != 0L)
                                 {
                                     if (kind > 8)
                                         kind = 8;
@@ -588,7 +588,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                 }
                                 break;
                             case 5:
-                                if ((0x87ffffff57fffffeL & l) == 0L)
+                                if ((unchecked((long)0x87ffffff57fffffeL) & l) == 0L)
                                     break;
                                 if (kind > 8)
                                     kind = 8;
@@ -597,7 +597,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             }
                                 break;
                             case 6:
-                                if ((0xbfffffffd7fffffeL & l) == 0L)
+                                if ((unchecked((long)0xbfffffffd7fffffeL) & l) == 0L)
                                     break;
                                 if (kind > 8)
                                     kind = 8;
@@ -632,9 +632,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     int hiByte = (curChar >> 8);
                     int i1 = hiByte >> 6;
-                    ulong l1 = (ulong)1L << (hiByte & 077);
+                    var l1 = 1L << (hiByte & 077);
                     int i2 = (curChar & 0xff) >> 6;
-                    ulong l2 = (ulong)1L << (curChar & 077);
+                    var l2 = 1L << (curChar & 077);
                     do
                     {
                         switch (jjstateSet[--i])
@@ -688,7 +688,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             18, 19, 20, 21,
         };
 
-        private static /*readonly*/ bool jjCanMove_0(int hiByte, int i1, int i2, ulong l1, ulong l2)
+        private static /*readonly*/ bool jjCanMove_0(int hiByte, int i1, int i2, long l1, long l2)
         {
             switch (hiByte)
             {

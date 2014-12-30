@@ -82,7 +82,18 @@ namespace Test
                 Console.WriteLine(dep);
             }*/
 
-            var charStream = "CONJP < (CC <: /^(?i:but|and)$/ $+ (RB=head <: /^(?i:not)$/))";
+
+            for (var i = 0; i < 256; i++)
+            {
+                var curChar = (char) i;
+                //var res = (curChar & ~077);
+                var res = (curChar % 64);
+                Console.WriteLine("{0}({1}) -> {2}", curChar, i, res);
+            }
+            /*TregexPattern rearrangeNowThatTregex = TregexPattern.compile("ADVP=advp <1 (RB < /^(?i:now)$/) <2 (SBAR=sbar <1 (IN < /^(?i:that)$/))");
+            Console.WriteLine(rearrangeNowThatTregex);*/
+
+            /*var charStream = "CONJP < (CC <: /^(?i:but|and)$/ $+ (RB=head <: /^(?i:not)$/))";
             var reader = new StringReader(charStream);
             var stream = new SimpleCharStream(reader);
             Console.WriteLine(charStream);
@@ -91,7 +102,7 @@ namespace Test
             {
                 Console.WriteLine(c);
                 c = stream.readChar();
-            }
+            }*/
             
             Console.WriteLine("===========");
             Console.WriteLine("OK");

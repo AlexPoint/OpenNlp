@@ -1201,14 +1201,23 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
 /** Token literal values. */
 
+        /*public static readonly String[] jjstrLiteralImages =
+        {
+            "", null, null, null, null, "\x133", "\x151\x146", "\x156\x157\x164",
+            "\x145\x170\x151\x163\x164\x163", "\x144\x145\x154\x145\x164\x145", "\x160\x162\x165\x156\x145",
+            "\x162\x145\x154\x141\x142\x145\x154", "\x145\x170\x143\x151\x163\x145", "\x151\x156\x163\x145\x162\x164", "\x155\x157\x166\x145",
+            "\x162\x145\x160\x154\x141\x143\x145", "\x143\x162\x145\x141\x164\x145\x123\x165\x142\x164\x162\x145\x145",
+            "\x141\x144\x152\x157\x151\x156", "\x141\x144\x152\x157\x151\x156\x110", "\x141\x144\x152\x157\x151\x156\x106",
+            "\x143\x157\x151\x156\x144\x145\x170", null, "\x135", null, null, null, null, null, null, null, null, null, "\x51",
+        };*/
         public static readonly String[] jjstrLiteralImages =
         {
-            "", null, null, null, null, @"\133", @"\151\146", @"\156\157\164",
-            @"\145\170\151\163\164\163", @"\144\145\154\145\164\145", @"\160\162\165\156\145",
-            @"\162\145\154\141\142\145\154", @"\145\170\143\151\163\145", @"\151\156\163\145\162\164", @"\155\157\166\145",
-            @"\162\145\160\154\141\143\145", @"\143\162\145\141\164\145\123\165\142\164\162\145\145",
-            @"\141\144\152\157\151\156", @"\141\144\152\157\151\156\110", @"\141\144\152\157\151\156\106",
-            @"\143\157\151\156\144\145\170", null, @"\135", null, null, null, null, null, null, null, null, null, @"\51",
+            "", null, null, null, null, "[", "if", "not",
+            "exists", "delete", "prune",
+            "relabel", "excise", "insert", "move",
+            "replace", "createSubtree",
+            "adjoin", "adjoinH", "adjoinF",
+            "coindex", null, "]", null, null, null, null, null, null, null, null, null, ")",
         };
 
         protected Token jjFillToken()

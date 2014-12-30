@@ -67,7 +67,7 @@ namespace Test
             }*/
 
             // parsing
-            var sentence = "This is a test.";
+            /*var sentence = "This is a test.";
             var modelPath = currentDirectory + "../Resources/Models/";
 			var parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(modelPath, true, false);
             var parse = parser.DoParse(sentence);
@@ -81,7 +81,7 @@ namespace Test
             foreach (var dep in dependencies)
             {
                 Console.WriteLine(dep);
-            }
+            }*/
 
 
             /*for (var i = 0; i < 256; i++)
@@ -93,8 +93,8 @@ namespace Test
                 Console.WriteLine("{0}({1}) -> {2}|{3}", curChar, i, res1, res2);
             }*/
 
-            /*TsurgeonPattern rearrangeNowThatTsurgeon = Tsurgeon.parseOperation("[relabel advp SBAR] [excise sbar sbar]");
-            Console.WriteLine(rearrangeNowThatTsurgeon);*/
+            TsurgeonPattern rearrangeNowThatTsurgeon = Tsurgeon.parseOperation("createSubtree CONJP start end");
+            Console.WriteLine(rearrangeNowThatTsurgeon);
 
             /*var pattern = TregexPattern.compile("CONJP < (CC <: /^(?i:but|and)$/ $+ (RB=head <: /^(?i:not)$/))");
             Console.WriteLine(pattern);*/

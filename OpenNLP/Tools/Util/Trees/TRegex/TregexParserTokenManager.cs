@@ -559,7 +559,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 else if (curChar < 128)
                 {
-                    var l = 1L << (curChar & 077);
+                    //var l = 1L << (curChar & 077);
+                    var l = 1L << (curChar % 64);
                     do
                     {
                         switch (jjstateSet[--i])
@@ -632,9 +633,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     int hiByte = (curChar >> 8);
                     int i1 = hiByte >> 6;
-                    var l1 = 1L << (hiByte & 077);
+                    //var l1 = 1L << (hiByte & 077);
+                    var l1 = 1L << (hiByte % 64);
                     int i2 = (curChar & 0xff) >> 6;
-                    var l2 = 1L << (curChar & 077);
+                    //var l2 = 1L << (curChar & 077);
+                    var l2 = 1L << (curChar % 64);
                     do
                     {
                         switch (jjstateSet[--i])
@@ -788,7 +791,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     if (jjmatchedPos + 1 < curPos)
                         input_stream.backup(curPos - jjmatchedPos - 1);
-                    if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
+                    //if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
+                    if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind % 64))) != 0L)
                     {
                         matchedToken = jjFillToken();
                         return matchedToken;

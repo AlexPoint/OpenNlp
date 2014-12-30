@@ -66,7 +66,7 @@ namespace Test
             }*/
 
             // parsing
-            /*var sentence = "This is a test.";
+            var sentence = "This is a test.";
             var modelPath = currentDirectory + "../Resources/Models/";
 			var parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(modelPath, true, false);
             var parse = parser.DoParse(sentence);
@@ -80,16 +80,16 @@ namespace Test
             foreach (var dep in dependencies)
             {
                 Console.WriteLine(dep);
-            }*/
+            }
 
 
-            for (var i = 0; i < 256; i++)
+            /*for (var i = 0; i < 256; i++)
             {
                 var curChar = (char) i;
                 //var res = (curChar & ~077);
                 var res = (curChar % 64);
                 Console.WriteLine("{0}({1}) -> {2}", curChar, i, res);
-            }
+            }*/
             /*TregexPattern rearrangeNowThatTregex = TregexPattern.compile("ADVP=advp <1 (RB < /^(?i:now)$/) <2 (SBAR=sbar <1 (IN < /^(?i:that)$/))");
             Console.WriteLine(rearrangeNowThatTregex);*/
 

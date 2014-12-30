@@ -474,14 +474,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             return jjMoveNfa_0(state, pos + 1);
         }
 
-        private static readonly ulong[] jjbitVec0 =
+        private static readonly long[] jjbitVec0 =
         {
-            0xfffffffffffffffeL, 0xffffffffffffffffL, 0xffffffffffffffffL, 0xffffffffffffffffL
+            unchecked ((long)0xfffffffffffffffeL), unchecked ((long)0xffffffffffffffffL), unchecked ((long)0xffffffffffffffffL), unchecked ((long)0xffffffffffffffffL)
         };
 
-        private static readonly ulong[] jjbitVec2 =
+        private static readonly long[] jjbitVec2 =
         {
-            0x0L, 0x0L, 0xffffffffffffffffL, 0xffffffffffffffffL
+            0x0L, 0x0L, unchecked ((long)0xffffffffffffffffL), unchecked ((long)0xffffffffffffffffL)
         };
 
         private int jjMoveNfa_0(int startState, int curPos)
@@ -497,13 +497,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     ReInitRounds();
                 if (curChar < 64)
                 {
-                    ulong l = (ulong)1L << curChar;
+                    var l = 1L << curChar;
                     do
                     {
                         switch (jjstateSet[--i])
                         {
                             case 0:
-                                if ((0xfbfffcfeffffdbffL & l) != 0L)
+                                if ((unchecked((long)0xfbfffcfeffffdbffL) & l) != 0L)
                                 {
                                     if (kind > 30)
                                         kind = 30;
@@ -579,7 +579,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             }
                                 break;
                             case 6:
-                                if ((0xffffffffffffdbffL & l) != 0L)
+                                if ((unchecked((long)0xffffffffffffdbffL) & l) != 0L)
                                 {
                                     jjAddStates(10, 12);
                                 }
@@ -600,7 +600,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             }
                                 break;
                             case 13:
-                                if ((0xfbfffcfeffffdbffL & l) == 0L)
+                                if ((unchecked((long)0xfbfffcfeffffdbffL) & l) == 0L)
                                     break;
                                 if (kind > 30)
                                     kind = 30;
@@ -618,7 +618,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             }
                                 break;
                             case 15:
-                                if ((0xf3fffcfa00000000L & l) == 0L)
+                                if ((unchecked((long)0xf3fffcfa00000000L) & l) == 0L)
                                     break;
                                 if (kind > 31)
                                     kind = 31;
@@ -659,7 +659,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                 }
                                 break;
                             case 39:
-                                if ((0xffffffffffffdbffL & l) != 0L)
+                                if ((unchecked((long)0xffffffffffffdbffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(13, 15);
                                 }
@@ -708,7 +708,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                 }
                                 break;
                             case 46:
-                                if ((0xffffffffffffdbffL & l) != 0L)
+                                if ((unchecked((long)0xffffffffffffdbffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(27, 29);
                                 }
@@ -723,7 +723,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             }
                                 break;
                             case 52:
-                                if ((0xffffffffffffdbffL & l) != 0L)
+                                if ((unchecked((long)0xffffffffffffdbffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(30, 32);
                                 }
@@ -745,13 +745,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 }
                 else if (curChar < 128)
                 {
-                    ulong l = (ulong)1L << (curChar & 077);
+                    //var l = 1L << (curChar & 077);
+                    var l = 1L << (curChar %64);
                     do
                     {
                         switch (jjstateSet[--i])
                         {
                             case 0:
-                                if ((0xffffffffd7ffffffL & l) != 0L)
+                                if ((unchecked((long)0xffffffffd7ffffffL) & l) != 0L)
                                 {
                                     if (kind > 30)
                                         kind = 30;
@@ -789,7 +790,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                 }
                                 break;
                             case 6:
-                                if ((0xefffffffefffffffL & l) != 0L)
+                                if ((unchecked((long)0xefffffffefffffffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(10, 12);
                                 }
@@ -811,7 +812,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                 }
                                 break;
                             case 13:
-                                if ((0xffffffffd7ffffffL & l) == 0L)
+                                if ((unchecked((long)0xffffffffd7ffffffL) & l) == 0L)
                                     break;
                                 if (kind > 30)
                                     kind = 30;
@@ -917,7 +918,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             }
                                 break;
                             case 46:
-                                if ((0xffffffffcfffffffL & l) != 0L)
+                                if ((unchecked((long)0xffffffffcfffffffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(27, 29);
                                 }
@@ -941,7 +942,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                 }
                                 break;
                             case 52:
-                                if ((0xffffffffcfffffffL & l) != 0L)
+                                if ((unchecked((long)0xffffffffcfffffffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(30, 32);
                                 }
@@ -973,9 +974,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 {
                     int hiByte = (curChar >> 8);
                     int i1 = hiByte >> 6;
-                    long l1 = 1L << (hiByte & 077);
+                    //long l1 = 1L << (hiByte & 077);
+                    long l1 = 1L << (hiByte % 64);
                     int i2 = (curChar & 0xff) >> 6;
-                    long l2 = 1L << (curChar & 077);
+                    //long l2 = 1L << (curChar & 077);
+                    long l2 = 1L << (curChar % 64);
                     do
                     {
                         switch (jjstateSet[--i])
@@ -1095,13 +1098,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     ReInitRounds();
                 if (curChar < 64)
                 {
-                    ulong l = (ulong)1L << curChar;
+                    var l = 1L << curChar;
                     do
                     {
                         switch (jjstateSet[--i])
                         {
                             case 0:
-                                if ((0xfbfffcfeffffdbffL & l) == 0L)
+                                if ((unchecked((long)0xfbfffcfeffffdbffL) & l) == 0L)
                                     break;
                                 kind = 21;
                                 jjstateSet[jjnewStateCnt++] = 0;
@@ -1113,13 +1116,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 }
                 else if (curChar < 128)
                 {
-                    ulong l = (ulong)1L << (curChar & 077);
+                    //var l = 1L << (curChar & 077);
+                    var l = 1L << (curChar % 64);
                     do
                     {
                         switch (jjstateSet[--i])
                         {
                             case 0:
-                                if ((0xffffffffd7ffffffL & l) == 0L)
+                                if ((unchecked ((long)0xffffffffd7ffffffL) & l) == 0L)
                                     break;
                                 kind = 21;
                                 jjstateSet[jjnewStateCnt++] = 0;
@@ -1133,9 +1137,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 {
                     int hiByte = (curChar >> 8);
                     int i1 = hiByte >> 6;
-                    long l1 = 1L << (hiByte & 077);
+                    //long l1 = 1L << (hiByte & 077);
+                    long l1 = 1L << (hiByte % 64);
                     int i2 = (curChar & 0xff) >> 6;
-                    long l2 = 1L << (curChar & 077);
+                    //long l2 = 1L << (curChar & 077);
+                    long l2 = 1L << (curChar % 64);
                     do
                     {
                         switch (jjstateSet[--i])
@@ -1185,9 +1191,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             switch (hiByte)
             {
                 case 0:
-                    return ((jjbitVec2[i2] & (ulong)l2) != 0L);
+                    return ((jjbitVec2[i2] & l2) != 0L);
                 default:
-                    if ((jjbitVec0[i1] & (ulong)l1) != 0L)
+                    if ((jjbitVec0[i1] & l1) != 0L)
                         return true;
                     return false;
             }
@@ -1308,7 +1314,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 {
                     if (jjmatchedPos + 1 < curPos)
                         input_stream.backup(curPos - jjmatchedPos - 1);
-                    if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
+                    //if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
+                    if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind % 64))) != 0L)
                     {
                         matchedToken = jjFillToken();
                         if (jjnewLexState[jjmatchedKind] != -1)

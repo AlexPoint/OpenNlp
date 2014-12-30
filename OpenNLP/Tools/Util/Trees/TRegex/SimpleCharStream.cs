@@ -126,7 +126,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             int i;
             try
             {
-                if ((i = inputStream.Read(buffer, maxNextCharInd, available - maxNextCharInd)) == -1)
+                //if ((i = inputStream.Read(buffer, maxNextCharInd, available - maxNextCharInd)) == -1)
+                if ((i = inputStream.Read(buffer, maxNextCharInd, available - maxNextCharInd)) == 0)
                 {
                     inputStream.Close();
                     throw new IOException();
@@ -135,12 +136,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     maxNextCharInd += i;
                 return;
             }
-            catch (IOException e)
+            catch (Exception e)
             {
-                --bufpos;
-                backup(0);
-                if (tokenBegin == -1)
-                    tokenBegin = bufpos;
+                if (e is IOException || e is ObjectDisposedException)
+                {
+                    --bufpos;
+                    backup(0);
+                    if (tokenBegin == -1)
+                        tokenBegin = bufpos; 
+                }
                 throw e;
             }
         }

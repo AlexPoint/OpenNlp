@@ -1251,12 +1251,16 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 {
                     curChar = input_stream.BeginToken();
                 }
-                catch ( /*java.io.*/IOException e)
+                catch ( /*java.io.*/Exception e)
                 {
-                    jjmatchedKind = 0;
-                    jjmatchedPos = -1;
-                    matchedToken = jjFillToken();
-                    return matchedToken;
+                    if (e is IOException || e is ObjectDisposedException)
+                    {
+                        jjmatchedKind = 0;
+                        jjmatchedPos = -1;
+                        matchedToken = jjFillToken();
+                        return matchedToken;
+                    }
+                    throw e;
                 }
 
                 switch (curLexState)

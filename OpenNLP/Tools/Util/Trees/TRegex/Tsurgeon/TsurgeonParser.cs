@@ -98,7 +98,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             {
                                 case OPEN_BRACKET:
                                 {
-                                    label_1:
+                                    //label_1:
                                     while (true)
                                     {
                                         jj_consume_token(OPEN_BRACKET);
@@ -124,15 +124,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                                 goto post_label_1;
                                         }
                                     }
-                                post_label_1:
+                                    post_label_1:
                                     {
                                         jjtree.closeNodeScope(jjtn000, true);
-                                    jjtc000 = false;
-                                    TsurgeonPattern[] array = new TsurgeonPattern[results.Count];
-                                    {
-                                        if ("" != null) return new TsurgeonPatternRoot(results.ToArray());
-                                    }
-                                    break;
+                                        jjtc000 = false;
+                                        TsurgeonPattern[] array = new TsurgeonPattern[results.Count];
+                                        {
+                                            if ("" != null)
+                                            {
+                                                return new TsurgeonPatternRoot(results.ToArray());
+                                            }
+                                        }
+                                        break;
                                     }
                                 }
                                 default:
@@ -288,7 +291,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             jjtree.closeNodeScope(jjtn000, true);
                             jjtc000 = false;
                             {
-                                if ("" != null) return new ReplaceNode(child1, new []{child2});
+                                if ("" != null) return new ReplaceNode(child1, new[] {child2});
                             }
                         }
                         else if (jj_2_8(3))
@@ -1355,8 +1358,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         private int jj_la;
         private int jj_gen;
         private readonly int[] jj_la1 = new int[10];
-        private static int[] jj_la1_0;
-        private static int[] jj_la1_1;
+        //private static int[] jj_la1_0;
+        private static int[] jj_la1_0 = new int[]
+        {
+            0x20, 0x1ffe00, 0x20, 0x1600, 0x4000, 0x1f0000, 0x2000000, unchecked ((int) 0xc2000000),
+            unchecked ((int) 0xc2000000), unchecked ((int) 0xc2000000),
+        };
+
+        //private static int[] jj_la1_1;
+        private static int[] jj_la1_1 = new int[] {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1,};
 
         /*private static 
         {
@@ -1370,32 +1380,41 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             {0x20, 0x1ffe00, 0x20, 0x1600, 0x4000, 0x1f0000, 0x2000000, 0xc2000000, 0xc2000000, 0xc2000000,};
         }*/
 
-        private static void jj_la1_init_1()
+        /*private static void jj_la1_init_1()
         {
             jj_la1_1 = new int[] {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1,};
-        }
+        }*/
 
         private readonly JJCalls[] jj_2_rtns = new JJCalls[10];
         private bool jj_rescan = false;
         private int jj_gc = 0;
 
         /** Constructor with InputStream. */
-        public TsurgeonParser(/*java.io.InputStream*/Stream stream):
-     this(stream, null){}
+
+        public TsurgeonParser( /*java.io.InputStream*/ Stream stream) :
+            this(stream, null)
+        {
+        }
 
         /** Constructor with InputStream and supplied encoding */
-        public TsurgeonParser(/*java.io.InputStream*/Stream stream, String encoding) {
+
+        public TsurgeonParser( /*java.io.InputStream*/ Stream stream, String encoding)
+        {
             try
             {
                 jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1);
-            } catch(/*java.io.UnsupportedEncodingException*/Exception e) { throw new SystemException(e.Message); }
-    token_source = new TsurgeonParserTokenManager(jj_input_stream);
-    token = new Token();
-    jj_ntk = -1;
-    jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
-    for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
-  }
+            }
+            catch ( /*java.io.UnsupportedEncodingException*/Exception e)
+            {
+                throw new SystemException(e.Message);
+            }
+            token_source = new TsurgeonParserTokenManager(jj_input_stream);
+            token = new Token();
+            jj_ntk = -1;
+            jj_gen = 0;
+            for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+        }
 
         /** Reinitialise. */
         /*public void ReInit(java.io.InputStream stream) {
@@ -1414,15 +1433,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
   }*/
 
         /** Constructor. */
-        public TsurgeonParser(/*java.io.Reader*/TextReader stream) {
-    jj_input_stream = new SimpleCharStream(stream, 1, 1);
-    token_source = new TsurgeonParserTokenManager(jj_input_stream);
-    token = new Token();
-    jj_ntk = -1;
-    jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
-    for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
-  }
+
+        public TsurgeonParser( /*java.io.Reader*/ TextReader stream)
+        {
+            jj_input_stream = new SimpleCharStream(stream, 1, 1);
+            token_source = new TsurgeonParserTokenManager(jj_input_stream);
+            token = new Token();
+            jj_ntk = -1;
+            jj_gen = 0;
+            for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+        }
 
         /** Reinitialise. */
         /*public void ReInit(java.io.Reader stream) {

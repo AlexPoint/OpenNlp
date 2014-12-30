@@ -20,22 +20,25 @@ namespace OpenNLP.Tools.Util.Trees
    * return value for children() for leaf nodes if desired.
    * This can also be used elsewhere when you want an empty Tree array.
    */
-  public static readonly Tree[] EMPTY_TREE_ARRAY = new Tree[0];
+        public static readonly Tree[] EMPTY_TREE_ARRAY = new Tree[0];
 
-        public Tree() { }
+        public Tree()
+        {
+        }
 
         // TODO: build SP Tree from an OpenNlp Parse object
         public Tree(Parse p)
         {
             parse = p;
         }
-        
+
 
         /**
          * Returns the last child of a tree, or <code>null</code> if none.
          *
          * @return The last child
          */
+
         public Tree lastChild()
         {
             Tree[] kids = children();
@@ -56,60 +59,78 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @param hf The headfinding algorithm to use
    */
-        public void percolateHeads(HeadFinder hf) {
-    Label nodeLabel = label();
-    if (isLeaf()) {
-      // Sanity check: word() is usually set by the TreeReader.
-      if (nodeLabel is HasWord) {
-        HasWord w = (HasWord) nodeLabel;
-        if (w.word() == null) {
-          w.setWord(nodeLabel.value());
+
+        public void percolateHeads(HeadFinder hf)
+        {
+            Label nodeLabel = label();
+            if (isLeaf())
+            {
+                // Sanity check: word() is usually set by the TreeReader.
+                if (nodeLabel is HasWord)
+                {
+                    HasWord w = (HasWord) nodeLabel;
+                    if (w.word() == null)
+                    {
+                        w.setWord(nodeLabel.value());
+                    }
+                }
+
+            }
+            else
+            {
+                foreach (Tree kid in children())
+                {
+                    kid.percolateHeads(hf);
+                }
+
+                /*final*/
+                Tree head = hf.determineHead(this);
+                if (head != null)
+                {
+                    /*final*/
+                    Label headLabel = head.label();
+
+                    // Set the head tag.
+                    String headTag = (headLabel is HasTag) ? ((HasTag) headLabel).tag() : null;
+                    if (headTag == null && head.isLeaf())
+                    {
+                        // below us is a leaf
+                        headTag = nodeLabel.value();
+                    }
+
+                    // Set the head word
+                    String headWord = (headLabel is HasWord) ? ((HasWord) headLabel).word() : null;
+                    if (headWord == null && head.isLeaf())
+                    {
+                        // below us is a leaf
+                        // this might be useful despite case for leaf above in
+                        // case the leaf label type doesn't support word()
+                        headWord = headLabel.value();
+                    }
+
+                    // Set the head index
+                    int headIndex = (headLabel is HasIndex) ? ((HasIndex) headLabel).index() : -1;
+
+                    if (nodeLabel is HasWord)
+                    {
+                        ((HasWord) nodeLabel).setWord(headWord);
+                    }
+                    if (nodeLabel is HasTag)
+                    {
+                        ((HasTag) nodeLabel).setTag(headTag);
+                    }
+                    if (nodeLabel is HasIndex && headIndex >= 0)
+                    {
+                        ((HasIndex) nodeLabel).setIndex(headIndex);
+                    }
+
+                }
+                else
+                {
+                    //System.err.println("Head is null: " + this);
+                }
+            }
         }
-      }
-
-    } else {
-      foreach (Tree kid in children()) {
-        kid.percolateHeads(hf);
-      }
-
-      /*final*/ Tree head = hf.determineHead(this);
-      if (head != null) {
-        /*final*/ Label headLabel = head.label();
-
-        // Set the head tag.
-        String headTag = (headLabel is HasTag) ? ((HasTag) headLabel).tag() : null;
-        if (headTag == null && head.isLeaf()) {
-          // below us is a leaf
-          headTag = nodeLabel.value();
-        }
-
-        // Set the head word
-        String headWord = (headLabel is HasWord) ? ((HasWord) headLabel).word() : null;
-        if (headWord == null && head.isLeaf()) {
-          // below us is a leaf
-          // this might be useful despite case for leaf above in
-          // case the leaf label type doesn't support word()
-          headWord = headLabel.value();
-        }
-
-        // Set the head index
-        int headIndex = (headLabel is HasIndex) ? ((HasIndex) headLabel).index() : -1;
-
-        if (nodeLabel is HasWord) {
-          ((HasWord) nodeLabel).setWord(headWord);
-        }
-        if (nodeLabel is HasTag) {
-          ((HasTag) nodeLabel).setTag(headTag);
-        }
-        if (nodeLabel is HasIndex && headIndex >= 0) {
-          ((HasIndex) nodeLabel).setIndex(headIndex);
-        }
-
-      } else {
-        //System.err.println("Head is null: " + this);
-      }
-    }
-  }
 
         /**
    * Makes a deep copy of not only the Tree structure but of the labels as well.
@@ -119,12 +140,14 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return A deep copy of the tree structure and its labels
    */
-  public Tree deepCopy() {
-    return deepCopy(treeFactory());
-  }
+
+        public Tree deepCopy()
+        {
+            return deepCopy(treeFactory());
+        }
 
 
-  /**
+        /**
    * Makes a deep copy of not only the Tree structure but of the labels as well.
    * The new tree will have nodes made by the given TreeFactory.
    * Each Label is copied using the labelFactory() returned
@@ -137,12 +160,14 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A Tree that is a deep copy of the tree structure and
    *         Labels of the original tree.
    */
-  public Tree deepCopy(TreeFactory tf) {
-    return deepCopy(tf, label().labelFactory());
-  }
+
+        public Tree deepCopy(TreeFactory tf)
+        {
+            return deepCopy(tf, label().labelFactory());
+        }
 
 
-  /**
+        /**
    * Makes a deep copy of not only the Tree structure but of the labels as well.
    * Each tree is copied with the given TreeFactory.
    * Each Label is copied using the given LabelFactory.
@@ -157,31 +182,36 @@ namespace OpenNLP.Tools.Util.Trees
    *         Labels of the original tree.
    */
 
-  //@SuppressWarnings({"unchecked"})
-  public Tree deepCopy(TreeFactory tf, LabelFactory lf) {
-    Label lab = lf.newLabel(label());
-    if (isLeaf()) {
-      return tf.newLeaf(lab);
-    }
-    Tree[] kids = children();
-    // NB: The below list may not be of type Tree but TreeGraphNode, so we leave it untyped
-    var newKids = new List<Tree>();
-    foreach (Tree kid in kids) {
-      newKids.Add(kid.deepCopy(tf, lf));
-    }
-    return tf.newTreeNode(lab, newKids);
-  }
-        
+        //@SuppressWarnings({"unchecked"})
+        public Tree deepCopy(TreeFactory tf, LabelFactory lf)
+        {
+            Label lab = lf.newLabel(label());
+            if (isLeaf())
+            {
+                return tf.newLeaf(lab);
+            }
+            Tree[] kids = children();
+            // NB: The below list may not be of type Tree but TreeGraphNode, so we leave it untyped
+            var newKids = new List<Tree>();
+            foreach (Tree kid in kids)
+            {
+                newKids.Add(kid.deepCopy(tf, lf));
+            }
+            return tf.newTreeNode(lab, newKids);
+        }
+
         /**
          * insert <code>dtr</code> after <code>position</code> existing
          * daughters in <code>this</code>.
          */
+
         public void insertDtr(Tree dtr, int position)
         {
             Tree[] kids = children();
             if (position > kids.Length)
             {
-                throw new ArgumentException("Can't insert tree after the " + position + "th daughter in " + this + "; only " + kids.Length + " daughters exist!");
+                throw new ArgumentException("Can't insert tree after the " + position + "th daughter in " + this +
+                                            "; only " + kids.Length + " daughters exist!");
             }
             Tree[] newKids = new Tree[kids.Length + 1];
             int i = 0;
@@ -203,6 +233,7 @@ namespace OpenNLP.Tools.Util.Trees
    * to determine domination.
    * t.dominates(t) returns false.
    */
+
         public bool dominates(Tree t)
         {
             List<Tree> dPath = dominationPath(t);
@@ -215,12 +246,13 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @param label The label
    */
-  //@Override
-  public void setLabel(Label label) {
-    // a noop
-  }
+        //@Override
+        public void setLabel(Label label)
+        {
+            // a noop
+        }
 
-  /**
+        /**
 * Gets the yield of the tree.  The <code>Label</code> of all leaf nodes
 * is returned
 * as a list ordered by the natural left to right order of the
@@ -229,12 +261,13 @@ namespace OpenNLP.Tools.Util.Trees
 *
 * @return a <code>List</code> of the data in the tree's leaves.
 */
-  public List<Label> yield()
-  {
-      return yield(new List<Label>());
-  }
 
-  /**
+        public List<Label> yield()
+        {
+            return yield(new List<Label>());
+        }
+
+        /**
    * Gets the yield of the tree.  The <code>Label</code> of all leaf nodes
    * is returned
    * as a list ordered by the natural left to right order of the
@@ -250,21 +283,27 @@ namespace OpenNLP.Tools.Util.Trees
    *          if not, the new yield is added to the end of the list.
    * @return a <code>List</code> of the data in the tree's leaves.
    */
-  public List<Label> yield(List<Label> y) {
-    if (isLeaf()) {
-      y.Add(label());
 
-    } else {
-      Tree[] kids = children();
-      foreach (Tree kid in kids) {
-        kid.yield(y);
-      }
-    }
-    return y;
-  }
+        public List<Label> yield(List<Label> y)
+        {
+            if (isLeaf())
+            {
+                y.Add(label());
+
+            }
+            else
+            {
+                Tree[] kids = children();
+                foreach (Tree kid in kids)
+                {
+                    kid.yield(y);
+                }
+            }
+            return y;
+        }
 
 
-  /**
+        /**
    * Adds the tree t at the index position among the daughters.  Note
    * that this method will throw an {@link ArrayIndexOutOfBoundsException} if
    * the daughter index is too big for the list of daughters.
@@ -272,31 +311,33 @@ namespace OpenNLP.Tools.Util.Trees
    * @param i the index position at which to add the new daughter
    * @param t the new daughter
    */
-  public void addChild(int i, Tree t)
-  {
-      Tree[] kids = children();
-      Tree[] newKids = new Tree[kids.Length + 1];
-      if (i != 0)
-      {
-          Array.Copy(kids, 0, newKids, 0, i);
-      }
-      newKids[i] = t;
-      if (i != kids.Length)
-      {
-          Array.Copy(kids, i, newKids, i + 1, kids.Length - i);
-      }
-      setChildren(newKids);
-  }
 
-  /**
+        public void addChild(int i, Tree t)
+        {
+            Tree[] kids = children();
+            Tree[] newKids = new Tree[kids.Length + 1];
+            if (i != 0)
+            {
+                Array.Copy(kids, 0, newKids, 0, i);
+            }
+            newKids[i] = t;
+            if (i != kids.Length)
+            {
+                Array.Copy(kids, i, newKids, i + 1, kids.Length - i);
+            }
+            setChildren(newKids);
+        }
+
+        /**
    * Adds the tree t at the last index position among the daughters.
    *
    * @param t the new daughter
    */
-  public void addChild(Tree t)
-  {
-      addChild(children().Length, t);
-  }
+
+        public void addChild(Tree t)
+        {
+            addChild(children().Length, t);
+        }
 
         /**
          * Returns the path of nodes leading down to a dominated node,
@@ -305,6 +346,7 @@ namespace OpenNLP.Tools.Util.Trees
          * equality (==) is the relevant criterion.
          * t.dominationPath(t) returns null.
          */
+
         public List<Tree> dominationPath(Tree t)
         {
             //Tree[] result = dominationPathHelper(t, 0);
@@ -371,7 +413,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public int numChildren()
         {
-            return parse.ChildCount;
+            return children().Length;
         }
 
         /**
@@ -417,12 +459,14 @@ namespace OpenNLP.Tools.Util.Trees
    * @param children The array of children, each a <code>Tree</code>
    * @see #setChildren(List)
    */
-  public void setChildren(Tree[] children) {
-    throw new InvalidOperationException();
-  }
+
+        public void setChildren(Tree[] children)
+        {
+            throw new InvalidOperationException();
+        }
 
 
-  /**
+        /**
    * Set the children of this tree node to the given list.  This
    * method is implemented in the <code>Tree</code> class by
    * converting the <code>List</code> into a tree array and calling
@@ -439,16 +483,21 @@ namespace OpenNLP.Tools.Util.Trees
    *          not copied).
    * @see #setChildren(Tree[])
    */
-  public void setChildren(List<Tree> childTreesList) {
-    if (childTreesList == null || !childTreesList.Any()) {
-      setChildren(EMPTY_TREE_ARRAY);
-    } else {
-      Tree[] childTrees = childTreesList.ToArray();
-      setChildren(childTrees);
-    }
-  }
 
-  /**
+        public void setChildren(List<Tree> childTreesList)
+        {
+            if (childTreesList == null || !childTreesList.Any())
+            {
+                setChildren(EMPTY_TREE_ARRAY);
+            }
+            else
+            {
+                Tree[] childTrees = childTreesList.ToArray();
+                setChildren(childTrees);
+            }
+        }
+
+        /**
 * Replaces the <code>i</code>th child of <code>this</code> with the tree t.
 * Note
 * that this method will throw an {@link ArrayIndexOutOfBoundsException} if
@@ -458,15 +507,16 @@ namespace OpenNLP.Tools.Util.Trees
 * @param t The new child
 * @return The tree that was previously the ith d
 */
-  public Tree setChild(int i, Tree t)
-  {
-      Tree[] kids = children();
-      Tree old = kids[i];
-      kids[i] = t;
-      return old;
-  }
 
-  /**
+        public Tree setChild(int i, Tree t)
+        {
+            Tree[] kids = children();
+            Tree old = kids[i];
+            kids[i] = t;
+            return old;
+        }
+
+        /**
 * Destructively removes the child at some daughter index and returns it.
 * Note
 * that this method will throw an {@link ArrayIndexOutOfBoundsException} if
@@ -475,25 +525,26 @@ namespace OpenNLP.Tools.Util.Trees
 * @param i The daughter index
 * @return The tree at that daughter index
 */
-  public Tree removeChild(int i)
-  {
-      Tree[] kids = children();
-      Tree kid = kids[i];
-      Tree[] newKids = new Tree[kids.Length - 1];
-      for (int j = 0; j < newKids.Length; j++)
-      {
-          if (j < i)
-          {
-              newKids[j] = kids[j];
-          }
-          else
-          {
-              newKids[j] = kids[j + 1];
-          }
-      }
-      setChildren(newKids);
-      return kid;
-  }
+
+        public Tree removeChild(int i)
+        {
+            Tree[] kids = children();
+            Tree kid = kids[i];
+            Tree[] newKids = new Tree[kids.Length - 1];
+            for (int j = 0; j < newKids.Length; j++)
+            {
+                if (j < i)
+                {
+                    newKids[j] = kids[j];
+                }
+                else
+                {
+                    newKids[j] = kids[j + 1];
+                }
+            }
+            setChildren(newKids);
+            return kid;
+        }
 
         /**
    * Get the set of all subtrees inside the tree by returning a tree
@@ -507,11 +558,13 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return the <code>Set</code> of all subtrees in the tree.
    */
-  public Set<Tree> subTrees() {
-    return new HashSet<Tree>(subTrees(new HashSet<Tree>()));
-  }
 
-  /**
+        public Set<Tree> subTrees()
+        {
+            return new HashSet<Tree>(subTrees(new HashSet<Tree>()));
+        }
+
+        /**
    * Get the list of all subtrees inside the tree by returning a tree
    * rooted at each node.  These are <i>not</i> copies, but all share
    * structure.  The tree is regarded as a subtree of itself.
@@ -523,12 +576,14 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return the <code>List</code> of all subtrees in the tree.
    */
-  public List<Tree> subTreeList() {
-    return subTrees(new List<Tree>()).ToList();
-  }
+
+        public List<Tree> subTreeList()
+        {
+            return subTrees(new List<Tree>()).ToList();
+        }
 
 
-  /**
+        /**
    * Add the set of all subtrees inside a tree (including the tree itself)
    * to the given <code>Collection</code>.
    * <p/>
@@ -540,14 +595,17 @@ namespace OpenNLP.Tools.Util.Trees
    * @param n A collection of nodes to which the subtrees will be added.
    * @return The collection parameter with the subtrees added.
    */
-  public /*<T extends Collection<Tree>>*/ ICollection<Tree> subTrees(ICollection<Tree> n) {
-    n.Add(this);
-    Tree[] kids = children();
-    foreach (Tree kid in kids) {
-      kid.subTrees(n);
-    }
-    return n;
-  }
+
+        public /*<T extends Collection<Tree>>*/ ICollection<Tree> subTrees(ICollection<Tree> n)
+        {
+            n.Add(this);
+            Tree[] kids = children();
+            foreach (Tree kid in kids)
+            {
+                kid.subTrees(n);
+            }
+            return n;
+        }
 
         /**
    * Returns the label associated with the current node, or null
@@ -614,6 +672,7 @@ namespace OpenNLP.Tools.Util.Trees
          * @return <code>true</code> if the node is phrasal;
          *         <code>false</code> otherwise
          */
+
         public bool isPhrasal()
         {
             Tree[] kids = children();
@@ -625,6 +684,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The first child
    */
+
         public Tree firstChild()
         {
             Tree[] kids = children();
@@ -643,6 +703,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return a {@code List} of the data in the tree's pre-leaves.
    */
+
         public List<Label> preTerminalYield()
         {
             return preTerminalYield(new List<Label>());
@@ -659,17 +720,23 @@ namespace OpenNLP.Tools.Util.Trees
    *          but if not, the new yield is added to the end of the list.
    * @return a <code>List</code> of the data in the tree's pre-leaves.
    */
-        public List<Label> preTerminalYield(List<Label> y) {
-    if (isPreTerminal()) {
-      y.Add(label());
-    } else {
-      Tree[] kids = children();
-      foreach (Tree kid in kids) {
-        kid.preTerminalYield(y);
-      }
-    }
-    return y;
-  }
+
+        public List<Label> preTerminalYield(List<Label> y)
+        {
+            if (isPreTerminal())
+            {
+                y.Add(label());
+            }
+            else
+            {
+                Tree[] kids = children();
+                foreach (Tree kid in kids)
+                {
+                    kid.preTerminalYield(y);
+                }
+            }
+            return y;
+        }
 
 
         public void setValue(String value)
@@ -690,6 +757,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The parent <code>Tree</code> node or <code>null</code>
    * @see Tree#parent(Tree)
    */
+
         public Tree parent()
         {
             return new Tree(parse.Parent);
@@ -707,6 +775,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the parent <code>Tree</code> node if any;
    *         else <code>null</code>
    */
+
         public Tree parent(Tree root)
         {
             Tree[] kids = root.children();
@@ -714,18 +783,22 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
 
-        private static Tree parentHelper(Tree parent, Tree[] kids, Tree node) {
-    foreach (Tree kid in kids) {
-      if (kid == node) {
-        return parent;
-      }
-      Tree ret = node.parent(kid);
-      if (ret != null) {
-        return ret;
-      }
-    }
-    return null;
-  }
+        private static Tree parentHelper(Tree parent, Tree[] kids, Tree node)
+        {
+            foreach (Tree kid in kids)
+            {
+                if (kid == node)
+                {
+                    return parent;
+                }
+                Tree ret = node.parent(kid);
+                if (ret != null)
+                {
+                    return ret;
+                }
+            }
+            return null;
+        }
 
         /**
    * Returns the position of a Tree in the children list, if present,
@@ -740,6 +813,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param tree The tree to look for in children list
    * @return Its index in the list or -1
    */
+
         public int objectIndexOf(Tree tree)
         {
             Tree[] kids = children();
@@ -763,6 +837,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The children of the node
    */
+
         public List<Tree> getChildrenAsList()
         {
             return new List<Tree>(children());
@@ -776,20 +851,25 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return the depth
    */
-        public int depth() {
-    if (isLeaf()) {
-      return 0;
-    }
-    int maxDepth = 0;
-    Tree[] kids = children();
-    foreach (Tree kid in kids) {
-      int curDepth = kid.depth();
-      if (curDepth > maxDepth) {
-        maxDepth = curDepth;
-      }
-    }
-    return maxDepth + 1;
-  }
+
+        public int depth()
+        {
+            if (isLeaf())
+            {
+                return 0;
+            }
+            int maxDepth = 0;
+            Tree[] kids = children();
+            foreach (Tree kid in kids)
+            {
+                int curDepth = kid.depth();
+                if (curDepth > maxDepth)
+                {
+                    maxDepth = curDepth;
+                }
+            }
+            return maxDepth + 1;
+        }
 
         /**
          * Finds the distance from this node to the specified node.
@@ -798,11 +878,18 @@ namespace OpenNLP.Tools.Util.Trees
          * @param node A subtree contained in this tree
          * @return the depth
          */
+
         public int depth(Tree node)
         {
             Tree p = node.parent(this);
-            if (this == node) { return 0; }
-            if (p == null) { return -1; }
+            if (this == node)
+            {
+                return 0;
+            }
+            if (p == null)
+            {
+                return -1;
+            }
             int depth = 1;
             while (this != p)
             {
@@ -819,6 +906,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param i The daughter index
    * @return The tree at that daughter index
    */
+
         public Tree getChild(int i)
         {
             Tree[] kids = children();
@@ -832,6 +920,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    *  @return The label of a tree node as a String
    */
+
         public String nodeString()
         {
             return (value() == null) ? "" : value();

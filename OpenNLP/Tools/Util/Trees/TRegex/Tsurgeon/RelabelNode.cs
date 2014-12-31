@@ -67,7 +67,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         oneGeneralReplacementPattern.Match(m1.Groups[2].Value);
       int lastPosition = 0;
         var nextMatch = generalMatcher.NextMatch();
-      while (nextMatch != null) {
+      while (nextMatch.Success) {
         if (nextMatch.Index > lastPosition) {
           replacementPieces.Add(replacementString.Substring(lastPosition, nextMatch.Index));
         }

@@ -420,6 +420,7 @@
     <Compile Include="Tools\Util\Trees\LabeledScoredTreeReaderFactory.cs" />
     <Compile Include="Tools\Util\Trees\ModCollinsHeadFinder.cs" />
     <Compile Include="Tools\Util\Trees\NamedDependency.cs" />
+    <Compile Include="Tools\Util\Trees\ParseTree.cs" />
     <Compile Include="Tools\Util\Trees\PennTreebankLanguagePack.cs" />
     <Compile Include="Tools\Util\Trees\PennTreebankTokenizer.cs" />
     <Compile Include="Tools\Util\Trees\PennTreeReader.cs" />

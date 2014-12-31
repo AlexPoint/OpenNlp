@@ -4,10 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //using OpenNLP.Tools.Util.International.Morph;
+using OpenNLP.Tools.Util.Ling;
 using OpenNLP.Tools.Util.Process;
 
 namespace OpenNLP.Tools.Util.Trees
 {
+    /**
+ * This interface specifies language/treebank specific information for a
+ * Treebank, which a parser or other treebank user might need to know. <p>
+ * <p/>
+ * Some of this is fixed for a (treebank,language) pair, but some of it
+ * reflects feature extraction decisions, so it can be sensible to have
+ * multiple implementations of this interface for the same
+ * (treebank,language) pair. <p>
+ * <p/>
+ * So far this covers punctuation, character encodings, and characters
+ * reserved for label annotations.  It should probably be expanded to
+ * cover other stuff (unknown words?). <p>
+ * <p/>
+ * Various methods in this class return arrays.  You should treat them
+ * as read-only, even though one cannot enforce that in Java. <p>
+ * <p/>
+ * Implementations in this class do not call basicCategory() on arguments
+ * before testing them, so if needed, you should explicitly call
+ * basicCategory() yourself before passing arguments to these routines for
+ * testing.
+ * <p/>
+ * This class should be able to be an immutable singleton.  It contains
+ * data on various things, but no state.  At some point we should make it
+ * a real immutable singleton.
+ *
+ * @author Christopher Manning
+ * @version 1.1, Mar 2003
+ */
     public interface TreebankLanguagePack
     {
         /**
@@ -289,7 +318,8 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return the String->String Function object
    */
-   Func<String,String> getBasicCategoryFunction();
+   /*Func<String,String>*/
+   AbstractTreebankLanguagePack.BasicCategoryStringFunction getBasicCategoryFunction();
 
   /**
    * Returns the syntactic category and 'function' of a String.
@@ -309,7 +339,8 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return the String->String Function object
    */
-   Func<String,String> getCategoryAndFunctionFunction();
+   /*Func<String,String>*/
+   AbstractTreebankLanguagePack.CategoryAndFunctionStringFunction getCategoryAndFunctionFunction();
 
   /**
    * Accepts a String that is a start symbol of the treebank.

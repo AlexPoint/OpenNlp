@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
 {
+    /**
+ * A <code>TreeReader</code> adds functionality to another <code>Reader</code>
+ * by reading in Trees, or some descendant class.
+ *
+ * @author Christopher Manning
+ * @author Roger Levy (mod. 2003/01)
+ * @version 2003/01
+ */
     public interface TreeReader
     {
         /**

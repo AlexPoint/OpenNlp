@@ -198,7 +198,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Returns an array of the children of this node.
    */
   //@Override
-  public TreeGraphNode[] children() {
+  public override Tree[] children() {
     return pchildren;
   }
 
@@ -432,7 +432,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a factory to produce treegraphs
    */
   //@Override
-  public TreeFactory treeFactory() {
+  public override TreeFactory treeFactory() {
     LabelFactory lf;
     if (label() != null) {
       lf = label().labelFactory();

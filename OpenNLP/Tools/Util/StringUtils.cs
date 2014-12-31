@@ -921,10 +921,10 @@ namespace OpenNLP.Tools.Util
    * for properties without an explicitly given value is set to "true". This can be used for a 2nd level
    * of properties, for example, when you have a commandline argument like "-outputOptions style=xml,tags".
    */
-  /*public static Properties stringToProperties(String str) {
-    Properties result = new Properties();
+  public static Dictionary<String,String> stringToProperties(String str) {
+    var result = new Dictionary<string, string>();
     return stringToProperties(str, result);
-  }*/
+  }
 
   /**
    * This method updates a Properties object based on
@@ -933,10 +933,10 @@ namespace OpenNLP.Tools.Util
    * to a Properties object.  Each property is "property=value".  The value
    * for properties without an explicitly given value is set to "true".
    */
-  /*public static Properties stringToProperties(String str, Properties props) {
-    String[] propsStr = str.Trim().Split(",\\s*");
-    for (String term : propsStr) {
-      int divLoc = term.indexOf('=');
+  public static Dictionary<String,String> stringToProperties(String str, Dictionary<String,String> props) {
+    String[] propsStr = Regex.Split(str.Trim(), ",\\s*");
+    foreach (String term in propsStr) {
+      int divLoc = term.IndexOf('=');
       String key;
       String value;
       if (divLoc >= 0) {
@@ -946,10 +946,10 @@ namespace OpenNLP.Tools.Util
         key = term.Trim();
         value = "true";
       }
-      props.setProperty(key, value);
+      props[key] = value;
     }
     return props;
-  }*/
+  }
 
   /**
    * If any of the given list of properties are not found, returns the

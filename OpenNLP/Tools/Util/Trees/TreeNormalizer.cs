@@ -6,6 +6,32 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
 {
+    /**
+ * A class for tree normalization.  The default one does no normalization.
+ * Other tree normalizers will change various node labels, or perhaps the
+ * whole tree geometry (by doing such things as deleting functional tags or
+ * empty elements).  Another operation that a <code>TreeNormalizer</code>
+ * may wish to perform is interning the <code>String</code>s passed to
+ * it.  Can be reused as a Singleton.  Designed to be extended.
+ * <p/>
+ * The <code>TreeNormalizer</code> methods are in two groups.
+ * The contract for this class is that first normalizeTerminal or
+ * normalizeNonterminal will be called on each <code>String</code> that will
+ * be put into a <code>Tree</code>, when they are read from files or
+ * otherwise created.  Then <code>normalizeWholeTree</code> will
+ * be called on the <code>Tree</code>.  It normally walks the
+ * <code>Tree</code> making whatever modifications it wishes to. A
+ * <code>TreeNormalizer</code> need not make a deep copy of a
+ * <code>Tree</code>.  It is assumed to be able to work destructively,
+ * because afterwards we will only use the normalized <code>Tree</code>.
+ * <p/>
+ * <i>Implementation note:</i> This is a very old legacy class used in conjunction
+ * with PennTreeReader.  It seems now that it would be better to move the
+ * String normalization into the tokenizer, and then we are just left with a
+ * (possibly destructive) TreeTransformer.
+ *
+ * @author Christopher Manning
+ */
     public class TreeNormalizer
     {
         public TreeNormalizer() {

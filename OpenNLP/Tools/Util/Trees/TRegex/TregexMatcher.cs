@@ -21,7 +21,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   public readonly VariableStrings variableStrings;
 
   // these things are used by "find"
-  TreeIterator findIterator;
+  Tree.TreeIterator findIterator;
   Tree findCurrent;
 
   public readonly HeadFinder headFinder;

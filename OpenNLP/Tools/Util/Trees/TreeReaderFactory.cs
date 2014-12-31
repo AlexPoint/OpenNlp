@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
 {
+    /**
+ * A <code>TreeReaderFactory</code> is a factory for creating objects of
+ * class <code>TreeReader</code>, or some descendant class.
+ *
+ * @author Christopher Manning
+ */
     public interface TreeReaderFactory
     {
         /**

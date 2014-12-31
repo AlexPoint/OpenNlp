@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Util.International.Morph;
+using OpenNLP.Tools.Util.Ling;
 using OpenNLP.Tools.Util.Process;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    public abstract class AbstractTreebankLanguagePack/*: TreebankLanguagePack*/
+    public abstract class AbstractTreebankLanguagePack: TreebankLanguagePack
     {
         /**
    * So changed versions deserialize correctly.
@@ -70,8 +72,10 @@ namespace OpenNLP.Tools.Util.Trees
    */
   //@Override
   public abstract String[] sentenceFinalPunctuationTags();
+    
+        public abstract string[] sentenceFinalPunctuationWords();
 
-  /**
+        /**
    * Returns a String array of punctuation tags that EVALB-style evaluation
    * should ignore for this treebank/language.
    * Traditionally, EVALB has ignored a subset of the total set of
@@ -246,8 +250,10 @@ namespace OpenNLP.Tools.Util.Trees
     return DEFAULT_ENCODING;
   }
 
+        public abstract TokenizerFactory<HasWord> getTokenizerFactory();
 
-  private static readonly char[] EMPTY_CHAR_ARRAY = new char[0];
+
+        private static readonly char[] EMPTY_CHAR_ARRAY = new char[0];
 
   /**
    * Return an array of characters at which a String should be
@@ -376,22 +382,22 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
 
-  /*private static class CategoryAndFunctionStringFunction implements Function<String,String>, Serializable {
+  public /*static*/ class CategoryAndFunctionStringFunction /*implements Function<String,String>, Serializable */{
 
     private static readonly long serialVersionUID = 1L;
 
     private TreebankLanguagePack tlp;
 
-    CategoryAndFunctionStringFunction(TreebankLanguagePack tlp) {
+    public CategoryAndFunctionStringFunction(TreebankLanguagePack tlp) {
       this.tlp = tlp;
     }
 
     //@Override
-    public String apply(String in) {
-      return tlp.categoryAndFunction(in);
+    public String apply(String input) {
+      return tlp.categoryAndFunction(input);
     }
 
-  }*/
+  }
 
 
   /**
@@ -463,9 +469,10 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The String->String Function object
    */
   //@Override
-  /*public Func<String,String> getCategoryAndFunctionFunction() {
+  public CategoryAndFunctionStringFunction getCategoryAndFunctionFunction()
+  {
     return new CategoryAndFunctionStringFunction(this);
-  }*/
+  }
 
 
   /**
@@ -534,6 +541,8 @@ namespace OpenNLP.Tools.Util.Trees
     return ssyms[0];
   }
 
+        public abstract string treebankFileExtension();
+
         private Predicate<string> punctTagStringAcceptFilter()
         {
             return Filters.collectionAcceptFilter(punctuationTags());
@@ -554,7 +563,7 @@ namespace OpenNLP.Tools.Util.Trees
             return Filters.collectionAcceptFilter(evalBIgnoredPunctuationTags());
         }
 
-        private Predicate<String> startSymbolAcceptFilter()
+        public Predicate<String> startSymbolAcceptFilter()
         {
             return Filters.collectionAcceptFilter(startSymbols());
         }
@@ -567,7 +576,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A tokenizer
    */
   //@Override
-  /*public TokenizerFactory<? extends HasWord> getTokenizerFactory() {
+  /*public TokenizerFactory<HasWord> getTokenizerFactory() {
     return WhitespaceTokenizer.factory(false);
   }*/
 
@@ -621,22 +630,25 @@ namespace OpenNLP.Tools.Util.Trees
 
   /** {@inheritDoc} */
   //@Override
-  /*public TreeReaderFactory treeReaderFactory() {
+  public TreeReaderFactory treeReaderFactory() {
     return new PennTreeReaderFactory();
-  }*/
+  }
 
   /** {@inheritDoc} */
   //@Override
-  /*public TokenizerFactory<Tree> treeTokenizerFactory() {
+  public TokenizerFactory<Tree> treeTokenizerFactory() {
     return new TreeTokenizerFactory(treeReaderFactory());
-  }*/
+  }
 
-  /**
+        public abstract HeadFinder headFinder();
+        public abstract HeadFinder typedDependencyHeadFinder();
+
+        /**
    * Returns a morphological feature specification for words in this language.
    */
   //@Override
-  /*public MorphoFeatureSpecification morphFeatureSpec() {
+  public MorphoFeatureSpecification morphFeatureSpec() {
     return null;
-  }*/
+  }
     }
 }

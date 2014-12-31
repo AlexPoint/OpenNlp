@@ -119,12 +119,12 @@ namespace OpenNLP.Tools.Util.Ling
    * Class that all "generic" annotations extend.
    * This allows you to read in arbitrary values from a file as features, for example.
    */
-  /*public static interface GenericAnnotation<T> extends CoreAnnotation<T> {  }
+  public /*static */interface GenericAnnotation<T> : CoreAnnotation<T> {  }
   //Unchecked is below because eclipse can't handle the level of type inference if we correctly parameterize GenericAnnotation with String
-  @SuppressWarnings("unchecked")
-  public static readonly Map<String, Class<? extends GenericAnnotation>> genericKeys = Generics.newHashMap();
-  @SuppressWarnings("unchecked")
-  public static readonly Map<Class<? extends GenericAnnotation>, String> genericValues = Generics.newHashMap();*/
+  //@SuppressWarnings("unchecked")
+  /*public static /*readonly #1#Dictionary<String, typeof(GenericAnnotation)> genericKeys = Generics.newHashMap();
+  //@SuppressWarnings("unchecked")
+  public static /*readonly #1#Dictionary<Class<? extends GenericAnnotation>, String> genericValues = Generics.newHashMap();*/
 
 
   //@SuppressWarnings("unchecked")
@@ -132,7 +132,7 @@ namespace OpenNLP.Tools.Util.Ling
     for(int i = 0; i < Math.Min(keys.Length, values.Length); i++) {
       String key = keys[i];
       String value = values[i];
-      KeyLookup lookup = AnnotationLookup.getCoreKey(key);
+      AnnotationLookup.KeyLookup lookup = AnnotationLookup.getCoreKey(key);
 
       //now work with the key we got above
       if (lookup == null) {
@@ -175,12 +175,12 @@ namespace OpenNLP.Tools.Util.Ling
             this.set(lookup.coreKey, Long.parseLong(values[i]));
           }
         } catch (Exception e) {
-          e.printStackTrace();
+          /*e.printStackTrace();
           // unexpected value type
           System.err.println("CORE: CoreLabel.initFromStrings: "
               + "Bad type for " + key
               + ". Value was: " + value
-              + "; expected "+AnnotationLookup.getValueType(lookup.coreKey));
+              + "; expected "+AnnotationLookup.getValueType(lookup.coreKey));#1#
         }
       }
     }

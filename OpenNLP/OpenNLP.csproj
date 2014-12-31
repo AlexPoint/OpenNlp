@@ -297,6 +297,7 @@
     <Compile Include="Tools\Tokenize\TokenSpanEventReader.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\AbstractCollection.cs" />
     <Compile Include="Tools\Util\ArrayCoreMap.cs" />
     <Compile Include="Tools\Util\BeamSearch.cs">
       <SubType>Code</SubType>
@@ -318,7 +319,6 @@
     <Compile Include="Tools\Util\HashSet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tools\Util\HasWord.cs" />
     <Compile Include="Tools\Util\IBeamSearchContextGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -327,6 +327,8 @@
     <Compile Include="Tools\Util\IHeap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Util\International\Morph\MorphoFeatures.cs" />
+    <Compile Include="Tools\Util\International\Morph\MorphoFeatureSpecification.cs" />
     <Compile Include="Tools\Util\Interner.cs" />
     <Compile Include="Tools\Util\IntPair.cs" />
     <Compile Include="Tools\Util\IntQuadruple.cs" />
@@ -346,19 +348,32 @@
     <Compile Include="Tools\Util\Ling\HasWord.cs" />
     <Compile Include="Tools\Util\Ling\IndexedWord.cs" />
     <Compile Include="Tools\Util\Ling\Label.cs" />
+    <Compile Include="Tools\Util\Ling\Labeled.cs" />
+    <Compile Include="Tools\Util\Ling\LabeledWord.cs" />
     <Compile Include="Tools\Util\Ling\LabelFactory.cs" />
+    <Compile Include="Tools\Util\Ling\Scored.cs" />
     <Compile Include="Tools\Util\Ling\StringLabelFactory.cs" />
+    <Compile Include="Tools\Util\Ling\TaggedWord.cs" />
+    <Compile Include="Tools\Util\Ling\TaggedWordFactory.cs" />
     <Compile Include="Tools\Util\Ling\ValueLabel.cs" />
     <Compile Include="Tools\Util\Ling\WordFactory.cs" />
     <Compile Include="Tools\Util\ListHeap.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tools\Util\MapFactory.cs" />
+    <Compile Include="Tools\Util\MutableWrapper.cs" />
     <Compile Include="Tools\Util\ObjectBank\IteratorFromReaderFactory.cs" />
     <Compile Include="Tools\Util\PriorityQueue.cs" />
     <Compile Include="Tools\Util\Process\AbstractTokenizer.cs" />
+    <Compile Include="Tools\Util\Process\CoreLabelTokenFactory.cs" />
+    <Compile Include="Tools\Util\Process\CoreTokenFactory.cs" />
+    <Compile Include="Tools\Util\Process\LexedTokenFactory.cs" />
+    <Compile Include="Tools\Util\Process\StreamTokenizer.cs" />
     <Compile Include="Tools\Util\Process\Tokenizer.cs" />
+    <Compile Include="Tools\Util\Process\TokenizerAdapter.cs" />
     <Compile Include="Tools\Util\Process\TokenizerFactory.cs" />
+    <Compile Include="Tools\Util\Process\WordTokenFactory.cs" />
+    <Compile Include="Tools\Util\PropertiesUtils.cs" />
     <Compile Include="Tools\Util\Sequence.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -381,7 +396,10 @@
     </Compile>
     <Compile Include="Tools\Util\Trees\AbstractCollinsHeadFinder.cs" />
     <Compile Include="Tools\Util\Trees\AbstractTreebankLanguagePack.cs" />
+    <Compile Include="Tools\Util\Trees\BobChrisTreeNormalizer.cs" />
     <Compile Include="Tools\Util\Trees\CollinsHeadFinder.cs" />
+    <Compile Include="Tools\Util\Trees\Constituent.cs" />
+    <Compile Include="Tools\Util\Trees\ConstituentFactory.cs" />
     <Compile Include="Tools\Util\Trees\CoordinationTransformer.cs" />
     <Compile Include="Tools\Util\Trees\CopulaHeadFinder.cs" />
     <Compile Include="Tools\Util\Trees\DateTreeTransformer.cs" />
@@ -399,18 +417,30 @@
     <Compile Include="Tools\Util\Trees\HeadFinder.cs" />
     <Compile Include="Tools\Util\Trees\LabeledScoredTreeFactory.cs" />
     <Compile Include="Tools\Util\Trees\LabeledScoredTreeNode.cs" />
+    <Compile Include="Tools\Util\Trees\LabeledScoredTreeReaderFactory.cs" />
     <Compile Include="Tools\Util\Trees\ModCollinsHeadFinder.cs" />
+    <Compile Include="Tools\Util\Trees\NamedDependency.cs" />
     <Compile Include="Tools\Util\Trees\PennTreebankLanguagePack.cs" />
+    <Compile Include="Tools\Util\Trees\PennTreebankTokenizer.cs" />
+    <Compile Include="Tools\Util\Trees\PennTreeReader.cs" />
+    <Compile Include="Tools\Util\Trees\PennTreeReaderFactory.cs" />
     <Compile Include="Tools\Util\Trees\QPTreeTransformer.cs" />
     <Compile Include="Tools\Util\Trees\SemanticHeadFinder.cs" />
+    <Compile Include="Tools\Util\Trees\SimpleConstituent.cs" />
+    <Compile Include="Tools\Util\Trees\SimpleConstituentFactory.cs" />
     <Compile Include="Tools\Util\Trees\SimpleTree.cs" />
     <Compile Include="Tools\Util\Trees\SimpleTreeFactory.cs" />
     <Compile Include="Tools\Util\Trees\Tree.cs" />
+    <Compile Include="Tools\Util\Trees\TreebankLanguagePack.cs" />
     <Compile Include="Tools\Util\Trees\TreeCoreAnnotations.cs" />
     <Compile Include="Tools\Util\Trees\TreeFactory.cs" />
     <Compile Include="Tools\Util\Trees\TreeGraphNode.cs" />
     <Compile Include="Tools\Util\Trees\TreeGraphNodeFactory.cs" />
+    <Compile Include="Tools\Util\Trees\TreeNormalizer.cs" />
+    <Compile Include="Tools\Util\Trees\TreeReader.cs" />
+    <Compile Include="Tools\Util\Trees\TreeReaderFactory.cs" />
     <Compile Include="Tools\Util\Trees\Trees.cs" />
+    <Compile Include="Tools\Util\Trees\TreeTokenizerFactory.cs" />
     <Compile Include="Tools\Util\Trees\TreeTransformer.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\CoordinationPattern.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\DescriptionPattern.cs" />
@@ -459,8 +489,11 @@
     <Compile Include="Tools\Util\Trees\TRegex\Tsurgeon\TsurgeonRuntimeException.cs" />
     <Compile Include="Tools\Util\Trees\TRegex\VariableStrings.cs" />
     <Compile Include="Tools\Util\Trees\TypedDependency.cs" />
+    <Compile Include="Tools\Util\Trees\UnnamedConcreteDependency.cs" />
+    <Compile Include="Tools\Util\Trees\UnnamedDependency.cs" />
     <Compile Include="Tools\Util\TypesafeMap.cs" />
     <Compile Include="Tools\Util\Ling\Word.cs" />
+    <Compile Include="Tools\Util\XMLUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpEntropy\SharpEntropy.csproj">

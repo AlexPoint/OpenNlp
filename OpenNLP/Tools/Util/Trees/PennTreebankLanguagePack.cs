@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Util.Ling;
+using OpenNLP.Tools.Util.Process;
 
 namespace OpenNLP.Tools.Util.Trees
 {
@@ -82,7 +84,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The sentence readonly punctuation tags
    */
   //@Override
-  public String[] sentenceFinalPunctuationWords() {
+  public override String[] sentenceFinalPunctuationWords() {
     return pennSFPunctWords;
   }
 
@@ -112,7 +114,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return An array of characters that set off label name suffixes
    */
   //@Override
-  public char[] labelAnnotationIntroducingCharacters() {
+        public char[] labelAnnotationIntroducingCharacters() {
     return annotationIntroducingChars;
   }
 
@@ -136,13 +138,17 @@ namespace OpenNLP.Tools.Util.Trees
   /*public TokenizerFactory<CoreLabel> getTokenizerFactory() {
     return PTBTokenizer.coreLabelFactory();
   }*/
+  public override TokenizerFactory<HasWord> getTokenizerFactory()
+  {
+      throw new NotImplementedException();
+  }
 
   /**
    * Returns the extension of treebank files for this treebank.
    * This is "mrg".
    */
   //@Override
-  public String treebankFileExtension() {
+  public override String treebankFileExtension() {
     return "mrg";
   }
 
@@ -180,15 +186,15 @@ namespace OpenNLP.Tools.Util.Trees
 
   /** {@inheritDoc} */
   //@Override
-  /*public HeadFinder headFinder() {
+  public override HeadFinder headFinder() {
     return new ModCollinsHeadFinder(this);
-  }*/
+  }
 
   /** {@inheritDoc} */
   //@Override
-  /*public HeadFinder typedDependencyHeadFinder() {
+  public override HeadFinder typedDependencyHeadFinder() {
     return new SemanticHeadFinder(this, true);
-  }*/
+  }
 
 
   /** Prints a few aspects of the TreebankLanguagePack, just for debugging.

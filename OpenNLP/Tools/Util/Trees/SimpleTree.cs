@@ -56,7 +56,7 @@ namespace OpenNLP.Tools.Util.Trees
    * if it is a leaf.
    */
         //@Override
-        public Tree[] children()
+        public override Tree[] children()
         {
             return daughterTrees;
         }
@@ -98,7 +98,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a factory to produce simple (unlabelled) trees
    */
         //@Override
-        public TreeFactory treeFactory()
+        public override TreeFactory treeFactory()
         {
             return TreeFactoryHolder.tf;
         }

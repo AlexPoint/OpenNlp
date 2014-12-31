@@ -18,22 +18,22 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   //@Override
-  public Tree newLeaf(/*final*/ String word) {
+  public virtual Tree newLeaf(/*final*/ String word) {
     return new SimpleTree();
   }
 
   //@Override
-  public Tree newLeaf(/*final*/ Label word) {
+  public virtual Tree newLeaf(/*final*/ Label word) {
     return new SimpleTree();
   }
 
   //@Override
-  public Tree newTreeNode(/*final*/ String parent, /*final */List<Tree> children) {
+  public virtual Tree newTreeNode(/*final*/ String parent, /*final */List<Tree> children) {
     return new SimpleTree(null, children);
   }
 
   //@Override
-  public Tree newTreeNode(/*final */Label parentLabel, /*final */List<Tree> children) {
+  public virtual Tree newTreeNode(/*final */Label parentLabel, /*final */List<Tree> children) {
     return new SimpleTree(parentLabel, children);
   }
     }

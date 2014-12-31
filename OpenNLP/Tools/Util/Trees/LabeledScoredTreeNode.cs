@@ -82,7 +82,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param children An array of child trees
    */
   //@Override
-  public void setChildren(Tree[] children) {
+  public override void setChildren(Tree[] children) {
     if (children == null) {
       daughterTrees = EMPTY_TREE_ARRAY;
     } else {
@@ -95,7 +95,7 @@ namespace OpenNLP.Tools.Util.Trees
    * if there is no label
    */
   //@Override
-  public Label label() {
+  public override Label label() {
     return p_label;
   }
 
@@ -103,7 +103,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Sets the label associated with the current node, if there is one.
    */
   //@Override
-  public void setLabel(/*final */Label label) {
+  public override void setLabel(/*final */Label label) {
     this.p_label = label;
   }
 
@@ -112,7 +112,7 @@ namespace OpenNLP.Tools.Util.Trees
    * if there is no score
    */
   //@Override
-  public double score() {
+  public override double score() {
     return p_score;
   }
 
@@ -120,7 +120,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Sets the score associated with the current node, if there is one
    */
   //@Override
-  public void setScore(double score) {
+  public override void setScore(double score) {
     this.p_score = score;
   }
 
@@ -179,7 +179,7 @@ namespace OpenNLP.Tools.Util.Trees
   private static readonly String nf = "#.###";
 
   //@Override
-  public String nodeString() {
+  public override String nodeString() {
     StringBuilder buff = new StringBuilder();
     buff.Append(base.nodeString());
     if ( ! double.IsNaN(p_score)) {

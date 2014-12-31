@@ -29,7 +29,7 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   //@Override
-  public Tree newLeaf(/*final*/ String word) {
+  public override Tree newLeaf(/*final*/ String word) {
     return new LabeledScoredTreeNode(lf.newLabel(word));
   }
 
@@ -40,12 +40,12 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A new tree leaf
    */
   //@Override
-  public Tree newLeaf(Label label) {
+  public override Tree newLeaf(Label label) {
     return new LabeledScoredTreeNode(lf.newLabel(label));
   }
 
   //@Override
-  public Tree newTreeNode(/*final*/ String parent, /*final */List<Tree> children) {
+  public override Tree newTreeNode(/*final*/ String parent, /*final */List<Tree> children) {
     return new LabeledScoredTreeNode(lf.newLabel(parent), children);
   }
 
@@ -58,7 +58,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A new internal tree node
    */
   //@Override
-  public Tree newTreeNode(Label parentLabel, List<Tree> children) {
+  public override Tree newTreeNode(Label parentLabel, List<Tree> children) {
     return new LabeledScoredTreeNode(lf.newLabel(parentLabel), children);
   }
     }

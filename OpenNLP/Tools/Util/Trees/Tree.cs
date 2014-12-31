@@ -267,7 +267,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param children The array of children, each a <code>Tree</code>
    * @see #setChildren(List)
    */
-  public void setChildren(Tree[] children) {
+  public virtual void setChildren(Tree[] children) {
     throw new InvalidOperationException();
   }
 
@@ -289,7 +289,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *          not copied).
    * @see #setChildren(Tree[])
    */
-  public void setChildren(List<Tree> childTreesList) {
+  public virtual void setChildren(List<Tree> childTreesList) {
     if (childTreesList == null || !childTreesList.Any()) {
       setChildren(EMPTY_TREE_ARRAY);
     } else {
@@ -310,7 +310,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return The label of the node
    */
   //@Override
-  public Label label() {
+  public virtual Label label() {
     return null;
   }
 
@@ -322,7 +322,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param label The label
    */
   //@Override
-  public void setLabel(Label label) {
+  public virtual void setLabel(Label label) {
     // a noop
   }
 
@@ -334,7 +334,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return The score
    */
   //@Override
-  public double score() {
+  public virtual double score() {
     return Double.NaN;
   }
 
@@ -344,7 +344,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @param score The score
    */
-  public void setScore(double score) {
+  public  virtual void setScore(double score) {
     throw new InvalidOperationException("You must use a tree type that implements scoring in order call setScore()");
   }
 
@@ -854,7 +854,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    *  @return The label of a tree node as a String
    */
-  public String nodeString() {
+  public virtual String nodeString() {
     return (value() == null) ? "" : value();
   }
 

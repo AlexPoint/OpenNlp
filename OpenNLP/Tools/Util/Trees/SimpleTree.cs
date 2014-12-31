@@ -69,7 +69,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param children An array of child trees
    */
         //@Override
-        public void setChildren(Tree[] children)
+        public override void setChildren(Tree[] children)
         {
             if (children == null)
             {

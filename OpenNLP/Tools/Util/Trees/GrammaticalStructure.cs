@@ -350,10 +350,19 @@ namespace OpenNLP.Tools.Util.Trees
       // it is necessary to look for paths using all directions
       // because sometimes there are edges created from lower nodes to
       // nodes higher up
-      TreeGraphNode parent = t.parent().highestNodeWithSameHead();
-      if (!basicGraph.isEdge(parent, t) && basicGraph.getShortestPath(root, t, false) == null) {
-        basicGraph.add(parent, t, GrammaticalRelation.DEPENDENT);
-      }
+        var parentAsTreeGraphNode = t.parent() as TreeGraphNode;
+        if (parentAsTreeGraphNode != null)
+        {
+            TreeGraphNode parent = parentAsTreeGraphNode.highestNodeWithSameHead();
+            if (!basicGraph.isEdge(parent, t) && basicGraph.getShortestPath(root, t, false) == null)
+            {
+                basicGraph.add(parent, t, GrammaticalRelation.DEPENDENT);
+            }
+        }
+        else
+        {
+            throw new SystemException("Should never be here.");
+        }
     }
     foreach (TreeGraphNode kid in t.children()) {
       attachStrandedNodes(kid, root, (kid.headWordNode() != t.headWordNode()), puncFilter, basicGraph);
@@ -409,10 +418,22 @@ namespace OpenNLP.Tools.Util.Trees
     List<TypedDependency> basicDep = new List<TypedDependency>();
 
     foreach (TreeGraphNode gov in basicGraph.getAllVertices()) {
-      foreach (TreeGraphNode dep in basicGraph.getChildren(gov)) {
-        GrammaticalRelation reln = getGrammaticalRelationCommonAncestor(gov.label(), dep.label(), basicGraph.getEdges(gov, dep).ToList());
-        // System.err.println("  Gov: " + gov + " Dep: " + dep + " Reln: " + reln);
-        basicDep.Add(new TypedDependency(reln, new IndexedWord(gov.headWordNode().label()), new IndexedWord(dep.headWordNode().label())));
+      foreach (TreeGraphNode dep in basicGraph.getChildren(gov))
+      {
+          var govCLabel = gov.label() as CoreLabel;
+          var depCLabel = dep.label() as CoreLabel;
+          if (govCLabel != null && depCLabel != null)
+          {
+              GrammaticalRelation reln = getGrammaticalRelationCommonAncestor(govCLabel, depCLabel,
+                  basicGraph.getEdges(gov, dep).ToList());
+              // System.err.println("  Gov: " + gov + " Dep: " + dep + " Reln: " + reln);
+              basicDep.Add(new TypedDependency(reln, new IndexedWord(gov.headWordNode().label()),
+                  new IndexedWord(dep.headWordNode().label())));
+          }
+          else
+          {
+              throw new SystemException("Should never be here");
+          }
       }
     }
 

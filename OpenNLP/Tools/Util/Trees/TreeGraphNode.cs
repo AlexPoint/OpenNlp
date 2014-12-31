@@ -152,7 +152,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the label of the node
    */
   //@Override
-  public CoreLabel label() {
+  public override /*CoreLabel */ Label label() {
     return plabel;
   }
 
@@ -183,7 +183,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Get the parent for the current node.
    */
   //@Override
-  public TreeGraphNode parent() {
+  public override /*TreeGraphNode*/Tree parent() {
     return pparent;
   }
 
@@ -512,8 +512,17 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   public String toPrimes() {
-    int copy = label().copyCount();
-    return StringUtils.repeat('\'', copy);
+      var coreLabel = label() as CoreLabel;
+      if (coreLabel != null)
+      {
+          int copy = coreLabel.copyCount();
+          return StringUtils.repeat('\'', copy);
+      }
+      else
+      {
+          //throw new SystemException("Shouldn't be here!");
+          return "";
+      }
   }
 
   //@Override

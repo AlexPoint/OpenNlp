@@ -3298,7 +3298,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
   private /*static*/ class UnbrokenCategoryIsDominatedBy : Relation {
 
-    private static readonly long serialVersionUID = 2867922828235355129L;
+    private new static readonly long serialVersionUID = 2867922828235355129L;
 
     private readonly UnbrokenCategoryDominates unbrokenCategoryDominates;
 

@@ -25,7 +25,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
   }
 
   //@Override
-  public TsurgeonMatcher matcher() {
+  public override TsurgeonMatcher matcher() {
     CoindexationGenerator coindexer = null;
     if (coindexes) {
       coindexer = new CoindexationGenerator();

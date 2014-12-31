@@ -672,7 +672,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return the tree as a bracketed list on one line
    */
   //@Override
-  public String ToString() {
+  public override String ToString() {
     return toStringBuilder(new StringBuilder(Tree.initialPrintStringBuilderSize)).ToString();
   }
 
@@ -1126,7 +1126,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @param hf The headfinding algorithm to use
    */
-  public void percolateHeads(HeadFinder hf) {
+  public virtual void percolateHeads(HeadFinder hf) {
     Label nodeLabel = label();
     if (isLeaf()) {
       // Sanity check: word() is usually set by the TreeReader.
@@ -2084,7 +2084,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return The parent <code>Tree</code> node or <code>null</code>
    * @see Tree#parent(Tree)
    */
-  public Tree parent() {
+  public virtual Tree parent() {
     throw new InvalidOperationException();
   }
 

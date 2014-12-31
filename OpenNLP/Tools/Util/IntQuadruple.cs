@@ -23,7 +23,7 @@ namespace OpenNLP.Tools.Util
 
 
   //@Override
-  public IntTuple getCopy() {
+  public override IntTuple getCopy() {
     IntQuadruple nT = new IntQuadruple(elements[0], elements[1], elements[2], elements[3]);
     return nT;
   }

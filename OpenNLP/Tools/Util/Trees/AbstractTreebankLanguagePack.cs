@@ -85,7 +85,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a EVALB-ignored punctuation tag
    */
   //@Override
-  public String[] evalBIgnoredPunctuationTags() {
+  public virtual String[] evalBIgnoredPunctuationTags() {
     return punctuationTags();
   }
 
@@ -266,7 +266,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return An array of characters that set off label name suffixes
    */
   //@Override
-  public char[] labelAnnotationIntroducingCharacters() {
+  public virtual char[] labelAnnotationIntroducingCharacters() {
     return EMPTY_CHAR_ARRAY;
   }
 
@@ -587,7 +587,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A GrammaticalStructureFactory suitable for this language/treebank
    */
   //@Override
-  public GrammaticalStructureFactory grammaticalStructureFactory() {
+  public virtual GrammaticalStructureFactory grammaticalStructureFactory() {
     throw new InvalidOperationException("No GrammaticalStructureFactory defined for " /*+ getClass().getName()*/);
   }
 
@@ -614,7 +614,7 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   //@Override
-  public bool supportsGrammaticalStructures() {
+  public virtual bool supportsGrammaticalStructures() {
     return false;
   }
 

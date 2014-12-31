@@ -52,7 +52,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    *
    * @param tree The tree to start searching on
    */
-  public void resetChildIter(Tree tree) {
+  public virtual void resetChildIter(Tree tree) {
     this.tree = tree;
     resetChildIter();
   }
@@ -60,7 +60,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   /**
    * Resets the matcher to restart search for matching subexpressions
    */
-  public void resetChildIter() {
+  public virtual void resetChildIter() {
   }
 
   /**

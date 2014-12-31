@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
   public readonly TsurgeonPattern[] children;
 
   TsurgeonPattern root; // TODO: can remove?
-  public void setRoot(TsurgeonPatternRoot root) {
+  public virtual void setRoot(TsurgeonPatternRoot root) {
     this.root = root;
     foreach (TsurgeonPattern child in children) {
       child.setRoot(root);
@@ -55,7 +55,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     return resultSB.ToString();
   }
 
-  public TsurgeonMatcher matcher() {
+  public virtual TsurgeonMatcher matcher() {
     throw new InvalidOperationException("Only the root node can produce the top level matcher");
   }
   

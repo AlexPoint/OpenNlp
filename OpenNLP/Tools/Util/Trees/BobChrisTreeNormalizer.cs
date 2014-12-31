@@ -59,7 +59,7 @@ namespace OpenNLP.Tools.Util.Trees
    * This implementation interns the leaf.
    */
   //@Override
-  public String normalizeTerminal(String leaf) {
+  public override String normalizeTerminal(String leaf) {
     // We could unquote * and / with backslash \ in front of them
     return leaf/*.intern()*/;
   }
@@ -71,7 +71,7 @@ namespace OpenNLP.Tools.Util.Trees
    * nonterminal.
    */
   //@Override
-  public String normalizeNonterminal(String category) {
+  public override String normalizeNonterminal(String category) {
     return cleanUpLabel(category)/*.intern()*/;
   }
 
@@ -101,7 +101,7 @@ namespace OpenNLP.Tools.Util.Trees
    * unary A over A nodes.  It does work for a null tree.
    */
   //@Override
-  public Tree normalizeWholeTree(Tree tree, TreeFactory tf) {
+  public override Tree normalizeWholeTree(Tree tree, TreeFactory tf) {
     return tree.prune(emptyFilter.test, tf).spliceOut(aOverAFilter.test, tf);
   }
 

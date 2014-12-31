@@ -34,7 +34,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @return the value for the label
    */
-  public String value() {
+  public virtual String value() {
     return null;
   }
 
@@ -44,7 +44,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @param value - the value for the label
    */
-  public void setValue(String value) {
+  public virtual void setValue(String value) {
   }
 
 
@@ -62,7 +62,7 @@ namespace OpenNLP.Tools.Util.Ling
   }
 
 
-  public void setFromString(String labelStr) {
+  public virtual void setFromString(String labelStr) {
     throw new NotSupportedException();
   }
 

@@ -89,7 +89,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Otherwise the default toString() is used.
    */
   //@Override
-  public String toString(String format) {
+  public override String toString(String format) {
     switch (format) {
       case "xml":
         String govIdxStr = " idx=\"" + headIndex + "\"";
@@ -103,11 +103,11 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   //@Override
-  public DependencyFactory dependencyFactory() {
+  public override DependencyFactory dependencyFactory() {
     return DependencyFactoryHolder.df;
   }
   
-  public static DependencyFactory factory() {
+  public new static DependencyFactory factory() {
     return DependencyFactoryHolder.df;
   }
 

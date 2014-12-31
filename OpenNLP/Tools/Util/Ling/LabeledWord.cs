@@ -82,7 +82,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The label factory
    */
   //@Override
-  public LabelFactory labelFactory() {
+  public override LabelFactory labelFactory() {
     return LabelFactoryHolder.lf;
   }
 
@@ -92,7 +92,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @return The label factory
    */
-  public static LabelFactory factory() {
+  public new static LabelFactory factory() {
     return LabelFactoryHolder.lf;
   }
 

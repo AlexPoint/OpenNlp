@@ -98,7 +98,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a EVALB-ignored punctuation tag
    */
   //@Override
-  public String[] evalBIgnoredPunctuationTags() {
+  public override String[] evalBIgnoredPunctuationTags() {
     return collinsPunctTags;
   }
 
@@ -114,7 +114,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return An array of characters that set off label name suffixes
    */
   //@Override
-        public char[] labelAnnotationIntroducingCharacters() {
+        public override char[] labelAnnotationIntroducingCharacters() {
     return annotationIntroducingChars;
   }
 
@@ -158,7 +158,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A GrammaticalStructure suitable for this language/treebank.
    */
   //@Override
-  public GrammaticalStructureFactory grammaticalStructureFactory() {
+  public override GrammaticalStructureFactory grammaticalStructureFactory() {
     return new EnglishGrammaticalStructureFactory();
   }
 
@@ -180,7 +180,7 @@ namespace OpenNLP.Tools.Util.Trees
   }*/
 
   //@Override
-  public bool supportsGrammaticalStructures() {
+  public override bool supportsGrammaticalStructures() {
     return true;
   }
 

@@ -36,7 +36,7 @@ namespace OpenNLP.Tools.Util
 
 
   //@Override
-  public IntTuple getCopy() {
+  public override IntTuple getCopy() {
     return new IntPair(elements[0], elements[1]);
   }
 

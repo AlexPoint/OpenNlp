@@ -27,7 +27,7 @@ namespace OpenNLP.Tools.Util
 
 
   //@Override
-  public IntTuple getCopy() {
+  public override IntTuple getCopy() {
     IntUni nT = new IntUni(elements[0]);
     return nT;
   }

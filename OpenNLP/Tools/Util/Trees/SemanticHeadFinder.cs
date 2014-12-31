@@ -133,7 +133,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         //@Override
-        public bool makesCopulaHead()
+        public override bool makesCopulaHead()
         {
             return makeCopulaHead;
         }
@@ -273,7 +273,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Overwrite the postOperationFix method.  For "a, b and c" or similar: we want "a" to be the head.
    */
         //@Override
-        protected int postOperationFix(int headIdx, Tree[] daughterTrees)
+        protected override int postOperationFix(int headIdx, Tree[] daughterTrees)
         {
             if (headIdx >= 2)
             {
@@ -372,7 +372,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The parse tree that is the head
    */
         //@Override
-        protected Tree determineNonTrivialHead(Tree t, Tree parent)
+        protected override Tree determineNonTrivialHead(Tree t, Tree parent)
         {
             String motherCat = tlp.basicCategory(t.label().value());
 

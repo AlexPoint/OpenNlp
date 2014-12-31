@@ -105,7 +105,7 @@ namespace OpenNLP.Tools.Util.Trees
    * </dl>
    */
   //@Override
-  protected void collapseDependencies(List<TypedDependency> list, bool CCprocess, bool includeExtras) {
+  protected override void collapseDependencies(List<TypedDependency> list, bool CCprocess, bool includeExtras) {
     /*if (DEBUG) {
       printListSorted("collapseDependencies: CCproc: " + CCprocess + " includeExtras: " + includeExtras, list);
     }*/
@@ -1692,7 +1692,7 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   //@Override
-  protected void collapseDependenciesTree(List<TypedDependency> list) {
+  protected override void collapseDependenciesTree(List<TypedDependency> list) {
     collapseDependencies(list, false, false);
   }
 

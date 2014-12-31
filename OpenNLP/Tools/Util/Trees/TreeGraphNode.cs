@@ -210,7 +210,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param children an array of child trees
    */
   //@Override
-  public void setChildren(Tree[] children) {
+  public override void setChildren(Tree[] children) {
     if (children == null || children.Length == 0) {
       this.pchildren = ZERO_TGN_CHILDREN;
     } else {
@@ -275,7 +275,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param hf The headfinding algorithm to use
    */
   //@Override
-  public void percolateHeads(HeadFinder hf) {
+  public override void percolateHeads(HeadFinder hf) {
     if (isLeaf()) {
       TreeGraphNode hwn = headWordNode();
       if (hwn == null) {

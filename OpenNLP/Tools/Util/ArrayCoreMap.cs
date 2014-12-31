@@ -137,7 +137,7 @@ namespace OpenNLP.Tools.Util
    */
   //@Override
   //@SuppressWarnings("unchecked")
-  public /*<VALUE> VALUE*/object set(/*Class<? extends Key<VALUE>>*/Type key, object value) {
+  public virtual/*<VALUE> VALUE*/object set(/*Class<? extends Key<VALUE>>*/Type key, object value) {
 
     // search array for existing value to replace
     for (int i = 0; i < psize; i++) {
@@ -301,7 +301,7 @@ namespace OpenNLP.Tools.Util
    *  @return A String representation of the CoreMap
    */
   //@Override
-  public String toString() {
+  public override String ToString() {
     IdentityHashSet<CoreMap> calledSet = toStringCalled.Value;
     bool createdCalledSet = calledSet.isEmpty();
 
@@ -453,7 +453,7 @@ namespace OpenNLP.Tools.Util
    */
   //@SuppressWarnings("unchecked")
   //@Override
-  public bool equals(Object obj) {
+  public override bool Equals(Object obj) {
     if (!(obj is CoreMap)) {
       return false;
     }
@@ -575,7 +575,7 @@ namespace OpenNLP.Tools.Util
    * is not appropriate for use as map keys.
    */
   //@Override
-  public int hashCode() {
+  public override int GetHashCode() {
     IdentityHashSet<CoreMap> calledSet = hashCodeCalled.Value;
     bool createdCalledSet = (calledSet == null);
     if (createdCalledSet) {

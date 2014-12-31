@@ -322,7 +322,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     }
 
     //@Override
-    void resetChildIter() {
+    public override void resetChildIter() {
       decommitVariableGroups();
       removeNamedNodes();
       // lazy initialization saves quite a bit of time in use cases

@@ -73,7 +73,7 @@ namespace OpenNLP.Tools.Util
    *   immutable, hashable key.
    */
   //@Override
-  public /*<VALUE> VALUE*/Object set(Type key, Object value)
+  public override/*<VALUE> VALUE*/Object set(Type key, Object value)
   {
     
     if (immutableKeys.Contains(key)) {
@@ -89,7 +89,7 @@ namespace OpenNLP.Tools.Util
    * to the constructor.
    */
   //@Override
-  public int hashCode() {
+  public override int GetHashCode() {
     return hashcode;
   }
   
@@ -100,7 +100,7 @@ namespace OpenNLP.Tools.Util
    */
   //    @SuppressWarnings("unchecked")
   //@Override
-  public bool equals(Object o) {
+  public override bool Equals(Object o) {
     if (o is HashableCoreMap) {
       HashableCoreMap other = (HashableCoreMap) o;
       if (!other.immutableKeys.Equals(this.immutableKeys)) {
@@ -114,7 +114,7 @@ namespace OpenNLP.Tools.Util
       }
       return true;
     } else {
-      return base.equals(o);
+      return base.Equals(o);
     }
   }
   

@@ -82,7 +82,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return String the word value for the label
    */
   //@Override
-  public String value() {
+  public override String value() {
     return str;
   }
 
@@ -93,7 +93,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param value The value for the label
    */
   //@Override
-  public void setValue(/*final */String value) {
+  public override void setValue(/*final */String value) {
     str = value;
   }
 
@@ -104,7 +104,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param str The str for the label
    */
   //@Override
-  public void setFromString(/*final */String str) {
+  public override void setFromString(/*final */String str) {
     this.str = str;
   }
 

@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
   }
 
   //@Override
-  protected void setRoot(TsurgeonPatternRoot root) {
+        public override void setRoot(TsurgeonPatternRoot root) {
     base.setRoot(root);
     root.setCoindexes();
   }

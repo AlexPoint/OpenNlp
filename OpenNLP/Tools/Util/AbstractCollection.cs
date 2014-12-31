@@ -440,7 +440,7 @@ namespace OpenNLP.Tools.Util
         */
          public abstract IEnumerator<E> GetEnumerator();
 
-         public String ToString() {
+         public override String ToString() {
            IEnumerator<E> it = GetEnumerator();
            StringBuilder sb = new StringBuilder();
            sb.Append('[');

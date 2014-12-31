@@ -74,7 +74,7 @@ namespace OpenNLP.Tools.Util.Trees
     return vDependent;
   }
 
-  public Object name() {
+  public virtual Object name() {
     return null;
   }
   
@@ -94,7 +94,7 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   //@Override
-  public bool equals(Object o) {
+  public override bool Equals(Object o) {
     return equalsIgnoreName(o);
   }
   
@@ -124,7 +124,7 @@ namespace OpenNLP.Tools.Util.Trees
    * The recognized options are currently "xml", and "predicate".
    * Otherwise the default toString() is used.
    */
-  public String toString(String format) {
+  public virtual String toString(String format) {
     switch (format) {
       case "xml":
             return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(governor().value()) + "</governor>\n    <dependent>" + XMLUtils.XmlEscape(dependent().value()) + "</dependent>\n  </dep>";
@@ -135,7 +135,7 @@ namespace OpenNLP.Tools.Util.Trees
     }
   }
   
-  public DependencyFactory dependencyFactory() {
+  public virtual DependencyFactory dependencyFactory() {
     return DependencyFactoryHolder.df;
   }
   

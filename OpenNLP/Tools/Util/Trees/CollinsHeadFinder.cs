@@ -72,7 +72,7 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   //@Override
-  protected int postOperationFix(int headIdx, Tree[] daughterTrees) {
+  protected override int postOperationFix(int headIdx, Tree[] daughterTrees) {
     if (headIdx >= 2) {
       String prevLab = tlp.basicCategory(daughterTrees[headIdx - 1].value());
       if (prevLab.Equals("CC") || prevLab.Equals("CONJP")) {

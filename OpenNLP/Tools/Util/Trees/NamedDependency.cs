@@ -35,7 +35,7 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   //@Override
-  public Object name() {
+  public override Object name() {
     return vName;
   }
 
@@ -66,7 +66,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Otherwise the default toString() is used.
    */
   //@Override
-  public String toString(String format) {
+  public String ToString(String format) {
     switch (format) {
       case "xml":
         return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(governor().value()) + "</governor>\n    <dependent>" + XMLUtils.XmlEscape(dependent().value()) + "</dependent>\n  </dep>";
@@ -78,11 +78,11 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   //@Override
-  public DependencyFactory dependencyFactory() {
+  public override DependencyFactory dependencyFactory() {
     return DependencyFactoryHolder.df;
   }
   
-  public static DependencyFactory factory() {
+  public new static DependencyFactory factory() {
     return DependencyFactoryHolder.df;
   }
 

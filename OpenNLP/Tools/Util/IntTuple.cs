@@ -67,7 +67,7 @@ namespace OpenNLP.Tools.Util
   }
 
 
-  public IntTuple getCopy() {
+  public virtual IntTuple getCopy() {
       
     IntTuple copy = IntTuple.getIntTuple(elements.Length); //new IntTuple(numElements);
       for (var i = 0; i < elements.Length; i++)

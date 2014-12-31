@@ -99,7 +99,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     }
 
     //@Override
-    void resetChildIter() {
+    public override void resetChildIter() {
       currChild = 0;
       foreach (TregexMatcher child in children) {
         if (child != null) {
@@ -109,7 +109,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     }
 
     //@Override
-    void resetChildIter(Tree tree) {
+    public override void resetChildIter(Tree tree) {
       this.tree = tree;
       currChild = 0;
       foreach (TregexMatcher child in children) {

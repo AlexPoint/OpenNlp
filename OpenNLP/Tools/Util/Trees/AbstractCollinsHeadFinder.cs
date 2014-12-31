@@ -119,7 +119,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Generally will be false, except for SemanticHeadFinder
    */
         //@Override
-        public bool makesCopulaHead()
+        public virtual bool makesCopulaHead()
         {
             return false;
         }
@@ -216,7 +216,7 @@ namespace OpenNLP.Tools.Util.Trees
    *  @return The head daughter of t
    */
 
-        protected Tree determineNonTrivialHead(Tree t, Tree parent)
+        protected virtual Tree determineNonTrivialHead(Tree t, Tree parent)
         {
             Tree theHead = null;
             String motherCat = tlp.basicCategory(t.label().value());
@@ -472,7 +472,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The new headIndex
    */
 
-        protected int postOperationFix(int headIdx, Tree[] daughterTrees)
+        protected virtual int postOperationFix(int headIdx, Tree[] daughterTrees)
         {
             return headIdx;
         }

@@ -96,7 +96,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @param taggedWord The word that will go into the <code>Word</code>
    */
-  public void setFromString(String taggedWord) {
+  public override void setFromString(String taggedWord) {
     setFromString(taggedWord, DIVIDER);
   }
 
@@ -129,7 +129,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The label factory
    */
   //@Override
-  public LabelFactory labelFactory() {
+  public override LabelFactory labelFactory() {
     return LabelFactoryHolder.lf;
   }
 
@@ -139,7 +139,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @return The label factory
    */
-  public static LabelFactory factory() {
+  public new static LabelFactory factory() {
     return LabelFactoryHolder.lf;
   }
 

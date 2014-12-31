@@ -128,7 +128,7 @@ namespace OpenNLP.Tools.Util
 
   private class HashMapFactory<K,V> : MapFactory<K,V> {
 
-    private static readonly long serialVersionUID = -9222344631596580863L;
+    private new static readonly long serialVersionUID = -9222344631596580863L;
 
     //@Override
     public override Dictionary<K,V> newMap() {
@@ -288,7 +288,7 @@ namespace OpenNLP.Tools.Util
 
   private class LinkedHashMapFactory<K,V> : MapFactory<K,V> {
 
-    private static readonly long serialVersionUID = -9138736068025818671L;
+    private new static readonly long serialVersionUID = -9138736068025818671L;
 
     //@Override
     public override Dictionary<K,V> newMap() {
@@ -326,7 +326,7 @@ namespace OpenNLP.Tools.Util
 
   private class ArrayMapFactory<K,V> : MapFactory<K,V> {
 
-    private static readonly long serialVersionUID = -5855812734715185523L;
+    private new static readonly long serialVersionUID = -5855812734715185523L;
 
     //@Override
     public override Dictionary<K,V> newMap() {

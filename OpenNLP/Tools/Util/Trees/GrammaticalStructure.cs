@@ -798,7 +798,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param list A list of dependencies to process for possible collapsing
    * @param CCprocess apply CC process?
    */
-  protected void collapseDependencies(List<TypedDependency> list, bool CCprocess, bool includeExtras) {
+  protected virtual void collapseDependencies(List<TypedDependency> list, bool CCprocess, bool includeExtras) {
     // do nothing as default operation
   }
 
@@ -811,7 +811,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param list A list of dependencies to process for possible collapsing
    *
    */
-  protected void collapseDependenciesTree(List<TypedDependency> list) {
+  protected virtual void collapseDependenciesTree(List<TypedDependency> list) {
     // do nothing as default operation
   }
 

@@ -43,7 +43,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param leaf The String that decorates the leaf
    * @return The normalized form of this leaf String
    */
-  public String normalizeTerminal(String leaf) {
+  public virtual String normalizeTerminal(String leaf) {
     return leaf;
   }
 
@@ -53,7 +53,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param category The String that decorates this nonterminal node
    * @return The normalized form of this nonterminal String
    */
-  public String normalizeNonterminal(String category) {
+  public virtual String normalizeNonterminal(String category) {
     return category;
   }
 
@@ -70,7 +70,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param tf   the TreeFactory to create new nodes (if needed)
    * @return Tree the normalized tree
    */
-  public Tree normalizeWholeTree(Tree tree, TreeFactory tf) {
+  public virtual Tree normalizeWholeTree(Tree tree, TreeFactory tf) {
     return tree;
   }
 

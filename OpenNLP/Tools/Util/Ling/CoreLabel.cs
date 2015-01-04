@@ -187,7 +187,7 @@ namespace OpenNLP.Tools.Util.Ling
   }*/
 
 
-  private /*static*/ class CoreLabelFactory: LabelFactory {
+  public /*static*/ class CoreLabelFactory: LabelFactory {
 
     //@Override
     public Label newLabel(String labelStr) {

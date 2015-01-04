@@ -94,7 +94,8 @@ namespace OpenNLP.Tools.Util.Graphs
   }
 
   private Dictionary<V, List<E>> getOutgoingEdgesMap(V v) {
-    Dictionary<V, List<E>> map = outgoingEdges[v];
+    Dictionary<V, List<E>> map;
+      outgoingEdges.TryGetValue(v, out map);
     if (map == null) {
       map = innerMapFactory.newMap();
       outgoingEdges.Add(v, map);
@@ -103,8 +104,10 @@ namespace OpenNLP.Tools.Util.Graphs
     return map;
   }
 
-  private Dictionary<V, List<E>> getIncomingEdgesMap(V v) {
-    Dictionary<V, List<E>> map = incomingEdges[v];
+  private Dictionary<V, List<E>> getIncomingEdgesMap(V v)
+  {
+      Dictionary<V, List<E>> map;
+      incomingEdges.TryGetValue(v, out map);
     if (map == null) {
       outgoingEdges.Add(v, innerMapFactory.newMap());
       map = innerMapFactory.newMap();
@@ -125,13 +128,15 @@ namespace OpenNLP.Tools.Util.Graphs
     Dictionary<V, List<E>> outgoingMap = getOutgoingEdgesMap(source);
     Dictionary<V, List<E>> incomingMap = getIncomingEdgesMap(dest);
 
-    List<E> outgoingList = outgoingMap[dest];
+    List<E> outgoingList;
+      outgoingMap.TryGetValue(dest, out outgoingList);
     if (outgoingList == null) {
       outgoingList = new List<E>();
       outgoingMap.Add(dest, outgoingList);
     }
 
-    List<E> incomingList = incomingMap[source];
+      List<E> incomingList;
+      incomingMap.TryGetValue(source, out incomingList);
     if (incomingList == null) {
       incomingList = new List<E>();
       incomingMap.Add(source, incomingList);
@@ -310,11 +315,14 @@ namespace OpenNLP.Tools.Util.Graphs
    * @param dest
    */
   //@Override
-  public bool isEdge(V source, V dest) {
-    Dictionary<V, List<E>> childrenMap = outgoingEdges[source];
+  public bool isEdge(V source, V dest)
+  {
+      Dictionary<V, List<E>> childrenMap;
+      outgoingEdges.TryGetValue(source, out childrenMap);
     if (childrenMap == null || !childrenMap.Any())
       return false;
-    List<E> edges = childrenMap[dest];
+    List<E> edges;
+      childrenMap.TryGetValue(dest, out edges);
     if (edges == null || !edges.Any())
       return false;
     return edges.Count > 0;

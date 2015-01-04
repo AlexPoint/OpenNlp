@@ -463,10 +463,12 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public int index() {
-    int n = (int)get(typeof(CoreAnnotations.IndexAnnotation));
-    if(n == null)
-      return -1;
-    return n;
+    var n = get(typeof(CoreAnnotations.IndexAnnotation));
+      if (n == null)
+      {
+          return -1;
+      }
+      else { return (int)n; }
   }
 
   /**

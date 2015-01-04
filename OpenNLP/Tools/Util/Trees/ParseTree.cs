@@ -20,10 +20,29 @@ namespace OpenNLP.Tools.Util.Trees
         {
             return this.parse.GetChildren().Select(ch => new ParseTree(ch)).ToArray();
         }
-
+        
         public override Label label()
         {
-            return new CoreLabel.CoreLabelFactory().newLabel(this.parse.Label);
+            /*var label = this.parse.IsLeaf ? this.parse.Value : this.parse.Type;
+            var coreLabel = (CoreLabel)new CoreLabel.CoreLabelFactory().newLabel(label);*/
+
+            // TODO: move this CoreLabel construction logic somewhere appropriate
+            var cLabel = new CoreLabel();
+            if (this.parse.IsLeaf)
+            {
+                cLabel.setWord(this.parse.Value);
+                cLabel.setBeginPosition(this.parse.Span.Start);
+                cLabel.setEndPosition(this.parse.Span.End);
+            }
+            else
+            {
+                cLabel.setCategory(this.parse.Type);
+                if (this.depth() == 1)
+                {
+                    cLabel.setTag(this.parse.Type);
+                }
+            }
+            return cLabel;
         }
 
         public override TreeFactory treeFactory()

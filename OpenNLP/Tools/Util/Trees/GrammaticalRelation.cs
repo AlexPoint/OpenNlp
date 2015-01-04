@@ -194,7 +194,8 @@ namespace OpenNLP.Tools.Util.Trees
       }
     }
 
-    Dictionary<String, GrammaticalRelation> sToR = stringsToRelations[language];
+      Dictionary<String, GrammaticalRelation> sToR;
+    stringsToRelations.TryGetValue(language, out sToR);
     if (sToR == null) {
       sToR = new Dictionary<string, GrammaticalRelation>();
       stringsToRelations.Add(language, sToR);

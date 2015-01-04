@@ -35,6 +35,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Runtime.Serialization;
@@ -89,6 +91,16 @@ namespace OpenNLP.Tools.Parser
         /// The syntactic type of this parse.
         /// </summary>
 		public virtual string Type { get; set; }
+
+	    public string Value
+	    {
+            get { return this.Text.Substring(this.Span.Start, this.Span.Length()); }
+	    }
+
+	    public bool IsLeaf
+	    {
+            get { return !this.GetChildren().Any(); }
+	    }
 
 		/// <summary>
 		/// The sub-constituents of this parse.

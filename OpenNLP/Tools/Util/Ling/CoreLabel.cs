@@ -484,10 +484,11 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public int sentIndex() {
-    int n = (int)get(typeof(CoreAnnotations.SentenceIndexAnnotation));
+    var n = get(typeof(CoreAnnotations.SentenceIndexAnnotation));
     if(n == null)
       return -1;
-    return n;
+    else
+        return (int)n;
   }
 
   /**
@@ -503,9 +504,11 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public int beginPosition() {
-    int i = (int)get(typeof(CoreAnnotations.CharacterOffsetBeginAnnotation));
-    if(i != null) return i;
-    return -1;
+    var i = get(typeof(CoreAnnotations.CharacterOffsetBeginAnnotation));
+    if(i != null)
+        return (int)i;
+    else 
+        return -1;
   }
 
   /**
@@ -513,9 +516,10 @@ namespace OpenNLP.Tools.Util.Ling
    */
   //@Override
   public int endPosition() {
-    int i = (int)get(typeof(CoreAnnotations.CharacterOffsetEndAnnotation));
-    if(i != null) return i;
-    return -1;
+    var i = get(typeof(CoreAnnotations.CharacterOffsetEndAnnotation));
+    if(i != null)
+        return (int)i;
+    else return -1;
   }
 
   /**
@@ -535,10 +539,10 @@ namespace OpenNLP.Tools.Util.Ling
   }
 
   public int copyCount() {
-    int copy = (int)get(typeof(CoreAnnotations.CopyAnnotation));
+    var copy = get(typeof(CoreAnnotations.CopyAnnotation));
     if (copy == null)
       return 0;
-    return copy;
+    else return (int)copy;
   }
 
   public void setCopyCount(int count) {

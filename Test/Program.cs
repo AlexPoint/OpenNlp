@@ -75,6 +75,7 @@ namespace Test
             var tlp = new PennTreebankLanguagePack();
             var gsf = tlp.grammaticalStructureFactory();
             var tree = new ParseTree(parse);
+            Console.WriteLine(tree);
             var gs = gsf.newGrammaticalStructure(tree);
             var dependencies = gs.mtypedDependencies();
 

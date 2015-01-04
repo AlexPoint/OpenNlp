@@ -33,10 +33,12 @@ namespace OpenNLP.Tools.Util.Trees
                 cLabel.setWord(this.parse.Value);
                 cLabel.setBeginPosition(this.parse.Span.Start);
                 cLabel.setEndPosition(this.parse.Span.End);
+                cLabel.setValue(this.parse.Value);
             }
             else
             {
                 cLabel.setCategory(this.parse.Type);
+                cLabel.setValue(this.parse.Type);
                 if (this.depth() == 1)
                 {
                     cLabel.setTag(this.parse.Type);

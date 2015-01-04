@@ -11,13 +11,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     public class DescriptionPattern: TregexPattern
     {
         enum DescriptionMode {
-    PATTERN, STRINGS, EXACT, ANYTHING, NOTHING
+    PATTERN, STRINGS, EXACT, ANYTHING
   }
 
   private readonly Relation rel;
   private readonly bool negDesc;
 
-  private readonly DescriptionMode descriptionMode;
+  private readonly DescriptionMode? descriptionMode;
   private readonly String exactMatch;
   private readonly Regex descPattern;
   private readonly Predicate<String> stringFilter;
@@ -196,7 +196,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         throw new InvalidDataException("Illegal description pattern.  Does not describe a node or link/name a variable");
       }
       stringDesc = " ";
-      descriptionMode = DescriptionMode.NOTHING;
+      descriptionMode = null;
       descPattern = null;
       exactMatch = null;
       stringFilter = null;

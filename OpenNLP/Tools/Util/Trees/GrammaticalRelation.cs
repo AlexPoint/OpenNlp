@@ -32,8 +32,7 @@ namespace OpenNLP.Tools.Util.Trees
    * <p/>
    * Example: "the red car" &rarr; <code>dep</code>(car, red)
    */
-  public static readonly GrammaticalRelation DEPENDENT =
-    new GrammaticalRelation(Language.Any, "dep", "dependent", null);
+  public static readonly GrammaticalRelation DEPENDENT = new GrammaticalRelation(Language.Any, "dep", "dependent", null);
 
 
   /**
@@ -145,7 +144,7 @@ namespace OpenNLP.Tools.Util.Trees
 
 
   /* Non-static stuff */
-  private readonly Language language;
+  private readonly Language? language;
   private readonly String shortName;
   private readonly String longName;
   private readonly GrammaticalRelation parent;

@@ -526,13 +526,13 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   //@Override
-  public String toString() {
+  public override String ToString() {
     return plabel.toString();
   }
 
-  /*public String toString(CoreLabel.OutputFormat format) {
+  public String toString(CoreLabel.OutputFormat format) {
     return plabel.toString(format);
-  }*/
+  }
 
   /**
    * Just for testing.

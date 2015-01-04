@@ -32,7 +32,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   }
 
   //@Override
-  public String toString() {
+  public override String ToString() {
     StringBuilder sb = new StringBuilder();
     if (isConj) {
       if (isNegated()) {

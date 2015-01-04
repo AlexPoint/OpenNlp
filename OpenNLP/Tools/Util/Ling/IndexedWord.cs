@@ -268,20 +268,20 @@ namespace OpenNLP.Tools.Util.Ling
 
     //now compare on appropriate keys
     IndexedWord otherWord = (IndexedWord) o;
-    int myInd = (int)get(typeof(CoreAnnotations.IndexAnnotation));
-    int otherInd = (int)otherWord.get(typeof(CoreAnnotations.IndexAnnotation));
+    var myInd = get(typeof(CoreAnnotations.IndexAnnotation));
+    var otherInd = otherWord.get(typeof(CoreAnnotations.IndexAnnotation));
     if (myInd == null) {
       if (otherInd != null)
       return false;
-    } else if ( ! myInd.Equals(otherInd)) {
+    } else if ( ! ((int)myInd).Equals((int)otherInd)) {
       return false;
     }
-    int mySentInd = (int)get(typeof(CoreAnnotations.SentenceIndexAnnotation));
-    int otherSentInd = (int)otherWord.get(typeof(CoreAnnotations.SentenceIndexAnnotation));
+    var mySentInd = get(typeof(CoreAnnotations.SentenceIndexAnnotation));
+    var otherSentInd = otherWord.get(typeof(CoreAnnotations.SentenceIndexAnnotation));
     if (mySentInd == null) {
       if (otherSentInd != null)
       return false;
-    } else if ( ! mySentInd.Equals(otherSentInd)) {
+    } else if ( ! ((int)mySentInd).Equals((int)otherSentInd)) {
       return false;
     }
     String myDocID = getString(typeof(CoreAnnotations.DocIDAnnotation));

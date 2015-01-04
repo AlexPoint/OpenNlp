@@ -613,9 +613,9 @@ namespace OpenNLP.Tools.Util.Ling
     }
     case OutputFormat.VALUE_INDEX: {
       buf.Append(value());
-      int index = (int)this.get(typeof(CoreAnnotations.IndexAnnotation));
+      var index = this.get(typeof(CoreAnnotations.IndexAnnotation));
       if (index != null) {
-        buf.Append('-').Append(index);
+          buf.Append('-').Append((int)index);
       }
       buf.Append(toPrimes());
       break;
@@ -635,18 +635,18 @@ namespace OpenNLP.Tools.Util.Ling
       if (ltag != null) {
         buf.Append(TAG_SEPARATOR).Append(ltag);
       }
-      int index = (int)this.get(typeof(CoreAnnotations.IndexAnnotation));
+      var index = this.get(typeof(CoreAnnotations.IndexAnnotation));
       if (index != null) {
-        buf.Append('-').Append(index);
+          buf.Append('-').Append((int)index);
       }
       buf.Append(toPrimes());
       break;
     }
     case OutputFormat.VALUE_INDEX_MAP: {
       buf.Append(value());
-      int index = (int)this.get(typeof(CoreAnnotations.IndexAnnotation));
+      var index = this.get(typeof(CoreAnnotations.IndexAnnotation));
       if (index != null) {
-        buf.Append('-').Append(index);
+          buf.Append('-').Append((int)index);
       }
       Dictionary<String,Object> map2 = new Dictionary<String,Object>();
       foreach(var key in this.keySet()) {
@@ -671,9 +671,9 @@ namespace OpenNLP.Tools.Util.Ling
       break;
     case OutputFormat.WORD_INDEX: {
       buf.Append(this.get(typeof(CoreAnnotations.TextAnnotation)));
-      int index = (int)this.get(typeof(CoreAnnotations.IndexAnnotation));
+      var index = this.get(typeof(CoreAnnotations.IndexAnnotation));
       if (index != null) {
-        buf.Append('-').Append(index);
+          buf.Append('-').Append((int)index);
       }
       buf.Append(toPrimes());
       break;

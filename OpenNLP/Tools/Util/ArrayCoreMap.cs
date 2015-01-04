@@ -303,7 +303,10 @@ namespace OpenNLP.Tools.Util
   //@Override
   public override String ToString() {
     IdentityHashSet<CoreMap> calledSet = toStringCalled.Value;
-    bool createdCalledSet = calledSet.isEmpty();
+      if (calledSet == null)
+      {
+          calledSet = new IdentityHashSet<CoreMap>();
+      }
 
     if (calledSet.contains(this)) {
       return "[...]";
@@ -322,6 +325,7 @@ namespace OpenNLP.Tools.Util
     }
     s.Append(']');
 
+    bool createdCalledSet = calledSet == null || calledSet.isEmpty();
     if (createdCalledSet) {
       toStringCalled.Dispose();/*remove();*/
     } else {

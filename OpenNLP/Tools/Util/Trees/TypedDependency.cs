@@ -104,13 +104,13 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
   //@Override
-  /*public override String ToString() {
+  public override String ToString() {
     return toString(CoreLabel.OutputFormat.VALUE_INDEX);
   }
 
   public String toString(CoreLabel.OutputFormat format) {
     return preln + "(" + pgov.toString(format) + ", " + pdep.toString(format) + ")";
-  }*/
+  }
 
   public int CompareTo(TypedDependency tdArg) {
     IndexedWord depArg = tdArg.dep();

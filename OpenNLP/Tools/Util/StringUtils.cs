@@ -2039,7 +2039,7 @@ namespace OpenNLP.Tools.Util
     return ngrams;
   }
 
-  private static Regex diacriticalMarksPattern = new Regex("\\p{InCombiningDiacriticalMarks}", RegexOptions.Compiled);
+  //private static Regex diacriticalMarksPattern = new Regex("\\p{InCombiningDiacriticalMarks}", RegexOptions.Compiled);
   /*public static String normalize(String s) {
     // Normalizes string and strips diacritics (map to ascii) by
     // 1. taking the NFKD (compatibility decomposition -

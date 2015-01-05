@@ -367,8 +367,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
       if (treeNodeMatchCandidateIterator == null) {
         treeNodeMatchCandidateIterator = myNode.rel.searchNodeIterator(tree, this);
       }
-        var success = treeNodeMatchCandidateIterator.MoveNext();
-      while (success) {
+//        var success = treeNodeMatchCandidateIterator.MoveNext();
+      //while (success) {
+      while (treeNodeMatchCandidateIterator.MoveNext())
+      {
           Console.WriteLine("success = true");
         nextTreeNodeMatchCandidate = treeNodeMatchCandidateIterator.Current;
         if (myNode.descriptionMode == null) {
@@ -452,7 +454,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             break;
           }
         }
-          success = treeNodeMatchCandidateIterator.MoveNext();
+          //success = treeNodeMatchCandidateIterator.MoveNext();
       }
       if (!finished) { // I successfully matched.
           Console.WriteLine("!finished");

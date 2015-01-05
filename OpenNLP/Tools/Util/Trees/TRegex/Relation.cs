@@ -1185,11 +1185,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class HasLeftmostDescendantSearchNodeIterator : IEnumerator<Tree>
         {
-            private Tree firstNode;
 
             public HasLeftmostDescendantSearchNodeIterator(Tree t)
             {
-                firstNode = t;
+                this.Current = t;
             }
 
             public void Dispose()
@@ -1201,8 +1200,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             {
                 if (this.Current == null)
                 {
-                    this.Current = firstNode;
-                    return true;
+                    return false;
                 }
                 else if (this.Current.isLeaf())
                 {
@@ -1290,11 +1288,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class HasRighmostDescendantSearchNodeIterator : IEnumerator<Tree>
         {
-            private Tree firstNode;
-
             public HasRighmostDescendantSearchNodeIterator(Tree t)
             {
-                firstNode = t;
+                this.Current = t;
             }
 
             public void Dispose()
@@ -1306,8 +1302,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             {
                 if (this.Current == null)
                 {
-                    this.Current = firstNode;
-                    return true;
+                    return false;
                 }
                 else if (this.Current.isLeaf())
                 {
@@ -2587,19 +2582,23 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
     /*@Override*/
     public override IEnumerator<Tree> searchNodeIterator(/*readonly*/ Tree t,
-                                      /*readonly */TregexMatcher matcher) {
+                                      /*readonly */TregexMatcher matcher)
+    {
+        var next = t;
+
         HeadFinder headFinder = matcher.getHeadFinder();
           if (headFinder == null) {headFinder = this.hf;}
 
-          Tree last = t;
-          t = matcher.getParent(t);
-        if (t != null && headFinder.determineHead(t) != last)
+          Tree last = next;
+          next = matcher.getParent(next);
+        if (next != null && headFinder.determineHead(next) != last)
         {
-            return new List<Tree>() {t}.GetEnumerator();
+            next = null;
+            return new List<Tree>().GetEnumerator();
         }
         else
         {
-            return new List<Tree>().GetEnumerator();
+            return new List<Tree>(){next}.GetEnumerator();
         }
       /*return new SearchNodeIterator() {
         @Override

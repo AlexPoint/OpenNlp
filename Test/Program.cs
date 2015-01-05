@@ -76,9 +76,7 @@ namespace Test
             {
                 Console.WriteLine(lit);
             }*/
-            var test = "This is a test";
-            Console.WriteLine(test.Substring(1, test.Length - 2));
-
+            
             // parsing
             var sentence = "This is a test.";
             var modelPath = currentDirectory + "../Resources/Models/";

@@ -706,11 +706,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
 /** Token literal values. */
 
-        public static readonly String[] jjstrLiteralImages =
+        /*public static readonly String[] jjstrLiteralImages =
         {
             "", null, null, null, null, @"\74\56\56\56", null, null, null, @"\137\137", null,
             null, @"\174", @"\12", @"\50", @"\51", @"\41", @"\100", @"\43", @"\45", @"\75", @"\176",
             @"\46", @"\77", @"\133", @"\135", @"\173", @"\73", @"\175",
+        };*/
+        public static readonly String[] jjstrLiteralImages =
+        {
+            "", null, null, null, null, "<...", null, null, null, "__", null,
+            null, "|", "\n", "(", ")", "!", "@", "#", "%", "=", "~",
+            "&", "?", "[", "]", "{", ";", "}",
         };
 
         protected Token jjFillToken()

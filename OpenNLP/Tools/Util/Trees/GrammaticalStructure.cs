@@ -371,10 +371,13 @@ namespace OpenNLP.Tools.Util.Trees
 
   // cdm dec 2009: I changed this to automatically fail on preterminal nodes, since they shouldn't match for GR parent patterns.  Should speed it up.
   private static void analyzeNode(TreeGraphNode t, TreeGraphNode root, ICollection<GrammaticalRelation> relations, HeadFinder hf, Predicate<String> puncFilter, DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph, DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> completeGraph) {
+      //Console.WriteLine("analyzeNode()");
     if (t.isPhrasal()) {    // don't do leaves or preterminals!
+        //Console.WriteLine("isPhrasal = true");
       TreeGraphNode tHigh = t.highestNodeWithSameHead();
       foreach (GrammaticalRelation egr in relations) {
         if (egr.isApplicable(t)) {
+            //Console.WriteLine("isApplicable = true");
           foreach (TreeGraphNode u in egr.getRelatedNodes(t, root, hf)) {
             TreeGraphNode uHigh = u.highestNodeWithSameHead();
             if (uHigh == tHigh) {

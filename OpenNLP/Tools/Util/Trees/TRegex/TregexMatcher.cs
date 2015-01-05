@@ -130,7 +130,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * otherwise, an AssertionError will be thrown.
    */
   public bool findAt(Tree node) {
-      Console.WriteLine("findAt() on '" + node);
+      //Console.WriteLine("findAt() on '" + node);
     if (findCurrent != null && findCurrent != node) {
       throw new InvalidOperationException("Error: must call reset() before changing nodes for a call to findAt");
     }

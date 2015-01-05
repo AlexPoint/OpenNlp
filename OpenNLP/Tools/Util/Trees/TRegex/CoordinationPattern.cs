@@ -122,6 +122,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     // find the next local match
     //@Override
     public override bool matches() {  // also known as "FUN WITH LOGIC"
+        //Console.WriteLine("matches()");
       if (considerAll) {
         // these are the cases where all children must be considered to match
         if (currChild < 0) {

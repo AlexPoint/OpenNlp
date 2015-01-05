@@ -3191,7 +3191,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         basicCat = false;
       }
       if (Regex.IsMatch(arg,"/.*/")) {
-        pattern = new Regex(arg.Substring(1, arg.Length - 1));
+        //pattern = new Regex(arg.Substring(1, arg.Length - 1));
+        pattern = new Regex(arg.Substring(1, arg.Length - 2));
       } else if (Regex.IsMatch(arg,"__")) {
         pattern = new Regex("^.*$");
       } else {
@@ -3404,7 +3405,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         basicCat = false;
       }
       if (Regex.IsMatch(arg, "/.*/")) {
-        pattern = new Regex(arg.Substring(1, arg.Length - 1));
+        //pattern = new Regex(arg.Substring(1, arg.Length - 1));
+        pattern = new Regex(arg.Substring(1, arg.Length - 2));
       } else if (Regex.IsMatch(arg,"__")) {
         pattern = new Regex("^.*$");
       } else {
@@ -3568,7 +3570,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         basicCat = false;
       }
       if (Regex.IsMatch(arg, "/.*/")) {
-        pattern = new Regex(arg.Substring(1, arg.Length - 1));
+        //pattern = new Regex(arg.Substring(1, arg.Length - 1));
+        pattern = new Regex(arg.Substring(1, arg.Length - 2));
       } else if (Regex.IsMatch(arg, "__")) {
         pattern = new Regex("^.*$");
       } else {

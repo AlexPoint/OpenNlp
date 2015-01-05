@@ -154,11 +154,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         StringBuilder label = new StringBuilder();
         foreach (String chunk in node.replacementPieces) {
           if (variablePattern.IsMatch(chunk)) {
-            String name = chunk.Substring(2, chunk.Length - 1);
+            //String name = chunk.Substring(2, chunk.Length - 1);
+            String name = chunk.Substring(2, chunk.Length - 3);
             //label.Append(Matcher.quoteReplacement(tregex.getVariableString(name)));
             label.Append(tregex.getVariableString(name).Replace("'", "").Replace("\"",""));
           } else if (nodePattern.IsMatch(chunk)) {
-            String name = chunk.Substring(2, chunk.Length - 1);
+            //String name = chunk.Substring(2, chunk.Length - 1);
+            String name = chunk.Substring(2, chunk.Length - 3);
             //label.Append(Matcher.quoteReplacement(tregex.getNode(name).value()));
             label.Append(tregex.getNode(name).value().Replace("'", "").Replace("\"",""));
           } else {

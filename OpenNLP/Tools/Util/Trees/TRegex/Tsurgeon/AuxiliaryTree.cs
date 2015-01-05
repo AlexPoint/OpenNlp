@@ -186,8 +186,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     }
   }
 
-  static String unescape(String input) {
-    return input.Replace("\\\\(.)", "$1");
+  static String unescape(String input)
+  {
+      return Regex.Replace(input, "\\\\(.)", "$1");
+    //return input.Replace("\\\\(.)", "$1");
   }
     }
 }

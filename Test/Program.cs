@@ -23,6 +23,23 @@ namespace Test
 
         static void Main(string[] args)
         {
+            /*FileStream ostrm;
+            StreamWriter writer;
+            TextWriter oldOut = Console.Out;
+            try
+            {
+                ostrm = new FileStream("C:\\Users\\Alexandre\\Desktop\\vs_output_2.txt", FileMode.OpenOrCreate, FileAccess.Write);
+                writer = new StreamWriter(ostrm);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cannot open Redirect.txt for writing");
+                Console.WriteLine(e.Message);
+                return;
+            }
+            Console.SetOut(writer);*/
+
+
             /*// read file
             var tokenizerTrainingFilePath = currentDirectory + "Input/tokenizer.train";
             var outputFilePath = currentDirectory + "Output/EnglishTok.nbin";
@@ -78,7 +95,7 @@ namespace Test
             }*/
             
             // parsing
-            var sentence = "This is a test.";
+            var sentence = "I looked the word up in the dictionary.";
             var modelPath = currentDirectory + "../Resources/Models/";
 			var parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(modelPath, true, false);
             var parse = parser.DoParse(sentence);

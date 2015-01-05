@@ -98,7 +98,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             break;
           }
         }
-        matchedGroup = matchedGroup.Replace("\\\\", "");
+        //matchedGroup = matchedGroup.Replace("\\\\", "");
+        matchedGroup = matchedGroup.Replace("\\", "");
         //if (matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None).Length > MAX_STRING_MATCHER_SIZE) {
         if (matchedGroup.Split('|').Length > MAX_STRING_MATCHER_SIZE) {
           descriptionMode = DescriptionMode.PATTERN;
@@ -125,7 +126,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             break;
           }
         }
-        matchedGroup = matchedGroup.Replace("\\\\", "");
+        //matchedGroup = matchedGroup.Replace("\\\\", "");
+        matchedGroup = matchedGroup.Replace("\\", "");
         //if (matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None).Length > MAX_STRING_MATCHER_SIZE) {
         if (matchedGroup.Split('|').Length > MAX_STRING_MATCHER_SIZE) {
           descriptionMode = DescriptionMode.PATTERN;

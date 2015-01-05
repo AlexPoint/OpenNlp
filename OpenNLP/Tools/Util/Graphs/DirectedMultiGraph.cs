@@ -260,15 +260,18 @@ namespace OpenNLP.Tools.Util.Graphs
 
   //@Override
   public ReadOnlyCollection<V> getParents(V vertex) {
-    Dictionary<V, List<E>> parentMap = incomingEdges[vertex];
+    Dictionary<V, List<E>> parentMap;
+      incomingEdges.TryGetValue(vertex, out parentMap);
     if (parentMap == null)
       return null;
     return new ReadOnlyCollection<V>(parentMap.Keys.ToList());
   }
 
   //@Override
-  public ReadOnlyCollection<V> getChildren(V vertex) {
-    Dictionary<V, List<E>> childMap = outgoingEdges[vertex];
+  public ReadOnlyCollection<V> getChildren(V vertex)
+  {
+      Dictionary<V, List<E>> childMap;
+      outgoingEdges.TryGetValue(vertex, out childMap);
     if (childMap == null)
       return null;
     return new ReadOnlyCollection<V>(childMap.Keys.ToList());

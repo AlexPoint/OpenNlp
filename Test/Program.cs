@@ -66,6 +66,17 @@ namespace Test
                 Console.WriteLine(string.Join(" | ", tokens));
             }*/
 
+            /*String[] jjstrLiteralImages =
+        {
+            "", null, null, null, null, "\x74\x56\x56\x56", null, null, null, @"\137\137", null,
+            null, @"\174", @"\12", @"\50", @"\51", @"\41", @"\100", @"\43", @"\45", @"\75", @"\176",
+            @"\46", @"\77", @"\133", @"\135", @"\173", @"\73", @"\175",
+        };
+            foreach (var lit in jjstrLiteralImages)
+            {
+                Console.WriteLine(lit);
+            }*/
+
             // parsing
             var sentence = "This is a test.";
             var modelPath = currentDirectory + "../Resources/Models/";

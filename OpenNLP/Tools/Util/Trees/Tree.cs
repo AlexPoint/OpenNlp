@@ -2224,7 +2224,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
       //@Override
       public bool hasNext()
       {
-          return (!treeStack.Any());
+          return (treeStack.Any());
       }
 
       //@Override

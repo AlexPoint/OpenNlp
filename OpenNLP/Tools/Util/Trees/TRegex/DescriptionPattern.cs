@@ -99,9 +99,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           }
         }
         matchedGroup = matchedGroup.Replace("\\\\", "");
-        if (matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None).Length > MAX_STRING_MATCHER_SIZE) {
+        //if (matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None).Length > MAX_STRING_MATCHER_SIZE) {
+        if (matchedGroup.Split('|').Length > MAX_STRING_MATCHER_SIZE) {
           descriptionMode = DescriptionMode.PATTERN;
-          descPattern = new Regex(desc.Substring(1, desc.Length - 1));
+          //descPattern = new Regex(desc.Substring(1, desc.Length - 1));
+          descPattern = new Regex(desc.Substring(1, desc.Length - 2));
           exactMatch = null;
           stringFilter = null;
           //System.err.println("DescriptionPattern: not converting " + desc);
@@ -110,7 +112,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           descPattern = null;
           exactMatch = null;
           //stringFilter = new ArrayStringFilter(ArrayStringFilter.Mode.EXACT, matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None)); 
-          stringFilter = a => matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None).Any(s => s == a);
+          stringFilter = a => matchedGroup.Split('|').Any(s => s == a);
           //System.err.println("DescriptionPattern: converting " + desc + " to " + stringFilter);
         }
       } else if (CASE_INSENSITIVE_PATTERN.IsMatch(desc)) {
@@ -124,9 +126,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           }
         }
         matchedGroup = matchedGroup.Replace("\\\\", "");
-        if (matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None).Length > MAX_STRING_MATCHER_SIZE) {
+        //if (matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None).Length > MAX_STRING_MATCHER_SIZE) {
+        if (matchedGroup.Split('|').Length > MAX_STRING_MATCHER_SIZE) {
           descriptionMode = DescriptionMode.PATTERN;
-          descPattern = new Regex(desc.Substring(1, desc.Length - 1));
+          //descPattern = new Regex(desc.Substring(1, desc.Length - 1));
+          descPattern = new Regex(desc.Substring(1, desc.Length - 2));
           exactMatch = null;
           stringFilter = null;
           //System.err.println("DescriptionPattern: not converting " + desc);
@@ -135,7 +139,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           descPattern = null;
           exactMatch = null;
           //stringFilter = new ArrayStringFilter(ArrayStringFilter.Mode.CASE_INSENSITIVE, matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None)); 
-          stringFilter = a => matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None).Any(s => s.Equals(a, StringComparison.InvariantCultureIgnoreCase));
+          stringFilter = a => matchedGroup.Split('|').Any(s => s.Equals(a, StringComparison.InvariantCultureIgnoreCase));
           //System.err.println("DescriptionPattern: converting " + desc + " to " + stringFilter);
         }
       } else if (PREFIX_PATTERN.IsMatch(desc)) {
@@ -148,9 +152,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             break;
           }
         }
-        if (matchedGroup.Split(new []{"\\|"}, StringSplitOptions.None).Length > MAX_STRING_MATCHER_SIZE) {
+        //if (matchedGroup.Split(new []{"\\|"}, StringSplitOptions.None).Length > MAX_STRING_MATCHER_SIZE) {
+        if (matchedGroup.Split('|').Length > MAX_STRING_MATCHER_SIZE) {
           descriptionMode = DescriptionMode.PATTERN;
-          descPattern = new Regex(desc.Substring(1, desc.Length - 1));
+          //descPattern = new Regex(desc.Substring(1, desc.Length - 1));
+          descPattern = new Regex(desc.Substring(1, desc.Length - 2));
           exactMatch = null;
           stringFilter = null;
           //System.err.println("DescriptionPattern: not converting " + desc);
@@ -159,12 +165,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           descPattern = null;
           exactMatch = null;
           //stringFilter = new ArrayStringFilter(ArrayStringFilter.Mode.PREFIX, matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None)); 
-          stringFilter = a => matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None).Any(s => a.StartsWith(s)); 
+          stringFilter = a => matchedGroup.Split('|').Any(s => a.StartsWith(s)); 
           //System.err.println("DescriptionPattern: converting " + desc + " to " + stringFilter);
         }
       } else if (Regex.IsMatch(desc,"/.*/")){
         descriptionMode = DescriptionMode.PATTERN;
-        descPattern = new Regex(desc.Substring(1, desc.Length - 1));
+        //descPattern = new Regex(desc.Substring(1, desc.Length - 1));
+        descPattern = new Regex(desc.Substring(1, desc.Length - 2));
         exactMatch = null;
         stringFilter = null;
       } else if (desc.IndexOf('|') >= 0) {
@@ -172,7 +179,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         // promote those to regex match or make a string matcher out
         // of them.  for short enough disjunctions, a simple string
         // matcher can be more efficient than a regex.
-        String[] words = desc.Split(new []{"[|]"}, StringSplitOptions.None);
+        //String[] words = desc.Split(new []{"[|]"}, StringSplitOptions.None);
+        String[] words = desc.Split('|');
         if (words.Length <= MAX_STRING_MATCHER_SIZE) {
           descriptionMode = DescriptionMode.STRINGS;
           descPattern = null;
@@ -350,6 +358,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
      * This is the hotspot method in running tregex, but not clear how to make it faster. */
     // when finished = false; break; is called, it means I successfully matched.
     private void goToNextTreeNodeMatch() {
+        Console.WriteLine("goToNextTreeNodeMatch()");
       decommitVariableGroups(); // make sure variable groups are free.
       removeNamedNodes(); // if we named a node, it should now be unnamed
       finished = true;
@@ -360,20 +369,26 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
       }
         var success = treeNodeMatchCandidateIterator.MoveNext();
       while (success) {
+          Console.WriteLine("success = true");
         nextTreeNodeMatchCandidate = treeNodeMatchCandidateIterator.Current;
         if (myNode.descriptionMode == null) {
+            Console.WriteLine("myNode.descriptionMode == null");
           // this is a backreference or link
           if (myNode.isLink) {
+              Console.WriteLine("myNode.isLink");
             Tree otherTree = namesToNodes[myNode.linkedName];
             if (otherTree != null) {
+                Console.WriteLine("otherTree != null");
               String otherValue = myNode.basicCatFunction == null ? otherTree.value() : myNode.basicCatFunction(otherTree.value());
               String myValue = myNode.basicCatFunction == null ? nextTreeNodeMatchCandidate.value() : myNode.basicCatFunction(nextTreeNodeMatchCandidate.value());
               if (otherValue.Equals(myValue)) {
+                  Console.WriteLine("otherValue.Equals(myValue)");
                 finished = false;
                 break;
               }
             }
           } else if (namesToNodes[myNode.name] == nextTreeNodeMatchCandidate) {
+              Console.WriteLine("namesToNodes[myNode.name] == nextTreeNodeMatchCandidate");
             finished = false;
             break;
           }
@@ -382,6 +397,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           // String value = (myNode.basicCatFunction == null ? nextTreeNodeMatchCandidate.value() : myNode.basicCatFunction.apply(nextTreeNodeMatchCandidate.value()));
           // m = myNode.descPattern.matcher(value);
           // bool found = m.find();
+            Console.WriteLine("else");
           bool found;
           value = nextTreeNodeMatchCandidate.value();
           if (value == null) {
@@ -409,12 +425,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
           }
           if (found) {
+              Console.WriteLine("found = true");
             foreach (Tuple<int,String> varGroup in myNode.variableGroups) { // if variables have been captured from a regex, they must match any previous matchings
               String thisVariable = varGroup.Item2;
               String thisVarString = variableStrings.getString(thisVariable);
               if (m != null) {
                 if (thisVarString != null &&
-                    !thisVarString.Equals(m.Groups[varGroup.Item1])) {
+                    !thisVarString.Equals(m.Groups[varGroup.Item1].Value)) {
                   // failed to match a variable
                   found = false;
                   break;
@@ -430,6 +447,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
           }
           if (found != myNode.negDesc) {
+              Console.WriteLine("found != myNode.negDesc");
             finished = false;
             break;
           }
@@ -437,6 +455,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           success = treeNodeMatchCandidateIterator.MoveNext();
       }
       if (!finished) { // I successfully matched.
+          Console.WriteLine("!finished");
         resetChild(); // reset my unique TregexMatcher child based on the Tree node I successfully matched at.
         // cdm bugfix jul 2009: on next line need to check for descPattern not null, or else this is a backreference or a link to an already named node, and the map should _not_ be updated
         if ((myNode.descriptionMode != null || myNode.isLink) && myNode.name != null) {
@@ -491,6 +510,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
     /* tries to match the unique child of the DescriptionPattern node to a Tree node.  Returns "true" if succeeds.*/
     private bool matchChild() {
+        Console.WriteLine("matchChild()");
       // entering here (given that it's called only once in matches())
       // we know finished is false, and either nextChild == null
       // (meaning goToNextChild has not been called) or nextChild exists
@@ -516,6 +536,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     // find the next local match
     //@Override
     public override bool matches() {
+        Console.WriteLine("matches()");
       // this is necessary so that a negated/optional node matches only once
       if (finished) {
         return false;

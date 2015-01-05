@@ -84,7 +84,8 @@ namespace OpenNLP.Tools.Util.International.Morph
    * @param str
    */
   public MorphoFeatures fromTagString(String str) {
-    List<String> feats = str.Split(new string[]{"\\-"}, StringSplitOptions.None).ToList();
+    //List<String> feats = str.Split(new string[]{"\\-"}, StringSplitOptions.None).ToList();
+    List<String> feats = str.Split('-').ToList();
     MorphoFeatures mFeats = new MorphoFeatures();
     foreach(String fPair in feats) {
       String[] keyValue = Regex.Split(fPair, KEY_VAL_DELIM);

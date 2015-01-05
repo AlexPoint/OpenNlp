@@ -2222,7 +2222,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
       }
 
       //@Override
-      public bool hasNext()
+      /*public bool hasNext()
       {
           return (treeStack.Any());
       }
@@ -2244,7 +2244,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
               treeStack.Add(kids[i]);
           }
           return tr;
-      }
+      }*/
 
       public void Dispose()
       {
@@ -2253,7 +2253,23 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
 
       public bool MoveNext()
       {
-          throw new NotImplementedException();
+          if (!treeStack.Any())
+          {
+              this.Current = null;
+              return false;
+          }
+          else
+          {
+              this.Current = treeStack.Last();
+              treeStack.Remove(this.Current);
+              Tree[] kids = this.Current.children();
+              // so that we can efficiently use one List, we reverse them
+              for (int i = kids.Length - 1; i >= 0; i--)
+              {
+                  treeStack.Add(kids[i]);
+              }
+              return true;
+          }
       }
 
       public void Reset()

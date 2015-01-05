@@ -21,9 +21,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
   public void setLastIndex(Tree t) {
     lastIndex = 0;
       var iterator = t.iterator();
-      while(iterator.hasNext())
+      while(iterator.MoveNext())
       {
-          var node = iterator.next();
+          var node = iterator.Current;
     /*foreach (Tree node in t) {*/
       String value = node.label().value();
       if (value != null) {

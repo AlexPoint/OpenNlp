@@ -11,6 +11,7 @@ namespace OpenNLP.Tools.Util.Process
  * in the underlying text.  This is used to create tokens in JFlex lexers
  * such as PTBTokenizer.
  */
+
     public interface LexedTokenFactory<T>
     {
         /**

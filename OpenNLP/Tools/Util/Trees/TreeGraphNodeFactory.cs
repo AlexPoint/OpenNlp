@@ -16,41 +16,49 @@ namespace OpenNLP.Tools.Util.Trees
  *
  * @author Bill MacCartney
  */
-    public class TreeGraphNodeFactory: TreeFactory
+
+    public class TreeGraphNodeFactory : TreeFactory
     {
         private LabelFactory mlf;
 
-  /**
+        /**
    * Make a <code>TreeFactory</code> that produces
    * <code>TreeGraphNode</code>s.  The labels are of class
    * <code>CoreLabel</code>.
    */
-  public TreeGraphNodeFactory():
-    this(CoreLabel.factory()){
-  }
 
-  public TreeGraphNodeFactory(LabelFactory mlf) {
-    this.mlf = mlf;
-  }
+        public TreeGraphNodeFactory() :
+            this(CoreLabel.factory())
+        {
+        }
 
-  // docs inherited
-  public Tree newLeaf(/*final*/ String word) {
-    return newLeaf(mlf.newLabel(word));
-  }
+        public TreeGraphNodeFactory(LabelFactory mlf)
+        {
+            this.mlf = mlf;
+        }
 
-  // docs inherited
-  public Tree newLeaf(Label label) {
-    return new TreeGraphNode(label);
-  }
+        // docs inherited
+        public Tree newLeaf( /*final*/ String word)
+        {
+            return newLeaf(mlf.newLabel(word));
+        }
 
-  // docs inherited
-  public Tree newTreeNode(/*final*/ String parent, /*final*/ List<Tree> children) {
-    return newTreeNode(mlf.newLabel(parent), children);
-  }
+        // docs inherited
+        public Tree newLeaf(Label label)
+        {
+            return new TreeGraphNode(label);
+        }
 
-  // docs inherited
-  public Tree newTreeNode(Label parentLabel, List<Tree> children) {
-    return new TreeGraphNode(parentLabel, children);
-  }
+        // docs inherited
+        public Tree newTreeNode( /*final*/ String parent, /*final*/ List<Tree> children)
+        {
+            return newTreeNode(mlf.newLabel(parent), children);
+        }
+
+        // docs inherited
+        public Tree newTreeNode(Label parentLabel, List<Tree> children)
+        {
+            return new TreeGraphNode(parentLabel, children);
+        }
     }
 }

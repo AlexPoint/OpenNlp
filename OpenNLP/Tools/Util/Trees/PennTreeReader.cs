@@ -30,22 +30,23 @@ namespace OpenNLP.Tools.Util.Trees
  * @author Roger Levy
  * @author Spence Green
  */
-    public class PennTreeReader: TreeReader
+
+    public class PennTreeReader : TreeReader
     {
         private readonly TextReader reader;
-  private readonly Tokenizer<String> tokenizer;
-  private readonly TreeNormalizer treeNormalizer;
-  private readonly TreeFactory treeFactory;
+        private readonly Tokenizer<String> tokenizer;
+        private readonly TreeNormalizer treeNormalizer;
+        private readonly TreeFactory treeFactory;
 
-  //private static readonly bool DEBUG = false;
+        //private static readonly bool DEBUG = false;
 
-  private Tree currentTree;
-  // misuse a list as a stack, since we want to avoid the synchronized and old Stack, but don't need the power and JDK 1.6 dependency of a Deque
-  private List<Tree> stack;
-  private const String leftParen = "(";
-  private const String rightParen = ")";
+        private Tree currentTree;
+        // misuse a list as a stack, since we want to avoid the synchronized and old Stack, but don't need the power and JDK 1.6 dependency of a Deque
+        private List<Tree> stack;
+        private const String leftParen = "(";
+        private const String rightParen = ")";
 
-  /**
+        /**
    * Read parse trees from a <code>Reader</code>.
    * For the defaulted arguments, you get a
    * <code>SimpleTreeFactory</code>, no <code>TreeNormalizer</code>, and
@@ -53,31 +54,40 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @param in The <code>Reader</code>
    */
-  public PennTreeReader(TextReader input):this(input, new LabeledScoredTreeFactory()){}
+
+        public PennTreeReader(TextReader input) : this(input, new LabeledScoredTreeFactory())
+        {
+        }
 
 
-  /**
+        /**
    * Read parse trees from a <code>Reader</code>.
    *
    * @param in the Reader
    * @param tf TreeFactory -- factory to create some kind of Tree
    */
-  public PennTreeReader(TextReader input, TreeFactory tf):
-    this(input, tf, null, new PennTreebankTokenizer(input)){}
+
+        public PennTreeReader(TextReader input, TreeFactory tf) :
+            this(input, tf, null, new PennTreebankTokenizer(input))
+        {
+        }
 
 
-  /**
+        /**
    * Read parse trees from a Reader.
    *
    * @param in Reader
    * @param tf TreeFactory -- factory to create some kind of Tree
    * @param tn the method of normalizing trees
    */
-  public PennTreeReader(TextReader input, TreeFactory tf, TreeNormalizer tn):
-    this(input, tf, tn, new PennTreebankTokenizer(input)){}
+
+        public PennTreeReader(TextReader input, TreeFactory tf, TreeNormalizer tn) :
+            this(input, tf, tn, new PennTreebankTokenizer(input))
+        {
+        }
 
 
-  /**
+        /**
    * Read parse trees from a Reader.
    *
    * @param in Reader
@@ -85,36 +95,41 @@ namespace OpenNLP.Tools.Util.Trees
    * @param tn the method of normalizing trees
    * @param st Tokenizer that divides up Reader
    */
-  public PennTreeReader(TextReader input, TreeFactory tf, TreeNormalizer tn, Tokenizer<String> st) {
-    reader = input;
-    treeFactory = tf;
-    treeNormalizer = tn;
-    tokenizer = st;
 
-    // check for whacked out headers still present in Brown corpus in Treebank 3
-    String first = (st.hasNext() ? st.peek() : null);
-    if (first != null && first.StartsWith("*x*x*x")) {
-      /*if (DEBUG) {
+        public PennTreeReader(TextReader input, TreeFactory tf, TreeNormalizer tn, Tokenizer<String> st)
+        {
+            reader = input;
+            treeFactory = tf;
+            treeNormalizer = tn;
+            tokenizer = st;
+
+            // check for whacked out headers still present in Brown corpus in Treebank 3
+            String first = (st.hasNext() ? st.peek() : null);
+            if (first != null && first.StartsWith("*x*x*x"))
+            {
+                /*if (DEBUG) {
         System.err.printf("%s: Skipping past whacked out header (%s)%n",this.getClass().getName(),first);
       }*/
-      int foundCount = 0;
-      while (foundCount < 4 && st.hasNext()) {
-        first = st.next();
-        if (first != null && first.StartsWith("*x*x*x")) {
-          foundCount++;
-        }
-      }
-    }
+                int foundCount = 0;
+                while (foundCount < 4 && st.hasNext())
+                {
+                    first = st.next();
+                    if (first != null && first.StartsWith("*x*x*x"))
+                    {
+                        foundCount++;
+                    }
+                }
+            }
 
-    /*if (DEBUG) {
+            /*if (DEBUG) {
       System.err.printf("%s: Built from%n %s ", this.getClass().getName(), in.getClass().getName());
       System.err.println(' ' + ((tf == null) ? "no tf" : tf.getClass().getName()));
       System.err.println(' ' + ((tn == null) ? "no tn" : tn.getClass().getName()));
       System.err.println(' ' + ((st == null) ? "no st" : st.getClass().getName()));
     }*/
-  }
+        }
 
-  /**
+        /**
    * Reads a single tree in standard Penn Treebank format from the
    * input stream. The method supports additional parentheses around the
    * tree (an unnamed ROOT node) so long as they are balanced. If the token stream
@@ -128,149 +143,173 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return A single tree, or <code>null</code> at end of token stream.
    */
-  //@Override
-  public Tree readTree() /*throws IOException*/ {
-    Tree t = null;
+        //@Override
+        public Tree readTree() /*throws IOException*/
+        {
+            Tree t = null;
 
-    while (tokenizer.hasNext() && t == null) {
+            while (tokenizer.hasNext() && t == null)
+            {
 
-      //Setup PDA
-      this.currentTree = null;
-      this.stack = new List<Tree>();
+                //Setup PDA
+                this.currentTree = null;
+                this.stack = new List<Tree>();
 
-      try {
-        t = getTreeFromInputStream();
-      } catch (Exception e) {
-        throw new IOException("End of token stream encountered before parsing could complete.");
-      }
+                try
+                {
+                    t = getTreeFromInputStream();
+                }
+                catch (Exception e)
+                {
+                    throw new IOException("End of token stream encountered before parsing could complete.");
+                }
 
-      if (t != null) {
-        // cdm 20100618: Don't do this!  This was never the historical behavior!!!
-        // Escape empty trees e.g. (())
-        // while(t != null && (t.value() == null || t.value().equals("")) && t.numChildren() <= 1)
-        //   t = t.firstChild();
+                if (t != null)
+                {
+                    // cdm 20100618: Don't do this!  This was never the historical behavior!!!
+                    // Escape empty trees e.g. (())
+                    // while(t != null && (t.value() == null || t.value().equals("")) && t.numChildren() <= 1)
+                    //   t = t.firstChild();
 
-        if (treeNormalizer != null && treeFactory != null) {
-          t = treeNormalizer.normalizeWholeTree(t, treeFactory);
+                    if (treeNormalizer != null && treeFactory != null)
+                    {
+                        t = treeNormalizer.normalizeWholeTree(t, treeFactory);
+                    }
+                    t.indexLeaves(true);
+                }
+            }
+
+            return t;
         }
-        t.indexLeaves(true);
-      }
-    }
 
-    return t;
-  }
-
-  private static readonly Regex STAR_PATTERN = new Regex("\\\\\\*");
-  private static readonly Regex SLASH_PATTERN = new Regex("\\\\/");
+        private static readonly Regex STAR_PATTERN = new Regex("\\\\\\*");
+        private static readonly Regex SLASH_PATTERN = new Regex("\\\\/");
 
 
-  private Tree getTreeFromInputStream() /*throws NoSuchElementException*/ {
-    int wordIndex = 1;
+        private Tree getTreeFromInputStream() /*throws NoSuchElementException*/
+        {
+            int wordIndex = 1;
 
-    // FSA
-    //label:
-    while (tokenizer.hasNext()) {
-      String token = tokenizer.next();
+            // FSA
+            //label:
+            while (tokenizer.hasNext())
+            {
+                String token = tokenizer.next();
 
-      switch (token) {
-        case leftParen:
+                switch (token)
+                {
+                    case leftParen:
 
-          // cdm 20100225: This next line used to have "" instead of null, but the traditional and current tree normalizers depend on the label being null not "" when there is no label on a tree (like the outermost English PTB level)
-          String label = (tokenizer.peek().Equals(leftParen)) ? null : tokenizer.next();
-          if (rightParen.Equals(label)) {//Skip past empty trees
-            continue;
-          } else if (treeNormalizer != null) {
-            label = treeNormalizer.normalizeNonterminal(label);
-          }
+                        // cdm 20100225: This next line used to have "" instead of null, but the traditional and current tree normalizers depend on the label being null not "" when there is no label on a tree (like the outermost English PTB level)
+                        String label = (tokenizer.peek().Equals(leftParen)) ? null : tokenizer.next();
+                        if (rightParen.Equals(label))
+                        {
+//Skip past empty trees
+                            continue;
+                        }
+                        else if (treeNormalizer != null)
+                        {
+                            label = treeNormalizer.normalizeNonterminal(label);
+                        }
 
-          if (label != null) {
-            label = STAR_PATTERN.Replace(label, "*");
-            label = SLASH_PATTERN.Replace(label, "/");
-          }
+                        if (label != null)
+                        {
+                            label = STAR_PATTERN.Replace(label, "*");
+                            label = SLASH_PATTERN.Replace(label, "/");
+                        }
 
-          Tree newTree = treeFactory.newTreeNode(label, null); // dtrs are added below
+                        Tree newTree = treeFactory.newTreeNode(label, null); // dtrs are added below
 
-          if (currentTree == null)
-            stack.Add(newTree);
-          else {
-            currentTree.addChild(newTree);
-            stack.Add(currentTree);
-          }
+                        if (currentTree == null)
+                            stack.Add(newTree);
+                        else
+                        {
+                            currentTree.addChild(newTree);
+                            stack.Add(currentTree);
+                        }
 
-          currentTree = newTree;
+                        currentTree = newTree;
 
-          break;
-        case rightParen:
-          if (!stack.Any()) {
-            // Warn that file has too many right parens
-            //System.err.println("PennTreeReader: warning: file has extra non-matching right parenthesis [ignored]");
-            //break label;
-              goto post_while_label;
-          }
+                        break;
+                    case rightParen:
+                        if (!stack.Any())
+                        {
+                            // Warn that file has too many right parens
+                            //System.err.println("PennTreeReader: warning: file has extra non-matching right parenthesis [ignored]");
+                            //break label;
+                            goto post_while_label;
+                        }
 
-          //Accept
-              currentTree = stack.Last();
-              stack.RemoveAt(stack.Count - 1);  // i.e., stack.pop()
+                        //Accept
+                        currentTree = stack.Last();
+                        stack.RemoveAt(stack.Count - 1); // i.e., stack.pop()
 
-          if (!stack.Any()) return currentTree;
+                        if (!stack.Any()) return currentTree;
 
-          break;
-        default:
+                        break;
+                    default:
 
-          if (currentTree == null) {
-            // A careful Reader should warn here, but it's kind of useful to
-            // suppress this because then the TreeReader doesn't print a ton of
-            // messages if there is a README file in a directory of Trees.
-            // System.err.println("PennTreeReader: warning: file has extra token not in a s-expression tree: " + token + " [ignored]");
-            //break label;
-              goto post_while_label;
-          }
+                        if (currentTree == null)
+                        {
+                            // A careful Reader should warn here, but it's kind of useful to
+                            // suppress this because then the TreeReader doesn't print a ton of
+                            // messages if there is a README file in a directory of Trees.
+                            // System.err.println("PennTreeReader: warning: file has extra token not in a s-expression tree: " + token + " [ignored]");
+                            //break label;
+                            goto post_while_label;
+                        }
 
-          String terminal = (treeNormalizer == null) ? token : treeNormalizer.normalizeTerminal(token);
-          terminal = STAR_PATTERN.Replace(terminal, "*");
-          terminal = SLASH_PATTERN.Replace(terminal, "/");
-          Tree leaf = treeFactory.newLeaf(terminal);
-          if (leaf.label() is HasIndex) {
-            HasIndex hi = (HasIndex) leaf.label();
-            hi.setIndex(wordIndex);
-          }
-          if (leaf.label() is HasWord) {
-            HasWord hw = (HasWord) leaf.label();
-            hw.setWord(leaf.label().value());
-          }
-          wordIndex++;
+                        String terminal = (treeNormalizer == null) ? token : treeNormalizer.normalizeTerminal(token);
+                        terminal = STAR_PATTERN.Replace(terminal, "*");
+                        terminal = SLASH_PATTERN.Replace(terminal, "/");
+                        Tree leaf = treeFactory.newLeaf(terminal);
+                        if (leaf.label() is HasIndex)
+                        {
+                            HasIndex hi = (HasIndex) leaf.label();
+                            hi.setIndex(wordIndex);
+                        }
+                        if (leaf.label() is HasWord)
+                        {
+                            HasWord hw = (HasWord) leaf.label();
+                            hw.setWord(leaf.label().value());
+                        }
+                        wordIndex++;
 
-          currentTree.addChild(leaf);
-          // cdm: Note: this implementation just isn't as efficient as the old recursive descent parser (see 2008 code), where all the daughters are gathered before the tree is made....
-          break;
-      }
-    }
-      post_while_label:{}
+                        currentTree.addChild(leaf);
+                        // cdm: Note: this implementation just isn't as efficient as the old recursive descent parser (see 2008 code), where all the daughters are gathered before the tree is made....
+                        break;
+                }
+            }
+            post_while_label:
+            {
+            }
 
-    //Reject
-    if (currentTree != null) {
-      //System.err.println("PennTreeReader: warning: incomplete tree (extra left parentheses in input): " + currentTree);
-    }
-    return null;
-  }
+            //Reject
+            if (currentTree != null)
+            {
+                //System.err.println("PennTreeReader: warning: incomplete tree (extra left parentheses in input): " + currentTree);
+            }
+            return null;
+        }
 
 
-  /**
+        /**
    * Closes the underlying <code>Reader</code> used to create this
    * class.
    */
-  //@Override
-  public void close() /*throws IOException*/ {
-    reader.Close();
-  }
+        //@Override
+        public void close() /*throws IOException*/
+        {
+            reader.Close();
+        }
 
 
-  /**
+        /**
    * Loads treebank data from first argument and prints it.
    *
    * @param args Array of command-line arguments: specifies a filename
    */
-  /*public static void main(String[] args) {
+        /*public static void main(String[] args) {
     try {
       TreeFactory tf = new LabeledScoredTreeFactory();
       Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(args[0]), "UTF-8"));

@@ -11,6 +11,7 @@ namespace OpenNLP.Tools.Util.Trees
  * makesCopulaHead method, which says how the HeadFinder in question
  * handles "to be" verbs.
  */
+
     public interface CopulaHeadFinder
     {
         bool makesCopulaHead();

@@ -143,7 +143,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     --bufpos;
                     backup(0);
                     if (tokenBegin == -1)
-                        tokenBegin = bufpos; 
+                        tokenBegin = bufpos;
                 }
                 throw e;
             }

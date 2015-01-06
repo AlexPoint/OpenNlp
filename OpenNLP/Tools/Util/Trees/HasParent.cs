@@ -13,6 +13,7 @@ namespace OpenNLP.Tools.Util.Trees
  *
  * @author John Bauer
  */
+
     public interface HasParent
     {
         Tree parent();

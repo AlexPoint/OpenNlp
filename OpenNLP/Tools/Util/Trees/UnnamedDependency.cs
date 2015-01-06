@@ -19,153 +19,185 @@ namespace OpenNLP.Tools.Util.Trees
  * @author Spence Green
  * 
  */
+
     public class UnnamedDependency : Dependency<Label, Label, Object>
     {
         private static readonly long serialVersionUID = -3768440215342256085L;
 
-  // We store the text of the labels separately because it looks like
-  // it is possible for an object to request a hash code using itself
-  // in a partially reconstructed state when unserializing.  For
-  // example, a TreeGraphNode might ask for the hash code of an
-  // UnnamedDependency, which then uses an unfilled member of the same
-  // TreeGraphNode to get the hash code.  Keeping the text of the
-  // labels breaks that possible cycle.
-  protected readonly String regentText;
-  protected readonly String dependentText;
+        // We store the text of the labels separately because it looks like
+        // it is possible for an object to request a hash code using itself
+        // in a partially reconstructed state when unserializing.  For
+        // example, a TreeGraphNode might ask for the hash code of an
+        // UnnamedDependency, which then uses an unfilled member of the same
+        // TreeGraphNode to get the hash code.  Keeping the text of the
+        // labels breaks that possible cycle.
+        protected readonly String regentText;
+        protected readonly String dependentText;
 
-  private readonly Label regent;
-  private readonly Label vDependent;
+        private readonly Label regent;
+        private readonly Label vDependent;
 
-  public UnnamedDependency(String regent, String dependent) {
-    if (regent == null || dependent == null) {
-      throw new ArgumentException("governor or dependent cannot be null");
-    }
-    
-    CoreLabel headLabel = new CoreLabel();
-    headLabel.setValue(regent);
-    headLabel.setWord(regent);
-    this.regent = headLabel;
-    
-    CoreLabel depLabel = new CoreLabel();
-    depLabel.setValue(dependent);
-    depLabel.setWord(dependent);
-    this.vDependent = depLabel;
+        public UnnamedDependency(String regent, String dependent)
+        {
+            if (regent == null || dependent == null)
+            {
+                throw new ArgumentException("governor or dependent cannot be null");
+            }
 
-    regentText = regent;
-    dependentText = dependent;
-  }
+            CoreLabel headLabel = new CoreLabel();
+            headLabel.setValue(regent);
+            headLabel.setWord(regent);
+            this.regent = headLabel;
 
-  public UnnamedDependency(Label regent, Label dependent) {
-    if (regent == null || dependent == null) {
-      throw new ArgumentException("governor or dependent cannot be null");
-    }
-    this.regent = regent;
-    this.vDependent = dependent;
+            CoreLabel depLabel = new CoreLabel();
+            depLabel.setValue(dependent);
+            depLabel.setWord(dependent);
+            this.vDependent = depLabel;
 
-    regentText = getText(regent);
-    dependentText = getText(dependent);
-  }
+            regentText = regent;
+            dependentText = dependent;
+        }
 
-  public Label governor() {
-    return regent;
-  }
+        public UnnamedDependency(Label regent, Label dependent)
+        {
+            if (regent == null || dependent == null)
+            {
+                throw new ArgumentException("governor or dependent cannot be null");
+            }
+            this.regent = regent;
+            this.vDependent = dependent;
 
-  public Label dependent() {
-    return vDependent;
-  }
+            regentText = getText(regent);
+            dependentText = getText(dependent);
+        }
 
-  public virtual Object name() {
-    return null;
-  }
-  
-  protected String getText(Label label) {
-    if (label is HasWord) {
-      String word = ((HasWord) label).word();
-      if (word != null) {
-        return word;
-      }
-    }
-    return label.value();
-  }
+        public Label governor()
+        {
+            return regent;
+        }
 
-  //@Override
-  public override int GetHashCode() {
-    return regentText.GetHashCode() ^ dependentText.GetHashCode();
-  }
+        public Label dependent()
+        {
+            return vDependent;
+        }
 
-  //@Override
-  public override bool Equals(Object o) {
-    return equalsIgnoreName(o);
-  }
-  
-  public bool equalsIgnoreName(Object o) {
-     if (this == o) {
-        return true;
-      } else if( !(o is UnnamedDependency)) {
-        return false;
-      }
-      UnnamedDependency d = (UnnamedDependency) o;
+        public virtual Object name()
+        {
+            return null;
+        }
 
-      String thisHeadWord = regentText;
-      String thisDepWord = dependentText;
-      String headWord = d.regentText;
-      String depWord = d.dependentText;
+        protected String getText(Label label)
+        {
+            if (label is HasWord)
+            {
+                String word = ((HasWord) label).word();
+                if (word != null)
+                {
+                    return word;
+                }
+            }
+            return label.value();
+        }
 
-      return thisHeadWord.Equals(headWord) && thisDepWord.Equals(depWord);
-  }
+        //@Override
+        public override int GetHashCode()
+        {
+            return regentText.GetHashCode() ^ dependentText.GetHashCode();
+        }
 
-  //@Override
-  public override String ToString() {
-    return String.Format("{0} --> {1}", regentText, dependentText);
-  }
+        //@Override
+        public override bool Equals(Object o)
+        {
+            return equalsIgnoreName(o);
+        }
 
-  /**
+        public bool equalsIgnoreName(Object o)
+        {
+            if (this == o)
+            {
+                return true;
+            }
+            else if (!(o is UnnamedDependency))
+            {
+                return false;
+            }
+            UnnamedDependency d = (UnnamedDependency) o;
+
+            String thisHeadWord = regentText;
+            String thisDepWord = dependentText;
+            String headWord = d.regentText;
+            String depWord = d.dependentText;
+
+            return thisHeadWord.Equals(headWord) && thisDepWord.Equals(depWord);
+        }
+
+        //@Override
+        public override String ToString()
+        {
+            return String.Format("{0} --> {1}", regentText, dependentText);
+        }
+
+        /**
    * Provide different printing options via a String keyword.
    * The recognized options are currently "xml", and "predicate".
    * Otherwise the default toString() is used.
    */
-  public virtual String toString(String format) {
-    switch (format) {
-      case "xml":
-            return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(governor().value()) + "</governor>\n    <dependent>" + XMLUtils.XmlEscape(dependent().value()) + "</dependent>\n  </dep>";
-      case "predicate":
-        return "dep(" + governor() + "," + dependent() + ")";
-      default:
-        return ToString();
-    }
-  }
-  
-  public virtual DependencyFactory dependencyFactory() {
-    return DependencyFactoryHolder.df;
-  }
-  
-  public static DependencyFactory factory() {
-    return DependencyFactoryHolder.df;
-  }
 
-  // extra class guarantees correct lazy loading (Bloch p.194)
-  private static class DependencyFactoryHolder {
-    public static readonly DependencyFactory df = new UnnamedDependencyFactory();
-  }
+        public virtual String toString(String format)
+        {
+            switch (format)
+            {
+                case "xml":
+                    return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(governor().value()) +
+                           "</governor>\n    <dependent>" + XMLUtils.XmlEscape(dependent().value()) +
+                           "</dependent>\n  </dep>";
+                case "predicate":
+                    return "dep(" + governor() + "," + dependent() + ")";
+                default:
+                    return ToString();
+            }
+        }
 
-  /**
+        public virtual DependencyFactory dependencyFactory()
+        {
+            return DependencyFactoryHolder.df;
+        }
+
+        public static DependencyFactory factory()
+        {
+            return DependencyFactoryHolder.df;
+        }
+
+        // extra class guarantees correct lazy loading (Bloch p.194)
+        private static class DependencyFactoryHolder
+        {
+            public static readonly DependencyFactory df = new UnnamedDependencyFactory();
+        }
+
+        /**
    * A <code>DependencyFactory</code> acts as a factory for creating objects
    * of class <code>Dependency</code>
    */
-  private /*static*/ class UnnamedDependencyFactory : DependencyFactory {
-    /**
-     * Create a new <code>Dependency</code>.
-     */
-    public Dependency<Label, Label, Object> newDependency(Label regent, Label dependent) {
-      return newDependency(regent, dependent, null);
-    }
 
-    /**
+        private /*static*/ class UnnamedDependencyFactory : DependencyFactory
+        {
+            /**
      * Create a new <code>Dependency</code>.
      */
-    public Dependency<Label, Label, Object> newDependency(Label regent, Label dependent, Object name) {
-      return new UnnamedDependency(regent, dependent);
-    }
-  }
+
+            public Dependency<Label, Label, Object> newDependency(Label regent, Label dependent)
+            {
+                return newDependency(regent, dependent, null);
+            }
+
+            /**
+     * Create a new <code>Dependency</code>.
+     */
+
+            public Dependency<Label, Label, Object> newDependency(Label regent, Label dependent, Object name)
+            {
+                return new UnnamedDependency(regent, dependent);
+            }
+        }
     }
 }

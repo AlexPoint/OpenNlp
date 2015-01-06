@@ -32,103 +32,109 @@ namespace OpenNLP.Tools.Util.Trees
  * @author Marie-Catherine de Marneffe
  * @author John Bauer
  */
-    public class CoordinationTransformer: TreeTransformer
+
+    public class CoordinationTransformer : TreeTransformer
     {
         //private static readonly bool VERBOSE = System.getProperty("CoordinationTransformer", null) != null;
-  private readonly TreeTransformer tn = new DependencyTreeTransformer(); //to get rid of unwanted nodes and tag
-  private readonly TreeTransformer qp = new QPTreeTransformer();         //to restructure the QP constituents
-  private readonly TreeTransformer dates = new DateTreeTransformer();    //to flatten date patterns
+        private readonly TreeTransformer tn = new DependencyTreeTransformer(); //to get rid of unwanted nodes and tag
+        private readonly TreeTransformer qp = new QPTreeTransformer(); //to restructure the QP constituents
+        private readonly TreeTransformer dates = new DateTreeTransformer(); //to flatten date patterns
 
-  private readonly HeadFinder headFinder;
+        private readonly HeadFinder headFinder;
 
-  // default constructor
-  public CoordinationTransformer(HeadFinder hf) {
-    this.headFinder = hf;
-  }
+        // default constructor
+        public CoordinationTransformer(HeadFinder hf)
+        {
+            this.headFinder = hf;
+        }
 
-  /**
+        /**
    * Transforms t if it contains a coordination in a flat structure (CCtransform)
    * and transforms UCP (UCPtransform).
    *
    * @param t a tree to be transformed
    * @return t transformed
    */
-  //@Override
-  public Tree transformTree(Tree t) {
-    /*if (VERBOSE) {
+        //@Override
+        public Tree transformTree(Tree t)
+        {
+            /*if (VERBOSE) {
       System.err.println("Input to CoordinationTransformer: " + t);
     }*/
-    t = tn.transformTree(t);
-    /*if (VERBOSE) {
+            t = tn.transformTree(t);
+            /*if (VERBOSE) {
       System.err.println("After DependencyTreeTransformer:  " + t);
     }*/
-    if (t == null) {
-      return t;
-    }
-    t = UCPtransform(t);
-    /*if (VERBOSE) {
+            if (t == null)
+            {
+                return t;
+            }
+            t = UCPtransform(t);
+            /*if (VERBOSE) {
       System.err.println("After UCPTransformer:             " + t);
     }*/
-    t = CCtransform(t);
-    /*if (VERBOSE) {
+            t = CCtransform(t);
+            /*if (VERBOSE) {
       System.err.println("After CCTransformer:              " + t);
     }*/
-    t = qp.transformTree(t);
-    /*if (VERBOSE) {
+            t = qp.transformTree(t);
+            /*if (VERBOSE) {
       System.err.println("After QPTreeTransformer:          " + t);
     }*/
-    t = SQflatten(t);
-    /*if (VERBOSE) {
+            t = SQflatten(t);
+            /*if (VERBOSE) {
       System.err.println("After SQ flattening:              " + t);
     }*/
-    t = dates.transformTree(t);
-    /*if (VERBOSE) {
+            t = dates.transformTree(t);
+            /*if (VERBOSE) {
       System.err.println("After DateTreeTransformer:        " + t);
     }*/
-    t = removeXOverX(t);
-    /*if (VERBOSE) {
+            t = removeXOverX(t);
+            /*if (VERBOSE) {
       System.err.println("After removeXoverX:               " + t);
     }*/
-    t = combineConjp(t);
-    /*if (VERBOSE) {
+            t = combineConjp(t);
+            /*if (VERBOSE) {
       System.err.println("After combineConjp:               " + t);
     }*/
-    t = moveRB(t);
-    /*if (VERBOSE) {
+            t = moveRB(t);
+            /*if (VERBOSE) {
       System.err.println("After moveRB:                     " + t);
     }*/
-    t = changeSbarToPP(t);
-    /*if (VERBOSE) {
+            t = changeSbarToPP(t);
+            /*if (VERBOSE) {
       System.err.println("After changeSbarToPP:             " + t);
     }*/
-    t = rearrangeNowThat(t);
-    /*if (VERBOSE) {
+            t = rearrangeNowThat(t);
+            /*if (VERBOSE) {
       System.err.println("After rearrangeNowThat:           " + t);
     }*/
-    return t;
-  }
+            return t;
+        }
 
-  private static TregexPattern rearrangeNowThatTregex =
-    TregexPattern.compile("ADVP=advp <1 (RB < /^(?i:now)$/) <2 (SBAR=sbar <1 (IN < /^(?i:that)$/))");
+        private static TregexPattern rearrangeNowThatTregex =
+            TregexPattern.compile("ADVP=advp <1 (RB < /^(?i:now)$/) <2 (SBAR=sbar <1 (IN < /^(?i:that)$/))");
 
-  private static TsurgeonPattern rearrangeNowThatTsurgeon =
-    Tsurgeon.parseOperation("[relabel advp SBAR] [excise sbar sbar]");
+        private static TsurgeonPattern rearrangeNowThatTsurgeon =
+            Tsurgeon.parseOperation("[relabel advp SBAR] [excise sbar sbar]");
 
-  private static Tree rearrangeNowThat(Tree t) {
-    if (t == null) {
-      return t;
-    }
-    return Tsurgeon.processPattern(rearrangeNowThatTregex, rearrangeNowThatTsurgeon, t);
-  }
+        private static Tree rearrangeNowThat(Tree t)
+        {
+            if (t == null)
+            {
+                return t;
+            }
+            return Tsurgeon.processPattern(rearrangeNowThatTregex, rearrangeNowThatTsurgeon, t);
+        }
 
 
-  private static TregexPattern changeSbarToPPTregex =
-    TregexPattern.compile("NP < (NP $++ (SBAR=sbar < (IN < /^(?i:after|before|until|since|during)$/ $++ S)))");
+        private static TregexPattern changeSbarToPPTregex =
+            TregexPattern.compile("NP < (NP $++ (SBAR=sbar < (IN < /^(?i:after|before|until|since|during)$/ $++ S)))");
 
-  private static TsurgeonPattern changeSbarToPPTsurgeon =
-    Tsurgeon.parseOperation("relabel sbar PP");
+        private static TsurgeonPattern changeSbarToPPTsurgeon =
+            Tsurgeon.parseOperation("relabel sbar PP");
 
-  /**
+        /**
    * For certain phrases, we change the SBAR to a PP to get prep/pcomp
    * dependencies.  For example, in "The day after the airline was
    * planning...", we want prep(day, after) and pcomp(after,
@@ -136,72 +142,84 @@ namespace OpenNLP.Tools.Util.Trees
    * SBAR, either by the parser or in the treebank, we fix that here.
    */
 
-  private static Tree changeSbarToPP(Tree t) {
-    if (t == null) {
-      return null;
-    }
-    return Tsurgeon.processPattern(changeSbarToPPTregex, changeSbarToPPTsurgeon, t);
-  }
+        private static Tree changeSbarToPP(Tree t)
+        {
+            if (t == null)
+            {
+                return null;
+            }
+            return Tsurgeon.processPattern(changeSbarToPPTregex, changeSbarToPPTsurgeon, t);
+        }
 
-  private static TregexPattern findFlatConjpTregex =
-    // TODO: add more patterns, perhaps ignore case
-    // for example, what should we do with "and not"?  Is it right to
-    // generally add the "not" to the following tree with moveRB, or
-    // should we make "and not" a CONJP?
-    // also, perhaps look at ADVP
-    TregexPattern.compile("/^(S|PP|VP)/ < (/^(S|PP|VP)/ $++ (CC=start $+ (RB|ADVP $+ /^(S|PP|VP)/) " +
-                          "[ (< and $+ (RB=end < yet)) | " +  // TODO: what should be the head of "and yet"?
-                          "  (< and $+ (RB=end < so)) | " +
-                          "  (< and $+ (ADVP=end < (RB|IN < so))) ] ))"); // TODO: this structure needs a dependency
+        private static TregexPattern findFlatConjpTregex =
+            // TODO: add more patterns, perhaps ignore case
+            // for example, what should we do with "and not"?  Is it right to
+            // generally add the "not" to the following tree with moveRB, or
+            // should we make "and not" a CONJP?
+            // also, perhaps look at ADVP
+            TregexPattern.compile("/^(S|PP|VP)/ < (/^(S|PP|VP)/ $++ (CC=start $+ (RB|ADVP $+ /^(S|PP|VP)/) " +
+                                  "[ (< and $+ (RB=end < yet)) | " + // TODO: what should be the head of "and yet"?
+                                  "  (< and $+ (RB=end < so)) | " +
+                                  "  (< and $+ (ADVP=end < (RB|IN < so))) ] ))");
+            // TODO: this structure needs a dependency
 
-  private static TsurgeonPattern addConjpTsurgeon =
-    Tsurgeon.parseOperation("createSubtree CONJP start end");
+        private static TsurgeonPattern addConjpTsurgeon =
+            Tsurgeon.parseOperation("createSubtree CONJP start end");
 
-  private static Tree combineConjp(Tree t) {
-    if (t == null) {
-      return null;
-    }
-    return Tsurgeon.processPattern(findFlatConjpTregex, addConjpTsurgeon, t);
-  }
+        private static Tree combineConjp(Tree t)
+        {
+            if (t == null)
+            {
+                return null;
+            }
+            return Tsurgeon.processPattern(findFlatConjpTregex, addConjpTsurgeon, t);
+        }
 
-  private static TregexPattern[] moveRBTregex = {
-    TregexPattern.compile("/^S|PP|VP|NP/ < (/^(S|PP|VP|NP)/ $++ (/^(,|CC|CONJP)$/ [ $+ (RB=adv [ < not | < then ]) | $+ (ADVP=adv <: RB) ])) : (=adv $+ /^(S|PP|VP|NP)/=dest) "),
-    TregexPattern.compile("/^ADVP/ < (/^ADVP/ $++ (/^(,|CC|CONJP)$/ [$+ (RB=adv [ < not | < then ]) | $+ (ADVP=adv <: RB)])) : (=adv $+ /^NP-ADV|ADVP|PP/=dest)"),
-    TregexPattern.compile("/^FRAG/ < (ADVP|RB=adv $+ VP=dest)"),
-  };
+        private static TregexPattern[] moveRBTregex =
+        {
+            TregexPattern.compile(
+                "/^S|PP|VP|NP/ < (/^(S|PP|VP|NP)/ $++ (/^(,|CC|CONJP)$/ [ $+ (RB=adv [ < not | < then ]) | $+ (ADVP=adv <: RB) ])) : (=adv $+ /^(S|PP|VP|NP)/=dest) "),
+            TregexPattern.compile(
+                "/^ADVP/ < (/^ADVP/ $++ (/^(,|CC|CONJP)$/ [$+ (RB=adv [ < not | < then ]) | $+ (ADVP=adv <: RB)])) : (=adv $+ /^NP-ADV|ADVP|PP/=dest)"),
+            TregexPattern.compile("/^FRAG/ < (ADVP|RB=adv $+ VP=dest)"),
+        };
 
-  private static TsurgeonPattern moveRBTsurgeon =
-    Tsurgeon.parseOperation("move adv >0 dest");
+        private static TsurgeonPattern moveRBTsurgeon =
+            Tsurgeon.parseOperation("move adv >0 dest");
 
-  private static Tree moveRB(Tree t) {
-    if (t == null) {
-      return null;
-    }
-    foreach (TregexPattern pattern in moveRBTregex) {
-      t = Tsurgeon.processPattern(pattern, moveRBTsurgeon, t);
-    }
-    return t;
-  }
+        private static Tree moveRB(Tree t)
+        {
+            if (t == null)
+            {
+                return null;
+            }
+            foreach (TregexPattern pattern in moveRBTregex)
+            {
+                t = Tsurgeon.processPattern(pattern, moveRBTsurgeon, t);
+            }
+            return t;
+        }
 
-  // Matches to be questions if the question starts with WHNP, such as
-  // Who, What, if there is an SQ after the WH question.
-  //
-  // TODO: maybe we want to catch more complicated tree structures
-  // with something in between the WH and the actual question.
-  private static TregexPattern flattenSQTregex =
-    TregexPattern.compile("SBARQ < ((WHNP=what < WP) $+ (SQ=sq < (/^VB/=verb < " + EnglishPatterns.copularWordRegex + ") " +
-                          // match against "is running" if the verb is under just a VBG
-                          " !< (/^VB/ < !" + EnglishPatterns.copularWordRegex + ") " +
-                          // match against "is running" if the verb is under a VP - VBG
-                          " !< (/^V/ < /^VB/ < !" + EnglishPatterns.copularWordRegex + ") " +
-                          // match against "What is on the test?"
-                          " !< (PP $- =verb) " +
-                          // match against "is there"
-                          " !<, (/^VB/ < " + EnglishPatterns.copularWordRegex + " $+ (NP < (EX < there)))))");
+        // Matches to be questions if the question starts with WHNP, such as
+        // Who, What, if there is an SQ after the WH question.
+        //
+        // TODO: maybe we want to catch more complicated tree structures
+        // with something in between the WH and the actual question.
+        private static TregexPattern flattenSQTregex =
+            TregexPattern.compile("SBARQ < ((WHNP=what < WP) $+ (SQ=sq < (/^VB/=verb < " +
+                                  EnglishPatterns.copularWordRegex + ") " +
+                                  // match against "is running" if the verb is under just a VBG
+                                  " !< (/^VB/ < !" + EnglishPatterns.copularWordRegex + ") " +
+                                  // match against "is running" if the verb is under a VP - VBG
+                                  " !< (/^V/ < /^VB/ < !" + EnglishPatterns.copularWordRegex + ") " +
+                                  // match against "What is on the test?"
+                                  " !< (PP $- =verb) " +
+                                  // match against "is there"
+                                  " !<, (/^VB/ < " + EnglishPatterns.copularWordRegex + " $+ (NP < (EX < there)))))");
 
-  private static TsurgeonPattern flattenSQTsurgeon = Tsurgeon.parseOperation("excise sq sq");
+        private static TsurgeonPattern flattenSQTsurgeon = Tsurgeon.parseOperation("excise sq sq");
 
-  /**
+        /**
    * Removes the SQ structure under a WHNP question, such as "Who am I
    * to judge?".  We do this so that it is easier to pick out the head
    * and then easier to connect that head to all of the other words in
@@ -209,49 +227,56 @@ namespace OpenNLP.Tools.Util.Trees
    * the copula head, we don't do this so that the existing headfinder
    * code can easily find the "am" or other copula verb.
    */
-  public Tree SQflatten(Tree t) {
-    if (headFinder != null && (headFinder is CopulaHeadFinder)) {
-      if (((CopulaHeadFinder) headFinder).makesCopulaHead()) {
-        return t;
-      }
-    }
-    if (t == null) {
-      return null;
-    }
-    return Tsurgeon.processPattern(flattenSQTregex, flattenSQTsurgeon, t);
-  }
 
-  private static TregexPattern removeXOverXTregex =
-    TregexPattern.compile("__=repeat <: (~repeat < __)");
+        public Tree SQflatten(Tree t)
+        {
+            if (headFinder != null && (headFinder is CopulaHeadFinder))
+            {
+                if (((CopulaHeadFinder) headFinder).makesCopulaHead())
+                {
+                    return t;
+                }
+            }
+            if (t == null)
+            {
+                return null;
+            }
+            return Tsurgeon.processPattern(flattenSQTregex, flattenSQTsurgeon, t);
+        }
 
-  private static TsurgeonPattern removeXOverXTsurgeon = Tsurgeon.parseOperation("excise repeat repeat");
+        private static TregexPattern removeXOverXTregex =
+            TregexPattern.compile("__=repeat <: (~repeat < __)");
 
-  public static Tree removeXOverX(Tree t) {
-    return Tsurgeon.processPattern(removeXOverXTregex, removeXOverXTsurgeon, t);
-  }
+        private static TsurgeonPattern removeXOverXTsurgeon = Tsurgeon.parseOperation("excise repeat repeat");
 
-  // UCP (JJ ...) -> ADJP
-  // UCP (DT JJ ...) -> ADJP
-  // UCP (... (ADJP (JJR older|younger))) -> ADJP
-  // UCP (N ...) -> NP
-  // UCP ADVP -> ADVP
-  // Might want to look for ways to include RB for flatter structures,
-  // but then we have to watch out for (RB not) for example
-  // Note that the order of OR expressions means the older|younger
-  // pattern takes precedence
-  // By searching for everything at once, then using one tsurgeon
-  // which fixes everything at once, we can save quite a bit of time
-  private static readonly TregexPattern ucpRenameTregex =
-    TregexPattern.compile("/^UCP/=ucp [ <, /^JJ|ADJP/=adjp | ( <1 DT <2 /^JJ|ADJP/=adjp ) |" +
-                          " <- (ADJP=adjp < (JJR < /^(?i:younger|older)$/)) |" +
-                          " <, /^N/=np | ( <1 DT <2 /^N/=np ) | " +
-                          " <, /^ADVP/=advp ]");
+        public static Tree removeXOverX(Tree t)
+        {
+            return Tsurgeon.processPattern(removeXOverXTregex, removeXOverXTsurgeon, t);
+        }
 
-  // TODO: this turns UCP-TMP into ADVP instead of ADVP-TMP.  What do we actually want?
-  private static readonly TsurgeonPattern ucpRenameTsurgeon =
-    Tsurgeon.parseOperation("[if exists adjp relabel ucp /^UCP(.*)$/ADJP$1/] [if exists np relabel ucp /^UCP(.*)$/NP$1/] [if exists advp relabel ucp /^UCP(.*)$/ADVP/]");
+        // UCP (JJ ...) -> ADJP
+        // UCP (DT JJ ...) -> ADJP
+        // UCP (... (ADJP (JJR older|younger))) -> ADJP
+        // UCP (N ...) -> NP
+        // UCP ADVP -> ADVP
+        // Might want to look for ways to include RB for flatter structures,
+        // but then we have to watch out for (RB not) for example
+        // Note that the order of OR expressions means the older|younger
+        // pattern takes precedence
+        // By searching for everything at once, then using one tsurgeon
+        // which fixes everything at once, we can save quite a bit of time
+        private static readonly TregexPattern ucpRenameTregex =
+            TregexPattern.compile("/^UCP/=ucp [ <, /^JJ|ADJP/=adjp | ( <1 DT <2 /^JJ|ADJP/=adjp ) |" +
+                                  " <- (ADJP=adjp < (JJR < /^(?i:younger|older)$/)) |" +
+                                  " <, /^N/=np | ( <1 DT <2 /^N/=np ) | " +
+                                  " <, /^ADVP/=advp ]");
 
-  /**
+        // TODO: this turns UCP-TMP into ADVP instead of ADVP-TMP.  What do we actually want?
+        private static readonly TsurgeonPattern ucpRenameTsurgeon =
+            Tsurgeon.parseOperation(
+                "[if exists adjp relabel ucp /^UCP(.*)$/ADJP$1/] [if exists np relabel ucp /^UCP(.*)$/NP$1/] [if exists advp relabel ucp /^UCP(.*)$/ADVP/]");
+
+        /**
    * Transforms t if it contains an UCP, it will change the UCP tag
    * into the phrasal tag of the first word of the UCP
    * (UCP (JJ electronic) (, ,) (NN computer) (CC and) (NN building))
@@ -261,45 +286,60 @@ namespace OpenNLP.Tools.Util.Trees
    * @param t a tree to be transformed
    * @return t transformed
    */
-  public static Tree UCPtransform(Tree t) {
-    if (t == null) {
-      return null;
-    }
-    return Tsurgeon.processPattern(ucpRenameTregex, ucpRenameTsurgeon, t);
-  }
+
+        public static Tree UCPtransform(Tree t)
+        {
+            if (t == null)
+            {
+                return null;
+            }
+            return Tsurgeon.processPattern(ucpRenameTregex, ucpRenameTsurgeon, t);
+        }
 
 
-  /**
+        /**
    * Transforms t if it contains a coordination in a flat structure
    *
    * @param t a tree to be transformed
    * @return t transformed (give t not null, return will not be null)
    */
-  public static Tree CCtransform(Tree t) {
-    bool notDone = true;
-    while (notDone) {
-      Tree cc = findCCparent(t, t);
-      if (cc != null) {
-        t = cc;
-      } else {
-        notDone = false;
-      }
-    }
-    return t;
-  }
 
-  private static String getHeadTag(Tree t) {
-    if (t.value().StartsWith("NN")) {
-      return "NP";
-    } else if (t.value().StartsWith("JJ")) {
-      return "ADJP";
-    } else {
-      return "NP";
-    }
-  }
+        public static Tree CCtransform(Tree t)
+        {
+            bool notDone = true;
+            while (notDone)
+            {
+                Tree cc = findCCparent(t, t);
+                if (cc != null)
+                {
+                    t = cc;
+                }
+                else
+                {
+                    notDone = false;
+                }
+            }
+            return t;
+        }
+
+        private static String getHeadTag(Tree t)
+        {
+            if (t.value().StartsWith("NN"))
+            {
+                return "NP";
+            }
+            else if (t.value().StartsWith("JJ"))
+            {
+                return "ADJP";
+            }
+            else
+            {
+                return "NP";
+            }
+        }
 
 
-  /** If things match, this method destructively changes the children list
+        /** If things match, this method destructively changes the children list
    *  of the tree t.  When this method is called, t is an NP and there must
    *  be at least two children to the right of ccIndex.
    *
@@ -307,77 +347,93 @@ namespace OpenNLP.Tools.Util.Trees
    *  @param ccIndex The index of the CC child
    *  @return t
    */
-  private static Tree transformCC(Tree t, int ccIndex) {
-    /*if (VERBOSE) {
+
+        private static Tree transformCC(Tree t, int ccIndex)
+        {
+            /*if (VERBOSE) {
       System.err.println("transformCC in:  " + t);
     }*/
-    //System.out.println(ccIndex);
-    // use the factories of t to create new nodes
-    TreeFactory tf = t.treeFactory();
-    LabelFactory lf = t.label().labelFactory();
+            //System.out.println(ccIndex);
+            // use the factories of t to create new nodes
+            TreeFactory tf = t.treeFactory();
+            LabelFactory lf = t.label().labelFactory();
 
-    Tree[] ccSiblings = t.children();
+            Tree[] ccSiblings = t.children();
 
-    //check if other CC
-    List<int> ccPositions = new List<int>();
-    for (int i = ccIndex + 1; i < ccSiblings.Length; i++) {
-      if (ccSiblings[i].value().StartsWith("CC") && i < ccSiblings.Length - 1) { // second conjunct to ensure that a CC we add isn't the last child
-        ccPositions.Add(i);
-      }
-    }
+            //check if other CC
+            List<int> ccPositions = new List<int>();
+            for (int i = ccIndex + 1; i < ccSiblings.Length; i++)
+            {
+                if (ccSiblings[i].value().StartsWith("CC") && i < ccSiblings.Length - 1)
+                {
+                    // second conjunct to ensure that a CC we add isn't the last child
+                    ccPositions.Add(i);
+                }
+            }
 
-    // a CC b c ... -> (a CC b) c ...  with b not a DT
-    String beforeSibling = ccSiblings[ccIndex - 1].value();
-    if (ccIndex == 1 && (beforeSibling.Equals("DT") || beforeSibling.Equals("JJ") || beforeSibling.Equals("RB") || ! (ccSiblings[ccIndex + 1].value().Equals("DT"))) && ! (beforeSibling.StartsWith("NP")
-            || beforeSibling.Equals("ADJP")
-            || beforeSibling.Equals("NNS"))) { // && (ccSiblings.Length == ccIndex + 3 || !ccPositions.isEmpty())) {  // something like "soya or maize oil"
-      String leftHead = getHeadTag(ccSiblings[ccIndex - 1]);
-      //create a new tree to be inserted as first child of t
-      Tree left = tf.newTreeNode(lf.newLabel(leftHead), null);
-      for (int i = 0; i < ccIndex + 2; i++) {
-        left.addChild(ccSiblings[i]);
-      }
-      /*if (VERBOSE) {
+            // a CC b c ... -> (a CC b) c ...  with b not a DT
+            String beforeSibling = ccSiblings[ccIndex - 1].value();
+            if (ccIndex == 1 &&
+                (beforeSibling.Equals("DT") || beforeSibling.Equals("JJ") || beforeSibling.Equals("RB") ||
+                 ! (ccSiblings[ccIndex + 1].value().Equals("DT"))) && ! (beforeSibling.StartsWith("NP")
+                                                                         || beforeSibling.Equals("ADJP")
+                                                                         || beforeSibling.Equals("NNS")))
+            {
+                // && (ccSiblings.Length == ccIndex + 3 || !ccPositions.isEmpty())) {  // something like "soya or maize oil"
+                String leftHead = getHeadTag(ccSiblings[ccIndex - 1]);
+                //create a new tree to be inserted as first child of t
+                Tree left = tf.newTreeNode(lf.newLabel(leftHead), null);
+                for (int i = 0; i < ccIndex + 2; i++)
+                {
+                    left.addChild(ccSiblings[i]);
+                }
+                /*if (VERBOSE) {
         System.out.println("print left tree");
         left.pennPrint();
         System.out.println();
       }*/
 
-      // remove all the children of t before ccIndex+2
-      for (int i = 0; i < ccIndex + 2; i++) {
-        t.removeChild(0);
-      }
+                // remove all the children of t before ccIndex+2
+                for (int i = 0; i < ccIndex + 2; i++)
+                {
+                    t.removeChild(0);
+                }
                 /*if (VERBOSE)
                 {
                     if (t.numChildren() == 0) { System.out.println("Youch! No t children"); }
                 }*/
 
-      // if stuff after (like "soya or maize oil and vegetables")
-      // we need to put the tree in another tree
-      if (ccPositions.Any()) {
-        bool comma = false;
-        int index = ccPositions[0];
-        /*if (VERBOSE) {System.err.println("more CC index " +  index);}s*/
-        if (ccSiblings[index - 1].value().Equals(",")) {//to handle the case of a comma ("soya and maize oil, and vegetables")
-          index = index - 1;
-          comma = true;
-        }
-        /*if (VERBOSE) {System.err.println("more CC index " +  index);}*/
-        String head = getHeadTag(ccSiblings[index - 1]);
+                // if stuff after (like "soya or maize oil and vegetables")
+                // we need to put the tree in another tree
+                if (ccPositions.Any())
+                {
+                    bool comma = false;
+                    int index = ccPositions[0];
+                    /*if (VERBOSE) {System.err.println("more CC index " +  index);}s*/
+                    if (ccSiblings[index - 1].value().Equals(","))
+                    {
+//to handle the case of a comma ("soya and maize oil, and vegetables")
+                        index = index - 1;
+                        comma = true;
+                    }
+                    /*if (VERBOSE) {System.err.println("more CC index " +  index);}*/
+                    String head = getHeadTag(ccSiblings[index - 1]);
 
-        if (ccIndex + 2 < index) {
-          Tree tree = tf.newTreeNode(lf.newLabel(head), null);
-          tree.addChild(0, left);
+                    if (ccIndex + 2 < index)
+                    {
+                        Tree tree = tf.newTreeNode(lf.newLabel(head), null);
+                        tree.addChild(0, left);
 
-          int k = 1;
-          for (int j = ccIndex+2; j<index; j++) {
-            /*if (VERBOSE) ccSiblings[j].pennPrint();*/
-            t.removeChild(0);
-            tree.addChild(k, ccSiblings[j]);
-            k++;
-          }
+                        int k = 1;
+                        for (int j = ccIndex + 2; j < index; j++)
+                        {
+                            /*if (VERBOSE) ccSiblings[j].pennPrint();*/
+                            t.removeChild(0);
+                            tree.addChild(k, ccSiblings[j]);
+                            k++;
+                        }
 
-          /*if (VERBOSE) {
+                        /*if (VERBOSE) {
             System.out.println("print t");
             t.pennPrint();
 
@@ -385,233 +441,292 @@ namespace OpenNLP.Tools.Util.Trees
             tree.pennPrint();
             System.out.println();
           }*/
-          t.addChild(0, tree);
-        } else {
-          t.addChild(0, left);
-        }
+                        t.addChild(0, tree);
+                    }
+                    else
+                    {
+                        t.addChild(0, left);
+                    }
 
-        Tree rightTree = tf.newTreeNode(lf.newLabel("NP"), null);
-        int start = 2;
-        if (comma) {
-          start++;
-        }
-        while (start < t.numChildren()) {
-          Tree sib = t.getChild(start);
-          t.removeChild(start);
-          rightTree.addChild(sib);
-        }
-        t.addChild(rightTree);
-      } else {
-        t.addChild(0, left);
-      }
-    }
-    // DT a CC b c -> DT (a CC b) c
-    else if (ccIndex == 2 && ccSiblings[0].value().StartsWith("DT") && !ccSiblings[ccIndex - 1].value().Equals("NNS") && (ccSiblings.Length == 5 || (ccPositions.Any() && ccPositions[0] == 5))) {
-      String head = getHeadTag(ccSiblings[ccIndex - 1]);
-      //create a new tree to be inserted as second child of t (after the determiner
-      Tree child = tf.newTreeNode(lf.newLabel(head), null);
+                    Tree rightTree = tf.newTreeNode(lf.newLabel("NP"), null);
+                    int start = 2;
+                    if (comma)
+                    {
+                        start++;
+                    }
+                    while (start < t.numChildren())
+                    {
+                        Tree sib = t.getChild(start);
+                        t.removeChild(start);
+                        rightTree.addChild(sib);
+                    }
+                    t.addChild(rightTree);
+                }
+                else
+                {
+                    t.addChild(0, left);
+                }
+            }
+                // DT a CC b c -> DT (a CC b) c
+            else if (ccIndex == 2 && ccSiblings[0].value().StartsWith("DT") &&
+                     !ccSiblings[ccIndex - 1].value().Equals("NNS") &&
+                     (ccSiblings.Length == 5 || (ccPositions.Any() && ccPositions[0] == 5)))
+            {
+                String head = getHeadTag(ccSiblings[ccIndex - 1]);
+                //create a new tree to be inserted as second child of t (after the determiner
+                Tree child = tf.newTreeNode(lf.newLabel(head), null);
 
-      for (int i = 1; i < ccIndex + 2; i++) {
-        child.addChild(ccSiblings[i]);
-      }
-      /*if (VERBOSE) { if (child.numChildren() == 0) { System.out.println("Youch! No child children"); } }*/
+                for (int i = 1; i < ccIndex + 2; i++)
+                {
+                    child.addChild(ccSiblings[i]);
+                }
+                /*if (VERBOSE) { if (child.numChildren() == 0) { System.out.println("Youch! No child children"); } }*/
 
-      // remove all the children of t between the determiner and ccIndex+2
-      //System.out.println("print left tree");
-      //child.pennPrint();
+                // remove all the children of t between the determiner and ccIndex+2
+                //System.out.println("print left tree");
+                //child.pennPrint();
 
-      for (int i = 1; i < ccIndex + 2; i++) {
-        t.removeChild(1);
-      }
+                for (int i = 1; i < ccIndex + 2; i++)
+                {
+                    t.removeChild(1);
+                }
 
-      t.addChild(1, child);
-    }
+                t.addChild(1, child);
+            }
 
-    // ... a, b CC c ... -> ... (a, b CC c) ...
-    else if (ccIndex > 2 && ccSiblings[ccIndex - 2].value().Equals(",") && !ccSiblings[ccIndex - 1].value().Equals("NNS")) {
-      String head = getHeadTag(ccSiblings[ccIndex - 1]);
-      Tree child = tf.newTreeNode(lf.newLabel(head), null);
+                // ... a, b CC c ... -> ... (a, b CC c) ...
+            else if (ccIndex > 2 && ccSiblings[ccIndex - 2].value().Equals(",") &&
+                     !ccSiblings[ccIndex - 1].value().Equals("NNS"))
+            {
+                String head = getHeadTag(ccSiblings[ccIndex - 1]);
+                Tree child = tf.newTreeNode(lf.newLabel(head), null);
 
-      for (int j = ccIndex - 3; j < ccIndex + 2; j++) {
-        child.addChild(ccSiblings[j]);
-      }
-      /*if (VERBOSE) { if (child.numChildren() == 0) { System.out.println("Youch! No child children"); } }*/
+                for (int j = ccIndex - 3; j < ccIndex + 2; j++)
+                {
+                    child.addChild(ccSiblings[j]);
+                }
+                /*if (VERBOSE) { if (child.numChildren() == 0) { System.out.println("Youch! No child children"); } }*/
 
-      int i = ccIndex - 4;
-      while (i > 0 && ccSiblings[i].value().Equals(",")) {
-        child.addChild(0, ccSiblings[i]);    // add the comma
-        child.addChild(0, ccSiblings[i - 1]);  // add the word before the comma
-        i = i - 2;
-      }
+                int i = ccIndex - 4;
+                while (i > 0 && ccSiblings[i].value().Equals(","))
+                {
+                    child.addChild(0, ccSiblings[i]); // add the comma
+                    child.addChild(0, ccSiblings[i - 1]); // add the word before the comma
+                    i = i - 2;
+                }
 
-      if (i < 0) {
-        i = -1;
-      }
+                if (i < 0)
+                {
+                    i = -1;
+                }
 
-      // remove the old children
-      for (int j = i + 1; j < ccIndex + 2; j++) {
-        t.removeChild(i + 1);
-      }
-      // put the new tree
-      t.addChild(i + 1, child);
-    }
+                // remove the old children
+                for (int j = i + 1; j < ccIndex + 2; j++)
+                {
+                    t.removeChild(i + 1);
+                }
+                // put the new tree
+                t.addChild(i + 1, child);
+            }
 
-    // something like "the new phone book and tour guide" -> multiple heads
-    // we want (NP the new phone book) (CC and) (NP tour guide)
-    else {
-      bool commaLeft = false;
-      bool commaRight = false;
-      bool preconj = false;
-      int indexBegin = 0;
-      Tree conjT = tf.newTreeNode(lf.newLabel("CC"), null);
+                // something like "the new phone book and tour guide" -> multiple heads
+                // we want (NP the new phone book) (CC and) (NP tour guide)
+            else
+            {
+                bool commaLeft = false;
+                bool commaRight = false;
+                bool preconj = false;
+                int indexBegin = 0;
+                Tree conjT = tf.newTreeNode(lf.newLabel("CC"), null);
 
-      // create the left tree
-      String leftHead = getHeadTag(ccSiblings[ccIndex - 1]);
-      Tree left = tf.newTreeNode(lf.newLabel(leftHead), null);
+                // create the left tree
+                String leftHead = getHeadTag(ccSiblings[ccIndex - 1]);
+                Tree left = tf.newTreeNode(lf.newLabel(leftHead), null);
 
 
-      // handle the case of a preconjunct (either, both, neither)
-      Tree first = ccSiblings[0];
-      String leaf = first.firstChild().value().ToLower();
-      if (leaf.Equals("either") || leaf.Equals("neither") || leaf.Equals("both")) {
-        preconj = true;
-        indexBegin = 1;
-        conjT.addChild(first.firstChild());
-      }
+                // handle the case of a preconjunct (either, both, neither)
+                Tree first = ccSiblings[0];
+                String leaf = first.firstChild().value().ToLower();
+                if (leaf.Equals("either") || leaf.Equals("neither") || leaf.Equals("both"))
+                {
+                    preconj = true;
+                    indexBegin = 1;
+                    conjT.addChild(first.firstChild());
+                }
 
-      for (int i = indexBegin; i < ccIndex - 1; i++) {
-        left.addChild(ccSiblings[i]);
-      }
-      // handle the case of a comma ("GM soya and maize, and food ingredients")
-      if (ccSiblings[ccIndex - 1].value().Equals(",")) {
-        commaLeft = true;
-      } else {
-        left.addChild(ccSiblings[ccIndex - 1]);
-      }
+                for (int i = indexBegin; i < ccIndex - 1; i++)
+                {
+                    left.addChild(ccSiblings[i]);
+                }
+                // handle the case of a comma ("GM soya and maize, and food ingredients")
+                if (ccSiblings[ccIndex - 1].value().Equals(","))
+                {
+                    commaLeft = true;
+                }
+                else
+                {
+                    left.addChild(ccSiblings[ccIndex - 1]);
+                }
 
-      // create the CC tree
-      Tree cc = ccSiblings[ccIndex];
+                // create the CC tree
+                Tree cc = ccSiblings[ccIndex];
 
-      // create the right tree
-      int nextCC;
-      if (!ccPositions.Any()) {
-        nextCC = ccSiblings.Length;
-      } else {
-        nextCC = ccPositions[0];
-      }
-      String rightHead = getHeadTag(ccSiblings[nextCC - 1]);
-      Tree right = tf.newTreeNode(lf.newLabel(rightHead), null);
-      for (int i = ccIndex + 1; i < nextCC - 1; i++) {
-        right.addChild(ccSiblings[i]);
-      }
-      // handle the case of a comma ("GM soya and maize, and food ingredients")
-      if (ccSiblings[nextCC - 1].value().Equals(",")) {
-        commaRight = true;
-      } else {
-        right.addChild(ccSiblings[nextCC - 1]);
-      }
+                // create the right tree
+                int nextCC;
+                if (!ccPositions.Any())
+                {
+                    nextCC = ccSiblings.Length;
+                }
+                else
+                {
+                    nextCC = ccPositions[0];
+                }
+                String rightHead = getHeadTag(ccSiblings[nextCC - 1]);
+                Tree right = tf.newTreeNode(lf.newLabel(rightHead), null);
+                for (int i = ccIndex + 1; i < nextCC - 1; i++)
+                {
+                    right.addChild(ccSiblings[i]);
+                }
+                // handle the case of a comma ("GM soya and maize, and food ingredients")
+                if (ccSiblings[nextCC - 1].value().Equals(","))
+                {
+                    commaRight = true;
+                }
+                else
+                {
+                    right.addChild(ccSiblings[nextCC - 1]);
+                }
 
-      /*if (VERBOSE) {
+                /*if (VERBOSE) {
         if (left.numChildren() == 0) { System.out.println("Youch! No left children"); }
         if (right.numChildren() == 0) { System.out.println("Youch! No right children"); }
       }*/
 
-      // put trees together in old t, first we remove the old nodes
-      for (int i = 0; i < nextCC; i++) {
-        t.removeChild(0);
-      }
-      if (ccPositions.Any()) { // need an extra level
-        Tree tree = tf.newTreeNode(lf.newLabel("NP"), null);
+                // put trees together in old t, first we remove the old nodes
+                for (int i = 0; i < nextCC; i++)
+                {
+                    t.removeChild(0);
+                }
+                if (ccPositions.Any())
+                {
+                    // need an extra level
+                    Tree tree = tf.newTreeNode(lf.newLabel("NP"), null);
 
-        if (preconj) {
-          tree.addChild(conjT);
-        }
-        if (left.numChildren() > 0) {
-          tree.addChild(left);
-        }
-        if (commaLeft) {
-          tree.addChild(ccSiblings[ccIndex - 1]);
-        }
-        tree.addChild(cc);
-        if (right.numChildren() > 0) {
-          tree.addChild(right);
-        }
-        if (commaRight) {
-          t.addChild(0, ccSiblings[nextCC - 1]);
-        }
-        t.addChild(0, tree);
-      } else {
-        if (preconj) {
-          t.addChild(conjT);
-        }
-        if (left.numChildren() > 0) {
-          t.addChild(left);
-        }
-        if (commaLeft) {
-          t.addChild(ccSiblings[ccIndex - 1]);
-        }
-        t.addChild(cc);
-        if (right.numChildren() > 0) {
-          t.addChild(right);
-        }
-        if (commaRight) {
-          t.addChild(ccSiblings[nextCC - 1]);
-        }
-      }
-    }
+                    if (preconj)
+                    {
+                        tree.addChild(conjT);
+                    }
+                    if (left.numChildren() > 0)
+                    {
+                        tree.addChild(left);
+                    }
+                    if (commaLeft)
+                    {
+                        tree.addChild(ccSiblings[ccIndex - 1]);
+                    }
+                    tree.addChild(cc);
+                    if (right.numChildren() > 0)
+                    {
+                        tree.addChild(right);
+                    }
+                    if (commaRight)
+                    {
+                        t.addChild(0, ccSiblings[nextCC - 1]);
+                    }
+                    t.addChild(0, tree);
+                }
+                else
+                {
+                    if (preconj)
+                    {
+                        t.addChild(conjT);
+                    }
+                    if (left.numChildren() > 0)
+                    {
+                        t.addChild(left);
+                    }
+                    if (commaLeft)
+                    {
+                        t.addChild(ccSiblings[ccIndex - 1]);
+                    }
+                    t.addChild(cc);
+                    if (right.numChildren() > 0)
+                    {
+                        t.addChild(right);
+                    }
+                    if (commaRight)
+                    {
+                        t.addChild(ccSiblings[nextCC - 1]);
+                    }
+                }
+            }
 
-    /*if (VERBOSE) {
+            /*if (VERBOSE) {
       System.err.println("transformCC out: " + t);
     }*/
-    return t;
-  }
+            return t;
+        }
 
-  private static bool notNP(List<Tree> children, int ccIndex) {
-    for (int i = ccIndex, sz = children.Count; i < sz; i++) {
-      if (children[i].value().StartsWith("NP")) {
-        return false;
-      }
-    }
-    return true;
-  }
+        private static bool notNP(List<Tree> children, int ccIndex)
+        {
+            for (int i = ccIndex, sz = children.Count; i < sz; i++)
+            {
+                if (children[i].value().StartsWith("NP"))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
-  /*
+        /*
    * Given a tree t, if this tree contains a CC inside a NP followed by 2 nodes
    * (i.e. we have a flat structure that will not work for the dependencies),
    * it will call transform CC on the NP containing the CC and the index of the
    * CC, and then return the root of the whole transformed tree.
    * If it finds no such tree, this method returns null.
    */
-  private static Tree findCCparent(Tree t, Tree root) {
-    if (t.isPreTerminal()) {
-      if (t.value().StartsWith("CC")) {
-        Tree parent = t.parent(root);
-        if (parent != null && parent.value().StartsWith("NP")) {
-          List<Tree> children = parent.getChildrenAsList();
-          //System.out.println(children);
-          int ccIndex = children.IndexOf(t);
-          if (children.Count > ccIndex + 2 && notNP(children, ccIndex) && ccIndex != 0 && (ccIndex == children.Count - 1 || !children[ccIndex+1].value().StartsWith("CC"))) {
-            transformCC(parent, ccIndex);
-            /*if (VERBOSE) {
+
+        private static Tree findCCparent(Tree t, Tree root)
+        {
+            if (t.isPreTerminal())
+            {
+                if (t.value().StartsWith("CC"))
+                {
+                    Tree parent = t.parent(root);
+                    if (parent != null && parent.value().StartsWith("NP"))
+                    {
+                        List<Tree> children = parent.getChildrenAsList();
+                        //System.out.println(children);
+                        int ccIndex = children.IndexOf(t);
+                        if (children.Count > ccIndex + 2 && notNP(children, ccIndex) && ccIndex != 0 &&
+                            (ccIndex == children.Count - 1 || !children[ccIndex + 1].value().StartsWith("CC")))
+                        {
+                            transformCC(parent, ccIndex);
+                            /*if (VERBOSE) {
               System.err.println("After transformCC:             " + root);
             }*/
-            return root;
-          }
+                            return root;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (Tree child in t.getChildrenAsList())
+                {
+                    Tree cur = findCCparent(child, root);
+                    if (cur != null)
+                    {
+                        return cur;
+                    }
+                }
+            }
+            return null;
         }
-      }
-    } else {
-      foreach (Tree child in t.getChildrenAsList()) {
-        Tree cur = findCCparent(child, root);
-        if (cur != null) {
-          return cur;
-        }
-      }
-    }
-    return null;
-  }
 
 
-  /*public static void main(String[] args) {
+        /*public static void main(String[] args) {
 
     CoordinationTransformer transformer = new CoordinationTransformer(null);
     Treebank tb = new MemoryTreebank();

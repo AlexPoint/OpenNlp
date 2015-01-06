@@ -17,6 +17,7 @@ namespace OpenNLP.Tools.Util.Ling
  * @author Dan Klein
  * @version 12/4/2000
  */
+
     public interface Scored
     {
         /**

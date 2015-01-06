@@ -2500,7 +2500,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             PATTERN_SPLITTER, UNARY_PATH_ANCESTOR_OF, UNARY_PATH_DESCENDANT_OF,
             PARENT_EQUALS
         };
-        
+
         private static readonly Dictionary<String, Relation> ADDITIONAL_RELATION_MAP = new Dictionary<string, Relation>()
         {
             {"<<`", HAS_RIGHTMOST_DESCENDANT},
@@ -2518,7 +2518,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             .Union(ADDITIONAL_RELATION_MAP)
             .ToDictionary(ent => ent.Key, ent => ent.Value);
 
-  /*static {
+        /*static {
     for (Relation r : SIMPLE_RELATIONS) {
       SIMPLE_RELATIONS_MAP.put(r.symbol, r);
     }
@@ -2532,75 +2532,96 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     SIMPLE_RELATIONS_MAP.put("$,", IMMEDIATE_RIGHT_SISTER_OF);
   }*/
 
-  //@Override
-  public override bool Equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o is Relation)) {
-      return false;
-    }
-
-    /*readonly*/ Relation relation = (Relation) o;
-
-    return symbol.Equals(relation.symbol);
-  }
-
-  /*@Override*/
-  public override int GetHashCode() {
-    return symbol.GetHashCode();
-  }
-
-
-  private /*static*/ class Heads : Relation {
-
-    private new static readonly long serialVersionUID = 4681433462932265831L;
-
-    public readonly HeadFinder hf;
-
-    public Heads(HeadFinder hf):base(">>#"){
-      this.hf = hf;
-    }
-
-    //@Override
-    public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly*/ TregexMatcher matcher) {
-      if (t2.isLeaf()) {
-        return false;
-      } else if (t2.isPreTerminal()) {
-        return (t2.firstChild() == t1);
-      } else {
-        HeadFinder headFinder = matcher.getHeadFinder();
-        if (headFinder == null) headFinder = this.hf;
-        Tree head = headFinder.determineHead(t2);
-        if (head == t1) {
-          return true;
-        } else {
-          return satisfies(t1, head, root, matcher);
-        }
-      }
-    }
-
-    /*@Override*/
-    public override IEnumerator<Tree> searchNodeIterator(/*readonly*/ Tree t,
-                                      /*readonly */TregexMatcher matcher)
-    {
-        var next = t;
-
-        HeadFinder headFinder = matcher.getHeadFinder();
-          if (headFinder == null) {headFinder = this.hf;}
-
-          Tree last = next;
-          next = matcher.getParent(next);
-        if (next != null && headFinder.determineHead(next) != last)
+        //@Override
+        public override bool Equals(Object o)
         {
-            next = null;
-            return new List<Tree>().GetEnumerator();
+            if (this == o)
+            {
+                return true;
+            }
+            if (!(o is Relation))
+            {
+                return false;
+            }
+
+            /*readonly*/
+            Relation relation = (Relation) o;
+
+            return symbol.Equals(relation.symbol);
         }
-        else
+
+        /*@Override*/
+
+        public override int GetHashCode()
         {
-            return new List<Tree>(){next}.GetEnumerator();
+            return symbol.GetHashCode();
         }
-      /*return new SearchNodeIterator() {
+
+
+        private /*static*/ class Heads : Relation
+        {
+
+            private new static readonly long serialVersionUID = 4681433462932265831L;
+
+            public readonly HeadFinder hf;
+
+            public Heads(HeadFinder hf) : base(">>#")
+            {
+                this.hf = hf;
+            }
+
+            //@Override
+            public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly*/ TregexMatcher matcher)
+            {
+                if (t2.isLeaf())
+                {
+                    return false;
+                }
+                else if (t2.isPreTerminal())
+                {
+                    return (t2.firstChild() == t1);
+                }
+                else
+                {
+                    HeadFinder headFinder = matcher.getHeadFinder();
+                    if (headFinder == null) headFinder = this.hf;
+                    Tree head = headFinder.determineHead(t2);
+                    if (head == t1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return satisfies(t1, head, root, matcher);
+                    }
+                }
+            }
+
+            /*@Override*/
+
+            public override IEnumerator<Tree> searchNodeIterator( /*readonly*/ Tree t,
+                /*readonly */TregexMatcher matcher)
+            {
+                var next = t;
+
+                HeadFinder headFinder = matcher.getHeadFinder();
+                if (headFinder == null)
+                {
+                    headFinder = this.hf;
+                }
+
+                Tree last = next;
+                next = matcher.getParent(next);
+                if (next != null && headFinder.determineHead(next) != last)
+                {
+                    next = null;
+                    return new List<Tree>().GetEnumerator();
+                }
+                else
+                {
+                    return new List<Tree>() {next}.GetEnumerator();
+                }
+                /*return new SearchNodeIterator() {
         @Override
         void initialize() {
           next = t;
@@ -2619,36 +2640,44 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           }
         }
       };*/
-    }
+            }
 
-    //@Override
-    public override bool Equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (!(o is Heads)) {
-        return false;
-      }
-      if (!base.Equals(o)) {
-        return false;
-      }
+            //@Override
+            public override bool Equals(Object o)
+            {
+                if (this == o)
+                {
+                    return true;
+                }
+                if (!(o is Heads))
+                {
+                    return false;
+                }
+                if (!base.Equals(o))
+                {
+                    return false;
+                }
 
-      /*readonly*/ Heads heads = (Heads) o;
+                /*readonly*/
+                Heads heads = (Heads) o;
 
-      if (hf != null ? !hf.Equals(heads.hf) : heads.hf != null) {
-        return false;
-      }
+                if (hf != null ? !hf.Equals(heads.hf) : heads.hf != null)
+                {
+                    return false;
+                }
 
-      return true;
-    }
+                return true;
+            }
 
-    /*@Override*/
-    public override int GetHashCode() {
-      int result = base.GetHashCode();
-      result = 29 * result + (hf != null ? hf.GetHashCode() : 0);
-      return result;
-    }
-  }
+            /*@Override*/
+
+            public override int GetHashCode()
+            {
+                int result = base.GetHashCode();
+                result = 29*result + (hf != null ? hf.GetHashCode() : 0);
+                return result;
+            }
+        }
 
         private class HeadedByIterator : IEnumerator<Tree>
         {
@@ -2686,10 +2715,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 else
                 {
-                    if (this.Current.isLeaf()) {
-                        this.Current= null;
+                    if (this.Current.isLeaf())
+                    {
+                        this.Current = null;
                         return false;
-                    } else {
+                    }
+                    else
+                    {
                         this.Current = this.hf.determineHead(this.Current);
                         return true;
                     }
@@ -2709,28 +2741,33 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-  private /*static*/ class HeadedBy : Relation {
+        private /*static*/ class HeadedBy : Relation
+        {
 
-    private new static readonly long serialVersionUID = 2825997185749055693L;
+            private new static readonly long serialVersionUID = 2825997185749055693L;
 
-    private readonly Heads heads;
+            private readonly Heads heads;
 
-    public HeadedBy(HeadFinder hf):base("<<#"){
-      this.heads = Interner<Heads>.globalIntern(new Heads(hf));
-    }
+            public HeadedBy(HeadFinder hf) : base("<<#")
+            {
+                this.heads = Interner<Heads>.globalIntern(new Heads(hf));
+            }
 
-    /*@Override*/
-    public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly*/ TregexMatcher matcher) {
-      return heads.satisfies(t2, t1, root, matcher);
-    }
+            /*@Override*/
 
-    /*@Override*/
-    public override IEnumerator<Tree> searchNodeIterator(/*readonly*/ Tree t,
-                                      /*readonly */TregexMatcher matcher)
-    {
-        var finder = matcher.getHeadFinder() != null ? matcher.getHeadFinder() : this.heads.hf;
-        return new HeadedByIterator(t, matcher, finder);
-      /*return new SearchNodeIterator() {
+            public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly*/ TregexMatcher matcher)
+            {
+                return heads.satisfies(t2, t1, root, matcher);
+            }
+
+            /*@Override*/
+
+            public override IEnumerator<Tree> searchNodeIterator( /*readonly*/ Tree t,
+                /*readonly */TregexMatcher matcher)
+            {
+                var finder = matcher.getHeadFinder() != null ? matcher.getHeadFinder() : this.heads.hf;
+                return new HeadedByIterator(t, matcher, finder);
+                /*return new SearchNodeIterator() {
         @Override
         void initialize() {
           next = t;
@@ -2750,72 +2787,92 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           }
         }
       };*/
-    }
-
-    /*@Override*/
-    public override bool Equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (!(o is HeadedBy)) {
-        return false;
-      }
-      if (!base.Equals(o)) {
-        return false;
-      }
-
-      /*readonly */HeadedBy headedBy = (HeadedBy) o;
-
-      if (heads != null ? !heads.Equals(headedBy.heads)
-          : headedBy.heads != null) {
-        return false;
-      }
-
-      return true;
-    }
-
-    /*@Override*/
-    public override int GetHashCode() {
-      int result = base.GetHashCode();
-      result = 29 * result + (heads != null ? heads.GetHashCode() : 0);
-      return result;
-    }
-  }
-
-        
-  private /*static*/ class ImmediatelyHeads : Relation {
-
-
-    private new static readonly long serialVersionUID = 2085410152913894987L;
-
-    public readonly HeadFinder hf;
-
-    public ImmediatelyHeads(HeadFinder hf):base(">#"){
-      this.hf = hf;
-    }
-
-    /*@Override*/
-    public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher) {
-      if (matcher.getHeadFinder() != null) {
-        return matcher.getHeadFinder().determineHead(t2) == t1;
-      } else {
-        return hf.determineHead(t2) == t1;
-      }
-    }
-
-    /*@Override*/
-    public override IEnumerator<Tree> searchNodeIterator(/*readonly*/ Tree t,
-                                      /*readonly*/ TregexMatcher matcher) {
-        if (t != matcher.getRoot()) {
-            var next = matcher.getParent(t);
-            HeadFinder headFinder = matcher.getHeadFinder() == null ? hf : matcher.getHeadFinder();
-            if (headFinder.determineHead(next) == t)
-            {
-                return new List<Tree>() {next}.GetEnumerator();
             }
-          }
-        return new List<Tree>().GetEnumerator();
-        /*return new SearchNodeIterator() {
+
+            /*@Override*/
+
+            public override bool Equals(Object o)
+            {
+                if (this == o)
+                {
+                    return true;
+                }
+                if (!(o is HeadedBy))
+                {
+                    return false;
+                }
+                if (!base.Equals(o))
+                {
+                    return false;
+                }
+
+                /*readonly */
+                HeadedBy headedBy = (HeadedBy) o;
+
+                if (heads != null
+                    ? !heads.Equals(headedBy.heads)
+                    : headedBy.heads != null)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            /*@Override*/
+
+            public override int GetHashCode()
+            {
+                int result = base.GetHashCode();
+                result = 29*result + (heads != null ? heads.GetHashCode() : 0);
+                return result;
+            }
+        }
+
+
+        private /*static*/ class ImmediatelyHeads : Relation
+        {
+
+
+            private new static readonly long serialVersionUID = 2085410152913894987L;
+
+            public readonly HeadFinder hf;
+
+            public ImmediatelyHeads(HeadFinder hf) : base(">#")
+            {
+                this.hf = hf;
+            }
+
+            /*@Override*/
+
+            public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
+            {
+                if (matcher.getHeadFinder() != null)
+                {
+                    return matcher.getHeadFinder().determineHead(t2) == t1;
+                }
+                else
+                {
+                    return hf.determineHead(t2) == t1;
+                }
+            }
+
+            /*@Override*/
+
+            public override IEnumerator<Tree> searchNodeIterator( /*readonly*/ Tree t,
+                /*readonly*/ TregexMatcher matcher)
+            {
+                if (t != matcher.getRoot())
+                {
+                    var next = matcher.getParent(t);
+                    HeadFinder headFinder = matcher.getHeadFinder() == null ? hf : matcher.getHeadFinder();
+                    if (headFinder.determineHead(next) == t)
+                    {
+                        return new List<Tree>() {next}.GetEnumerator();
+                    }
+                }
+                return new List<Tree>().GetEnumerator();
+                /*return new SearchNodeIterator() {
         @Override
         void initialize() {
           if (t != matcher.getRoot()) {
@@ -2827,65 +2884,80 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           }
         }
       };*/
-                                      }
+            }
 
-    /*@Override*/
-    public override bool Equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (!(o is ImmediatelyHeads)) {
-        return false;
-      }
-      if (!base.Equals(o)) {
-        return false;
-      }
+            /*@Override*/
 
-      /*readonly*/ ImmediatelyHeads immediatelyHeads = (ImmediatelyHeads) o;
+            public override bool Equals(Object o)
+            {
+                if (this == o)
+                {
+                    return true;
+                }
+                if (!(o is ImmediatelyHeads))
+                {
+                    return false;
+                }
+                if (!base.Equals(o))
+                {
+                    return false;
+                }
 
-      if (hf != null ? !hf.Equals(immediatelyHeads.hf) : immediatelyHeads.hf != null) {
-        return false;
-      }
+                /*readonly*/
+                ImmediatelyHeads immediatelyHeads = (ImmediatelyHeads) o;
 
-      return true;
-    }
+                if (hf != null ? !hf.Equals(immediatelyHeads.hf) : immediatelyHeads.hf != null)
+                {
+                    return false;
+                }
 
-    /*@Override*/
-    public override int GetHashCode() {
-      int result = base.GetHashCode();
-      result = 29 * result + (hf != null ? hf.GetHashCode() : 0);
-      return result;
-    }
-  }
+                return true;
+            }
 
+            /*@Override*/
 
-  private /*static*/ class ImmediatelyHeadedBy : Relation {
-
-    private new static readonly long serialVersionUID = 5910075663419780905L;
-
-    private readonly ImmediatelyHeads immediatelyHeads;
-
-    public ImmediatelyHeadedBy(HeadFinder hf):base("<#"){
-      this.immediatelyHeads = Interner<ImmediatelyHeads>
-          .globalIntern(new ImmediatelyHeads(hf));
-    }
-
-    /*@Override*/
-    public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher) {
-      return immediatelyHeads.satisfies(t2, t1, root, matcher);
-    }
-
-    /*@Override*/
-    public override IEnumerator<Tree> searchNodeIterator(/*readonly*/ Tree t,
-                                      /*readonly */TregexMatcher matcher) {
-        if (!t.isLeaf())
-        {
-            var headFinder = matcher.getHeadFinder() != null ? matcher.getHeadFinder() : immediatelyHeads.hf;
-            var next = headFinder.determineHead(t);
-            return new List<Tree>() {next}.GetEnumerator();
+            public override int GetHashCode()
+            {
+                int result = base.GetHashCode();
+                result = 29*result + (hf != null ? hf.GetHashCode() : 0);
+                return result;
+            }
         }
-        return new List<Tree>().GetEnumerator();
-        /*return new SearchNodeIterator() {
+
+
+        private /*static*/ class ImmediatelyHeadedBy : Relation
+        {
+
+            private new static readonly long serialVersionUID = 5910075663419780905L;
+
+            private readonly ImmediatelyHeads immediatelyHeads;
+
+            public ImmediatelyHeadedBy(HeadFinder hf) : base("<#")
+            {
+                this.immediatelyHeads = Interner<ImmediatelyHeads>
+                    .globalIntern(new ImmediatelyHeads(hf));
+            }
+
+            /*@Override*/
+
+            public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
+            {
+                return immediatelyHeads.satisfies(t2, t1, root, matcher);
+            }
+
+            /*@Override*/
+
+            public override IEnumerator<Tree> searchNodeIterator( /*readonly*/ Tree t,
+                /*readonly */TregexMatcher matcher)
+            {
+                if (!t.isLeaf())
+                {
+                    var headFinder = matcher.getHeadFinder() != null ? matcher.getHeadFinder() : immediatelyHeads.hf;
+                    var next = headFinder.determineHead(t);
+                    return new List<Tree>() {next}.GetEnumerator();
+                }
+                return new List<Tree>().GetEnumerator();
+                /*return new SearchNodeIterator() {
         @Override
         void initialize() {
           if (!t.isLeaf()) {
@@ -2897,92 +2969,116 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           }
         }
       };*/
-                                      }
-
-    /*@Override*/
-    public override bool Equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (!(o is ImmediatelyHeadedBy)) {
-        return false;
-      }
-      if (!base.Equals(o)) {
-        return false;
-      }
-
-      /*readonly */ImmediatelyHeadedBy immediatelyHeadedBy = (ImmediatelyHeadedBy) o;
-
-      if (immediatelyHeads != null ? !immediatelyHeads
-          .Equals(immediatelyHeadedBy.immediatelyHeads)
-          : immediatelyHeadedBy.immediatelyHeads != null) {
-        return false;
-      }
-
-      return true;
-    }
-
-    /*@Override*/
-    public override int GetHashCode() {
-      int result = base.GetHashCode();
-      result = 29 * result
-          + (immediatelyHeads != null ? immediatelyHeads.GetHashCode() : 0);
-      return result;
-    }
-  }
-
-
-  private /*static */class IthChildOf : Relation {
-
-    private new static readonly long serialVersionUID = -1463126827537879633L;
-
-    public readonly int childNum;
-
-    public IthChildOf(int i):base(">" + i){
-      if (i == 0) {
-        throw new ArgumentException(
-            "Error -- no such thing as zeroth child!");
-      } else {
-        childNum = i;
-      }
-    }
-
-    /*@Override*/
-    public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher) {
-      Tree[] kids = t2.children();
-      if (kids.Length < Math.Abs(childNum)) {
-        return false;
-      }
-      if (childNum > 0 && kids[childNum - 1] == t1) {
-        return true;
-      }
-      if (childNum < 0 && kids[kids.Length + childNum] == t1) {
-        return true;
-      }
-      return false;
-    }
-
-    /*@Override*/
-    public override IEnumerator<Tree> searchNodeIterator(/*readonly */Tree t,
-                                      /*readonly */TregexMatcher matcher) {
-        if (t != matcher.getRoot()) {
-            var next = matcher.getParent(t);
-            if (childNum > 0
-                && (next.numChildren() < childNum || next
-                    .getChild(childNum - 1) != t)
-                || childNum < 0
-                && (next.numChildren() < -childNum || next.getChild(next
-                    .numChildren()
-                    + childNum) != t)) {
-              next = null;
             }
-            if (next != null)
+
+            /*@Override*/
+
+            public override bool Equals(Object o)
             {
-                return new List<Tree>() {next}.GetEnumerator();
+                if (this == o)
+                {
+                    return true;
+                }
+                if (!(o is ImmediatelyHeadedBy))
+                {
+                    return false;
+                }
+                if (!base.Equals(o))
+                {
+                    return false;
+                }
+
+                /*readonly */
+                ImmediatelyHeadedBy immediatelyHeadedBy = (ImmediatelyHeadedBy) o;
+
+                if (immediatelyHeads != null
+                    ? !immediatelyHeads
+                        .Equals(immediatelyHeadedBy.immediatelyHeads)
+                    : immediatelyHeadedBy.immediatelyHeads != null)
+                {
+                    return false;
+                }
+
+                return true;
             }
-          }
-        return new List<Tree>().GetEnumerator();
-        /*return new SearchNodeIterator() {
+
+            /*@Override*/
+
+            public override int GetHashCode()
+            {
+                int result = base.GetHashCode();
+                result = 29*result
+                         + (immediatelyHeads != null ? immediatelyHeads.GetHashCode() : 0);
+                return result;
+            }
+        }
+
+
+        private /*static */ class IthChildOf : Relation
+        {
+
+            private new static readonly long serialVersionUID = -1463126827537879633L;
+
+            public readonly int childNum;
+
+            public IthChildOf(int i) : base(">" + i)
+            {
+                if (i == 0)
+                {
+                    throw new ArgumentException(
+                        "Error -- no such thing as zeroth child!");
+                }
+                else
+                {
+                    childNum = i;
+                }
+            }
+
+            /*@Override*/
+
+            public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
+            {
+                Tree[] kids = t2.children();
+                if (kids.Length < Math.Abs(childNum))
+                {
+                    return false;
+                }
+                if (childNum > 0 && kids[childNum - 1] == t1)
+                {
+                    return true;
+                }
+                if (childNum < 0 && kids[kids.Length + childNum] == t1)
+                {
+                    return true;
+                }
+                return false;
+            }
+
+            /*@Override*/
+
+            public override IEnumerator<Tree> searchNodeIterator( /*readonly */ Tree t,
+                /*readonly */TregexMatcher matcher)
+            {
+                if (t != matcher.getRoot())
+                {
+                    var next = matcher.getParent(t);
+                    if (childNum > 0
+                        && (next.numChildren() < childNum || next
+                            .getChild(childNum - 1) != t)
+                        || childNum < 0
+                        && (next.numChildren() < -childNum || next.getChild(next
+                            .numChildren()
+                                                                            + childNum) != t))
+                    {
+                        next = null;
+                    }
+                    if (next != null)
+                    {
+                        return new List<Tree>() {next}.GetEnumerator();
+                    }
+                }
+                return new List<Tree>().GetEnumerator();
+                /*return new SearchNodeIterator() {
         @Override
         void initialize() {
           if (t != matcher.getRoot()) {
@@ -2999,66 +3095,82 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           }
         }
       };*/
-                                      }
-
-    /*@Override*/
-    public override bool Equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (!(o is IthChildOf)) {
-        return false;
-      }
-
-      /*readonly */IthChildOf ithChildOf = (IthChildOf) o;
-
-      if (childNum != ithChildOf.childNum) {
-        return false;
-      }
-
-      return true;
-    }
-
-    /*@Override*/
-      public override int GetHashCode()
-      {
-          return childNum;
-      }
-
-  }
-
-
-  private /*static */class HasIthChild : Relation {
-
-    private new static readonly long serialVersionUID = 3546853729291582806L;
-
-    private readonly IthChildOf ithChildOf;
-
-    public HasIthChild(int i):base("<" + i){
-      ithChildOf = Interner<IthChildOf>.globalIntern(new IthChildOf(i));
-    }
-
-    /*@Override*/
-    public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher) {
-      return ithChildOf.satisfies(t2, t1, root, matcher);
-    }
-
-    /*@Override*/
-    public override IEnumerator<Tree> searchNodeIterator(/*readonly */Tree t,
-                                      /*readonly */TregexMatcher matcher) {
-        int childNum = ithChildOf.childNum;
-          if (t.numChildren() >= Math.Abs(childNum))
-          {
-              Tree next;
-            if (childNum > 0) {
-              next = t.getChild(childNum - 1);
-            } else {
-              next = t.getChild(t.numChildren() + childNum);
             }
-              return new List<Tree>() {next}.GetEnumerator();
-          }
-        return new List<Tree>().GetEnumerator();
-        /*return new SearchNodeIterator() {
+
+            /*@Override*/
+
+            public override bool Equals(Object o)
+            {
+                if (this == o)
+                {
+                    return true;
+                }
+                if (!(o is IthChildOf))
+                {
+                    return false;
+                }
+
+                /*readonly */
+                IthChildOf ithChildOf = (IthChildOf) o;
+
+                if (childNum != ithChildOf.childNum)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            /*@Override*/
+
+            public override int GetHashCode()
+            {
+                return childNum;
+            }
+
+        }
+
+
+        private /*static */ class HasIthChild : Relation
+        {
+
+            private new static readonly long serialVersionUID = 3546853729291582806L;
+
+            private readonly IthChildOf ithChildOf;
+
+            public HasIthChild(int i) : base("<" + i)
+            {
+                ithChildOf = Interner<IthChildOf>.globalIntern(new IthChildOf(i));
+            }
+
+            /*@Override*/
+
+            public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
+            {
+                return ithChildOf.satisfies(t2, t1, root, matcher);
+            }
+
+            /*@Override*/
+
+            public override IEnumerator<Tree> searchNodeIterator( /*readonly */ Tree t,
+                /*readonly */TregexMatcher matcher)
+            {
+                int childNum = ithChildOf.childNum;
+                if (t.numChildren() >= Math.Abs(childNum))
+                {
+                    Tree next;
+                    if (childNum > 0)
+                    {
+                        next = t.getChild(childNum - 1);
+                    }
+                    else
+                    {
+                        next = t.getChild(t.numChildren() + childNum);
+                    }
+                    return new List<Tree>() {next}.GetEnumerator();
+                }
+                return new List<Tree>().GetEnumerator();
+                /*return new SearchNodeIterator() {
         @Override
         void initialize() {
           int childNum = ithChildOf.childNum;
@@ -3071,53 +3183,66 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           }
         }
       };*/
-                                      }
+            }
 
-    /*@Override*/
-    public override bool Equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (!(o is HasIthChild)) {
-        return false;
-      }
-      if (!base.Equals(o)) {
-        return false;
-      }
+            /*@Override*/
 
-      /*readonly */HasIthChild hasIthChild = (HasIthChild) o;
+            public override bool Equals(Object o)
+            {
+                if (this == o)
+                {
+                    return true;
+                }
+                if (!(o is HasIthChild))
+                {
+                    return false;
+                }
+                if (!base.Equals(o))
+                {
+                    return false;
+                }
 
-      if (ithChildOf != null ? !ithChildOf.Equals(hasIthChild.ithChildOf)
-          : hasIthChild.ithChildOf != null) {
-        return false;
-      }
+                /*readonly */
+                HasIthChild hasIthChild = (HasIthChild) o;
 
-      return true;
-    }
+                if (ithChildOf != null
+                    ? !ithChildOf.Equals(hasIthChild.ithChildOf)
+                    : hasIthChild.ithChildOf != null)
+                {
+                    return false;
+                }
 
-    /*@Override*/
-    public override int GetHashCode() {
-      int result = base.GetHashCode();
-      result = 29 * result + (ithChildOf != null ? ithChildOf.GetHashCode() : 0);
-      return result;
-    }
-  }
+                return true;
+            }
 
-        private class UnbrokenCategoryDominatesIterator:IEnumerator<Tree>
+            /*@Override*/
+
+            public override int GetHashCode()
+            {
+                int result = base.GetHashCode();
+                result = 29*result + (ithChildOf != null ? ithChildOf.GetHashCode() : 0);
+                return result;
+            }
+        }
+
+        private class UnbrokenCategoryDominatesIterator : IEnumerator<Tree>
         {
             private Stack<Tree> searchStack;
             private Func<Tree, bool> patchMatchesNode;
+
             public UnbrokenCategoryDominatesIterator(Tree t, Func<Tree, bool> patchMatchesNode)
             {
                 searchStack = new Stack<Tree>();
-          for (int i = t.numChildren() - 1; i >= 0; i--) {
-            searchStack.Push(t.getChild(i));
-          }
-          /*if (!searchStack.isEmpty()) {
+                for (int i = t.numChildren() - 1; i >= 0; i--)
+                {
+                    searchStack.Push(t.getChild(i));
+                }
+                /*if (!searchStack.isEmpty()) {
             advance();
           }*/
                 this.patchMatchesNode = patchMatchesNode;
             }
+
             public void Dispose()
             {
                 // do nothing
@@ -3159,82 +3284,110 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         }
 
 
-  private /*static */class UnbrokenCategoryDominates : Relation {
+        private /*static */ class UnbrokenCategoryDominates : Relation
+        {
 
-    private new static readonly long serialVersionUID = -4174923168221859262L;
+            private new static readonly long serialVersionUID = -4174923168221859262L;
 
-    private readonly Regex pattern;
-    private readonly bool negatedPattern;
-    private readonly bool basicCat;
-    private Func<String, String> basicCatFunction;
+            private readonly Regex pattern;
+            private readonly bool negatedPattern;
+            private readonly bool basicCat;
+            private Func<String, String> basicCatFunction;
 
 
-    /**
+            /**
      *
      * @param arg This may have a ! and then maybe a @ and then either an
      *            identifier or regex
      */
-    public UnbrokenCategoryDominates(String arg,
-                              Func<String, String> basicCatFunction):base("<+(" + arg + ')'){
-      if (arg.StartsWith("!")) {
-        negatedPattern = true;
-        arg = arg.Substring(1);
-      } else {
-        negatedPattern = false;
-      }
-      if (arg.StartsWith("@")) {
-        basicCat = true;
-        this.basicCatFunction = basicCatFunction;
-        arg = arg.Substring(1);
-      } else {
-        basicCat = false;
-      }
-      if (Regex.IsMatch(arg,"/.*/")) {
-        //pattern = new Regex(arg.Substring(1, arg.Length - 1));
-        pattern = new Regex(arg.Substring(1, arg.Length - 2));
-      } else if (Regex.IsMatch(arg,"__")) {
-        pattern = new Regex("^.*$");
-      } else {
-        pattern = new Regex("^(?:" + arg + ")$");
-      }
-    }
 
-    /** {@inheritDoc} */
-    /*@Override*/
-    public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher) {
-      foreach (Tree kid in t1.children()) {
-        if (kid == t2) {
-          return true;
-        } else {
-          if (pathMatchesNode(kid) && satisfies(kid, t2, root, matcher)) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
+            public UnbrokenCategoryDominates(String arg,
+                Func<String, String> basicCatFunction) : base("<+(" + arg + ')')
+            {
+                if (arg.StartsWith("!"))
+                {
+                    negatedPattern = true;
+                    arg = arg.Substring(1);
+                }
+                else
+                {
+                    negatedPattern = false;
+                }
+                if (arg.StartsWith("@"))
+                {
+                    basicCat = true;
+                    this.basicCatFunction = basicCatFunction;
+                    arg = arg.Substring(1);
+                }
+                else
+                {
+                    basicCat = false;
+                }
+                if (Regex.IsMatch(arg, "/.*/"))
+                {
+                    //pattern = new Regex(arg.Substring(1, arg.Length - 1));
+                    pattern = new Regex(arg.Substring(1, arg.Length - 2));
+                }
+                else if (Regex.IsMatch(arg, "__"))
+                {
+                    pattern = new Regex("^.*$");
+                }
+                else
+                {
+                    pattern = new Regex("^(?:" + arg + ")$");
+                }
+            }
 
-    public bool pathMatchesNode(Tree node) {
-      String lab = node.value();
-      // added this code to not crash if null node, even though there probably should be null nodes in the tree
-      if (lab == null) {
-        // Say that a null label matches no positive pattern, but any negated patern
-        return negatedPattern;
-      } else {
-        if (basicCat) {
-          lab = basicCatFunction(lab);
-        }
-        var m = pattern.Match(lab);
-        return m.Success != negatedPattern;
-      }
-    }
+            /** {@inheritDoc} */
+            /*@Override*/
 
-    /** {@inheritDoc} */
-    /*@Override*/
-    public override IEnumerator<Tree> searchNodeIterator(/*readonly */Tree t,
-                                      /*readonly */TregexMatcher matcher) {
-        return new UnbrokenCategoryDominatesIterator(t, this.pathMatchesNode);
-      /*return new SearchNodeIterator() {
+            public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
+            {
+                foreach (Tree kid in t1.children())
+                {
+                    if (kid == t2)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        if (pathMatchesNode(kid) && satisfies(kid, t2, root, matcher))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            public bool pathMatchesNode(Tree node)
+            {
+                String lab = node.value();
+                // added this code to not crash if null node, even though there probably should be null nodes in the tree
+                if (lab == null)
+                {
+                    // Say that a null label matches no positive pattern, but any negated patern
+                    return negatedPattern;
+                }
+                else
+                {
+                    if (basicCat)
+                    {
+                        lab = basicCatFunction(lab);
+                    }
+                    var m = pattern.Match(lab);
+                    return m.Success != negatedPattern;
+                }
+            }
+
+            /** {@inheritDoc} */
+            /*@Override*/
+
+            public override IEnumerator<Tree> searchNodeIterator( /*readonly */ Tree t,
+                /*readonly */TregexMatcher matcher)
+            {
+                return new UnbrokenCategoryDominatesIterator(t, this.pathMatchesNode);
+                /*return new SearchNodeIterator() {
         Stack<Tree> searchStack;
 
         @Override
@@ -3262,72 +3415,86 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           }
         }
       };*/
-    }
+            }
 
-    /*@Override*/
-    public override bool Equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (!(o is UnbrokenCategoryDominates)) {
-        return false;
-      }
+            /*@Override*/
 
-      /*readonly*/ UnbrokenCategoryDominates unbrokenCategoryDominates = (UnbrokenCategoryDominates) o;
+            public override bool Equals(Object o)
+            {
+                if (this == o)
+                {
+                    return true;
+                }
+                if (!(o is UnbrokenCategoryDominates))
+                {
+                    return false;
+                }
 
-      if (negatedPattern != unbrokenCategoryDominates.negatedPattern) {
-        return false;
-      }
-      if (!pattern.Equals(unbrokenCategoryDominates.pattern)) {
-        return false;
-      }
+                /*readonly*/
+                UnbrokenCategoryDominates unbrokenCategoryDominates = (UnbrokenCategoryDominates) o;
 
-      return true;
-    }
+                if (negatedPattern != unbrokenCategoryDominates.negatedPattern)
+                {
+                    return false;
+                }
+                if (!pattern.Equals(unbrokenCategoryDominates.pattern))
+                {
+                    return false;
+                }
 
-    /*@Override*/
-    public override int GetHashCode() {
-      int result;
-      result = pattern.GetHashCode();
-      result = 29 * result + (negatedPattern ? 1 : 0);
-      return result;
-    }
+                return true;
+            }
 
-  } // end class UnbrokenCategoryDominates
+            /*@Override*/
+
+            public override int GetHashCode()
+            {
+                int result;
+                result = pattern.GetHashCode();
+                result = 29*result + (negatedPattern ? 1 : 0);
+                return result;
+            }
+
+        } // end class UnbrokenCategoryDominates
 
 
-  private /*static*/ class UnbrokenCategoryIsDominatedBy : Relation {
-
-    private new static readonly long serialVersionUID = 2867922828235355129L;
-
-    private readonly UnbrokenCategoryDominates unbrokenCategoryDominates;
-
-    public UnbrokenCategoryIsDominatedBy(String arg,
-                                  Func<String, String> basicCatFunction):base(">+(" + arg + ')'){
-      unbrokenCategoryDominates = Interner<UnbrokenCategoryDominates>
-        .globalIntern((new UnbrokenCategoryDominates(arg, basicCatFunction)));
-    }
-
-    /** {@inheritDoc} */
-    /*@Override*/
-    public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher) {
-      return unbrokenCategoryDominates.satisfies(t2, t1, root, matcher);
-    }
-
-    /** {@inheritDoc} */
-    /*@Override*/
-    public override IEnumerator<Tree> searchNodeIterator(/*readonly */Tree t,
-                                      /*readonly */TregexMatcher matcher)
-    {
-        var nodes = new List<Tree>();
-        var node = t;
-        while (unbrokenCategoryDominates.pathMatchesNode(node))
+        private /*static*/ class UnbrokenCategoryIsDominatedBy : Relation
         {
-            node = matcher.getParent(node);
-            nodes.Add(node);
-        }
-        return nodes.GetEnumerator();
-        /*return new SearchNodeIterator() {
+
+            private new static readonly long serialVersionUID = 2867922828235355129L;
+
+            private readonly UnbrokenCategoryDominates unbrokenCategoryDominates;
+
+            public UnbrokenCategoryIsDominatedBy(String arg,
+                Func<String, String> basicCatFunction) : base(">+(" + arg + ')')
+            {
+                unbrokenCategoryDominates = Interner<UnbrokenCategoryDominates>
+                    .globalIntern((new UnbrokenCategoryDominates(arg, basicCatFunction)));
+            }
+
+            /** {@inheritDoc} */
+            /*@Override*/
+
+            public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
+            {
+                return unbrokenCategoryDominates.satisfies(t2, t1, root, matcher);
+            }
+
+            /** {@inheritDoc} */
+            /*@Override*/
+
+            public override IEnumerator<Tree> searchNodeIterator( /*readonly */ Tree t,
+                /*readonly */TregexMatcher matcher)
+            {
+                var nodes = new List<Tree>();
+                var node = t;
+                while (unbrokenCategoryDominates.pathMatchesNode(node))
+                {
+                    node = matcher.getParent(node);
+                    nodes.Add(node);
+                }
+                return nodes.GetEnumerator();
+                /*return new SearchNodeIterator() {
         @Override
         void initialize() {
           next = matcher.getParent(t);
@@ -3342,142 +3509,185 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           }
         }
       };*/
-    }
+            }
 
-    /*@Override*/
-    public override bool Equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (!(o is UnbrokenCategoryIsDominatedBy)) {
-        return false;
-      }
-      if (!base.Equals(o)) {
-        return false;
-      }
+            /*@Override*/
 
-      /*readonly */UnbrokenCategoryIsDominatedBy unbrokenCategoryIsDominatedBy = (UnbrokenCategoryIsDominatedBy) o;
+            public override bool Equals(Object o)
+            {
+                if (this == o)
+                {
+                    return true;
+                }
+                if (!(o is UnbrokenCategoryIsDominatedBy))
+                {
+                    return false;
+                }
+                if (!base.Equals(o))
+                {
+                    return false;
+                }
 
-      return unbrokenCategoryDominates.Equals(unbrokenCategoryIsDominatedBy.unbrokenCategoryDominates);
-    }
+                /*readonly */
+                UnbrokenCategoryIsDominatedBy unbrokenCategoryIsDominatedBy = (UnbrokenCategoryIsDominatedBy) o;
 
-    /*@Override*/
-    public override int GetHashCode() {
-      int result = base.GetHashCode();
-      result = 29 * result + unbrokenCategoryDominates.GetHashCode();
-      return result;
-    }
-  }
+                return unbrokenCategoryDominates.Equals(unbrokenCategoryIsDominatedBy.unbrokenCategoryDominates);
+            }
+
+            /*@Override*/
+
+            public override int GetHashCode()
+            {
+                int result = base.GetHashCode();
+                result = 29*result + unbrokenCategoryDominates.GetHashCode();
+                return result;
+            }
+        }
 
 
-  /**
+        /**
    * Note that this only works properly for context-free trees.
    * Also, the use of initialize and advance is not very efficient just yet.  Finally, each node in the tree
    * is added only once, even if there is more than one unbroken-category precedence path to it.
    *
    */
-  private /*static*/ class UnbrokenCategoryPrecedes : Relation {
 
-    private new static readonly long serialVersionUID = 6866888667804306111L;
+        private /*static*/ class UnbrokenCategoryPrecedes : Relation
+        {
 
-    private readonly Regex pattern;
-    private readonly bool negatedPattern;
-    private readonly bool basicCat;
-    private Func<String, String> basicCatFunction;
+            private new static readonly long serialVersionUID = 6866888667804306111L;
 
-    /**
+            private readonly Regex pattern;
+            private readonly bool negatedPattern;
+            private readonly bool basicCat;
+            private Func<String, String> basicCatFunction;
+
+            /**
      * @param arg The pattern to match, perhaps preceded by ! and/or @
      */
-    public UnbrokenCategoryPrecedes(String arg,
-                             Func<String, String> basicCatFunction):base(".+(" + arg + ')'){
-      if (arg.StartsWith("!")) {
-        negatedPattern = true;
-        arg = arg.Substring(1);
-      } else {
-        negatedPattern = false;
-      }
-      if (arg.StartsWith("@")) {
-        basicCat = true;
-        this.basicCatFunction = basicCatFunction; // todo -- this was missing a this. which must be testable in a unit test!!! Make one
-        arg = arg.Substring(1);
-      } else {
-        basicCat = false;
-      }
-      if (Regex.IsMatch(arg, "/.*/")) {
-        //pattern = new Regex(arg.Substring(1, arg.Length - 1));
-        pattern = new Regex(arg.Substring(1, arg.Length - 2));
-      } else if (Regex.IsMatch(arg,"__")) {
-        pattern = new Regex("^.*$");
-      } else {
-        pattern = new Regex("^(?:" + arg + ")$");
-      }
-    }
 
-    /** {@inheritDoc} */
-    //@Override
-    public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher) {
-      return true; // shouldn't have to do anything here.
-    }
-
-    private bool pathMatchesNode(Tree node) {
-      String lab = node.value();
-      // added this code to not crash if null node, even though there probably should be null nodes in the tree
-      if (lab == null) {
-        // Say that a null label matches no positive pattern, but any negated pattern
-        return negatedPattern;
-      } else {
-        if (basicCat) {
-          lab = basicCatFunction(lab);
-        }
-        var m = pattern.Match(lab);
-        return m.Success != negatedPattern;
-      }
-    }
-
-      private void initializeHelper(Stack<Tree> stack, Tree node, Tree root, TregexMatcher matcher, IdentityHashSet<Tree> nodesToSearch) {
-          if (node==root) {
-            return;
-          }
-          Tree parent = matcher.getParent(node);
-          int i = parent.objectIndexOf(node);
-          while (i == parent.children().Length-1 && parent != root) {
-            node = parent;
-            parent = matcher.getParent(parent);
-            i = parent.objectIndexOf(node);
-          }
-          Tree followingNode;
-          if (i+1 < parent.children().Length) {
-            followingNode = parent.children()[i+1];
-          } else {
-            followingNode = null;
-          }
-          while (followingNode != null) {
-            //System.err.println("adding to stack node " + followingNode.toString());
-            if (! nodesToSearch.contains(followingNode)) {
-              stack.Push(followingNode);
-              nodesToSearch.Add(followingNode);
+            public UnbrokenCategoryPrecedes(String arg,
+                Func<String, String> basicCatFunction) : base(".+(" + arg + ')')
+            {
+                if (arg.StartsWith("!"))
+                {
+                    negatedPattern = true;
+                    arg = arg.Substring(1);
+                }
+                else
+                {
+                    negatedPattern = false;
+                }
+                if (arg.StartsWith("@"))
+                {
+                    basicCat = true;
+                    this.basicCatFunction = basicCatFunction;
+                        // todo -- this was missing a this. which must be testable in a unit test!!! Make one
+                    arg = arg.Substring(1);
+                }
+                else
+                {
+                    basicCat = false;
+                }
+                if (Regex.IsMatch(arg, "/.*/"))
+                {
+                    //pattern = new Regex(arg.Substring(1, arg.Length - 1));
+                    pattern = new Regex(arg.Substring(1, arg.Length - 2));
+                }
+                else if (Regex.IsMatch(arg, "__"))
+                {
+                    pattern = new Regex("^.*$");
+                }
+                else
+                {
+                    pattern = new Regex("^(?:" + arg + ")$");
+                }
             }
-            if (pathMatchesNode(followingNode)) {
-              initializeHelper(stack, followingNode, root, matcher, nodesToSearch);
-            }
-            if (! followingNode.isLeaf()) {
-              followingNode = followingNode.children()[0];
-            } else {
-              followingNode = null;
-            }
-          }
-        }
 
-    /** {@inheritDoc} */
-    //@Override
-    public override IEnumerator<Tree> searchNodeIterator(/*readonly */Tree t,
-                                      /*readonly */TregexMatcher matcher)
-    {
-        var stack = new Stack<Tree>();
-        initializeHelper(stack, t, matcher.getRoot(), matcher, new IdentityHashSet<Tree>());
+            /** {@inheritDoc} */
+            //@Override
+            public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
+            {
+                return true; // shouldn't have to do anything here.
+            }
 
-        return stack.GetEnumerator();
-        /*return new SearchNodeIterator() {
+            private bool pathMatchesNode(Tree node)
+            {
+                String lab = node.value();
+                // added this code to not crash if null node, even though there probably should be null nodes in the tree
+                if (lab == null)
+                {
+                    // Say that a null label matches no positive pattern, but any negated pattern
+                    return negatedPattern;
+                }
+                else
+                {
+                    if (basicCat)
+                    {
+                        lab = basicCatFunction(lab);
+                    }
+                    var m = pattern.Match(lab);
+                    return m.Success != negatedPattern;
+                }
+            }
+
+            private void initializeHelper(Stack<Tree> stack, Tree node, Tree root, TregexMatcher matcher,
+                IdentityHashSet<Tree> nodesToSearch)
+            {
+                if (node == root)
+                {
+                    return;
+                }
+                Tree parent = matcher.getParent(node);
+                int i = parent.objectIndexOf(node);
+                while (i == parent.children().Length - 1 && parent != root)
+                {
+                    node = parent;
+                    parent = matcher.getParent(parent);
+                    i = parent.objectIndexOf(node);
+                }
+                Tree followingNode;
+                if (i + 1 < parent.children().Length)
+                {
+                    followingNode = parent.children()[i + 1];
+                }
+                else
+                {
+                    followingNode = null;
+                }
+                while (followingNode != null)
+                {
+                    //System.err.println("adding to stack node " + followingNode.toString());
+                    if (! nodesToSearch.contains(followingNode))
+                    {
+                        stack.Push(followingNode);
+                        nodesToSearch.Add(followingNode);
+                    }
+                    if (pathMatchesNode(followingNode))
+                    {
+                        initializeHelper(stack, followingNode, root, matcher, nodesToSearch);
+                    }
+                    if (! followingNode.isLeaf())
+                    {
+                        followingNode = followingNode.children()[0];
+                    }
+                    else
+                    {
+                        followingNode = null;
+                    }
+                }
+            }
+
+            /** {@inheritDoc} */
+            //@Override
+            public override IEnumerator<Tree> searchNodeIterator( /*readonly */ Tree t,
+                /*readonly */TregexMatcher matcher)
+            {
+                var stack = new Stack<Tree>();
+                initializeHelper(stack, t, matcher.getRoot(), matcher, new IdentityHashSet<Tree>());
+
+                return stack.GetEnumerator();
+                /*return new SearchNodeIterator() {
         private IdentityHashSet<Tree> nodesToSearch;
         private Stack<Tree> searchStack;
 
@@ -3532,116 +3742,151 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           }
         }
       };*/
-    }
-  }
+            }
+        }
 
 
-  /**
+        /**
    * Note that this only works properly for context-free trees.
    * Also, the use of initialize and advance is not very efficient just yet.  Finally, each node in the tree
    * is added only once, even if there is more than one unbroken-category precedence path to it.
    */
-  private /*static */class UnbrokenCategoryFollows : Relation {
 
-    private new static readonly long serialVersionUID = -7890430001297866437L;
+        private /*static */ class UnbrokenCategoryFollows : Relation
+        {
 
-    private readonly Regex pattern;
-    private readonly bool negatedPattern;
-    private readonly bool basicCat;
-    private Func<String, String> basicCatFunction;
+            private new static readonly long serialVersionUID = -7890430001297866437L;
 
-    /**
+            private readonly Regex pattern;
+            private readonly bool negatedPattern;
+            private readonly bool basicCat;
+            private Func<String, String> basicCatFunction;
+
+            /**
      * @param arg The pattern to match, perhaps preceded by ! and/or @
      */
-    public UnbrokenCategoryFollows(String arg,
-                            Func<String, String> basicCatFunction): base(",+(" + arg + ')'){
-      if (arg.StartsWith("!")) {
-        negatedPattern = true;
-        arg = arg.Substring(1);
-      } else {
-        negatedPattern = false;
-      }
-      if (arg.StartsWith("@")) {
-        basicCat = true;
-        this.basicCatFunction = basicCatFunction;
-        arg = arg.Substring(1);
-      } else {
-        basicCat = false;
-      }
-      if (Regex.IsMatch(arg, "/.*/")) {
-        //pattern = new Regex(arg.Substring(1, arg.Length - 1));
-        pattern = new Regex(arg.Substring(1, arg.Length - 2));
-      } else if (Regex.IsMatch(arg, "__")) {
-        pattern = new Regex("^.*$");
-      } else {
-        pattern = new Regex("^(?:" + arg + ")$");
-      }
-    }
 
-    /** {@inheritDoc} */
-    //@Override
-    public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher) {
-      return true; // shouldn't have to do anything here.
-    }
-
-    private bool pathMatchesNode(Tree node) {
-      String lab = node.value();
-      // added this code to not crash if null node, even though there probably should be null nodes in the tree
-      if (lab == null) {
-        // Say that a null label matches no positive pattern, but any negated pattern
-        return negatedPattern;
-      } else {
-        if (basicCat) {
-          lab = basicCatFunction(lab);
-        }
-        var m = pattern.Match(lab);
-        return m.Success != negatedPattern;
-      }
-    }
-
-      private void initializeHelper(Stack<Tree> stack, Tree node, Tree root, TregexMatcher matcher, IdentityHashSet<Tree> nodesToSearch) {
-          if (node==root) {
-            return;
-          }
-          Tree parent = matcher.getParent(node);
-          int i = parent.objectIndexOf(node);
-          while (i == 0 && parent != root) {
-            node = parent;
-            parent = matcher.getParent(parent);
-            i = parent.objectIndexOf(node);
-          }
-          Tree precedingNode;
-          if (i > 0) {
-            precedingNode = parent.children()[i-1];
-          } else {
-            precedingNode = null;
-          }
-          while (precedingNode != null) {
-            //System.err.println("adding to stack node " + precedingNode.toString());
-            if ( ! nodesToSearch.contains(precedingNode)) {
-              stack.Push(precedingNode);
-              nodesToSearch.Add(precedingNode);
+            public UnbrokenCategoryFollows(String arg,
+                Func<String, String> basicCatFunction) : base(",+(" + arg + ')')
+            {
+                if (arg.StartsWith("!"))
+                {
+                    negatedPattern = true;
+                    arg = arg.Substring(1);
+                }
+                else
+                {
+                    negatedPattern = false;
+                }
+                if (arg.StartsWith("@"))
+                {
+                    basicCat = true;
+                    this.basicCatFunction = basicCatFunction;
+                    arg = arg.Substring(1);
+                }
+                else
+                {
+                    basicCat = false;
+                }
+                if (Regex.IsMatch(arg, "/.*/"))
+                {
+                    //pattern = new Regex(arg.Substring(1, arg.Length - 1));
+                    pattern = new Regex(arg.Substring(1, arg.Length - 2));
+                }
+                else if (Regex.IsMatch(arg, "__"))
+                {
+                    pattern = new Regex("^.*$");
+                }
+                else
+                {
+                    pattern = new Regex("^(?:" + arg + ")$");
+                }
             }
-            if (pathMatchesNode(precedingNode)) {
-              initializeHelper(stack, precedingNode, root, matcher, nodesToSearch);
-            }
-            if (! precedingNode.isLeaf()) {
-              precedingNode = precedingNode.children()[0];
-            } else {
-              precedingNode = null;
-            }
-          }
-        }
 
-    /** {@inheritDoc} */
-    //@Override
-    public override IEnumerator<Tree> searchNodeIterator(/*readonly */Tree t,
-                                      /*readonly */TregexMatcher matcher) {
-        var searchStack = new Stack<Tree>();
-        initializeHelper(searchStack, t, matcher.getRoot(), matcher, new IdentityHashSet<Tree>());
+            /** {@inheritDoc} */
+            //@Override
+            public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
+            {
+                return true; // shouldn't have to do anything here.
+            }
 
-        return searchStack.GetEnumerator();
-        /*return new SearchNodeIterator() {
+            private bool pathMatchesNode(Tree node)
+            {
+                String lab = node.value();
+                // added this code to not crash if null node, even though there probably should be null nodes in the tree
+                if (lab == null)
+                {
+                    // Say that a null label matches no positive pattern, but any negated pattern
+                    return negatedPattern;
+                }
+                else
+                {
+                    if (basicCat)
+                    {
+                        lab = basicCatFunction(lab);
+                    }
+                    var m = pattern.Match(lab);
+                    return m.Success != negatedPattern;
+                }
+            }
+
+            private void initializeHelper(Stack<Tree> stack, Tree node, Tree root, TregexMatcher matcher,
+                IdentityHashSet<Tree> nodesToSearch)
+            {
+                if (node == root)
+                {
+                    return;
+                }
+                Tree parent = matcher.getParent(node);
+                int i = parent.objectIndexOf(node);
+                while (i == 0 && parent != root)
+                {
+                    node = parent;
+                    parent = matcher.getParent(parent);
+                    i = parent.objectIndexOf(node);
+                }
+                Tree precedingNode;
+                if (i > 0)
+                {
+                    precedingNode = parent.children()[i - 1];
+                }
+                else
+                {
+                    precedingNode = null;
+                }
+                while (precedingNode != null)
+                {
+                    //System.err.println("adding to stack node " + precedingNode.toString());
+                    if (! nodesToSearch.contains(precedingNode))
+                    {
+                        stack.Push(precedingNode);
+                        nodesToSearch.Add(precedingNode);
+                    }
+                    if (pathMatchesNode(precedingNode))
+                    {
+                        initializeHelper(stack, precedingNode, root, matcher, nodesToSearch);
+                    }
+                    if (! precedingNode.isLeaf())
+                    {
+                        precedingNode = precedingNode.children()[0];
+                    }
+                    else
+                    {
+                        precedingNode = null;
+                    }
+                }
+            }
+
+            /** {@inheritDoc} */
+            //@Override
+            public override IEnumerator<Tree> searchNodeIterator( /*readonly */ Tree t,
+                /*readonly */TregexMatcher matcher)
+            {
+                var searchStack = new Stack<Tree>();
+                initializeHelper(searchStack, t, matcher.getRoot(), matcher, new IdentityHashSet<Tree>());
+
+                return searchStack.GetEnumerator();
+                /*return new SearchNodeIterator() {
         IdentityHashSet<Tree> nodesToSearch;
         Stack<Tree> searchStack;
 
@@ -3696,7 +3941,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
           }
         }
       };*/
-                                      }
-  }
+            }
+        }
     }
 }

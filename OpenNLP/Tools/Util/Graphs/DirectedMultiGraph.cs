@@ -20,392 +20,467 @@ namespace OpenNLP.Tools.Util.Graphs
  * @param <E>
  *          Type of edges.
  */
-    public class DirectedMultiGraph<V,E>:Graph<V,E>
+
+    public class DirectedMultiGraph<V, E> : Graph<V, E>
     {
-        readonly Dictionary<V, Dictionary<V, List<E>>> outgoingEdges;
+        private readonly Dictionary<V, Dictionary<V, List<E>>> outgoingEdges;
 
-  readonly Dictionary<V, Dictionary<V, List<E>>> incomingEdges;
+        private readonly Dictionary<V, Dictionary<V, List<E>>> incomingEdges;
 
-  readonly MapFactory<V, Dictionary<V, List<E>>> outerMapFactory;
-  readonly MapFactory<V, List<E>> innerMapFactory;
+        private readonly MapFactory<V, Dictionary<V, List<E>>> outerMapFactory;
+        private readonly MapFactory<V, List<E>> innerMapFactory;
 
-  public DirectedMultiGraph():
-      this(MapFactory<V, Dictionary<V, List<E>>>.hashMapFactory<V, Dictionary<V, List<E>>>(), MapFactory<V, List<E>>.hashMapFactory<V, List<E>>()){}
+        public DirectedMultiGraph() :
+            this(
+            MapFactory<V, Dictionary<V, List<E>>>.hashMapFactory<V, Dictionary<V, List<E>>>(),
+            MapFactory<V, List<E>>.hashMapFactory<V, List<E>>())
+        {
+        }
 
-  public DirectedMultiGraph(MapFactory<V, Dictionary<V, List<E>>> outerMapFactory, MapFactory<V, List<E>> innerMapFactory) {
-    this.outerMapFactory = outerMapFactory;
-    this.innerMapFactory = innerMapFactory;
-    this.outgoingEdges = outerMapFactory.newMap();
-    this.incomingEdges = outerMapFactory.newMap();
-  }
+        public DirectedMultiGraph(MapFactory<V, Dictionary<V, List<E>>> outerMapFactory,
+            MapFactory<V, List<E>> innerMapFactory)
+        {
+            this.outerMapFactory = outerMapFactory;
+            this.innerMapFactory = innerMapFactory;
+            this.outgoingEdges = outerMapFactory.newMap();
+            this.incomingEdges = outerMapFactory.newMap();
+        }
 
-  /**
+        /**
    * Creates a copy of the given graph. This will copy the entire data structure (this may be slow!), but will not copy
    * any of the edge or vertex objects.
    *
    * @param graph The graph to copy into this object.
    */
-  public DirectedMultiGraph(DirectedMultiGraph<V,E> graph):
-    this(graph.outerMapFactory, graph.innerMapFactory){
-    foreach (/*Map.Entry<V, Dictionary<V, List<E>>>*/var map in graph.outgoingEdges/*.entrySet()*/) {
-      Dictionary<V, List<E>> edgesCopy = innerMapFactory.newMap();
-      foreach (/*Map.Entry<V, List<E>>*/var entry in map.Value) {
-        edgesCopy.Add(entry.Key, new List<E>(entry.Value));
-      }
-      this.outgoingEdges.Add(map.Key, edgesCopy);
-    }
-    foreach (/*Map.Entry<V, Dictionary<V, List<E>>>*/var map in graph.incomingEdges) {
-      Dictionary<V, List<E>> edgesCopy = innerMapFactory.newMap();
-      foreach (/*Map.Entry<V, List<E>>*/var entry in map.Value) {
-        edgesCopy.Add(entry.Key, new List<E>(entry.Value));
-      }
-      this.incomingEdges.Add(map.Key, edgesCopy);
-    }
-  }
 
-  /**
+        public DirectedMultiGraph(DirectedMultiGraph<V, E> graph) :
+            this(graph.outerMapFactory, graph.innerMapFactory)
+        {
+            foreach ( /*Map.Entry<V, Dictionary<V, List<E>>>*/var map in graph.outgoingEdges /*.entrySet()*/)
+            {
+                Dictionary<V, List<E>> edgesCopy = innerMapFactory.newMap();
+                foreach ( /*Map.Entry<V, List<E>>*/var entry in map.Value)
+                {
+                    edgesCopy.Add(entry.Key, new List<E>(entry.Value));
+                }
+                this.outgoingEdges.Add(map.Key, edgesCopy);
+            }
+            foreach ( /*Map.Entry<V, Dictionary<V, List<E>>>*/var map in graph.incomingEdges)
+            {
+                Dictionary<V, List<E>> edgesCopy = innerMapFactory.newMap();
+                foreach ( /*Map.Entry<V, List<E>>*/var entry in map.Value)
+                {
+                    edgesCopy.Add(entry.Key, new List<E>(entry.Value));
+                }
+                this.incomingEdges.Add(map.Key, edgesCopy);
+            }
+        }
+
+        /**
    * Be careful hashing these. They are mutable objects, and changing the object
    * will throw off the hash code, messing up your hash table
    */
-  public int hashCode() {
-    return outgoingEdges.GetHashCode();
-  }
 
-  public bool equals(Object that) {
-    if (that == this)
-      return true;
-    if (!(that is DirectedMultiGraph<V,E>))
-      return false;
-    return outgoingEdges.Equals(((DirectedMultiGraph<V, E>) that).outgoingEdges);
-  }
+        public int hashCode()
+        {
+            return outgoingEdges.GetHashCode();
+        }
 
-  /**
+        public bool equals(Object that)
+        {
+            if (that == this)
+                return true;
+            if (!(that is DirectedMultiGraph<V, E>))
+                return false;
+            return outgoingEdges.Equals(((DirectedMultiGraph<V, E>) that).outgoingEdges);
+        }
+
+        /**
    * For adding a zero degree vertex
    *
    * @param v
    */
-  //@Override
-  public bool addVertex(V v) {
-    if (outgoingEdges.ContainsKey(v))
-      return false;
-    outgoingEdges.Add(v, innerMapFactory.newMap());
-    incomingEdges.Add(v, innerMapFactory.newMap());
-    return true;
-  }
+        //@Override
+        public bool addVertex(V v)
+        {
+            if (outgoingEdges.ContainsKey(v))
+                return false;
+            outgoingEdges.Add(v, innerMapFactory.newMap());
+            incomingEdges.Add(v, innerMapFactory.newMap());
+            return true;
+        }
 
-  private Dictionary<V, List<E>> getOutgoingEdgesMap(V v) {
-    Dictionary<V, List<E>> map;
-      outgoingEdges.TryGetValue(v, out map);
-    if (map == null) {
-      map = innerMapFactory.newMap();
-      outgoingEdges.Add(v, map);
-      incomingEdges.Add(v, innerMapFactory.newMap());
-    }
-    return map;
-  }
+        private Dictionary<V, List<E>> getOutgoingEdgesMap(V v)
+        {
+            Dictionary<V, List<E>> map;
+            outgoingEdges.TryGetValue(v, out map);
+            if (map == null)
+            {
+                map = innerMapFactory.newMap();
+                outgoingEdges.Add(v, map);
+                incomingEdges.Add(v, innerMapFactory.newMap());
+            }
+            return map;
+        }
 
-  private Dictionary<V, List<E>> getIncomingEdgesMap(V v)
-  {
-      Dictionary<V, List<E>> map;
-      incomingEdges.TryGetValue(v, out map);
-    if (map == null) {
-      outgoingEdges.Add(v, innerMapFactory.newMap());
-      map = innerMapFactory.newMap();
-      incomingEdges.Add(v, map);
-    }
-    return map;
-  }
+        private Dictionary<V, List<E>> getIncomingEdgesMap(V v)
+        {
+            Dictionary<V, List<E>> map;
+            incomingEdges.TryGetValue(v, out map);
+            if (map == null)
+            {
+                outgoingEdges.Add(v, innerMapFactory.newMap());
+                map = innerMapFactory.newMap();
+                incomingEdges.Add(v, map);
+            }
+            return map;
+        }
 
-  /**
+        /**
    * adds vertices (if not already in the graph) and the edge between them
    *
    * @param source
    * @param dest
    * @param data
    */
-  //@Override
-  public void add(V source, V dest, E data) {
-    Dictionary<V, List<E>> outgoingMap = getOutgoingEdgesMap(source);
-    Dictionary<V, List<E>> incomingMap = getIncomingEdgesMap(dest);
+        //@Override
+        public void add(V source, V dest, E data)
+        {
+            Dictionary<V, List<E>> outgoingMap = getOutgoingEdgesMap(source);
+            Dictionary<V, List<E>> incomingMap = getIncomingEdgesMap(dest);
 
-    List<E> outgoingList;
-      outgoingMap.TryGetValue(dest, out outgoingList);
-    if (outgoingList == null) {
-      outgoingList = new List<E>();
-      outgoingMap.Add(dest, outgoingList);
-    }
+            List<E> outgoingList;
+            outgoingMap.TryGetValue(dest, out outgoingList);
+            if (outgoingList == null)
+            {
+                outgoingList = new List<E>();
+                outgoingMap.Add(dest, outgoingList);
+            }
 
-      List<E> incomingList;
-      incomingMap.TryGetValue(source, out incomingList);
-    if (incomingList == null) {
-      incomingList = new List<E>();
-      incomingMap.Add(source, incomingList);
-    }
+            List<E> incomingList;
+            incomingMap.TryGetValue(source, out incomingList);
+            if (incomingList == null)
+            {
+                incomingList = new List<E>();
+                incomingMap.Add(source, incomingList);
+            }
 
-    outgoingList.Add(data);
-    incomingList.Add(data);
-  }
+            outgoingList.Add(data);
+            incomingList.Add(data);
+        }
 
-  //@Override
-  public bool removeEdges(V source, V dest) {
-    if (!outgoingEdges.ContainsKey(source)) {
-      return false;
-    }
-    if (!incomingEdges.ContainsKey(dest)) {
-      return false;
-    }
-    if (!outgoingEdges[source].ContainsKey(dest)) {
-      return false;
-    }
-    outgoingEdges[source].Remove(dest);
-    incomingEdges[dest].Remove(source);
-    return true;
-  }
+        //@Override
+        public bool removeEdges(V source, V dest)
+        {
+            if (!outgoingEdges.ContainsKey(source))
+            {
+                return false;
+            }
+            if (!incomingEdges.ContainsKey(dest))
+            {
+                return false;
+            }
+            if (!outgoingEdges[source].ContainsKey(dest))
+            {
+                return false;
+            }
+            outgoingEdges[source].Remove(dest);
+            incomingEdges[dest].Remove(source);
+            return true;
+        }
 
-  //@Override
-  public bool removeEdge(V source, V dest, E data) {
-    if (!outgoingEdges.ContainsKey(source)) {
-      return false;
-    }
-    if (!incomingEdges.ContainsKey(dest)) {
-      return false;
-    }
-    if (!outgoingEdges[source].ContainsKey(dest)) {
-      return false;
-    }
-    bool foundOut = outgoingEdges.ContainsKey(source) && outgoingEdges[source].ContainsKey(dest) &&
-        outgoingEdges[source][dest].Remove(data);
-    bool foundIn = incomingEdges.ContainsKey(dest) && incomingEdges[dest].ContainsKey(source) &&
-        incomingEdges[dest][source].Remove(data);
-    if (foundOut && !foundIn) {
-      throw new InvalidDataException("Edge found in outgoing but not incoming");
-    }
-    if (foundIn && !foundOut) {
-      throw new InvalidDataException("Edge found in incoming but not outgoing");
-    }
-    // TODO: cut down the number of .get calls
-    if (outgoingEdges.ContainsKey(source) && (!outgoingEdges[source].ContainsKey(dest) || outgoingEdges[source][dest].Count == 0)) {
-      outgoingEdges[source].Remove(dest);
-    }
-    if (incomingEdges.ContainsKey(dest) && (!incomingEdges[dest].ContainsKey(source) || incomingEdges[dest][source].Count == 0)) {
-      incomingEdges[dest].Remove(source);
-    }
-    return foundOut;
-  }
+        //@Override
+        public bool removeEdge(V source, V dest, E data)
+        {
+            if (!outgoingEdges.ContainsKey(source))
+            {
+                return false;
+            }
+            if (!incomingEdges.ContainsKey(dest))
+            {
+                return false;
+            }
+            if (!outgoingEdges[source].ContainsKey(dest))
+            {
+                return false;
+            }
+            bool foundOut = outgoingEdges.ContainsKey(source) && outgoingEdges[source].ContainsKey(dest) &&
+                            outgoingEdges[source][dest].Remove(data);
+            bool foundIn = incomingEdges.ContainsKey(dest) && incomingEdges[dest].ContainsKey(source) &&
+                           incomingEdges[dest][source].Remove(data);
+            if (foundOut && !foundIn)
+            {
+                throw new InvalidDataException("Edge found in outgoing but not incoming");
+            }
+            if (foundIn && !foundOut)
+            {
+                throw new InvalidDataException("Edge found in incoming but not outgoing");
+            }
+            // TODO: cut down the number of .get calls
+            if (outgoingEdges.ContainsKey(source) &&
+                (!outgoingEdges[source].ContainsKey(dest) || outgoingEdges[source][dest].Count == 0))
+            {
+                outgoingEdges[source].Remove(dest);
+            }
+            if (incomingEdges.ContainsKey(dest) &&
+                (!incomingEdges[dest].ContainsKey(source) || incomingEdges[dest][source].Count == 0))
+            {
+                incomingEdges[dest].Remove(source);
+            }
+            return foundOut;
+        }
 
-  /**
+        /**
    * remove a vertex (and its edges) from the graph.
    *
    * @param vertex
    * @return true if successfully removes the node
    */
-  //@Override
-  public bool removeVertex(V vertex) {
-    if (!outgoingEdges.ContainsKey(vertex)) {
-      return false;
-    }
-    foreach (var other in outgoingEdges[vertex]) {
-      incomingEdges[other.Key].Remove(vertex);
-    }
-    foreach (var other in incomingEdges[vertex]) {
-      outgoingEdges[other.Key].Remove(vertex);
-    }
-    outgoingEdges.Remove(vertex);
-    incomingEdges.Remove(vertex);
-    return true;
-  }
+        //@Override
+        public bool removeVertex(V vertex)
+        {
+            if (!outgoingEdges.ContainsKey(vertex))
+            {
+                return false;
+            }
+            foreach (var other in outgoingEdges[vertex])
+            {
+                incomingEdges[other.Key].Remove(vertex);
+            }
+            foreach (var other in incomingEdges[vertex])
+            {
+                outgoingEdges[other.Key].Remove(vertex);
+            }
+            outgoingEdges.Remove(vertex);
+            incomingEdges.Remove(vertex);
+            return true;
+        }
 
-  //@Override
-  public bool removeVertices(ICollection<V> vertices) {
-    bool changed = false;
-    foreach (V v in vertices) {
-      if (removeVertex(v)) {
-        changed = true;
-      }
-    }
-    return changed;
-  }
+        //@Override
+        public bool removeVertices(ICollection<V> vertices)
+        {
+            bool changed = false;
+            foreach (V v in vertices)
+            {
+                if (removeVertex(v))
+                {
+                    changed = true;
+                }
+            }
+            return changed;
+        }
 
-  //@Override
-  public int getNumVertices() {
-    return outgoingEdges.Count;
-  }
+        //@Override
+        public int getNumVertices()
+        {
+            return outgoingEdges.Count;
+        }
 
-  //@Override
-  public List<E> getOutgoingEdges(V v) {
-    if (!outgoingEdges.ContainsKey(v)) { //noinspection unchecked
-      return new List<E>();
-    }
-    return outgoingEdges[v].Values.SelectMany(l => l).ToList();
-  }
+        //@Override
+        public List<E> getOutgoingEdges(V v)
+        {
+            if (!outgoingEdges.ContainsKey(v))
+            {
+                //noinspection unchecked
+                return new List<E>();
+            }
+            return outgoingEdges[v].Values.SelectMany(l => l).ToList();
+        }
 
-  //@Override
-  public List<E> getIncomingEdges(V v) {
-    if (!incomingEdges.ContainsKey(v)) { //noinspection unchecked
-      return new List<E>();
-    }
-    return incomingEdges[v].Values.SelectMany(l => l).ToList();
-  }
+        //@Override
+        public List<E> getIncomingEdges(V v)
+        {
+            if (!incomingEdges.ContainsKey(v))
+            {
+                //noinspection unchecked
+                return new List<E>();
+            }
+            return incomingEdges[v].Values.SelectMany(l => l).ToList();
+        }
 
-  //@Override
-  public int getNumEdges() {
-    int count = 0;
-    foreach (/*Map.Entry<V, Dictionary<V, List<E>>>*/var sourceEntry in outgoingEdges) {
-      foreach (/*Map.Entry<V, List<E>>*/var destEntry in sourceEntry.Value/*.entrySet()*/) {
-        count += destEntry.Value.Count;
-      }
-    }
-    return count;
-  }
+        //@Override
+        public int getNumEdges()
+        {
+            int count = 0;
+            foreach ( /*Map.Entry<V, Dictionary<V, List<E>>>*/var sourceEntry in outgoingEdges)
+            {
+                foreach ( /*Map.Entry<V, List<E>>*/var destEntry in sourceEntry.Value /*.entrySet()*/)
+                {
+                    count += destEntry.Value.Count;
+                }
+            }
+            return count;
+        }
 
-  //@Override
-  public ReadOnlyCollection<V> getParents(V vertex) {
-    Dictionary<V, List<E>> parentMap;
-      incomingEdges.TryGetValue(vertex, out parentMap);
-    if (parentMap == null)
-      return null;
-    return new ReadOnlyCollection<V>(parentMap.Keys.ToList());
-  }
+        //@Override
+        public ReadOnlyCollection<V> getParents(V vertex)
+        {
+            Dictionary<V, List<E>> parentMap;
+            incomingEdges.TryGetValue(vertex, out parentMap);
+            if (parentMap == null)
+                return null;
+            return new ReadOnlyCollection<V>(parentMap.Keys.ToList());
+        }
 
-  //@Override
-  public ReadOnlyCollection<V> getChildren(V vertex)
-  {
-      Dictionary<V, List<E>> childMap;
-      outgoingEdges.TryGetValue(vertex, out childMap);
-    if (childMap == null)
-      return null;
-    return new ReadOnlyCollection<V>(childMap.Keys.ToList());
-  }
+        //@Override
+        public ReadOnlyCollection<V> getChildren(V vertex)
+        {
+            Dictionary<V, List<E>> childMap;
+            outgoingEdges.TryGetValue(vertex, out childMap);
+            if (childMap == null)
+                return null;
+            return new ReadOnlyCollection<V>(childMap.Keys.ToList());
+        }
 
-  /**
+        /**
    * Gets both parents and children nodes
    *
    * @param v
    */
-  //@Override
-  public Set<V> getNeighbors(V v) {
-    // TODO: pity we have to copy the sets... is there a combination set?
-    ReadOnlyCollection<V> children = getChildren(v);
-    ReadOnlyCollection<V> parents = getParents(v);
+        //@Override
+        public Set<V> getNeighbors(V v)
+        {
+            // TODO: pity we have to copy the sets... is there a combination set?
+            ReadOnlyCollection<V> children = getChildren(v);
+            ReadOnlyCollection<V> parents = getParents(v);
 
-    if (children == null && parents == null)
-      return null;
-    Set<V> neighbors = innerMapFactory.newSet();
-    neighbors.AddAll(children);
-    neighbors.AddAll(parents);
-    return neighbors;
-  }
+            if (children == null && parents == null)
+                return null;
+            Set<V> neighbors = innerMapFactory.newSet();
+            neighbors.AddAll(children);
+            neighbors.AddAll(parents);
+            return neighbors;
+        }
 
-  /**
+        /**
    * clears the graph, removes all edges and nodes
    */
-  //@Override
-  public void clear() {
-    incomingEdges.Clear();
-    outgoingEdges.Clear();
-  }
+        //@Override
+        public void clear()
+        {
+            incomingEdges.Clear();
+            outgoingEdges.Clear();
+        }
 
-  //@Override
-  public bool containsVertex(V v) {
-    return outgoingEdges.ContainsKey(v);
-  }
+        //@Override
+        public bool containsVertex(V v)
+        {
+            return outgoingEdges.ContainsKey(v);
+        }
 
-  /**
+        /**
    * only checks if there is an edge from source to dest. To check if it is
    * connected in either direction, use isNeighbor
    *
    * @param source
    * @param dest
    */
-  //@Override
-  public bool isEdge(V source, V dest)
-  {
-      Dictionary<V, List<E>> childrenMap;
-      outgoingEdges.TryGetValue(source, out childrenMap);
-    if (childrenMap == null || !childrenMap.Any())
-      return false;
-    List<E> edges;
-      childrenMap.TryGetValue(dest, out edges);
-    if (edges == null || !edges.Any())
-      return false;
-    return edges.Count > 0;
-  }
+        //@Override
+        public bool isEdge(V source, V dest)
+        {
+            Dictionary<V, List<E>> childrenMap;
+            outgoingEdges.TryGetValue(source, out childrenMap);
+            if (childrenMap == null || !childrenMap.Any())
+                return false;
+            List<E> edges;
+            childrenMap.TryGetValue(dest, out edges);
+            if (edges == null || !edges.Any())
+                return false;
+            return edges.Count > 0;
+        }
 
-  //@Override
-  public bool isNeighbor(V source, V dest) {
-    return isEdge(source, dest) || isEdge(dest, source);
-  }
+        //@Override
+        public bool isNeighbor(V source, V dest)
+        {
+            return isEdge(source, dest) || isEdge(dest, source);
+        }
 
-  //@Override
-  public ReadOnlyCollection<V> getAllVertices() {
-    return new ReadOnlyCollection<V>(outgoingEdges.Keys.ToList());
-  }
+        //@Override
+        public ReadOnlyCollection<V> getAllVertices()
+        {
+            return new ReadOnlyCollection<V>(outgoingEdges.Keys.ToList());
+        }
 
-  //@Override
-  public List<E> getAllEdges() {
-    List<E> edges = new List<E>();
-    foreach (Dictionary<V, List<E>> e in outgoingEdges.Values) {
-      foreach (List<E> ee in e.Values) {
-        edges.AddRange(ee);
-      }
-    }
-    return edges;
-  }
+        //@Override
+        public List<E> getAllEdges()
+        {
+            List<E> edges = new List<E>();
+            foreach (Dictionary<V, List<E>> e in outgoingEdges.Values)
+            {
+                foreach (List<E> ee in e.Values)
+                {
+                    edges.AddRange(ee);
+                }
+            }
+            return edges;
+        }
 
-  /**
+        /**
    * False if there are any vertices in the graph, true otherwise. Does not care
    * about the number of edges.
    */
-  //@Override
-  public bool isEmpty() {
-    return !outgoingEdges.Any();
-  }
+        //@Override
+        public bool isEmpty()
+        {
+            return !outgoingEdges.Any();
+        }
 
-  /**
+        /**
    * Deletes nodes with zero incoming and zero outgoing edges
    */
-  //@Override
-  public void removeZeroDegreeNodes() {
-    List<V> toDelete = new List<V>();
-    foreach (var vertex in outgoingEdges) {
-      if (!outgoingEdges[vertex.Key].Any() && !incomingEdges[vertex.Key].Any()) {
-        toDelete.Add(vertex.Key);
-      }
-    }
-    foreach (var vertex in toDelete) {
-      outgoingEdges.Remove(vertex);
-      incomingEdges.Remove(vertex);
-    }
-  }
+        //@Override
+        public void removeZeroDegreeNodes()
+        {
+            List<V> toDelete = new List<V>();
+            foreach (var vertex in outgoingEdges)
+            {
+                if (!outgoingEdges[vertex.Key].Any() && !incomingEdges[vertex.Key].Any())
+                {
+                    toDelete.Add(vertex.Key);
+                }
+            }
+            foreach (var vertex in toDelete)
+            {
+                outgoingEdges.Remove(vertex);
+                incomingEdges.Remove(vertex);
+            }
+        }
 
-  //@Override
-  public ReadOnlyCollection<E> getEdges(V source, V dest) {
-    Dictionary<V, List<E>> childrenMap = outgoingEdges[source];
-    if (childrenMap == null) {
-      return new ReadOnlyCollection<E>(new E[]{});
-    }
-    List<E> edges = childrenMap[dest];
-    if (edges == null) {
-      return new ReadOnlyCollection<E>(new E[]{});
-    }
-    return new ReadOnlyCollection<E>(edges);
-  }
+        //@Override
+        public ReadOnlyCollection<E> getEdges(V source, V dest)
+        {
+            Dictionary<V, List<E>> childrenMap = outgoingEdges[source];
+            if (childrenMap == null)
+            {
+                return new ReadOnlyCollection<E>(new E[] {});
+            }
+            List<E> edges = childrenMap[dest];
+            if (edges == null)
+            {
+                return new ReadOnlyCollection<E>(new E[] {});
+            }
+            return new ReadOnlyCollection<E>(edges);
+        }
 
-  /**
+        /**
    * direction insensitive (the paths can go "up" or through the parents)
    */
-  public List<V> getShortestPath(V node1, V node2) {
-    if (!outgoingEdges.ContainsKey(node1) || !outgoingEdges.ContainsKey(node2)) {
-      return null;
-    }
-    return getShortestPath(node1, node2, false);
-  }
 
-  public List<E> getShortestPathEdges(V node1, V node2) {
-    return convertPath(getShortestPath(node1, node2), false);
-  }
+        public List<V> getShortestPath(V node1, V node2)
+        {
+            if (!outgoingEdges.ContainsKey(node1) || !outgoingEdges.ContainsKey(node2))
+            {
+                return null;
+            }
+            return getShortestPath(node1, node2, false);
+        }
 
-  /**
+        public List<E> getShortestPathEdges(V node1, V node2)
+        {
+            return convertPath(getShortestPath(node1, node2), false);
+        }
+
+        /**
    * can specify the direction sensitivity
    *
    * @param node1
@@ -414,77 +489,94 @@ namespace OpenNLP.Tools.Util.Graphs
    *          - whether the path can go through the parents
    * @return the list of nodes you get through to get there
    */
-  public List<V> getShortestPath(V node1, V node2, bool directionSensitive) {
-    if (!outgoingEdges.ContainsKey(node1) || !outgoingEdges.ContainsKey(node2)) {
-      return null;
-    }
-    return DijkstraShortestPath.getShortestPath(this, node1, node2, directionSensitive);
-  }
 
-  public List<E> getShortestPathEdges(V node1, V node2, bool directionSensitive) {
-    return convertPath(getShortestPath(node1, node2, directionSensitive), directionSensitive);
-  }
+        public List<V> getShortestPath(V node1, V node2, bool directionSensitive)
+        {
+            if (!outgoingEdges.ContainsKey(node1) || !outgoingEdges.ContainsKey(node2))
+            {
+                return null;
+            }
+            return DijkstraShortestPath.getShortestPath(this, node1, node2, directionSensitive);
+        }
 
-  public List<E> convertPath(List<V> nodes, bool directionSensitive) {
-    if (nodes == null)
-      return null;
+        public List<E> getShortestPathEdges(V node1, V node2, bool directionSensitive)
+        {
+            return convertPath(getShortestPath(node1, node2, directionSensitive), directionSensitive);
+        }
 
-    if (nodes.Count <= 1)
-      return new List<E>();
+        public List<E> convertPath(List<V> nodes, bool directionSensitive)
+        {
+            if (nodes == null)
+                return null;
 
-    List<E> path = new List<E>();
-    var nodeIterator = nodes.GetEnumerator();
-    V previous = nodeIterator.Current;
-    while (nodeIterator.MoveNext()) {
-      V next = nodeIterator.Current;
-      E connection = default(E);
-      var edges = getEdges(previous, next);
-      if (edges.Count == 0 && !directionSensitive) {
-        edges = getEdges(next, previous);
-      }
-      if (edges.Count > 0) {
-        connection = edges[0];
-      } else {
-        throw new ArgumentException("Path given with missing " + "edge connection");
-      }
-      path.Add(connection);
-      previous = next;
-    }
-    return path;
-  }
+            if (nodes.Count <= 1)
+                return new List<E>();
 
-  //@Override
-  public int getInDegree(V vertex) {
-    if (!containsVertex(vertex)) {
-      return 0;
-    }
-    int result = 0;
-    Dictionary<V, List<E>> incoming = incomingEdges[vertex];
-    foreach (List<E> edges in incoming.Values) {
-      result += edges.Count;
-    }
-    return result;
-  }
+            List<E> path = new List<E>();
+            var nodeIterator = nodes.GetEnumerator();
+            V previous = nodeIterator.Current;
+            while (nodeIterator.MoveNext())
+            {
+                V next = nodeIterator.Current;
+                E connection = default(E);
+                var edges = getEdges(previous, next);
+                if (edges.Count == 0 && !directionSensitive)
+                {
+                    edges = getEdges(next, previous);
+                }
+                if (edges.Count > 0)
+                {
+                    connection = edges[0];
+                }
+                else
+                {
+                    throw new ArgumentException("Path given with missing " + "edge connection");
+                }
+                path.Add(connection);
+                previous = next;
+            }
+            return path;
+        }
 
-  //@Override
-  public int getOutDegree(V vertex) {
-    int result = 0;
-    Dictionary<V, List<E>> outgoing = outgoingEdges[vertex];
-    if (outgoing == null) {
-      return 0;
-    }
-    foreach (List<E> edges in outgoing.Values) {
-      result += edges.Count;
-    }
-    return result;
-  }
+        //@Override
+        public int getInDegree(V vertex)
+        {
+            if (!containsVertex(vertex))
+            {
+                return 0;
+            }
+            int result = 0;
+            Dictionary<V, List<E>> incoming = incomingEdges[vertex];
+            foreach (List<E> edges in incoming.Values)
+            {
+                result += edges.Count;
+            }
+            return result;
+        }
 
-  //@Override
-  public List<Set<V>> getConnectedComponents() {
-    return ConnectedComponents.getConnectedComponents(this);
-  }
+        //@Override
+        public int getOutDegree(V vertex)
+        {
+            int result = 0;
+            Dictionary<V, List<E>> outgoing = outgoingEdges[vertex];
+            if (outgoing == null)
+            {
+                return 0;
+            }
+            foreach (List<E> edges in outgoing.Values)
+            {
+                result += edges.Count;
+            }
+            return result;
+        }
 
-  /*public Iterator<E> incomingEdgeIterator(readonly V vertex) {
+        //@Override
+        public List<Set<V>> getConnectedComponents()
+        {
+            return ConnectedComponents.getConnectedComponents(this);
+        }
+
+        /*public Iterator<E> incomingEdgeIterator(readonly V vertex) {
     return new EdgeIterator<V, E>(incomingEdges, vertex);
   }
 
@@ -508,7 +600,7 @@ namespace OpenNLP.Tools.Util.Graphs
     return () -> new EdgeIterator<V, E>(DirectedMultiGraph.this);
   }*/
 
-  /*static class EdgeIterator<V, E> : Iterator<E> {
+        /*static class EdgeIterator<V, E> : Iterator<E> {
     private Iterator<Dictionary<V, List<E>>> vertexIterator;
     private Iterator<List<E>> connectionIterator;
     private Iterator<E> edgeIterator;
@@ -562,39 +654,53 @@ namespace OpenNLP.Tools.Util.Graphs
     }
   }*/
 
-  /**
+        /**
    * Cast this multi-graph as a map from vertices, to the outgoing data along edges out of those vertices.
    *
    * @return A map representation of the graph.
    */
-  public Dictionary<V, List<E>> toMap() {
-    Dictionary<V, List<E>> map = innerMapFactory.newMap();
-    foreach (V vertex in getAllVertices()) {
-      map.Add(vertex, getOutgoingEdges(vertex));
-    }
-    return map;
-  }
 
-  //@Override
-  public String toString() {
-    StringBuilder s = new StringBuilder();
-    s.Append("{\n");
-    s.Append("Vertices:\n");
-    foreach (var vertex in outgoingEdges) {
-      s.Append("  ").Append(vertex.Key).Append('\n');
-    }
-    s.Append("Edges:\n");
-    foreach (var source in outgoingEdges) {
-      foreach (var dest in outgoingEdges[source.Key]) {
-        foreach (var edge in outgoingEdges[source.Key][dest.Key]) {
-          s.Append("  ").Append(source.Key).Append(" -> ").Append(dest.Key).Append(" : ").Append(edge).Append('\n');
+        public Dictionary<V, List<E>> toMap()
+        {
+            Dictionary<V, List<E>> map = innerMapFactory.newMap();
+            foreach (V vertex in getAllVertices())
+            {
+                map.Add(vertex, getOutgoingEdges(vertex));
+            }
+            return map;
         }
-      }
-    }
-    s.Append('}');
-    return s.ToString();
-  }
 
-  private static readonly long serialVersionUID = 609823567298345145L;
+        //@Override
+        public String toString()
+        {
+            StringBuilder s = new StringBuilder();
+            s.Append("{\n");
+            s.Append("Vertices:\n");
+            foreach (var vertex in outgoingEdges)
+            {
+                s.Append("  ").Append(vertex.Key).Append('\n');
+            }
+            s.Append("Edges:\n");
+            foreach (var source in outgoingEdges)
+            {
+                foreach (var dest in outgoingEdges[source.Key])
+                {
+                    foreach (var edge in outgoingEdges[source.Key][dest.Key])
+                    {
+                        s.Append("  ")
+                            .Append(source.Key)
+                            .Append(" -> ")
+                            .Append(dest.Key)
+                            .Append(" : ")
+                            .Append(edge)
+                            .Append('\n');
+                    }
+                }
+            }
+            s.Append('}');
+            return s.ToString();
+        }
+
+        private static readonly long serialVersionUID = 609823567298345145L;
     }
 }

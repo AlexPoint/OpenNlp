@@ -21,53 +21,61 @@ namespace OpenNLP.Tools.Util.Ling
  *
  * @author Christopher Manning
  */
-    public abstract class ValueLabel: Label, IComparable<ValueLabel>
+
+    public abstract class ValueLabel : Label, IComparable<ValueLabel>
     {
-        protected ValueLabel() {
-  }
+        protected ValueLabel()
+        {
+        }
 
 
-  /**
+        /**
    * Return the value of the label (or null if none).
    * The default value returned by an <code>ValueLabel</code> is
    * always <code>null</code>
    *
    * @return the value for the label
    */
-  public virtual String value() {
-    return null;
-  }
+
+        public virtual String value()
+        {
+            return null;
+        }
 
 
-  /**
+        /**
    * Set the value for the label (if one is stored).
    *
    * @param value - the value for the label
    */
-  public virtual void setValue(String value) {
-  }
+
+        public virtual void setValue(String value)
+        {
+        }
 
 
-  /**
+        /**
    * Return a string representation of the label.  This will just
    * be the <code>value()</code> if it is non-<code>null</code>,
    * and the empty string otherwise.
    *
    * @return The string representation
    */
-  //@Override
-  public override String ToString() {
-    String val = value();
-    return (val == null) ? "" : val;
-  }
+        //@Override
+        public override String ToString()
+        {
+            String val = value();
+            return (val == null) ? "" : val;
+        }
 
 
-  public virtual void setFromString(String labelStr) {
-    throw new NotSupportedException();
-  }
+        public virtual void setFromString(String labelStr)
+        {
+            throw new NotSupportedException();
+        }
 
 
-  /**
+        /**
    * Equality for <code>ValueLabel</code>s is defined in the first instance
    * as equality of their <code>String</code> <code>value()</code>.
    * Now rewritten to correctly enforce the contract of equals in Object.
@@ -79,44 +87,49 @@ namespace OpenNLP.Tools.Util.Ling
    * @param obj the object against which equality is to be checked
    * @return true if <code>this</code> and <code>obj</code> are equal
    */
-  //@Override
-  public override bool Equals(Object obj) {
-    String val = value();
-    return (obj is ValueLabel) && (val == null ? ((Label) obj).value() == null : val.Equals(((Label) obj).value()));
-  }
+        //@Override
+        public override bool Equals(Object obj)
+        {
+            String val = value();
+            return (obj is ValueLabel) &&
+                   (val == null ? ((Label) obj).value() == null : val.Equals(((Label) obj).value()));
+        }
 
 
-  /**
+        /**
    * Return the hashCode of the String value providing there is one.
    * Otherwise, returns an arbitrary constant for the case of
    * <code>null</code>.
    */
-  //@Override
-  public override int GetHashCode() {
-    String val = value();
-    return val == null ? 3 : val.GetHashCode();
-  }
+        //@Override
+        public override int GetHashCode()
+        {
+            String val = value();
+            return val == null ? 3 : val.GetHashCode();
+        }
 
 
-  /**
+        /**
    * Orders by <code>value()</code>'s lexicographic ordering.
    *
    * @param valueLabel object to compare to
    * @return result (positive if this is greater than obj)
    */
-  public int CompareTo(ValueLabel valueLabel) {
-    return value().CompareTo(valueLabel.value());
-  }
+
+        public int CompareTo(ValueLabel valueLabel)
+        {
+            return value().CompareTo(valueLabel.value());
+        }
 
 
-  /**
+        /**
    * Returns a factory that makes Labels of the appropriate sort.
    *
    * @return the <code>LabelFactory</code>
    */
-  public abstract LabelFactory labelFactory();
+        public abstract LabelFactory labelFactory();
 
 
-  private static readonly long serialVersionUID = -1413303679077285530L;
+        private static readonly long serialVersionUID = -1413303679077285530L;
     }
 }

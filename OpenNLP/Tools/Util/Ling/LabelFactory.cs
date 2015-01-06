@@ -14,6 +14,7 @@ namespace OpenNLP.Tools.Util.Ling
  * @author Christopher Manning
  * @version 2000/12/25
  */
+
     public interface LabelFactory
     {
         /**

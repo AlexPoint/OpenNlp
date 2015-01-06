@@ -40,22 +40,25 @@ namespace OpenNLP.Tools.Util.Trees
  * @author Dan Klein
  * @author Sarah Spikes (sdspikes@cs.stanford.edu) - filled in types
  */
-public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*, Serializable*/ {
 
-  private static readonly long serialVersionUID = 5441849457648722744L;
+    public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored /*, Serializable*/
+    {
 
-  /**
+        private static readonly long serialVersionUID = 5441849457648722744L;
+
+        /**
    * A leaf node should have a zero-length array for its
    * children. For efficiency, classes can use this array as a
    * return value for children() for leaf nodes if desired.
    * This can also be used elsewhere when you want an empty Tree array.
    */
-  public static readonly Tree[] EMPTY_TREE_ARRAY = new Tree[0];
+        public static readonly Tree[] EMPTY_TREE_ARRAY = new Tree[0];
 
-  public Tree() {
-  }
+        public Tree()
+        {
+        }
 
-  /**
+        /**
    * Says whether a node is a leaf.  Can be used on an arbitrary
    * <code>Tree</code>.  Being a leaf is defined as having no
    * children.  This must be implemented as returning a zero-length
@@ -63,47 +66,55 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return true if this object is a leaf
    */
-  public bool isLeaf() {
-    return numChildren() == 0;
-  }
+
+        public bool isLeaf()
+        {
+            return numChildren() == 0;
+        }
 
 
-  /**
+        /**
    * Says how many children a tree node has in its local tree.
    * Can be used on an arbitrary <code>Tree</code>.  Being a leaf is defined
    * as having no children.
    *
    * @return The number of direct children of the tree node
    */
-  public int numChildren() {
-    return children().Length;
-  }
+
+        public int numChildren()
+        {
+            return children().Length;
+        }
 
 
-  /**
+        /**
    * Says whether the current node has only one child.
    * Can be used on an arbitrary <code>Tree</code>.
    *
    * @return Whether the node heads a unary rewrite
    */
-  public bool isUnaryRewrite() {
-    return numChildren() == 1;
-  }
+
+        public bool isUnaryRewrite()
+        {
+            return numChildren() == 1;
+        }
 
 
-  /**
+        /**
    * Return whether this node is a preterminal or not.  A preterminal is
    * defined to be a node with one child which is itself a leaf.
    *
    * @return true if the node is a preterminal; false otherwise
    */
-  public bool isPreTerminal() {
-    Tree[] kids = children();
-    return (kids.Length == 1) && (kids[0].isLeaf());
-  }
+
+        public bool isPreTerminal()
+        {
+            Tree[] kids = children();
+            return (kids.Length == 1) && (kids[0].isLeaf());
+        }
 
 
-  /**
+        /**
    * Return whether all the children of this node are preterminals or not.
    * A preterminal is
    * defined to be a node with one child which is itself a leaf.
@@ -111,21 +122,26 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return true if the node is a prepreterminal; false otherwise
    */
-  public bool isPrePreTerminal() {
-    Tree[] kids = children();
-    if (kids.Length == 0) {
-      return false;
-    }
-    foreach (Tree kid in kids) {
-      if ( ! kid.isPreTerminal()) {
-        return false;
-      }
-    }
-    return true;
-  }
+
+        public bool isPrePreTerminal()
+        {
+            Tree[] kids = children();
+            if (kids.Length == 0)
+            {
+                return false;
+            }
+            foreach (Tree kid in kids)
+            {
+                if (! kid.isPreTerminal())
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
 
-  /**
+        /**
    * Return whether this node is a phrasal node or not.  A phrasal node
    * is defined to be a node which is not a leaf or a preterminal.
    * Worded positively, this means that it must have two or more children,
@@ -134,13 +150,15 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return <code>true</code> if the node is phrasal;
    *         <code>false</code> otherwise
    */
-  public bool isPhrasal() {
-    Tree[] kids = children();
-    return !(kids == null || kids.Length == 0 || (kids.Length == 1 && kids[0].isLeaf()));
-  }
+
+        public bool isPhrasal()
+        {
+            Tree[] kids = children();
+            return !(kids == null || kids.Length == 0 || (kids.Length == 1 && kids[0].isLeaf()));
+        }
 
 
-  /**
+        /**
    * Implements equality for Tree's.  Two Tree objects are equal if they
    * have equal {@link #value}s, the same number of children, and their children
    * are pairwise equal.
@@ -148,59 +166,69 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param o The object to compare with
    * @return Whether two things are equal
    */
-  //@Override
-  public override bool Equals(Object o) {
-    if (o == this) {
-      return true;
-    }
-    if (!(o is Tree)) {
-      return false;
-    }
-    Tree t = (Tree) o;
-    String value1 = this.value();
-    String value2 = t.value();
-    if (value1 != null || value2 != null) {
-    	if (value1 == null || value2 == null || !value1.Equals(value2)) {
-    		return false;
-    	}
-    }
-    Tree[] mykids = children();
-    Tree[] theirkids = t.children();
-    //if((mykids == null && (theirkids == null || theirkids.Length != 0)) || (theirkids == null && mykids.Length != 0) || (mykids.Length != theirkids.Length)){
-    if (mykids.Length != theirkids.Length) {
-      return false;
-    }
-    for (int i = 0; i < mykids.Length; i++) {
-      if (!mykids[i].Equals(theirkids[i])) {
-        return false;
-      }
-    }
-    return true;
-  }
+        //@Override
+        public override bool Equals(Object o)
+        {
+            if (o == this)
+            {
+                return true;
+            }
+            if (!(o is Tree))
+            {
+                return false;
+            }
+            Tree t = (Tree) o;
+            String value1 = this.value();
+            String value2 = t.value();
+            if (value1 != null || value2 != null)
+            {
+                if (value1 == null || value2 == null || !value1.Equals(value2))
+                {
+                    return false;
+                }
+            }
+            Tree[] mykids = children();
+            Tree[] theirkids = t.children();
+            //if((mykids == null && (theirkids == null || theirkids.Length != 0)) || (theirkids == null && mykids.Length != 0) || (mykids.Length != theirkids.Length)){
+            if (mykids.Length != theirkids.Length)
+            {
+                return false;
+            }
+            for (int i = 0; i < mykids.Length; i++)
+            {
+                if (!mykids[i].Equals(theirkids[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
 
-  /**
+        /**
    * Implements a hashCode for Tree's.  Two trees should have the same
    * hashcode if they are equal, so we hash on the label value and
    * the children's label values.
    *
    * @return The hash code
    */
-  //@Override
-  public override int GetHashCode() {
-    String v = this.value();
-    int hc = (v == null) ? 1 : v.GetHashCode();
-    Tree[] kids = children();
-    for (int i = 0; i < kids.Length; i++) {
-      v = kids[i].value();
-      int hc2 = (v == null) ? i : v.GetHashCode();
-      hc ^= (hc2 << i);
-    }
-    return hc;
-  }
+        //@Override
+        public override int GetHashCode()
+        {
+            String v = this.value();
+            int hc = (v == null) ? 1 : v.GetHashCode();
+            Tree[] kids = children();
+            for (int i = 0; i < kids.Length; i++)
+            {
+                v = kids[i].value();
+                int hc2 = (v == null) ? i : v.GetHashCode();
+                hc ^= (hc2 << i);
+            }
+            return hc;
+        }
 
 
-  /**
+        /**
    * Returns the position of a Tree in the children list, if present,
    * or -1 if it is not present.  Trees are checked for presence with
    * object equality, ==.  Note that there are very few cases where an
@@ -213,18 +241,22 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param tree The tree to look for in children list
    * @return Its index in the list or -1
    */
-  public int objectIndexOf(Tree tree) {
-    Tree[] kids = children();
-    for (int i = 0; i < kids.Length; i++) {
-      if (kids[i] == tree) {
-        return i;
-      }
-    }
-    return -1;
-  }
+
+        public int objectIndexOf(Tree tree)
+        {
+            Tree[] kids = children();
+            for (int i = 0; i < kids.Length; i++)
+            {
+                if (kids[i] == tree)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
 
-  /**
+        /**
    * Returns an array of children for the current node.  If there
    * are no children (if the node is a leaf), this must return a
    * Tree[] array of length 0.  A null children() value for tree
@@ -235,10 +267,10 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return The children of the node
    * @see #getChildrenAsList()
    */
-  public abstract Tree[] children();
+        public abstract Tree[] children();
 
 
-  /**
+        /**
    * Returns a List of children for the current node.  If there are no
    * children, then a (non-null) <code>List&lt;Tree&gt;</code> of size 0 will
    * be returned.  The list has new list structure but pointers to,
@@ -248,12 +280,14 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return The children of the node
    */
-  public List<Tree> getChildrenAsList() {
-    return new List<Tree>(children());
-  }
+
+        public List<Tree> getChildrenAsList()
+        {
+            return new List<Tree>(children());
+        }
 
 
-  /**
+        /**
    * Set the children of this node to be the children given in the
    * array.  This is an <b>optional</b> operation; by default it is
    * unsupported.  Note for subclasses that if there are no
@@ -267,12 +301,14 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param children The array of children, each a <code>Tree</code>
    * @see #setChildren(List)
    */
-  public virtual void setChildren(Tree[] children) {
-    throw new InvalidOperationException();
-  }
+
+        public virtual void setChildren(Tree[] children)
+        {
+            throw new InvalidOperationException();
+        }
 
 
-  /**
+        /**
    * Set the children of this tree node to the given list.  This
    * method is implemented in the <code>Tree</code> class by
    * converting the <code>List</code> into a tree array and calling
@@ -289,94 +325,111 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *          not copied).
    * @see #setChildren(Tree[])
    */
-  public virtual void setChildren(List<Tree> childTreesList) {
-    if (childTreesList == null || !childTreesList.Any()) {
-      setChildren(EMPTY_TREE_ARRAY);
-    } else {
-      /*int leng = childTreesList.Count;
+
+        public virtual void setChildren(List<Tree> childTreesList)
+        {
+            if (childTreesList == null || !childTreesList.Any())
+            {
+                setChildren(EMPTY_TREE_ARRAY);
+            }
+            else
+            {
+                /*int leng = childTreesList.Count;
       Tree[] childTrees = new Tree[leng];
       childTreesList.toArray(childTrees);
       setChildren(childTrees);*/
-        setChildren(childTreesList.ToArray());
-    }
-  }
+                setChildren(childTreesList.ToArray());
+            }
+        }
 
 
-  /**
+        /**
    * Returns the label associated with the current node, or null
    * if there is no label.  The default implementation always
    * returns {@code null}.
    *
    * @return The label of the node
    */
-  //@Override
-  public virtual Label label() {
-    return null;
-  }
+        //@Override
+        public virtual Label label()
+        {
+            return null;
+        }
 
 
-  /**
+        /**
    * Sets the label associated with the current node, if there is one.
    * The default implementation ignores the label.
    *
    * @param label The label
    */
-  //@Override
-  public virtual void setLabel(Label label) {
-    // a noop
-  }
+        //@Override
+        public virtual void setLabel(Label label)
+        {
+            // a noop
+        }
 
 
-  /**
+        /**
    * Returns the score associated with the current node, or NaN
    * if there is no score.  The default implementation returns NaN.
    *
    * @return The score
    */
-  //@Override
-  public virtual double score() {
-    return Double.NaN;
-  }
+        //@Override
+        public virtual double score()
+        {
+            return Double.NaN;
+        }
 
 
-  /**
+        /**
    * Sets the score associated with the current node, if there is one.
    *
    * @param score The score
    */
-  public  virtual void setScore(double score) {
-    throw new InvalidOperationException("You must use a tree type that implements scoring in order call setScore()");
-  }
+
+        public virtual void setScore(double score)
+        {
+            throw new InvalidOperationException(
+                "You must use a tree type that implements scoring in order call setScore()");
+        }
 
 
-  /**
+        /**
    * Returns the first child of a tree, or <code>null</code> if none.
    *
    * @return The first child
    */
-  public Tree firstChild() {
-    Tree[] kids = children();
-    if (kids.Length == 0) {
-      return null;
-    }
-    return kids[0];
-  }
+
+        public Tree firstChild()
+        {
+            Tree[] kids = children();
+            if (kids.Length == 0)
+            {
+                return null;
+            }
+            return kids[0];
+        }
 
 
-  /**
+        /**
    * Returns the last child of a tree, or <code>null</code> if none.
    *
    * @return The last child
    */
-  public Tree lastChild() {
-    Tree[] kids = children();
-    if (kids.Length == 0) {
-      return null;
-    }
-    return kids[kids.Length - 1];
-  }
 
-  /** Return the highest node of the (perhaps trivial) unary chain that
+        public Tree lastChild()
+        {
+            Tree[] kids = children();
+            if (kids.Length == 0)
+            {
+                return null;
+            }
+            return kids[kids.Length - 1];
+        }
+
+        /** Return the highest node of the (perhaps trivial) unary chain that
    *  this node is part of.
    *  In case this node is the only child of its parent, trace up the chain of
    *  unaries, and return the uppermost node of the chain (the node whose
@@ -386,50 +439,58 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *  @return The uppermost node of the unary chain, if this node is in a unary
    *         chain, or else the current node
    */
-  public Tree upperMostUnary(Tree root) {
-    Tree p = parent(root);
-    if (p == null) {
-      return this;
-    }
-    if (p.numChildren() > 1) {
-      return this;
-    }
-    return p.upperMostUnary(root);
-  }
 
-  /**
+        public Tree upperMostUnary(Tree root)
+        {
+            Tree p = parent(root);
+            if (p == null)
+            {
+                return this;
+            }
+            if (p.numChildren() > 1)
+            {
+                return this;
+            }
+            return p.upperMostUnary(root);
+        }
+
+        /**
    * Assign a SpanAnnotation on each node of this tree.
    *  The index starts at zero.
    */
-  public void setSpans() {
-    constituentsNodes(0);
-  }
 
-  /**
+        public void setSpans()
+        {
+            constituentsNodes(0);
+        }
+
+        /**
    * Returns SpanAnnotation of this node, or null if annotation is not assigned.
    * Use <code>setSpans()</code> to assign SpanAnnotations to a tree.
    *
    * @return an IntPair: the SpanAnnotation of this node.
    */
-  /*public IntPair getSpan() {
+        /*public IntPair getSpan() {
     if(label() is CoreMap && ((CoreMap) label()).has(typeof(CoreAnnotations.SpanAnnotation)))
       return ((CoreMap) label()).get(typeof(CoreAnnotations.SpanAnnotation));
     return null;
   }*/
 
-  /**
+        /**
    * Returns the Constituents generated by the parse tree. Constituents
    * are computed with respect to whitespace (e.g., at the word level).
    *
    * @return a Set of the constituents as constituents of
    *         type <code>Constituent</code>
    */
-  public Set<Constituent> constituents() {
-    return constituents(new SimpleConstituentFactory());
-  }
+
+        public Set<Constituent> constituents()
+        {
+            return constituents(new SimpleConstituentFactory());
+        }
 
 
-  /**
+        /**
    * Returns the Constituents generated by the parse tree.
    * The Constituents of a sentence include the preterminal categories
    * but not the leaves.
@@ -438,11 +499,13 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return a Set of the constituents as SimpleConstituent type
    *         (in the current implementation, a <code>HashSet</code>
    */
-  public Set<Constituent> constituents(ConstituentFactory cf) {
-    return constituents(cf,false);
-  }
 
-  /**
+        public Set<Constituent> constituents(ConstituentFactory cf)
+        {
+            return constituents(cf, false);
+        }
+
+        /**
    * Returns the Constituents generated by the parse tree.
    * The Constituents of a sentence include the preterminal categories
    * but not the leaves.
@@ -454,13 +517,15 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return a Set of the constituents as SimpleConstituent type
    *         (in the current implementation, a <code>HashSet</code>
    */
-  public Set<Constituent> constituents(ConstituentFactory cf, int maxDepth) {
-    Set<Constituent> constituentsSet = new HashSet<Constituent>();
-    constituents(constituentsSet, 0, cf, false, null, maxDepth, 0);
-    return constituentsSet;
-  }
 
-  /**
+        public Set<Constituent> constituents(ConstituentFactory cf, int maxDepth)
+        {
+            Set<Constituent> constituentsSet = new HashSet<Constituent>();
+            constituents(constituentsSet, 0, cf, false, null, maxDepth, 0);
+            return constituentsSet;
+        }
+
+        /**
    * Returns the Constituents generated by the parse tree.
    * The Constituents of a sentence include the preterminal categories
    * but not the leaves.
@@ -470,52 +535,64 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return a Set of the constituents as SimpleConstituent type
    *         (in the current implementation, a <code>HashSet</code>
    */
-  public Set<Constituent> constituents(ConstituentFactory cf, bool charLevel) {
-    Set<Constituent> constituentsSet = new HashSet<Constituent>();
-    constituents(constituentsSet, 0, cf, charLevel, null, -1, 0);
-    return constituentsSet;
-  }
 
-  public Set<Constituent> constituents(ConstituentFactory cf, bool charLevel, Predicate<Tree> filter) {
-    Set<Constituent> constituentsSet = new HashSet<Constituent>();
-    constituents(constituentsSet, 0, cf, charLevel, filter, -1, 0);
-    return constituentsSet;
-  }
+        public Set<Constituent> constituents(ConstituentFactory cf, bool charLevel)
+        {
+            Set<Constituent> constituentsSet = new HashSet<Constituent>();
+            constituents(constituentsSet, 0, cf, charLevel, null, -1, 0);
+            return constituentsSet;
+        }
 
-  /**
+        public Set<Constituent> constituents(ConstituentFactory cf, bool charLevel, Predicate<Tree> filter)
+        {
+            Set<Constituent> constituentsSet = new HashSet<Constituent>();
+            constituents(constituentsSet, 0, cf, charLevel, filter, -1, 0);
+            return constituentsSet;
+        }
+
+        /**
    * Same as int constituents but just puts the span as an IntPair
    * in the CoreLabel of the nodes.
    *
    * @param left The left position to begin labeling from
    * @return The index of the right frontier of the constituent
    */
-  private int constituentsNodes(int left) {
-    if (isLeaf()) {
-      if (label() is CoreLabel) {
-        ((CoreLabel) label()).set(typeof(CoreAnnotations.SpanAnnotation), new IntPair(left, left));
-      } else {
-        throw new InvalidOperationException("Can only set spans on trees which use CoreLabel");
-      }
-      return (left + 1);
-    }
-    int position = left;
 
-    // enumerate through daughter trees
-    Tree[] kids = children();
-    foreach (Tree kid in kids)
-      position = kid.constituentsNodes(position);
+        private int constituentsNodes(int left)
+        {
+            if (isLeaf())
+            {
+                if (label() is CoreLabel)
+                {
+                    ((CoreLabel) label()).set(typeof (CoreAnnotations.SpanAnnotation), new IntPair(left, left));
+                }
+                else
+                {
+                    throw new InvalidOperationException("Can only set spans on trees which use CoreLabel");
+                }
+                return (left + 1);
+            }
+            int position = left;
 
-    //Parent span
-    if (label() is CoreLabel) {
-      ((CoreLabel) label()).set(typeof(CoreAnnotations.SpanAnnotation), new IntPair(left, position - 1));
-    } else {
-      throw new InvalidOperationException("Can only set spans on trees which use CoreLabel");
-    }
+            // enumerate through daughter trees
+            Tree[] kids = children();
+            foreach (Tree kid in kids)
+                position = kid.constituentsNodes(position);
 
-    return position;
-  }
+            //Parent span
+            if (label() is CoreLabel)
+            {
+                ((CoreLabel) label()).set(typeof (CoreAnnotations.SpanAnnotation), new IntPair(left, position - 1));
+            }
+            else
+            {
+                throw new InvalidOperationException("Can only set spans on trees which use CoreLabel");
+            }
 
-  /**
+            return position;
+        }
+
+        /**
    * Adds the constituents derived from <code>this</code> tree to
    * the ordered <code>Constituent</code> <code>Set</code>, beginning
    * numbering from the second argument and returning the number of
@@ -533,33 +610,38 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param depth           The current depth
    * @return Index of right frontier of Constituent
    */
-  private int constituents(Set<Constituent> constituentsSet, int left, ConstituentFactory cf, bool charLevel, Predicate<Tree> filter, int maxDepth, int depth) {
 
-    if(isPreTerminal())
-      return left + ((charLevel) ? firstChild().value().Length : 1);
+        private int constituents(Set<Constituent> constituentsSet, int left, ConstituentFactory cf, bool charLevel,
+            Predicate<Tree> filter, int maxDepth, int depth)
+        {
 
-    int position = left;
+            if (isPreTerminal())
+                return left + ((charLevel) ? firstChild().value().Length : 1);
 
-    // System.err.println("In bracketing trees left is " + left);
-    // System.err.println("  label is " + label() +
-    //                       "; num daughters: " + children().Length);
-    Tree[] kids = children();
-    foreach (Tree kid in kids) {
-      position = kid.constituents(constituentsSet, position, cf, charLevel, filter, maxDepth, depth + 1);
-      // System.err.println("  position went to " + position);
-    }
+            int position = left;
 
-    if ((filter == null || filter(this)) &&
-        (maxDepth < 0 || depth <= maxDepth)) {
-      //Compute span of entire tree at the end of recursion
-      constituentsSet.Add(cf.newConstituent(left, position - 1, label(), score()));
-    }
-    // System.err.println("  added " + label());
-    return position;
-  }
+            // System.err.println("In bracketing trees left is " + left);
+            // System.err.println("  label is " + label() +
+            //                       "; num daughters: " + children().Length);
+            Tree[] kids = children();
+            foreach (Tree kid in kids)
+            {
+                position = kid.constituents(constituentsSet, position, cf, charLevel, filter, maxDepth, depth + 1);
+                // System.err.println("  position went to " + position);
+            }
+
+            if ((filter == null || filter(this)) &&
+                (maxDepth < 0 || depth <= maxDepth))
+            {
+                //Compute span of entire tree at the end of recursion
+                constituentsSet.Add(cf.newConstituent(left, position - 1, label(), score()));
+            }
+            // System.err.println("  added " + label());
+            return position;
+        }
 
 
-  /**
+        /**
    * Returns a new Tree that represents the local Tree at a certain node.
    * That is, it builds a new tree that copies the mother and daughter
    * nodes (but not their Labels), as non-Leaf nodes,
@@ -567,18 +649,21 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return A local tree
    */
-  public Tree localTree() {
-    Tree[] kids = children();
-    Tree[] newKids = new Tree[kids.Length];
-    TreeFactory tf = treeFactory();
-    for (int i = 0, n = kids.Length; i < n; i++) {
-      newKids[i] = tf.newTreeNode(kids[i].label(), EMPTY_TREE_ARRAY.ToList());
-    }
-    return tf.newTreeNode(label(), newKids.ToList());
-  }
+
+        public Tree localTree()
+        {
+            Tree[] kids = children();
+            Tree[] newKids = new Tree[kids.Length];
+            TreeFactory tf = treeFactory();
+            for (int i = 0, n = kids.Length; i < n; i++)
+            {
+                newKids[i] = tf.newTreeNode(kids[i].label(), EMPTY_TREE_ARRAY.ToList());
+            }
+            return tf.newTreeNode(label(), newKids.ToList());
+        }
 
 
-  /**
+        /**
    * Returns a set of one level <code>Tree</code>s that ares the local trees
    * of the tree.
    * That is, it builds a new tree that copies the mother and daughter
@@ -587,25 +672,29 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return A set of local tree
    */
-  public Set<Tree> localTrees() {
-    Set<Tree> set = new Set<Tree>();
-    foreach (Tree st in this) {
-      if (st.isPhrasal()) {
-        set.Add(st.localTree());
-      }
-    }
-    return set;
-  }
+
+        public Set<Tree> localTrees()
+        {
+            Set<Tree> set = new Set<Tree>();
+            foreach (Tree st in this)
+            {
+                if (st.isPhrasal())
+                {
+                    set.Add(st.localTree());
+                }
+            }
+            return set;
+        }
 
 
-  /**
+        /**
    * Most instances of <code>Tree</code> will take a lot more than
    * than the default <code>StringBuffer</code> size of 16 to print
    * as an indented list of the whole tree, so we enlarge the default.
    */
-  private static readonly int initialPrintStringBuilderSize = 500;
+        private static readonly int initialPrintStringBuilderSize = 500;
 
-  /**
+        /**
    * Appends the printed form of a parse tree (as a bracketed String)
    * to a {@code StringBuilder}.
    * The implementation of this may be more efficient than for
@@ -614,11 +703,13 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param sb The {@code StringBuilder} to which the tree will be appended
    * @return Returns the {@code StringBuilder} passed in with extra stuff in it
    */
-  public StringBuilder toStringBuilder(StringBuilder sb) {
-    return toStringBuilder(sb, true);
-  }
 
-  /**
+        public StringBuilder toStringBuilder(StringBuilder sb)
+        {
+            return toStringBuilder(sb, true);
+        }
+
+        /**
    * Appends the printed form of a parse tree (as a bracketed String)
    * to a {@code StringBuilder}.
    * The implementation of this may be more efficient than for
@@ -628,41 +719,57 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param printOnlyLabelValue If true, print only the value() of each node's label
    * @return Returns the {@code StringBuilder} passed in with extra stuff in it
    */
-  public StringBuilder toStringBuilder(StringBuilder sb, bool printOnlyLabelValue) {
-    if (isLeaf()) {
-      if (label() != null) {
-        if(printOnlyLabelValue) {
-          sb.Append(label().value());
-        } else {
-          sb.Append(label());
+
+        public StringBuilder toStringBuilder(StringBuilder sb, bool printOnlyLabelValue)
+        {
+            if (isLeaf())
+            {
+                if (label() != null)
+                {
+                    if (printOnlyLabelValue)
+                    {
+                        sb.Append(label().value());
+                    }
+                    else
+                    {
+                        sb.Append(label());
+                    }
+                }
+                return sb;
+            }
+            else
+            {
+                sb.Append('(');
+                if (label() != null)
+                {
+                    if (printOnlyLabelValue)
+                    {
+                        if (value() != null)
+                        {
+                            sb.Append(label().value());
+                        }
+                        // don't print a null, just nothing!
+                    }
+                    else
+                    {
+                        sb.Append(label());
+                    }
+                }
+                Tree[] kids = children();
+                if (kids != null)
+                {
+                    foreach (Tree kid in kids)
+                    {
+                        sb.Append(' ');
+                        kid.toStringBuilder(sb, printOnlyLabelValue);
+                    }
+                }
+                return sb.Append(')');
+            }
         }
-      }
-      return sb;
-    } else {
-      sb.Append('(');
-      if (label() != null) {
-        if (printOnlyLabelValue) {
-          if (value() != null) {
-            sb.Append(label().value());
-          }
-          // don't print a null, just nothing!
-        } else {
-          sb.Append(label());
-        }
-      }
-      Tree[] kids = children();
-      if (kids != null) {
-        foreach (Tree kid in kids) {
-          sb.Append(' ');
-          kid.toStringBuilder(sb, printOnlyLabelValue);
-        }
-      }
-      return sb.Append(')');
-    }
-  }
 
 
-  /**
+        /**
    * Converts parse tree to string in Penn Treebank format.
    * <p>
    * Implementation note: Internally, the method gains
@@ -671,32 +778,35 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return the tree as a bracketed list on one line
    */
-  //@Override
-  public override String ToString() {
-    return toStringBuilder(new StringBuilder(Tree.initialPrintStringBuilderSize)).ToString();
-  }
+        //@Override
+        public override String ToString()
+        {
+            return toStringBuilder(new StringBuilder(Tree.initialPrintStringBuilderSize)).ToString();
+        }
 
 
-  private static readonly int indentIncr = 2;
+        private static readonly int indentIncr = 2;
 
 
-  private static String makeIndentString(int indent) {
-    StringBuilder sb = new StringBuilder(indent);
-    for (int i = 0; i < indentIncr; i++) {
-      sb.Append(' ');
-    }
-    return sb.ToString();
-  }
+        private static String makeIndentString(int indent)
+        {
+            StringBuilder sb = new StringBuilder(indent);
+            for (int i = 0; i < indentIncr; i++)
+            {
+                sb.Append(' ');
+            }
+            return sb.ToString();
+        }
 
 
-  /*public void printLocalTree() {
+        /*public void printLocalTree() {
     printLocalTree(new PrintWriter(System.out, true));
   }*/
 
-  /**
+        /**
    * Only prints the local tree structure, does not recurse
    */
-  /*public void printLocalTree(PrintWriter pw) {
+        /*public void printLocalTree(PrintWriter pw) {
     pw.print("(" + label() + ' ');
     foreach (Tree kid in children()) {
       pw.print("(");
@@ -707,28 +817,28 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
   }*/
 
 
-  /**
+        /**
    * Indented list printing of a tree.  The tree is printed in an
    * indented list notation, with node labels followed by node scores.
    */
-  /*public void indentedListPrint() {
+        /*public void indentedListPrint() {
     indentedListPrint(new PrintWriter(System.out, true), false);
   }*/
 
 
-  /**
+        /**
    * Indented list printing of a tree.  The tree is printed in an
    * indented list notation, with node labels followed by node scores.
    *
    * @param pw The PrintWriter to print the tree to
    * @param printScores Whether to print the scores (log probs) of tree nodes
    */
-  /*public void indentedListPrint(PrintWriter pw, bool printScores) {
+        /*public void indentedListPrint(PrintWriter pw, bool printScores) {
     indentedListPrint("", makeIndentString(indentIncr), pw, printScores);
   }*/
 
 
-  /**
+        /**
    * Indented list printing of a tree.  The tree is printed in an
    * indented list notation, with node labels followed by node scores.
    * String parameters are used rather than integer levels for efficiency.
@@ -740,7 +850,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param pw     The PrintWriter to print the tree to
    * @param printScores Whether to print the scores (log probs) of tree nodes
    */
-  /*private void indentedListPrint(String indent, String pad, PrintWriter pw, bool printScores) {
+        /*private void indentedListPrint(String indent, String pad, PrintWriter pw, bool printScores) {
     StringBuilder sb = new StringBuilder(indent);
     Label label = label();
     if (label != null) {
@@ -758,28 +868,28 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
     }
   }*/
 
-  /**
+        /**
    * Indented xml printing of a tree.  The tree is printed in an
    * indented xml notation.
    */
-  /*public void indentedXMLPrint() {
+        /*public void indentedXMLPrint() {
     indentedXMLPrint(new PrintWriter(System.out, true), false);
   }*/
 
 
-  /**
+        /**
    * Indented xml printing of a tree.  The tree is printed in an
    * indented xml notation, with node labels followed by node scores.
    *
    * @param pw The PrintWriter to print the tree to
    * @param printScores Whether to print the scores (log probs) of tree nodes
    */
-  /*public void indentedXMLPrint(PrintWriter pw, bool printScores) {
+        /*public void indentedXMLPrint(PrintWriter pw, bool printScores) {
     indentedXMLPrint("", makeIndentString(indentIncr), pw, printScores);
   }*/
 
 
-  /**
+        /**
    * Indented xml printing of a tree.  The tree is printed in an
    * indented xml notation, with node labels followed by node scores.
    * String parameters are used rather than integer levels for efficiency.
@@ -792,7 +902,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param pw     The PrintWriter to print the tree to
    * @param printScores Whether to print the scores (log probs) of tree nodes
    */
-  /*private void indentedXMLPrint(String indent, String pad,
+        /*private void indentedXMLPrint(String indent, String pad,
                                 PrintWriter pw, bool printScores) {
     StringBuilder sb = new StringBuilder(indent);
     Tree[] children = children();
@@ -833,7 +943,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
   }*/
 
 
-  /*private static void displayChildren(Tree[] trChildren, int indent, bool parentLabelNull, bool onlyLabelValue, PrintWriter pw) {
+        /*private static void displayChildren(Tree[] trChildren, int indent, bool parentLabelNull, bool onlyLabelValue, PrintWriter pw) {
     bool firstSibling = true;
     bool leftSibIsPreTerm = true;  // counts as true at beginning
     foreach (Tree currentTree in trChildren) {
@@ -847,21 +957,23 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
     }
   }*/
 
-  /**
+        /**
    *  Returns the value of the nodes label as a String.  This is done by
    *  calling <code>toString()</code> on the value, if it exists. Otherwise,
    *  an empty string is returned.
    *
    *  @return The label of a tree node as a String
    */
-  public virtual String nodeString() {
-    return (value() == null) ? "" : value();
-  }
 
-  /**
+        public virtual String nodeString()
+        {
+            return (value() == null) ? "" : value();
+        }
+
+        /**
    * Display a node, implementing Penn Treebank style layout
    */
-  /*private void display(int indent, bool parentLabelNull, bool firstSibling, bool leftSiblingPreTerminal, bool topLevel, bool onlyLabelValue, PrintWriter pw) {
+        /*private void display(int indent, bool parentLabelNull, bool firstSibling, bool leftSiblingPreTerminal, bool topLevel, bool onlyLabelValue, PrintWriter pw) {
     // the condition for staying on the same line in Penn Treebank
     bool suppressIndent = (parentLabelNull || (firstSibling && isPreTerminal()) || (leftSiblingPreTerminal && isPreTerminal() && (label() == null || !label().value().startsWith("CC"))));
     if (suppressIndent) {
@@ -899,7 +1011,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
   }*/
 
 
-  /**
+        /**
    * Print the tree as done in Penn Treebank merged files.
    * The formatting should be exactly the same, but we don't print the
    * trailing whitespace found in Penn Treebank trees.
@@ -912,7 +1024,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @param pw The tree is printed to this <code>PrintWriter</code>
    */
-  /*public void pennPrint(PrintWriter pw) {
+        /*public void pennPrint(PrintWriter pw) {
     pennPrint(pw, true);
   }
 
@@ -923,7 +1035,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
   }*/
 
 
-  /**
+        /**
    * Print the tree as done in Penn Treebank merged files.
    * The formatting should be exactly the same, but we don't print the
    * trailing whitespace found in Penn Treebank trees.
@@ -936,7 +1048,7 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @param ps The tree is printed to this <code>PrintStream</code>
    */
-  /*public void pennPrint(PrintStream ps) {
+        /*public void pennPrint(PrintStream ps) {
     pennPrint(new PrintWriter(new OutputStreamWriter(ps), true));
   }
 
@@ -944,18 +1056,18 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
     pennPrint(new PrintWriter(new OutputStreamWriter(ps), true), printOnlyLabelValue);
   }*/
 
-  /**
+        /**
    * Calls <code>pennPrint()</code> and saves output to a String
    *
    * @return The indent S-expression representation of a Tree
    */
-  /*public String pennString() {
+        /*public String pennString() {
     StringWriter sw = new StringWriter();
     pennPrint(new PrintWriter(sw));
     return sw.toString();
   }*/
 
-  /**
+        /**
    * Print the tree as done in Penn Treebank merged files.
    * The formatting should be exactly the same, but we don't print the
    * trailing whitespace found in Penn Treebank trees.
@@ -967,12 +1079,12 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * outer brackets are collapsed onto the same line as the next
    * bracket down.
    */
-  /*public void pennPrint() {
+        /*public void pennPrint() {
     pennPrint(System.out);
   }*/
 
 
-  /**
+        /**
    * Finds the depth of the tree.  The depth is defined as the length
    * of the longest path from this node to a leaf node.  Leaf nodes
    * have depth zero.  POS tags have depth 1. Phrasal nodes have
@@ -980,72 +1092,92 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return the depth
    */
-  public int depth() {
-    if (isLeaf()) {
-      return 0;
-    }
-    int maxDepth = 0;
-    Tree[] kids = children();
-    foreach (Tree kid in kids) {
-      int curDepth = kid.depth();
-      if (curDepth > maxDepth) {
-        maxDepth = curDepth;
-      }
-    }
-    return maxDepth + 1;
-  }
 
-  /**
+        public int depth()
+        {
+            if (isLeaf())
+            {
+                return 0;
+            }
+            int maxDepth = 0;
+            Tree[] kids = children();
+            foreach (Tree kid in kids)
+            {
+                int curDepth = kid.depth();
+                if (curDepth > maxDepth)
+                {
+                    maxDepth = curDepth;
+                }
+            }
+            return maxDepth + 1;
+        }
+
+        /**
    * Finds the distance from this node to the specified node.
    * return -1 if this is not an ancestor of node.
    *
    * @param node A subtree contained in this tree
    * @return the depth
    */
-  public int depth(Tree node) {
-    Tree p = node.parent(this);
-    if (this == node) { return 0; }
-    if (p == null) { return -1; }
-    int depth = 1;
-    while (this != p) {
-      p = p.parent(this);
-      depth++;
-    }
-    return depth;
-  }
+
+        public int depth(Tree node)
+        {
+            Tree p = node.parent(this);
+            if (this == node)
+            {
+                return 0;
+            }
+            if (p == null)
+            {
+                return -1;
+            }
+            int depth = 1;
+            while (this != p)
+            {
+                p = p.parent(this);
+                depth++;
+            }
+            return depth;
+        }
 
 
-  /**
+        /**
    * Returns the tree leaf that is the head of the tree.
    *
    * @param hf The head-finding algorithm to use
    * @param parent  The parent of this tree
    * @return The head tree leaf if any, else <code>null</code>
    */
-  public Tree headTerminal(HeadFinder hf, Tree parent) {
-    if (isLeaf()) {
-      return this;
-    }
-    Tree head = hf.determineHead(this, parent);
-    if (head != null) {
-      return head.headTerminal(hf, parent);
-    }
-    //System.err.println("Head is null: " + this);
-    return null;
-  }
 
-  /**
+        public Tree headTerminal(HeadFinder hf, Tree parent)
+        {
+            if (isLeaf())
+            {
+                return this;
+            }
+            Tree head = hf.determineHead(this, parent);
+            if (head != null)
+            {
+                return head.headTerminal(hf, parent);
+            }
+            //System.err.println("Head is null: " + this);
+            return null;
+        }
+
+        /**
    * Returns the tree leaf that is the head of the tree.
    *
    * @param hf The headfinding algorithm to use
    * @return The head tree leaf if any, else <code>null</code>
    */
-  public Tree headTerminal(HeadFinder hf) {
-    return headTerminal(hf, null);
-  }
+
+        public Tree headTerminal(HeadFinder hf)
+        {
+            return headTerminal(hf, null);
+        }
 
 
-  /**
+        /**
    * Returns the preterminal tree that is the head of the tree.
    * See {@link #isPreTerminal()} for
    * the definition of a preterminal node. Beware that some tree nodes may
@@ -1055,68 +1187,93 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return The head preterminal tree, if any, else <code>null</code>
    * @throws IllegalArgumentException if called on a leaf node
    */
-  public Tree headPreTerminal(HeadFinder hf) {
-    if (isPreTerminal()) {
-      return this;
-    } else if (isLeaf()) {
-      throw new ArgumentException("Called headPreTerminal on a leaf: " + this);
-    } else {
-      Tree head = hf.determineHead(this);
-      if (head != null) {
-        return head.headPreTerminal(hf);
-      }
-      //System.err.println("Head preterminal is null: " + this);
-      return null;
-    }
-  }
 
-  /**
+        public Tree headPreTerminal(HeadFinder hf)
+        {
+            if (isPreTerminal())
+            {
+                return this;
+            }
+            else if (isLeaf())
+            {
+                throw new ArgumentException("Called headPreTerminal on a leaf: " + this);
+            }
+            else
+            {
+                Tree head = hf.determineHead(this);
+                if (head != null)
+                {
+                    return head.headPreTerminal(hf);
+                }
+                //System.err.println("Head preterminal is null: " + this);
+                return null;
+            }
+        }
+
+        /**
    * Finds the head words of each tree and assigns HeadWordAnnotation
    * to each node pointing to the correct node.  This relies on the
    * nodes being CoreLabels, so it throws an IllegalArgumentException
    * if this is ever not true.
    */
-  public void percolateHeadAnnotations(HeadFinder hf) {
-    if (!(label() is CoreLabel)) {
-      throw new ArgumentException("Expected CoreLabels in the trees");
-    }
-    CoreLabel nodeLabel = (CoreLabel) label();
 
-    if (isLeaf()) {
-      return;
-    }
+        public void percolateHeadAnnotations(HeadFinder hf)
+        {
+            if (!(label() is CoreLabel))
+            {
+                throw new ArgumentException("Expected CoreLabels in the trees");
+            }
+            CoreLabel nodeLabel = (CoreLabel) label();
 
-    if (isPreTerminal()) {
-      nodeLabel.set(typeof(TreeCoreAnnotations.HeadWordAnnotation), children()[0]);
-      nodeLabel.set(typeof(TreeCoreAnnotations.HeadTagAnnotation), this);
-      return;
-    }
+            if (isLeaf())
+            {
+                return;
+            }
 
-    foreach (Tree kid in children()) {
-      kid.percolateHeadAnnotations(hf);
-    }
+            if (isPreTerminal())
+            {
+                nodeLabel.set(typeof (TreeCoreAnnotations.HeadWordAnnotation), children()[0]);
+                nodeLabel.set(typeof (TreeCoreAnnotations.HeadTagAnnotation), this);
+                return;
+            }
 
-    /*readonly */Tree head = hf.determineHead(this);
-    if (head == null) {
-      throw new NullReferenceException("HeadFinder " + hf + " returned null for " + this);
-    } else if (head.isLeaf()) {
-      nodeLabel.set(typeof(TreeCoreAnnotations.HeadWordAnnotation), head);
-      nodeLabel.set(typeof(TreeCoreAnnotations.HeadTagAnnotation), head.parent(this));
-    } else if (head.isPreTerminal()) {
-      nodeLabel.set(typeof(TreeCoreAnnotations.HeadWordAnnotation), head.children()[0]);
-      nodeLabel.set(typeof(TreeCoreAnnotations.HeadTagAnnotation), head);
-    } else {
-      if (!(head.label() is CoreLabel)) {
-        throw new SystemException("Horrible bug");
-      }
-      CoreLabel headLabel = (CoreLabel) head.label();
-      nodeLabel.set(typeof(TreeCoreAnnotations.HeadWordAnnotation), headLabel.get(typeof(TreeCoreAnnotations.HeadWordAnnotation)));
-      nodeLabel.set(typeof(TreeCoreAnnotations.HeadTagAnnotation), headLabel.get(typeof(TreeCoreAnnotations.HeadTagAnnotation)));
-    }
-  }
+            foreach (Tree kid in children())
+            {
+                kid.percolateHeadAnnotations(hf);
+            }
+
+            /*readonly */
+            Tree head = hf.determineHead(this);
+            if (head == null)
+            {
+                throw new NullReferenceException("HeadFinder " + hf + " returned null for " + this);
+            }
+            else if (head.isLeaf())
+            {
+                nodeLabel.set(typeof (TreeCoreAnnotations.HeadWordAnnotation), head);
+                nodeLabel.set(typeof (TreeCoreAnnotations.HeadTagAnnotation), head.parent(this));
+            }
+            else if (head.isPreTerminal())
+            {
+                nodeLabel.set(typeof (TreeCoreAnnotations.HeadWordAnnotation), head.children()[0]);
+                nodeLabel.set(typeof (TreeCoreAnnotations.HeadTagAnnotation), head);
+            }
+            else
+            {
+                if (!(head.label() is CoreLabel))
+                {
+                    throw new SystemException("Horrible bug");
+                }
+                CoreLabel headLabel = (CoreLabel) head.label();
+                nodeLabel.set(typeof (TreeCoreAnnotations.HeadWordAnnotation),
+                    headLabel.get(typeof (TreeCoreAnnotations.HeadWordAnnotation)));
+                nodeLabel.set(typeof (TreeCoreAnnotations.HeadTagAnnotation),
+                    headLabel.get(typeof (TreeCoreAnnotations.HeadTagAnnotation)));
+            }
+        }
 
 
-  /**
+        /**
    * Finds the heads of the tree.  This code assumes that the label
    * does store and return sensible values for the category, word, and tag.
    * It will be a no-op otherwise.  The tree is modified.  The routine
@@ -1126,62 +1283,80 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @param hf The headfinding algorithm to use
    */
-  public virtual void percolateHeads(HeadFinder hf) {
-    Label nodeLabel = label();
-    if (isLeaf()) {
-      // Sanity check: word() is usually set by the TreeReader.
-      if (nodeLabel is HasWord) {
-        HasWord w = (HasWord) nodeLabel;
-        if (w.word() == null) {
-          w.setWord(nodeLabel.value());
+
+        public virtual void percolateHeads(HeadFinder hf)
+        {
+            Label nodeLabel = label();
+            if (isLeaf())
+            {
+                // Sanity check: word() is usually set by the TreeReader.
+                if (nodeLabel is HasWord)
+                {
+                    HasWord w = (HasWord) nodeLabel;
+                    if (w.word() == null)
+                    {
+                        w.setWord(nodeLabel.value());
+                    }
+                }
+
+            }
+            else
+            {
+                foreach (Tree kid in children())
+                {
+                    kid.percolateHeads(hf);
+                }
+
+                /*readonly*/
+                Tree head = hf.determineHead(this);
+                if (head != null)
+                {
+                    /*readonly*/
+                    Label headLabel = head.label();
+
+                    // Set the head tag.
+                    String headTag = (headLabel is HasTag) ? ((HasTag) headLabel).tag() : null;
+                    if (headTag == null && head.isLeaf())
+                    {
+                        // below us is a leaf
+                        headTag = nodeLabel.value();
+                    }
+
+                    // Set the head word
+                    String headWord = (headLabel is HasWord) ? ((HasWord) headLabel).word() : null;
+                    if (headWord == null && head.isLeaf())
+                    {
+                        // below us is a leaf
+                        // this might be useful despite case for leaf above in
+                        // case the leaf label type doesn't support word()
+                        headWord = headLabel.value();
+                    }
+
+                    // Set the head index
+                    int headIndex = (headLabel is HasIndex) ? ((HasIndex) headLabel).index() : -1;
+
+                    if (nodeLabel is HasWord)
+                    {
+                        ((HasWord) nodeLabel).setWord(headWord);
+                    }
+                    if (nodeLabel is HasTag)
+                    {
+                        ((HasTag) nodeLabel).setTag(headTag);
+                    }
+                    if (nodeLabel is HasIndex && headIndex >= 0)
+                    {
+                        ((HasIndex) nodeLabel).setIndex(headIndex);
+                    }
+
+                }
+                else
+                {
+                    //System.err.println("Head is null: " + this);
+                }
+            }
         }
-      }
 
-    } else {
-      foreach (Tree kid in children()) {
-        kid.percolateHeads(hf);
-      }
-
-      /*readonly*/ Tree head = hf.determineHead(this);
-      if (head != null) {
-        /*readonly*/ Label headLabel = head.label();
-
-        // Set the head tag.
-        String headTag = (headLabel is HasTag) ? ((HasTag) headLabel).tag() : null;
-        if (headTag == null && head.isLeaf()) {
-          // below us is a leaf
-          headTag = nodeLabel.value();
-        }
-
-        // Set the head word
-        String headWord = (headLabel is HasWord) ? ((HasWord) headLabel).word() : null;
-        if (headWord == null && head.isLeaf()) {
-          // below us is a leaf
-          // this might be useful despite case for leaf above in
-          // case the leaf label type doesn't support word()
-          headWord = headLabel.value();
-        }
-
-        // Set the head index
-        int headIndex = (headLabel is HasIndex) ? ((HasIndex) headLabel).index() : -1;
-
-        if (nodeLabel is HasWord) {
-          ((HasWord) nodeLabel).setWord(headWord);
-        }
-        if (nodeLabel is HasTag) {
-          ((HasTag) nodeLabel).setTag(headTag);
-        }
-        if (nodeLabel is HasIndex && headIndex >= 0) {
-          ((HasIndex) nodeLabel).setIndex(headIndex);
-        }
-
-      } else {
-        //System.err.println("Head is null: " + this);
-      }
-    }
-  }
-
-  /**
+        /**
    * Return a Set of TaggedWord-TaggedWord dependencies, represented as
    * Dependency objects, for the Tree.  This will only give
    * useful results if the internal tree node labels support HasWord and
@@ -1190,15 +1365,18 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return Set of dependencies (each a Dependency)
    */
-  public Set<Dependency<Label, Label, Object>> dependencies() {
-      return dependencies(Filters.acceptFilter<Dependency<Label, Label, Object>>());
-  }
 
-  public Set<Dependency<Label, Label, Object>> dependencies(Predicate<Dependency<Label, Label, Object>> f) {
-    return dependencies(f, true, true, false);
-  }
+        public Set<Dependency<Label, Label, Object>> dependencies()
+        {
+            return dependencies(Filters.acceptFilter<Dependency<Label, Label, Object>>());
+        }
 
-  /**
+        public Set<Dependency<Label, Label, Object>> dependencies(Predicate<Dependency<Label, Label, Object>> f)
+        {
+            return dependencies(f, true, true, false);
+        }
+
+        /**
    * Convert a constituency label to a dependency label. Options are provided for selecting annotations
    * to copy.
    *
@@ -1207,26 +1385,30 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param copyIndex
    * @param copyPosTag
    */
-  private static Label makeDependencyLabel(Label oldLabel, bool copyLabel, bool copyIndex, bool copyPosTag) {
-    if ( ! copyLabel)
-      return oldLabel;
 
-    String wordForm = (oldLabel is HasWord) ? ((HasWord) oldLabel).word() : oldLabel.value();
-    Label newLabel = oldLabel.labelFactory().newLabel(wordForm);
-    if (newLabel is HasWord) ((HasWord) newLabel).setWord(wordForm);
-    if (copyPosTag && newLabel is HasTag && oldLabel is HasTag) {
-      String tag = ((HasTag) oldLabel).tag();
-      ((HasTag) newLabel).setTag(tag);
-    }
-    if (copyIndex && newLabel is HasIndex && oldLabel is HasIndex) {
-      int index = ((HasIndex) oldLabel).index();
-      ((HasIndex) newLabel).setIndex(index);
-    }
+        private static Label makeDependencyLabel(Label oldLabel, bool copyLabel, bool copyIndex, bool copyPosTag)
+        {
+            if (! copyLabel)
+                return oldLabel;
 
-    return newLabel;
-  }
+            String wordForm = (oldLabel is HasWord) ? ((HasWord) oldLabel).word() : oldLabel.value();
+            Label newLabel = oldLabel.labelFactory().newLabel(wordForm);
+            if (newLabel is HasWord) ((HasWord) newLabel).setWord(wordForm);
+            if (copyPosTag && newLabel is HasTag && oldLabel is HasTag)
+            {
+                String tag = ((HasTag) oldLabel).tag();
+                ((HasTag) newLabel).setTag(tag);
+            }
+            if (copyIndex && newLabel is HasIndex && oldLabel is HasIndex)
+            {
+                int index = ((HasIndex) oldLabel).index();
+                ((HasIndex) newLabel).setIndex(index);
+            }
 
-  /**
+            return newLabel;
+        }
+
+        /**
    * Return a set of TaggedWord-TaggedWord dependencies, represented as
    * Dependency objects, for the Tree.  This will only give
    * useful results if the internal tree node labels support HasWord and
@@ -1236,48 +1418,60 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *          accepted by the Filter
    * @return Set of dependencies (each a Dependency)
    */
-  public Set<Dependency<Label, Label, Object>> dependencies(Predicate<Dependency<Label, Label, Object>> f, bool isConcrete, bool copyLabel, bool copyPosTag) {
-    Set<Dependency<Label, Label, Object>> deps = new Set<Dependency<Label, Label, object>>();
-    foreach (Tree node in this) {
-      // Skip leaves and unary re-writes
-      if (node.isLeaf() || node.children().Length < 2) {
-        continue;
-      }
-      // Create the head label (percolateHeads has already been executed)
-      Label headLabel = makeDependencyLabel(node.label(), copyLabel, isConcrete, copyPosTag);
-      String headWord = ((HasWord) headLabel).word();
-      if (headWord == null) {
-        headWord = headLabel.value();
-      }
-      int headIndex = (isConcrete && (headLabel is HasIndex)) ? ((HasIndex) headLabel).index() : -1;
 
-      // every child with a different (or repeated) head is an argument
-      bool seenHead = false;
-      foreach (Tree child in node.children()) {
-        Label depLabel = makeDependencyLabel(child.label(), copyLabel, isConcrete, copyPosTag);
-        String depWord = ((HasWord) depLabel).word();
-        if (depWord == null) {
-          depWord = depLabel.value();
+        public Set<Dependency<Label, Label, Object>> dependencies(Predicate<Dependency<Label, Label, Object>> f,
+            bool isConcrete, bool copyLabel, bool copyPosTag)
+        {
+            Set<Dependency<Label, Label, Object>> deps = new Set<Dependency<Label, Label, object>>();
+            foreach (Tree node in this)
+            {
+                // Skip leaves and unary re-writes
+                if (node.isLeaf() || node.children().Length < 2)
+                {
+                    continue;
+                }
+                // Create the head label (percolateHeads has already been executed)
+                Label headLabel = makeDependencyLabel(node.label(), copyLabel, isConcrete, copyPosTag);
+                String headWord = ((HasWord) headLabel).word();
+                if (headWord == null)
+                {
+                    headWord = headLabel.value();
+                }
+                int headIndex = (isConcrete && (headLabel is HasIndex)) ? ((HasIndex) headLabel).index() : -1;
+
+                // every child with a different (or repeated) head is an argument
+                bool seenHead = false;
+                foreach (Tree child in node.children())
+                {
+                    Label depLabel = makeDependencyLabel(child.label(), copyLabel, isConcrete, copyPosTag);
+                    String depWord = ((HasWord) depLabel).word();
+                    if (depWord == null)
+                    {
+                        depWord = depLabel.value();
+                    }
+                    int depIndex = (isConcrete && (depLabel is HasIndex)) ? ((HasIndex) depLabel).index() : -1;
+
+                    if (!seenHead && headIndex == depIndex && headWord.Equals(depWord))
+                    {
+                        seenHead = true;
+                    }
+                    else
+                    {
+                        Dependency<Label, Label, Object> dependency = (isConcrete && depIndex != headIndex)
+                            ? new UnnamedConcreteDependency(headLabel, depLabel)
+                            : new UnnamedDependency(headLabel, depLabel);
+
+                        if (f(dependency))
+                        {
+                            deps.Add(dependency);
+                        }
+                    }
+                }
+            }
+            return deps;
         }
-        int depIndex = (isConcrete && (depLabel is HasIndex)) ? ((HasIndex) depLabel).index() : -1;
 
-        if (!seenHead && headIndex == depIndex && headWord.Equals(depWord)) {
-          seenHead = true;
-        } else {
-          Dependency<Label, Label, Object> dependency = (isConcrete && depIndex != headIndex) ?
-              new UnnamedConcreteDependency(headLabel, depLabel) :
-              new UnnamedDependency(headLabel, depLabel);
-
-          if (f(dependency)) {
-            deps.Add(dependency);
-          }
-        }
-      }
-    }
-    return deps;
-  }
-
-  /**
+        /**
    * Return a set of Label-Label dependencies, represented as
    * Dependency objects, for the Tree.  The Labels are the ones of the leaf
    * nodes of the tree, without mucking with them.
@@ -1292,45 +1486,56 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *           <code>CoreLabel</code>s, which each contain a tag(), word(),
    *           and value(), the last two of which are identical).
    */
-  public Set<Dependency<Label, Label, Object>> mapDependencies(Predicate<Dependency<Label, Label, Object>> f, HeadFinder hf) {
-    if (hf == null) {
-      throw new ArgumentException("mapDependencies: need HeadFinder");
-    }
-    Set<Dependency<Label, Label, Object>> deps = new HashSet<Dependency<Label, Label, object>>();
-    foreach (Tree node in this) {
-      if (node.isLeaf() || node.children().Length < 2) {
-        continue;
-      }
-      // Label l = node.label();
-      // System.err.println("doing kids of label: " + l);
-      //Tree hwt = node.headPreTerminal(hf);
-      Tree hwt = node.headTerminal(hf);
-      // System.err.println("have hf, found head preterm: " + hwt);
-      if (hwt == null) {
-        throw new InvalidDataException("mapDependencies: HeadFinder failed!");
-      }
 
-      foreach (Tree child in node.children()) {
-        // Label dl = child.label();
-        // Tree dwt = child.headPreTerminal(hf);
-        Tree dwt = child.headTerminal(hf);
-        if (dwt == null) {
-            throw new InvalidDataException("mapDependencies: HeadFinder failed!");
-        }
-        //System.err.println("kid is " + dl);
-         //System.err.println("transformed to " + dml.toString("value{map}"));
-        if (dwt != hwt) {
-          Dependency<Label, Label, Object> p = new UnnamedDependency(hwt.label(), dwt.label());
-          if (f(p)) {
-            deps.Add(p);
-          }
-        }
-      }
-    }
-    return deps;
-  }
+        public Set<Dependency<Label, Label, Object>> mapDependencies(Predicate<Dependency<Label, Label, Object>> f,
+            HeadFinder hf)
+        {
+            if (hf == null)
+            {
+                throw new ArgumentException("mapDependencies: need HeadFinder");
+            }
+            Set<Dependency<Label, Label, Object>> deps = new HashSet<Dependency<Label, Label, object>>();
+            foreach (Tree node in this)
+            {
+                if (node.isLeaf() || node.children().Length < 2)
+                {
+                    continue;
+                }
+                // Label l = node.label();
+                // System.err.println("doing kids of label: " + l);
+                //Tree hwt = node.headPreTerminal(hf);
+                Tree hwt = node.headTerminal(hf);
+                // System.err.println("have hf, found head preterm: " + hwt);
+                if (hwt == null)
+                {
+                    throw new InvalidDataException("mapDependencies: HeadFinder failed!");
+                }
 
-  /**
+                foreach (Tree child in node.children())
+                {
+                    // Label dl = child.label();
+                    // Tree dwt = child.headPreTerminal(hf);
+                    Tree dwt = child.headTerminal(hf);
+                    if (dwt == null)
+                    {
+                        throw new InvalidDataException("mapDependencies: HeadFinder failed!");
+                    }
+                    //System.err.println("kid is " + dl);
+                    //System.err.println("transformed to " + dml.toString("value{map}"));
+                    if (dwt != hwt)
+                    {
+                        Dependency<Label, Label, Object> p = new UnnamedDependency(hwt.label(), dwt.label());
+                        if (f(p))
+                        {
+                            deps.Add(p);
+                        }
+                    }
+                }
+            }
+            return deps;
+        }
+
+        /**
    * Return a set of Label-Label dependencies, represented as
    * Dependency objects, for the Tree.  The Labels are the ones of the leaf
    * nodes of the tree, without mucking with them. The head of the sentence is a
@@ -1347,19 +1552,23 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *           <code>CoreLabel</code>s, which each contain a tag(), word(),
    *           and value(), the last two of which are identical).
    */
-  public Set<Dependency<Label, Label, Object>> mapDependencies(Predicate<Dependency<Label, Label, Object>> f, HeadFinder hf, String rootName) {
-    Set<Dependency<Label, Label, Object>> deps = mapDependencies(f, hf);
-    if(rootName != null) {
-      Label hl = headTerminal(hf).label();
-      CoreLabel rl = new CoreLabel();
-      rl.set(typeof(CoreAnnotations.TextAnnotation), rootName);
-      rl.set(typeof(CoreAnnotations.IndexAnnotation), 0);
-      deps.Add(new NamedDependency(rl, hl, rootName));
-    }
-    return deps;
-  }
 
-  /**
+        public Set<Dependency<Label, Label, Object>> mapDependencies(Predicate<Dependency<Label, Label, Object>> f,
+            HeadFinder hf, String rootName)
+        {
+            Set<Dependency<Label, Label, Object>> deps = mapDependencies(f, hf);
+            if (rootName != null)
+            {
+                Label hl = headTerminal(hf).label();
+                CoreLabel rl = new CoreLabel();
+                rl.set(typeof (CoreAnnotations.TextAnnotation), rootName);
+                rl.set(typeof (CoreAnnotations.IndexAnnotation), 0);
+                deps.Add(new NamedDependency(rl, hl, rootName));
+            }
+            return deps;
+        }
+
+        /**
    * Gets the yield of the tree.  The <code>Label</code> of all leaf nodes
    * is returned
    * as a list ordered by the natural left to right order of the
@@ -1368,11 +1577,13 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return a <code>List</code> of the data in the tree's leaves.
    */
-  public List<Label> yield() {
-    return yield(new List<Label>());
-  }
 
-  /**
+        public List<Label> yield()
+        {
+            return yield(new List<Label>());
+        }
+
+        /**
    * Gets the yield of the tree.  The <code>Label</code> of all leaf nodes
    * is returned
    * as a list ordered by the natural left to right order of the
@@ -1388,73 +1599,97 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *          if not, the new yield is added to the end of the list.
    * @return a <code>List</code> of the data in the tree's leaves.
    */
-  public List<Label> yield(List<Label> y) {
-    if (isLeaf()) {
-      y.Add(label());
 
-    } else {
-      Tree[] kids = children();
-      foreach (Tree kid in kids) {
-        kid.yield(y);
-      }
-    }
-    return y;
-  }
+        public List<Label> yield(List<Label> y)
+        {
+            if (isLeaf())
+            {
+                y.Add(label());
 
-  public List<Word> yieldWords() {
-    return yieldWords(new List<Word>());
-  }
-
-  public List<Word> yieldWords(List<Word> y) {
-    if (isLeaf()) {
-      y.Add(new Word(label()));
-    } else {
-      foreach (Tree kid in children()) {
-        kid.yieldWords(y);
-      }
-    }
-    return y;
-  }
-
-  public /*<X extends HasWord>*/ List<HasWord> yieldHasWord() {
-    return yieldHasWord(new List<HasWord>());
-  }
-
-  //@SuppressWarnings("unchecked")
-  public /*<X extends HasWord>*/ List<HasWord> yieldHasWord(List<HasWord> y) {
-    if (isLeaf()) {
-      Label lab = label();
-      // cdm: this is new hacked in stuff in Mar 2007 so we can now have a
-      // well-typed version of a Sentence, whose objects MUST implement HasWord
-      //
-      // wsg (Feb. 2010) - More hacks for trees with CoreLabels in which the type implements
-      // HasWord but only the value field is populated. This can happen if legacy code uses
-      // LabeledScoredTreeFactory but passes in a StringLabel to e.g. newLeaf().
-      if (lab is HasWord) {
-        if(lab is CoreLabel) {
-          CoreLabel cl = (CoreLabel) lab;
-          if(cl.word() == null)
-            cl.setWord(cl.value());
-          y.Add((HasWord) cl);
-        } else {
-          y.Add((HasWord) lab);
+            }
+            else
+            {
+                Tree[] kids = children();
+                foreach (Tree kid in kids)
+                {
+                    kid.yield(y);
+                }
+            }
+            return y;
         }
 
-      } else {
-        y.Add((HasWord) new Word(lab));
-      }
+        public List<Word> yieldWords()
+        {
+            return yieldWords(new List<Word>());
+        }
 
-    } else {
-      Tree[] kids = children();
-      foreach (Tree kid in kids) {
-        kid.yield(y);
-      }
-    }
-    return y;
-  }
+        public List<Word> yieldWords(List<Word> y)
+        {
+            if (isLeaf())
+            {
+                y.Add(new Word(label()));
+            }
+            else
+            {
+                foreach (Tree kid in children())
+                {
+                    kid.yieldWords(y);
+                }
+            }
+            return y;
+        }
+
+        public /*<X extends HasWord>*/ List<HasWord> yieldHasWord()
+        {
+            return yieldHasWord(new List<HasWord>());
+        }
+
+        //@SuppressWarnings("unchecked")
+        public /*<X extends HasWord>*/ List<HasWord> yieldHasWord(List<HasWord> y)
+        {
+            if (isLeaf())
+            {
+                Label lab = label();
+                // cdm: this is new hacked in stuff in Mar 2007 so we can now have a
+                // well-typed version of a Sentence, whose objects MUST implement HasWord
+                //
+                // wsg (Feb. 2010) - More hacks for trees with CoreLabels in which the type implements
+                // HasWord but only the value field is populated. This can happen if legacy code uses
+                // LabeledScoredTreeFactory but passes in a StringLabel to e.g. newLeaf().
+                if (lab is HasWord)
+                {
+                    if (lab is CoreLabel)
+                    {
+                        CoreLabel cl = (CoreLabel) lab;
+                        if (cl.word() == null)
+                            cl.setWord(cl.value());
+                        y.Add((HasWord) cl);
+                    }
+                    else
+                    {
+                        y.Add((HasWord) lab);
+                    }
+
+                }
+                else
+                {
+                    y.Add((HasWord) new Word(lab));
+                }
+
+            }
+            else
+            {
+                Tree[] kids = children();
+                foreach (Tree kid in kids)
+                {
+                    kid.yield(y);
+                }
+            }
+            return y;
+        }
 
 
-  /**
+        /**
    * Gets the yield of the tree.  The <code>Label</code> of all leaf nodes
    * is returned
    * as a list ordered by the natural left to right order of the
@@ -1467,25 +1702,31 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *          if not, the new yield is added to the end of the list.
    * @return a <code>List</code> of the data in the tree's leaves.
    */
-  //@SuppressWarnings("unchecked")
-  public /*<T>*/ List<T> yield<T>(List<T> y) {
-    if (isLeaf()) {
-      if(label() is HasWord) {
-        HasWord hw = (HasWord) label();
-        hw.setWord(label().value());
-      }
-      y.Add((T) label());
+        //@SuppressWarnings("unchecked")
+        public /*<T>*/ List<T> yield<T>(List<T> y)
+        {
+            if (isLeaf())
+            {
+                if (label() is HasWord)
+                {
+                    HasWord hw = (HasWord) label();
+                    hw.setWord(label().value());
+                }
+                y.Add((T) label());
 
-    } else {
-      Tree[] kids = children();
-      foreach (Tree kid in kids) {
-        kid.yield(y);
-      }
-    }
-    return y;
-  }
+            }
+            else
+            {
+                Tree[] kids = children();
+                foreach (Tree kid in kids)
+                {
+                    kid.yield(y);
+                }
+            }
+            return y;
+        }
 
-  /**
+        /**
    * Gets the tagged yield of the tree.
    * The <code>Label</code> of all leaf nodes is returned
    * as a list ordered by the natural left to right order of the
@@ -1494,15 +1735,18 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return a <code>List</code> of the data in the tree's leaves.
    */
-  public List<Ling.TaggedWord> taggedYield() {
-      return taggedYield(new List<Ling.TaggedWord>());
-  }
 
-  public List<LabeledWord> labeledYield() {
-    return labeledYield(new List<LabeledWord>());
-  }
+        public List<Ling.TaggedWord> taggedYield()
+        {
+            return taggedYield(new List<Ling.TaggedWord>());
+        }
 
-  /**
+        public List<LabeledWord> labeledYield()
+        {
+            return labeledYield(new List<LabeledWord>());
+        }
+
+        /**
    * Gets the tagged yield of the tree -- that is, get the preterminals
    * as well as the terminals.  The <code>Label</code> of all leaf nodes
    * is returned
@@ -1519,60 +1763,76 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *           but if not, the new yield is added to the end of the list.
    * @return a <code>List</code> of the data in the tree's leaves.
    */
-  public /*<X extends List<TaggedWord>>*/ List<Ling.TaggedWord> taggedYield(List<Ling.TaggedWord> ty)
-  {
-    Tree[] kids = children();
-    // this inlines the content of isPreTerminal()
-    if (kids.Length == 1 && kids[0].isLeaf()) {
-      ty.Add(new Ling.TaggedWord(kids[0].label(), label()));
-    } else {
-      foreach (Tree kid in kids) {
-        kid.taggedYield(ty);
-      }
-    }
-    return ty;
-  }
 
-  public List<LabeledWord> labeledYield(List<LabeledWord> ty) {
-    Tree[] kids = children();
-    // this inlines the content of isPreTerminal()
-    if (kids.Length == 1 && kids[0].isLeaf()) {
-      ty.Add(new LabeledWord(kids[0].label(), label()));
-    } else {
-      foreach (Tree kid in kids) {
-        kid.labeledYield(ty);
-      }
-    }
-    return ty;
-  }
+        public /*<X extends List<TaggedWord>>*/ List<Ling.TaggedWord> taggedYield(List<Ling.TaggedWord> ty)
+        {
+            Tree[] kids = children();
+            // this inlines the content of isPreTerminal()
+            if (kids.Length == 1 && kids[0].isLeaf())
+            {
+                ty.Add(new Ling.TaggedWord(kids[0].label(), label()));
+            }
+            else
+            {
+                foreach (Tree kid in kids)
+                {
+                    kid.taggedYield(ty);
+                }
+            }
+            return ty;
+        }
 
-  public List<CoreLabel> taggedLabeledYield() {
-  	List<CoreLabel> ty = new List<CoreLabel>();
-  	taggedLabeledYield(ty,0);
-  	return ty;
-  }
+        public List<LabeledWord> labeledYield(List<LabeledWord> ty)
+        {
+            Tree[] kids = children();
+            // this inlines the content of isPreTerminal()
+            if (kids.Length == 1 && kids[0].isLeaf())
+            {
+                ty.Add(new LabeledWord(kids[0].label(), label()));
+            }
+            else
+            {
+                foreach (Tree kid in kids)
+                {
+                    kid.labeledYield(ty);
+                }
+            }
+            return ty;
+        }
 
-  private int taggedLabeledYield(List<CoreLabel> ty, int termIdx) {
-  	if(isPreTerminal()) {
-  		CoreLabel taggedWord = new CoreLabel();
-  		/*readonly*/ String tag = (value() == null) ? "" : value();
-  		taggedWord.setValue(tag);
-  		taggedWord.setTag(tag);
-  		taggedWord.setIndex(termIdx);
-  		taggedWord.setWord(firstChild().value());
-  		ty.Add(taggedWord);
+        public List<CoreLabel> taggedLabeledYield()
+        {
+            List<CoreLabel> ty = new List<CoreLabel>();
+            taggedLabeledYield(ty, 0);
+            return ty;
+        }
 
-  		return termIdx + 1;
+        private int taggedLabeledYield(List<CoreLabel> ty, int termIdx)
+        {
+            if (isPreTerminal())
+            {
+                CoreLabel taggedWord = new CoreLabel();
+                /*readonly*/
+                String tag = (value() == null) ? "" : value();
+                taggedWord.setValue(tag);
+                taggedWord.setTag(tag);
+                taggedWord.setIndex(termIdx);
+                taggedWord.setWord(firstChild().value());
+                ty.Add(taggedWord);
 
-  	} else {
-  		foreach(Tree kid in getChildrenAsList())
-  			termIdx = kid.taggedLabeledYield(ty, termIdx);
-  	}
+                return termIdx + 1;
 
-		return termIdx;
-  }
+            }
+            else
+            {
+                foreach (Tree kid in getChildrenAsList())
+                    termIdx = kid.taggedLabeledYield(ty, termIdx);
+            }
 
-  /**
+            return termIdx;
+        }
+
+        /**
    * Gets the preterminal yield (i.e., tags) of the tree.  All data in
    * preterminal nodes is returned as a list ordered by the natural left to
    * right order of the tree.  Null values, if any, are inserted into the
@@ -1580,12 +1840,14 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return a {@code List} of the data in the tree's pre-leaves.
    */
-  public List<Label> preTerminalYield() {
-    return preTerminalYield(new List<Label>());
-  }
+
+        public List<Label> preTerminalYield()
+        {
+            return preTerminalYield(new List<Label>());
+        }
 
 
-  /**
+        /**
    * Gets the preterminal yield (i.e., tags) of the tree.  All data in
    * preleaf nodes is returned as a list ordered by the natural left to
    * right order of the tree.  Null values, if any, are inserted into the
@@ -1596,30 +1858,38 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *          but if not, the new yield is added to the end of the list.
    * @return a <code>List</code> of the data in the tree's pre-leaves.
    */
-  public List<Label> preTerminalYield(List<Label> y) {
-    if (isPreTerminal()) {
-      y.Add(label());
-    } else {
-      Tree[] kids = children();
-      foreach (Tree kid in kids) {
-        kid.preTerminalYield(y);
-      }
-    }
-    return y;
-  }
 
-  /**
+        public List<Label> preTerminalYield(List<Label> y)
+        {
+            if (isPreTerminal())
+            {
+                y.Add(label());
+            }
+            else
+            {
+                Tree[] kids = children();
+                foreach (Tree kid in kids)
+                {
+                    kid.preTerminalYield(y);
+                }
+            }
+            return y;
+        }
+
+        /**
    * Gets the leaves of the tree.  All leaves nodes are returned as a list
    * ordered by the natural left to right order of the tree.  Null values,
    * if any, are inserted into the list like any other value.
    *
    * @return a <code>List</code> of the leaves.
    */
-  public /*<T extends Tree>*/ List<Tree> getLeaves() {
-    return getLeaves(new List<Tree>());
-  }
 
-  /**
+        public /*<T extends Tree>*/ List<Tree> getLeaves()
+        {
+            return getLeaves(new List<Tree>());
+        }
+
+        /**
    * Gets the leaves of the tree.
    *
    * @param list The list in which the leaves of the tree will be
@@ -1627,45 +1897,53 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *             but if not, the new yield is added to the end of the list.
    * @return a <code>List</code> of the leaves.
    */
-  //@SuppressWarnings("unchecked")
-  public /*<T extends Tree>*/ List<Tree> getLeaves(List<Tree> list) {
-    if (isLeaf()) {
-      list.Add((Tree)this);
-    } else {
-      foreach (Tree kid in children()) {
-        kid.getLeaves(list);
-      }
-    }
-    return list;
-  }
+        //@SuppressWarnings("unchecked")
+        public /*<T extends Tree>*/ List<Tree> getLeaves(List<Tree> list)
+        {
+            if (isLeaf())
+            {
+                list.Add((Tree) this);
+            }
+            else
+            {
+                foreach (Tree kid in children())
+                {
+                    kid.getLeaves(list);
+                }
+            }
+            return list;
+        }
 
 
-  /**
+        /**
    * Get the set of all node and leaf {@code Label}s,
    * null or otherwise, contained in the tree.
    *
    * @return the {@code Collection} (actually, Set) of all values
    *         in the tree.
    */
-  //@Override
-  public ICollection<Label> labels() {
-    Set<Label> n = new Set<Label>();
-    n.Add(label());
-    Tree[] kids = children();
-    foreach (Tree kid in kids) {
-      n.AddAll(kid.labels());
-    }
-    return n;
-  }
+        //@Override
+        public ICollection<Label> labels()
+        {
+            Set<Label> n = new Set<Label>();
+            n.Add(label());
+            Tree[] kids = children();
+            foreach (Tree kid in kids)
+            {
+                n.AddAll(kid.labels());
+            }
+            return n;
+        }
 
 
-  //@Override
-  public void setLabels(ICollection<Label> c) {
-    throw new InvalidOperationException("Can't set Tree labels");
-  }
+        //@Override
+        public void setLabels(ICollection<Label> c)
+        {
+            throw new InvalidOperationException("Can't set Tree labels");
+        }
 
 
-  /**
+        /**
    * Return a flattened version of a tree.  In many circumstances, this
    * will just return the tree, but if the tree is something like a
    * binarized version of a dependency grammar tree, then it will be
@@ -1678,11 +1956,13 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return A flattened version of this tree.
    */
-  public Tree flatten() {
-    return flatten(treeFactory());
-  }
 
-  /**
+        public Tree flatten()
+        {
+            return flatten(treeFactory());
+        }
+
+        /**
    * Return a flattened version of a tree.  In many circumstances, this
    * will just return the tree, but if the tree is something like a
    * binarized version of a dependency grammar tree, then it will be
@@ -1698,29 +1978,39 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param tf TreeFactory used to create tree structure for flattened tree
    * @return A flattened version of this tree.
    */
-  public Tree flatten(TreeFactory tf) {
-    if (isLeaf() || isPreTerminal()) {
-      return this;
-    }
-    Tree[] kids = children();
-    List<Tree> newChildren = new List<Tree>(kids.Length);
-    foreach (Tree child in kids) {
-      if (child.isLeaf() || child.isPreTerminal()) {
-        newChildren.Add(child);
-      } else {
-        Tree newChild = child.flatten(tf);
-        if (label().Equals(newChild.label())) {
-          newChildren.AddRange(newChild.getChildrenAsList());
-        } else {
-          newChildren.Add(newChild);
+
+        public Tree flatten(TreeFactory tf)
+        {
+            if (isLeaf() || isPreTerminal())
+            {
+                return this;
+            }
+            Tree[] kids = children();
+            List<Tree> newChildren = new List<Tree>(kids.Length);
+            foreach (Tree child in kids)
+            {
+                if (child.isLeaf() || child.isPreTerminal())
+                {
+                    newChildren.Add(child);
+                }
+                else
+                {
+                    Tree newChild = child.flatten(tf);
+                    if (label().Equals(newChild.label()))
+                    {
+                        newChildren.AddRange(newChild.getChildrenAsList());
+                    }
+                    else
+                    {
+                        newChildren.Add(newChild);
+                    }
+                }
+            }
+            return tf.newTreeNode(label(), newChildren);
         }
-      }
-    }
-    return tf.newTreeNode(label(), newChildren);
-  }
 
 
-  /**
+        /**
    * Get the set of all subtrees inside the tree by returning a tree
    * rooted at each node.  These are <i>not</i> copies, but all share
    * structure.  The tree is regarded as a subtree of itself.
@@ -1732,11 +2022,13 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return the <code>Set</code> of all subtrees in the tree.
    */
-  public Set<Tree> subTrees() {
-    return subTrees(new HashSet<Tree>());
-  }
 
-  /**
+        public Set<Tree> subTrees()
+        {
+            return subTrees(new HashSet<Tree>());
+        }
+
+        /**
    * Get the list of all subtrees inside the tree by returning a tree
    * rooted at each node.  These are <i>not</i> copies, but all share
    * structure.  The tree is regarded as a subtree of itself.
@@ -1748,12 +2040,14 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return the <code>List</code> of all subtrees in the tree.
    */
-  public List<Tree> subTreeList() {
-    return subTrees(new List<Tree>());
-  }
+
+        public List<Tree> subTreeList()
+        {
+            return subTrees(new List<Tree>());
+        }
 
 
-  /**
+        /**
    * Add the set of all subtrees inside a tree (including the tree itself)
    * to the given <code>Collection</code>.
    * <p/>
@@ -1765,17 +2059,19 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param n A collection of nodes to which the subtrees will be added.
    * @return The collection parameter with the subtrees added.
    */
-  public /*<T extends Collection<Tree>>*/ T subTrees<T>(T n) where T: ICollection<Tree>
-  {
-    n.Add(this);
-    Tree[] kids = children();
-    foreach (Tree kid in kids) {
-      kid.subTrees(n);
-    }
-    return n;
-  }
 
-  /**
+        public /*<T extends Collection<Tree>>*/ T subTrees<T>(T n) where T : ICollection<Tree>
+        {
+            n.Add(this);
+            Tree[] kids = children();
+            foreach (Tree kid in kids)
+            {
+                kid.subTrees(n);
+            }
+            return n;
+        }
+
+        /**
    * Makes a deep copy of not only the Tree structure but of the labels as well.
    * Uses the TreeFactory of the root node given by treeFactory().
    * Assumes that your labels give a non-null labelFactory().
@@ -1783,12 +2079,14 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return A deep copy of the tree structure and its labels
    */
-  public Tree deepCopy() {
-    return deepCopy(treeFactory());
-  }
+
+        public Tree deepCopy()
+        {
+            return deepCopy(treeFactory());
+        }
 
 
-  /**
+        /**
    * Makes a deep copy of not only the Tree structure but of the labels as well.
    * The new tree will have nodes made by the given TreeFactory.
    * Each Label is copied using the labelFactory() returned
@@ -1801,12 +2099,14 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return A Tree that is a deep copy of the tree structure and
    *         Labels of the original tree.
    */
-  public Tree deepCopy(TreeFactory tf) {
-    return deepCopy(tf, label().labelFactory());
-  }
+
+        public Tree deepCopy(TreeFactory tf)
+        {
+            return deepCopy(tf, label().labelFactory());
+        }
 
 
-  /**
+        /**
    * Makes a deep copy of not only the Tree structure but of the labels as well.
    * Each tree is copied with the given TreeFactory.
    * Each Label is copied using the given LabelFactory.
@@ -1821,23 +2121,26 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *         Labels of the original tree.
    */
 
-  //@SuppressWarnings({"unchecked"})
-  public Tree deepCopy(TreeFactory tf, LabelFactory lf) {
-    Label lab = lf.newLabel(label());
-    if (isLeaf()) {
-      return tf.newLeaf(lab);
-    }
-    Tree[] kids = children();
-    // NB: The below list may not be of type Tree but TreeGraphNode, so we leave it untyped
-    List<Tree> newKids = new List<Tree>(kids.Length);
-    foreach (Tree kid in kids) {
-      newKids.Add(kid.deepCopy(tf, lf));
-    }
-    return tf.newTreeNode(lab, newKids);
-  }
+        //@SuppressWarnings({"unchecked"})
+        public Tree deepCopy(TreeFactory tf, LabelFactory lf)
+        {
+            Label lab = lf.newLabel(label());
+            if (isLeaf())
+            {
+                return tf.newLeaf(lab);
+            }
+            Tree[] kids = children();
+            // NB: The below list may not be of type Tree but TreeGraphNode, so we leave it untyped
+            List<Tree> newKids = new List<Tree>(kids.Length);
+            foreach (Tree kid in kids)
+            {
+                newKids.Add(kid.deepCopy(tf, lf));
+            }
+            return tf.newTreeNode(lab, newKids);
+        }
 
 
-  /**
+        /**
    * Create a deep copy of the tree structure.  The entire structure is
    * recursively copied, but label data themselves are not cloned.
    * The copy is built using a <code>TreeFactory</code> that will
@@ -1845,12 +2148,14 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return A deep copy of the tree structure (but not its labels).
    */
-  public Tree treeSkeletonCopy() {
-    return treeSkeletonCopy(treeFactory());
-  }
+
+        public Tree treeSkeletonCopy()
+        {
+            return treeSkeletonCopy(treeFactory());
+        }
 
 
-  /**
+        /**
    * Create a deep copy of the tree structure.  The entire structure is
    * recursively copied, but label data themselves are not cloned.
    * By specifying an appropriate <code>TreeFactory</code>, this
@@ -1860,23 +2165,29 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *           the returned <code>Tree</code>
    * @return A deep copy of the tree structure (but not its labels).
    */
-  public Tree treeSkeletonCopy(TreeFactory tf) {
-    Tree t;
-    if (isLeaf()) {
-      t = tf.newLeaf(label());
-    } else {
-      Tree[] kids = children();
-      List<Tree> newKids = new List<Tree>(kids.Length);
-      foreach (Tree kid in kids) {
-        newKids.Add(kid.treeSkeletonCopy(tf));
-      }
-      t = tf.newTreeNode(label(), newKids);
-    }
-    return t;
-  }
+
+        public Tree treeSkeletonCopy(TreeFactory tf)
+        {
+            Tree t;
+            if (isLeaf())
+            {
+                t = tf.newLeaf(label());
+            }
+            else
+            {
+                Tree[] kids = children();
+                List<Tree> newKids = new List<Tree>(kids.Length);
+                foreach (Tree kid in kids)
+                {
+                    newKids.Add(kid.treeSkeletonCopy(tf));
+                }
+                t = tf.newTreeNode(label(), newKids);
+            }
+            return t;
+        }
 
 
-  /**
+        /**
    * Create a transformed Tree.  The tree is traversed in a depth-first,
    * left-to-right order, and the <code>TreeTransformer</code> is called
    * on each node.  It returns some <code>Tree</code>.  The transformed
@@ -1886,12 +2197,14 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param transformer The function that transforms tree nodes or subtrees
    * @return a transformation of this <code>Tree</code>
    */
-  public Tree transform(/*readonly*/ TreeTransformer transformer) {
-    return transform(transformer, treeFactory());
-  }
+
+        public Tree transform( /*readonly*/ TreeTransformer transformer)
+        {
+            return transform(transformer, treeFactory());
+        }
 
 
-  /**
+        /**
    * Create a transformed Tree.  The tree is traversed in a depth-first,
    * left-to-right order, and the <code>TreeTransformer</code> is called
    * on each node.  It returns some <code>Tree</code>.  The transformed
@@ -1903,23 +2216,29 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *                    new nodes for the returned <code>Tree</code>
    * @return a transformation of this <code>Tree</code>
    */
-  public Tree transform(/*readonly*/ TreeTransformer transformer, /*readonly */TreeFactory tf) {
-    Tree t;
-    if (isLeaf()) {
-      t = tf.newLeaf(label());
-    } else {
-      Tree[] kids = children();
-      List<Tree> newKids = new List<Tree>(kids.Length);
-      foreach (Tree kid in kids) {
-        newKids.Add(kid.transform(transformer, tf));
-      }
-      t = tf.newTreeNode(label(), newKids);
-    }
-    return transformer.transformTree(t);
-  }
+
+        public Tree transform( /*readonly*/ TreeTransformer transformer, /*readonly */TreeFactory tf)
+        {
+            Tree t;
+            if (isLeaf())
+            {
+                t = tf.newLeaf(label());
+            }
+            else
+            {
+                Tree[] kids = children();
+                List<Tree> newKids = new List<Tree>(kids.Length);
+                foreach (Tree kid in kids)
+                {
+                    newKids.Add(kid.transform(transformer, tf));
+                }
+                t = tf.newTreeNode(label(), newKids);
+            }
+            return transformer.transformTree(t);
+        }
 
 
-  /**
+        /**
    * Creates a (partial) deep copy of the tree, where all nodes that the
    * filter does not accept are spliced out.  If the result is not a tree
    * (that is, it's a forest), an empty root node is generated.
@@ -1928,12 +2247,14 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *                   keep this node, false to mean delete it
    * @return a filtered copy of the tree
    */
-  public Tree spliceOut(/*readonly*/ Predicate<Tree> nodeFilter) {
-    return spliceOut(nodeFilter, treeFactory());
-  }
+
+        public Tree spliceOut( /*readonly*/ Predicate<Tree> nodeFilter)
+        {
+            return spliceOut(nodeFilter, treeFactory());
+        }
 
 
-  /**
+        /**
    * Creates a (partial) deep copy of the tree, where all nodes that the
    * filter does not accept are spliced out.  That is, the particular
    * modes for which the <code>Filter</code> returns <code>false</code>
@@ -1950,44 +2271,55 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *                   the root node is deleted.
    * @return a filtered copy of the tree.
    */
-  public Tree spliceOut(/*readonly*/ Predicate<Tree> nodeFilter, /*readonly */TreeFactory tf) {
-    List<Tree> l = spliceOutHelper(nodeFilter, tf);
-    if (!l.Any()) {
-      return null;
-    } else if (l.Count == 1) {
-      return l[0];
-    }
-    // for a forest, make a new root
-    return tf.newTreeNode((Label) null, l);
-  }
+
+        public Tree spliceOut( /*readonly*/ Predicate<Tree> nodeFilter, /*readonly */TreeFactory tf)
+        {
+            List<Tree> l = spliceOutHelper(nodeFilter, tf);
+            if (!l.Any())
+            {
+                return null;
+            }
+            else if (l.Count == 1)
+            {
+                return l[0];
+            }
+            // for a forest, make a new root
+            return tf.newTreeNode((Label) null, l);
+        }
 
 
-  private List<Tree> spliceOutHelper(Predicate<Tree> nodeFilter, TreeFactory tf) {
-    // recurse over all children first
-    Tree[] kids = children();
-    List<Tree> l = new List<Tree>();
-    foreach (Tree kid in kids) {
-      l.AddRange(kid.spliceOutHelper(nodeFilter, tf));
-    }
-    // check if this node is being spliced out
-    if (nodeFilter(this)) {
-      // no, so add our children and return
-      Tree t;
-      if (l.Any()) {
-        t = tf.newTreeNode(label(), l);
-      } else {
-        t = tf.newLeaf(label());
-      }
-      l = new List<Tree>(1);
-      l.Add(t);
-      return l;
-    }
-    // we're out, so return our children
-    return l;
-  }
+        private List<Tree> spliceOutHelper(Predicate<Tree> nodeFilter, TreeFactory tf)
+        {
+            // recurse over all children first
+            Tree[] kids = children();
+            List<Tree> l = new List<Tree>();
+            foreach (Tree kid in kids)
+            {
+                l.AddRange(kid.spliceOutHelper(nodeFilter, tf));
+            }
+            // check if this node is being spliced out
+            if (nodeFilter(this))
+            {
+                // no, so add our children and return
+                Tree t;
+                if (l.Any())
+                {
+                    t = tf.newTreeNode(label(), l);
+                }
+                else
+                {
+                    t = tf.newLeaf(label());
+                }
+                l = new List<Tree>(1);
+                l.Add(t);
+                return l;
+            }
+            // we're out, so return our children
+            return l;
+        }
 
 
-  /**
+        /**
    * Creates a deep copy of the tree, where all nodes that the filter
    * does not accept and all children of such nodes are pruned.  If all
    * of a node's children are pruned, that node is cut as well.
@@ -2010,12 +2342,14 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return a filtered copy of the tree, including the possibility of
    *         <code>null</code> if the root node of the tree is filtered
    */
-  public Tree prune(/*readonly*/ Predicate<Tree> filter) {
-    return prune(filter, treeFactory());
-  }
+
+        public Tree prune( /*readonly*/ Predicate<Tree> filter)
+        {
+            return prune(filter, treeFactory());
+        }
 
 
-  /**
+        /**
    * Creates a deep copy of the tree, where all nodes that the filter
    * does not accept and all children of such nodes are pruned.  If all
    * of a node's children are pruned, that node is cut as well.
@@ -2027,55 +2361,64 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return a filtered copy of the tree, including the possibility of
    *         <code>null</code> if the root node of the tree is filtered
    */
-  public Tree prune(Predicate<Tree> filter, TreeFactory tf) {
-    // is the current node to be pruned?
-    if ( ! filter(this)) {
-      return null;
-    }
-    // if not, recurse over all children
-    List<Tree> l = new List<Tree>();
-    Tree[] kids = children();
-    foreach (Tree kid in kids) {
-      Tree prunedChild = kid.prune(filter, tf);
-      if (prunedChild != null) {
-        l.Add(prunedChild);
-      }
-    }
-    // and check if this node has lost all its children
-    if (!l.Any() && !(kids.Length == 0)) {
-      return null;
-    }
-    // if we're still ok, copy the node
-    if (isLeaf()) {
-      return tf.newLeaf(label());
-    }
-    return tf.newTreeNode(label(), l);
-  }
 
-  /**
+        public Tree prune(Predicate<Tree> filter, TreeFactory tf)
+        {
+            // is the current node to be pruned?
+            if (! filter(this))
+            {
+                return null;
+            }
+            // if not, recurse over all children
+            List<Tree> l = new List<Tree>();
+            Tree[] kids = children();
+            foreach (Tree kid in kids)
+            {
+                Tree prunedChild = kid.prune(filter, tf);
+                if (prunedChild != null)
+                {
+                    l.Add(prunedChild);
+                }
+            }
+            // and check if this node has lost all its children
+            if (!l.Any() && !(kids.Length == 0))
+            {
+                return null;
+            }
+            // if we're still ok, copy the node
+            if (isLeaf())
+            {
+                return tf.newLeaf(label());
+            }
+            return tf.newTreeNode(label(), l);
+        }
+
+        /**
    * Returns first child if this is unary and if the label at the current
    * node is either "ROOT" or empty.
    *
    * @return The first child if this is unary and if the label at the current
    * node is either "ROOT" or empty, else this
    */
-  public Tree skipRoot() {
-    if(!isUnaryRewrite())
-      return this;
-    String lab = label().value();
-    return (lab == null || !lab.Any() || "ROOT".Equals(lab)) ? firstChild() : this;
-  }
 
-  /**
+        public Tree skipRoot()
+        {
+            if (!isUnaryRewrite())
+                return this;
+            String lab = label().value();
+            return (lab == null || !lab.Any() || "ROOT".Equals(lab)) ? firstChild() : this;
+        }
+
+        /**
    * Return a <code>TreeFactory</code> that produces trees of the
    * appropriate type.
    *
    * @return A factory to produce Trees
    */
-  public abstract TreeFactory treeFactory();
+        public abstract TreeFactory treeFactory();
 
 
-  /**
+        /**
    * Return the parent of the tree node.  This routine may return
    * <code>null</code> meaning simply that the implementation doesn't
    * know how to determine the parent node, rather than there is no
@@ -2084,12 +2427,14 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return The parent <code>Tree</code> node or <code>null</code>
    * @see Tree#parent(Tree)
    */
-  public virtual Tree parent() {
-    throw new InvalidOperationException();
-  }
+
+        public virtual Tree parent()
+        {
+            throw new InvalidOperationException();
+        }
 
 
-  /**
+        /**
    * Return the parent of the tree node.  This routine will traverse
    * a tree (depth first) from the given <code>root</code>, and will
    * correctly find the parent, regardless of whether the concrete
@@ -2101,27 +2446,33 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return the parent <code>Tree</code> node if any;
    *         else <code>null</code>
    */
-  public Tree parent(Tree root) {
-    Tree[] kids = root.children();
-    return parentHelper(root, kids, this);
-  }
+
+        public Tree parent(Tree root)
+        {
+            Tree[] kids = root.children();
+            return parentHelper(root, kids, this);
+        }
 
 
-  private static Tree parentHelper(Tree parent, Tree[] kids, Tree node) {
-    foreach (Tree kid in kids) {
-      if (kid == node) {
-        return parent;
-      }
-      Tree ret = node.parent(kid);
-      if (ret != null) {
-        return ret;
-      }
-    }
-    return null;
-  }
+        private static Tree parentHelper(Tree parent, Tree[] kids, Tree node)
+        {
+            foreach (Tree kid in kids)
+            {
+                if (kid == node)
+                {
+                    return parent;
+                }
+                Tree ret = node.parent(kid);
+                if (ret != null)
+                {
+                    return ret;
+                }
+            }
+            return null;
+        }
 
 
-  /**
+        /**
    * Returns the number of nodes the tree contains.  This method
    * implements the <code>size()</code> function required by the
    * <code>Collections</code> interface.  The size of the tree is the
@@ -2131,17 +2482,19 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return The size of the tree
    * @see #depth()
    */
-  //@Override
-  public int size() {
-    int size = 1;
-    Tree[] kids = children();
-    foreach (Tree kid in kids) {
-      size += kid.size();
-    }
-    return size;
-  }
+        //@Override
+        public int size()
+        {
+            int size = 1;
+            Tree[] kids = children();
+            foreach (Tree kid in kids)
+            {
+                size += kid.size();
+            }
+            return size;
+        }
 
-  /**
+        /**
    * Return the ancestor tree node <code>height</code> nodes up from the current node.
    *
    * @param height How many nodes up to go. A parameter of 0 means return
@@ -2151,22 +2504,27 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *         if it does not exist or the tree implementation does not keep track
    *         of parents
    */
-  public Tree ancestor(int height, Tree root) {
-    if (height < 0) {
-      throw new ArgumentException("ancestor: height cannot be negative");
-    }
-    if (height == 0) {
-      return this;
-    }
-    Tree par = parent(root);
-    if (par == null) {
-      return null;
-    }
-    return par.ancestor(height - 1, root);
-  }
+
+        public Tree ancestor(int height, Tree root)
+        {
+            if (height < 0)
+            {
+                throw new ArgumentException("ancestor: height cannot be negative");
+            }
+            if (height == 0)
+            {
+                return this;
+            }
+            Tree par = parent(root);
+            if (par == null)
+            {
+                return null;
+            }
+            return par.ancestor(height - 1, root);
+        }
 
 
-  /*private static class TreeIterator : Iterator<Tree> {
+        /*private static class TreeIterator : Iterator<Tree> {
 
     private readonly List<Tree> treeStack;
 
@@ -2210,19 +2568,19 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
 
   }*/
 
-  public class TreeIterator : IEnumerator<Tree>
-  {
+        public class TreeIterator : IEnumerator<Tree>
+        {
 
-      private readonly List<Tree> treeStack;
+            private readonly List<Tree> treeStack;
 
-      public TreeIterator(Tree t)
-      {
-          treeStack = new List<Tree>();
-          treeStack.Add(t);
-      }
+            public TreeIterator(Tree t)
+            {
+                treeStack = new List<Tree>();
+                treeStack.Add(t);
+            }
 
-      //@Override
-      /*public bool hasNext()
+            //@Override
+            /*public bool hasNext()
       {
           return (treeStack.Any());
       }
@@ -2246,52 +2604,52 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
           return tr;
       }*/
 
-      public void Dispose()
-      {
-          throw new NotImplementedException();
-      }
+            public void Dispose()
+            {
+                throw new NotImplementedException();
+            }
 
-      public bool MoveNext()
-      {
-          if (!treeStack.Any())
-          {
-              this.Current = null;
-              return false;
-          }
-          else
-          {
-              this.Current = treeStack.Last();
-              treeStack.Remove(this.Current);
-              Tree[] kids = this.Current.children();
-              // so that we can efficiently use one List, we reverse them
-              for (int i = kids.Length - 1; i >= 0; i--)
-              {
-                  treeStack.Add(kids[i]);
-              }
-              return true;
-          }
-      }
+            public bool MoveNext()
+            {
+                if (!treeStack.Any())
+                {
+                    this.Current = null;
+                    return false;
+                }
+                else
+                {
+                    this.Current = treeStack.Last();
+                    treeStack.Remove(this.Current);
+                    Tree[] kids = this.Current.children();
+                    // so that we can efficiently use one List, we reverse them
+                    for (int i = kids.Length - 1; i >= 0; i--)
+                    {
+                        treeStack.Add(kids[i]);
+                    }
+                    return true;
+                }
+            }
 
-      public void Reset()
-      {
-          throw new NotImplementedException();
-      }
+            public void Reset()
+            {
+                throw new NotImplementedException();
+            }
 
-      public Tree Current { get; private set; }
+            public Tree Current { get; private set; }
 
-      object IEnumerator.Current
-      {
-          get { return Current; }
-      }
-  }
+            object IEnumerator.Current
+            {
+                get { return Current; }
+            }
+        }
 
 
-    public override IEnumerator<Tree> GetEnumerator()
-    {
-        return new TreeIterator(this);
-    }
+        public override IEnumerator<Tree> GetEnumerator()
+        {
+            return new TreeIterator(this);
+        }
 
-    /**
+        /**
    * Returns an iterator over all the nodes of the tree.  This method
    * implements the <code>iterator()</code> method required by the
    * <code>Collections</code> interface.  It does a preorder
@@ -2301,36 +2659,45 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *
    * @return An iterator over the nodes of the tree
    */
-  //@Override
-  public TreeIterator iterator() {
-    return new TreeIterator(this);
-  }
+        //@Override
+        public TreeIterator iterator()
+        {
+            return new TreeIterator(this);
+        }
 
-  public List<Tree> postOrderNodeList() {
-    List<Tree> nodes = new List<Tree>();
-    postOrderRecurse(this, nodes);
-    return nodes;
-  }
-  private static void postOrderRecurse(Tree t, List<Tree> nodes) {
-    foreach (Tree c in t.children()) {
-      postOrderRecurse(c, nodes);
-    }
-    nodes.Add(t);
-  }
+        public List<Tree> postOrderNodeList()
+        {
+            List<Tree> nodes = new List<Tree>();
+            postOrderRecurse(this, nodes);
+            return nodes;
+        }
 
-  public List<Tree> preOrderNodeList() {
-    List<Tree> nodes = new List<Tree>();
-    preOrderRecurse(this, nodes);
-    return nodes;
-  }
-  private static void preOrderRecurse(Tree t, List<Tree> nodes) {
-    nodes.Add(t);
-    foreach (Tree c in t.children()) {
-      preOrderRecurse(c, nodes);
-    }
-  }
+        private static void postOrderRecurse(Tree t, List<Tree> nodes)
+        {
+            foreach (Tree c in t.children())
+            {
+                postOrderRecurse(c, nodes);
+            }
+            nodes.Add(t);
+        }
 
-  /**
+        public List<Tree> preOrderNodeList()
+        {
+            List<Tree> nodes = new List<Tree>();
+            preOrderRecurse(this, nodes);
+            return nodes;
+        }
+
+        private static void preOrderRecurse(Tree t, List<Tree> nodes)
+        {
+            nodes.Add(t);
+            foreach (Tree c in t.children())
+            {
+                preOrderRecurse(c, nodes);
+            }
+        }
+
+        /**
    * This gives you a tree from a String representation (as a
    * bracketed Tree, of the kind produced by <code>toString()</code>,
    * <code>pennPrint()</code>, or as in the Penn Treebank).
@@ -2344,11 +2711,13 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return The Tree
    * @throws RuntimeException If Tree format is not valid
    */
-  public static Tree valueOf(String str) {
-      return valueOf(str, new LabeledScoredTreeReaderFactory());
-  }
 
-  /**
+        public static Tree valueOf(String str)
+        {
+            return valueOf(str, new LabeledScoredTreeReaderFactory());
+        }
+
+        /**
    * This gives you a tree from a String representation (as a
    * bracketed Tree, of the kind produced by <code>toString()</code>,
    * <code>pennPrint()</code>, or as in the Penn Treebank.
@@ -2359,28 +2728,35 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @return The Tree
    * @throws RuntimeException If the Tree format is not valid
    */
-  public static Tree valueOf(String str, TreeReaderFactory trf) {
-    try {
-      return trf.newTreeReader(new StringReader(str)).readTree();
-    } catch (IOException ioe) {
-      throw new SystemException("Tree.valueOf() tree construction failed", ioe);
-    }
-  }
+
+        public static Tree valueOf(String str, TreeReaderFactory trf)
+        {
+            try
+            {
+                return trf.newTreeReader(new StringReader(str)).readTree();
+            }
+            catch (IOException ioe)
+            {
+                throw new SystemException("Tree.valueOf() tree construction failed", ioe);
+            }
+        }
 
 
-  /**
+        /**
    * Return the child at some daughter index.  The children are numbered
    * starting with an index of 0.
    *
    * @param i The daughter index
    * @return The tree at that daughter index
    */
-  public Tree getChild(int i) {
-    Tree[] kids = children();
-    return kids[i];
-  }
 
-  /**
+        public Tree getChild(int i)
+        {
+            Tree[] kids = children();
+            return kids[i];
+        }
+
+        /**
    * Destructively removes the child at some daughter index and returns it.
    * Note
    * that this method will throw an {@link ArrayIndexOutOfBoundsException} if
@@ -2389,22 +2765,28 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param i The daughter index
    * @return The tree at that daughter index
    */
-  public Tree removeChild(int i) {
-    Tree[] kids = children();
-    Tree kid = kids[i];
-    Tree[] newKids = new Tree[kids.Length - 1];
-    for (int j = 0; j < newKids.Length; j++) {
-      if (j < i) {
-        newKids[j] = kids[j];
-      } else {
-        newKids[j] = kids[j + 1];
-      }
-    }
-    setChildren(newKids);
-    return kid;
-  }
 
-  /**
+        public Tree removeChild(int i)
+        {
+            Tree[] kids = children();
+            Tree kid = kids[i];
+            Tree[] newKids = new Tree[kids.Length - 1];
+            for (int j = 0; j < newKids.Length; j++)
+            {
+                if (j < i)
+                {
+                    newKids[j] = kids[j];
+                }
+                else
+                {
+                    newKids[j] = kids[j + 1];
+                }
+            }
+            setChildren(newKids);
+            return kid;
+        }
+
+        /**
    * Adds the tree t at the index position among the daughters.  Note
    * that this method will throw an {@link ArrayIndexOutOfBoundsException} if
    * the daughter index is too big for the list of daughters.
@@ -2412,29 +2794,35 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param i the index position at which to add the new daughter
    * @param t the new daughter
    */
-  public void addChild(int i, Tree t) {
-    Tree[] kids = children();
-    Tree[] newKids = new Tree[kids.Length + 1];
-    if (i != 0) {
-      Array.Copy(kids, 0, newKids, 0, i);
-    }
-    newKids[i] = t;
-    if (i != kids.Length) {
-      Array.Copy(kids, i, newKids, i + 1, kids.Length - i);
-    }
-    setChildren(newKids);
-  }
 
-  /**
+        public void addChild(int i, Tree t)
+        {
+            Tree[] kids = children();
+            Tree[] newKids = new Tree[kids.Length + 1];
+            if (i != 0)
+            {
+                Array.Copy(kids, 0, newKids, 0, i);
+            }
+            newKids[i] = t;
+            if (i != kids.Length)
+            {
+                Array.Copy(kids, i, newKids, i + 1, kids.Length - i);
+            }
+            setChildren(newKids);
+        }
+
+        /**
    * Adds the tree t at the last index position among the daughters.
    *
    * @param t the new daughter
    */
-  public void addChild(Tree t) {
-    addChild(children().Length, t);
-  }
 
-  /**
+        public void addChild(Tree t)
+        {
+            addChild(children().Length, t);
+        }
+
+        /**
    * Replaces the <code>i</code>th child of <code>this</code> with the tree t.
    * Note
    * that this method will throw an {@link ArrayIndexOutOfBoundsException} if
@@ -2444,104 +2832,124 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param t The new child
    * @return The tree that was previously the ith d
    */
-  public Tree setChild(int i, Tree t) {
-    Tree[] kids = children();
-    Tree old = kids[i];
-    kids[i] = t;
-    return old;
-  }
 
-  /**
+        public Tree setChild(int i, Tree t)
+        {
+            Tree[] kids = children();
+            Tree old = kids[i];
+            kids[i] = t;
+            return old;
+        }
+
+        /**
    * Returns true if <code>this</code> dominates the Tree passed in
    * as an argument.  Object equality (==) rather than .equals() is used
    * to determine domination.
    * t.dominates(t) returns false.
    */
-  public bool dominates(Tree t) {
-    List<Tree> dPath = dominationPath(t);
-    return dPath != null && dPath.Count > 1;
-  }
 
-  /**
+        public bool dominates(Tree t)
+        {
+            List<Tree> dPath = dominationPath(t);
+            return dPath != null && dPath.Count > 1;
+        }
+
+        /**
    * Returns the path of nodes leading down to a dominated node,
    * including <code>this</code> and the dominated node itself.
    * Returns null if t is not dominated by <code>this</code>.  Object
    * equality (==) is the relevant criterion.
    * t.dominationPath(t) returns null.
    */
-  public List<Tree> dominationPath(Tree t) {
-    //Tree[] result = dominationPathHelper(t, 0);
-    Tree[] result = dominationPath(t, 0);
-    if (result == null) {
-      return null;
-    }
-    return result.ToList();
-  }
 
-  private Tree[] dominationPathHelper(Tree t, int depth) {
-    Tree[] kids = children();
-    for (int i = kids.Length - 1; i >= 0; i--) {
-      Tree t1 = kids[i];
-      if (t1 == null) {
-        return null;
-      }
-      Tree[] result;
-      if ((result = t1.dominationPath(t, depth + 1)) != null) {
-        result[depth] = this;
-        return result;
-      }
-    }
-    return null;
-  }
+        public List<Tree> dominationPath(Tree t)
+        {
+            //Tree[] result = dominationPathHelper(t, 0);
+            Tree[] result = dominationPath(t, 0);
+            if (result == null)
+            {
+                return null;
+            }
+            return result.ToList();
+        }
 
-  private Tree[] dominationPath(Tree t, int depth) {
-    if (this == t) {
-      Tree[] result = new Tree[depth + 1];
-      result[depth] = this;
-      return result;
-    }
-    return dominationPathHelper(t, depth);
-  }
+        private Tree[] dominationPathHelper(Tree t, int depth)
+        {
+            Tree[] kids = children();
+            for (int i = kids.Length - 1; i >= 0; i--)
+            {
+                Tree t1 = kids[i];
+                if (t1 == null)
+                {
+                    return null;
+                }
+                Tree[] result;
+                if ((result = t1.dominationPath(t, depth + 1)) != null)
+                {
+                    result[depth] = this;
+                    return result;
+                }
+            }
+            return null;
+        }
 
-  /**
+        private Tree[] dominationPath(Tree t, int depth)
+        {
+            if (this == t)
+            {
+                Tree[] result = new Tree[depth + 1];
+                result[depth] = this;
+                return result;
+            }
+            return dominationPathHelper(t, depth);
+        }
+
+        /**
    * Given nodes <code>t1</code> and <code>t2</code> which are
    * dominated by this node, returns a list of all the nodes on the
    * path from t1 to t2, inclusive, or null if none found.
    */
-  public List<Tree> pathNodeToNode(Tree t1, Tree t2) {
-    if (!Contains(t1) || !Contains(t2)) {
-      return null;
-    }
-    if (t1 == t2) {
-      return new List<Tree>(){t1};
-    }
-    if (t1.dominates(t2)) {
-      return t1.dominationPath(t2);
-    }
-    if (t2.dominates(t1)) {
-      List<Tree> path1 = t2.dominationPath(t1);
-      path1.Reverse();
-      return path1;
-    }
-    Tree jNode = joinNode(t1, t2);
-    if (jNode == null)
-    {
-      return null;
-    }
-    List<Tree> t1DomPath = jNode.dominationPath(t1);
-    List<Tree> t2DomPath = jNode.dominationPath(t2);
-    if (t1DomPath == null || t2DomPath == null) {
-      return null;
-    }
-    List<Tree> path = new List<Tree>();
-    path.AddRange(t1DomPath);
-    path.Reverse();
-    path.Remove(jNode);
-    path.AddRange(t2DomPath);
-    return path;
-  }
 
-  /**
+        public List<Tree> pathNodeToNode(Tree t1, Tree t2)
+        {
+            if (!Contains(t1) || !Contains(t2))
+            {
+                return null;
+            }
+            if (t1 == t2)
+            {
+                return new List<Tree>() {t1};
+            }
+            if (t1.dominates(t2))
+            {
+                return t1.dominationPath(t2);
+            }
+            if (t2.dominates(t1))
+            {
+                List<Tree> path1 = t2.dominationPath(t1);
+                path1.Reverse();
+                return path1;
+            }
+            Tree jNode = joinNode(t1, t2);
+            if (jNode == null)
+            {
+                return null;
+            }
+            List<Tree> t1DomPath = jNode.dominationPath(t1);
+            List<Tree> t2DomPath = jNode.dominationPath(t2);
+            if (t1DomPath == null || t2DomPath == null)
+            {
+                return null;
+            }
+            List<Tree> path = new List<Tree>();
+            path.AddRange(t1DomPath);
+            path.Reverse();
+            path.Remove(jNode);
+            path.AddRange(t2DomPath);
+            return path;
+        }
+
+        /**
    * Given nodes <code>t1</code> and <code>t2</code> which are
    * dominated by this node, returns their "join node": the node
    * <code>j</code> such that <code>j</code> dominates both
@@ -2551,52 +2959,64 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * In the special case that t1 dominates t2, return t1, and vice versa.
    * Return <code>null</code> if no such node can be found.
    */
-  public Tree joinNode(Tree t1, Tree t2) {
-    if (!Contains(t1) || !Contains(t2)) {
-      return null;
-    }
-    if (this == t1 || this == t2) {
-      return this;
-    }
-    Tree joinNode = null;
-    List<Tree> t1DomPath = dominationPath(t1);
-    List<Tree> t2DomPath = dominationPath(t2);
-    if (t1DomPath == null || t2DomPath == null) {
-      return null;
-    }
-    IEnumerator<Tree> it1 = t1DomPath.GetEnumerator();
-    IEnumerator<Tree> it2 = t2DomPath.GetEnumerator();
-    while (it1.MoveNext() && it2.MoveNext()) {
-      Tree n1 = it1.Current;
-      Tree n2 = it2.Current;
-      if (n1 != n2) {
-        break;
-      }
-      joinNode = n1;
-    }
-    return joinNode;
-  }
 
-  /**
+        public Tree joinNode(Tree t1, Tree t2)
+        {
+            if (!Contains(t1) || !Contains(t2))
+            {
+                return null;
+            }
+            if (this == t1 || this == t2)
+            {
+                return this;
+            }
+            Tree joinNode = null;
+            List<Tree> t1DomPath = dominationPath(t1);
+            List<Tree> t2DomPath = dominationPath(t2);
+            if (t1DomPath == null || t2DomPath == null)
+            {
+                return null;
+            }
+            IEnumerator<Tree> it1 = t1DomPath.GetEnumerator();
+            IEnumerator<Tree> it2 = t2DomPath.GetEnumerator();
+            while (it1.MoveNext() && it2.MoveNext())
+            {
+                Tree n1 = it1.Current;
+                Tree n2 = it2.Current;
+                if (n1 != n2)
+                {
+                    break;
+                }
+                joinNode = n1;
+            }
+            return joinNode;
+        }
+
+        /**
    * Given nodes {@code t1} and {@code t2} which are
    * dominated by this node, returns {@code true} iff
    * {@code t1} c-commands {@code t2}.  (A node c-commands
    * its sister(s) and any nodes below its sister(s).)
    */
-  public bool cCommands(Tree t1, Tree t2) {
-    List<Tree> sibs = t1.siblings(this);
-    if (sibs == null) {
-      return false;
-    }
-    foreach (Tree sib in sibs) {
-      if (sib == t2 || sib.Contains(t2)) {
-        return true;
-      }
-    }
-    return false;
-  }
 
-  /**
+        public bool cCommands(Tree t1, Tree t2)
+        {
+            List<Tree> sibs = t1.siblings(this);
+            if (sibs == null)
+            {
+                return false;
+            }
+            foreach (Tree sib in sibs)
+            {
+                if (sib == t2 || sib.Contains(t2))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /**
    * Returns the siblings of this Tree node.  The siblings are all
    * children of the parent of this node except this node.
    *
@@ -2605,110 +3025,138 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    *   The returned list is a modifiable new list structure, but contains
    *   the actual children.
    */
-  public List<Tree> siblings(Tree root) {
-    Tree par = parent(root);
-    if (par == null) {
-      return null;
-    }
-    List<Tree> siblings = par.getChildrenAsList();
-    siblings.Remove(this);
-    return siblings;
-  }
 
-  /**
+        public List<Tree> siblings(Tree root)
+        {
+            Tree par = parent(root);
+            if (par == null)
+            {
+                return null;
+            }
+            List<Tree> siblings = par.getChildrenAsList();
+            siblings.Remove(this);
+            return siblings;
+        }
+
+        /**
    * insert <code>dtr</code> after <code>position</code> existing
    * daughters in <code>this</code>.
    */
-  public void insertDtr(Tree dtr, int position) {
-    Tree[] kids = children();
-    if (position > kids.Length) {
-      throw new ArgumentException("Can't insert tree after the " + position + "th daughter in " + this + "; only " + kids.Length + " daughters exist!");
-    }
-    Tree[] newKids = new Tree[kids.Length + 1];
-    int i = 0;
-    for (; i < position; i++) {
-      newKids[i] = kids[i];
-    }
-    newKids[i] = dtr;
-    for (; i < kids.Length; i++) {
-      newKids[i + 1] = kids[i];
-    }
-    setChildren(newKids);
-  }
 
-  // --- composition methods to implement Label interface
+        public void insertDtr(Tree dtr, int position)
+        {
+            Tree[] kids = children();
+            if (position > kids.Length)
+            {
+                throw new ArgumentException("Can't insert tree after the " + position + "th daughter in " + this +
+                                            "; only " + kids.Length + " daughters exist!");
+            }
+            Tree[] newKids = new Tree[kids.Length + 1];
+            int i = 0;
+            for (; i < position; i++)
+            {
+                newKids[i] = kids[i];
+            }
+            newKids[i] = dtr;
+            for (; i < kids.Length; i++)
+            {
+                newKids[i + 1] = kids[i];
+            }
+            setChildren(newKids);
+        }
 
-  //@Override
-  public String value() {
-    Label lab = label();
-    if (lab == null) {
-      return null;
-    }
-    return lab.value();
-  }
+        // --- composition methods to implement Label interface
+
+        //@Override
+        public String value()
+        {
+            Label lab = label();
+            if (lab == null)
+            {
+                return null;
+            }
+            return lab.value();
+        }
 
 
-  //@Override
-  public void setValue(String value) {
-    Label lab = label();
-    if (lab != null) {
-      lab.setValue(value);
-    }
-  }
+        //@Override
+        public void setValue(String value)
+        {
+            Label lab = label();
+            if (lab != null)
+            {
+                lab.setValue(value);
+            }
+        }
 
 
-  //@Override
-  public void setFromString(String labelStr) {
-    Label lab = label();
-    if (lab != null) {
-      lab.setFromString(labelStr);
-    }
-  }
+        //@Override
+        public void setFromString(String labelStr)
+        {
+            Label lab = label();
+            if (lab != null)
+            {
+                lab.setFromString(labelStr);
+            }
+        }
 
-  /**
+        /**
    * Returns a factory that makes labels of the same type as this one.
    * May return <code>null</code> if no appropriate factory is known.
    *
    * @return the LabelFactory for this kind of label
    */
-  //@Override
-  public LabelFactory labelFactory() {
-    Label lab = label();
-    if (lab == null) {
-      return null;
-    }
-    return lab.labelFactory();
-  }
+        //@Override
+        public LabelFactory labelFactory()
+        {
+            Label lab = label();
+            if (lab == null)
+            {
+                return null;
+            }
+            return lab.labelFactory();
+        }
 
-  /**
+        /**
    * Returns the positional index of the left edge of  <i>node</i> within the tree,
    * as measured by characters.  Returns -1 if <i>node is not found.</i>
    */
-  public int leftCharEdge(Tree node) {
-    var i = new MutableWrapper<int>(0);
-    if (leftCharEdge(node, i)) {
-      return i.Value();
-    }
-    return -1;
-  }
 
-  private bool leftCharEdge(Tree node, MutableWrapper<int> i) {
-    if (this == node) {
-      return true;
-    } else if (isLeaf()) {
-      i.SetValue(i.Value() + value().Length);
-      return false;
-    } else {
-      foreach (Tree child in children()) {
-        if (child.leftCharEdge(node, i)) {
-          return true;
+        public int leftCharEdge(Tree node)
+        {
+            var i = new MutableWrapper<int>(0);
+            if (leftCharEdge(node, i))
+            {
+                return i.Value();
+            }
+            return -1;
         }
-      }
-      return false;
-    }
-  }
 
-  /**
+        private bool leftCharEdge(Tree node, MutableWrapper<int> i)
+        {
+            if (this == node)
+            {
+                return true;
+            }
+            else if (isLeaf())
+            {
+                i.SetValue(i.Value() + value().Length);
+                return false;
+            }
+            else
+            {
+                foreach (Tree child in children())
+                {
+                    if (child.leftCharEdge(node, i))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        /**
    * Returns the positional index of the right edge of  <i>node</i> within the tree,
    * as measured by characters. Returns -1 if <i>node is not found.</i>
    *
@@ -2718,60 +3166,76 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param node The subtree to look for in this Tree
    * @return The positional index of the right edge of node
    */
-  public int rightCharEdge(Tree node) {
-    List<Tree> s = getLeaves();
-    int length = 0;
-    foreach (Tree leaf in s) {
-      length += leaf.label().value().Length;
-    }
-    MutableWrapper<int> i = new MutableWrapper<int>(length);
-    if (rightCharEdge(node, i)) {
-      return i.Value();
-    }
-    return -1;
-  }
 
-  private bool rightCharEdge(Tree node, MutableWrapper<int> i) {
-    if (this == node) {
-      return true;
-    } else if (isLeaf()) {
-      i.SetValue(i.Value() - label().value().Length);
-      return false;
-    } else {
-      for (int j = children().Length - 1; j >= 0; j--) {
-        if (children()[j].rightCharEdge(node, i)) {
-          return true;
+        public int rightCharEdge(Tree node)
+        {
+            List<Tree> s = getLeaves();
+            int length = 0;
+            foreach (Tree leaf in s)
+            {
+                length += leaf.label().value().Length;
+            }
+            MutableWrapper<int> i = new MutableWrapper<int>(length);
+            if (rightCharEdge(node, i))
+            {
+                return i.Value();
+            }
+            return -1;
         }
-      }
-      return false;
-    }
-  }
 
-  /**
+        private bool rightCharEdge(Tree node, MutableWrapper<int> i)
+        {
+            if (this == node)
+            {
+                return true;
+            }
+            else if (isLeaf())
+            {
+                i.SetValue(i.Value() - label().value().Length);
+                return false;
+            }
+            else
+            {
+                for (int j = children().Length - 1; j >= 0; j--)
+                {
+                    if (children()[j].rightCharEdge(node, i))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        /**
    * Calculates the node's <i>number</i>, defined as the number of nodes traversed in a left-to-right, depth-first search of the
    * tree starting at <code>root</code> and ending at <code>this</code>.  Returns -1 if <code>root</code> does not contain <code>this</code>.
    * @param root the root node of the relevant tree
    * @return the number of the current node, or -1 if <code>root</code> does not contain <code>this</code>.
    */
-  public int nodeNumber(Tree root) {
-    MutableWrapper<int> i = new MutableWrapper<int>(1);
-    if(nodeNumberHelper(root,i))
-      return i.Value();
-    return -1;
-  }
 
-  private bool nodeNumberHelper(Tree t, MutableWrapper<int> i) {
-    if(this==t)
-      return true;
-    i.SetValue(i.Value() + 1);
-    for(int j = 0; j < t.children().Length; j++) {
-      if(nodeNumberHelper(t.children()[j],i))
-        return true;
-    }
-    return false;
-  }
+        public int nodeNumber(Tree root)
+        {
+            MutableWrapper<int> i = new MutableWrapper<int>(1);
+            if (nodeNumberHelper(root, i))
+                return i.Value();
+            return -1;
+        }
 
-  /**
+        private bool nodeNumberHelper(Tree t, MutableWrapper<int> i)
+        {
+            if (this == t)
+                return true;
+            i.SetValue(i.Value() + 1);
+            for (int j = 0; j < t.children().Length; j++)
+            {
+                if (nodeNumberHelper(t.children()[j], i))
+                    return true;
+            }
+            return false;
+        }
+
+        /**
    * Fetches the <code>i</code>th node in the tree, with node numbers defined
    * as in {@link #nodeNumber(Tree)}.
    *
@@ -2780,46 +3244,54 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @throws IndexOutOfBoundsException if <code>i</code> is not between 1 and
    *    the number of nodes (inclusive) contained in <code>this</code>.
    */
-  public Tree getNodeNumber(int i) {
-    return getNodeNumberHelper(new MutableWrapper<int>(1),i);
-  }
 
-  private Tree getNodeNumberHelper(MutableWrapper<int> i, int target) {
-    int i1 = i.Value();
-    if(i1 == target)
-      return this;
-    if(i1 > target)
-      throw new IndexOutOfRangeException("Error -- tree does not contain " + i + " nodes.");
-    i.SetValue(i.Value() + 1);
-    for(int j = 0; j < children().Length; j++) {
-      Tree temp = children()[j].getNodeNumberHelper(i, target);
-      if(temp != null)
-        return temp;
-    }
-    return null;
-  }
+        public Tree getNodeNumber(int i)
+        {
+            return getNodeNumberHelper(new MutableWrapper<int>(1), i);
+        }
 
-  /**
+        private Tree getNodeNumberHelper(MutableWrapper<int> i, int target)
+        {
+            int i1 = i.Value();
+            if (i1 == target)
+                return this;
+            if (i1 > target)
+                throw new IndexOutOfRangeException("Error -- tree does not contain " + i + " nodes.");
+            i.SetValue(i.Value() + 1);
+            for (int j = 0; j < children().Length; j++)
+            {
+                Tree temp = children()[j].getNodeNumberHelper(i, target);
+                if (temp != null)
+                    return temp;
+            }
+            return null;
+        }
+
+        /**
    * Assign sequential integer indices to the leaves of the tree
    * rooted at this <code>Tree</code>, starting with 1.
    * The leaves are traversed from left
    * to right. If the node is already indexed, then it uses the existing index.
    * This will only work if the leaves extend CoreMap.
    */
-  public void indexLeaves() {
-    indexLeaves(1, false);
-  }
 
-  /**
+        public void indexLeaves()
+        {
+            indexLeaves(1, false);
+        }
+
+        /**
    * Index the leaves, and optionally overwrite existing IndexAnnotations if they exist.
    *
    * @param overWrite Whether to replace an existing index for a leaf.
    */
-  public void indexLeaves(bool overWrite) {
-    indexLeaves(1, overWrite);
-  }
 
-  /**
+        public void indexLeaves(bool overWrite)
+        {
+            indexLeaves(1, overWrite);
+        }
+
+        /**
    * Assign sequential integer indices to the leaves of the subtree
    * rooted at this <code>Tree</code>, beginning with
    * <code>startIndex</code>, and traversing the leaves from left
@@ -2831,10 +3303,13 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
    * @param overWrite Whether to replace an existing index for a leaf.
    * @return the next index still unassigned
    */
-  public int indexLeaves(int startIndex, bool overWrite) {
-    if (isLeaf()) {
 
-      /*CoreLabel afl = (CoreLabel) label();
+        public int indexLeaves(int startIndex, bool overWrite)
+        {
+            if (isLeaf())
+            {
+
+                /*CoreLabel afl = (CoreLabel) label();
       Integer oldIndex = afl.get(CoreAnnotations.IndexAnnotation.class);
       if (!overWrite && oldIndex != null && oldIndex >= 0) {
         startIndex = oldIndex;
@@ -2842,97 +3317,120 @@ public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored/*,
         afl.set(CoreAnnotations.IndexAnnotation.class, startIndex);
       }*/
 
-      if(label() is HasIndex) {
-        HasIndex hi = (HasIndex) label();
-        int oldIndex = hi.index();
-        if (!overWrite && oldIndex >= 0) {
-          startIndex = oldIndex;
-        } else {
-          hi.setIndex(startIndex);
+                if (label() is HasIndex)
+                {
+                    HasIndex hi = (HasIndex) label();
+                    int oldIndex = hi.index();
+                    if (!overWrite && oldIndex >= 0)
+                    {
+                        startIndex = oldIndex;
+                    }
+                    else
+                    {
+                        hi.setIndex(startIndex);
+                    }
+                    startIndex++;
+                }
+            }
+            else
+            {
+                foreach (Tree kid in children())
+                {
+                    startIndex = kid.indexLeaves(startIndex, overWrite);
+                }
+            }
+            return startIndex;
         }
-        startIndex++;
-      }
-    } else {
-      foreach (Tree kid in children()) {
-        startIndex = kid.indexLeaves(startIndex, overWrite);
-      }
-    }
-    return startIndex;
-  }
 
-  /**
+        /**
    * Percolates terminal indices through a dependency tree. The terminals should be indexed, e.g.,
    * by calling indexLeaves() on the tree.
    * <p>
    * This method assumes CoreLabels!
    */
-  public void percolateHeadIndices() {
-    if (isPreTerminal()) {
-      int nodeIndex = ((HasIndex) firstChild().label()).index();
-      ((HasIndex) label()).setIndex(nodeIndex);
-      return;
-    }
 
-    // Assign the head index to the first child that we encounter with a matching
-    // surface form. Obviously a head can have the same surface form as its dependent,
-    // and in this case the head index is ambiguous.
-    String wordAnnotation = ((HasWord) label()).word();
-    if (wordAnnotation == null) {
-      wordAnnotation = value();
-    }
-    bool seenHead = false;
-    foreach (Tree child in children()) {
-      child.percolateHeadIndices();
-      String childWordAnnotation = ((HasWord) child.label()).word();
-      if (childWordAnnotation == null) {
-        childWordAnnotation = child.value();
-      }
-      if ( !seenHead && wordAnnotation.Equals(childWordAnnotation)) {
-        seenHead = true;
-        int nodeIndex = ((HasIndex) child.label()).index();
-        ((HasIndex) label()).setIndex(nodeIndex);
-      }
-    }
-  }
+        public void percolateHeadIndices()
+        {
+            if (isPreTerminal())
+            {
+                int nodeIndex = ((HasIndex) firstChild().label()).index();
+                ((HasIndex) label()).setIndex(nodeIndex);
+                return;
+            }
 
-  public void indexSpans() {
-    indexSpans(0);
-  }
+            // Assign the head index to the first child that we encounter with a matching
+            // surface form. Obviously a head can have the same surface form as its dependent,
+            // and in this case the head index is ambiguous.
+            String wordAnnotation = ((HasWord) label()).word();
+            if (wordAnnotation == null)
+            {
+                wordAnnotation = value();
+            }
+            bool seenHead = false;
+            foreach (Tree child in children())
+            {
+                child.percolateHeadIndices();
+                String childWordAnnotation = ((HasWord) child.label()).word();
+                if (childWordAnnotation == null)
+                {
+                    childWordAnnotation = child.value();
+                }
+                if (!seenHead && wordAnnotation.Equals(childWordAnnotation))
+                {
+                    seenHead = true;
+                    int nodeIndex = ((HasIndex) child.label()).index();
+                    ((HasIndex) label()).setIndex(nodeIndex);
+                }
+            }
+        }
 
-  public void indexSpans(int startIndex) {
-    indexSpans(new MutableWrapper<int>(startIndex));
-  }
+        public void indexSpans()
+        {
+            indexSpans(0);
+        }
 
-  /**
+        public void indexSpans(int startIndex)
+        {
+            indexSpans(new MutableWrapper<int>(startIndex));
+        }
+
+        /**
    * Assigns span indices (BeginIndexAnnotation and EndIndexAnnotation) to all nodes in a tree.
    * The beginning index is equivalent to the IndexAnnotation of the first leaf in the constituent.
    * The end index is equivalent to the first integer after the IndexAnnotation of the last leaf in the constituent.
    * @param startIndex Begin indexing at this value
    */
-  public Tuple<int, int> indexSpans(MutableWrapper<int> startIndex) {
-    int start = int.MaxValue;
-    int end = int.MinValue;
 
-    if(isLeaf()){
-      start = startIndex.Value();
-      end = startIndex.Value() + 1;
-      startIndex.SetValue(startIndex.Value() + 1);
-    } else {
-      foreach (Tree kid in children()) {
-        Tuple<int, int>  span = kid.indexSpans(startIndex);
-        if(span.Item1 < start) start = span.Item1;
-        if(span.Item2 > end) end = span.Item2;
-      }
+        public Tuple<int, int> indexSpans(MutableWrapper<int> startIndex)
+        {
+            int start = int.MaxValue;
+            int end = int.MinValue;
+
+            if (isLeaf())
+            {
+                start = startIndex.Value();
+                end = startIndex.Value() + 1;
+                startIndex.SetValue(startIndex.Value() + 1);
+            }
+            else
+            {
+                foreach (Tree kid in children())
+                {
+                    Tuple<int, int> span = kid.indexSpans(startIndex);
+                    if (span.Item1 < start) start = span.Item1;
+                    if (span.Item2 > end) end = span.Item2;
+                }
+            }
+
+            Label lab = label();
+            if (lab is CoreMap)
+            {
+                CoreMap afl = (CoreMap) label();
+                afl.set(typeof (CoreAnnotations.BeginIndexAnnotation), start);
+                afl.set(typeof (CoreAnnotations.EndIndexAnnotation), end);
+            }
+            return new Tuple<int, int>(start, end);
+        }
+
     }
-
-    Label lab = label();
-    if (lab is CoreMap) {
-    CoreMap afl = (CoreMap) label();
-      afl.set(typeof(CoreAnnotations.BeginIndexAnnotation), start);
-      afl.set(typeof(CoreAnnotations.EndIndexAnnotation), end);
-    }
-    return new Tuple<int, int>(start, end);
-  }
-
-}
 }

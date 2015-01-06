@@ -15,9 +15,9 @@ namespace OpenNLP.Tools.Util
         private T _value;
 
         public MutableWrapper(T val)
-    {
-        this._value = val;
-    }
+        {
+            this._value = val;
+        }
 
         public void SetValue(T t)
         {

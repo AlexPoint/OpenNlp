@@ -18,7 +18,8 @@ namespace OpenNLP.Tools.Util.Trees
  *
  * @author Christopher Manning
  */
-    public interface Dependency<G,D,N> where G : Label where D: Label
+
+    public interface Dependency<G, D, N> where G : Label where D : Label
     {
         /**
    * Describes the governor (regent/head) of the dependency relation.

@@ -17,6 +17,7 @@ namespace OpenNLP.Tools.Util.Trees
  * @author Anna Rafferty
  *
  */
+
     public static class TreeCoreAnnotations
     {
         /**
@@ -24,13 +25,16 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * This key is typically set on sentence annotations.
    */
-  public class TreeAnnotation : CoreAnnotation<Tree> {
-    public Type getType() {
-      return typeof(Tree);
-    }
-  }
 
-  /**
+        public class TreeAnnotation : CoreAnnotation<Tree>
+        {
+            public Type getType()
+            {
+                return typeof (Tree);
+            }
+        }
+
+        /**
    * The CoreMap key for getting the binarized version of the
    * syntactic parse tree of a sentence.
    *
@@ -39,27 +43,39 @@ namespace OpenNLP.Tools.Util.Trees
    * this (parse.saveBinarized).  The sentiment annotator requires
    * this kind of tree, but otherwise it is not typically used.
    */
-  public class BinarizedTreeAnnotation : CoreAnnotation<Tree> {
-    public Type getType() {
-      return typeof(Tree);
-    }
-  }
 
-  /**
+        public class BinarizedTreeAnnotation : CoreAnnotation<Tree>
+        {
+            public Type getType()
+            {
+                return typeof (Tree);
+            }
+        }
+
+        /**
    * The standard key for storing a head word in the map as a pointer to
    * another node.
    */
-  public class HeadWordAnnotation : CoreAnnotation<Tree> {
-      public Type getType()
-      {
-          return typeof(Tree);
-      } }
 
-  /**
+        public class HeadWordAnnotation : CoreAnnotation<Tree>
+        {
+            public Type getType()
+            {
+                return typeof (Tree);
+            }
+        }
+
+        /**
    * The standard key for storing a head tag in the map as a pointer to
    * another node.
    */
-  public class HeadTagAnnotation : CoreAnnotation<Tree> {
-    public Type getType() {  return typeof(Tree); } }
+
+        public class HeadTagAnnotation : CoreAnnotation<Tree>
+        {
+            public Type getType()
+            {
+                return typeof (Tree);
+            }
+        }
     }
 }

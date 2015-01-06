@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex
 {
-    public class TregexParseException: SystemException
+    public class TregexParseException : SystemException
     {
-        public TregexParseException(String message):base(message){}
+        public TregexParseException(String message) : base(message)
+        {
+        }
     }
 }

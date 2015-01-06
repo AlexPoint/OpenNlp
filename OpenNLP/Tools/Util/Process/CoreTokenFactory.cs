@@ -15,7 +15,8 @@ namespace OpenNLP.Tools.Util.Process
  * 
  * @param <IN>
  */
-    public interface CoreTokenFactory<IN> where IN:CoreMap
+
+    public interface CoreTokenFactory<IN> where IN : CoreMap
     {
         IN makeToken();
 

@@ -17,16 +17,17 @@ namespace OpenNLP.Tools.Util
  * @author Chris Cox
  * @version 2006/02/03
  */
+
     public static class StringUtils
     {
         public static readonly String[] EMPTY_STRING_ARRAY = new String[0];
-  private static readonly String PROP = "prop";
-  private static readonly String PROPS = "props";
-  private static readonly String PROPERTIES = "properties";
-  private static readonly String ARGS = "args";
-  private static readonly String ARGUMENTS = "arguments";
+        private static readonly String PROP = "prop";
+        private static readonly String PROPS = "props";
+        private static readonly String PROPERTIES = "properties";
+        private static readonly String ARGS = "args";
+        private static readonly String ARGUMENTS = "arguments";
 
-  /**
+        /**
    * Say whether this regular expression can be found inside
    * this String.  This method provides one of the two "missing"
    * convenience methods for regular expressions in the String class
@@ -37,25 +38,30 @@ namespace OpenNLP.Tools.Util
    * @param regex String to compile as the regular expression
    * @return Whether the regex can be found in str
    */
-  public static bool find(String str, String regex) {
-    return Regex.IsMatch(str, regex);
-  }
 
-  /**
+        public static bool find(String str, String regex)
+        {
+            return Regex.IsMatch(str, regex);
+        }
+
+        /**
    * Convenience method: a case-insensitive variant of Collection.contains
    * @param c Collection&lt;String&gt;
    * @param s String
    * @return true if s case-insensitively matches a string in c
    */
-  public static bool containsIgnoreCase(List<String> c, String s) {
-    foreach (String squote in c) {
-      if (squote.Equals(s, StringComparison.InvariantCultureIgnoreCase))
-        return true;
-    }
-    return false;
-  }
 
-  /**
+        public static bool containsIgnoreCase(List<String> c, String s)
+        {
+            foreach (String squote in c)
+            {
+                if (squote.Equals(s, StringComparison.InvariantCultureIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+
+        /**
    * Say whether this regular expression can be found at the beginning of
    * this String.  This method provides one of the two "missing"
    * convenience methods for regular expressions in the String class
@@ -65,13 +71,14 @@ namespace OpenNLP.Tools.Util
    * @param regex String to compile as the regular expression
    * @return Whether the regex can be found at the start of str
    */
-  public static bool lookingAt(String str, String regex)
-  {
-      return Regex.IsMatch(str, "^" + regex);
-      //return Pattern.compile(regex).matcher(str).lookingAt();
-  }
 
-  /**
+        public static bool lookingAt(String str, String regex)
+        {
+            return Regex.IsMatch(str, "^" + regex);
+            //return Pattern.compile(regex).matcher(str).lookingAt();
+        }
+
+        /**
    * Takes a string of the form "x1=y1,x2=y2,..." such
    * that each y is an integer and each x is a key.  A
    * String[] s is returned such that s[yn]=xn
@@ -79,61 +86,70 @@ namespace OpenNLP.Tools.Util
    *     that each y is an integer and each x is a key.
    * @return  A String[] s is returned such that s[yn]=xn
    */
-  public static String[] mapStringToArray(String map) {
-    String[] m = map.Split(new []{'[',',',';',']'});
-    int maxIndex = 0;
-    String[] keys = new String[m.Length];
-    int[] indices = new int[m.Length];
-    for (int i = 0; i < m.Length; i++) {
-      int index = m[i].LastIndexOf('=');
-      keys[i] = m[i].Substring(0, index);
-      indices[i] = int.Parse(m[i].Substring(index + 1));
-      if (indices[i] > maxIndex) {
-        maxIndex = indices[i];
-      }
-    }
-    String[] mapArr = new String[maxIndex + 1];
-    //Arrays.fill(mapArr, null);
-    for (int i = 0; i < m.Length; i++) {
-      mapArr[indices[i]] = keys[i];
-    }
-    return mapArr;
-  }
+
+        public static String[] mapStringToArray(String map)
+        {
+            String[] m = map.Split(new[] {'[', ',', ';', ']'});
+            int maxIndex = 0;
+            String[] keys = new String[m.Length];
+            int[] indices = new int[m.Length];
+            for (int i = 0; i < m.Length; i++)
+            {
+                int index = m[i].LastIndexOf('=');
+                keys[i] = m[i].Substring(0, index);
+                indices[i] = int.Parse(m[i].Substring(index + 1));
+                if (indices[i] > maxIndex)
+                {
+                    maxIndex = indices[i];
+                }
+            }
+            String[] mapArr = new String[maxIndex + 1];
+            //Arrays.fill(mapArr, null);
+            for (int i = 0; i < m.Length; i++)
+            {
+                mapArr[indices[i]] = keys[i];
+            }
+            return mapArr;
+        }
 
 
-  /**
+        /**
    * Takes a string of the form "x1=y1,x2=y2,..." and returns Map
    * @param map A string of the form "x1=y1,x2=y2,..."
    * @return  A Map m is returned such that m.get(xn) = yn
    */
-  public static Dictionary<String, String> mapStringToMap(String map) {
-    String[] m = map.Split(new []{'[',',',';',']'});
-    Dictionary<String, String> res = new Dictionary<string, string>();
-    foreach (String str in m) {
-      int index = str.LastIndexOf('=');
-      String key = str.Substring(0, index);
-      String val = str.Substring(index + 1);
-      res.Add(key.Trim(), val.Trim());
-    }
-    return res;
-  }
 
-  public static List<Regex> regexesToPatterns(IEnumerable<String> regexes)
-  {
-    List<Regex> patterns = new List<Regex>();
-    foreach (String regex in regexes) {
-      patterns.Add(new Regex(regex));
-    }
-    return patterns;
-  }
+        public static Dictionary<String, String> mapStringToMap(String map)
+        {
+            String[] m = map.Split(new[] {'[', ',', ';', ']'});
+            Dictionary<String, String> res = new Dictionary<string, string>();
+            foreach (String str in m)
+            {
+                int index = str.LastIndexOf('=');
+                String key = str.Substring(0, index);
+                String val = str.Substring(index + 1);
+                res.Add(key.Trim(), val.Trim());
+            }
+            return res;
+        }
 
-  /**
+        public static List<Regex> regexesToPatterns(IEnumerable<String> regexes)
+        {
+            List<Regex> patterns = new List<Regex>();
+            foreach (String regex in regexes)
+            {
+                patterns.Add(new Regex(regex));
+            }
+            return patterns;
+        }
+
+        /**
    * Given a pattern and a string, returns a list with the values of the
    * captured groups in the pattern. If the pattern does not match, returns
    * null. Note that this uses Matcher.find() rather than Matcher.matches().
    * If str is null, returns null.
    */
-  /*public static List<String> regexGroups(Regex regex, String str) {
+        /*public static List<String> regexGroups(Regex regex, String str) {
     if (str == null) {
       return null;
     }
@@ -151,7 +167,7 @@ namespace OpenNLP.Tools.Util
     return groups;
   }*/
 
-  /**
+        /**
    * Say whether this regular expression matches
    * this String.  This method is the same as the String.matches() method,
    * and is included just to give a call that is parallel to the other
@@ -161,12 +177,12 @@ namespace OpenNLP.Tools.Util
    * @param regex String to compile as the regular expression
    * @return Whether the regex matches the whole of this str
    */
-  /*public static bool matches(String str, String regex) {
+        /*public static bool matches(String str, String regex) {
     return Pattern.compile(regex).matcher(str).matches();
   }*/
 
 
-  /*public static Set<String> stringToSet(String str, String delimiter)
+        /*public static Set<String> stringToSet(String str, String delimiter)
   {
     Set<String> ret = null;
     if (str != null) {
@@ -181,7 +197,7 @@ namespace OpenNLP.Tools.Util
   }*/
 
 
-  /*public static String joinWords(Iterable<? extends HasWord> l, String glue) {
+        /*public static String joinWords(Iterable<? extends HasWord> l, String glue) {
     StringBuilder sb = new StringBuilder();
     bool first = true;
     for (HasWord o : l) {
@@ -366,16 +382,18 @@ namespace OpenNLP.Tools.Util
   }*/
 
 
-  /**
+        /**
    * Splits on whitespace (\\s+).
    * @param s String to split
    * @return List<String> of split strings
    */
-  public static List<String> split(String s) {
-    return split(s, "\\s+");
-  }
 
-  /**
+        public static List<String> split(String s)
+        {
+            return split(s, "\\s+");
+        }
+
+        /**
    * Splits the given string using the given regex as delimiters.
    * This method is the same as the String.Split() method (except it throws
    * the results in a List),
@@ -386,11 +404,13 @@ namespace OpenNLP.Tools.Util
    * @param regex String to compile as the regular expression
    * @return List of Strings resulting from splitting on the regex
    */
-  public static List<String> split(String str, String regex) {
-    return Regex.Split(str, regex).ToList();
-  }
 
-  /*public static String[] splitOnChar(String input, char delimiter) {
+        public static List<String> split(String str, String regex)
+        {
+            return Regex.Split(str, regex).ToList();
+        }
+
+        /*public static String[] splitOnChar(String input, char delimiter) {
     // State
     String[] out = new String[input.Length() + 1];
     int nextIndex = 0;
@@ -487,224 +507,287 @@ namespace OpenNLP.Tools.Util
   }*/
 
 
-  /**
+        /**
    * Return a String of length a minimum of totalChars characters by
    * padding the input String str at the right end with spaces.
    * If str is already longer
    * than totalChars, it is returned unchanged.
    */
-  public static String pad(String str, int totalChars) {
-    if (str == null) {
-      str = "null";
-    }
-    int slen = str.Length;
-    StringBuilder sb = new StringBuilder(str);
-    for (int i = 0; i < totalChars - slen; i++) {
-      sb.Append(' ');
-    }
-    return sb.ToString();
-  }
 
-  /**
+        public static String pad(String str, int totalChars)
+        {
+            if (str == null)
+            {
+                str = "null";
+            }
+            int slen = str.Length;
+            StringBuilder sb = new StringBuilder(str);
+            for (int i = 0; i < totalChars - slen; i++)
+            {
+                sb.Append(' ');
+            }
+            return sb.ToString();
+        }
+
+        /**
    * Pads the toString value of the given Object.
    */
-  public static String pad(Object obj, int totalChars) {
-    return pad(obj.ToString(), totalChars);
-  }
+
+        public static String pad(Object obj, int totalChars)
+        {
+            return pad(obj.ToString(), totalChars);
+        }
 
 
-  /**
+        /**
    * Pad or trim so as to produce a string of exactly a certain length.
    *
    * @param str The String to be padded or truncated
    * @param num The desired length
    */
-  public static String padOrTrim(String str, int num) {
-    if (str == null) {
-      str = "null";
-    }
-    int leng = str.Length;
-    if (leng < num) {
-      StringBuilder sb = new StringBuilder(str);
-      for (int i = 0; i < num - leng; i++) {
-        sb.Append(' ');
-      }
-      return sb.ToString();
-    } else if (leng > num) {
-      return str.Substring(0, num);
-    } else {
-      return str;
-    }
-  }
 
-  /**
+        public static String padOrTrim(String str, int num)
+        {
+            if (str == null)
+            {
+                str = "null";
+            }
+            int leng = str.Length;
+            if (leng < num)
+            {
+                StringBuilder sb = new StringBuilder(str);
+                for (int i = 0; i < num - leng; i++)
+                {
+                    sb.Append(' ');
+                }
+                return sb.ToString();
+            }
+            else if (leng > num)
+            {
+                return str.Substring(0, num);
+            }
+            else
+            {
+                return str;
+            }
+        }
+
+        /**
    * Pad or trim so as to produce a string of exactly a certain length.
    *
    * @param str The String to be padded or truncated
    * @param num The desired length
    */
-  public static String padLeftOrTrim(String str, int num) {
-    if (str == null) {
-      str = "null";
-    }
-    int leng = str.Length;
-    if (leng < num) {
-      StringBuilder sb = new StringBuilder();
-      for (int i = 0; i < num - leng; i++) {
-        sb.Append(' ');
-      }
-      sb.Append(str);
-      return sb.ToString();
-    } else if (leng > num) {
-      return str.Substring(str.Length - num);
-    } else {
-      return str;
-    }
-  }
 
-  /**
+        public static String padLeftOrTrim(String str, int num)
+        {
+            if (str == null)
+            {
+                str = "null";
+            }
+            int leng = str.Length;
+            if (leng < num)
+            {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < num - leng; i++)
+                {
+                    sb.Append(' ');
+                }
+                sb.Append(str);
+                return sb.ToString();
+            }
+            else if (leng > num)
+            {
+                return str.Substring(str.Length - num);
+            }
+            else
+            {
+                return str;
+            }
+        }
+
+        /**
    * Pad or trim the toString value of the given Object.
    */
-  public static String padOrTrim(Object obj, int totalChars) {
-    return padOrTrim(obj.ToString(), totalChars);
-  }
+
+        public static String padOrTrim(Object obj, int totalChars)
+        {
+            return padOrTrim(obj.ToString(), totalChars);
+        }
 
 
-  /**
+        /**
    * Pads the given String to the left with the given character to ensure that
    * it's at least totalChars long.
    */
-  public static String padLeft(String str, int totalChars, char ch) {
-    if (str == null) {
-      str = "null";
-    }
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0, num = totalChars - str.Length; i < num; i++) {
-      sb.Append(ch);
-    }
-    sb.Append(str);
-    return sb.ToString();
-  }
+
+        public static String padLeft(String str, int totalChars, char ch)
+        {
+            if (str == null)
+            {
+                str = "null";
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0, num = totalChars - str.Length; i < num; i++)
+            {
+                sb.Append(ch);
+            }
+            sb.Append(str);
+            return sb.ToString();
+        }
 
 
-  /**
+        /**
    * Pads the given String to the left with spaces to ensure that it's
    * at least totalChars long.
    */
-  public static String padLeft(String str, int totalChars) {
-    return padLeft(str, totalChars, ' ');
-  }
+
+        public static String padLeft(String str, int totalChars)
+        {
+            return padLeft(str, totalChars, ' ');
+        }
 
 
-  public static String padLeft(Object obj, int totalChars) {
-    return padLeft(obj.ToString(), totalChars);
-  }
+        public static String padLeft(Object obj, int totalChars)
+        {
+            return padLeft(obj.ToString(), totalChars);
+        }
 
-  public static String padLeft(int i, int totalChars) {
-    return padLeft(i, totalChars);
-  }
+        public static String padLeft(int i, int totalChars)
+        {
+            return padLeft(i, totalChars);
+        }
 
-  public static String padLeft(double d, int totalChars) {
-    return padLeft(d, totalChars);
-  }
+        public static String padLeft(double d, int totalChars)
+        {
+            return padLeft(d, totalChars);
+        }
 
-  /**
+        /**
    * Returns s if it's at most maxWidth chars, otherwise chops right side to fit.
    */
-  public static String Trim(String s, int maxWidth) {
-    if (s.Length <= maxWidth) {
-      return (s);
-    }
-    return (s.Substring(0, maxWidth));
-  }
 
-  public static String Trim(Object obj, int maxWidth) {
-    return Trim(obj.ToString(), maxWidth);
-  }
+        public static String Trim(String s, int maxWidth)
+        {
+            if (s.Length <= maxWidth)
+            {
+                return (s);
+            }
+            return (s.Substring(0, maxWidth));
+        }
 
-  public static String repeat(String s, int times) {
-    if (times == 0) {
-      return "";
-    }
-    StringBuilder sb = new StringBuilder(times * s.Length);
-    for (int i = 0; i < times; i++) {
-      sb.Append(s);
-    }
-    return sb.ToString();
-  }
+        public static String Trim(Object obj, int maxWidth)
+        {
+            return Trim(obj.ToString(), maxWidth);
+        }
 
-  public static String repeat(char ch, int times) {
-    if (times == 0) {
-      return "";
-    }
-    StringBuilder sb = new StringBuilder(times);
-    for (int i = 0; i < times; i++) {
-      sb.Append(ch);
-    }
-    return sb.ToString();
-  }
+        public static String repeat(String s, int times)
+        {
+            if (times == 0)
+            {
+                return "";
+            }
+            StringBuilder sb = new StringBuilder(times*s.Length);
+            for (int i = 0; i < times; i++)
+            {
+                sb.Append(s);
+            }
+            return sb.ToString();
+        }
 
-  /**
+        public static String repeat(char ch, int times)
+        {
+            if (times == 0)
+            {
+                return "";
+            }
+            StringBuilder sb = new StringBuilder(times);
+            for (int i = 0; i < times; i++)
+            {
+                sb.Append(ch);
+            }
+            return sb.ToString();
+        }
+
+        /**
    * Returns a "clean" version of the given filename in which spaces have
    * been converted to dashes and all non-alphanumeric chars are underscores.
    */
-  public static String fileNameClean(String s) {
-    char[] chars = s.ToCharArray();
-    StringBuilder sb = new StringBuilder();
-    foreach (char c in chars) {
-      if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || (c == '_')) {
-        sb.Append(c);
-      } else {
-        if (c == ' ' || c == '-') {
-          sb.Append('_');
-        } else {
-          sb.Append('x').Append((int) c).Append('x');
-        }
-      }
-    }
-    return sb.ToString();
-  }
 
-  /**
+        public static String fileNameClean(String s)
+        {
+            char[] chars = s.ToCharArray();
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in chars)
+            {
+                if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || (c == '_'))
+                {
+                    sb.Append(c);
+                }
+                else
+                {
+                    if (c == ' ' || c == '-')
+                    {
+                        sb.Append('_');
+                    }
+                    else
+                    {
+                        sb.Append('x').Append((int) c).Append('x');
+                    }
+                }
+            }
+            return sb.ToString();
+        }
+
+        /**
    * Returns the index of the <i>n</i>th occurrence of ch in s, or -1
    * if there are less than n occurrences of ch.
    */
-  public static int nthIndex(String s, char ch, int n) {
-    int index = 0;
-    for (int i = 0; i < n; i++) {
-      // if we're already at the end of the string,
-      // and we need to find another ch, return -1
-      if (index == s.Length - 1) {
-        return -1;
-      }
-      index = s.IndexOf(ch, index + 1);
-      if (index == -1) {
-        return (-1);
-      }
-    }
-    return index;
-  }
+
+        public static int nthIndex(String s, char ch, int n)
+        {
+            int index = 0;
+            for (int i = 0; i < n; i++)
+            {
+                // if we're already at the end of the string,
+                // and we need to find another ch, return -1
+                if (index == s.Length - 1)
+                {
+                    return -1;
+                }
+                index = s.IndexOf(ch, index + 1);
+                if (index == -1)
+                {
+                    return (-1);
+                }
+            }
+            return index;
+        }
 
 
-  /**
+        /**
    * This returns a string from decimal digit smallestDigit to decimal digit
    * biggest digit. Smallest digit is labeled 1, and the limits are
    * inclusive.
    */
-  public static String truncate(int n, int smallestDigit, int biggestDigit) {
-    int numDigits = biggestDigit - smallestDigit + 1;
-    char[] result = new char[numDigits];
-    for (int j = 1; j < smallestDigit; j++) {
-      n = n / 10;
-    }
-    for (int j = numDigits - 1; j >= 0; j--) {
-      result[j] = (char)(n % 10);
-      n = n / 10;
-    }
-    return new String(result);
-  }
 
-  /**
+        public static String truncate(int n, int smallestDigit, int biggestDigit)
+        {
+            int numDigits = biggestDigit - smallestDigit + 1;
+            char[] result = new char[numDigits];
+            for (int j = 1; j < smallestDigit; j++)
+            {
+                n = n/10;
+            }
+            for (int j = numDigits - 1; j >= 0; j--)
+            {
+                result[j] = (char) (n%10);
+                n = n/10;
+            }
+            return new String(result);
+        }
+
+        /**
    * Parses command line arguments into a Map. Arguments of the form
    * <p/>
    * -flag1 arg1a arg1b ... arg1m -flag2 -flag3 arg3a ... arg3n
@@ -722,11 +805,11 @@ namespace OpenNLP.Tools.Util
    * @return a {@link Map} of flag names to flag argument {@link
    *         String} arrays.
    */
-  /*public static Map<String, String[]> argsToMap(String[] args) {
+        /*public static Map<String, String[]> argsToMap(String[] args) {
     return argsToMap(args, Collections.<String,Integer>emptyMap());
   }*/
 
-  /**
+        /**
    * Parses command line arguments into a Map. Arguments of the form
    * <p/>
    * -flag1 arg1a arg1b ... arg1m -flag2 -flag3 arg3a ... arg3n
@@ -759,7 +842,7 @@ namespace OpenNLP.Tools.Util
    *                       for that flag (default min 0, max 1).
    * @return a {@link Map} of flag names to flag argument {@link String}
    */
-  /*public static Map<String, String[]> argsToMap(String[] args, Map<String, Integer> flagsToNumArgs) {
+        /*public static Map<String, String[]> argsToMap(String[] args, Map<String, Integer> flagsToNumArgs) {
     Map<String, String[]> result = Generics.newHashMap();
     List<String> remainingArgs = new ArrayList<String>();
     for (int i = 0; i < args.Length; i++) {
@@ -791,7 +874,7 @@ namespace OpenNLP.Tools.Util
     return result;
   }*/
 
-  /**
+        /**
    * In this version each flag has zero or one argument. It has one argument
    * if there is a thing following a flag that does not begin with '-'.  See
    * {@link #argsToProperties(String[], Map)} for full documentation.
@@ -799,11 +882,11 @@ namespace OpenNLP.Tools.Util
    * @param args Command line arguments
    * @return A Properties object representing the arguments.
    */
-  /*public static Properties argsToProperties(String... args) {
+        /*public static Properties argsToProperties(String... args) {
     return argsToProperties(args, Collections.<String,Integer>emptyMap());
   }*/
 
-  /**
+        /**
    * Analogous to {@link #argsToMap}.  However, there are several key differences between this method and {@link #argsToMap}:
    * <ul>
    * <li> Hyphens are stripped from flag names </li>
@@ -822,7 +905,7 @@ namespace OpenNLP.Tools.Util
    * @param flagsToNumArgs Map of how many arguments flags should have. The keys are without the minus signs.
    * @return A Properties object representing the arguments.
    */
-  /*public static Properties argsToProperties(String[] args, Map<String,Integer> flagsToNumArgs) {
+        /*public static Properties argsToProperties(String[] args, Map<String,Integer> flagsToNumArgs) {
     Properties result = new Properties();
     List<String> remainingArgs = new ArrayList<String>();
     for (int i = 0; i < args.Length; i++) {
@@ -890,14 +973,14 @@ namespace OpenNLP.Tools.Util
   }*/
 
 
-  /**
+        /**
    * This method reads in properties listed in a file in the format prop=value, one property per line.
    * Although <code>Properties.load(InputStream)</code> exists, I implemented this method to trim the lines,
    * something not implemented in the <code>load()</code> method.
    * @param filename A properties file to read
    * @return The corresponding Properties object
    */
-  /*public static Properties propFileToProperties(String filename) {
+        /*public static Properties propFileToProperties(String filename) {
     Properties result = new Properties();
     try {
       InputStream is = new BufferedInputStream(new FileInputStream(filename));
@@ -914,48 +997,56 @@ namespace OpenNLP.Tools.Util
     }
   }*/
 
-  /**
+        /**
    * This method converts a comma-separated String (with whitespace
    * optionally allowed after the comma) representing properties
    * to a Properties object.  Each property is "property=value".  The value
    * for properties without an explicitly given value is set to "true". This can be used for a 2nd level
    * of properties, for example, when you have a commandline argument like "-outputOptions style=xml,tags".
    */
-  public static Dictionary<String,String> stringToProperties(String str) {
-    var result = new Dictionary<string, string>();
-    return stringToProperties(str, result);
-  }
 
-  /**
+        public static Dictionary<String, String> stringToProperties(String str)
+        {
+            var result = new Dictionary<string, string>();
+            return stringToProperties(str, result);
+        }
+
+        /**
    * This method updates a Properties object based on
    * a comma-separated String (with whitespace
    * optionally allowed after the comma) representing properties
    * to a Properties object.  Each property is "property=value".  The value
    * for properties without an explicitly given value is set to "true".
    */
-  public static Dictionary<String,String> stringToProperties(String str, Dictionary<String,String> props) {
-    String[] propsStr = Regex.Split(str.Trim(), ",\\s*");
-    foreach (String term in propsStr) {
-      int divLoc = term.IndexOf('=');
-      String key;
-      String value;
-      if (divLoc >= 0) {
-        key = term.Substring(0, divLoc).Trim();
-        value = term.Substring(divLoc + 1).Trim();
-      } else {
-        key = term.Trim();
-        value = "true";
-      }
-      props[key] = value;
-    }
-    return props;
-  }
 
-  /**
+        public static Dictionary<String, String> stringToProperties(String str, Dictionary<String, String> props)
+        {
+            String[] propsStr = Regex.Split(str.Trim(), ",\\s*");
+            foreach (String term in propsStr)
+            {
+                int divLoc = term.IndexOf('=');
+                String key;
+                String value;
+                if (divLoc >= 0)
+                {
+                    key = term.Substring(0, divLoc).Trim();
+                    value = term.Substring(divLoc + 1).Trim();
+                }
+                else
+                {
+                    key = term.Trim();
+                    value = "true";
+                }
+                props[key] = value;
+            }
+            return props;
+        }
+
+        /**
    * If any of the given list of properties are not found, returns the
    * name of that property.  Otherwise, returns null.
    */
-  /*public static String checkRequiredProperties(Properties props,
+        /*public static String checkRequiredProperties(Properties props,
                                                String ... requiredProps) {
     for (String required : requiredProps) {
       if (props.getProperty(required) == null) {
@@ -966,11 +1057,11 @@ namespace OpenNLP.Tools.Util
   }*/
 
 
-  /**
+        /**
    * Prints to a file.  If the file already exists, appends if
    * <code>append=true</code>, and overwrites if <code>append=false</code>.
    */
-  /*public static void printToFile(File file, String message, bool append,
+        /*public static void printToFile(File file, String message, bool append,
                                  bool printLn, String encoding) {
     PrintWriter pw = null;
     try {
@@ -999,11 +1090,11 @@ namespace OpenNLP.Tools.Util
   }*/
 
 
-  /**
+        /**
    * Prints to a file.  If the file already exists, appends if
    * <code>append=true</code>, and overwrites if <code>append=false</code>.
    */
-  /*public static void printToFileLn(File file, String message, bool append) {
+        /*public static void printToFileLn(File file, String message, bool append) {
     PrintWriter pw = null;
     try {
       Writer fw = new FileWriter(file, append);
@@ -1020,11 +1111,11 @@ namespace OpenNLP.Tools.Util
     }
   }*/
 
-  /**
+        /**
    * Prints to a file.  If the file already exists, appends if
    * <code>append=true</code>, and overwrites if <code>append=false</code>.
    */
-  /*public static void printToFile(File file, String message, bool append) {
+        /*public static void printToFile(File file, String message, bool append) {
     PrintWriter pw = null;
     try {
       Writer fw = new FileWriter(file, append);
@@ -1042,40 +1133,40 @@ namespace OpenNLP.Tools.Util
   }*/
 
 
-  /**
+        /**
    * Prints to a file.  If the file does not exist, rewrites the file;
    * does not append.
    */
-  /*public static void printToFile(File file, String message) {
+        /*public static void printToFile(File file, String message) {
     printToFile(file, message, false);
   }*/
 
-  /**
+        /**
    * Prints to a file.  If the file already exists, appends if
    * <code>append=true</code>, and overwrites if <code>append=false</code>
    */
-  /*public static void printToFile(String filename, String message, bool append) {
+        /*public static void printToFile(String filename, String message, bool append) {
     printToFile(new File(filename), message, append);
   }*/
 
-  /**
+        /**
    * Prints to a file.  If the file already exists, appends if
    * <code>append=true</code>, and overwrites if <code>append=false</code>
    */
-  /*public static void printToFileLn(String filename, String message, bool append) {
+        /*public static void printToFileLn(String filename, String message, bool append) {
     printToFileLn(new File(filename), message, append);
   }*/
 
 
-  /**
+        /**
    * Prints to a file.  If the file does not exist, rewrites the file;
    * does not append.
    */
-  /*public static void printToFile(String filename, String message) {
+        /*public static void printToFile(String filename, String message) {
     printToFile(new File(filename), message, false);
   }*/
 
-  /**
+        /**
    * A simpler form of command line argument parsing.
    * Dan thinks this is highly superior to the overly complexified code that
    * comes before it.
@@ -1087,12 +1178,12 @@ namespace OpenNLP.Tools.Util
    *
    * @return A Map from keys to possible values (String or null)
    */
-  /*@SuppressWarnings("unchecked")
+        /*@SuppressWarnings("unchecked")
   public static Map<String, String> parseCommandLineArguments(String[] args) {
     return (Map)parseCommandLineArguments(args, false);
   }*/
 
-  /**
+        /**
    * A simpler form of command line argument parsing.
    * Dan thinks this is highly superior to the overly complexified code that
    * comes before it.
@@ -1106,7 +1197,7 @@ namespace OpenNLP.Tools.Util
    *
    * @return A Map from keys to possible values (String or null)
    */
-  /*public static Map<String, Object> parseCommandLineArguments(String[] args, bool parseNumbers) {
+        /*public static Map<String, Object> parseCommandLineArguments(String[] args, bool parseNumbers) {
     Map<String, Object> result = Generics.newHashMap();
     for (int i = 0; i < args.Length; i++) {
       String key = args[i];
@@ -1137,18 +1228,21 @@ namespace OpenNLP.Tools.Util
     return result;
   }*/
 
-  public static String stripNonAlphaNumerics(String orig) {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < orig.Length; i++) {
-      char c = orig[i];
-      if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')) {
-        sb.Append(c);
-      }
-    }
-    return sb.ToString();
-  }
+        public static String stripNonAlphaNumerics(String orig)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < orig.Length; i++)
+            {
+                char c = orig[i];
+                if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
+        }
 
-  /*public static String stripSGML(String orig) {
+        /*public static String stripSGML(String orig) {
       Pattern sgmlPattern = Pattern.compile("<.*?>", Pattern.DOTALL);
       Matcher sgmlMatcher = sgmlPattern.matcher(orig);
       return sgmlMatcher.replaceAll("");
@@ -1161,26 +1255,33 @@ namespace OpenNLP.Tools.Util
     }
   }*/
 
-  public static String escapeString(String s, char[] charsToEscape, char escapeChar) {
-    StringBuilder result = new StringBuilder();
-    for (int i = 0; i < s.Length; i++) {
-      char c = s[i];
-      if (c == escapeChar) {
-        result.Append(escapeChar);
-      } else {
-        foreach (char charToEscape in charsToEscape) {
-          if (c == charToEscape) {
-            result.Append(escapeChar);
-            break;
-          }
+        public static String escapeString(String s, char[] charsToEscape, char escapeChar)
+        {
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                if (c == escapeChar)
+                {
+                    result.Append(escapeChar);
+                }
+                else
+                {
+                    foreach (char charToEscape in charsToEscape)
+                    {
+                        if (c == charToEscape)
+                        {
+                            result.Append(escapeChar);
+                            break;
+                        }
+                    }
+                }
+                result.Append(c);
+            }
+            return result.ToString();
         }
-      }
-      result.Append(c);
-    }
-    return result.ToString();
-  }
 
-  /**
+        /**
    * This function splits the String s into multiple Strings using the
    * splitChar.  However, it provides a quoting facility: it is possible to
    * quote strings with the quoteChar.
@@ -1194,52 +1295,67 @@ namespace OpenNLP.Tools.Util
    * @param escapeChar The character to escape the quoteChar with
    * @return An array of Strings that s is split into
    */
-  public static String[] splitOnCharWithQuoting(String s, char splitChar, char quoteChar, char escapeChar) {
-    List<String> result = new List<String>();
-    int i = 0;
-    int length = s.Length;
-    StringBuilder b = new StringBuilder();
-    while (i < length) {
-      char curr = s[i];
-      if (curr == splitChar) {
-        // add last buffer
-        // cdm 2014: Do this even if the field is empty!
-        // if (b.Length() > 0) {
-        result.Add(b.ToString());
-        b = new StringBuilder();
-        // }
-        i++;
-      } else if (curr == quoteChar) {
-        // find next instance of quoteChar
-        i++;
-        while (i < length) {
-          curr = s[i];
-          // mrsmith: changed this condition from
-          // if (curr == escapeChar) {
-          if ((curr == escapeChar) && (i+1 < length) && (s[i+1] == quoteChar)) {
-            b.Append(s[i + 1]);
-            i += 2;
-          } else if (curr == quoteChar) {
-            i++;
-            break; // break this loop
-          } else {
-            b.Append(s[i]);
-            i++;
-          }
-        }
-      } else {
-        b.Append(curr);
-        i++;
-      }
-    }
-    // RFC 4180 disallows readonly comma. At any rate, don't produce a field after it unless non-empty
-    if (b.Length > 0) {
-      result.Add(b.ToString());
-    }
-    return result.ToArray();
-  }
 
-  /**
+        public static String[] splitOnCharWithQuoting(String s, char splitChar, char quoteChar, char escapeChar)
+        {
+            List<String> result = new List<String>();
+            int i = 0;
+            int length = s.Length;
+            StringBuilder b = new StringBuilder();
+            while (i < length)
+            {
+                char curr = s[i];
+                if (curr == splitChar)
+                {
+                    // add last buffer
+                    // cdm 2014: Do this even if the field is empty!
+                    // if (b.Length() > 0) {
+                    result.Add(b.ToString());
+                    b = new StringBuilder();
+                    // }
+                    i++;
+                }
+                else if (curr == quoteChar)
+                {
+                    // find next instance of quoteChar
+                    i++;
+                    while (i < length)
+                    {
+                        curr = s[i];
+                        // mrsmith: changed this condition from
+                        // if (curr == escapeChar) {
+                        if ((curr == escapeChar) && (i + 1 < length) && (s[i + 1] == quoteChar))
+                        {
+                            b.Append(s[i + 1]);
+                            i += 2;
+                        }
+                        else if (curr == quoteChar)
+                        {
+                            i++;
+                            break; // break this loop
+                        }
+                        else
+                        {
+                            b.Append(s[i]);
+                            i++;
+                        }
+                    }
+                }
+                else
+                {
+                    b.Append(curr);
+                    i++;
+                }
+            }
+            // RFC 4180 disallows readonly comma. At any rate, don't produce a field after it unless non-empty
+            if (b.Length > 0)
+            {
+                result.Add(b.ToString());
+            }
+            return result.ToArray();
+        }
+
+        /**
    * Computes the longest common substring of s and t.
    * The longest common substring of a and b is the longest run of
    * characters that appear in order inside both a and b. Both a and b
@@ -1247,7 +1363,7 @@ namespace OpenNLP.Tools.Util
    * edit distance but with no substitution and a higher number means
    * more similar. For example, the LCS of "abcD" and "aXbc" is 3 (abc).
    */
-  /*public static int longestCommonSubstring(String s, String t) {
+        /*public static int longestCommonSubstring(String s, String t) {
     int[][] d; // matrix
     int n; // length of s
     int m; // length of t
@@ -1309,50 +1425,61 @@ namespace OpenNLP.Tools.Util
     return d[n][m];
   }*/
 
-  /**
+        /**
    * Computes the longest common contiguous substring of s and t.
    * The LCCS is the longest run of characters that appear consecutively in
    * both s and t. For instance, the LCCS of "color" and "colour" is 4, because
    * of "colo".
    */
-  public static int longestCommonContiguousSubstring(String s, String t) {
-    if (string.IsNullOrEmpty(s) || string.IsNullOrEmpty(t)) {
-      return 0;
-    }
-    int M = s.Length;
-    int N = t.Length;
-    int[,] d = new int[M + 1,N + 1];
-    for (int j = 0; j <= N; j++) {
-      d[0,j] = 0;
-    }
-    for (int i = 0; i <= M; i++) {
-      d[i,0] = 0;
-    }
 
-    int max = 0;
-    for (int i = 1; i <= M; i++) {
-      for (int j = 1; j <= N; j++) {
-        if (s[i - 1] == t[j - 1]) {
-          d[i,j] = d[i - 1,j - 1] + 1;
-        } else {
-          d[i,j] = 0;
+        public static int longestCommonContiguousSubstring(String s, String t)
+        {
+            if (string.IsNullOrEmpty(s) || string.IsNullOrEmpty(t))
+            {
+                return 0;
+            }
+            int M = s.Length;
+            int N = t.Length;
+            int[,] d = new int[M + 1, N + 1];
+            for (int j = 0; j <= N; j++)
+            {
+                d[0, j] = 0;
+            }
+            for (int i = 0; i <= M; i++)
+            {
+                d[i, 0] = 0;
+            }
+
+            int max = 0;
+            for (int i = 1; i <= M; i++)
+            {
+                for (int j = 1; j <= N; j++)
+                {
+                    if (s[i - 1] == t[j - 1])
+                    {
+                        d[i, j] = d[i - 1, j - 1] + 1;
+                    }
+                    else
+                    {
+                        d[i, j] = 0;
+                    }
+
+                    if (d[i, j] > max)
+                    {
+                        max = d[i, j];
+                    }
+                }
+            }
+            // System.err.println("LCCS(" + s + "," + t + ") = " + max);
+            return max;
         }
 
-        if (d[i,j] > max) {
-          max = d[i,j];
-        }
-      }
-    }
-    // System.err.println("LCCS(" + s + "," + t + ") = " + max);
-    return max;
-  }
-
-  /**
+        /**
    * Computes the Levenshtein (edit) distance of the two given Strings.
    * This method doesn't allow transposition, so one character transposed between two strings has a cost of 2 (one insertion, one deletion).
    * The EditDistance class also implements the Levenshtein distance, but does allow transposition.
    */
-  /*public static int editDistance(String s, String t) {
+        /*public static int editDistance(String s, String t) {
     // Step 1
     int n = s.Length; // length of s
     int m = t.Length; // length of t
@@ -1393,35 +1520,41 @@ namespace OpenNLP.Tools.Util
   }*/
 
 
-  /**
+        /**
    * Computes the WordNet 2.0 POS tag corresponding to the PTB POS tag s.
    *
    * @param s a Penn TreeBank POS tag.
    */
-  public static String pennPOSToWordnetPOS(String s) {
-    if (Regex.IsMatch(s, "NN|NNP|NNS|NNPS")) {
-      return "noun";
-    }
-    if (Regex.IsMatch(s, "VB|VBD|VBG|VBN|VBZ|VBP|MD")) {
-      return "verb";
-    }
-    if (Regex.IsMatch(s, "JJ|JJR|JJS|CD")) {
-      return "adjective";
-    }
-    if (Regex.IsMatch(s, "RB|RBR|RBS|RP|WRB")) {
-      return "adverb";
-    }
-    return null;
-  }
 
-  /**
+        public static String pennPOSToWordnetPOS(String s)
+        {
+            if (Regex.IsMatch(s, "NN|NNP|NNS|NNPS"))
+            {
+                return "noun";
+            }
+            if (Regex.IsMatch(s, "VB|VBD|VBG|VBN|VBZ|VBP|MD"))
+            {
+                return "verb";
+            }
+            if (Regex.IsMatch(s, "JJ|JJR|JJS|CD"))
+            {
+                return "adjective";
+            }
+            if (Regex.IsMatch(s, "RB|RBR|RBS|RP|WRB"))
+            {
+                return "adverb";
+            }
+            return null;
+        }
+
+        /**
    * Returns a short class name for an object.
    * This is the class name stripped of any package name.
    *
    * @return The name of the class minus a package name, for example
    *         <code>ArrayList</code>
    */
-  /*public static String getShortClassName(Object o) {
+        /*public static String getShortClassName(Object o) {
     if (o == null) {
       return "null";
     }
@@ -1434,7 +1567,7 @@ namespace OpenNLP.Tools.Util
   }*/
 
 
-  /**
+        /**
    * Converts a tab delimited string into an object with given fields
    * Requires the object has setXxx functions for the specified fields
    *
@@ -1445,14 +1578,14 @@ namespace OpenNLP.Tools.Util
    * @param <T> type to return
    * @return Object created from string
    */
-  /*public static <T> T columnStringToObject(Class objClass, String str, String delimiterRegex, String[] fieldNames)
+        /*public static <T> T columnStringToObject(Class objClass, String str, String delimiterRegex, String[] fieldNames)
           throws InstantiationException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException
   {
     Pattern delimiterPattern = Pattern.compile(delimiterRegex);
     return StringUtils.<T>columnStringToObject(objClass, str, delimiterPattern, fieldNames);
   }*/
 
-  /**
+        /**
    * Converts a tab delimited string into an object with given fields
    * Requires the object has public access for the specified fields
    *
@@ -1463,7 +1596,7 @@ namespace OpenNLP.Tools.Util
    * @param <T> type to return
    * @return Object created from string
    */
-  /*public static <T> T columnStringToObject(Class<?> objClass, String str, Pattern delimiterPattern, String[] fieldNames)
+        /*public static <T> T columnStringToObject(Class<?> objClass, String str, Pattern delimiterPattern, String[] fieldNames)
           throws InstantiationException, IllegalAccessException, NoSuchMethodException, NoSuchFieldException, InvocationTargetException
   {
     String[] fields = delimiterPattern.Split(str);
@@ -1480,7 +1613,7 @@ namespace OpenNLP.Tools.Util
     return item;
   }*/
 
-  /**
+        /**
    * Converts an object into a tab delimited string with given fields
    * Requires the object has public access for the specified fields
    *
@@ -1489,7 +1622,7 @@ namespace OpenNLP.Tools.Util
    * @param fieldNames fieldnames
    * @return String representing object
    */
-  /*public static String objectToColumnString(Object object, String delimiter, String[] fieldNames)
+        /*public static String objectToColumnString(Object object, String delimiter, String[] fieldNames)
           throws IllegalAccessException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException
   {
     StringBuilder sb = new StringBuilder();
@@ -1508,69 +1641,83 @@ namespace OpenNLP.Tools.Util
     return sb.toString();
   }*/
 
-  /**
+        /**
    * Uppercases the first character of a string.
    *
    * @param s a string to capitalize
    * @return a capitalized version of the string
    */
-  public static String capitalize(String s) {
-    if (char.IsLower(s[0])) {
-      return char.ToUpper(s[0]) + s.Substring(1);
-    } else {
-      return s;
-    }
-  }
 
-  /**
+        public static String capitalize(String s)
+        {
+            if (char.IsLower(s[0]))
+            {
+                return char.ToUpper(s[0]) + s.Substring(1);
+            }
+            else
+            {
+                return s;
+            }
+        }
+
+        /**
    * Check if a string begins with an uppercase.
    *
    * @param s a string
    * @return true if the string is capitalized
    *         false otherwise
    */
-  public static bool isCapitalized(String s) {
-    return (char.IsUpper(s[0]));
-  }
 
-  public static String searchAndReplace(String text, String from, String to) {
-    from = escapeString(from, new char[]{'.', '[', ']', '\\'}, '\\'); // special chars in regex
-      var res = Regex.Replace(text, from, to);
-      return res;
-  }
+        public static bool isCapitalized(String s)
+        {
+            return (char.IsUpper(s[0]));
+        }
 
-  /**
+        public static String searchAndReplace(String text, String from, String to)
+        {
+            from = escapeString(from, new char[] {'.', '[', ']', '\\'}, '\\'); // special chars in regex
+            var res = Regex.Replace(text, from, to);
+            return res;
+        }
+
+        /**
    * Returns an HTML table containing the matrix of Strings passed in.
    * The first dimension of the matrix should represent the rows, and the
    * second dimension the columns.
    */
-  public static String makeHTMLTable(String[][] table, String[] rowLabels, String[] colLabels) {
-    StringBuilder buff = new StringBuilder();
-    buff.Append("<table class=\"auto\" border=\"1\" cellspacing=\"0\">\n");
-    // top row
-    buff.Append("<tr>\n");
-    buff.Append("<td></td>\n"); // the top left cell
-    for (int j = 0; j < table[0].Length; j++) { // assume table is a rectangular matrix
-      buff.Append("<td class=\"label\">").Append(colLabels[j]).Append("</td>\n");
-    }
-    buff.Append("</tr>\n");
-    // all other rows
-    for (int i = 0; i < table.Length; i++) {
-      // one row
-      buff.Append("<tr>\n");
-      buff.Append("<td class=\"label\">").Append(rowLabels[i]).Append("</td>\n");
-      for (int j = 0; j < table[i].Length; j++) {
-        buff.Append("<td class=\"data\">");
-        buff.Append(((table[i][j] != null) ? table[i][j] : ""));
-        buff.Append("</td>\n");
-      }
-      buff.Append("</tr>\n");
-    }
-    buff.Append("</table>");
-    return buff.ToString();
-  }
 
-  /**
+        public static String makeHTMLTable(String[][] table, String[] rowLabels, String[] colLabels)
+        {
+            StringBuilder buff = new StringBuilder();
+            buff.Append("<table class=\"auto\" border=\"1\" cellspacing=\"0\">\n");
+            // top row
+            buff.Append("<tr>\n");
+            buff.Append("<td></td>\n"); // the top left cell
+            for (int j = 0; j < table[0].Length; j++)
+            {
+                // assume table is a rectangular matrix
+                buff.Append("<td class=\"label\">").Append(colLabels[j]).Append("</td>\n");
+            }
+            buff.Append("</tr>\n");
+            // all other rows
+            for (int i = 0; i < table.Length; i++)
+            {
+                // one row
+                buff.Append("<tr>\n");
+                buff.Append("<td class=\"label\">").Append(rowLabels[i]).Append("</td>\n");
+                for (int j = 0; j < table[i].Length; j++)
+                {
+                    buff.Append("<td class=\"data\">");
+                    buff.Append(((table[i][j] != null) ? table[i][j] : ""));
+                    buff.Append("</td>\n");
+                }
+                buff.Append("</tr>\n");
+            }
+            buff.Append("</table>");
+            return buff.ToString();
+        }
+
+        /**
    * Returns a text table containing the matrix of objects passed in.
    * The first dimension of the matrix should represent the rows, and the
    * second dimension the columns. Each object is printed in a cell with toString().
@@ -1580,49 +1727,61 @@ namespace OpenNLP.Tools.Util
    *
    * @return A String form of the table
    */
-  public static String makeTextTable(Object[][] table, Object[] rowLabels, Object[] colLabels, int padLeft, int padRight, bool tsv) {
-    StringBuilder buff = new StringBuilder();
-    // top row
-    buff.Append(makeAsciiTableCell("", padLeft, padRight, tsv)); // the top left cell
-    for (int j = 0; j < table[0].Length; j++) { // assume table is a rectangular matrix
-      buff.Append(makeAsciiTableCell(colLabels[j], padLeft, padRight, (j != table[0].Length - 1) && tsv));
-    }
-    buff.Append('\n');
-    // all other rows
-    for (int i = 0; i < table.Length; i++) {
-      // one row
-      buff.Append(makeAsciiTableCell(rowLabels[i], padLeft, padRight, tsv));
-      for (int j = 0; j < table[i].Length; j++) {
-        buff.Append(makeAsciiTableCell(table[i][j], padLeft, padRight, (j != table[0].Length - 1) && tsv));
-      }
-      buff.Append('\n');
-    }
-    return buff.ToString();
-  }
+
+        public static String makeTextTable(Object[][] table, Object[] rowLabels, Object[] colLabels, int padLeft,
+            int padRight, bool tsv)
+        {
+            StringBuilder buff = new StringBuilder();
+            // top row
+            buff.Append(makeAsciiTableCell("", padLeft, padRight, tsv)); // the top left cell
+            for (int j = 0; j < table[0].Length; j++)
+            {
+                // assume table is a rectangular matrix
+                buff.Append(makeAsciiTableCell(colLabels[j], padLeft, padRight, (j != table[0].Length - 1) && tsv));
+            }
+            buff.Append('\n');
+            // all other rows
+            for (int i = 0; i < table.Length; i++)
+            {
+                // one row
+                buff.Append(makeAsciiTableCell(rowLabels[i], padLeft, padRight, tsv));
+                for (int j = 0; j < table[i].Length; j++)
+                {
+                    buff.Append(makeAsciiTableCell(table[i][j], padLeft, padRight, (j != table[0].Length - 1) && tsv));
+                }
+                buff.Append('\n');
+            }
+            return buff.ToString();
+        }
 
 
-  /** The cell String is the string representation of the object.
+        /** The cell String is the string representation of the object.
    *  If padLeft is greater than 0, it is padded. Ditto right
    *
    */
-  private static String makeAsciiTableCell(Object obj, int padLeft, int padRight, bool tsv) {
-    String result = obj.ToString();
-    if (padLeft > 0) {
-      result = StringUtils.padLeft(result, padLeft);
-    }
-    if (padRight > 0) {
-      result = pad(result, padRight);
-    }
-    if (tsv) {
-      result = result + '\t';
-    }
-    return result;
-  }
 
-  /**
+        private static String makeAsciiTableCell(Object obj, int padLeft, int padRight, bool tsv)
+        {
+            String result = obj.ToString();
+            if (padLeft > 0)
+            {
+                result = StringUtils.padLeft(result, padLeft);
+            }
+            if (padRight > 0)
+            {
+                result = pad(result, padRight);
+            }
+            if (tsv)
+            {
+                result = result + '\t';
+            }
+            return result;
+        }
+
+        /**
    * Tests the string edit distance function.
    */
- /* public static void main(String[] args) {
+        /* public static void main(String[] args) {
 
     String[] s = {"there once was a man", "this one is a manic", "hey there", "there once was a mane", "once in a manger.", "where is one match?", "Jo3seph Smarr!", "Joseph R Smarr"};
     for (int i = 0; i < 8; i++) {
@@ -1637,87 +1796,146 @@ namespace OpenNLP.Tools.Util
     }
   }*/
 
-  public static String toAscii(String s) {
-    StringBuilder b = new StringBuilder();
-    for (int i = 0; i < s.Length; i++) {
-      char c = s[i];
-      if (c > 127) {
-        String result = "?";
-        if (c >= 0x00c0 && c <= 0x00c5) {
-          result = "A";
-        } else if (c == 0x00c6) {
-          result = "AE";
-        } else if (c == 0x00c7) {
-          result = "C";
-        } else if (c >= 0x00c8 && c <= 0x00cb) {
-          result = "E";
-        } else if (c >= 0x00cc && c <= 0x00cf) {
-          result = "F";
-        } else if (c == 0x00d0) {
-          result = "D";
-        } else if (c == 0x00d1) {
-          result = "N";
-        } else if (c >= 0x00d2 && c <= 0x00d6) {
-          result = "O";
-        } else if (c == 0x00d7) {
-          result = "x";
-        } else if (c == 0x00d8) {
-          result = "O";
-        } else if (c >= 0x00d9 && c <= 0x00dc) {
-          result = "U";
-        } else if (c == 0x00dd) {
-          result = "Y";
-        } else if (c >= 0x00e0 && c <= 0x00e5) {
-          result = "a";
-        } else if (c == 0x00e6) {
-          result = "ae";
-        } else if (c == 0x00e7) {
-          result = "c";
-        } else if (c >= 0x00e8 && c <= 0x00eb) {
-          result = "e";
-        } else if (c >= 0x00ec && c <= 0x00ef) {
-          result = "i";
-        } else if (c == 0x00f1) {
-          result = "n";
-        } else if (c >= 0x00f2 && c <= 0x00f8) {
-          result = "o";
-        } else if (c >= 0x00f9 && c <= 0x00fc) {
-          result = "u";
-        } else if (c >= 0x00fd && c <= 0x00ff) {
-          result = "y";
-        } else if (c >= 0x2018 && c <= 0x2019) {
-          result = "\'";
-        } else if (c >= 0x201c && c <= 0x201e) {
-          result = "\"";
-        } else if (c >= 0x0213 && c <= 0x2014) {
-          result = "-";
-        } else if (c >= 0x00A2 && c <= 0x00A5) {
-          result = "$";
-        } else if (c == 0x2026) {
-          result = ".";
+        public static String toAscii(String s)
+        {
+            StringBuilder b = new StringBuilder();
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                if (c > 127)
+                {
+                    String result = "?";
+                    if (c >= 0x00c0 && c <= 0x00c5)
+                    {
+                        result = "A";
+                    }
+                    else if (c == 0x00c6)
+                    {
+                        result = "AE";
+                    }
+                    else if (c == 0x00c7)
+                    {
+                        result = "C";
+                    }
+                    else if (c >= 0x00c8 && c <= 0x00cb)
+                    {
+                        result = "E";
+                    }
+                    else if (c >= 0x00cc && c <= 0x00cf)
+                    {
+                        result = "F";
+                    }
+                    else if (c == 0x00d0)
+                    {
+                        result = "D";
+                    }
+                    else if (c == 0x00d1)
+                    {
+                        result = "N";
+                    }
+                    else if (c >= 0x00d2 && c <= 0x00d6)
+                    {
+                        result = "O";
+                    }
+                    else if (c == 0x00d7)
+                    {
+                        result = "x";
+                    }
+                    else if (c == 0x00d8)
+                    {
+                        result = "O";
+                    }
+                    else if (c >= 0x00d9 && c <= 0x00dc)
+                    {
+                        result = "U";
+                    }
+                    else if (c == 0x00dd)
+                    {
+                        result = "Y";
+                    }
+                    else if (c >= 0x00e0 && c <= 0x00e5)
+                    {
+                        result = "a";
+                    }
+                    else if (c == 0x00e6)
+                    {
+                        result = "ae";
+                    }
+                    else if (c == 0x00e7)
+                    {
+                        result = "c";
+                    }
+                    else if (c >= 0x00e8 && c <= 0x00eb)
+                    {
+                        result = "e";
+                    }
+                    else if (c >= 0x00ec && c <= 0x00ef)
+                    {
+                        result = "i";
+                    }
+                    else if (c == 0x00f1)
+                    {
+                        result = "n";
+                    }
+                    else if (c >= 0x00f2 && c <= 0x00f8)
+                    {
+                        result = "o";
+                    }
+                    else if (c >= 0x00f9 && c <= 0x00fc)
+                    {
+                        result = "u";
+                    }
+                    else if (c >= 0x00fd && c <= 0x00ff)
+                    {
+                        result = "y";
+                    }
+                    else if (c >= 0x2018 && c <= 0x2019)
+                    {
+                        result = "\'";
+                    }
+                    else if (c >= 0x201c && c <= 0x201e)
+                    {
+                        result = "\"";
+                    }
+                    else if (c >= 0x0213 && c <= 0x2014)
+                    {
+                        result = "-";
+                    }
+                    else if (c >= 0x00A2 && c <= 0x00A5)
+                    {
+                        result = "$";
+                    }
+                    else if (c == 0x2026)
+                    {
+                        result = ".";
+                    }
+                    b.Append(result);
+                }
+                else
+                {
+                    b.Append(c);
+                }
+            }
+            return b.ToString();
         }
-        b.Append(result);
-      } else {
-        b.Append(c);
-      }
-    }
-    return b.ToString();
-  }
 
 
-  public static String toCSVString(String[] fields) {
-    StringBuilder b = new StringBuilder();
-    foreach (String fld in fields) {
-      if (b.Length > 0) {
-        b.Append(',');
-      }
-      String field = escapeString(fld, new char[]{'\"'}, '\"'); // escape quotes with double quotes
-      b.Append('\"').Append(field).Append('\"');
-    }
-    return b.ToString();
-  }
+        public static String toCSVString(String[] fields)
+        {
+            StringBuilder b = new StringBuilder();
+            foreach (String fld in fields)
+            {
+                if (b.Length > 0)
+                {
+                    b.Append(',');
+                }
+                String field = escapeString(fld, new char[] {'\"'}, '\"'); // escape quotes with double quotes
+                b.Append('\"').Append(field).Append('\"');
+            }
+            return b.ToString();
+        }
 
-  /**
+        /**
    * Swap any occurrences of any characters in the from String in the input String with
    * the corresponding character from the to String.  As Perl tr, for example,
    * tr("chris", "irs", "mop").equals("chomp"), except it does not
@@ -1726,7 +1944,7 @@ namespace OpenNLP.Tools.Util
    * <i>Note:</i> This is now optimized to not allocate any objects if the
    * input is returned unchanged.
    */
-  /*public static String tr(String input, String from, String to) {
+        /*public static String tr(String input, String from, String to) {
     assert from.Length() == to.Length();
     StringBuilder sb = null;
     int len = input.Length();
@@ -1746,34 +1964,39 @@ namespace OpenNLP.Tools.Util
     }
   }*/
 
-  /**
+        /**
    * Returns the supplied string with any trailing '\n' removed.
    */
-  public static String chomp(String s) {
-    if(s.Length == 0)
-      return s;
-    int l_1 = s.Length - 1;
-    if (s[l_1] == '\n') {
-      return s.Substring(0, l_1);
-    }
-    return s;
-  }
 
-  /**
+        public static String chomp(String s)
+        {
+            if (s.Length == 0)
+                return s;
+            int l_1 = s.Length - 1;
+            if (s[l_1] == '\n')
+            {
+                return s.Substring(0, l_1);
+            }
+            return s;
+        }
+
+        /**
    * Returns the result of calling toString() on the supplied Object, but with
    * any trailing '\n' removed.
    */
-  public static String chomp(Object o) {
-    return chomp(o.ToString());
-  }
+
+        public static String chomp(Object o)
+        {
+            return chomp(o.ToString());
+        }
 
 
-  /*public static void printErrInvocationString(String cls, String[] args) {
+        /*public static void printErrInvocationString(String cls, String[] args) {
     System.err.println(toInvocationString(cls, args));
   }*/
 
 
-  /*public static String toInvocationString(String cls, String[] args) {
+        /*public static String toInvocationString(String cls, String[] args) {
     StringBuilder sb = new StringBuilder();
     sb.Append(cls).Append(" invoked on ").Append(new Date());
     sb.Append(" with arguments:\n  ");
@@ -1783,109 +2006,125 @@ namespace OpenNLP.Tools.Util
     return sb.toString();
   }*/
 
-  /**
+        /**
    * Strip directory from filename.  Like Unix 'basename'. <p/>
    *
    * Example: <code>getBaseName("/u/wcmac/foo.txt") ==> "foo.txt"</code>
    */
-  public static String getBaseName(String fileName) {
-    return getBaseName(fileName, "");
-  }
 
-  /**
+        public static String getBaseName(String fileName)
+        {
+            return getBaseName(fileName, "");
+        }
+
+        /**
    * Strip directory and suffix from filename.  Like Unix 'basename'. <p/>
    *
    * Example: <code>getBaseName("/u/wcmac/foo.txt", "") ==> "foo.txt"</code><br/>
    * Example: <code>getBaseName("/u/wcmac/foo.txt", ".txt") ==> "foo"</code><br/>
    * Example: <code>getBaseName("/u/wcmac/foo.txt", ".pdf") ==> "foo.txt"</code><br/>
    */
-  public static String getBaseName(String fileName, String suffix) {
-    String[] elts = fileName.Split(new []{"/"}, StringSplitOptions.None);
-    String lastElt = elts[elts.Length - 1];
-    if (lastElt.EndsWith(suffix)) {
-      lastElt = lastElt.Substring(0, lastElt.Length - suffix.Length);
-    }
-    return lastElt;
-  }
 
-  /**
+        public static String getBaseName(String fileName, String suffix)
+        {
+            String[] elts = fileName.Split(new[] {"/"}, StringSplitOptions.None);
+            String lastElt = elts[elts.Length - 1];
+            if (lastElt.EndsWith(suffix))
+            {
+                lastElt = lastElt.Substring(0, lastElt.Length - suffix.Length);
+            }
+            return lastElt;
+        }
+
+        /**
    * Given a String the method uses Regex to check if the String only contains alphabet characters
    *
    * @param s a String to check using regex
    * @return true if the String is valid
    */
-  public static bool isAlpha(String s){
-    /*Pattern p = Pattern.compile("^[\\p{Alpha}\\s]+$");
+
+        public static bool isAlpha(String s)
+        {
+            /*Pattern p = Pattern.compile("^[\\p{Alpha}\\s]+$");
     Matcher m = p.matcher(s);
     return m.matches();*/
-      return Regex.IsMatch(s, "^[\\p{Alpha}\\s]+$");
-  }
+            return Regex.IsMatch(s, "^[\\p{Alpha}\\s]+$");
+        }
 
-  /**
+        /**
    * Given a String the method uses Regex to check if the String only contains numeric characters
    *
    * @param s a String to check using regex
    * @return true if the String is valid
    */
-  public static bool isNumeric(String s){
-    /*Pattern p = Pattern.compile("^[\\p{Digit}\\s\\.]+$");
+
+        public static bool isNumeric(String s)
+        {
+            /*Pattern p = Pattern.compile("^[\\p{Digit}\\s\\.]+$");
     Matcher m = p.matcher(s);
     return m.matches();*/
-      return Regex.IsMatch(s, "^[\\p{Digit}\\s\\.]+$");
-  }
+            return Regex.IsMatch(s, "^[\\p{Digit}\\s\\.]+$");
+        }
 
-  /**
+        /**
    * Given a String the method uses Regex to check if the String only contains alphanumeric characters
    *
    * @param s a String to check using regex
    * @return true if the String is valid
    */
-  public static bool isAlphanumeric(String s){
-    /*Pattern p = Pattern.compile("^[\\p{Alnum}\\s\\.]+$");
+
+        public static bool isAlphanumeric(String s)
+        {
+            /*Pattern p = Pattern.compile("^[\\p{Alnum}\\s\\.]+$");
     Matcher m = p.matcher(s);
     return m.matches();*/
-      return Regex.IsMatch(s, "^[\\p{Alnum}\\s\\.]+$");
-  }
+            return Regex.IsMatch(s, "^[\\p{Alnum}\\s\\.]+$");
+        }
 
-  /**
+        /**
    * Given a String the method uses Regex to check if the String only contains punctuation characters
    *
    * @param s a String to check using regex
    * @return true if the String is valid
    */
-  public static bool isPunct(String s){
-    /*Pattern p = Pattern.compile("^[\\p{Punct}]+$");
+
+        public static bool isPunct(String s)
+        {
+            /*Pattern p = Pattern.compile("^[\\p{Punct}]+$");
     Matcher m = p.matcher(s);
     return m.matches();*/
-      return Regex.IsMatch(s, "^[\\p{Punct}]+$");
-  }
+            return Regex.IsMatch(s, "^[\\p{Punct}]+$");
+        }
 
-  /**
+        /**
    * Given a String the method uses Regex to check if the String looks like an acronym
    *
    * @param s a String to check using regex
    * @return true if the String is valid
    */
-  public static bool isAcronym(String s){
-    /*Pattern p = Pattern.compile("^[\\p{Upper}]+$");
+
+        public static bool isAcronym(String s)
+        {
+            /*Pattern p = Pattern.compile("^[\\p{Upper}]+$");
     Matcher m = p.matcher(s);
     return m.matches();*/
-      return Regex.IsMatch(s, "^[\\p{Upper}]+$");
-  }
+            return Regex.IsMatch(s, "^[\\p{Upper}]+$");
+        }
 
-  public static String getNotNullString(String s) {
-    if (s == null)
-      return "";
-    else
-      return s;
-  }
+        public static String getNotNullString(String s)
+        {
+            if (s == null)
+                return "";
+            else
+                return s;
+        }
 
-  /**
+        /**
    * Resolve variable. If it is the props file, then substitute that variable with
    * the value mentioned in the props file, otherwise look for the variable in the environment variables.
    * If the variable is not found then substitute it for empty string.
    */
-  /*public static String resolveVars(String str, Map props) {
+        /*public static String resolveVars(String str, Map props) {
     if (str == null)
       return null;
     // ${VAR_NAME} or $VAR_NAME
@@ -1909,13 +2148,13 @@ namespace OpenNLP.Tools.Util
   }*/
 
 
-  /**
+        /**
    * convert args to properties with variable names resolved. for each value
    * having a ${VAR} or $VAR, its value is first resolved using the variables
    * listed in the props file, and if not found then using the environment
    * variables. if the variable is not found then substitute it for empty string
    */
-  /*public static Properties argsToPropertiesWithResolve(String[] args) {
+        /*public static Properties argsToPropertiesWithResolve(String[] args) {
     LinkedHashMap<String, String> result = new LinkedHashMap<String, String>();
     Map<String, String> existingArgs = new LinkedHashMap<String, String>();
 
@@ -1960,7 +2199,7 @@ namespace OpenNLP.Tools.Util
     return props;
   }*/
 
-  /**
+        /**
    * This method reads in properties listed in a file in the format prop=value,
    * one property per line. and reads them into a LinkedHashMap (insertion order preserving)
    * Flags not having any arguments is set to "true".
@@ -1969,7 +2208,7 @@ namespace OpenNLP.Tools.Util
    * @return The corresponding LinkedHashMap where the ordering is the same as in the
    *         props file
    */
-  /*public static LinkedHashMap<String, String> propFileToLinkedHashMap(String filename, Map<String, String> existingArgs) {
+        /*public static LinkedHashMap<String, String> propFileToLinkedHashMap(String filename, Map<String, String> existingArgs) {
 
     LinkedHashMap<String, String> result = new LinkedHashMap<String, String>();
     result.putAll(existingArgs);
@@ -1987,10 +2226,10 @@ namespace OpenNLP.Tools.Util
     return result;
   }*/
 
-  /**
+        /**
    * n grams for already splitted string. the ngrams are joined with a single space
    */
-  /*public static List<String> getNgrams(List<String> words, int minSize, int maxSize){
+        /*public static List<String> getNgrams(List<String> words, int minSize, int maxSize){
     List<List<String>> ng = CollectionUtils.getNGrams(words, minSize, maxSize);
     List<String> ngrams = new ArrayList<String>();
     for(List<String> n: ng)
@@ -1999,10 +2238,10 @@ namespace OpenNLP.Tools.Util
     return ngrams;
   }*/
 
-  /**
+        /**
    * n grams for already splitted string. the ngrams are joined with a single space
    */
-  /*public static List<String> getNgramsFromTokens(List<CoreLabel> words, int minSize, int maxSize){
+        /*public static List<String> getNgramsFromTokens(List<CoreLabel> words, int minSize, int maxSize){
     List<String> wordsStr = new ArrayList<String>();
     for(CoreLabel l : words)
       wordsStr.Add(l.word());
@@ -2014,33 +2253,37 @@ namespace OpenNLP.Tools.Util
     return ngrams;
   }*/
 
-  /**
+        /**
    * The string is split on whitespace and the ngrams are joined with a single space
    */
-  /*public static List<String> getNgramsString(String s, int minSize, int maxSize){
+        /*public static List<String> getNgramsString(String s, int minSize, int maxSize){
     return getNgrams(Arrays.asList(s.Split("\\s+")), minSize, maxSize);
   }*/
 
-  /**
+        /**
    * Build a list of character-based ngrams from the given string.
    */
-  public static List<String> getCharacterNgrams(String s, int minSize, int maxSize) {
-    List<String> ngrams = new List<String>();
-    int len = s.Length;
 
-    for (int i = 0; i < len; i++) {
-      for (int ngramSize = minSize;
-           ngramSize > 0 && ngramSize <= maxSize && i + ngramSize <= len;
-           ngramSize++) {
-        ngrams.Add(s.Substring(i, i + ngramSize));
-      }
-    }
+        public static List<String> getCharacterNgrams(String s, int minSize, int maxSize)
+        {
+            List<String> ngrams = new List<String>();
+            int len = s.Length;
 
-    return ngrams;
-  }
+            for (int i = 0; i < len; i++)
+            {
+                for (int ngramSize = minSize;
+                    ngramSize > 0 && ngramSize <= maxSize && i + ngramSize <= len;
+                    ngramSize++)
+                {
+                    ngrams.Add(s.Substring(i, i + ngramSize));
+                }
+            }
 
-  //private static Regex diacriticalMarksPattern = new Regex("\\p{InCombiningDiacriticalMarks}", RegexOptions.Compiled);
-  /*public static String normalize(String s) {
+            return ngrams;
+        }
+
+        //private static Regex diacriticalMarksPattern = new Regex("\\p{InCombiningDiacriticalMarks}", RegexOptions.Compiled);
+        /*public static String normalize(String s) {
     // Normalizes string and strips diacritics (map to ascii) by
     // 1. taking the NFKD (compatibility decomposition -
     //   in compatibility equivalence, formatting such as subscripting is lost -

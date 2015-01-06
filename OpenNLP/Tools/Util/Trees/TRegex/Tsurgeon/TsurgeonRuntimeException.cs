@@ -11,15 +11,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
  *
  * @author John Bauer
  */
-    public class TsurgeonRuntimeException:SystemException
+
+    public class TsurgeonRuntimeException : SystemException
     {
         private static readonly long serialVersionUID = 1;
 
-  /**
+        /**
    * Creates a new exception with a message.
    *
    * @param message the message for the exception
    */
-  public TsurgeonRuntimeException(String message):base(message){}
+
+        public TsurgeonRuntimeException(String message) : base(message)
+        {
+        }
     }
 }

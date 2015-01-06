@@ -10,12 +10,12 @@ namespace OpenNLP.Tools.Util.Ling
     {
         String ner();
 
-  void setNER(String ner);
+        void setNER(String ner);
 
-  String originalText();
+        String originalText();
 
-  void setOriginalText(String originalText);
+        void setOriginalText(String originalText);
 
-  String getString(Type key);
+        String getString(Type key);
     }
 }

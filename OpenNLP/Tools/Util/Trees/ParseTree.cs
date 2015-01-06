@@ -8,9 +8,10 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    public class ParseTree: Tree
+    public class ParseTree : Tree
     {
         private Parse parse;
+
         public ParseTree(Parse p)
         {
             this.parse = p;
@@ -20,7 +21,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             return this.parse.GetChildren().Select(ch => new ParseTree(ch)).ToArray();
         }
-        
+
         public override Label label()
         {
             /*var label = this.parse.IsLeaf ? this.parse.Value : this.parse.Type;

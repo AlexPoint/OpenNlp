@@ -13,105 +13,125 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
  *
  * @author John Bauer
  */
-    public class CreateSubtreeNode: TsurgeonPattern
+
+    public class CreateSubtreeNode : TsurgeonPattern
     {
         private AuxiliaryTree auxTree;
 
-  public CreateSubtreeNode(TsurgeonPattern start, AuxiliaryTree tree):
-    this(start, null, tree){
-  }
+        public CreateSubtreeNode(TsurgeonPattern start, AuxiliaryTree tree) :
+            this(start, null, tree)
+        {
+        }
 
-  public CreateSubtreeNode(TsurgeonPattern start, TsurgeonPattern end, AuxiliaryTree tree):
-    base("combineSubtrees",
-      (end == null) ? new TsurgeonPattern[] { start } : new TsurgeonPattern[] { start, end }){
+        public CreateSubtreeNode(TsurgeonPattern start, TsurgeonPattern end, AuxiliaryTree tree) :
+            base("combineSubtrees",
+                (end == null) ? new TsurgeonPattern[] {start} : new TsurgeonPattern[] {start, end})
+        {
 
-    this.auxTree = tree;
-    findFoot();
-  }
+            this.auxTree = tree;
+            findFoot();
+        }
 
-  /**
+        /**
    * We want to support a command syntax where a simple node label can
    * be given (i.e., without using a tree literal).
    *
    * Check if this syntax is being used, and simulate a foot if so.
    */
-  private void findFoot() {
-    if (auxTree.foot == null) {
-      if (!auxTree.tree.isLeaf())
-        throw new TsurgeonParseException("No foot node found for " + auxTree);
 
-      // Pretend this leaf is a foot node
-      auxTree.foot = auxTree.tree;
-    }
-  }
+        private void findFoot()
+        {
+            if (auxTree.foot == null)
+            {
+                if (!auxTree.tree.isLeaf())
+                    throw new TsurgeonParseException("No foot node found for " + auxTree);
 
-  //@Override
-  public override TsurgeonMatcher matcher(Dictionary<String,Tree> newNodeNames, CoindexationGenerator coindexer) {
-    return new Matcher(newNodeNames, coindexer, this);
-  }
+                // Pretend this leaf is a foot node
+                auxTree.foot = auxTree.tree;
+            }
+        }
 
-  private class Matcher: TsurgeonMatcher
-  {
-      private CreateSubtreeNode node;
-    public Matcher(Dictionary<String,Tree> newNodeNames, CoindexationGenerator coindexer, CreateSubtreeNode node):
-      base(node, newNodeNames, coindexer)
-    {
-        this.node = node;
-    }
+        //@Override
+        public override TsurgeonMatcher matcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer)
+        {
+            return new Matcher(newNodeNames, coindexer, this);
+        }
 
-    /**
+        private class Matcher : TsurgeonMatcher
+        {
+            private CreateSubtreeNode node;
+
+            public Matcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer,
+                CreateSubtreeNode node) :
+                    base(node, newNodeNames, coindexer)
+            {
+                this.node = node;
+            }
+
+            /**
      * Combines all nodes between start and end into one subtree, then
      * replaces those nodes with the new subtree in the corresponding
      * location under parent
      */
-    //@Override
-    public override Tree evaluate(Tree tree, TregexMatcher tregex) {
-      Tree startChild = childMatcher[0].evaluate(tree, tregex);
-      Tree endChild = (childMatcher.Length == 2) ? childMatcher[1].evaluate(tree, tregex) : startChild;
+            //@Override
+            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            {
+                Tree startChild = childMatcher[0].evaluate(tree, tregex);
+                Tree endChild = (childMatcher.Length == 2) ? childMatcher[1].evaluate(tree, tregex) : startChild;
 
-      Tree parent = startChild.parent(tree);
+                Tree parent = startChild.parent(tree);
 
-      // sanity check
-      if (parent != endChild.parent(tree)) {
-        throw new TsurgeonRuntimeException("Parents did not match for trees when applied to " + this);
-      }
-      
-      AuxiliaryTree treeCopy = node.auxTree.copy(this);
+                // sanity check
+                if (parent != endChild.parent(tree))
+                {
+                    throw new TsurgeonRuntimeException("Parents did not match for trees when applied to " + this);
+                }
 
-      // Collect all the children of the parent of the node we care
-      // about.  If the child is one of the nodes we care about, or
-      // between those two nodes, we add it to a list of inner children.
-      // When we reach the second endpoint, we turn that list of inner
-      // children into a new node using the newly created label.  All
-      // other children are kept in an outer list, with the new node
-      // added at the appropriate location.
-      List<Tree> children = new List<Tree>();
-      List<Tree> innerChildren = new List<Tree>();
-      bool insideSpan = false;
-      foreach (Tree child in parent.children()) {
-        if (child == startChild || child == endChild) {
-          if (!insideSpan && startChild != endChild) {
-            insideSpan = true;
-            innerChildren.Add(child);
-          } else {
-            insideSpan = false;
-            innerChildren.Add(child);
+                AuxiliaryTree treeCopy = node.auxTree.copy(this);
 
-            // All children have been collected; place these beneath the foot of the auxiliary tree
-            treeCopy.foot.setChildren(innerChildren);
-            children.Add(treeCopy.tree);
-          }
-        } else if (insideSpan) {
-          innerChildren.Add(child);
-        } else {
-          children.Add(child);
+                // Collect all the children of the parent of the node we care
+                // about.  If the child is one of the nodes we care about, or
+                // between those two nodes, we add it to a list of inner children.
+                // When we reach the second endpoint, we turn that list of inner
+                // children into a new node using the newly created label.  All
+                // other children are kept in an outer list, with the new node
+                // added at the appropriate location.
+                List<Tree> children = new List<Tree>();
+                List<Tree> innerChildren = new List<Tree>();
+                bool insideSpan = false;
+                foreach (Tree child in parent.children())
+                {
+                    if (child == startChild || child == endChild)
+                    {
+                        if (!insideSpan && startChild != endChild)
+                        {
+                            insideSpan = true;
+                            innerChildren.Add(child);
+                        }
+                        else
+                        {
+                            insideSpan = false;
+                            innerChildren.Add(child);
+
+                            // All children have been collected; place these beneath the foot of the auxiliary tree
+                            treeCopy.foot.setChildren(innerChildren);
+                            children.Add(treeCopy.tree);
+                        }
+                    }
+                    else if (insideSpan)
+                    {
+                        innerChildren.Add(child);
+                    }
+                    else
+                    {
+                        children.Add(child);
+                    }
+                }
+
+                parent.setChildren(children);
+
+                return tree;
+            }
         }
-      }
-
-      parent.setChildren(children);
-
-      return tree;
-    }
-  }
     }
 }

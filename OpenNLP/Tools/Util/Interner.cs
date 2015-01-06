@@ -29,87 +29,100 @@ namespace OpenNLP.Tools.Util
  *
  * @author Dan Klein
  */
-    public class Interner<T> where T:class
+
+    public class Interner<T> where T : class
     {
         protected static Interner<Object> interner = new Interner<Object>();
 
-  /**
+        /**
    * For getting the instance that global methods use.
    */
-  public static Interner<Object> getGlobal() {
-    return interner;
-  }
 
-  /**
+        public static Interner<Object> getGlobal()
+        {
+            return interner;
+        }
+
+        /**
    * For supplying a new instance for the global methods to use.
    * 
    * @return the previous global interner.
    */
-  /*public static Interner<Object> setGlobal(Interner<Object> interner) {
+        /*public static Interner<Object> setGlobal(Interner<Object> interner) {
     Interner<Object> oldInterner = Interner.interner;
     Interner.interner = interner;
     return oldInterner;
   }*/
 
-  /**
+        /**
    * Returns a unique object o' that .equals the argument o.  If o
    * itself is returned, this is the first request for an object
    * .equals to o.
    */
-  //@SuppressWarnings("unchecked")
-  public static T globalIntern<T>(T o) {
-    return (T) getGlobal().intern(o);
-  }
+        //@SuppressWarnings("unchecked")
+        public static T globalIntern<T>(T o)
+        {
+            return (T) getGlobal().intern(o);
+        }
 
 
-  protected Dictionary<T,WeakReference<T>> map = new Dictionary<T, WeakReference<T>>();
+        protected Dictionary<T, WeakReference<T>> map = new Dictionary<T, WeakReference<T>>();
 
-  public void clear() { map = new Dictionary<T, WeakReference<T>>(); }
-  
-  /**
+        public void clear()
+        {
+            map = new Dictionary<T, WeakReference<T>>();
+        }
+
+        /**
    * Returns a unique object o' that .equals the argument o.  If o
    * itself is returned, this is the first request for an object
    * .equals to o.
    */
-  public T intern(T o) {
-      if (!map.ContainsKey(o))
-      {
-          var wRef = new WeakReference<T>(o);
-          map.Add(o, wRef);
-      }
-    /*WeakReference<T> wRef = map.get(o);
+
+        public T intern(T o)
+        {
+            if (!map.ContainsKey(o))
+            {
+                var wRef = new WeakReference<T>(o);
+                map.Add(o, wRef);
+            }
+            /*WeakReference<T> wRef = map.get(o);
     if (wRef == null) {
       wRef = Generics.newWeakReference(o);
       map.put(o, ref);
     }
     return ref.get();*/
-      T target;
-      var success = map[o].TryGetTarget(out target);
-      // TODO: test if success
-      return target;
-  }
+            T target;
+            var success = map[o].TryGetTarget(out target);
+            // TODO: test if success
+            return target;
+        }
 
-  /**
+        /**
    * Returns a <code>Set</code> such that each element in the returned set
    * is a unique object e' that .equals the corresponding element e in the
    * original set.
    */
-  public Set<T> internAll(Set<T> s) {
-    Set<T> result = new Set<T>();
-    foreach (T o in s) {
-      result.Add(intern(o));
-    }
-    return result;
-  }
 
-  public int size() {
-    return map.Count;
-  }
+        public Set<T> internAll(Set<T> s)
+        {
+            Set<T> result = new Set<T>();
+            foreach (T o in s)
+            {
+                result.Add(intern(o));
+            }
+            return result;
+        }
 
-  /**
+        public int size()
+        {
+            return map.Count;
+        }
+
+        /**
    * Test method: interns its arguments and says whether they == themselves.
    */
-  /*public static void main(String[] args) {
+        /*public static void main(String[] args) {
     for (int i = 0; i < args.length; i++) {
       String str = args[i];
       System.out.println(Interner.globalIntern(str) == str);

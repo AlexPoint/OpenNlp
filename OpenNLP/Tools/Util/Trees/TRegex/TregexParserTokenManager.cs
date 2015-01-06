@@ -208,12 +208,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private static readonly long[] jjbitVec0 =
         {
-            unchecked((long)0xfffffffffffffffeL), unchecked((long)0xffffffffffffffffL), unchecked((long)0xffffffffffffffffL), unchecked((long)0xffffffffffffffffL)
+            unchecked((long) 0xfffffffffffffffeL), unchecked((long) 0xffffffffffffffffL),
+            unchecked((long) 0xffffffffffffffffL), unchecked((long) 0xffffffffffffffffL)
         };
 
         private static readonly long[] jjbitVec2 =
         {
-            0x0L, 0x0L, unchecked((long)0xffffffffffffffffL), unchecked((long)0xffffffffffffffffL)
+            0x0L, 0x0L, unchecked((long) 0xffffffffffffffffL), unchecked((long) 0xffffffffffffffffL)
         };
 
         private int jjMoveNfa_0(int startState, int curPos)
@@ -397,7 +398,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                 }
                                 break;
                             case 10:
-                                if ((unchecked((long)0xffff7fffffffdbffL) & l) != 0L)
+                                if ((unchecked((long) 0xffff7fffffffdbffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(0, 2);
                                 }
@@ -560,7 +561,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 else if (curChar < 128)
                 {
                     //var l = 1L << (curChar & 077);
-                    var l = 1L << (curChar % 64);
+                    var l = 1L << (curChar%64);
                     do
                     {
                         switch (jjstateSet[--i])
@@ -571,7 +572,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                     kind = 4;
                                 break;
                             case 0:
-                                if ((unchecked((long)0x87ffffff57fffffeL) & l) != 0L)
+                                if ((unchecked((long) 0x87ffffff57fffffeL) & l) != 0L)
                                 {
                                     if (kind > 8)
                                         kind = 8;
@@ -589,7 +590,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                 }
                                 break;
                             case 5:
-                                if ((unchecked((long)0x87ffffff57fffffeL) & l) == 0L)
+                                if ((unchecked((long) 0x87ffffff57fffffeL) & l) == 0L)
                                     break;
                                 if (kind > 8)
                                     kind = 8;
@@ -598,7 +599,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             }
                                 break;
                             case 6:
-                                if ((unchecked((long)0xbfffffffd7fffffeL) & l) == 0L)
+                                if ((unchecked((long) 0xbfffffffd7fffffeL) & l) == 0L)
                                     break;
                                 if (kind > 8)
                                     kind = 8;
@@ -634,10 +635,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     int hiByte = (curChar >> 8);
                     int i1 = hiByte >> 6;
                     //var l1 = 1L << (hiByte & 077);
-                    var l1 = 1L << (hiByte % 64);
+                    var l1 = 1L << (hiByte%64);
                     int i2 = (curChar & 0xff) >> 6;
                     //var l2 = 1L << (curChar & 077);
-                    var l2 = 1L << (curChar % 64);
+                    var l2 = 1L << (curChar%64);
                     do
                     {
                         switch (jjstateSet[--i])
@@ -712,6 +713,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             null, @"\174", @"\12", @"\50", @"\51", @"\41", @"\100", @"\43", @"\45", @"\75", @"\176",
             @"\46", @"\77", @"\133", @"\135", @"\173", @"\73", @"\175",
         };*/
+
         public static readonly String[] jjstrLiteralImages =
         {
             "", null, null, null, null, "<...", null, null, null, "__", null,
@@ -766,7 +768,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             //EOFLoop :
             for (;;)
             {
-            start_EOF_loop:{}
+                start_EOF_loop:
+                {
+                }
                 try
                 {
                     curChar = input_stream.BeginToken();
@@ -798,7 +802,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     if (jjmatchedPos + 1 < curPos)
                         input_stream.backup(curPos - jjmatchedPos - 1);
                     //if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
-                    if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind % 64))) != 0L)
+                    if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind%64))) != 0L)
                     {
                         matchedToken = jjFillToken();
                         return matchedToken;
@@ -921,7 +925,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         public void SwitchTo(int lexState)
         {
             if (lexState >= 1 || lexState < 0)
-                throw new TokenMgrException("Error: Ignoring invalid lexical state : " + lexState + ". State unchanged.",
+                throw new TokenMgrException(
+                    "Error: Ignoring invalid lexical state : " + lexState + ". State unchanged.",
                     TokenMgrException.INVALID_LEXICAL_STATE);
             else
                 curLexState = lexState;

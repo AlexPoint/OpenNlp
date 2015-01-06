@@ -152,6 +152,7 @@ namespace OpenNLP.Tools.Util.Process
         public double NumberValue { get; private set; }
 
         /** Private constructor that initializes everything except the streams. */
+
         private StreamTokenizer()
         {
             WordChars('a', 'z');
@@ -170,6 +171,7 @@ namespace OpenNLP.Tools.Util.Process
          *
          * @param r  a Reader object providing the input stream.
          */
+
         public StreamTokenizer(TextReader r)
             : this()
         {
@@ -185,6 +187,7 @@ namespace OpenNLP.Tools.Util.Process
          * "ordinary." See the <code>ordinaryChar</code> method
          * for more information on a character being ordinary.
          */
+
         public void ResetSyntax()
         {
             Array.Clear(characterType, 0, characterType.Length);
@@ -199,6 +202,7 @@ namespace OpenNLP.Tools.Util.Process
          * @param   low   the low end of the range.
          * @param   hi    the high end of the range.
          */
+
         public void WordChars(int low, int hi)
         {
             if (low < 0)
@@ -227,6 +231,7 @@ namespace OpenNLP.Tools.Util.Process
          * @param   low   the low end of the range.
          * @param   hi    the high end of the range.
          */
+
         public void WhitespaceChars(int low, int hi)
         {
             if (low < 0)
@@ -254,6 +259,7 @@ namespace OpenNLP.Tools.Util.Process
          * @param   hi    the high end of the range.
          * @see     java.io.StreamTokenizer#ordinaryChar(int)
          */
+
         public void OrdinaryChars(int low, int hi)
         {
             if (low < 0)
@@ -269,6 +275,7 @@ namespace OpenNLP.Tools.Util.Process
                 characterType[low++] = 0;
             }
         }
+
         /**
          * Specifies that the character argument is "ordinary"
          * in this tokenizer. It removes any special significance the
@@ -285,6 +292,7 @@ namespace OpenNLP.Tools.Util.Process
          *
          * @param   ch   the character.
          */
+
         public void OrdinaryChar(int ch)
         {
             if (ch >= 0 && ch < characterType.Length)
@@ -300,6 +308,7 @@ namespace OpenNLP.Tools.Util.Process
          *
          * @param   ch   the character.
          */
+
         public void CommentChar(int ch)
         {
             if (ch >= 0 && ch < characterType.Length)
@@ -329,6 +338,7 @@ namespace OpenNLP.Tools.Util.Process
          *
          * @param   ch   the character.
          */
+
         public void QuoteChar(int ch)
         {
             if (ch >= 0 && ch < characterType.Length)
@@ -351,6 +361,7 @@ namespace OpenNLP.Tools.Util.Process
          * field to the value <code>TT_NUMBER</code> and putting the numeric
          * value of the token into the <code>nval</code> field.
          */
+
         public void ParseNumbers()
         {
             for (int i = '0'; i <= '9'; i++)
@@ -381,6 +392,7 @@ namespace OpenNLP.Tools.Util.Process
          *                 are separate tokens; <code>false</code> indicates that
          *                 end-of-line characters are white space.
          */
+
         public void EolIsSignificant(bool flag)
         {
             eolIsSignificantP = flag;
@@ -398,6 +410,7 @@ namespace OpenNLP.Tools.Util.Process
          * @param   flag   <code>true</code> indicates to recognize and ignore
          *                 C-style comments.
          */
+
         public bool SlashStarComments
         {
             get { return slashStarCommentsP; }
@@ -417,6 +430,7 @@ namespace OpenNLP.Tools.Util.Process
          * @param   flag   <code>true</code> indicates to recognize and ignore
          *                 C++-style comments.
          */
+
         public bool SlashSlashComments
         {
             get { return slashSlashCommentsP; }
@@ -437,12 +451,14 @@ namespace OpenNLP.Tools.Util.Process
          * @param   fl   <code>true</code> indicates that all word tokens should
          *               be lowercased.
          */
+
         public bool LowerCaseMode
         {
             set { forceLower = value; }
         }
 
         /** Read the next character */
+
         private int Read()
         {
             if (reader != null)
@@ -469,6 +485,7 @@ namespace OpenNLP.Tools.Util.Process
          *
          * @return     the value of the <code>ttype</code> field.
          */
+
         public int NextToken()
         {
             if (pushedBack)
@@ -496,7 +513,7 @@ namespace OpenNLP.Tools.Util.Process
                 if (c < 0)
                     return ttype = TT_EOF;
             }
-            ttype = c;      /* Just to be safe */
+            ttype = c; /* Just to be safe */
 
             /* Set peekc so that the next invocation of nextToken will Read
              * another character unless peekc is reset in this invocation
@@ -557,7 +574,7 @@ namespace OpenNLP.Tools.Util.Process
                         seendot = 1;
                     else if ('0' <= c && c <= '9')
                     {
-                        v = v * 10 + (c - '0');
+                        v = v*10 + (c - '0');
                         decexp += seendot;
                     }
                     else
@@ -575,7 +592,7 @@ namespace OpenNLP.Tools.Util.Process
                         decexp--;
                     }
                     /* Do one division of a likely-to-be-more-accurate number */
-                    v = v / denom;
+                    v = v/denom;
                 }
                 NumberValue = neg ? -v : v;
                 return ttype = TT_NUMBER;
@@ -586,7 +603,7 @@ namespace OpenNLP.Tools.Util.Process
                 int i = 0;
                 do
                 {
-                    buf[i++] = (char)c;
+                    buf[i++] = (char) c;
                     c = Read();
                     ctype = c < 0 ? CT_WHITESPACE : c < 256 ? ct[c] : CT_ALPHA;
                 } while ((ctype & (CT_ALPHA | CT_DIGIT)) != 0);
@@ -611,7 +628,7 @@ namespace OpenNLP.Tools.Util.Process
                     if (d == '\\')
                     {
                         c = Read();
-                        int first = c;   /* To allow \377, but not \477 */
+                        int first = c; /* To allow \377, but not \477 */
                         if (c >= '0' && c <= '7')
                         {
                             c = c - '0';
@@ -665,7 +682,7 @@ namespace OpenNLP.Tools.Util.Process
                         c = d;
                         d = Read();
                     }
-                    buf[i++] = (char)c;
+                    buf[i++] = (char) c;
                 }
 
                 /* If we broke out of the loop because we found a matching quote
@@ -748,9 +765,10 @@ namespace OpenNLP.Tools.Util.Process
          * field, and not to modify the value in the <code>nval</code> or
          * <code>sval</code> field.
          */
+
         public void PushBack()
         {
-            if (ttype != TT_NOTHING)   /* No-op if nextToken() not called */
+            if (ttype != TT_NOTHING) /* No-op if nextToken() not called */
             {
                 pushedBack = true;
             }
@@ -767,6 +785,7 @@ namespace OpenNLP.Tools.Util.Process
          *
          * @return  a string representation of the token
          */
+
         public override string ToString()
         {
             string ret;
@@ -788,26 +807,26 @@ namespace OpenNLP.Tools.Util.Process
                     ret = "NOTHING";
                     break;
                 default:
-                    {
-                        /* 
+                {
+                    /* 
                          * ttype is the first character of either a quoted string or
                          * is an ordinary character. ttype can definitely not be less
                          * than 0, since those are reserved values used in the previous
                          * case statements
                          */
-                        if (ttype < 256 &&
-                            ((characterType[ttype] & CT_QUOTE) != 0))
-                        {
-                            ret = StringValue;
-                            break;
-                        }
-
-                        char[] s = new char[3];
-                        s[0] = s[2] = '\'';
-                        s[1] = (char)ttype;
-                        ret = new string(s);
+                    if (ttype < 256 &&
+                        ((characterType[ttype] & CT_QUOTE) != 0))
+                    {
+                        ret = StringValue;
                         break;
                     }
+
+                    char[] s = new char[3];
+                    s[0] = s[2] = '\'';
+                    s[1] = (char) ttype;
+                    ret = new string(s);
+                    break;
+                }
             }
             return "Token[" + ret + "], line " + LineNumber;
         }

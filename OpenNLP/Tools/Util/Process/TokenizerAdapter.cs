@@ -14,14 +14,15 @@ namespace OpenNLP.Tools.Util.Process
  * @author Christopher Manning
  * @version 2004/04/01
  */
+
     public class TokenizerAdapter : AbstractTokenizer<String>
     {
         protected readonly StreamTokenizer st;
 
-  protected String eolString = "<EOL>";
+        protected String eolString = "<EOL>";
 
 
-  /**
+        /**
    * Create a new <code>TokenizerAdaptor</code>.  In general, it is
    * recommended that the passed in <code>StreamTokenizer</code> should
    * have had <code>resetSyntax()</code> done to it, so that numbers are
@@ -30,41 +31,48 @@ namespace OpenNLP.Tools.Util.Process
    *
    * @param st The internal <code>java.io.StreamTokenizer</code>
    */
-  public TokenizerAdapter(StreamTokenizer st) {
-    this.st = st;
-  }
+
+        public TokenizerAdapter(StreamTokenizer st)
+        {
+            this.st = st;
+        }
 
 
-  /**
+        /**
    * Internally fetches the next token.
    *
    * @return the next token in the token stream, or null if none exists.
    */
-  //@Override
-  protected override String getNext() {
-    try {
-      int nextTok = st.NextToken();
-      switch (nextTok) {
-        case StreamTokenizer.TT_EOL:
-          return eolString;
-        case StreamTokenizer.TT_EOF:
-          return null;
-        case StreamTokenizer.TT_WORD:
-          return st.StringValue;
-        case StreamTokenizer.TT_NUMBER:
-          return st.NumberValue.ToString();
-        default:
-          char[] t = { (char) nextTok };    // (array initialization)
-          return new String(t);
-      }
-    } catch (IOException ioe) {
-      // do nothing, return null
-      return null;
-    }
-  }
+        //@Override
+        protected override String getNext()
+        {
+            try
+            {
+                int nextTok = st.NextToken();
+                switch (nextTok)
+                {
+                    case StreamTokenizer.TT_EOL:
+                        return eolString;
+                    case StreamTokenizer.TT_EOF:
+                        return null;
+                    case StreamTokenizer.TT_WORD:
+                        return st.StringValue;
+                    case StreamTokenizer.TT_NUMBER:
+                        return st.NumberValue.ToString();
+                    default:
+                        char[] t = {(char) nextTok}; // (array initialization)
+                        return new String(t);
+                }
+            }
+            catch (IOException ioe)
+            {
+                // do nothing, return null
+                return null;
+            }
+        }
 
 
-  /**
+        /**
    * Set the <code>String</code> returned when the inner tokenizer
    * returns an end-of-line token.  This will only happen if the
    * inner tokenizer has been set to <code>eolIsSignificant(true)</code>.
@@ -72,23 +80,28 @@ namespace OpenNLP.Tools.Util.Process
    * @param eolString The String used to represent eol.  It is not allowed
    *                  to be <code>null</code> (which would confuse line ends and file end)
    */
-  public void setEolString(String eolString) {
-    if (eolString == null) {
-      throw new ArgumentException("eolString cannot be null");
-    }
-    this.eolString = eolString;
-  }
+
+        public void setEolString(String eolString)
+        {
+            if (eolString == null)
+            {
+                throw new ArgumentException("eolString cannot be null");
+            }
+            this.eolString = eolString;
+        }
 
 
-  /**
+        /**
    * Say whether the <code>String</code> is the end-of-line token for
    * this tokenizer.
    *
    * @param str The String being tested
    * @return Whether it is the end-of-line token
    */
-  public bool isEol(String str) {
-    return eolString.Equals(str);
-  }
+
+        public bool isEol(String str)
+        {
+            return eolString.Equals(str);
+        }
     }
 }

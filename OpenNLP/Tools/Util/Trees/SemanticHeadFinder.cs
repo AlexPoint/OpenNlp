@@ -158,18 +158,18 @@ namespace OpenNLP.Tools.Util.Trees
             // WHNP clauses should have the same sort of head as an NP
             // but it a WHNP has a NP and a WHNP under it, the WHNP should be the head.  E.g.,  (WHNP (WHNP (WP$ whose) (JJ chief) (JJ executive) (NN officer))(, ,) (NP (NNP James) (NNP Gatward))(, ,))
             nonTerminalInfo["WHNP"] = new String[][]
-                {
-                    new string[] {"rightdis", "NN", "NNP", "NNPS", "NNS", "NX", "NML", "JJR", "WP"},
-                    new string[] {"left", "WHNP", "NP"}, new string[] {"rightdis", "$", "ADJP", "PRN", "FW"},
-                    new string[] {"right", "CD"}, new string[] {"rightdis", "JJ", "JJS", "RB", "QP"},
-                    new string[] {"left", "WHPP", "WHADJP", "WP$", "WDT"}
-                };
+            {
+                new string[] {"rightdis", "NN", "NNP", "NNPS", "NNS", "NX", "NML", "JJR", "WP"},
+                new string[] {"left", "WHNP", "NP"}, new string[] {"rightdis", "$", "ADJP", "PRN", "FW"},
+                new string[] {"right", "CD"}, new string[] {"rightdis", "JJ", "JJS", "RB", "QP"},
+                new string[] {"left", "WHPP", "WHADJP", "WP$", "WDT"}
+            };
             //WHADJP
             nonTerminalInfo["WHADJP"] = new String[][]
-                {new string[] {"left", "ADJP", "JJ", "JJR", "WP"}, new string[] {"right", "RB"}, new string[] {"right"}};
+            {new string[] {"left", "ADJP", "JJ", "JJR", "WP"}, new string[] {"right", "RB"}, new string[] {"right"}};
             //WHADJP
             nonTerminalInfo["WHADVP"] = new String[][] {new string[] {"rightdis", "WRB", "WHADVP", "RB", "JJ"}};
-                // if not WRB or WHADVP, probably has flat NP structure, allow JJ for "how long" constructions
+            // if not WRB or WHADVP, probably has flat NP structure, allow JJ for "how long" constructions
             // QP: we don't want the first CD to be the semantic head (e.g., "three billion": head should be "billion"), so we go from right to left
             nonTerminalInfo["QP"] =
                 new String[][]
@@ -181,17 +181,17 @@ namespace OpenNLP.Tools.Util.Trees
             // S, SBAR and SQ clauses should prefer the main verb as the head
             // S: "He considered him a friend" -> we want a friend to be the head
             nonTerminalInfo["S"] = new String[][]
-                {new string[] {"left", "VP", "S", "FRAG", "SBAR", "ADJP", "UCP", "TO"}, new string[] {"right", "NP"}};
+            {new string[] {"left", "VP", "S", "FRAG", "SBAR", "ADJP", "UCP", "TO"}, new string[] {"right", "NP"}};
 
             nonTerminalInfo["SBAR"] = new String[][]
-                {
-                    new string[]
-                    {"left", "S", "SQ", "SINV", "SBAR", "FRAG", "VP", "WHNP", "WHPP", "WHADVP", "WHADJP", "IN", "DT"}
-                };
+            {
+                new string[]
+                {"left", "S", "SQ", "SINV", "SBAR", "FRAG", "VP", "WHNP", "WHPP", "WHADVP", "WHADJP", "IN", "DT"}
+            };
             // VP shouldn't be needed in SBAR, but occurs in one buggy tree in PTB3 wsj_1457 and otherwise does no harm
 
             nonTerminalInfo["SQ"] = new String[][]
-                {new string[] {"left", "VP", "SQ", "ADJP", "VB", "VBZ", "VBD", "VBP", "MD", "AUX", "AUXG"}};
+            {new string[] {"left", "VP", "SQ", "ADJP", "VB", "VBZ", "VBD", "VBP", "MD", "AUX", "AUXG"}};
 
 
             // UCP take the first element as head
@@ -204,20 +204,20 @@ namespace OpenNLP.Tools.Util.Trees
             // glosses; but it is correct to have ADJP and ADVP before S
             // because of weird parses of reduced sentences.
             nonTerminalInfo["FRAG"] = new String[][]
-                {
-                    new string[] {"left", "IN"}, new string[] {"right", "RB"}, new string[] {"left", "NP"},
-                    new string[] {"left", "ADJP", "ADVP", "FRAG", "S", "SBAR", "VP"}
-                };
+            {
+                new string[] {"left", "IN"}, new string[] {"right", "RB"}, new string[] {"left", "NP"},
+                new string[] {"left", "ADJP", "ADVP", "FRAG", "S", "SBAR", "VP"}
+            };
 
             // PRN: sentence first
             nonTerminalInfo["PRN"] = new String[][]
+            {
+                new string[]
                 {
-                    new string[]
-                    {
-                        "left", "VP", "SQ", "S", "SINV", "SBAR", "NP", "ADJP", "PP", "ADVP", "INTJ", "WHNP", "NAC", "VBP",
-                        "JJ", "NN", "NNP"
-                    }
-                };
+                    "left", "VP", "SQ", "S", "SINV", "SBAR", "NP", "ADJP", "PP", "ADVP", "INTJ", "WHNP", "NAC", "VBP",
+                    "JJ", "NN", "NNP"
+                }
+            };
 
             // add the constituent XS (special node to add a layer in a QP tree introduced in our QPTreeTransformer)
             nonTerminalInfo["XS"] = new String[][] {new string[] {"right", "IN"}};
@@ -354,7 +354,8 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return false;
             }
-            TregexPattern noVerbOverTempTregex = TregexPattern.compile("/^VP/ < NP-TMP !< /^V/ !< NNP|NN|NNPS|NNS|NP|JJ|ADJP|S");
+            TregexPattern noVerbOverTempTregex =
+                TregexPattern.compile("/^VP/ < NP-TMP !< /^V/ !< NNP|NN|NNPS|NNS|NP|JJ|ADJP|S");
             if (label.value().StartsWith("VP") && noVerbOverTempTregex.matcher(tree).matches())
             {
                 return false;

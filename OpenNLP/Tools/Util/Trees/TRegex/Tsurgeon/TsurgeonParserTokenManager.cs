@@ -476,12 +476,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         private static readonly long[] jjbitVec0 =
         {
-            unchecked ((long)0xfffffffffffffffeL), unchecked ((long)0xffffffffffffffffL), unchecked ((long)0xffffffffffffffffL), unchecked ((long)0xffffffffffffffffL)
+            unchecked ((long) 0xfffffffffffffffeL), unchecked ((long) 0xffffffffffffffffL),
+            unchecked ((long) 0xffffffffffffffffL), unchecked ((long) 0xffffffffffffffffL)
         };
 
         private static readonly long[] jjbitVec2 =
         {
-            0x0L, 0x0L, unchecked ((long)0xffffffffffffffffL), unchecked ((long)0xffffffffffffffffL)
+            0x0L, 0x0L, unchecked ((long) 0xffffffffffffffffL), unchecked ((long) 0xffffffffffffffffL)
         };
 
         private int jjMoveNfa_0(int startState, int curPos)
@@ -503,7 +504,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         switch (jjstateSet[--i])
                         {
                             case 0:
-                                if ((unchecked((long)0xfbfffcfeffffdbffL) & l) != 0L)
+                                if ((unchecked((long) 0xfbfffcfeffffdbffL) & l) != 0L)
                                 {
                                     if (kind > 30)
                                         kind = 30;
@@ -579,7 +580,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             }
                                 break;
                             case 6:
-                                if ((unchecked((long)0xffffffffffffdbffL) & l) != 0L)
+                                if ((unchecked((long) 0xffffffffffffdbffL) & l) != 0L)
                                 {
                                     jjAddStates(10, 12);
                                 }
@@ -600,7 +601,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             }
                                 break;
                             case 13:
-                                if ((unchecked((long)0xfbfffcfeffffdbffL) & l) == 0L)
+                                if ((unchecked((long) 0xfbfffcfeffffdbffL) & l) == 0L)
                                     break;
                                 if (kind > 30)
                                     kind = 30;
@@ -618,7 +619,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             }
                                 break;
                             case 15:
-                                if ((unchecked((long)0xf3fffcfa00000000L) & l) == 0L)
+                                if ((unchecked((long) 0xf3fffcfa00000000L) & l) == 0L)
                                     break;
                                 if (kind > 31)
                                     kind = 31;
@@ -659,7 +660,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                 }
                                 break;
                             case 39:
-                                if ((unchecked((long)0xffffffffffffdbffL) & l) != 0L)
+                                if ((unchecked((long) 0xffffffffffffdbffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(13, 15);
                                 }
@@ -708,7 +709,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                 }
                                 break;
                             case 46:
-                                if ((unchecked((long)0xffffffffffffdbffL) & l) != 0L)
+                                if ((unchecked((long) 0xffffffffffffdbffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(27, 29);
                                 }
@@ -723,7 +724,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             }
                                 break;
                             case 52:
-                                if ((unchecked((long)0xffffffffffffdbffL) & l) != 0L)
+                                if ((unchecked((long) 0xffffffffffffdbffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(30, 32);
                                 }
@@ -746,13 +747,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 else if (curChar < 128)
                 {
                     //var l = 1L << (curChar & 077);
-                    var l = 1L << (curChar %64);
+                    var l = 1L << (curChar%64);
                     do
                     {
                         switch (jjstateSet[--i])
                         {
                             case 0:
-                                if ((unchecked((long)0xffffffffd7ffffffL) & l) != 0L)
+                                if ((unchecked((long) 0xffffffffd7ffffffL) & l) != 0L)
                                 {
                                     if (kind > 30)
                                         kind = 30;
@@ -790,7 +791,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                 }
                                 break;
                             case 6:
-                                if ((unchecked((long)0xefffffffefffffffL) & l) != 0L)
+                                if ((unchecked((long) 0xefffffffefffffffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(10, 12);
                                 }
@@ -812,7 +813,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                 }
                                 break;
                             case 13:
-                                if ((unchecked((long)0xffffffffd7ffffffL) & l) == 0L)
+                                if ((unchecked((long) 0xffffffffd7ffffffL) & l) == 0L)
                                     break;
                                 if (kind > 30)
                                     kind = 30;
@@ -918,7 +919,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             }
                                 break;
                             case 46:
-                                if ((unchecked((long)0xffffffffcfffffffL) & l) != 0L)
+                                if ((unchecked((long) 0xffffffffcfffffffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(27, 29);
                                 }
@@ -942,7 +943,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                 }
                                 break;
                             case 52:
-                                if ((unchecked((long)0xffffffffcfffffffL) & l) != 0L)
+                                if ((unchecked((long) 0xffffffffcfffffffL) & l) != 0L)
                                 {
                                     jjCheckNAddStates(30, 32);
                                 }
@@ -975,10 +976,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     int hiByte = (curChar >> 8);
                     int i1 = hiByte >> 6;
                     //long l1 = 1L << (hiByte & 077);
-                    long l1 = 1L << (hiByte % 64);
+                    long l1 = 1L << (hiByte%64);
                     int i2 = (curChar & 0xff) >> 6;
                     //long l2 = 1L << (curChar & 077);
-                    long l2 = 1L << (curChar % 64);
+                    long l2 = 1L << (curChar%64);
                     do
                     {
                         switch (jjstateSet[--i])
@@ -1104,7 +1105,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         switch (jjstateSet[--i])
                         {
                             case 0:
-                                if ((unchecked((long)0xfbfffcfeffffdbffL) & l) == 0L)
+                                if ((unchecked((long) 0xfbfffcfeffffdbffL) & l) == 0L)
                                     break;
                                 kind = 21;
                                 jjstateSet[jjnewStateCnt++] = 0;
@@ -1117,13 +1118,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 else if (curChar < 128)
                 {
                     //var l = 1L << (curChar & 077);
-                    var l = 1L << (curChar % 64);
+                    var l = 1L << (curChar%64);
                     do
                     {
                         switch (jjstateSet[--i])
                         {
                             case 0:
-                                if ((unchecked ((long)0xffffffffd7ffffffL) & l) == 0L)
+                                if ((unchecked ((long) 0xffffffffd7ffffffL) & l) == 0L)
                                     break;
                                 kind = 21;
                                 jjstateSet[jjnewStateCnt++] = 0;
@@ -1138,10 +1139,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     int hiByte = (curChar >> 8);
                     int i1 = hiByte >> 6;
                     //long l1 = 1L << (hiByte & 077);
-                    long l1 = 1L << (hiByte % 64);
+                    long l1 = 1L << (hiByte%64);
                     int i2 = (curChar & 0xff) >> 6;
                     //long l2 = 1L << (curChar & 077);
-                    long l2 = 1L << (curChar % 64);
+                    long l2 = 1L << (curChar%64);
                     do
                     {
                         switch (jjstateSet[--i])
@@ -1210,6 +1211,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             "\x141\x144\x152\x157\x151\x156", "\x141\x144\x152\x157\x151\x156\x110", "\x141\x144\x152\x157\x151\x156\x106",
             "\x143\x157\x151\x156\x144\x145\x170", null, "\x135", null, null, null, null, null, null, null, null, null, "\x51",
         };*/
+
         public static readonly String[] jjstrLiteralImages =
         {
             "", null, null, null, null, "[", "if", "not",
@@ -1254,123 +1256,123 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             //EOFLoop :
             for (;;)
             {
-            beginning_eof_loop:
+                beginning_eof_loop:
                 {
                     try
-                {
-                    curChar = input_stream.BeginToken();
-                }
-                catch ( /*java.io.*/Exception e)
-                {
-                    if (e is IOException || e is ObjectDisposedException)
                     {
-                        jjmatchedKind = 0;
-                        jjmatchedPos = -1;
-                        matchedToken = jjFillToken();
-                        return matchedToken;
+                        curChar = input_stream.BeginToken();
                     }
-                    throw e;
-                }
+                    catch ( /*java.io.*/Exception e)
+                    {
+                        if (e is IOException || e is ObjectDisposedException)
+                        {
+                            jjmatchedKind = 0;
+                            jjmatchedPos = -1;
+                            matchedToken = jjFillToken();
+                            return matchedToken;
+                        }
+                        throw e;
+                    }
 
-                switch (curLexState)
-                {
-                    case 0:
-                        try
+                    switch (curLexState)
+                    {
+                        case 0:
+                            try
+                            {
+                                input_stream.backup(0);
+                                while (curChar <= 32 && (0x100002400L & (1L << curChar)) != 0L)
+                                    curChar = input_stream.BeginToken();
+                            }
+                            catch ( /*java.io.*/IOException e1)
+                            {
+                                //continue EOFLoop;
+                                goto beginning_eof_loop;
+                            }
+                            jjmatchedKind = 0x7fffffff;
+                            jjmatchedPos = 0;
+                            curPos = jjMoveStringLiteralDfa0_0();
+                            break;
+                        case 1:
+                            try
+                            {
+                                input_stream.backup(0);
+                                while (curChar <= 32 && (0x100002400L & (1L << curChar)) != 0L)
+                                    curChar = input_stream.BeginToken();
+                            }
+                            catch ( /*java.io.*/IOException e1)
+                            {
+                                //continue EOFLoop;
+                                goto beginning_eof_loop;
+                            }
+                            jjmatchedKind = 0x7fffffff;
+                            jjmatchedPos = 0;
+                            curPos = jjMoveStringLiteralDfa0_1();
+                            break;
+                        case 2:
+                            try
+                            {
+                                input_stream.backup(0);
+                                while (curChar <= 32 && (0x100002600L & (1L << curChar)) != 0L)
+                                    curChar = input_stream.BeginToken();
+                            }
+                            catch ( /*java.io.*/IOException e1)
+                            {
+                                //continue EOFLoop;
+                                goto beginning_eof_loop;
+                            }
+                            jjmatchedKind = 0x7fffffff;
+                            jjmatchedPos = 0;
+                            curPos = jjMoveStringLiteralDfa0_2();
+                            break;
+                    }
+                    if (jjmatchedKind != 0x7fffffff)
+                    {
+                        if (jjmatchedPos + 1 < curPos)
+                            input_stream.backup(curPos - jjmatchedPos - 1);
+                        //if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
+                        if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind%64))) != 0L)
                         {
-                            input_stream.backup(0);
-                            while (curChar <= 32 && (0x100002400L & (1L << curChar)) != 0L)
-                                curChar = input_stream.BeginToken();
+                            matchedToken = jjFillToken();
+                            if (jjnewLexState[jjmatchedKind] != -1)
+                                curLexState = jjnewLexState[jjmatchedKind];
+                            return matchedToken;
                         }
-                        catch ( /*java.io.*/IOException e1)
+                        else
                         {
+                            if (jjnewLexState[jjmatchedKind] != -1)
+                                curLexState = jjnewLexState[jjmatchedKind];
                             //continue EOFLoop;
                             goto beginning_eof_loop;
                         }
-                        jjmatchedKind = 0x7fffffff;
-                        jjmatchedPos = 0;
-                        curPos = jjMoveStringLiteralDfa0_0();
-                        break;
-                    case 1:
-                        try
-                        {
-                            input_stream.backup(0);
-                            while (curChar <= 32 && (0x100002400L & (1L << curChar)) != 0L)
-                                curChar = input_stream.BeginToken();
-                        }
-                        catch ( /*java.io.*/IOException e1)
-                        {
-                            //continue EOFLoop;
-                            goto beginning_eof_loop;
-                        }
-                        jjmatchedKind = 0x7fffffff;
-                        jjmatchedPos = 0;
-                        curPos = jjMoveStringLiteralDfa0_1();
-                        break;
-                    case 2:
-                        try
-                        {
-                            input_stream.backup(0);
-                            while (curChar <= 32 && (0x100002600L & (1L << curChar)) != 0L)
-                                curChar = input_stream.BeginToken();
-                        }
-                        catch ( /*java.io.*/IOException e1)
-                        {
-                            //continue EOFLoop;
-                            goto beginning_eof_loop;
-                        }
-                        jjmatchedKind = 0x7fffffff;
-                        jjmatchedPos = 0;
-                        curPos = jjMoveStringLiteralDfa0_2();
-                        break;
-                }
-                if (jjmatchedKind != 0x7fffffff)
-                {
-                    if (jjmatchedPos + 1 < curPos)
-                        input_stream.backup(curPos - jjmatchedPos - 1);
-                    //if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
-                    if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind % 64))) != 0L)
-                    {
-                        matchedToken = jjFillToken();
-                        if (jjnewLexState[jjmatchedKind] != -1)
-                            curLexState = jjnewLexState[jjmatchedKind];
-                        return matchedToken;
                     }
-                    else
+                    int error_line = input_stream.getEndLine();
+                    int error_column = input_stream.getEndColumn();
+                    String error_after = null;
+                    bool EOFSeen = false;
+                    try
                     {
-                        if (jjnewLexState[jjmatchedKind] != -1)
-                            curLexState = jjnewLexState[jjmatchedKind];
-                        //continue EOFLoop;
-                        goto beginning_eof_loop;
+                        input_stream.readChar();
+                        input_stream.backup(1);
                     }
-                }
-                int error_line = input_stream.getEndLine();
-                int error_column = input_stream.getEndColumn();
-                String error_after = null;
-                bool EOFSeen = false;
-                try
-                {
-                    input_stream.readChar();
-                    input_stream.backup(1);
-                }
-                catch ( /*java.io.*/IOException e1)
-                {
-                    EOFSeen = true;
-                    error_after = curPos <= 1 ? "" : input_stream.GetImage();
-                    if (curChar == '\n' || curChar == '\r')
+                    catch ( /*java.io.*/IOException e1)
                     {
-                        error_line++;
-                        error_column = 0;
+                        EOFSeen = true;
+                        error_after = curPos <= 1 ? "" : input_stream.GetImage();
+                        if (curChar == '\n' || curChar == '\r')
+                        {
+                            error_line++;
+                            error_column = 0;
+                        }
+                        else
+                            error_column++;
                     }
-                    else
-                        error_column++;
-                }
-                if (!EOFSeen)
-                {
-                    input_stream.backup(1);
-                    error_after = curPos <= 1 ? "" : input_stream.GetImage();
-                }
-                throw new TokenMgrException(EOFSeen, curLexState, error_line, error_column, error_after, curChar,
-                    TokenMgrException.LEXICAL_ERROR);
+                    if (!EOFSeen)
+                    {
+                        input_stream.backup(1);
+                        error_after = curPos <= 1 ? "" : input_stream.GetImage();
+                    }
+                    throw new TokenMgrException(EOFSeen, curLexState, error_line, error_column, error_after, curChar,
+                        TokenMgrException.LEXICAL_ERROR);
                 }
             }
         }

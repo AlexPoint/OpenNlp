@@ -41,42 +41,48 @@ namespace OpenNLP.Tools.Util.Trees
  *
  * @author Christopher Manning
  */
-    public class BobChrisTreeNormalizer: TreeNormalizer, TreeTransformer
+
+    public class BobChrisTreeNormalizer : TreeNormalizer, TreeTransformer
     {
         protected readonly TreebankLanguagePack tlp;
 
 
-  public BobChrisTreeNormalizer():
-    this(new PennTreebankLanguagePack()){}
+        public BobChrisTreeNormalizer() :
+            this(new PennTreebankLanguagePack())
+        {
+        }
 
-  public BobChrisTreeNormalizer(TreebankLanguagePack tlp) {
-    this.tlp = tlp;
-  }
+        public BobChrisTreeNormalizer(TreebankLanguagePack tlp)
+        {
+            this.tlp = tlp;
+        }
 
 
-  /**
+        /**
    * Normalizes a leaf contents.
    * This implementation interns the leaf.
    */
-  //@Override
-  public override String normalizeTerminal(String leaf) {
-    // We could unquote * and / with backslash \ in front of them
-    return leaf/*.intern()*/;
-  }
+        //@Override
+        public override String normalizeTerminal(String leaf)
+        {
+            // We could unquote * and / with backslash \ in front of them
+            return leaf /*.intern()*/;
+        }
 
 
-  /**
+        /**
    * Normalizes a nonterminal contents.
    * This implementation strips functional tags, etc. and interns the
    * nonterminal.
    */
-  //@Override
-  public override String normalizeNonterminal(String category) {
-    return cleanUpLabel(category)/*.intern()*/;
-  }
+        //@Override
+        public override String normalizeNonterminal(String category)
+        {
+            return cleanUpLabel(category) /*.intern()*/;
+        }
 
 
-  /**
+        /**
    * Remove things like hyphened functional tags and equals from the
    * end of a node label.  This version always just returns the phrase
    * structure category, or "ROOT" if the label was <code>null</code>.
@@ -84,78 +90,97 @@ namespace OpenNLP.Tools.Util.Trees
    * @param label The label from the treebank
    * @return The cleaned up label (phrase structure category)
    */
-  protected String cleanUpLabel(/*readonly */String label) {
-    if (label == null || label.Length == 0) {
-      return "ROOT";
-      // String constants are always interned
-    } else {
-      return tlp.basicCategory(label);
-    }
-  }
+
+        protected String cleanUpLabel( /*readonly */ String label)
+        {
+            if (label == null || label.Length == 0)
+            {
+                return "ROOT";
+                // String constants are always interned
+            }
+            else
+            {
+                return tlp.basicCategory(label);
+            }
+        }
 
 
-  /**
+        /**
    * Normalize a whole tree -- one can assume that this is the
    * root.  This implementation deletes empty elements (ones with
    * nonterminal tag label '-NONE-') from the tree, and splices out
    * unary A over A nodes.  It does work for a null tree.
    */
-  //@Override
-  public override Tree normalizeWholeTree(Tree tree, TreeFactory tf) {
-    return tree.prune(emptyFilter.test, tf).spliceOut(aOverAFilter.test, tf);
-  }
+        //@Override
+        public override Tree normalizeWholeTree(Tree tree, TreeFactory tf)
+        {
+            return tree.prune(emptyFilter.test, tf).spliceOut(aOverAFilter.test, tf);
+        }
 
-  //@Override
-  public Tree transformTree(Tree tree) {
-    return normalizeWholeTree(tree, tree.treeFactory());
-  }
-
-
-  protected EmptyFilter emptyFilter = new EmptyFilter();
-
-  protected AOverAFilter aOverAFilter = new AOverAFilter();
-
-  private static readonly long serialVersionUID = -1005188028979810143L;
+        //@Override
+        public Tree transformTree(Tree tree)
+        {
+            return normalizeWholeTree(tree, tree.treeFactory());
+        }
 
 
-  public /*static */class EmptyFilter /*: Predicate<Tree>*//*, Serializable*/ {
+        protected EmptyFilter emptyFilter = new EmptyFilter();
 
-    private static readonly long serialVersionUID = 8914098359495987617L;
+        protected AOverAFilter aOverAFilter = new AOverAFilter();
 
-    /** Doesn't accept nodes that only cover an empty. */
-    public bool test(Tree t) {
-      Tree[] kids = t.children();
-      Label l = t.label();
-      // Delete (return false for) empty/trace nodes (ones marked '-NONE-')
-      return ! ((l != null) && "-NONE-".Equals(l.value()) && !t.isLeaf() && kids.Length == 1 && kids[0].isLeaf());
-    }
-
-      //    private static readonly long serialVersionUID = 1L;
-
-  } // end class EmptyFilter
+        private static readonly long serialVersionUID = -1005188028979810143L;
 
 
-  public /*static*/ class AOverAFilter/* : Predicate<Tree>*//*, Serializable*/ {
+        public /*static */ class EmptyFilter /*: Predicate<Tree>*/ /*, Serializable*/
+        {
 
-    /** Doesn't accept nodes that are A over A nodes (perhaps due to
+            private static readonly long serialVersionUID = 8914098359495987617L;
+
+            /** Doesn't accept nodes that only cover an empty. */
+
+            public bool test(Tree t)
+            {
+                Tree[] kids = t.children();
+                Label l = t.label();
+                // Delete (return false for) empty/trace nodes (ones marked '-NONE-')
+                return
+                    ! ((l != null) && "-NONE-".Equals(l.value()) && !t.isLeaf() && kids.Length == 1 && kids[0].isLeaf());
+            }
+
+            //    private static readonly long serialVersionUID = 1L;
+
+        } // end class EmptyFilter
+
+
+        public /*static*/ class AOverAFilter /* : Predicate<Tree>*/ /*, Serializable*/
+        {
+
+            /** Doesn't accept nodes that are A over A nodes (perhaps due to
      *  empty removal or are EDITED nodes).
      */
-    public bool test(Tree t) {
-      if (t.isLeaf() || t.isPreTerminal()) {
-        return true;
-      }
-      // The special switchboard non-terminals clause
-      if ("EDITED".Equals(t.label().value()) || "CODE".Equals(t.label().value())) {
-        return false;
-      }
-      if (t.numChildren() != 1) {
-        return true;
-      }
-      return ! (t.label() != null && t.label().value() != null && t.label().value().Equals(t.getChild(0).label().value()));
-    }
 
-    private static readonly long serialVersionUID = 1L;
+            public bool test(Tree t)
+            {
+                if (t.isLeaf() || t.isPreTerminal())
+                {
+                    return true;
+                }
+                // The special switchboard non-terminals clause
+                if ("EDITED".Equals(t.label().value()) || "CODE".Equals(t.label().value()))
+                {
+                    return false;
+                }
+                if (t.numChildren() != 1)
+                {
+                    return true;
+                }
+                return
+                    ! (t.label() != null && t.label().value() != null &&
+                       t.label().value().Equals(t.getChild(0).label().value()));
+            }
 
-  } // end class AOverAFilter
+            private static readonly long serialVersionUID = 1L;
+
+        } // end class AOverAFilter
     }
 }

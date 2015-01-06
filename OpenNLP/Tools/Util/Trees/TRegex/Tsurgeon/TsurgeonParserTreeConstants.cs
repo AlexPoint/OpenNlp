@@ -20,17 +20,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         public int JJTTREEDTRS = 9;
 
 
-        public static String[] jjtNodeName = {
-    "Root",
-    "Operation",
-    "Location",
-    "NodeSelectionList",
-    "NodeSelection",
-    "NodeName",
-    "TreeList",
-    "TreeRoot",
-    "TreeNode",
-    "TreeDtrs",
-  };
+        public static String[] jjtNodeName =
+        {
+            "Root",
+            "Operation",
+            "Location",
+            "NodeSelectionList",
+            "NodeSelection",
+            "NodeName",
+            "TreeList",
+            "TreeRoot",
+            "TreeNode",
+            "TreeDtrs",
+        };
     }
 }

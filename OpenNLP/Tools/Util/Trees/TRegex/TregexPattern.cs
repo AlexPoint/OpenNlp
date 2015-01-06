@@ -305,27 +305,32 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
  * @author Anna Rafferty (filter mode)
  * @author John Bauer (extensively tested and bugfixed)
  */
+
     public abstract class TregexPattern
     {
         private bool neg = false;
-  private bool opt = false;
-  private String patternString;
+        private bool opt = false;
+        private String patternString;
 
-  public void negate() {
-    neg = true;
-    if (opt) {
-      throw new SystemException("Node cannot be both negated and optional.");
-    }
-  }
+        public void negate()
+        {
+            neg = true;
+            if (opt)
+            {
+                throw new SystemException("Node cannot be both negated and optional.");
+            }
+        }
 
-  public void makeOptional() {
-    opt = true;
-    if (neg) {
-      throw new SystemException("Node cannot be both negated and optional.");
-    }
-  }
+        public void makeOptional()
+        {
+            opt = true;
+            if (neg)
+            {
+                throw new SystemException("Node cannot be both negated and optional.");
+            }
+        }
 
-  /*private void prettyPrint(PrintWriter pw, int indent) {
+        /*private void prettyPrint(PrintWriter pw, int indent) {
     for (int i = 0; i < indent; i++) {
       pw.print("   ");
     }
@@ -341,54 +346,61 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     }
   }*/
 
-  // package private constructor
-  public TregexPattern() {
-  }
+        // package private constructor
+        public TregexPattern()
+        {
+        }
 
-  public abstract List<TregexPattern> getChildren();
+        public abstract List<TregexPattern> getChildren();
 
-  public abstract String localString();
+        public abstract String localString();
 
-  public bool isNegated() {
-    return neg;
-  }
+        public bool isNegated()
+        {
+            return neg;
+        }
 
-  public bool isOptional() {
-    return opt;
-  }
+        public bool isOptional()
+        {
+            return opt;
+        }
 
-  public abstract TregexMatcher matcher(Tree root, Tree tree,
-                                 IdentityDictionary<Tree, Tree> nodesToParents,
-                                 Dictionary<String, Tree> namesToNodes,
-                                 VariableStrings variableStrings,
-                                 HeadFinder headFinder);
+        public abstract TregexMatcher matcher(Tree root, Tree tree,
+            IdentityDictionary<Tree, Tree> nodesToParents,
+            Dictionary<String, Tree> namesToNodes,
+            VariableStrings variableStrings,
+            HeadFinder headFinder);
 
-  /**
+        /**
    * Get a {@link TregexMatcher} for this pattern on this tree.
    *
    * @param t a tree to match on
    * @return a TregexMatcher
    */
-  public TregexMatcher matcher(Tree t) {
-    // In the assumption that there will usually be very few names in
-    // the pattern, we use an ArrayMap instead of a hash map
-    // TODO: it would be even more efficient if we set this to be
-    // exactly the right size
-    return matcher(t, t, null, new Dictionary<string, Tree>(), new VariableStrings(), null);
-  }
 
-  /**
+        public TregexMatcher matcher(Tree t)
+        {
+            // In the assumption that there will usually be very few names in
+            // the pattern, we use an ArrayMap instead of a hash map
+            // TODO: it would be even more efficient if we set this to be
+            // exactly the right size
+            return matcher(t, t, null, new Dictionary<string, Tree>(), new VariableStrings(), null);
+        }
+
+        /**
    * Get a {@link TregexMatcher} for this pattern on this tree.  Any Relations which use heads of trees should use the provided HeadFinder.
    *
    * @param t a tree to match on
    * @param headFinder a HeadFinder to use when matching
    * @return a TregexMatcher
    */
-  public TregexMatcher matcher(Tree t, HeadFinder headFinder) {
-    return matcher(t, t, null, new Dictionary<string, Tree>(), new VariableStrings(), headFinder);
-  }
 
-  /**
+        public TregexMatcher matcher(Tree t, HeadFinder headFinder)
+        {
+            return matcher(t, t, null, new Dictionary<string, Tree>(), new VariableStrings(), headFinder);
+        }
+
+        /**
    * Creates a pattern from the given string using the default HeadFinder and
    * BasicCategoryFunction.  If you want to use a different HeadFinder or
    * BasicCategoryFunction, use a {@link TregexPatternCompiler} object.
@@ -397,11 +409,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @return a TregexPattern for the string.
    * @throws TregexParseException if the string does not parse
    */
-  public static TregexPattern compile(String tregex) {
-    return TregexPatternCompiler.defaultCompiler.compile(tregex);
-  }
 
-  /**
+        public static TregexPattern compile(String tregex)
+        {
+            return TregexPatternCompiler.defaultCompiler.compile(tregex);
+        }
+
+        /**
    * Creates a pattern from the given string using the default HeadFinder and
    * BasicCategoryFunction.  If you want to use a different HeadFinder or
    * BasicCategoryFunction, use a {@link TregexPatternCompiler} object.
@@ -412,35 +426,44 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @param verbose whether to log errors when the string doesn't parse
    * @return a TregexPattern for the string, or null if the string does not parse.
    */
-  public static TregexPattern safeCompile(String tregex, bool verbose) {
-    TregexPattern result = null;
-    try {
-      result = TregexPatternCompiler.defaultCompiler.compile(tregex);
-    } catch (TregexParseException ex) {
-      if (verbose) {
-        //System.err.println("Could not parse " + tregex + ":");
-        //ex.printStackTrace();
-      }
-    }
-    return result;
-  }
 
-  public String pattern() {
-    return patternString;
-  }
+        public static TregexPattern safeCompile(String tregex, bool verbose)
+        {
+            TregexPattern result = null;
+            try
+            {
+                result = TregexPatternCompiler.defaultCompiler.compile(tregex);
+            }
+            catch (TregexParseException ex)
+            {
+                if (verbose)
+                {
+                    //System.err.println("Could not parse " + tregex + ":");
+                    //ex.printStackTrace();
+                }
+            }
+            return result;
+        }
 
-  /** Only used by the TregexPatternCompiler to set the pattern. Pseudo-final. */
-  public void setPatternString(String patternString) {
-    this.patternString = patternString;
-  }
+        public String pattern()
+        {
+            return patternString;
+        }
 
-  /**
+        /** Only used by the TregexPatternCompiler to set the pattern. Pseudo-final. */
+
+        public void setPatternString(String patternString)
+        {
+            this.patternString = patternString;
+        }
+
+        /**
    * @return A single-line string representation of the pattern
    */
-  /*@Override
+        /*@Override
   public abstract String toString();*/
 
-  /*/**
+        /*/**
    * Print a multi-line representation
    * of the pattern illustrating it's syntax.
    #1#
@@ -465,9 +488,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   }*/
 
 
-  private static readonly Regex codePattern = new Regex("([0-9]+):([0-9]+)", RegexOptions.Compiled);
+        private static readonly Regex codePattern = new Regex("([0-9]+):([0-9]+)", RegexOptions.Compiled);
 
-  /*private static void extractSubtrees(List<String> codeStrings, String treeFile) {
+        /*private static void extractSubtrees(List<String> codeStrings, String treeFile) {
     List<Tuple<int,int>> codes = new List<Tuple<int,int>>();
     foreach(String s in codeStrings) {
       //Matcher m = codePattern.matcher(s);
@@ -500,8 +523,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
   private static Treebank treebank; // used by main method, must be accessible*/
 
-  // not thread-safe, but only used by TregexPattern's main method
-  /*private static class TRegexTreeVisitor: TreeVisitor {
+        // not thread-safe, but only used by TregexPattern's main method
+        /*private static class TRegexTreeVisitor: TreeVisitor {
 
     private static bool printNumMatchesToStdOut = false;
     static bool printNonMatchingTrees = false;
@@ -605,10 +628,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
   } // end class TRegexTreeVisitor*/
 
-  private static readonly long serialVersionUID = 5060298043763944913L;
+        private static readonly long serialVersionUID = 5060298043763944913L;
 
 
-  /*public static class TRegexTreeReaderFactory: TreeReaderFactory {
+        /*public static class TRegexTreeReaderFactory: TreeReaderFactory {
 
     private readonly TreeNormalizer tn;
 

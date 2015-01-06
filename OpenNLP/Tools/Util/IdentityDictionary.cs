@@ -10,11 +10,13 @@ namespace OpenNLP.Tools.Util
     public class IdentityDictionary<T1, T2> : Dictionary<T1, T2>
         where T1 : class
     {
-        public IdentityDictionary ():base(new IdentityEqualityComparer<T1>()){}
+        public IdentityDictionary() : base(new IdentityEqualityComparer<T1>())
+        {
+        }
     }
-    
+
     public class IdentityEqualityComparer<T> : IEqualityComparer<T>
-        where T:class
+        where T : class
     {
         public int GetHashCode(T value)
         {

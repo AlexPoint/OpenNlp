@@ -19,44 +19,44 @@ using System.Collections.Generic;
 
 namespace OpenNLP.Tools.Util
 {
-	/// <summary>
-	/// This class contains methods to manage a sorted collection.
-	/// RN note: this class (taken from the JLCA "support" code) doesn't actually
-	/// sort anything.
-	/// </summary>
-	public class SortedSet<T> : Set<T>
-	{
-		/// <summary>
-		/// Creates a new SortedSet.
-		/// </summary>
-		public SortedSet() : base()
-		{
-		}
-				
-		/// <summary>
-		/// Create a new SortedSet with a specific collection.
-		/// </summary>
-		/// <param name="collection">
-		/// The collection used to iniciatilize the SortedSetSupport
-		/// </param>
-		public SortedSet(ICollection<T> collection): base(collection)
-		{
-		}
-	 
-		/// <summary>
-		/// Returns the first element from the set.
-		/// </summary>
-		/// <returns>
-		/// Returns the first element from the set.
-		/// </returns>
-		public virtual T First()
-		{
-			IEnumerator<T> enumerator = this.GetEnumerator();
-			enumerator.MoveNext();
-			return enumerator.Current;
-		}
-	 
-		/*/// <summary>
+    /// <summary>
+    /// This class contains methods to manage a sorted collection.
+    /// RN note: this class (taken from the JLCA "support" code) doesn't actually
+    /// sort anything.
+    /// </summary>
+    public class SortedSet<T> : Set<T>
+    {
+        /// <summary>
+        /// Creates a new SortedSet.
+        /// </summary>
+        public SortedSet() : base()
+        {
+        }
+
+        /// <summary>
+        /// Create a new SortedSet with a specific collection.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection used to iniciatilize the SortedSetSupport
+        /// </param>
+        public SortedSet(ICollection<T> collection) : base(collection)
+        {
+        }
+
+        /// <summary>
+        /// Returns the first element from the set.
+        /// </summary>
+        /// <returns>
+        /// Returns the first element from the set.
+        /// </returns>
+        public virtual T First()
+        {
+            IEnumerator<T> enumerator = this.GetEnumerator();
+            enumerator.MoveNext();
+            return enumerator.Current;
+        }
+
+        /*/// <summary>
 		/// Returns a view of elements until the specified element.
 		/// </summary>
 		/// <returns>
@@ -72,26 +72,26 @@ namespace OpenNLP.Tools.Util
             }
             return sortedSet;
         }*/
-	 
-		/// <summary>
-		/// Returns the last element of the set.
-		/// </summary>
-		/// <returns>Returns the last element from the set.</returns>
-		public virtual T Last()
-		{
-			IEnumerator<T> enumerator = this.GetEnumerator();
-			T element = default(T);
-			while(enumerator.MoveNext())
-			{
-				if (enumerator.Current != null)
-				{
-					element = enumerator.Current;
-				}
-			}
-			return element;
-		}
-	 
-		/*/// <summary>
+
+        /// <summary>
+        /// Returns the last element of the set.
+        /// </summary>
+        /// <returns>Returns the last element from the set.</returns>
+        public virtual T Last()
+        {
+            IEnumerator<T> enumerator = this.GetEnumerator();
+            T element = default(T);
+            while (enumerator.MoveNext())
+            {
+                if (enumerator.Current != null)
+                {
+                    element = enumerator.Current;
+                }
+            }
+            return element;
+        }
+
+        /*/// <summary>
 		/// Returns a view of elements from the specified element.
 		/// </summary>
 		/// <returns>
@@ -107,8 +107,8 @@ namespace OpenNLP.Tools.Util
             }
             return sortedSet;
         }*/
-	 
-		/*/// <summary>
+
+        /*/// <summary>
 		/// Returns a view of elements between the specified elements.
 		/// </summary>
 		/// <returns>
@@ -124,5 +124,5 @@ namespace OpenNLP.Tools.Util
             }
             return sortedSet;
         }*/
-	}
+    }
 }

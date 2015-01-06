@@ -14,86 +14,112 @@ namespace OpenNLP.Tools.Util.Trees
  * @author Dan Klein
  * @author Aria Haghighi (tree path methods)
  */
+
     public static class Trees
     {
         private static readonly LabeledScoredTreeFactory defaultTreeFactory = new LabeledScoredTreeFactory();
 
-  //private Trees() {}
+        //private Trees() {}
 
 
-  /**
+        /**
    * Returns the positional index of the left edge of a tree <i>t</i>
    * within a given root, as defined by the size of the yield of all
    * material preceding <i>t</i>.
    */
-  public static int leftEdge(Tree t, Tree root)
-  {
-      var i = 0;
-    if (leftEdge(t, root, i)) {
-      return i;
-    } else {
-      throw new SystemException("Tree is not a descendant of root.");
+
+        public static int leftEdge(Tree t, Tree root)
+        {
+            var i = 0;
+            if (leftEdge(t, root, i))
+            {
+                return i;
+            }
+            else
+            {
+                throw new SystemException("Tree is not a descendant of root.");
 //      return -1;
-    }
-  }
-
-  static bool leftEdge(Tree t, Tree t1, int i) {
-    if (t == t1) {
-      return true;
-    } else if (t1.isLeaf()) {
-      int j = t1.yield().Count; // so that empties don't add size
-      i = i + j;
-      return false;
-    } else {
-      foreach (Tree kid in t1.children()) {
-        if (leftEdge(t, kid, i)) {
-          return true;
+            }
         }
-      }
-      return false;
-    }
-  }
 
-  /**
+        private static bool leftEdge(Tree t, Tree t1, int i)
+        {
+            if (t == t1)
+            {
+                return true;
+            }
+            else if (t1.isLeaf())
+            {
+                int j = t1.yield().Count; // so that empties don't add size
+                i = i + j;
+                return false;
+            }
+            else
+            {
+                foreach (Tree kid in t1.children())
+                {
+                    if (leftEdge(t, kid, i))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        /**
    * Returns the positional index of the right edge of a tree
    * <i>t</i> within a given root, as defined by the size of the yield
    * of all material preceding <i>t</i> plus all the material
    * contained in <i>t</i>.
    */
-  public static int rightEdge(Tree t, Tree root) {
-    var i = root.yield().Count;
-    if (rightEdge(t, root, i)) {
-      return i;
-    } else {
-      throw new SystemException("Tree is not a descendant of root.");
+
+        public static int rightEdge(Tree t, Tree root)
+        {
+            var i = root.yield().Count;
+            if (rightEdge(t, root, i))
+            {
+                return i;
+            }
+            else
+            {
+                throw new SystemException("Tree is not a descendant of root.");
 //      return root.yield().size() + 1;
-    }
-  }
-
-  static bool rightEdge(Tree t, Tree t1, int i) {
-    if (t == t1) {
-      return true;
-    } else if (t1.isLeaf()) {
-      int j = t1.yield().Count; // so that empties don't add size
-      i = i - j;
-      return false;
-    } else {
-      Tree[] kids = t1.children();
-      for (int j = kids.Length - 1; j >= 0; j--) {
-        if (rightEdge(t, kids[j], i)) {
-          return true;
+            }
         }
-      }
-      return false;
-    }
-  }
+
+        private static bool rightEdge(Tree t, Tree t1, int i)
+        {
+            if (t == t1)
+            {
+                return true;
+            }
+            else if (t1.isLeaf())
+            {
+                int j = t1.yield().Count; // so that empties don't add size
+                i = i - j;
+                return false;
+            }
+            else
+            {
+                Tree[] kids = t1.children();
+                for (int j = kids.Length - 1; j >= 0; j--)
+                {
+                    if (rightEdge(t, kids[j], i))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
 
 
-  /**
+        /**
    * Returns a lexicalized Tree whose Labels are CategoryWordTag
    * instances, all corresponds to the input tree.
    */
-  /*public static Tree lexicalize(Tree t, HeadFinder hf) {
+        /*public static Tree lexicalize(Tree t, HeadFinder hf) {
     Function<Tree,Tree> a =
       TreeFunctions.getLabeledTreeToCategoryWordTagTreeFunction();
     Tree t1 = a.apply(t);
@@ -101,109 +127,141 @@ namespace OpenNLP.Tools.Util.Trees
     return t1;
   }*/
 
-  /**
+        /**
    * returns the leaves in a Tree in the order that they're found.
    */
-  public static List<Tree> leaves(Tree t) {
-    List<Tree> l = new List<Tree>();
-    leaves(t, l);
-    return l;
-  }
 
-  private static void leaves(Tree t, List<Tree> l) {
-    if (t.isLeaf()) {
-      l.Add(t);
-    } else {
-      foreach (Tree kid in t.children()) {
-        leaves(kid, l);
-      }
-    }
-  }
+        public static List<Tree> leaves(Tree t)
+        {
+            List<Tree> l = new List<Tree>();
+            leaves(t, l);
+            return l;
+        }
 
-  public static List<Tree> preTerminals(Tree t) {
-    List<Tree> l = new List<Tree>();
-    preTerminals(t, l);
-    return l;
-  }
+        private static void leaves(Tree t, List<Tree> l)
+        {
+            if (t.isLeaf())
+            {
+                l.Add(t);
+            }
+            else
+            {
+                foreach (Tree kid in t.children())
+                {
+                    leaves(kid, l);
+                }
+            }
+        }
 
-  private static void preTerminals(Tree t, List<Tree> l) {
-    if (t.isPreTerminal()) {
-      l.Add(t);
-    } else {
-      foreach (Tree kid in t.children()) {
-        preTerminals(kid, l);
-      }
-    }
-  }
+        public static List<Tree> preTerminals(Tree t)
+        {
+            List<Tree> l = new List<Tree>();
+            preTerminals(t, l);
+            return l;
+        }
+
+        private static void preTerminals(Tree t, List<Tree> l)
+        {
+            if (t.isPreTerminal())
+            {
+                l.Add(t);
+            }
+            else
+            {
+                foreach (Tree kid in t.children())
+                {
+                    preTerminals(kid, l);
+                }
+            }
+        }
 
 
-  /**
+        /**
    * returns the labels of the leaves in a Tree in the order that they're found.
    */
-  public static List<Label> leafLabels(Tree t) {
-    List<Label> l = new List<Label>();
-    leafLabels(t, l);
-    return l;
-  }
 
-  private static void leafLabels(Tree t, List<Label> l) {
-    if (t.isLeaf()) {
-      l.Add(t.label());
-    } else {
-      foreach (Tree kid in t.children()) {
-        leafLabels(kid, l);
-      }
-    }
-  }
+        public static List<Label> leafLabels(Tree t)
+        {
+            List<Label> l = new List<Label>();
+            leafLabels(t, l);
+            return l;
+        }
 
-  /**
+        private static void leafLabels(Tree t, List<Label> l)
+        {
+            if (t.isLeaf())
+            {
+                l.Add(t.label());
+            }
+            else
+            {
+                foreach (Tree kid in t.children())
+                {
+                    leafLabels(kid, l);
+                }
+            }
+        }
+
+        /**
    * returns the labels of the leaves in a Tree, augmented with POS tags.  assumes that
    * the labels are CoreLabels.
    */
-  public static List<CoreLabel> taggedLeafLabels(Tree t) {
-    List<CoreLabel> l = new List<CoreLabel>();
-    taggedLeafLabels(t, l);
-    return l;
-  }
 
-  private static void taggedLeafLabels(Tree t, List<CoreLabel> l) {
-    if (t.isPreTerminal()) {
-      CoreLabel fl = (CoreLabel)t.getChild(0).label();
-      fl.set(typeof(CoreAnnotations.TagLabelAnnotation), t.label());
-      l.Add(fl);
-    } else {
-      foreach (Tree kid in t.children()) {
-        taggedLeafLabels(kid, l);
-      }
-    }
-  }
+        public static List<CoreLabel> taggedLeafLabels(Tree t)
+        {
+            List<CoreLabel> l = new List<CoreLabel>();
+            taggedLeafLabels(t, l);
+            return l;
+        }
+
+        private static void taggedLeafLabels(Tree t, List<CoreLabel> l)
+        {
+            if (t.isPreTerminal())
+            {
+                CoreLabel fl = (CoreLabel) t.getChild(0).label();
+                fl.set(typeof (CoreAnnotations.TagLabelAnnotation), t.label());
+                l.Add(fl);
+            }
+            else
+            {
+                foreach (Tree kid in t.children())
+                {
+                    taggedLeafLabels(kid, l);
+                }
+            }
+        }
 
 
-  /**
+        /**
    * returns the maximal projection of <code>head</code> in
    * <code>root</code> given a {@link HeadFinder}
    */
-  public static Tree maximalProjection(Tree head, Tree root, HeadFinder hf) {
-    Tree projection = head;
-    if (projection == root) {
-      return root;
-    }
-    Tree parent = projection.parent(root);
-    while (hf.determineHead(parent) == projection) {
-      projection = parent;
-      if (projection == root) {
-        return root;
-      }
-      parent = projection.parent(root);
-    }
-    return projection;
-  }
 
-  /* applies a TreeVisitor to all projections (including the node itself) of a node in a Tree.
+        public static Tree maximalProjection(Tree head, Tree root, HeadFinder hf)
+        {
+            Tree projection = head;
+            if (projection == root)
+            {
+                return root;
+            }
+            Tree parent = projection.parent(root);
+            while (hf.determineHead(parent) == projection)
+            {
+                projection = parent;
+                if (projection == root)
+                {
+                    return root;
+                }
+                parent = projection.parent(root);
+            }
+            return projection;
+        }
+
+        /* applies a TreeVisitor to all projections (including the node itself) of a node in a Tree.
   *  Does nothing if head is not in root.
   * @return the maximal projection of head in root.
   */
-  /*public static Tree applyToProjections(TreeVisitor v, Tree head, Tree root, HeadFinder hf) {
+        /*public static Tree applyToProjections(TreeVisitor v, Tree head, Tree root, HeadFinder hf) {
     Tree projection = head;
     Tree parent = projection.parent(root);
     if (parent == null && projection != root) {
@@ -224,10 +282,10 @@ namespace OpenNLP.Tools.Util.Trees
     return projection;
   }*/
 
-  /**
+        /**
    * gets the <code>n</code>th terminal in <code>tree</code>.  The first terminal is number zero.
    */
-  /*public static Tree getTerminal(Tree tree, int n) {
+        /*public static Tree getTerminal(Tree tree, int n) {
     return getTerminal(tree, new MutableInteger(0), n);
   }
 
@@ -254,10 +312,10 @@ namespace OpenNLP.Tools.Util.Trees
     }
   }*/
 
-  /**
+        /**
    * gets the <code>n</code>th preterminal in <code>tree</code>.  The first terminal is number zero.
    */
-  /*public static Tree getPreTerminal(Tree tree, int n) {
+        /*public static Tree getPreTerminal(Tree tree, int n) {
     return getPreTerminal(tree, new MutableInteger(0), n);
   }
 
@@ -284,39 +342,46 @@ namespace OpenNLP.Tools.Util.Trees
     }
   }*/
 
-  /**
+        /**
    * returns the syntactic category of the tree as a list of the syntactic categories of the mother and the daughters
    */
-  public static List<String> localTreeAsCatList(Tree t) {
-    List<String> l = new List<String>(t.children().Length + 1);
-    l.Add(t.label().value());
-    for (int i = 0; i < t.children().Length; i++) {
-      l.Add(t.children()[i].label().value());
-    }
-    return l;
-  }
 
-  /**
+        public static List<String> localTreeAsCatList(Tree t)
+        {
+            List<String> l = new List<String>(t.children().Length + 1);
+            l.Add(t.label().value());
+            for (int i = 0; i < t.children().Length; i++)
+            {
+                l.Add(t.children()[i].label().value());
+            }
+            return l;
+        }
+
+        /**
    * Returns the index of <code>daughter</code> in <code>parent</code> by ==.
    * Returns -1 if <code>daughter</code> not found.
    */
-  public static int objectEqualityIndexOf(Tree parent, Tree daughter) {
-    for (int i = 0; i < parent.children().Length; i++) {
-      if (daughter == parent.children()[i]) {
-        return i;
-      }
-    }
-    return -1;
-  }
 
-  /** Returns a String reporting what kinds of Tree and Label nodes this
+        public static int objectEqualityIndexOf(Tree parent, Tree daughter)
+        {
+            for (int i = 0; i < parent.children().Length; i++)
+            {
+                if (daughter == parent.children()[i])
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /** Returns a String reporting what kinds of Tree and Label nodes this
    *  Tree contains.
    *
    *  @param t The tree to examine.
    *  @return A human-readable String reporting what kinds of Tree and Label nodes this
    *      Tree contains.
    */
-  /*public static String toStructureDebugString(Tree t) {
+        /*public static String toStructureDebugString(Tree t) {
     String tCl = StringUtils.getShortClassName(t);
     String tfCl = StringUtils.getShortClassName(t.treeFactory());
     String lCl = StringUtils.getShortClassName(t.label());
@@ -396,7 +461,7 @@ namespace OpenNLP.Tools.Util.Trees
   }*/
 
 
-  /** Turns a sentence into a flat phrasal tree.
+        /** Turns a sentence into a flat phrasal tree.
    *  The structure is S -> tag*.  And then each tag goes to a word.
    *  The tag is either found from the label or made "WD".
    *  The tag and phrasal node have a StringLabel.
@@ -404,11 +469,11 @@ namespace OpenNLP.Tools.Util.Trees
    *  @param s The Sentence to make the Tree from
    *  @return The one phrasal level Tree
    */
-  /*public static Tree toFlatTree(List<HasWord> s) {
+        /*public static Tree toFlatTree(List<HasWord> s) {
     return toFlatTree(s, new StringLabelFactory());
   }*/
 
-  /** Turns a sentence into a flat phrasal tree.
+        /** Turns a sentence into a flat phrasal tree.
    *  The structure is S -> tag*.  And then each tag goes to a word.
    *  The tag is either found from the label or made "WD".
    *  The tag and phrasal node have a StringLabel.
@@ -417,7 +482,7 @@ namespace OpenNLP.Tools.Util.Trees
    *  @param lf The LabelFactory with which to create the new Tree labels
    *  @return The one phrasal level Tree
    */
-  /*public static Tree toFlatTree(List<? extends HasWord> s, LabelFactory lf) {
+        /*public static Tree toFlatTree(List<? extends HasWord> s, LabelFactory lf) {
     List<Tree> daughters = new List<Tree>(s.size());
     for (HasWord word : s) {
       Tree wordNode = new LabeledScoredTreeNode(lf.newLabel(word.word()));
@@ -433,87 +498,109 @@ namespace OpenNLP.Tools.Util.Trees
   }*/
 
 
-   public static String treeToLatex(Tree t) {
-     StringBuilder connections = new StringBuilder();
-     StringBuilder hierarchy = new StringBuilder();
-     treeToLatexHelper(t,connections,hierarchy,0,1,0);
-     return "\\tree"+hierarchy+ '\n' +connections+ '\n';
-   }
+        public static String treeToLatex(Tree t)
+        {
+            StringBuilder connections = new StringBuilder();
+            StringBuilder hierarchy = new StringBuilder();
+            treeToLatexHelper(t, connections, hierarchy, 0, 1, 0);
+            return "\\tree" + hierarchy + '\n' + connections + '\n';
+        }
 
-  private static int treeToLatexHelper(Tree t, StringBuilder c, StringBuilder h,
-                                       int n, int nextN, int indent) {
-    StringBuilder sb = new StringBuilder();
-    for (int i=0; i<indent; i++)
-      sb.Append("  ");
-    h.Append('\n').Append(sb);
-    h.Append("{\\").Append(t.isLeaf() ? "" : "n").Append("tnode{z").Append(n).Append("}{").Append(t.label()).Append('}');
-    if (!t.isLeaf()) {
-      for (int k=0; k<t.children().Length; k++) {
-        h.Append(", ");
-        c.Append("\\nodeconnect{z").Append(n).Append("}{z").Append(nextN).Append("}\n");
-        nextN = treeToLatexHelper(t.children()[k],c,h,nextN,nextN+1,indent+1);
-      }
-    }
-    h.Append('}');
-    return nextN;
-  }
+        private static int treeToLatexHelper(Tree t, StringBuilder c, StringBuilder h,
+            int n, int nextN, int indent)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < indent; i++)
+                sb.Append("  ");
+            h.Append('\n').Append(sb);
+            h.Append("{\\")
+                .Append(t.isLeaf() ? "" : "n")
+                .Append("tnode{z")
+                .Append(n)
+                .Append("}{")
+                .Append(t.label())
+                .Append('}');
+            if (!t.isLeaf())
+            {
+                for (int k = 0; k < t.children().Length; k++)
+                {
+                    h.Append(", ");
+                    c.Append("\\nodeconnect{z").Append(n).Append("}{z").Append(nextN).Append("}\n");
+                    nextN = treeToLatexHelper(t.children()[k], c, h, nextN, nextN + 1, indent + 1);
+                }
+            }
+            h.Append('}');
+            return nextN;
+        }
 
-  public static String treeToLatexEven(Tree t) {
-    StringBuilder connections = new StringBuilder();
-    StringBuilder hierarchy = new StringBuilder();
-    int maxDepth = t.depth();
-    treeToLatexEvenHelper(t,connections,hierarchy,0,1,0,0,maxDepth);
-    return "\\tree"+hierarchy+ '\n' +connections+ '\n';
-  }
+        public static String treeToLatexEven(Tree t)
+        {
+            StringBuilder connections = new StringBuilder();
+            StringBuilder hierarchy = new StringBuilder();
+            int maxDepth = t.depth();
+            treeToLatexEvenHelper(t, connections, hierarchy, 0, 1, 0, 0, maxDepth);
+            return "\\tree" + hierarchy + '\n' + connections + '\n';
+        }
 
-  private static int treeToLatexEvenHelper(Tree t, StringBuilder c, StringBuilder h, int n,
-                                           int nextN, int indent, int curDepth, int maxDepth) {
-    StringBuilder sb = new StringBuilder();
-    for (int i=0; i<indent; i++)
-      sb.Append("  ");
-    h.Append('\n').Append(sb);
-    int tDepth = t.depth();
-    if (tDepth == 0 && tDepth+curDepth < maxDepth) {
-      for (int pad=0; pad < maxDepth-tDepth-curDepth; pad++) {
-        h.Append("{\\ntnode{pad}{}, ");
-      }
-    }
-    h.Append("{\\ntnode{z").Append(n).Append("}{").Append(t.label()).Append('}');
-    if (!t.isLeaf()) {
-      for (int k=0; k<t.children().Length; k++) {
-        h.Append(", ");
-        c.Append("\\nodeconnect{z").Append(n).Append("}{z").Append(nextN).Append("}\n");
-        nextN = treeToLatexEvenHelper(t.children()[k],c,h,nextN,nextN+1,indent+1,curDepth+1,maxDepth);
-      }
-    }
-    if (tDepth == 0 && tDepth+curDepth < maxDepth) {
-      for (int pad=0; pad < maxDepth-tDepth-curDepth; pad++) {
-        h.Append('}');
-      }
-    }
-    h.Append('}');
-    return nextN;
-  }
+        private static int treeToLatexEvenHelper(Tree t, StringBuilder c, StringBuilder h, int n,
+            int nextN, int indent, int curDepth, int maxDepth)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < indent; i++)
+                sb.Append("  ");
+            h.Append('\n').Append(sb);
+            int tDepth = t.depth();
+            if (tDepth == 0 && tDepth + curDepth < maxDepth)
+            {
+                for (int pad = 0; pad < maxDepth - tDepth - curDepth; pad++)
+                {
+                    h.Append("{\\ntnode{pad}{}, ");
+                }
+            }
+            h.Append("{\\ntnode{z").Append(n).Append("}{").Append(t.label()).Append('}');
+            if (!t.isLeaf())
+            {
+                for (int k = 0; k < t.children().Length; k++)
+                {
+                    h.Append(", ");
+                    c.Append("\\nodeconnect{z").Append(n).Append("}{z").Append(nextN).Append("}\n");
+                    nextN = treeToLatexEvenHelper(t.children()[k], c, h, nextN, nextN + 1, indent + 1, curDepth + 1,
+                        maxDepth);
+                }
+            }
+            if (tDepth == 0 && tDepth + curDepth < maxDepth)
+            {
+                for (int pad = 0; pad < maxDepth - tDepth - curDepth; pad++)
+                {
+                    h.Append('}');
+                }
+            }
+            h.Append('}');
+            return nextN;
+        }
 
-  static String texTree(Tree t) {
-    return treeToLatex(t);
-  }
+        private static String texTree(Tree t)
+        {
+            return treeToLatex(t);
+        }
 
-  static String escape(String s) {
-    StringBuilder sb = new StringBuilder();
-    for (int i=0; i<s.Length; i++) {
-      char c = s[i];
-      if (c == '^')
-        sb.Append('\\');
-      sb.Append(c);
-      if (c == '^')
-        sb.Append("{}");
-    }
-    return sb.ToString();
-  }
+        private static String escape(String s)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+                if (c == '^')
+                    sb.Append('\\');
+                sb.Append(c);
+                if (c == '^')
+                    sb.Append("{}");
+            }
+            return sb.ToString();
+        }
 
 
-  /*public static void main(String[] args) throws IOException {
+        /*public static void main(String[] args) throws IOException {
     int i = 0;
     while (i < args.Length) {
       Tree tree = Tree.valueOf(args[i]);
@@ -534,7 +621,7 @@ namespace OpenNLP.Tools.Util.Trees
     }
   }*/
 
-  /*public static Tree normalizeTree(Tree tree, TreeNormalizer tn, TreeFactory tf) {
+        /*public static Tree normalizeTree(Tree tree, TreeNormalizer tn, TreeFactory tf) {
     foreach (Tree node in tree) {
       if (node.isLeaf()) {
         node.label().setValue(tn.normalizeTerminal(node.label().value()));
@@ -546,14 +633,14 @@ namespace OpenNLP.Tools.Util.Trees
   }*/
 
 
-  /**
+        /**
    * Gets the <i>i</i>th leaf of a tree from the left.
    * The leftmost leaf is numbered 0.
    *
    * @return The <i>i</i><sup>th</sup> leaf as a Tree, or <code>null</code>
    *     if there is no such leaf.
    */
-  /*public static Tree getLeaf(Tree tree, int i) {
+        /*public static Tree getLeaf(Tree tree, int i) {
     int count = -1;
     foreach (Tree next in tree) {
       if (next.isLeaf()) {
@@ -567,83 +654,93 @@ namespace OpenNLP.Tools.Util.Trees
   }*/
 
 
-  /**
+        /**
    * Get lowest common ancestor of all the nodes in the list with the tree rooted at root
    */
-  public static Tree getLowestCommonAncestor(List<Tree> nodes, Tree root) {
-    List<List<Tree>> paths = new List<List<Tree>>();
-    int min = int.MaxValue;
-    foreach (Tree t in nodes) {
-      List<Tree> path = pathFromRoot(t, root);
-      if (path == null) return null;
-      min = Math.Min(min, path.Count);
-      paths.Add(path);
-    }
-    Tree commonAncestor = null;
-    for (int i = 0; i < min; ++i) {
-      Tree ancestor = paths[0][i];
-      bool quit = false;
-      foreach (List<Tree> path in paths) {
-        if (!path[i].Equals(ancestor)) {
-          quit = true;
-          break;
+
+        public static Tree getLowestCommonAncestor(List<Tree> nodes, Tree root)
+        {
+            List<List<Tree>> paths = new List<List<Tree>>();
+            int min = int.MaxValue;
+            foreach (Tree t in nodes)
+            {
+                List<Tree> path = pathFromRoot(t, root);
+                if (path == null) return null;
+                min = Math.Min(min, path.Count);
+                paths.Add(path);
+            }
+            Tree commonAncestor = null;
+            for (int i = 0; i < min; ++i)
+            {
+                Tree ancestor = paths[0][i];
+                bool quit = false;
+                foreach (List<Tree> path in paths)
+                {
+                    if (!path[i].Equals(ancestor))
+                    {
+                        quit = true;
+                        break;
+                    }
+                }
+                if (quit) break;
+                commonAncestor = ancestor;
+            }
+            return commonAncestor;
         }
-      }
-      if (quit) break;
-      commonAncestor = ancestor;
-    }
-    return commonAncestor;
-  }
 
 
-  /**
+        /**
    * returns a list of categories that is the path from Tree from to Tree
    * to within Tree root.  If either from or to is not in root,
    * returns null.  Otherwise includes both from and to in the list.
    */
-  public static List<String> pathNodeToNode(Tree from, Tree to, Tree root) {
-    List<Tree> fromPath = pathFromRoot(from, root);
-    //System.out.println(treeListToCatList(fromPath));
-    if (fromPath == null)
-      return null;
 
-    List<Tree> toPath = pathFromRoot(to, root);
-    //System.out.println(treeListToCatList(toPath));
-    if (toPath == null)
-      return null;
+        public static List<String> pathNodeToNode(Tree from, Tree to, Tree root)
+        {
+            List<Tree> fromPath = pathFromRoot(from, root);
+            //System.out.println(treeListToCatList(fromPath));
+            if (fromPath == null)
+                return null;
 
-    //System.out.println(treeListToCatList(fromPath));
-    //System.out.println(treeListToCatList(toPath));
+            List<Tree> toPath = pathFromRoot(to, root);
+            //System.out.println(treeListToCatList(toPath));
+            if (toPath == null)
+                return null;
 
-    int last = 0;
-    int min = fromPath.Count <= toPath.Count ? fromPath.Count : toPath.Count;
+            //System.out.println(treeListToCatList(fromPath));
+            //System.out.println(treeListToCatList(toPath));
 
-    Tree lastNode = null;
+            int last = 0;
+            int min = fromPath.Count <= toPath.Count ? fromPath.Count : toPath.Count;
+
+            Tree lastNode = null;
 //     while((! (fromPath.isEmpty() || toPath.isEmpty())) &&  fromPath.get(0).equals(toPath.get(0))) {
 //       lastNode = (Tree) fromPath.remove(0);
 //       toPath.remove(0);
 //     }
-    while (last < min && fromPath[last].Equals(toPath[last])) {
-      lastNode = fromPath[last];
-      last++;
-    }
+            while (last < min && fromPath[last].Equals(toPath[last]))
+            {
+                lastNode = fromPath[last];
+                last++;
+            }
 
-    //System.out.println(treeListToCatList(fromPath));
-    //System.out.println(treeListToCatList(toPath));
-    List<String> totalPath = new List<String>();
+            //System.out.println(treeListToCatList(fromPath));
+            //System.out.println(treeListToCatList(toPath));
+            List<String> totalPath = new List<String>();
 
-    for (int i = fromPath.Count - 1; i >= last; i--) {
-      Tree t = fromPath[i];
-      totalPath.Add("up-" + t.label().value());
-    }
+            for (int i = fromPath.Count - 1; i >= last; i--)
+            {
+                Tree t = fromPath[i];
+                totalPath.Add("up-" + t.label().value());
+            }
 
-    if (lastNode != null)
-      totalPath.Add("up-" + lastNode.label().value());
+            if (lastNode != null)
+                totalPath.Add("up-" + lastNode.label().value());
 
-      foreach (Tree t in toPath)
-      {
-          totalPath.Add("down-" + t.label().value());
-      }
+            foreach (Tree t in toPath)
+            {
+                totalPath.Add("down-" + t.label().value());
+            }
 
 
 //     for(ListIterator i = fromPath.listIterator(fromPath.size()); i.hasPrevious(); ){
@@ -659,68 +756,82 @@ namespace OpenNLP.Tools.Util.Trees
 //       totalPath.Add("down-" + t.label().value());
 //     }
 
-    return totalPath;
-  }
+            return totalPath;
+        }
 
 
-  /**
+        /**
    * returns list of tree nodes to root from t.  Includes root and
    * t. Returns null if tree not found dominated by root
    */
-  public static List<Tree> pathFromRoot(Tree t, Tree root) {
-    if (t == root) {
-      //if (t.equals(root)) {
-      List<Tree> l = new List<Tree>(1);
-      l.Add(t);
-      return l;
-    } else if (root == null) {
-      return null;
-    }
-    return root.dominationPath(t);
-  }
+
+        public static List<Tree> pathFromRoot(Tree t, Tree root)
+        {
+            if (t == root)
+            {
+                //if (t.equals(root)) {
+                List<Tree> l = new List<Tree>(1);
+                l.Add(t);
+                return l;
+            }
+            else if (root == null)
+            {
+                return null;
+            }
+            return root.dominationPath(t);
+        }
 
 
-  /**
+        /**
    * replaces all instances (by ==) of node with node1.  Doesn't affect
    * the node t itself
    */
-  public static void replaceNode(Tree node, Tree node1, Tree t) {
-    if (t.isLeaf())
-      return;
-    Tree[] kids = t.children();
-    List<Tree> newKids = new List<Tree>(kids.Length);
-    foreach (Tree kid in kids) {
-      if (kid != node) {
-        newKids.Add(kid);
-        replaceNode(node, node1, kid);
-      } else {
-        newKids.Add(node1);
-      }
-    }
-    t.setChildren(newKids);
-  }
+
+        public static void replaceNode(Tree node, Tree node1, Tree t)
+        {
+            if (t.isLeaf())
+                return;
+            Tree[] kids = t.children();
+            List<Tree> newKids = new List<Tree>(kids.Length);
+            foreach (Tree kid in kids)
+            {
+                if (kid != node)
+                {
+                    newKids.Add(kid);
+                    replaceNode(node, node1, kid);
+                }
+                else
+                {
+                    newKids.Add(node1);
+                }
+            }
+            t.setChildren(newKids);
+        }
 
 
-  /**
+        /**
    * returns the node of a tree which represents the lowest common
    * ancestor of nodes t1 and t2 dominated by root. If either t1 or
    * or t2 is not dominated by root, returns null.
    */
-  public static Tree getLowestCommonAncestor(Tree t1, Tree t2, Tree root) {
-    List<Tree> t1Path = pathFromRoot(t1, root);
-    List<Tree> t2Path = pathFromRoot(t2, root);
-    if (t1Path == null || t2Path == null) return null;
 
-    int min = Math.Min(t1Path.Count, t2Path.Count);
-    Tree commonAncestor = null;
-    for (int i = 0; i < min && t1Path[i].Equals(t2Path[i]); ++i) {
-      commonAncestor = t1Path[i];
-    }
+        public static Tree getLowestCommonAncestor(Tree t1, Tree t2, Tree root)
+        {
+            List<Tree> t1Path = pathFromRoot(t1, root);
+            List<Tree> t2Path = pathFromRoot(t2, root);
+            if (t1Path == null || t2Path == null) return null;
 
-    return commonAncestor;
-  }
+            int min = Math.Min(t1Path.Count, t2Path.Count);
+            Tree commonAncestor = null;
+            for (int i = 0; i < min && t1Path[i].Equals(t2Path[i]); ++i)
+            {
+                commonAncestor = t1Path[i];
+            }
 
-  /*/**
+            return commonAncestor;
+        }
+
+        /*/**
    * Simple tree reading utility method.  Given a tree formatted as a PTB string, returns a Tree made by a specific TreeFactory.
    #1#
   public static Tree readTree(String ptbTreeString, TreeFactory treeFactory) {
@@ -732,17 +843,17 @@ namespace OpenNLP.Tools.Util.Trees
     }
   }*/
 
-  /**
+        /**
    * Simple tree reading utility method.  Given a tree formatted as a PTB string, returns a Tree made by the default TreeFactory (LabeledScoredTreeFactory)
    */
-  /*public static Tree readTree(String str) {
+        /*public static Tree readTree(String str) {
     return readTree(str, defaultTreeFactory);
   }*/
 
-  /**
+        /**
    * Outputs the labels on the trees, not just the words.
    */
-  /*public static void outputTreeLabels(Tree tree) {
+        /*public static void outputTreeLabels(Tree tree) {
     outputTreeLabels(tree, 0);
   }
 
@@ -756,37 +867,45 @@ namespace OpenNLP.Tools.Util.Trees
     }
   }*/
 
-  /**
+        /**
    * Converts the tree labels to CoreLabels.
    * We need this because we store additional info in the CoreLabel, like token span.
    * @param tree
    */
-  public static void convertToCoreLabels(Tree tree) {
-    Label l = tree.label();
-    if (!(l is CoreLabel)) {
-      CoreLabel cl = new CoreLabel();
-      cl.setValue(l.value());
-      tree.setLabel(cl);
-    }
 
-    foreach (Tree kid in tree.children()) {
-      convertToCoreLabels(kid);
-    }
-  }
+        public static void convertToCoreLabels(Tree tree)
+        {
+            Label l = tree.label();
+            if (!(l is CoreLabel))
+            {
+                CoreLabel cl = new CoreLabel();
+                cl.setValue(l.value());
+                tree.setLabel(cl);
+            }
+
+            foreach (Tree kid in tree.children())
+            {
+                convertToCoreLabels(kid);
+            }
+        }
 
 
-  /**
+        /**
    * Set the sentence index of all the leaves in the tree
    * (only works on CoreLabel)
    */
-  public static void setSentIndex(Tree tree, int sentIndex) {
-    List<Label> leaves = tree.yield();
-    foreach (Label leaf in leaves) {
-      if (!(leaf is CoreLabel)) {
-        throw new ArgumentException("Only works on CoreLabel");
-      }
-      ((CoreLabel) leaf).setSentIndex(sentIndex);
-    }
-  }
+
+        public static void setSentIndex(Tree tree, int sentIndex)
+        {
+            List<Label> leaves = tree.yield();
+            foreach (Label leaf in leaves)
+            {
+                if (!(leaf is CoreLabel))
+                {
+                    throw new ArgumentException("Only works on CoreLabel");
+                }
+                ((CoreLabel) leaf).setSentIndex(sentIndex);
+            }
+        }
     }
 }

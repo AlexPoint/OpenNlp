@@ -21,70 +21,87 @@ namespace OpenNLP.Tools.Util.Trees
  *
  * @author mcdm
  */
-    public class DependencyTreeTransformer: TreeTransformer
+
+    public class DependencyTreeTransformer : TreeTransformer
     {
         private static readonly Regex TmpPattern = new Regex("(NP|UCP).*-TMP.*", RegexOptions.Compiled);
-  private static readonly Regex AdvPattern = new Regex("(NP|UCP).*-ADV.*", RegexOptions.Compiled);
-  protected readonly AbstractTreebankLanguagePack tlp;
+        private static readonly Regex AdvPattern = new Regex("(NP|UCP).*-ADV.*", RegexOptions.Compiled);
+        protected readonly AbstractTreebankLanguagePack tlp;
 
-  public DependencyTreeTransformer() {
-    tlp = new PennTreebankLanguagePack();
-  }
+        public DependencyTreeTransformer()
+        {
+            tlp = new PennTreebankLanguagePack();
+        }
 
-  //@Override
-  public Tree transformTree(Tree t) {
-    //deal with empty root
-    t.setValue(cleanUpRoot(t.value()));
-    //strips tags
-    stripTag(t);
+        //@Override
+        public Tree transformTree(Tree t)
+        {
+            //deal with empty root
+            t.setValue(cleanUpRoot(t.value()));
+            //strips tags
+            stripTag(t);
 
-    // strip empty nodes
-    return stripEmptyNode(t);
-  }
+            // strip empty nodes
+            return stripEmptyNode(t);
+        }
 
-  protected static String cleanUpRoot(String label) {
-    if (label == null || label.Equals("TOP")) {
-      return "ROOT";
-      // String constants are always interned
-    } else {
-      return label;
-    }
-  }
+        protected static String cleanUpRoot(String label)
+        {
+            if (label == null || label.Equals("TOP"))
+            {
+                return "ROOT";
+                // String constants are always interned
+            }
+            else
+            {
+                return label;
+            }
+        }
 
-  // only leaves NP-TMP and NP-ADV
-  protected String cleanUpLabel(String label) {
-    if (label == null) {
-      return "";  // This shouldn't really happen, but can happen if there are unlabeled nodes further down a tree, as apparently happens in at least the 20100730 era American National Corpus
-    }
-    bool nptemp = TmpPattern.IsMatch(label);
-    bool npadv = AdvPattern.IsMatch(label);
-    label = tlp.basicCategory(label);
-    if (nptemp) {
-      label = label + "-TMP";
-    } else if (npadv) {
-      label = label + "-ADV";
-    }
-    return label;
-  }
+        // only leaves NP-TMP and NP-ADV
+        protected String cleanUpLabel(String label)
+        {
+            if (label == null)
+            {
+                return "";
+                    // This shouldn't really happen, but can happen if there are unlabeled nodes further down a tree, as apparently happens in at least the 20100730 era American National Corpus
+            }
+            bool nptemp = TmpPattern.IsMatch(label);
+            bool npadv = AdvPattern.IsMatch(label);
+            label = tlp.basicCategory(label);
+            if (nptemp)
+            {
+                label = label + "-TMP";
+            }
+            else if (npadv)
+            {
+                label = label + "-ADV";
+            }
+            return label;
+        }
 
-  protected void stripTag(Tree t) {
-    if ( ! t.isLeaf()) {
-      String label = cleanUpLabel(t.value());
-      t.setValue(label);
-      foreach (Tree child in t.getChildrenAsList()) {
-        stripTag(child);
-      }
-    }
-  }
+        protected void stripTag(Tree t)
+        {
+            if (! t.isLeaf())
+            {
+                String label = cleanUpLabel(t.value());
+                t.setValue(label);
+                foreach (Tree child in t.getChildrenAsList())
+                {
+                    stripTag(child);
+                }
+            }
+        }
 
-  private static readonly TregexPattern matchPattern =
-    TregexPattern.safeCompile("-NONE-=none", true);
+        private static readonly TregexPattern matchPattern =
+            TregexPattern.safeCompile("-NONE-=none", true);
 
-  private static readonly TsurgeonPattern operation =
-    Tsurgeon.parseOperation("prune none");
+        private static readonly TsurgeonPattern operation =
+            Tsurgeon.parseOperation("prune none");
 
-  protected static Tree stripEmptyNode(Tree t) {
-    return Tsurgeon.processPattern(matchPattern, operation, t);
-  }
+        protected static Tree stripEmptyNode(Tree t)
+        {
+            return Tsurgeon.processPattern(matchPattern, operation, t);
+        }
     }
 }

@@ -25,6 +25,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
  *
  * @author John Bauer
  */
+
     public abstract class TsurgeonMatcher
     {
         public Dictionary<String, Tree> newNodeNames;
@@ -35,7 +36,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         // TODO: ideally we should have the tree and the tregex matcher be
         // part of this as well.  That would involve putting some of the
         // functionality in Tsurgeon.java in this object
-        public TsurgeonMatcher(TsurgeonPattern pattern, Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public TsurgeonMatcher(TsurgeonPattern pattern, Dictionary<String, Tree> newNodeNames,
+            CoindexationGenerator coindexer)
         {
             this.newNodeNames = newNodeNames;
             this.coindexer = coindexer;

@@ -19,48 +19,48 @@ using System.Collections.Generic;
 
 namespace OpenNLP.Tools.Util
 {
-	/// <summary>
-	/// This class manages a tree set collection of sorted elements.
-	/// </summary>
-	public class TreeSet<T> : SortedSet<T>
-	{
-		/// <summary>
-		/// Creates a new TreeSet.
-		/// </summary>
-		public TreeSet()
-		{
-		}
-			 	
-		/// <summary>
-		/// Create a new TreeSet with a specific collection.
-		/// </summary>
-		/// <param name="collection">
-		/// The collection used to initialize the TreeSet
-		/// </param>
-		public TreeSet(ICollection<T> collection): base(collection)
-		{
-		}
-	 
-		/// <summary>
-		/// Creates a copy of the TreeSet.
-		/// </summary>
-		/// <returns>A copy of the TreeSet.</returns>
-		public virtual object TreeSetClone()
-		{
-			TreeSet<T> internalClone = new TreeSet<T>();
-			internalClone.AddAll(this);
-			return internalClone;
-		}
+    /// <summary>
+    /// This class manages a tree set collection of sorted elements.
+    /// </summary>
+    public class TreeSet<T> : SortedSet<T>
+    {
+        /// <summary>
+        /// Creates a new TreeSet.
+        /// </summary>
+        public TreeSet()
+        {
+        }
 
-		/// <summary>
-		/// Retrieves the number of elements contained in the set.
-		/// </summary>
-		/// <returns>
-		/// An integer value that represent the number of element in the set.
-		/// </returns>
-		public virtual int Size()
-		{
-			return this.Count;
-		}
-	}
+        /// <summary>
+        /// Create a new TreeSet with a specific collection.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection used to initialize the TreeSet
+        /// </param>
+        public TreeSet(ICollection<T> collection) : base(collection)
+        {
+        }
+
+        /// <summary>
+        /// Creates a copy of the TreeSet.
+        /// </summary>
+        /// <returns>A copy of the TreeSet.</returns>
+        public virtual object TreeSetClone()
+        {
+            TreeSet<T> internalClone = new TreeSet<T>();
+            internalClone.AddAll(this);
+            return internalClone;
+        }
+
+        /// <summary>
+        /// Retrieves the number of elements contained in the set.
+        /// </summary>
+        /// <returns>
+        /// An integer value that represent the number of element in the set.
+        /// </returns>
+        public virtual int Size()
+        {
+            return this.Count;
+        }
+    }
 }

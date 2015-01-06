@@ -30,6 +30,7 @@ namespace OpenNLP.Tools.Util
  * @author dramage
  * @author rafferty
  */
+
     public interface CoreMap : TypesafeMap
     {
         /** Attempt to provide a briefer and more human readable String for the contents of
@@ -46,6 +47,6 @@ namespace OpenNLP.Tools.Util
    *     CoreMap.
    */
 
-  String toShorterString(String[] what);
+        String toShorterString(String[] what);
     }
 }

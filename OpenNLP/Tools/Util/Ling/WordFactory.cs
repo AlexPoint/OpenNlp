@@ -13,11 +13,13 @@ namespace OpenNLP.Tools.Util.Ling
  * @author Christopher Manning
  * @version 2000/12/20
  */
-    public class WordFactory: LabelFactory
+
+    public class WordFactory : LabelFactory
     {
         /**
    * Creates a new WordFactory.
    */
+
         public WordFactory()
         {
         }
@@ -30,6 +32,7 @@ namespace OpenNLP.Tools.Util.Ling
          * @param word The word that will go into the <code>Word</code>
          * @return The new label
          */
+
         public Label newLabel(String word)
         {
             return new Word(word);
@@ -44,6 +47,7 @@ namespace OpenNLP.Tools.Util.Ling
          * @param options is ignored by a WordFactory
          * @return The new label
          */
+
         public Label newLabel(String word, int options)
         {
             return new Word(word);
@@ -57,6 +61,7 @@ namespace OpenNLP.Tools.Util.Ling
          * @param word The word that will go into the <code>Word</code>
          * @return The new label
          */
+
         public Label newLabelFromString(String word)
         {
             return new Word(word);
@@ -72,6 +77,7 @@ namespace OpenNLP.Tools.Util.Ling
          * @param oldLabel The Label that the new label is being created from
          * @return a new label of a particular type
          */
+
         public Label newLabel(Label oldLabel)
         {
             return new Word(oldLabel);

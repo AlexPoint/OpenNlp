@@ -11,91 +11,108 @@ namespace OpenNLP.Tools.Util.Ling
  * The <code>value()</code> of a TaggedWord is the Word.  The tag
  * is, and is a Label instead of a String
  */
-    public class LabeledWord:Word
+
+    public class LabeledWord : Word
     {
         private Label vTag;
-  
-  private static readonly String DIVIDER = "/";
 
-  /**
+        private static readonly String DIVIDER = "/";
+
+        /**
    * Create a new <code>TaggedWord</code>.
    * It will have <code>null</code> for its content fields.
    */
-  public LabeledWord(): base(){}
 
-  /**
+        public LabeledWord() : base()
+        {
+        }
+
+        /**
    * Create a new <code>TaggedWord</code>.
    *
    * @param word The word, which will have a <code>null</code> tag
    */
-  public LabeledWord(String word):
-    base(word){
-  }
 
-  /**
+        public LabeledWord(String word) :
+            base(word)
+        {
+        }
+
+        /**
    * Create a new <code>TaggedWord</code>.
    *
    * @param word The word
    * @param tag  The tag
    */
-  public LabeledWord(String word, Label tag):
-    base(word){
-    this.vTag = tag;
-  }
 
-  public LabeledWord(Label word, Label tag):
-    base(word){
-    this.vTag = tag;
-  }
+        public LabeledWord(String word, Label tag) :
+            base(word)
+        {
+            this.vTag = tag;
+        }
 
-  public Label tag() {
-    return vTag;
-  }
+        public LabeledWord(Label word, Label tag) :
+            base(word)
+        {
+            this.vTag = tag;
+        }
 
-  public void setTag(Label tag) {
-    this.vTag = tag;
-  }
+        public Label tag()
+        {
+            return vTag;
+        }
 
-  //@Override
-  public String toString() {
-    return toString(DIVIDER);
-  }
+        public void setTag(Label tag)
+        {
+            this.vTag = tag;
+        }
 
-  public String toString(String divider) {
-    return word() + divider + vTag;
-  }
+        //@Override
+        public String toString()
+        {
+            return toString(DIVIDER);
+        }
 
-  // extra class guarantees correct lazy loading (Bloch p.194)
-  private static class LabelFactoryHolder {
+        public String toString(String divider)
+        {
+            return word() + divider + vTag;
+        }
 
-    //private LabelFactoryHolder() {}
+        // extra class guarantees correct lazy loading (Bloch p.194)
+        private static class LabelFactoryHolder
+        {
 
-    public static readonly LabelFactory lf = new TaggedWordFactory();
+            //private LabelFactoryHolder() {}
 
-  }
+            public static readonly LabelFactory lf = new TaggedWordFactory();
 
-  /**
+        }
+
+        /**
    * Return a factory for this kind of label
    * (i.e., <code>TaggedWord</code>).
    * The factory returned is always the same one (a singleton).
    *
    * @return The label factory
    */
-  //@Override
-  public override LabelFactory labelFactory() {
-    return LabelFactoryHolder.lf;
-  }
+        //@Override
+        public override LabelFactory labelFactory()
+        {
+            return LabelFactoryHolder.lf;
+        }
 
 
-  /**
+        /**
    * Return a factory for this kind of label.
    *
    * @return The label factory
    */
-  public new static LabelFactory factory() {
-    return LabelFactoryHolder.lf;
-  }
 
-  private static readonly long serialVersionUID = -7252006452127051085L;
+        public new static LabelFactory factory()
+        {
+            return LabelFactoryHolder.lf;
+        }
+
+        private static readonly long serialVersionUID = -7252006452127051085L;
     }
 }

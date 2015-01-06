@@ -13,7 +13,8 @@ namespace OpenNLP.Tools.Util.Graphs
  * @param <V> Type of the vertices
  * @param <E> Type of the edges
  */
-    public interface Graph<V,E>
+
+    public interface Graph<V, E>
     {
         /**
    * Adds vertices (if not already in the graph) and the edge between them.

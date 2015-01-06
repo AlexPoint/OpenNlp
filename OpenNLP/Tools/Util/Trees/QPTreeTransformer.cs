@@ -23,7 +23,8 @@ namespace OpenNLP.Tools.Util.Trees
  *
  * @author mcdm
  */
-    public class QPTreeTransformer: TreeTransformer
+
+    public class QPTreeTransformer : TreeTransformer
     {
         /**
    * Right now (Jan 2013) we only deal with the following QP structures:
@@ -38,46 +39,50 @@ namespace OpenNLP.Tools.Util.Trees
    * @param t tree to be transformed
    * @return The tree t with an extra layer if there was a QP structure matching the ones mentioned above
    */
-  //@Override
-  public Tree transformTree(Tree t) {
-     return QPtransform(t);
-  }
+        //@Override
+        public Tree transformTree(Tree t)
+        {
+            return QPtransform(t);
+        }
 
 
-  private static TregexPattern flattenNPoverQPTregex =
-    TregexPattern.compile("NP < (QP=left $+ (QP=right < CC))");
+        private static TregexPattern flattenNPoverQPTregex =
+            TregexPattern.compile("NP < (QP=left $+ (QP=right < CC))");
 
-  private static TsurgeonPattern flattenNPoverQPTsurgeon =
-    Tsurgeon.parseOperation("[createSubtree QP left right] [excise left left] [excise right right]");
+        private static TsurgeonPattern flattenNPoverQPTsurgeon =
+            Tsurgeon.parseOperation("[createSubtree QP left right] [excise left left] [excise right right]");
 
-  private static TregexPattern multiwordXSTregex =
-    // TODO: should add NN and $ to the numeric expressions captured
-    //   NN is for words such as "half" which are probably misparsed
-    // TODO: <3 (IN < as|than) is to avoid one weird case in PTB,
-    // "more than about".  Perhaps there is some way to generalize this
-    // TODO: "all but X"
-    // TODO: "all but about X"
-    TregexPattern.compile("QP <1 /^RB|JJ|IN/=left [ ( <2 /^JJ|IN/=right <3 /^CD|DT/ ) | ( <2 /^JJ|IN/ <3 ( IN=right < /^(?i:as|than)$/ ) <4 /^CD|DT/ ) ] ");
+        private static TregexPattern multiwordXSTregex =
+            // TODO: should add NN and $ to the numeric expressions captured
+            //   NN is for words such as "half" which are probably misparsed
+            // TODO: <3 (IN < as|than) is to avoid one weird case in PTB,
+            // "more than about".  Perhaps there is some way to generalize this
+            // TODO: "all but X"
+            // TODO: "all but about X"
+            TregexPattern.compile(
+                "QP <1 /^RB|JJ|IN/=left [ ( <2 /^JJ|IN/=right <3 /^CD|DT/ ) | ( <2 /^JJ|IN/ <3 ( IN=right < /^(?i:as|than)$/ ) <4 /^CD|DT/ ) ] ");
 
-  private static TsurgeonPattern multiwordXSTsurgeon =
-    Tsurgeon.parseOperation("createSubtree XS left right");
+        private static TsurgeonPattern multiwordXSTsurgeon =
+            Tsurgeon.parseOperation("createSubtree XS left right");
 
-  // the old style split any flat QP with a CC in the middle
-  // TOD: there should be some allowances for phrases such as "or more", "or so", etc
-  private static TregexPattern splitCCTregex =
-    TregexPattern.compile("QP < (CC $- __=r1 $+ __=l2 ?$-- /^[$]|CC$/=lnum ?$++ /^[$]|CC$/=rnum) <1 __=l1 <- __=r2 !< (__ < (__ < __))");
+        // the old style split any flat QP with a CC in the middle
+        // TOD: there should be some allowances for phrases such as "or more", "or so", etc
+        private static TregexPattern splitCCTregex =
+            TregexPattern.compile(
+                "QP < (CC $- __=r1 $+ __=l2 ?$-- /^[$]|CC$/=lnum ?$++ /^[$]|CC$/=rnum) <1 __=l1 <- __=r2 !< (__ < (__ < __))");
 
-  private static TsurgeonPattern splitCCTsurgeon =
-    Tsurgeon.parseOperation("[if exists lnum createSubtree QP l1 r1] [if not exists lnum createSubtree NP l1 r1] " +
-                            "[if exists rnum createSubtree QP l2 r2] [if not exists rnum createSubtree NP l2 r2]");
+        private static TsurgeonPattern splitCCTsurgeon =
+            Tsurgeon.parseOperation(
+                "[if exists lnum createSubtree QP l1 r1] [if not exists lnum createSubtree NP l1 r1] " +
+                "[if exists rnum createSubtree QP l2 r2] [if not exists rnum createSubtree NP l2 r2]");
 
-  private static TregexPattern splitMoneyTregex =
-    TregexPattern.compile("QP < (/^[$]$/ !$++ /^(?!([$]|CD)).*$/ !$++ (__ < (__ < __)) $+ __=left) <- __=right");
+        private static TregexPattern splitMoneyTregex =
+            TregexPattern.compile("QP < (/^[$]$/ !$++ /^(?!([$]|CD)).*$/ !$++ (__ < (__ < __)) $+ __=left) <- __=right");
 
-  private static TsurgeonPattern splitMoneyTsurgeon =
-    Tsurgeon.parseOperation("createSubtree QP left right");
+        private static TsurgeonPattern splitMoneyTsurgeon =
+            Tsurgeon.parseOperation("createSubtree QP left right");
 
-  /**
+        /**
    * Transforms t if it contains one of the following QP structure:
    * <ul>
    * <li> NP (QP ...) (QP (CC and/or) ...)
@@ -90,16 +95,18 @@ namespace OpenNLP.Tools.Util.Trees
    * @param t a tree to be transformed
    * @return t transformed
    */
-  public static Tree QPtransform(Tree t) {
-    t = Tsurgeon.processPattern(flattenNPoverQPTregex, flattenNPoverQPTsurgeon, t);
-    t = Tsurgeon.processPattern(multiwordXSTregex, multiwordXSTsurgeon, t);
-    t = Tsurgeon.processPattern(splitCCTregex, splitCCTsurgeon, t);
-    t = Tsurgeon.processPattern(splitMoneyTregex, splitMoneyTsurgeon, t);
-    return t;
-  }
+
+        public static Tree QPtransform(Tree t)
+        {
+            t = Tsurgeon.processPattern(flattenNPoverQPTregex, flattenNPoverQPTsurgeon, t);
+            t = Tsurgeon.processPattern(multiwordXSTregex, multiwordXSTsurgeon, t);
+            t = Tsurgeon.processPattern(splitCCTregex, splitCCTsurgeon, t);
+            t = Tsurgeon.processPattern(splitMoneyTregex, splitMoneyTsurgeon, t);
+            return t;
+        }
 
 
-  /*public static void main(String[] args) {
+        /*public static void main(String[] args) {
 
     QPTreeTransformer transformer = new QPTreeTransformer();
     Treebank tb = new MemoryTreebank();

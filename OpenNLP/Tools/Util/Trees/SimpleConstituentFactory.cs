@@ -14,7 +14,8 @@ namespace OpenNLP.Tools.Util.Trees
  *
  * @author Christopher Manning
  */
-    public class SimpleConstituentFactory:ConstituentFactory
+
+    public class SimpleConstituentFactory : ConstituentFactory
     {
         public Constituent newConstituent(int start, int end)
         {

@@ -11,28 +11,32 @@ namespace OpenNLP.Tools.Util
         /**
    * Nothing to instantiate
    */
-  private Filters() {
-  }
 
-  /**
+        private Filters()
+        {
+        }
+
+        /**
    * The acceptFilter accepts everything.
    */
-  public static Predicate<T> acceptFilter<T>()
-  {
-      return s => true;
-      //return new CategoricalFilter<T>(true);
-  }
 
-  /**
+        public static Predicate<T> acceptFilter<T>()
+        {
+            return s => true;
+            //return new CategoricalFilter<T>(true);
+        }
+
+        /**
    * The rejectFilter accepts nothing.
    */
-  public static Predicate<T> rejectFilter<T>()
-  {
-      return s => false;
-      //return new CategoricalFilter<T>(false);
-  }
 
-  /*private static sealed class CategoricalFilter<T> : Predicate<T>/*, Serializable#1# {
+        public static Predicate<T> rejectFilter<T>()
+        {
+            return s => false;
+            //return new CategoricalFilter<T>(false);
+        }
+
+        /*private static sealed class CategoricalFilter<T> : Predicate<T>/*, Serializable#1# {
 
     private readonly bool judgment;
 
@@ -75,39 +79,41 @@ namespace OpenNLP.Tools.Util
   }*/
 
 
-  /*/**
+        /*/**
    * The collectionAcceptFilter accepts a certain collection.
    #1#
   public static <E> Predicate<E> collectionAcceptFilter(E[] objs) {
     return new CollectionAcceptFilter<E>(Arrays.asList(objs), true);
   }*/
 
-  /**
+        /**
    * The collectionAcceptFilter accepts a certain collection.
    */
-  public static Predicate<E> collectionAcceptFilter<E>(IEnumerable<E> objs)
-  {
-      return s => objs.Any(o => o.Equals(s));
-    //return new CollectionAcceptFilter<E>(objs, true);
-  }
 
-  /*/**
+        public static Predicate<E> collectionAcceptFilter<E>(IEnumerable<E> objs)
+        {
+            return s => objs.Any(o => o.Equals(s));
+            //return new CollectionAcceptFilter<E>(objs, true);
+        }
+
+        /*/**
    * The collectionRejectFilter rejects a certain collection.
    #1#
   public static Predicate<E> collectionRejectFilter<E>(E[] objs) {
     return new CollectionAcceptFilter<E>(objs.ToList(), false);
   }*/
 
-  /**
+        /**
    * The collectionRejectFilter rejects a certain collection.
    */
-  public static Predicate<E> collectionRejectFilter<E>(IEnumerable<E> objs)
-  {
-      return s => objs.All(o => !o.Equals(s));
-      //return new CollectionAcceptFilter<E>(objs, false);
-  }
 
-  /*private sealed class CollectionAcceptFilter<E> /*: Predicate<E>, Serializable#1# {
+        public static Predicate<E> collectionRejectFilter<E>(IEnumerable<E> objs)
+        {
+            return s => objs.All(o => !o.Equals(s));
+            //return new CollectionAcceptFilter<E>(objs, false);
+        }
+
+        /*private sealed class CollectionAcceptFilter<E> /*: Predicate<E>, Serializable#1# {
 
     private readonly IEnumerable<E> args;
     private readonly bool judgment;
@@ -137,25 +143,27 @@ namespace OpenNLP.Tools.Util
 
   } // end class CollectionAcceptFilter*/
 
-  /**
+        /**
    * Filter that accepts only when both filters accept (AND).
    */
-  public static Predicate<E> andFilter<E>(Predicate<E> f1, Predicate<E> f2)
-  {
-      return s => f1(s) && f2(s);
-    //return (new CombinedFilter<E>(f1, f2, true));
-  }
 
-  /**
+        public static Predicate<E> andFilter<E>(Predicate<E> f1, Predicate<E> f2)
+        {
+            return s => f1(s) && f2(s);
+            //return (new CombinedFilter<E>(f1, f2, true));
+        }
+
+        /**
    * Filter that accepts when either filter accepts (OR).
    */
-  public static Predicate<E> orFilter<E>(Predicate<E> f1, Predicate<E> f2)
-  {
-      return s => f1(s) || f2(s);
-      //return (new CombinedFilter<E>(f1, f2, false));
-  }
 
-  /*/**
+        public static Predicate<E> orFilter<E>(Predicate<E> f1, Predicate<E> f2)
+        {
+            return s => f1(s) || f2(s);
+            //return (new CombinedFilter<E>(f1, f2, false));
+        }
+
+        /*/**
    * Conjunction or disjunction of two filters.
    #1#
   private static class CombinedFilter<E> implements Predicate<E>, Serializable {
@@ -179,7 +187,7 @@ namespace OpenNLP.Tools.Util
     private static readonly long serialVersionUID = -2988241258905198687L;
   }*/
 
-  /*/**
+        /*/**
    * Disjunction of a list of filters.
    #1#
   public static class DisjFilter<T> implements Predicate<T>, Serializable {
@@ -208,10 +216,10 @@ namespace OpenNLP.Tools.Util
     private static readonly long serialVersionUID = 1L;
   }*/
 
-  /**
+        /**
    * Conjunction of a list of filters.
    */
-  /*public static class ConjFilter<T> implements Predicate<T>, Serializable {
+        /*public static class ConjFilter<T> implements Predicate<T>, Serializable {
     List<Predicate<T>> filters;
 
     public ConjFilter(List<Predicate<T>> filters) {
@@ -237,28 +245,30 @@ namespace OpenNLP.Tools.Util
     private static readonly long serialVersionUID = 1L;
   }*/
 
-  /**
+        /**
    * Filter that does the opposite of given filter (NOT).
    */
-  public static Predicate<E> notFilter<E>(Predicate<E> filter)
-  {
-      return s => !filter(s);
-      //return (new NegatedFilter<E>(filter));
-  }
 
-  /**
+        public static Predicate<E> notFilter<E>(Predicate<E> filter)
+        {
+            return s => !filter(s);
+            //return (new NegatedFilter<E>(filter));
+        }
+
+        /**
    * Filter that's either negated or normal as specified.
    */
-  public static Predicate<E> switchedFilter<E>(Predicate<E> filter, bool negated)
-  {
-      return s => negated ? !filter(s) : filter(s);
-    //return (new NegatedFilter<E>(filter, negated));
-  }
 
-  /**
+        public static Predicate<E> switchedFilter<E>(Predicate<E> filter, bool negated)
+        {
+            return s => negated ? !filter(s) : filter(s);
+            //return (new NegatedFilter<E>(filter, negated));
+        }
+
+        /**
    * Negation of a filter.
    */
-  /*private static class NegatedFilter<E> implements Predicate<E>, Serializable {
+        /*private static class NegatedFilter<E> implements Predicate<E>, Serializable {
     private Predicate<E> filter;
     private bool negated;
 
@@ -283,10 +293,10 @@ namespace OpenNLP.Tools.Util
     private static readonly long serialVersionUID = -1599556783677718177L;
   }s*/
 
-  /**
+        /**
    * A filter that accepts a random fraction of the input it sees.
    */
-  /*public static class RandomFilter<E> implements Predicate<E>, Serializable {
+        /*public static class RandomFilter<E> implements Predicate<E>, Serializable {
     readonly Random random;
     readonly double fraction;
 
@@ -308,13 +318,13 @@ namespace OpenNLP.Tools.Util
     }
   }*/
 
-  /**
+        /**
    * Applies the given filter to each of the given elems, and returns the
    * list of elems that were accepted. The runtime type of the returned
    * array is the same as the passed in array.
    */
-  //@SuppressWarnings("unchecked")
-  /*public static <E> E[] filter(E[] elems, Predicate<E> filter) {
+        //@SuppressWarnings("unchecked")
+        /*public static <E> E[] filter(E[] elems, Predicate<E> filter) {
     List<E> filtered = new ArrayList<E>();
     for (E elem: elems) {
       if (filter.test(elem)) {
@@ -324,10 +334,10 @@ namespace OpenNLP.Tools.Util
     return (filtered.toArray((E[]) Array.newInstance(elems.getClass().getComponentType(), filtered.size())));
   }s*/
 
-  /**
+        /**
    * Removes all elems in the given Collection that aren't accepted by the given Filter.
    */
-  /*public static <E> void retainAll(Collection<E> elems, Predicate<? super E> filter) {
+        /*public static <E> void retainAll(Collection<E> elems, Predicate<? super E> filter) {
     for (Iterator<E> iter = elems.iterator(); iter.hasNext();) {
       E elem = iter.next();
       if ( ! filter.test(elem)) {

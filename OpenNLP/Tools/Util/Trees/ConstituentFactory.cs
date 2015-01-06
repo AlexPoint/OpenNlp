@@ -14,6 +14,7 @@ namespace OpenNLP.Tools.Util.Trees
  *
  * @author Christopher Manning
  */
+
     public interface ConstituentFactory
     {
         /**

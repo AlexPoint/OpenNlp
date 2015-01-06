@@ -28,6 +28,7 @@ namespace OpenNLP.Tools.Util.Ling
 
  * @author Christopher Manning
  */
+
     public interface Label
     {
         /**

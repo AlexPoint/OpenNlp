@@ -56,7 +56,8 @@ namespace OpenNLP.Tools.Util
  * @author Teg Grenager (grenager@cs.stanford.edu)
  * @author Bill MacCartney
  */
-    public interface PriorityQueue<E>/*:ISet<E>*/
+
+    public interface PriorityQueue<E> /*:ISet<E>*/
     {
         /**
    * Finds the object with the highest priority, removes it,

@@ -13,11 +13,13 @@ namespace OpenNLP.Tools.Util.Process
  *
  * @author Jenny Finkel
  */
-    public class WordTokenFactory: LexedTokenFactory<Word>
+
+    public class WordTokenFactory : LexedTokenFactory<Word>
     {
         //@Override
-  public Word makeToken(String str, int begin, int length) {
-    return new Word(str, begin, begin+length);
-  }
+        public Word makeToken(String str, int begin, int length)
+        {
+            return new Word(str, begin, begin + length);
+        }
     }
 }

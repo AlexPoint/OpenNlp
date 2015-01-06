@@ -40,12 +40,12 @@ using System.IO;
 
 namespace OpenNLP.Tools.Util
 {
-	
-	/// <summary>
+
+    /// <summary>
     /// Set which counts the number of times a values are added to it.  
-	/// This value can be accessed with the GetCount method.
-	/// </summary>
-	public class CountedSet<T> : ICollection<T>
+    /// This value can be accessed with the GetCount method.
+    /// </summary>
+    public class CountedSet<T> : ICollection<T>
     {
         private IDictionary<T, int> mCountedSet;
 
@@ -98,18 +98,12 @@ namespace OpenNLP.Tools.Util
 
         public int Count
         {
-            get
-            {
-                return mCountedSet.Count;
-            }
+            get { return mCountedSet.Count; }
         }
 
         public bool IsReadOnly
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public bool Remove(T item)
@@ -126,12 +120,12 @@ namespace OpenNLP.Tools.Util
 
         /// <summary>
         /// Reduces the count associated with this object by 1.  If this causes the count
-		/// to become 0, then the object is removed form the set.
-		/// </summary>
-		/// <param name="item">The item whose count is being reduced.
-		/// </param>
+        /// to become 0, then the object is removed form the set.
+        /// </summary>
+        /// <param name="item">The item whose count is being reduced.
+        /// </param>
         public virtual void Subtract(T item)
-		{
+        {
             if (mCountedSet.ContainsKey(item))
             {
                 if (mCountedSet[item] > 1)
@@ -140,23 +134,23 @@ namespace OpenNLP.Tools.Util
                 }
                 else
                 {
-                   mCountedSet.Remove(item);
+                    mCountedSet.Remove(item);
                 }
             }
 
-		}
-		
-		/// <summary>
+        }
+
+        /// <summary>
         /// Assigns the specified object the specified count in the set.
         /// </summary>
-		/// <param name="item">
+        /// <param name="item">
         /// The item to be added or updated in the set.
-		/// </param>
-		/// <param name="count">
+        /// </param>
+        /// <param name="count">
         /// The count of the specified item.
-		/// </param>
-		public virtual void SetCount(T item, int count)
-		{
+        /// </param>
+        public virtual void SetCount(T item, int count)
+        {
             if (mCountedSet.ContainsKey(item))
             {
                 mCountedSet[item] = count;
@@ -165,34 +159,34 @@ namespace OpenNLP.Tools.Util
             {
                 mCountedSet.Add(item, count);
             }
-		}
-		
-		/// <summary> Return the count of the specified object.</summary>
-		/// <param name="item">the object whose count needs to be determined.
-		/// </param>
-		/// <returns> the count of the specified object.
-		/// </returns>
-		public virtual int GetCount(T item)
-		{
+        }
+
+        /// <summary> Return the count of the specified object.</summary>
+        /// <param name="item">the object whose count needs to be determined.
+        /// </param>
+        /// <returns> the count of the specified object.
+        /// </returns>
+        public virtual int GetCount(T item)
+        {
             if (!mCountedSet.ContainsKey(item))
-			{
-				return 0;
-			}
-			else
-			{
+            {
+                return 0;
+            }
+            else
+            {
                 return mCountedSet[item];
-			}
+            }
         }
 
         #region Write methods
 
         public virtual void Write(string fileName, int countCutoff)
-		{
-			Write(fileName, countCutoff, " ");
-		}
-		
-		public virtual void Write(string fileName, int countCutoff, string delim)
-		{
+        {
+            Write(fileName, countCutoff, " ");
+        }
+
+        public virtual void Write(string fileName, int countCutoff, string delim)
+        {
             using (StreamWriter streamWriter = new StreamWriter(fileName, false))
             {
                 foreach (T key in mCountedSet.Keys)
@@ -204,22 +198,22 @@ namespace OpenNLP.Tools.Util
                     }
                 }
             }
-		}
+        }
 
 
         public virtual void Write(string fileName, int countCutoff, string delim, System.Text.Encoding encoding)
-		{
-			using (StreamWriter streamWriter = new StreamWriter(fileName, false, encoding))
-			{				
-                foreach(T key in mCountedSet.Keys)
+        {
+            using (StreamWriter streamWriter = new StreamWriter(fileName, false, encoding))
+            {
+                foreach (T key in mCountedSet.Keys)
                 {
                     int count = this.GetCount(key);
                     if (count >= countCutoff)
-					{
-						streamWriter.WriteLine(count + delim + key);
-					}
+                    {
+                        streamWriter.WriteLine(count + delim + key);
+                    }
                 }
-			}
+            }
 
         }
 
@@ -238,7 +232,7 @@ namespace OpenNLP.Tools.Util
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return new ArrayList((ICollection)mCountedSet.Keys).GetEnumerator();
+            return new ArrayList((ICollection) mCountedSet.Keys).GetEnumerator();
         }
 
         #endregion
@@ -276,22 +270,22 @@ namespace OpenNLP.Tools.Util
         //    }
         //    return result;
         //}
-		
-		
-		
+
+
+
         ////UPGRADE_NOTE: The equivalent of method 'java.util.Set.containsAll' is not an override method. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1143'"
         //public virtual bool containsAll(System.Collections.ICollection c)
         //{
         //    //UPGRADE_TODO: Method 'java.util.Map.keySet' was converted to 'SupportClass.HashSetSupport' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073_javautilMapkeySet'"
         //    return SupportClass.ICollectionSupport.ContainsAll(new HashSet<T>(mCountedSet.Keys), c);
         //}
-		
+
         ////UPGRADE_NOTE: The equivalent of method 'java.util.Set.isEmpty' is not an override method. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1143'"
         //public virtual bool isEmpty()
         //{
         //    return (mCountedSet.Count == 0);
         //}
-		
+
         ////UPGRADE_ISSUE: The equivalent in .NET for method 'java.util.Set.iterator' returns a different type. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1224'"
         ////GetEnumerator is not virtual in the List<T>, which is the eventual base class
         ////public override List<T>.Enumerator GetEnumerator()
@@ -299,7 +293,7 @@ namespace OpenNLP.Tools.Util
         //    //UPGRADE_TODO: Method 'java.util.Map.keySet' was converted to 'SupportClass.HashSetSupport' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073_javautilMapkeySet'"
         ////    return new HashSet<T>(cset.Keys).GetEnumerator();
         ////}
-		
+
         ////UPGRADE_ISSUE: The equivalent in .NET for method 'java.util.Set.remove' returns a different type. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1224'"
         //public override bool Remove(T o)
         //{
@@ -310,7 +304,7 @@ namespace OpenNLP.Tools.Util
         //    }
         //    return false;
         //}
-		
+
         ////UPGRADE_NOTE: The equivalent of method 'java.util.Set.removeAll' is not an override method. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1143'"
         //public virtual bool removeAll(ICollection<T> c)
         //{
@@ -327,7 +321,7 @@ namespace OpenNLP.Tools.Util
         //    }
         //    return changed;
         //}
-		
+
         ////UPGRADE_NOTE: The equivalent of method 'java.util.Set.retainAll' is not an override method. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1143'"
         //public virtual bool retainAll(System.Collections.ICollection c)
         //{
@@ -346,19 +340,19 @@ namespace OpenNLP.Tools.Util
         //    }
         //    return changed;
         //}
-		
+
         ////UPGRADE_NOTE: The equivalent of method 'java.util.Set.toArray' is not an override method. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1143'"
         //public virtual System.Object[] toArray()
         //{
         //    //UPGRADE_TODO: Method 'java.util.Map.keySet' was converted to 'SupportClass.HashSetSupport' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073_javautilMapkeySet'"
         //    return SupportClass.ICollectionSupport.ToArray(new SupportClass.HashSetSupport(mCountedSet.Keys));
         //}
-		
+
         ////UPGRADE_NOTE: The equivalent of method 'java.util.Set.toArray' is not an override method. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1143'"
         //public virtual System.Object[] toArray(System.Object[] arg0)
         //{
         //    //UPGRADE_TODO: Method 'java.util.Map.keySet' was converted to 'SupportClass.HashSetSupport' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073_javautilMapkeySet'"
         //    return SupportClass.ICollectionSupport.ToArray(new SupportClass.HashSetSupport(mCountedSet.Keys), arg0);
         //}
-	}
+    }
 }

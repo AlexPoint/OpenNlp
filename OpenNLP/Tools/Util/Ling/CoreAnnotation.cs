@@ -15,7 +15,8 @@ namespace OpenNLP.Tools.Util.Ling
  * @author dramage
  * @author rafferty
  */
-    public interface CoreAnnotation<T>/*:Key<T>*/
+
+    public interface CoreAnnotation<T> /*:Key<T>*/
     {
         /**
    * Returns the type associated with this annotation.  This method must

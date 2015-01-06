@@ -9,6 +9,7 @@ namespace OpenNLP.Tools.Util.Ling
     /**
  * @author grenager
  */
+
     public interface HasIndex
     {
         String docID();

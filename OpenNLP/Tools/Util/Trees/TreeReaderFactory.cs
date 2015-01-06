@@ -13,6 +13,7 @@ namespace OpenNLP.Tools.Util.Trees
  *
  * @author Christopher Manning
  */
+
     public interface TreeReaderFactory
     {
         /**
@@ -22,6 +23,6 @@ namespace OpenNLP.Tools.Util.Trees
    * @param in The <code>Reader</code> to build on
    * @return The new TreeReader
    */
-  TreeReader newTreeReader(TextReader reader);
+        TreeReader newTreeReader(TextReader reader);
     }
 }

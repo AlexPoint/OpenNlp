@@ -17,11 +17,11 @@ using SharpEntropy.IO;
 
 namespace Test
 {
-    class Program
+    internal class Program
     {
         private static readonly string currentDirectory = Environment.CurrentDirectory + "/../../";
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             /*FileStream ostrm;
             StreamWriter writer;
@@ -44,7 +44,7 @@ namespace Test
             var tokenizerTrainingFilePath = currentDirectory + "Input/tokenizer.train";
             var outputFilePath = currentDirectory + "Output/EnglishTok.nbin";
             MaximumEntropyTokenizer.Train(tokenizerTrainingFilePath, outputFilePath);*/
-            
+
             // test detokenization
             /*var tokens = new List<string>() {"do", "n't", "commit"};
             var detokenizer = new DictionaryDetokenizer();
@@ -83,21 +83,10 @@ namespace Test
                 Console.WriteLine(string.Join(" | ", tokens));
             }*/
 
-            /*String[] jjstrLiteralImages =
-        {
-            "", null, null, null, null, "\x74\x56\x56\x56", null, null, null, @"\137\137", null,
-            null, @"\174", @"\12", @"\50", @"\51", @"\41", @"\100", @"\43", @"\45", @"\75", @"\176",
-            @"\46", @"\77", @"\133", @"\135", @"\173", @"\73", @"\175",
-        };
-            foreach (var lit in jjstrLiteralImages)
-            {
-                Console.WriteLine(lit);
-            }*/
-            
             // parsing
-            var sentence = "I looked the word up in the dictionary.";
+            var sentence = "You should get up and give the elderly man your seat.";
             var modelPath = currentDirectory + "../Resources/Models/";
-			var parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(modelPath, true, false);
+            var parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(modelPath, true, false);
             var parse = parser.DoParse(sentence);
             // Extract dependencies from lexical tree
             var tlp = new PennTreebankLanguagePack();
@@ -112,38 +101,11 @@ namespace Test
                 Console.WriteLine(dep);
             }
 
-
-            /*for (var i = 0; i < 256; i++)
-            {
-                var curChar = (char) i;
-                //var res = (curChar & ~077);
-                var res1 = 1L << curChar;
-                var res2 = (0x100002400L & (1L << curChar)) == 0L;
-                Console.WriteLine("{0}({1}) -> {2}|{3}", curChar, i, res1, res2);
-            }*/
-
-            /*TsurgeonPattern rearrangeNowThatTsurgeon = Tsurgeon.parseOperation("createSubtree CONJP start end");
-            Console.WriteLine(rearrangeNowThatTsurgeon);*/
-
-            /*var pattern = TregexPattern.compile("CONJP < (CC <: /^(?i:but|and)$/ $+ (RB=head <: /^(?i:not)$/))");
-            Console.WriteLine(pattern);*/
-
-            /*var charStream = "CONJP < (CC <: /^(?i:but|and)$/ $+ (RB=head <: /^(?i:not)$/))";
-            var reader = new StringReader(charStream);
-            var stream = new SimpleCharStream(reader);
-            Console.WriteLine(charStream);
-            var c = stream.readChar();
-            while (c != default(char))
-            {
-                Console.WriteLine(c);
-                c = stream.readChar();
-            }*/
-            
             Console.WriteLine("===========");
             Console.WriteLine("OK");
             Console.ReadKey();
         }
-        
+
         /*private void TestDechunk()
         {
             // detokenize

@@ -29,7 +29,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public LabeledScoredTreeReaderFactory()
         {
-            lf = CoreLabel.factory();
+            lf = CoreLabel.Factory();
             tm = new BobChrisTreeNormalizer();
         }
 
@@ -41,7 +41,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public LabeledScoredTreeReaderFactory(TreeNormalizer tm)
         {
-            lf = CoreLabel.factory();
+            lf = CoreLabel.Factory();
             this.tm = tm;
         }
 

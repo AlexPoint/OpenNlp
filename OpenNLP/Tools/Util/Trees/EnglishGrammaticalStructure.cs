@@ -262,9 +262,9 @@ namespace OpenNLP.Tools.Util.Trees
                 // first find the multi_preposition: dep(mpw[1], mwp[0])
                 foreach (TypedDependency td in list)
                 {
-                    if (Math.Abs(td.gov().index() - td.dep().index()) == 1 &&
-                        td.gov().value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
-                        && td.dep().value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase))
+                    if (Math.Abs(td.gov().Index() - td.dep().Index()) == 1 &&
+                        td.gov().Value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
+                        && td.dep().Value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase))
                     {
                         mwp1 = td.gov();
                         dep = td;
@@ -373,7 +373,7 @@ namespace OpenNLP.Tools.Util.Trees
 
                 foreach (TypedDependency td in list)
                 {
-                    if (td.dep().value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase)
+                    if (td.dep().Value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase)
                         &&
                         (td.reln() == EnglishGrammaticalRelations.PHRASAL_VERB_PARTICLE ||
                          td.reln() == EnglishGrammaticalRelations.ADVERBIAL_MODIFIER
@@ -399,8 +399,8 @@ namespace OpenNLP.Tools.Util.Trees
                 foreach (TypedDependency td1 in list)
                 {
                     if (td1.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER
-                        && td1.dep().value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
-                        && Math.Abs(td1.dep().index() - mwp0.index()) == 1 && td1.gov().Equals(governor))
+                        && td1.dep().Value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
+                        && Math.Abs(td1.dep().Index() - mwp0.Index()) == 1 && td1.gov().Equals(governor))
                     {
 // we
                         // found
@@ -515,9 +515,9 @@ namespace OpenNLP.Tools.Util.Trees
 
                 foreach (TypedDependency td in list)
                 {
-                    if (td.gov().value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase)
-                        && td.dep().value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
-                        && Math.Abs(td.gov().index() - td.dep().index()) == 1)
+                    if (td.gov().Value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase)
+                        && td.dep().Value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
+                        && Math.Abs(td.gov().Index() - td.dep().Index()) == 1)
                     {
                         mwp0 = td.gov();
                         mwp1 = td.dep();
@@ -532,8 +532,8 @@ namespace OpenNLP.Tools.Util.Trees
                 foreach (TypedDependency td in list)
                 {
                     if (td.gov().Equals(mwp1) &&
-                        td.dep().value().Equals(mwp[2], StringComparison.InvariantCultureIgnoreCase)
-                        && Math.Abs(td.gov().index() - td.dep().index()) == 1)
+                        td.dep().Value().Equals(mwp[2], StringComparison.InvariantCultureIgnoreCase)
+                        && Math.Abs(td.gov().Index() - td.dep().Index()) == 1)
                     {
                         mwp2 = td.dep();
                         dep2 = td;
@@ -639,9 +639,9 @@ namespace OpenNLP.Tools.Util.Trees
                 // indexes = 1)
                 foreach (TypedDependency td in list)
                 {
-                    if (td.gov().value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase)
-                        && td.dep().value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
-                        && Math.Abs(td.gov().index() - td.dep().index()) == 1)
+                    if (td.gov().Value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase)
+                        && td.dep().Value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
+                        && Math.Abs(td.gov().Index() - td.dep().Index()) == 1)
                     {
                         mwp0 = td.gov();
                         mwp1 = td.dep();
@@ -655,8 +655,8 @@ namespace OpenNLP.Tools.Util.Trees
                 foreach (TypedDependency td in list)
                 {
                     if (td.gov().Equals(mwp0) &&
-                        td.dep().value().Equals(mwp[2], StringComparison.InvariantCultureIgnoreCase)
-                        && Math.Abs(td.gov().index() - td.dep().index()) == 2)
+                        td.dep().Value().Equals(mwp[2], StringComparison.InvariantCultureIgnoreCase)
+                        && Math.Abs(td.gov().Index() - td.dep().Index()) == 2)
                     {
                         mwp2 = td.dep();
                         dep2 = td;
@@ -779,7 +779,7 @@ namespace OpenNLP.Tools.Util.Trees
                             continue;
                         }
                         if (!auxDep.gov().Equals(typedDep.dep()) ||
-                            !auxDep.dep().value().Equals("to", StringComparison.InvariantCultureIgnoreCase))
+                            !auxDep.dep().Value().Equals("to", StringComparison.InvariantCultureIgnoreCase))
                         {
                             continue;
                         }
@@ -833,11 +833,11 @@ namespace OpenNLP.Tools.Util.Trees
                     if (td2.reln() == EnglishGrammaticalRelations.CONJUNCT)
                     {
                         IndexedWord td2Dep = td2.dep();
-                        string td2DepPOS = td2Dep.tag();
+                        string td2DepPOS = td2Dep.Tag();
                         if (td2DepPOS.Equals("IN") || td2DepPOS.Equals("TO"))
                         {
                             samePrepositionInEachConjunct = samePrepositionInEachConjunct &&
-                                                            td2Dep.value().Equals(td1Dep.value());
+                                                            td2Dep.Value().Equals(td1Dep.Value());
                             Set<TypedDependency> possibles2 = map[td2Dep];
                             bool pobj = true; // default of collapsing preposition is prep_
                             TypedDependency prepOtherDep = null;
@@ -846,7 +846,7 @@ namespace OpenNLP.Tools.Util.Trees
                                 foreach (TypedDependency td3 in possibles2)
                                 {
                                     IndexedWord td3Dep = td3.dep();
-                                    string td3DepPOS = td3Dep.tag();
+                                    string td3DepPOS = td3Dep.Tag();
                                     // CDM Mar 2006: I put in disjunction here when I added in
                                     // PREPOSITIONAL_OBJECT. If it catches all cases, we should
                                     // be able to delete the DEPENDENT disjunct
@@ -868,9 +868,9 @@ namespace OpenNLP.Tools.Util.Trees
                                     }
                                 }
                             }
-                            if (conjIndex < td2Dep.index())
+                            if (conjIndex < td2Dep.Index())
                             {
-                                conjIndex = td2Dep.index();
+                                conjIndex = td2Dep.Index();
                             }
                             conjs.Add(new Tuple<TypedDependency, TypedDependency, Boolean>(td2, prepOtherDep, pobj));
                         }
@@ -885,19 +885,19 @@ namespace OpenNLP.Tools.Util.Trees
                 // if we have a conj under a preposition dependency, we look for the other
                 // parts
 
-                string td1DepPOS = td1Dep.tag();
+                string td1DepPOS = td1Dep.Tag();
                 foreach (TypedDependency td2 in possibles)
                 {
                     // we look for the cc linked to this conjDep
                     // the cc dep must have an index smaller than the dep of conjDep
-                    if (td2.reln() == EnglishGrammaticalRelations.COORDINATION && td2.dep().index() < conjIndex)
+                    if (td2.reln() == EnglishGrammaticalRelations.COORDINATION && td2.dep().Index() < conjIndex)
                     {
                         ccDep = td2;
                     }
                     else
                     {
                         IndexedWord td2Dep = td2.dep();
-                        string td2DepPOS = td2Dep.tag();
+                        string td2DepPOS = td2Dep.Tag();
                         // System.err.println("prepDep find: td1.reln: " + td1.reln() +
                         // "; td2.reln: " + td2.reln() + "; td1DepPos: " + td1DepPOS +
                         // "; td2DepPos: " + td2DepPOS + "; index " + index +
@@ -980,7 +980,7 @@ namespace OpenNLP.Tools.Util.Trees
                         }
                         else
                         {
-                            TypedDependency tdNew2 = new TypedDependency(conjValue(ccDep.dep().value()),
+                            TypedDependency tdNew2 = new TypedDependency(conjValue(ccDep.dep().Value()),
                                 prepDep.Item1.dep(), prepOtherDep.dep());
                             newTypedDeps.Add(tdNew2);
                             /*if (DEBUG) {
@@ -1091,12 +1091,12 @@ namespace OpenNLP.Tools.Util.Trees
                     // we add a "copy" entry in the CoreLabel
                     // existence of copy key is checked at printing (ToString method of
                     // TypedDependency)
-                    IndexedWord label = td1.gov().makeCopy(copyNumber);
+                    IndexedWord label = td1.gov().MakeCopy(copyNumber);
                     copyNumber++;
 
                     // now we add the conjunction relation between td1.gov and the copy
                     // the copy has the same label as td1.gov() but is another TreeGraphNode
-                    TypedDependency tdNew2 = new TypedDependency(conjValue(ccDep.dep().value()), td1.gov(), label);
+                    TypedDependency tdNew2 = new TypedDependency(conjValue(ccDep.dep().Value()), td1.gov(), label);
                     newTypedDeps.Add(tdNew2);
 
                     // now we still need to add the second prep grammatical relation
@@ -1119,7 +1119,7 @@ namespace OpenNLP.Tools.Util.Trees
                     {
                         // special treatment for prepositions: the original relation is
                         // likely to be a "dep" and we want this to be a "prep"
-                        if (otd.dep().tag().Equals("IN"))
+                        if (otd.dep().Tag().Equals("IN"))
                         {
                             otd.setReln(EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER);
                         }
@@ -1162,7 +1162,7 @@ namespace OpenNLP.Tools.Util.Trees
                 }
 
                 IndexedWord td1Dep = td1.dep();
-                string td1DepPOS = td1Dep.tag();
+                string td1DepPOS = td1Dep.Tag();
                 // find all other typedDeps having our dep as gov
                 Set<TypedDependency> possibles = map[td1Dep];
 
@@ -1181,7 +1181,7 @@ namespace OpenNLP.Tools.Util.Trees
                         {
 
                             IndexedWord td2Dep = td2.dep();
-                            string td2DepPOS = td2Dep.tag();
+                            string td2DepPOS = td2Dep.Tag();
                             if ((td1.reln() == EnglishGrammaticalRelations.POSSESSION_MODIFIER ||
                                  td1.reln() == EnglishGrammaticalRelations.CONJUNCT))
                             {
@@ -1303,7 +1303,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     // we have a conjunct
                     // check the POS of the dependent
-                    string tdDepPOS = td.dep().tag();
+                    string tdDepPOS = td.dep().Tag();
                     if (!(tdDepPOS.Equals("IN") || tdDepPOS.Equals("TO")))
                     {
                         return true;
@@ -1327,7 +1327,7 @@ namespace OpenNLP.Tools.Util.Trees
             // or be the dependent of a "vmod" relation
             // if it is the case, the "agent" variable becomes true
             bool agent = false;
-            string preposition = pc.dep().value().ToLower();
+            string preposition = pc.dep().Value().ToLower();
             if (preposition.Equals("by"))
             {
                 // look if we have an auxpass
@@ -1389,7 +1389,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     // i.e. "cc"
                     IndexedWord gov = td.gov();
-                    GrammaticalRelation conj = conjValue(td.dep().value());
+                    GrammaticalRelation conj = conjValue(td.dep().Value());
                     /*if (DEBUG) {
           System.err.println("Set conj to " + conj + " based on " + td);
         }*/
@@ -1412,7 +1412,7 @@ namespace OpenNLP.Tools.Util.Trees
                             }
                             else if (td1.reln() == EnglishGrammaticalRelations.COORDINATION)
                             {
-                                conj = conjValue(td1.dep().value());
+                                conj = conjValue(td1.dep().Value());
                                 /*if (DEBUG) {
                 System.err.println("Set conj to " + conj + " based on " + td1);
               }*/
@@ -1491,8 +1491,8 @@ namespace OpenNLP.Tools.Util.Trees
                 foreach (TypedDependency child in list)
                 {
                     if (child.gov().Equals(modifier) &&
-                        EnglishPatterns.RELATIVIZING_WORD_PATTERN.IsMatch(child.dep().value()) &&
-                        (leftChild == null || child.dep().index() < leftChild.dep().index()))
+                        EnglishPatterns.RELATIVIZING_WORD_PATTERN.IsMatch(child.dep().Value()) &&
+                        (leftChild == null || child.dep().Index() < leftChild.dep().Index()))
                     {
                         leftChild = child;
                     }
@@ -1509,8 +1509,8 @@ namespace OpenNLP.Tools.Util.Trees
                     foreach (TypedDependency grandchild in list)
                     {
                         if (grandchild.gov().Equals(child.dep()) &&
-                            EnglishPatterns.RELATIVIZING_WORD_PATTERN.IsMatch(grandchild.dep().value()) &&
-                            (leftGrandchild == null || grandchild.dep().index() < leftGrandchild.dep().index()))
+                            EnglishPatterns.RELATIVIZING_WORD_PATTERN.IsMatch(grandchild.dep().Value()) &&
+                            (leftGrandchild == null || grandchild.dep().Index() < leftGrandchild.dep().Index()))
                         {
                             leftGrandchild = grandchild;
                         }
@@ -1519,7 +1519,7 @@ namespace OpenNLP.Tools.Util.Trees
 
                 TypedDependency newDep = null;
                 if (leftGrandchild != null &&
-                    (leftChild == null || leftGrandchild.dep().index() < leftChild.dep().index()))
+                    (leftChild == null || leftGrandchild.dep().Index() < leftChild.dep().Index()))
                 {
                     newDep = new TypedDependency(EnglishGrammaticalRelations.REFERENT, head, leftGrandchild.dep());
                 }
@@ -1722,7 +1722,7 @@ namespace OpenNLP.Tools.Util.Trees
                     // part)
                     // CDM 2008: I also added in JJ, since participial verbs are often
                     // tagged JJ
-                    string tag = dep.tag();
+                    string tag = dep.Tag();
                     if (subjectMap.ContainsKey(gov) && (tag.StartsWith("VB") || tag.StartsWith("JJ")) &&
                         ! subjectMap.ContainsKey(dep))
                     {
@@ -1863,8 +1863,8 @@ namespace OpenNLP.Tools.Util.Trees
                     continue;
                 }
 
-                if ((modifier.value().Equals("to", StringComparison.InvariantCultureIgnoreCase) && hasAux) ||
-                    (!modifier.value().Equals("to", StringComparison.InvariantCultureIgnoreCase) && !hasAux))
+                if ((modifier.Value().Equals("to", StringComparison.InvariantCultureIgnoreCase) && hasAux) ||
+                    (!modifier.Value().Equals("to", StringComparison.InvariantCultureIgnoreCase) && !hasAux))
                 {
                     continue;
                 }
@@ -2168,9 +2168,9 @@ namespace OpenNLP.Tools.Util.Trees
             TypedDependency dep = null;
             foreach (TypedDependency td in list)
             {
-                if (td.gov().value().Equals(w_mwp0, StringComparison.InvariantCultureIgnoreCase) &&
-                    td.dep().value().Equals(w_mwp1, StringComparison.InvariantCultureIgnoreCase) &&
-                    Math.Abs(td.gov().index() - td.dep().index()) == 1)
+                if (td.gov().Value().Equals(w_mwp0, StringComparison.InvariantCultureIgnoreCase) &&
+                    td.dep().Value().Equals(w_mwp1, StringComparison.InvariantCultureIgnoreCase) &&
+                    Math.Abs(td.gov().Index() - td.dep().Index()) == 1)
                 {
                     mwp0 = td.gov();
                     mwp1 = td.dep();
@@ -2217,7 +2217,7 @@ namespace OpenNLP.Tools.Util.Trees
                      td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT) &&
                     (td2.gov().Equals(mwp1) || td2.gov().Equals(mwp0)))
                 {
-                    if (pobj == null || pobj.dep().index() > td2.dep().index())
+                    if (pobj == null || pobj.dep().Index() > td2.dep().Index())
                     {
                         pobj = td2;
                         // create the new gr relation

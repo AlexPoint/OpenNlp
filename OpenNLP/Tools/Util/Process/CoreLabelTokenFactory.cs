@@ -66,9 +66,9 @@ namespace OpenNLP.Tools.Util.Process
         public CoreLabel makeToken(string tokenText, string originalText, int begin, int length)
         {
             CoreLabel cl = addIndices ? new CoreLabel(5) : new CoreLabel();
-            cl.setValue(tokenText);
-            cl.setWord(tokenText);
-            cl.setOriginalText(originalText);
+            cl.SetValue(tokenText);
+            cl.SetWord(tokenText);
+            cl.SetOriginalText(originalText);
             if (addIndices)
             {
                 cl.Set(typeof (CoreAnnotations.CharacterOffsetBeginAnnotation), begin);

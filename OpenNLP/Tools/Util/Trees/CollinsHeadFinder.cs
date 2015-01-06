@@ -131,13 +131,13 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (headIdx >= 2)
             {
-                string prevLab = tlp.basicCategory(daughterTrees[headIdx - 1].value());
+                string prevLab = tlp.basicCategory(daughterTrees[headIdx - 1].Value());
                 if (prevLab.Equals("CC") || prevLab.Equals("CONJP"))
                 {
                     int newHeadIdx = headIdx - 2;
                     Tree t = daughterTrees[newHeadIdx];
                     while (newHeadIdx >= 0 && t.isPreTerminal() &&
-                           tlp.isPunctuationTag(t.value()))
+                           tlp.isPunctuationTag(t.Value()))
                     {
                         newHeadIdx--;
                     }

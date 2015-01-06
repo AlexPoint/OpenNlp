@@ -141,10 +141,10 @@ namespace OpenNLP.Tools.Util.Trees
             public bool test(Tree t)
             {
                 Tree[] kids = t.children();
-                Label l = t.label();
+                Label l = t.Label();
                 // Delete (return false for) empty/trace nodes (ones marked '-NONE-')
                 return
-                    ! ((l != null) && "-NONE-".Equals(l.value()) && !t.isLeaf() && kids.Length == 1 && kids[0].isLeaf());
+                    ! ((l != null) && "-NONE-".Equals(l.Value()) && !t.isLeaf() && kids.Length == 1 && kids[0].isLeaf());
             }
 
             //    private static readonly long serialVersionUID = 1L;
@@ -166,7 +166,7 @@ namespace OpenNLP.Tools.Util.Trees
                     return true;
                 }
                 // The special switchboard non-terminals clause
-                if ("EDITED".Equals(t.label().value()) || "CODE".Equals(t.label().value()))
+                if ("EDITED".Equals(t.Label().Value()) || "CODE".Equals(t.Label().Value()))
                 {
                     return false;
                 }
@@ -175,8 +175,8 @@ namespace OpenNLP.Tools.Util.Trees
                     return true;
                 }
                 return
-                    ! (t.label() != null && t.label().value() != null &&
-                       t.label().value().Equals(t.getChild(0).label().value()));
+                    ! (t.Label() != null && t.Label().Value() != null &&
+                       t.Label().Value().Equals(t.getChild(0).Label().Value()));
             }
 
             private static readonly long serialVersionUID = 1L;

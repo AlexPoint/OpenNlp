@@ -92,7 +92,7 @@ namespace OpenNLP.Tools.Util
         {
             /*Map<string, string> map = Generics.newHashMap();
     foreach (Entry<Object, Object> entry in properties.entrySet()) {
-      map.put((String)entry.getKey(), (String)entry.getValue());
+      map.put((string)entry.getKey(), (string)entry.getValue());
     }
     return map;*/
             return properties.ToDictionary(ent => ent.Key, ent => ent.Value);

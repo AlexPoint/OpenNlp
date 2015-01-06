@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @return string the word value for the label
    */
-        string word();
+        string GetWord();
 
 
         /**
@@ -28,6 +28,6 @@ namespace OpenNLP.Tools.Util.Ling
          *
          * @param word The word value for the label
          */
-        void setWord(string word);
+        void SetWord(string word);
     }
 }

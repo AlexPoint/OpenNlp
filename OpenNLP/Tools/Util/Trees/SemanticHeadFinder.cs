@@ -231,8 +231,8 @@ namespace OpenNLP.Tools.Util.Trees
         private bool shouldSkip(Tree t, bool origWasInterjection)
         {
             return t.isPreTerminal() &&
-                   (tlp.isPunctuationTag(t.value()) || ! origWasInterjection && "UH".Equals(t.value())) ||
-                   "INTJ".Equals(t.value()) && ! origWasInterjection;
+                   (tlp.isPunctuationTag(t.Value()) || ! origWasInterjection && "UH".Equals(t.Value())) ||
+                   "INTJ".Equals(t.Value()) && ! origWasInterjection;
         }
 
         private int findPreviousHead(int headIdx, Tree[] daughterTrees, bool origWasInterjection)
@@ -246,7 +246,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     return newHeadIdx;
                 }
-                string label = tlp.basicCategory(daughterTrees[newHeadIdx].value());
+                string label = tlp.basicCategory(daughterTrees[newHeadIdx].Value());
                 if (",".Equals(label) || ":".Equals(label))
                 {
                     seenSeparator = true;
@@ -277,10 +277,10 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (headIdx >= 2)
             {
-                string prevLab = tlp.basicCategory(daughterTrees[headIdx - 1].value());
+                string prevLab = tlp.basicCategory(daughterTrees[headIdx - 1].Value());
                 if (prevLab.Equals("CC") || prevLab.Equals("CONJP"))
                 {
-                    bool origWasInterjection = "UH".Equals(tlp.basicCategory(daughterTrees[headIdx].value()));
+                    bool origWasInterjection = "UH".Equals(tlp.basicCategory(daughterTrees[headIdx].Value()));
                     int newHeadIdx = headIdx - 2;
                     // newHeadIdx is now left of conjunction.  Now try going back over commas, etc. for 3+ conjuncts
                     // Don't allow INTJ unless conjoined with INTJ - important in informal genres "Oh and don't forget to call!"
@@ -345,18 +345,18 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return false;
             }
-            Label label = tree.label();
+            Label label = tree.Label();
             if (label == null)
             {
                 return false;
             }
-            if (label.value().Contains("-TMP") || label.value().Contains("-ADV"))
+            if (label.Value().Contains("-TMP") || label.Value().Contains("-ADV"))
             {
                 return false;
             }
             TregexPattern noVerbOverTempTregex =
                 TregexPattern.compile("/^VP/ < NP-TMP !< /^V/ !< NNP|NN|NNPS|NNS|NP|JJ|ADJP|S");
-            if (label.value().StartsWith("VP") && noVerbOverTempTregex.matcher(tree).matches())
+            if (label.Value().StartsWith("VP") && noVerbOverTempTregex.matcher(tree).matches())
             {
                 return false;
             }
@@ -375,7 +375,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         protected override Tree determineNonTrivialHead(Tree t, Tree parent)
         {
-            string motherCat = tlp.basicCategory(t.label().value());
+            string motherCat = tlp.basicCategory(t.Label().Value());
 
             /*if (DEBUG) {
       System.err.println("At " + motherCat + ", my parent is " + parent);
@@ -502,8 +502,8 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                     Tree pti = traverseLocate(tmpFilteredChildren, how, false);
                     // In SQ, only allow an NP to become head if there is another one to the left (then it's probably predicative)
-                    if (motherCat.Equals("SQ") && pti != null && pti.label() != null &&
-                        pti.label().value().StartsWith("NP"))
+                    if (motherCat.Equals("SQ") && pti != null && pti.Label() != null &&
+                        pti.Label().Value().StartsWith("NP"))
                     {
                         bool foundAnotherNp = false;
                         foreach (Tree kid in kids)
@@ -512,7 +512,7 @@ namespace OpenNLP.Tools.Util.Trees
                             {
                                 break;
                             }
-                            else if (kid.label() != null && kid.label().value().StartsWith("NP"))
+                            else if (kid.Label() != null && kid.Label().Value().StartsWith("NP"))
                             {
                                 foundAnotherNp = true;
                                 break;
@@ -588,7 +588,7 @@ namespace OpenNLP.Tools.Util.Trees
       System.err.println("isExistential: " + t + ' ' + parent);
     }*/
             bool toReturn = false;
-            string motherCat = tlp.basicCategory(t.label().value());
+            string motherCat = tlp.basicCategory(t.Label().Value());
             // affirmative case
             if (motherCat.Equals("VP") && parent != null)
             {
@@ -597,12 +597,12 @@ namespace OpenNLP.Tools.Util.Trees
                 // iterate over the sisters before t and checks if existential
                 foreach (Tree kid in kids)
                 {
-                    if (!kid.value().Equals("VP"))
+                    if (!kid.Value().Equals("VP"))
                     {
                         List<Label> tags = kid.preTerminalYield();
                         foreach (Label tag in tags)
                         {
-                            if (tag.value().Equals("EX"))
+                            if (tag.Value().Equals("EX"))
                             {
                                 toReturn = true;
                             }
@@ -622,13 +622,13 @@ namespace OpenNLP.Tools.Util.Trees
                 // iterate over the daughters and checks if existential
                 foreach (Tree kid in kids)
                 {
-                    if (!kid.value().StartsWith("VB"))
+                    if (!kid.Value().StartsWith("VB"))
                     {
 //not necessary to look into the verb
                         List<Label> tags = kid.preTerminalYield();
                         foreach (Label tag in tags)
                         {
-                            if (tag.value().Equals("EX"))
+                            if (tag.Value().Equals("EX"))
                             {
                                 toReturn = true;
                             }
@@ -659,15 +659,15 @@ namespace OpenNLP.Tools.Util.Trees
                 return false;
             }
             bool toReturn = false;
-            if (t.value().StartsWith("SQ"))
+            if (t.Value().StartsWith("SQ"))
             {
-                if (parent != null && parent.value().Equals("SBARQ"))
+                if (parent != null && parent.Value().Equals("SBARQ"))
                 {
                     Tree[] kids = parent.children();
                     foreach (Tree kid in kids)
                     {
                         // looks for a WH.*
-                        if (kid.value().StartsWith("WH"))
+                        if (kid.Value().StartsWith("WH"))
                         {
                             toReturn = true;
                         }
@@ -686,25 +686,25 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (preterminal.isPreTerminal())
             {
-                Label kidLabel = preterminal.label();
+                Label kidLabel = preterminal.Label();
                 string tag = null;
                 if (kidLabel is HasTag)
                 {
-                    tag = ((HasTag) kidLabel).tag();
+                    tag = ((HasTag) kidLabel).Tag();
                 }
                 if (tag == null)
                 {
-                    tag = preterminal.value();
+                    tag = preterminal.Value();
                 }
-                Label wordLabel = preterminal.firstChild().label();
+                Label wordLabel = preterminal.firstChild().Label();
                 string word = null;
                 if (wordLabel is HasWord)
                 {
-                    word = ((HasWord) wordLabel).word();
+                    word = ((HasWord) wordLabel).GetWord();
                 }
                 if (word == null)
                 {
-                    word = wordLabel.value();
+                    word = wordLabel.Value();
                 }
 
                 /*if (DEBUG) {
@@ -755,15 +755,15 @@ namespace OpenNLP.Tools.Util.Trees
                 }
                 else if (kid.isPhrasal())
                 {
-                    Label kidLabel = kid.label();
+                    Label kidLabel = kid.Label();
                     string cat = null;
                     if (kidLabel is HasCategory)
                     {
-                        cat = ((HasCategory) kidLabel).category();
+                        cat = ((HasCategory) kidLabel).Category();
                     }
                     if (cat == null)
                     {
-                        cat = kid.value();
+                        cat = kid.Value();
                     }
                     if (! cat.StartsWith("VP"))
                     {
@@ -781,15 +781,15 @@ namespace OpenNLP.Tools.Util.Trees
           }*/
                         if (kidkid.isPreTerminal())
                         {
-                            Label kidkidLabel = kidkid.label();
+                            Label kidkidLabel = kidkid.Label();
                             string tag = null;
                             if (kidkidLabel is HasTag)
                             {
-                                tag = ((HasTag) kidkidLabel).tag();
+                                tag = ((HasTag) kidkidLabel).Tag();
                             }
                             if (tag == null)
                             {
-                                tag = kidkid.value();
+                                tag = kidkid.Value();
                             }
                             // we allow in VBD because of frequent tagging mistakes
                             if ("VBN".Equals(tag) || "VBG".Equals(tag) || "VBD".Equals(tag))
@@ -814,11 +814,11 @@ namespace OpenNLP.Tools.Util.Trees
                             string catcat = null;
                             if (kidLabel is HasCategory)
                             {
-                                catcat = ((HasCategory) kidLabel).category();
+                                catcat = ((HasCategory) kidLabel).Category();
                             }
                             if (catcat == null)
                             {
-                                catcat = kid.value();
+                                catcat = kid.Value();
                             }
                             if ("VP".Equals(catcat))
                             {
@@ -859,15 +859,15 @@ namespace OpenNLP.Tools.Util.Trees
       }*/
                 if (kid.isPreTerminal())
                 {
-                    Label kidLabel = kid.label();
+                    Label kidLabel = kid.Label();
                     string tag = null;
                     if (kidLabel is HasTag)
                     {
-                        tag = ((HasTag) kidLabel).tag();
+                        tag = ((HasTag) kidLabel).Tag();
                     }
                     if (tag == null)
                     {
-                        tag = kid.value();
+                        tag = kid.Value();
                     }
                     if ("VBN".Equals(tag) || "VBG".Equals(tag) || "VBD".Equals(tag))
                     {

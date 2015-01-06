@@ -18,7 +18,7 @@ namespace OpenNLP.Tools.Util.Ling
     {
         private string vTag;
 
-        private static readonly string DIVIDER = "/";
+        private const string Divider = "/";
 
         /**
    * Create a new <code>TaggedWord</code>.
@@ -59,11 +59,11 @@ namespace OpenNLP.Tools.Util.Ling
    *                 HasTag interface, then the corresponding value will be set
    */
 
-        public TaggedWord(Label oldLabel) : base(oldLabel.value())
+        public TaggedWord(Label oldLabel) : base(oldLabel.Value())
         {
             if (oldLabel is HasTag)
             {
-                this.vTag = ((HasTag) oldLabel).tag();
+                this.vTag = ((HasTag) oldLabel).Tag();
             }
         }
 
@@ -77,15 +77,15 @@ namespace OpenNLP.Tools.Util.Ling
 
         public TaggedWord(Label word, Label tag) : base(word)
         {
-            this.vTag = tag.value();
+            this.vTag = tag.Value();
         }
 
-        public string tag()
+        public string Tag()
         {
             return vTag;
         }
 
-        public void setTag(string tag)
+        public void SetTag(string tag)
         {
             this.vTag = tag;
         }
@@ -93,12 +93,12 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public override string ToString()
         {
-            return ToString(DIVIDER);
+            return ToString(Divider);
         }
 
         public string ToString(string divider)
         {
-            return word() + divider + vTag;
+            return GetWord() + divider + vTag;
         }
 
 
@@ -115,23 +115,23 @@ namespace OpenNLP.Tools.Util.Ling
    * @param taggedWord The word that will go into the <code>Word</code>
    */
 
-        public override void setFromString(string taggedWord)
+        public override void SetFromString(string taggedWord)
         {
-            setFromString(taggedWord, DIVIDER);
+            SetFromString(taggedWord, Divider);
         }
 
-        public void setFromString(string taggedWord, string divider)
+        public void SetFromString(string taggedWord, string divider)
         {
             int where = taggedWord.LastIndexOf(divider);
             if (where >= 0)
             {
-                setWord(taggedWord.Substring(0, where));
-                setTag(taggedWord.Substring(where + 1));
+                SetWord(taggedWord.Substring(0, where));
+                SetTag(taggedWord.Substring(where + 1));
             }
             else
             {
-                setWord(taggedWord);
-                setTag(null);
+                SetWord(taggedWord);
+                SetTag(null);
             }
         }
 
@@ -154,7 +154,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The label factory
    */
         //@Override
-        public override LabelFactory labelFactory()
+        public override LabelFactory LabelFactory()
         {
             return LabelFactoryHolder.lf;
         }
@@ -166,7 +166,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The label factory
    */
 
-        public new static LabelFactory factory()
+        public new static LabelFactory Factory()
         {
             return LabelFactoryHolder.lf;
         }

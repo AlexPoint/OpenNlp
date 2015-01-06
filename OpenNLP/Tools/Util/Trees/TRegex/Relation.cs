@@ -3362,7 +3362,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool pathMatchesNode(Tree node)
             {
-                string lab = node.value();
+                string lab = node.Value();
                 // added this code to not crash if null node, even though there probably should be null nodes in the tree
                 if (lab == null)
                 {
@@ -3613,7 +3613,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             private bool pathMatchesNode(Tree node)
             {
-                string lab = node.value();
+                string lab = node.Value();
                 // added this code to not crash if null node, even though there probably should be null nodes in the tree
                 if (lab == null)
                 {
@@ -3812,7 +3812,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             private bool pathMatchesNode(Tree node)
             {
-                string lab = node.value();
+                string lab = node.Value();
                 // added this code to not crash if null node, even though there probably should be null nodes in the tree
                 if (lab == null)
                 {

@@ -22,7 +22,7 @@ namespace OpenNLP.Tools.Util.Trees
             return this.parse.GetChildren().Select(ch => new ParseTree(ch)).ToArray();
         }
 
-        public override Label label()
+        public override Label Label()
         {
             /*var label = this.parse.IsLeaf ? this.parse.Value : this.parse.Type;
             var coreLabel = (CoreLabel)new CoreLabel.CoreLabelFactory().newLabel(label);*/
@@ -31,18 +31,18 @@ namespace OpenNLP.Tools.Util.Trees
             var cLabel = new CoreLabel();
             if (this.parse.IsLeaf)
             {
-                cLabel.setWord(this.parse.Value);
-                cLabel.setBeginPosition(this.parse.Span.Start);
-                cLabel.setEndPosition(this.parse.Span.End);
-                cLabel.setValue(this.parse.Value);
+                cLabel.SetWord(this.parse.Value);
+                cLabel.SetBeginPosition(this.parse.Span.Start);
+                cLabel.SetEndPosition(this.parse.Span.End);
+                cLabel.SetValue(this.parse.Value);
             }
             else
             {
-                cLabel.setCategory(this.parse.Type);
-                cLabel.setValue(this.parse.Type);
+                cLabel.SetCategory(this.parse.Type);
+                cLabel.SetValue(this.parse.Type);
                 if (this.depth() == 1)
                 {
-                    cLabel.setTag(this.parse.Type);
+                    cLabel.SetTag(this.parse.Type);
                 }
             }
             return cLabel;
@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public override TreeFactory treeFactory()
         {
-            LabelFactory lf = (label() == null) ? CoreLabel.factory() : label().labelFactory();
+            LabelFactory lf = (Label() == null) ? CoreLabel.Factory() : Label().LabelFactory();
             //return new LabeledScoredTreeFactory(lf);
             return new ParseTreeFactory(lf);
         }

@@ -77,12 +77,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 if (node == foot)
                 {
                     // found the foot node; pass it up.
-                    clone = node.treeFactory().newTreeNode(node.label(), new List<Tree>(0));
+                    clone = node.treeFactory().newTreeNode(node.Label(), new List<Tree>(0));
                     newFoot = clone;
                 }
                 else
                 {
-                    clone = node.treeFactory().newLeaf(node.label().labelFactory().newLabel(node.label()));
+                    clone = node.treeFactory().newLeaf(node.Label().LabelFactory().NewLabel(node.Label()));
                 }
             }
             else
@@ -101,7 +101,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         newFoot = newChild.Item2;
                     }
                 }
-                clone = node.treeFactory().newTreeNode(node.label().labelFactory().newLabel(node.label()), newChildren);
+                clone = node.treeFactory().newTreeNode(node.Label().LabelFactory().NewLabel(node.Label()), newChildren);
             }
 
             if (nodesToNames.ContainsKey(node))
@@ -139,7 +139,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             Tree result = footNode;
             if (footNode != null)
             {
-                Tree newFootNode = footNode.treeFactory().newTreeNode(footNode.label(), new List<Tree>());
+                Tree newFootNode = footNode.treeFactory().newTreeNode(footNode.Label(), new List<Tree>());
 
                 Tree parent = footNode.parent(t);
                 if (parent != null)
@@ -158,10 +158,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             Tree foundDtr = null;
             if (t.isLeaf())
             {
-                var match = footNodeLabelPattern.Match(t.label().value());
+                var match = footNodeLabelPattern.Match(t.Label().Value());
                 if (match.Success)
                 {
-                    t.label().setValue(match.Groups[1].Value);
+                    t.Label().SetValue(match.Groups[1].Value);
                     return t;
                 }
                 else
@@ -186,8 +186,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
             /*Matcher m = escapedFootNodeCharacter.matcher(t.label().value());
     t.label().setValue(m.replaceAll(footNodeCharacter));*/
-            var newS = escapedFootNodeCharacter.Replace(t.label().value(), footNodeCharacter);
-            t.label().setValue(newS);
+            var newS = escapedFootNodeCharacter.Replace(t.Label().Value(), footNodeCharacter);
+            t.Label().SetValue(newS);
             return foundDtr;
         }
 
@@ -216,14 +216,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
             foreach (Tree node in t.subTreeList())
             {
-                var m = namePattern.Match(node.label().value());
+                var m = namePattern.Match(node.Label().Value());
                 if (m.Success)
                 {
                     pnamesToNodes.Add(m.Groups[2].Value, node);
                     nodesToNames.Add(node, m.Groups[2].Value);
-                    node.label().setValue(m.Groups[1].Value);
+                    node.Label().SetValue(m.Groups[1].Value);
                 }
-                node.label().setValue(unescape(node.label().value()));
+                node.Label().SetValue(unescape(node.Label().Value()));
             }
         }
 

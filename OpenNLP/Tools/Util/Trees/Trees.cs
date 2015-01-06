@@ -191,7 +191,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (t.isLeaf())
             {
-                l.Add(t.label());
+                l.Add(t.Label());
             }
             else
             {
@@ -218,8 +218,8 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (t.isPreTerminal())
             {
-                CoreLabel fl = (CoreLabel) t.getChild(0).label();
-                fl.Set(typeof (CoreAnnotations.TagLabelAnnotation), t.label());
+                CoreLabel fl = (CoreLabel) t.getChild(0).Label();
+                fl.Set(typeof (CoreAnnotations.TagLabelAnnotation), t.Label());
                 l.Add(fl);
             }
             else
@@ -349,10 +349,10 @@ namespace OpenNLP.Tools.Util.Trees
         public static List<string> localTreeAsCatList(Tree t)
         {
             List<string> l = new List<string>(t.children().Length + 1);
-            l.Add(t.label().value());
+            l.Add(t.Label().Value());
             for (int i = 0; i < t.children().Length; i++)
             {
-                l.Add(t.children()[i].label().value());
+                l.Add(t.children()[i].Label().Value());
             }
             return l;
         }
@@ -518,7 +518,7 @@ namespace OpenNLP.Tools.Util.Trees
                 .Append("tnode{z")
                 .Append(n)
                 .Append("}{")
-                .Append(t.label())
+                .Append(t.Label())
                 .Append('}');
             if (!t.isLeaf())
             {
@@ -557,7 +557,7 @@ namespace OpenNLP.Tools.Util.Trees
                     h.Append("{\\ntnode{pad}{}, ");
                 }
             }
-            h.Append("{\\ntnode{z").Append(n).Append("}{").Append(t.label()).Append('}');
+            h.Append("{\\ntnode{z").Append(n).Append("}{").Append(t.Label()).Append('}');
             if (!t.isLeaf())
             {
                 for (int k = 0; k < t.children().Length; k++)
@@ -709,15 +709,15 @@ namespace OpenNLP.Tools.Util.Trees
             for (int i = fromPath.Count - 1; i >= last; i--)
             {
                 Tree t = fromPath[i];
-                totalPath.Add("up-" + t.label().value());
+                totalPath.Add("up-" + t.Label().Value());
             }
 
             if (lastNode != null)
-                totalPath.Add("up-" + lastNode.label().value());
+                totalPath.Add("up-" + lastNode.Label().Value());
 
             foreach (Tree t in toPath)
             {
-                totalPath.Add("down-" + t.label().value());
+                totalPath.Add("down-" + t.Label().Value());
             }
 
 
@@ -853,12 +853,12 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static void convertToCoreLabels(Tree tree)
         {
-            Label l = tree.label();
+            Label l = tree.Label();
             if (!(l is CoreLabel))
             {
                 CoreLabel cl = new CoreLabel();
-                cl.setValue(l.value());
-                tree.setLabel(cl);
+                cl.SetValue(l.Value());
+                tree.SetLabel(cl);
             }
 
             foreach (Tree kid in tree.children())
@@ -882,7 +882,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     throw new ArgumentException("Only works on CoreLabel");
                 }
-                ((CoreLabel) leaf).setSentIndex(sentIndex);
+                ((CoreLabel) leaf).SetSentIndex(sentIndex);
             }
         }
     }

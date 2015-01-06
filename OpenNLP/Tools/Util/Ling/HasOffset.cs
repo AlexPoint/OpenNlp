@@ -21,7 +21,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @return the beginning position for the label
    */
-        int beginPosition();
+        int BeginPosition();
 
 
         /**
@@ -31,21 +31,21 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @param beginPos The beginning position
    */
-        void setBeginPosition(int beginPos);
+        void SetBeginPosition(int beginPos);
 
         /**
    * Return the ending character offset of the label (or -1 if none).
    *
    * @return the end position for the label
    */
-        int endPosition();
+        int EndPosition();
 
         /**
    * Set the ending character offset of the label (or -1 if none).
    *
    * @param endPos The end character offset for the label
    */
-        void setEndPosition(int endPos);
+        void SetEndPosition(int endPos);
 
     }
 }

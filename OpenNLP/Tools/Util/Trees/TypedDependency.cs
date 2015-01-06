@@ -136,8 +136,8 @@ namespace OpenNLP.Tools.Util.Trees
         {
             IndexedWord depArg = tdArg.dep();
             IndexedWord depThis = this.dep();
-            int indexArg = depArg.index();
-            int indexThis = depThis.index();
+            int indexArg = depArg.Index();
+            int indexThis = depThis.Index();
 
             if (indexThis > indexArg)
             {
@@ -149,8 +149,8 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             // dependent indices are equal, check governor
-            int govIndexArg = tdArg.gov().index();
-            int govIndexThis = this.gov().index();
+            int govIndexArg = tdArg.gov().Index();
+            int govIndexThis = this.gov().Index();
             if (govIndexThis > govIndexArg)
             {
                 return 1;

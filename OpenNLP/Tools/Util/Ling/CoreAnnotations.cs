@@ -41,9 +41,6 @@ namespace OpenNLP.Tools.Util.Ling
 
     public class CoreAnnotations
     {
-        private CoreAnnotations()
-        {
-        } // only static members
 
         /**
    * The CoreMap key identifying the annotation's text.
@@ -54,9 +51,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class TextAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -71,9 +68,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class LemmaAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -85,9 +82,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class PartOfSpeechAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -100,9 +97,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class NamedEntityTagAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -118,9 +115,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class StackedNamedEntityTagAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -133,9 +130,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class TrueCaseAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -148,9 +145,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class TrueCaseTextAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -163,7 +160,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class TokensAnnotation : CoreAnnotation<List<CoreLabel>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<CoreLabel>);
             }
@@ -178,7 +175,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class GenericTokensAnnotation : CoreAnnotation<List<CoreMap>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<CoreMap>);
             }
@@ -192,7 +189,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SentencesAnnotation : CoreAnnotation<List<CoreMap>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<CoreMap>);
             }
@@ -206,7 +203,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class ParagraphsAnnotation : CoreAnnotation<List<CoreMap>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<CoreMap>);
             }
@@ -221,7 +218,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class TokenBeginAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -236,7 +233,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class TokenEndAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -251,7 +248,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class CalendarAnnotation : CoreAnnotation<Calendar>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Calendar);
             }
@@ -267,9 +264,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class DocIDAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -285,7 +282,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class IndexAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -303,7 +300,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class BeginIndexAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -319,7 +316,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class EndIndexAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -335,7 +332,7 @@ namespace OpenNLP.Tools.Util.Ling
         public class ForcedSentenceUntilEndAnnotation
             : CoreAnnotation<Boolean>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Boolean);
             }
@@ -350,7 +347,7 @@ namespace OpenNLP.Tools.Util.Ling
         public class ForcedSentenceEndAnnotation
             : CoreAnnotation<Boolean>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Boolean);
             }
@@ -362,7 +359,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SentenceIndexAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -376,7 +373,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class LineNumberAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -388,17 +385,17 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class ValueAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class CategoryAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -410,9 +407,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class OriginalTextAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -424,9 +421,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class BeforeAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -438,9 +435,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class AfterAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -450,9 +447,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class CoarseTagAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -462,7 +459,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class CoNLLDepAnnotation : CoreAnnotation<CoreMap>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (CoreMap);
             }
@@ -474,7 +471,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class CoNLLPredicateAnnotation : CoreAnnotation<Boolean>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Boolean);
             }
@@ -487,7 +484,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class CoNLLSRLAnnotation : CoreAnnotation<Dictionary<int, string>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Dictionary<int, string>);
             }
@@ -499,9 +496,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class CoNLLDepTypeAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -512,7 +509,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class CoNLLDepParentIndexAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -524,7 +521,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class IDFAnnotation : CoreAnnotation<Double>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Double);
             }
@@ -541,9 +538,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class ProjectedCategoryAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -553,9 +550,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class ArgumentAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -566,9 +563,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class MarkingAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -578,9 +575,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SemanticHeadWordAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -590,9 +587,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SemanticHeadTagAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -603,9 +600,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class VerbSenseAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -615,9 +612,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class CategoryFunctionalTagAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -628,9 +625,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class NERIDAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -640,9 +637,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class NormalizedNamedEntityTagAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -661,7 +658,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SRLIDAnnotation : CoreAnnotation<SRL_ID>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (SRL_ID);
             }
@@ -676,9 +673,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class ShapeAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -689,7 +686,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class LeftTermAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -701,17 +698,17 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class ParentAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class INAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -721,7 +718,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SpanAnnotation : CoreAnnotation<IntPair>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (IntPair);
             }
@@ -733,9 +730,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class AnswerAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -745,9 +742,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class GoldAnswerAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -757,9 +754,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class FeaturesAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -769,9 +766,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class InterpretationAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -781,9 +778,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class RoleAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -793,7 +790,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class GazetteerAnnotation : CoreAnnotation<List<string>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<string>);
             }
@@ -805,49 +802,49 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class StemAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class PolarityAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class MorphoNumAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class MorphoPersAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class MorphoGenAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class MorphoCaseAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -857,25 +854,25 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class ChineseCharAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class ChineseOrigSegAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class ChineseSegAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -886,7 +883,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class ChineseIsSegmentedAnnotation : CoreAnnotation<Boolean>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Boolean);
             }
@@ -902,7 +899,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class CharacterOffsetBeginAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -918,7 +915,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class CharacterOffsetEndAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -930,7 +927,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class CostMagnificationAnnotation : CoreAnnotation<Double>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Double);
             }
@@ -938,9 +935,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class WordSenseAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -957,7 +954,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class NumTxtSentencesAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -969,7 +966,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class TagLabelAnnotation : CoreAnnotation<Label>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Label);
             }
@@ -983,25 +980,25 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class DomainAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class PositionAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class CharAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1009,17 +1006,17 @@ namespace OpenNLP.Tools.Util.Ling
         // specific meaning for sequence classifiers
         public class UnknownAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class IDAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1027,121 +1024,121 @@ namespace OpenNLP.Tools.Util.Ling
         // was "gaz"
         public class GazAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class PossibleAnswersAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class DistSimAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class AbbrAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class ChunkAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class GovernorAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class AbgeneAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class GeniaAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class AbstrAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class FreqAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class DictAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class WebAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class FemaleGazAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class MaleGazAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class LastGazAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1151,23 +1148,23 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class IsURLAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class LinkAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class MentionsAnnotation : CoreAnnotation<List<CoreMap>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<CoreMap>);
             }
@@ -1175,9 +1172,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class EntityTypeAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1187,17 +1184,17 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class IsDateRangeAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class PredictedAnswerAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1205,9 +1202,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class OriginalAnswerAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1215,15 +1212,15 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class OriginalCharAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class UTypeAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -1231,9 +1228,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class EntityRuleAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1243,9 +1240,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SectionAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1255,9 +1252,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SectionDateAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1267,9 +1264,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SectionIDAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1280,7 +1277,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SectionStartAnnotation : CoreAnnotation<CoreMap>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (CoreMap);
             }
@@ -1292,33 +1289,33 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SectionEndAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class WordPositionAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class ParaPositionAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class SentencePositionAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1327,23 +1324,23 @@ namespace OpenNLP.Tools.Util.Ling
         // uses both so here they remain for now...
         public class SentenceIDAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class EntityClassAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class AnswerObjectAnnotation : CoreAnnotation<Object>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Object);
             }
@@ -1355,25 +1352,25 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class BestCliquesAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class BestFullAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class LastTaggedAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1383,9 +1380,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class LabelAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1397,7 +1394,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class ContextsAnnotation : CoreAnnotation<List<Tuple<string, string>>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<Tuple<string, string>>);
             }
@@ -1406,7 +1403,7 @@ namespace OpenNLP.Tools.Util.Ling
         public class DependentsAnnotation :
             CoreAnnotation<List<Tuple<Tuple<string, String, string>, string>>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<Tuple<Tuple<string, String, string>, string>>);
             }
@@ -1414,31 +1411,31 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class WordFormAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class TrueTagAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class SubcategorizationAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class BagOfWordsAnnotation : CoreAnnotation<List<Tuple<string, string>>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<Tuple<string, string>>);
             }
@@ -1450,17 +1447,17 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class HeightAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class LengthAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1470,57 +1467,57 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class LBeginAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class LMiddleAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class LEndAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class D2_LBeginAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class D2_LMiddleAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class D2_LEndAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class UBlockAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1528,9 +1525,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SpaceBeforeAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1544,7 +1541,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class StateAnnotation : CoreAnnotation<CoreLabel>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (CoreLabel);
             }
@@ -1556,9 +1553,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class PrevChildAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1569,9 +1566,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class FirstChildAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1581,7 +1578,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class UnaryAnnotation : CoreAnnotation<Boolean>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Boolean);
             }
@@ -1593,7 +1590,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class DoAnnotation : CoreAnnotation<Boolean>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Boolean);
             }
@@ -1605,7 +1602,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class HaveAnnotation : CoreAnnotation<Boolean>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Boolean);
             }
@@ -1617,7 +1614,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class BeAnnotation : CoreAnnotation<Boolean>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Boolean);
             }
@@ -1629,7 +1626,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class NotAnnotation : CoreAnnotation<Boolean>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Boolean);
             }
@@ -1641,7 +1638,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class PercentAnnotation : CoreAnnotation<Boolean>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Boolean);
             }
@@ -1653,9 +1650,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class GrandparentAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1666,9 +1663,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class HeadWordStringAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1678,25 +1675,25 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class MonthAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class DayAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class YearAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1706,7 +1703,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class PriorAnnotation : CoreAnnotation<Dictionary<string, Double>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Dictionary<string, Double>);
             }
@@ -1714,23 +1711,23 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SemanticWordAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class SemanticTagAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class CovertIDAnnotation : CoreAnnotation<List<IntPair>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<IntPair>);
             }
@@ -1739,7 +1736,7 @@ namespace OpenNLP.Tools.Util.Ling
         public class ArgDescendentAnnotation : CoreAnnotation<Tuple<string, Double>>
         {
 
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Tuple<string, Double>);
             }
@@ -1753,7 +1750,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class CopyAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -1766,9 +1763,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class XmlElementAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1780,7 +1777,7 @@ namespace OpenNLP.Tools.Util.Ling
         public class XmlContextAnnotation : CoreAnnotation<List<string>>
         {
 
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<string>);
             }
@@ -1795,34 +1792,34 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class TopicAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         // gets the synonymn of a word in the Wordnet (use a bit differently in sonalg's code)
         public class WordnetSynAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         //to get words of the phrase
         public class PhraseWordsTagAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         //to get pos tag of the phrase i.e. root of the phrase tree in the parse tree
         public class PhraseWordsAnnotation : CoreAnnotation<List<string>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<string>);
             }
@@ -1831,18 +1828,18 @@ namespace OpenNLP.Tools.Util.Ling
         //to get prototype feature, see Haghighi Exemplar driven learning
         public class ProtoAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         //which common words list does this word belong to
         public class CommonWordsAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1850,9 +1847,9 @@ namespace OpenNLP.Tools.Util.Ling
         // Needed by SUTime
         public class DocDateAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1863,9 +1860,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class DocTypeAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1876,9 +1873,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class DocSourceTypeAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1889,9 +1886,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class DocTitleAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1901,9 +1898,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class LocationAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1914,9 +1911,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class AuthorAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1926,9 +1923,9 @@ namespace OpenNLP.Tools.Util.Ling
         // (twenty first => NUMBER ORDINAL)
         public class NumericTypeAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -1936,7 +1933,7 @@ namespace OpenNLP.Tools.Util.Ling
         // (twenty first => 20 1)
         public class NumericValueAnnotation : CoreAnnotation<Double>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Double);
             }
@@ -1945,7 +1942,7 @@ namespace OpenNLP.Tools.Util.Ling
         // Per token annotation indicating the numeric object associated with an annotation
         public class NumericObjectAnnotation : CoreAnnotation<Object>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Object);
             }
@@ -1955,7 +1952,7 @@ namespace OpenNLP.Tools.Util.Ling
         // represents a NUMBER or ORDINAL (twenty first => ORDINAL ORDINAL)
         public class NumericCompositeValueAnnotation : CoreAnnotation<Double>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Double);
             }
@@ -1965,16 +1962,16 @@ namespace OpenNLP.Tools.Util.Ling
         // (twenty first => 21 21 )
         public class NumericCompositeTypeAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         // Annotation indicating the numeric object associated with an annotation
         public class NumericCompositeObjectAnnotation : CoreAnnotation<Object>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (object);
             }
@@ -1982,7 +1979,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class NumerizedTokensAnnotation : CoreAnnotation<List<CoreMap>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (List<CoreMap>);
             }
@@ -1995,7 +1992,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class UseMarkedDiscourseAnnotation : CoreAnnotation<Boolean>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Boolean);
             }
@@ -2008,7 +2005,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class UtteranceAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -2021,9 +2018,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class SpeakerAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
@@ -2034,7 +2031,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class ParagraphAnnotation : CoreAnnotation<int>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (int);
             }
@@ -2056,7 +2053,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class LeftChildrenNodeAnnotation : CoreAnnotation<SortedSet<Tuple<CoreLabel, string>>>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (SortedSet<Tuple<CoreLabel, string>>);
             }
@@ -2080,15 +2077,15 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class AntecedentAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
 
         public class LabelWeightAnnotation : CoreAnnotation<Double>
         {
-            public Type getType()
+            public Type GetType()
             {
                 return typeof (Double);
             }
@@ -2096,9 +2093,9 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class ColumnDataClassifierAnnotation : CoreAnnotation<string>
         {
-            public Type getType()
+            public Type GetType()
             {
-                return typeof (String);
+                return typeof (string);
             }
         }
     }

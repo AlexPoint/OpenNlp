@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.Ling
     {
         private Label vTag;
 
-        private static readonly string DIVIDER = "/";
+        private const string Divider = "/";
 
         /**
    * Create a new <code>TaggedWord</code>.
@@ -57,12 +57,12 @@ namespace OpenNLP.Tools.Util.Ling
             this.vTag = tag;
         }
 
-        public Label tag()
+        public Label Tag()
         {
             return vTag;
         }
 
-        public void setTag(Label tag)
+        public void SetTag(Label tag)
         {
             this.vTag = tag;
         }
@@ -70,12 +70,12 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public override string ToString()
         {
-            return ToString(DIVIDER);
+            return ToString(Divider);
         }
 
         public string ToString(string divider)
         {
-            return word() + divider + vTag;
+            return GetWord() + divider + vTag;
         }
 
         // extra class guarantees correct lazy loading (Bloch p.194)
@@ -96,7 +96,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The label factory
    */
         //@Override
-        public override LabelFactory labelFactory()
+        public override LabelFactory LabelFactory()
         {
             return LabelFactoryHolder.lf;
         }
@@ -108,7 +108,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The label factory
    */
 
-        public new static LabelFactory factory()
+        public new static LabelFactory Factory()
         {
             return LabelFactoryHolder.lf;
         }

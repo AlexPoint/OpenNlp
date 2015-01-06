@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Util.Trees
 
             if (governor() is HasIndex)
             {
-                headIndex = ((HasIndex) governor()).index();
+                headIndex = ((HasIndex) governor()).Index();
             }
             else
             {
@@ -58,7 +58,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
             if (dependent() is HasIndex)
             {
-                depIndex = ((HasIndex) dependent()).index();
+                depIndex = ((HasIndex) dependent()).Index();
             }
             else
             {
@@ -118,8 +118,8 @@ namespace OpenNLP.Tools.Util.Trees
                 case "xml":
                     string govIdxStr = " idx=\"" + headIndex + "\"";
                     string depIdxStr = " idx=\"" + depIndex + "\"";
-                    return "  <dep>\n    <governor" + govIdxStr + ">" + XMLUtils.XmlEscape(governor().value()) +
-                           "</governor>\n    <dependent" + depIdxStr + ">" + XMLUtils.XmlEscape(dependent().value()) +
+                    return "  <dep>\n    <governor" + govIdxStr + ">" + XMLUtils.XmlEscape(governor().Value()) +
+                           "</governor>\n    <dependent" + depIdxStr + ">" + XMLUtils.XmlEscape(dependent().Value()) +
                            "</dependent>\n  </dep>";
                 case "predicate":
                     return "dep(" + governor() + "," + dependent() + ")";

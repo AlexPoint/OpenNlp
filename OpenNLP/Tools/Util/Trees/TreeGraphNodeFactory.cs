@@ -28,7 +28,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
 
         public TreeGraphNodeFactory() :
-            this(CoreLabel.factory())
+            this(CoreLabel.Factory())
         {
         }
 
@@ -40,7 +40,7 @@ namespace OpenNLP.Tools.Util.Trees
         // docs inherited
         public Tree newLeaf( /*final*/ string word)
         {
-            return newLeaf(mlf.newLabel(word));
+            return newLeaf(mlf.NewLabel(word));
         }
 
         // docs inherited
@@ -52,7 +52,7 @@ namespace OpenNLP.Tools.Util.Trees
         // docs inherited
         public Tree newTreeNode( /*final*/ string parent, /*final*/ List<Tree> children)
         {
-            return newTreeNode(mlf.newLabel(parent), children);
+            return newTreeNode(mlf.NewLabel(parent), children);
         }
 
         // docs inherited

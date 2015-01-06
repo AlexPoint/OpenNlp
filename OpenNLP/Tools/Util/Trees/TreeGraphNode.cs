@@ -55,7 +55,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
         protected static readonly TreeGraphNode[] ZERO_TGN_CHILDREN = new TreeGraphNode[0];
 
-        private static LabelFactory mlf = CoreLabel.factory();
+        private static LabelFactory mlf = CoreLabel.Factory();
 
         /**
    * Create a new empty <code>TreeGraphNode</code>.
@@ -74,7 +74,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public TreeGraphNode(Label label)
         {
-            this.plabel = (CoreLabel) mlf.newLabel(label);
+            this.plabel = (CoreLabel) mlf.NewLabel(label);
         }
 
         /**
@@ -135,10 +135,10 @@ namespace OpenNLP.Tools.Util.Trees
                 if (t.isPreTerminal())
                 {
                     // add the tags to the leaves
-                    pchildren[i].plabel.setTag(t.label().value());
+                    pchildren[i].plabel.SetTag(t.Label().Value());
                 }
             }
-            this.plabel = (CoreLabel) mlf.newLabel(t.label());
+            this.plabel = (CoreLabel) mlf.NewLabel(t.Label());
         }
 
         /**
@@ -168,7 +168,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the label of the node
    */
         //@Override
-        public override /*CoreLabel */ Label label()
+        public override /*CoreLabel */ Label Label()
         {
             return plabel;
         }
@@ -190,7 +190,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public int index()
         {
-            return plabel.index();
+            return plabel.Index();
         }
 
         /**
@@ -199,7 +199,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public void setIndex(int index)
         {
-            plabel.setIndex(index);
+            plabel.SetIndex(index);
         }
 
         /**
@@ -514,13 +514,13 @@ namespace OpenNLP.Tools.Util.Trees
         public override TreeFactory treeFactory()
         {
             LabelFactory lf;
-            if (label() != null)
+            if (Label() != null)
             {
-                lf = label().labelFactory();
+                lf = Label().LabelFactory();
             }
             else
             {
-                lf = CoreLabel.factory();
+                lf = CoreLabel.Factory();
             }
             return new TreeGraphNodeFactory(lf);
         }
@@ -613,10 +613,10 @@ namespace OpenNLP.Tools.Util.Trees
 
         public string toPrimes()
         {
-            var coreLabel = label() as CoreLabel;
+            var coreLabel = Label() as CoreLabel;
             if (coreLabel != null)
             {
-                int copy = coreLabel.copyCount();
+                int copy = coreLabel.CopyCount();
                 return StringUtils.Repeat('\'', copy);
             }
             else

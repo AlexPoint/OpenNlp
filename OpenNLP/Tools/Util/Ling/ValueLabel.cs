@@ -37,7 +37,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return the value for the label
    */
 
-        public virtual string value()
+        public virtual string Value()
         {
             return null;
         }
@@ -49,7 +49,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param value - the value for the label
    */
 
-        public virtual void setValue(string value)
+        public virtual void SetValue(string value)
         {
         }
 
@@ -64,12 +64,12 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public override string ToString()
         {
-            string val = value();
+            string val = Value();
             return (val == null) ? "" : val;
         }
 
 
-        public virtual void setFromString(string labelStr)
+        public virtual void SetFromString(string labelStr)
         {
             throw new NotSupportedException();
         }
@@ -90,9 +90,9 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public override bool Equals(Object obj)
         {
-            string val = value();
+            string val = Value();
             return (obj is ValueLabel) &&
-                   (val == null ? ((Label) obj).value() == null : val.Equals(((Label) obj).value()));
+                   (val == null ? ((Label) obj).Value() == null : val.Equals(((Label) obj).Value()));
         }
 
 
@@ -104,7 +104,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public override int GetHashCode()
         {
-            string val = value();
+            string val = Value();
             return val == null ? 3 : val.GetHashCode();
         }
 
@@ -118,7 +118,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public int CompareTo(ValueLabel valueLabel)
         {
-            return value().CompareTo(valueLabel.value());
+            return Value().CompareTo(valueLabel.Value());
         }
 
 
@@ -127,7 +127,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @return the <code>LabelFactory</code>
    */
-        public abstract LabelFactory labelFactory();
+        public abstract LabelFactory LabelFactory();
 
 
         private static readonly long serialVersionUID = -1413303679077285530L;

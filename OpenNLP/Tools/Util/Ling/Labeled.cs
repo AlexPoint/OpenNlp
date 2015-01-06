@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.Ling
    *         Returns null if there is no label.
    */
 
-        Label label();
+        Label Label();
 
 
         /**
@@ -25,7 +25,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param label The Label value
    */
 
-        void setLabel( /*final*/ Label label);
+        void SetLabel( /*final*/ Label label);
 
 
         /**
@@ -35,7 +35,7 @@ namespace OpenNLP.Tools.Util.Ling
    *         Collection if there are no labels.
    */
 
-        ICollection<Label> labels();
+        ICollection<Label> Labels();
 
 
         /**
@@ -44,6 +44,6 @@ namespace OpenNLP.Tools.Util.Ling
    * @param labels The set of Label values
    */
 
-        void setLabels( /*final*/ ICollection<Label> labels);
+        void SetLabels( /*final*/ ICollection<Label> labels);
     }
 }

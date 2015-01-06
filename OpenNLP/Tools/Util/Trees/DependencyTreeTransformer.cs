@@ -37,7 +37,7 @@ namespace OpenNLP.Tools.Util.Trees
         public Tree transformTree(Tree t)
         {
             //deal with empty root
-            t.setValue(cleanUpRoot(t.value()));
+            t.SetValue(cleanUpRoot(t.Value()));
             //strips tags
             stripTag(t);
 
@@ -84,8 +84,8 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (! t.isLeaf())
             {
-                string label = cleanUpLabel(t.value());
-                t.setValue(label);
+                string label = cleanUpLabel(t.Value());
+                t.SetValue(label);
                 foreach (Tree child in t.getChildrenAsList())
                 {
                     stripTag(child);

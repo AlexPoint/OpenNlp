@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.Trees
    * The labels are of class <code>CoreLabel</code>.
    */
 
-        public LabeledScoredTreeFactory() : this(CoreLabel.factory())
+        public LabeledScoredTreeFactory() : this(CoreLabel.Factory())
         {
         }
 
@@ -35,7 +35,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override Tree newLeaf( /*final*/ string word)
         {
-            return new LabeledScoredTreeNode(lf.newLabel(word));
+            return new LabeledScoredTreeNode(lf.NewLabel(word));
         }
 
         /**
@@ -47,13 +47,13 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override Tree newLeaf(Label label)
         {
-            return new LabeledScoredTreeNode(lf.newLabel(label));
+            return new LabeledScoredTreeNode(lf.NewLabel(label));
         }
 
         //@Override
         public override Tree newTreeNode( /*final*/ string parent, /*final */List<Tree> children)
         {
-            return new LabeledScoredTreeNode(lf.newLabel(parent), children);
+            return new LabeledScoredTreeNode(lf.NewLabel(parent), children);
         }
 
         /**
@@ -67,7 +67,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override Tree newTreeNode(Label parentLabel, List<Tree> children)
         {
-            return new LabeledScoredTreeNode(lf.newLabel(parentLabel), children);
+            return new LabeledScoredTreeNode(lf.NewLabel(parentLabel), children);
         }
     }
 }

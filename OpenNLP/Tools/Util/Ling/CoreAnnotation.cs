@@ -24,6 +24,6 @@ namespace OpenNLP.Tools.Util.Ling
    * one should be able to get away without this method, but because Java
    * erases the generic type signature, that info disappears at runtime.
    */
-        Type getType();
+        Type GetType();
     }
 }

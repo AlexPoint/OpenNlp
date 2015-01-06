@@ -45,7 +45,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 foreach (TsurgeonMatcher child in childMatcher)
                 {
                     Tree node = child.evaluate(tree, tregex);
-                    node.label().setValue(node.label().value() + coindexationIntroductionString + newIndex);
+                    node.Label().SetValue(node.Label().Value() + coindexationIntroductionString + newIndex);
                 }
                 return tree;
             }

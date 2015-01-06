@@ -324,11 +324,11 @@ namespace OpenNLP.Tools.Util.Trees
 
         private static string getHeadTag(Tree t)
         {
-            if (t.value().StartsWith("NN"))
+            if (t.Value().StartsWith("NN"))
             {
                 return "NP";
             }
-            else if (t.value().StartsWith("JJ"))
+            else if (t.Value().StartsWith("JJ"))
             {
                 return "ADJP";
             }
@@ -356,7 +356,7 @@ namespace OpenNLP.Tools.Util.Trees
             //System.out.println(ccIndex);
             // use the factories of t to create new nodes
             TreeFactory tf = t.treeFactory();
-            LabelFactory lf = t.label().labelFactory();
+            LabelFactory lf = t.Label().LabelFactory();
 
             Tree[] ccSiblings = t.children();
 
@@ -364,7 +364,7 @@ namespace OpenNLP.Tools.Util.Trees
             List<int> ccPositions = new List<int>();
             for (int i = ccIndex + 1; i < ccSiblings.Length; i++)
             {
-                if (ccSiblings[i].value().StartsWith("CC") && i < ccSiblings.Length - 1)
+                if (ccSiblings[i].Value().StartsWith("CC") && i < ccSiblings.Length - 1)
                 {
                     // second conjunct to ensure that a CC we add isn't the last child
                     ccPositions.Add(i);
@@ -372,17 +372,17 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             // a CC b c ... -> (a CC b) c ...  with b not a DT
-            string beforeSibling = ccSiblings[ccIndex - 1].value();
+            string beforeSibling = ccSiblings[ccIndex - 1].Value();
             if (ccIndex == 1 &&
                 (beforeSibling.Equals("DT") || beforeSibling.Equals("JJ") || beforeSibling.Equals("RB") ||
-                 ! (ccSiblings[ccIndex + 1].value().Equals("DT"))) && ! (beforeSibling.StartsWith("NP")
+                 ! (ccSiblings[ccIndex + 1].Value().Equals("DT"))) && ! (beforeSibling.StartsWith("NP")
                                                                          || beforeSibling.Equals("ADJP")
                                                                          || beforeSibling.Equals("NNS")))
             {
                 // && (ccSiblings.Length == ccIndex + 3 || !ccPositions.isEmpty())) {  // something like "soya or maize oil"
                 string leftHead = getHeadTag(ccSiblings[ccIndex - 1]);
                 //create a new tree to be inserted as first child of t
-                Tree left = tf.newTreeNode(lf.newLabel(leftHead), null);
+                Tree left = tf.newTreeNode(lf.NewLabel(leftHead), null);
                 for (int i = 0; i < ccIndex + 2; i++)
                 {
                     left.addChild(ccSiblings[i]);
@@ -410,7 +410,7 @@ namespace OpenNLP.Tools.Util.Trees
                     bool comma = false;
                     int index = ccPositions[0];
                     /*if (VERBOSE) {System.err.println("more CC index " +  index);}s*/
-                    if (ccSiblings[index - 1].value().Equals(","))
+                    if (ccSiblings[index - 1].Value().Equals(","))
                     {
 //to handle the case of a comma ("soya and maize oil, and vegetables")
                         index = index - 1;
@@ -421,7 +421,7 @@ namespace OpenNLP.Tools.Util.Trees
 
                     if (ccIndex + 2 < index)
                     {
-                        Tree tree = tf.newTreeNode(lf.newLabel(head), null);
+                        Tree tree = tf.newTreeNode(lf.NewLabel(head), null);
                         tree.addChild(0, left);
 
                         int k = 1;
@@ -448,7 +448,7 @@ namespace OpenNLP.Tools.Util.Trees
                         t.addChild(0, left);
                     }
 
-                    Tree rightTree = tf.newTreeNode(lf.newLabel("NP"), null);
+                    Tree rightTree = tf.newTreeNode(lf.NewLabel("NP"), null);
                     int start = 2;
                     if (comma)
                     {
@@ -468,13 +468,13 @@ namespace OpenNLP.Tools.Util.Trees
                 }
             }
                 // DT a CC b c -> DT (a CC b) c
-            else if (ccIndex == 2 && ccSiblings[0].value().StartsWith("DT") &&
-                     !ccSiblings[ccIndex - 1].value().Equals("NNS") &&
+            else if (ccIndex == 2 && ccSiblings[0].Value().StartsWith("DT") &&
+                     !ccSiblings[ccIndex - 1].Value().Equals("NNS") &&
                      (ccSiblings.Length == 5 || (ccPositions.Any() && ccPositions[0] == 5)))
             {
                 string head = getHeadTag(ccSiblings[ccIndex - 1]);
                 //create a new tree to be inserted as second child of t (after the determiner
-                Tree child = tf.newTreeNode(lf.newLabel(head), null);
+                Tree child = tf.newTreeNode(lf.NewLabel(head), null);
 
                 for (int i = 1; i < ccIndex + 2; i++)
                 {
@@ -495,11 +495,11 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
                 // ... a, b CC c ... -> ... (a, b CC c) ...
-            else if (ccIndex > 2 && ccSiblings[ccIndex - 2].value().Equals(",") &&
-                     !ccSiblings[ccIndex - 1].value().Equals("NNS"))
+            else if (ccIndex > 2 && ccSiblings[ccIndex - 2].Value().Equals(",") &&
+                     !ccSiblings[ccIndex - 1].Value().Equals("NNS"))
             {
                 string head = getHeadTag(ccSiblings[ccIndex - 1]);
-                Tree child = tf.newTreeNode(lf.newLabel(head), null);
+                Tree child = tf.newTreeNode(lf.NewLabel(head), null);
 
                 for (int j = ccIndex - 3; j < ccIndex + 2; j++)
                 {
@@ -508,7 +508,7 @@ namespace OpenNLP.Tools.Util.Trees
                 /*if (VERBOSE) { if (child.numChildren() == 0) { System.out.println("Youch! No child children"); } }*/
 
                 int i = ccIndex - 4;
-                while (i > 0 && ccSiblings[i].value().Equals(","))
+                while (i > 0 && ccSiblings[i].Value().Equals(","))
                 {
                     child.addChild(0, ccSiblings[i]); // add the comma
                     child.addChild(0, ccSiblings[i - 1]); // add the word before the comma
@@ -537,16 +537,16 @@ namespace OpenNLP.Tools.Util.Trees
                 bool commaRight = false;
                 bool preconj = false;
                 int indexBegin = 0;
-                Tree conjT = tf.newTreeNode(lf.newLabel("CC"), null);
+                Tree conjT = tf.newTreeNode(lf.NewLabel("CC"), null);
 
                 // create the left tree
                 string leftHead = getHeadTag(ccSiblings[ccIndex - 1]);
-                Tree left = tf.newTreeNode(lf.newLabel(leftHead), null);
+                Tree left = tf.newTreeNode(lf.NewLabel(leftHead), null);
 
 
                 // handle the case of a preconjunct (either, both, neither)
                 Tree first = ccSiblings[0];
-                string leaf = first.firstChild().value().ToLower();
+                string leaf = first.firstChild().Value().ToLower();
                 if (leaf.Equals("either") || leaf.Equals("neither") || leaf.Equals("both"))
                 {
                     preconj = true;
@@ -559,7 +559,7 @@ namespace OpenNLP.Tools.Util.Trees
                     left.addChild(ccSiblings[i]);
                 }
                 // handle the case of a comma ("GM soya and maize, and food ingredients")
-                if (ccSiblings[ccIndex - 1].value().Equals(","))
+                if (ccSiblings[ccIndex - 1].Value().Equals(","))
                 {
                     commaLeft = true;
                 }
@@ -582,13 +582,13 @@ namespace OpenNLP.Tools.Util.Trees
                     nextCC = ccPositions[0];
                 }
                 string rightHead = getHeadTag(ccSiblings[nextCC - 1]);
-                Tree right = tf.newTreeNode(lf.newLabel(rightHead), null);
+                Tree right = tf.newTreeNode(lf.NewLabel(rightHead), null);
                 for (int i = ccIndex + 1; i < nextCC - 1; i++)
                 {
                     right.addChild(ccSiblings[i]);
                 }
                 // handle the case of a comma ("GM soya and maize, and food ingredients")
-                if (ccSiblings[nextCC - 1].value().Equals(","))
+                if (ccSiblings[nextCC - 1].Value().Equals(","))
                 {
                     commaRight = true;
                 }
@@ -610,7 +610,7 @@ namespace OpenNLP.Tools.Util.Trees
                 if (ccPositions.Any())
                 {
                     // need an extra level
-                    Tree tree = tf.newTreeNode(lf.newLabel("NP"), null);
+                    Tree tree = tf.newTreeNode(lf.NewLabel("NP"), null);
 
                     if (preconj)
                     {
@@ -671,7 +671,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             for (int i = ccIndex, sz = children.Count; i < sz; i++)
             {
-                if (children[i].value().StartsWith("NP"))
+                if (children[i].Value().StartsWith("NP"))
                 {
                     return false;
                 }
@@ -691,16 +691,16 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (t.isPreTerminal())
             {
-                if (t.value().StartsWith("CC"))
+                if (t.Value().StartsWith("CC"))
                 {
                     Tree parent = t.parent(root);
-                    if (parent != null && parent.value().StartsWith("NP"))
+                    if (parent != null && parent.Value().StartsWith("NP"))
                     {
                         List<Tree> children = parent.getChildrenAsList();
                         //System.out.println(children);
                         int ccIndex = children.IndexOf(t);
                         if (children.Count > ccIndex + 2 && notNP(children, ccIndex) && ccIndex != 0 &&
-                            (ccIndex == children.Count - 1 || !children[ccIndex + 1].value().StartsWith("CC")))
+                            (ccIndex == children.Count - 1 || !children[ccIndex + 1].Value().StartsWith("CC")))
                         {
                             transformCC(parent, ccIndex);
                             /*if (VERBOSE) {

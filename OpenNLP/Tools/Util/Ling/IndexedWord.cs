@@ -63,9 +63,9 @@ namespace OpenNLP.Tools.Util.Ling
             else
             {
                 label = new CoreLabel(w);
-                if (label.word() == null)
+                if (label.GetWord() == null)
                 {
-                    label.setWord(label.value());
+                    label.SetWord(label.Value());
                 }
             }
         }
@@ -101,11 +101,11 @@ namespace OpenNLP.Tools.Util.Ling
             label.Set(typeof (CoreAnnotations.IndexAnnotation), index);
         }
 
-        public IndexedWord makeCopy(int count)
+        public IndexedWord MakeCopy(int count)
         {
-            CoreLabel labelCopy = new CoreLabel(label);
-            IndexedWord copy = new IndexedWord(labelCopy);
-            copy.setCopyCount(count);
+            var labelCopy = new CoreLabel(label);
+            var copy = new IndexedWord(labelCopy);
+            copy.SetCopyCount(count);
             return copy;
         }
 
@@ -134,9 +134,9 @@ namespace OpenNLP.Tools.Util.Ling
             return label.Set(key, value);
         }
 
-        public /*<KEY extends TypesafeMap.Key<string>>*/ string getString( /*Class<KEY>*/ Type key)
+        public /*<KEY extends TypesafeMap.Key<string>>*/ string GetString( /*Class<KEY>*/ Type key)
         {
-            return label.getString(key);
+            return label.GetString(key);
         }
 
         public /*<VALUE> VALUE*/ object Remove( /*Class<? extends Key<VALUE>>*/ Type key)
@@ -155,150 +155,150 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         //@Override
-        public string value()
+        public string Value()
         {
-            return label.value();
+            return label.Value();
         }
 
         //@Override
-        public void setValue(string value)
+        public void SetValue(string value)
         {
-            label.setValue(value);
+            label.SetValue(value);
         }
 
         //@Override
-        public string tag()
+        public string Tag()
         {
-            return label.tag();
+            return label.Tag();
         }
 
         //@Override
-        public void setTag(string tag)
+        public void SetTag(string tag)
         {
-            label.setTag(tag);
+            label.SetTag(tag);
         }
 
         //@Override
-        public string word()
+        public string GetWord()
         {
-            return label.word();
+            return label.GetWord();
         }
 
         //@Override
-        public void setWord(string word)
+        public void SetWord(string word)
         {
-            label.setWord(word);
+            label.SetWord(word);
         }
 
         //@Override
-        public string lemma()
+        public string Lemma()
         {
-            return label.lemma();
+            return label.Lemma();
         }
 
         //@Override
-        public void setLemma(string lemma)
+        public void SetLemma(string lemma)
         {
-            label.setLemma(lemma);
+            label.SetLemma(lemma);
         }
 
         //@Override
-        public string ner()
+        public string Ner()
         {
-            return label.ner();
+            return label.Ner();
         }
 
         //@Override
-        public void setNER(string ner)
+        public void SetNER(string ner)
         {
-            label.setNER(ner);
+            label.SetNER(ner);
         }
 
         //@Override
-        public string docID()
+        public string DocID()
         {
-            return label.docID();
+            return label.DocID();
         }
 
         //@Override
-        public void setDocID(string docID)
+        public void SetDocID(string docID)
         {
-            label.setDocID(docID);
+            label.SetDocID(docID);
         }
 
         //@Override
-        public int index()
+        public int Index()
         {
-            return label.index();
+            return label.Index();
         }
 
         //@Override
-        public void setIndex(int index)
+        public void SetIndex(int index)
         {
-            label.setIndex(index);
+            label.SetIndex(index);
         }
 
         //@Override
-        public int sentIndex()
+        public int SentIndex()
         {
-            return label.sentIndex();
+            return label.SentIndex();
         }
 
         //@Override
-        public void setSentIndex(int sentIndex)
+        public void SetSentIndex(int sentIndex)
         {
-            label.setSentIndex(sentIndex);
+            label.SetSentIndex(sentIndex);
         }
 
         //@Override
-        public string originalText()
+        public string OriginalText()
         {
-            return label.originalText();
+            return label.OriginalText();
         }
 
         //@Override
-        public void setOriginalText(string originalText)
+        public void SetOriginalText(string originalText)
         {
-            label.setOriginalText(originalText);
+            label.SetOriginalText(originalText);
         }
 
         //@Override
-        public int beginPosition()
+        public int BeginPosition()
         {
-            return label.beginPosition();
+            return label.BeginPosition();
         }
 
         //@Override
-        public int endPosition()
+        public int EndPosition()
         {
-            return label.endPosition();
+            return label.EndPosition();
         }
 
         //@Override
-        public void setBeginPosition(int beginPos)
+        public void SetBeginPosition(int beginPos)
         {
-            label.setBeginPosition(beginPos);
+            label.SetBeginPosition(beginPos);
         }
 
         //@Override
-        public void setEndPosition(int endPos)
+        public void SetEndPosition(int endPos)
         {
-            label.setEndPosition(endPos);
+            label.SetEndPosition(endPos);
         }
 
-        public int copyCount()
+        public int CopyCount()
         {
-            return label.copyCount();
+            return label.CopyCount();
         }
 
-        public void setCopyCount(int count)
+        public void SetCopyCount(int count)
         {
-            label.setCopyCount(count);
+            label.SetCopyCount(count);
         }
 
-        public string toPrimes()
+        public string ToPrimes()
         {
-            int copy = label.copyCount();
+            int copy = label.CopyCount();
             return StringUtils.Repeat('\'', copy);
         }
 
@@ -315,7 +315,7 @@ namespace OpenNLP.Tools.Util.Ling
             if (!(o is IndexedWord)) return false;
 
             //now compare on appropriate keys
-            IndexedWord otherWord = (IndexedWord) o;
+            var otherWord = (IndexedWord) o;
             var myInd = Get(typeof (CoreAnnotations.IndexAnnotation));
             var otherInd = otherWord.Get(typeof (CoreAnnotations.IndexAnnotation));
             if (myInd == null)
@@ -338,8 +338,8 @@ namespace OpenNLP.Tools.Util.Ling
             {
                 return false;
             }
-            string myDocID = getString(typeof (CoreAnnotations.DocIDAnnotation));
-            string otherDocID = otherWord.getString(typeof (CoreAnnotations.DocIDAnnotation));
+            string myDocID = GetString(typeof (CoreAnnotations.DocIDAnnotation));
+            string otherDocID = otherWord.GetString(typeof (CoreAnnotations.DocIDAnnotation));
             if (myDocID == null)
             {
                 if (otherDocID != null)
@@ -349,7 +349,7 @@ namespace OpenNLP.Tools.Util.Ling
             {
                 return false;
             }
-            if (copyCount() != otherWord.copyCount())
+            if (CopyCount() != otherWord.CopyCount())
             {
                 return false;
             }
@@ -423,17 +423,17 @@ namespace OpenNLP.Tools.Util.Ling
                 return 1;
             }
 
-            string docID = this.getString(typeof (CoreAnnotations.DocIDAnnotation));
-            int docComp = docID.CompareTo(w.getString(typeof (CoreAnnotations.DocIDAnnotation)));
+            string docID = this.GetString(typeof (CoreAnnotations.DocIDAnnotation));
+            int docComp = docID.CompareTo(w.GetString(typeof (CoreAnnotations.DocIDAnnotation)));
             if (docComp != 0) return docComp;
 
-            int sentComp = sentIndex() - w.sentIndex();
+            int sentComp = SentIndex() - w.SentIndex();
             if (sentComp != 0) return sentComp;
 
-            int indexComp = index() - w.index();
+            int indexComp = Index() - w.Index();
             if (indexComp != 0) return indexComp;
 
-            return copyCount() - w.copyCount();
+            return CopyCount() - w.CopyCount();
         }
 
         /**
@@ -456,7 +456,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setFromString(string labelStr)
+        public void SetFromString(string labelStr)
         {
             throw new InvalidOperationException("Cannot set from string");
         }
@@ -464,25 +464,25 @@ namespace OpenNLP.Tools.Util.Ling
 
         public class LabFact : LabelFactory
         {
-            public Label newLabel(string labelStr)
+            public Label NewLabel(string labelStr)
             {
-                CoreLabel label = new CoreLabel();
-                label.setValue(labelStr);
+                var label = new CoreLabel();
+                label.SetValue(labelStr);
                 return new IndexedWord(label);
             }
 
-            public Label newLabel(string labelStr, int options)
+            public Label NewLabel(string labelStr, int options)
             {
-                return newLabel(labelStr);
+                return NewLabel(labelStr);
             }
 
-            public Label newLabelFromString(string encodedLabelStr)
+            public Label NewLabelFromString(string encodedLabelStr)
             {
                 throw new InvalidOperationException("This code branch left blank" +
                                                     " because we do not understand what this method should do.");
             }
 
-            public Label newLabel(Label oldLabel)
+            public Label NewLabel(Label oldLabel)
             {
                 return new IndexedWord(oldLabel);
             }
@@ -512,7 +512,7 @@ namespace OpenNLP.Tools.Util.Ling
     };
   }*/
 
-        public static LabelFactory factory()
+        public static LabelFactory Factory()
         {
             return new LabFact();
         }
@@ -521,9 +521,9 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public LabelFactory labelFactory()
+        public LabelFactory LabelFactory()
         {
-            return IndexedWord.factory();
+            return IndexedWord.Factory();
         }
     }
 }

@@ -89,9 +89,9 @@ namespace OpenNLP.Tools.Util.Trees
                 throw new InvalidDataException("Cannot use null HeadFinder");
             }
             root.percolateHeads(hf);
-            if (root.value() == null)
+            if (root.Value() == null)
             {
-                root.setValue("ROOT"); // todo: cdm: it doesn't seem like this line should be here
+                root.SetValue("ROOT"); // todo: cdm: it doesn't seem like this line should be here
             }
             // add dependencies, using heads
             this.puncFilter = puncFilter;
@@ -282,7 +282,7 @@ namespace OpenNLP.Tools.Util.Trees
             List<TreeGraphNode> tgPOSNodes = new List<TreeGraphNode>(tokens.Count);
 
             CoreLabel rootLabel = new CoreLabel();
-            rootLabel.setValue("ROOT");
+            rootLabel.SetValue("ROOT");
             List<IndexedWord> nodeWords = new List<IndexedWord>(tgPOSNodes.Count + 1);
             nodeWords.Add(new IndexedWord(rootLabel));
 
@@ -294,13 +294,13 @@ namespace OpenNLP.Tools.Util.Trees
                 string posString = posIter.Current;
                 posIter.MoveNext();
                 CoreLabel wordLabel = new CoreLabel();
-                wordLabel.setWord(wordString);
-                wordLabel.setValue(wordString);
-                wordLabel.setTag(posString);
+                wordLabel.SetWord(wordString);
+                wordLabel.SetValue(wordString);
+                wordLabel.SetTag(posString);
                 TreeGraphNode word = new TreeGraphNode(wordLabel);
                 CoreLabel tagLabel = new CoreLabel();
-                tagLabel.setValue(posString);
-                tagLabel.setWord(posString);
+                tagLabel.SetValue(posString);
+                tagLabel.SetWord(posString);
                 TreeGraphNode pos = new TreeGraphNode(tagLabel);
                 tgWordNodes.Add(word);
                 tgPOSNodes.Add(pos);
@@ -392,7 +392,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return;
             }
-            if (attach && puncFilter(t.headWordNode().label().value()))
+            if (attach && puncFilter(t.headWordNode().Label().Value()))
             {
                 // make faster by first looking for links from parent
                 // it is necessary to look for paths using all directions
@@ -442,7 +442,7 @@ namespace OpenNLP.Tools.Util.Trees
                             {
                                 continue;
                             }
-                            if (!puncFilter(uHigh.headWordNode().label().value()))
+                            if (!puncFilter(uHigh.headWordNode().Label().Value()))
                             {
                                 continue;
                             }
@@ -491,15 +491,15 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 foreach (TreeGraphNode dep in basicGraph.GetChildren(gov))
                 {
-                    var govCLabel = gov.label() as CoreLabel;
-                    var depCLabel = dep.label() as CoreLabel;
+                    var govCLabel = gov.Label() as CoreLabel;
+                    var depCLabel = dep.Label() as CoreLabel;
                     if (govCLabel != null && depCLabel != null)
                     {
                         GrammaticalRelation reln = getGrammaticalRelationCommonAncestor(govCLabel, depCLabel,
                             basicGraph.GetEdges(gov, dep).ToList());
                         // System.err.println("  Gov: " + gov + " Dep: " + dep + " Reln: " + reln);
-                        basicDep.Add(new TypedDependency(reln, new IndexedWord(gov.headWordNode().label()),
-                            new IndexedWord(dep.headWordNode().label())));
+                        basicDep.Add(new TypedDependency(reln, new IndexedWord(gov.headWordNode().Label()),
+                            new IndexedWord(dep.headWordNode().Label())));
                     }
                     else
                     {
@@ -532,7 +532,7 @@ namespace OpenNLP.Tools.Util.Trees
             if (rootDep != null)
             {
                 TypedDependency rootTypedDep = new TypedDependency(GrammaticalRelation.ROOT,
-                    new IndexedWord(dependencyRoot.label()), new IndexedWord(rootDep.label()));
+                    new IndexedWord(dependencyRoot.Label()), new IndexedWord(rootDep.Label()));
                 if (puncTypedDepFilter(rootTypedDep))
                 {
                     basicDep.Add(rootTypedDep);
@@ -607,8 +607,8 @@ namespace OpenNLP.Tools.Util.Trees
                         GrammaticalRelation rel in
                             removeGrammaticalRelationAncestors(completeGraph.GetEdges(gov, dep).ToList()))
                     {
-                        TypedDependency newDep = new TypedDependency(rel, new IndexedWord(gov.headWordNode().label()),
-                            new IndexedWord(dep.headWordNode().label()));
+                        TypedDependency newDep = new TypedDependency(rel, new IndexedWord(gov.headWordNode().Label()),
+                            new IndexedWord(dep.headWordNode().Label()));
                         if (!deps.Contains(newDep) && puncTypedDepFilter(newDep) && extraTreeDepFilter(newDep))
                         {
                             newDep.setExtra();
@@ -640,7 +640,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     return false;
                 }
-                return npf(lab.value());
+                return npf(lab.Value());
             }
 
             // Automatically generated by Eclipse
@@ -669,7 +669,7 @@ namespace OpenNLP.Tools.Util.Trees
                 IndexedWord l = d.dep();
                 if (l == null) return false;
 
-                return npf(l.value());
+                return npf(l.Value());
             }
 
             // Automatically generated by Eclipse
@@ -687,7 +687,7 @@ namespace OpenNLP.Tools.Util.Trees
             TreeGraphNode gov = getNodeByIndex(govIndex);
             TreeGraphNode dep = getNodeByIndex(depIndex);
             // TODO: this is pretty ugly
-            return getGrammaticalRelation(new IndexedWord(gov.label()), new IndexedWord(dep.label()));
+            return getGrammaticalRelation(new IndexedWord(gov.Label()), new IndexedWord(dep.Label()));
         }
 
         /**

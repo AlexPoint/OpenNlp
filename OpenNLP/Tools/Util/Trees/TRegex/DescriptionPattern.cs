@@ -476,11 +476,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             {
                                 Console.WriteLine("otherTree != null");
                                 string otherValue = myNode.basicCatFunction == null
-                                    ? otherTree.value()
-                                    : myNode.basicCatFunction(otherTree.value());
+                                    ? otherTree.Value()
+                                    : myNode.basicCatFunction(otherTree.Value());
                                 string myValue = myNode.basicCatFunction == null
-                                    ? nextTreeNodeMatchCandidate.value()
-                                    : myNode.basicCatFunction(nextTreeNodeMatchCandidate.value());
+                                    ? nextTreeNodeMatchCandidate.Value()
+                                    : myNode.basicCatFunction(nextTreeNodeMatchCandidate.Value());
                                 if (otherValue.Equals(myValue))
                                 {
                                     Console.WriteLine("otherValue.Equals(myValue)");
@@ -505,7 +505,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         // bool found = m.find();
                         Console.WriteLine("else");
                         bool found;
-                        value = nextTreeNodeMatchCandidate.value();
+                        value = nextTreeNodeMatchCandidate.Value();
                         if (value == null)
                         {
                             found = false;

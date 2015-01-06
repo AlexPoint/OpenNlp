@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @return string the tag value for the label
    */
-        string tag();
+        string Tag();
 
 
         /**
@@ -28,6 +28,6 @@ namespace OpenNLP.Tools.Util.Ling
          *
          * @param tag The tag value for the label
          */
-        void setTag(string tag);
+        void SetTag(string tag);
     }
 }

@@ -112,7 +112,7 @@ namespace OpenNLP.Tools.Util.Trees
      * @return The created label
      */
 
-            public Label newLabel( /*final*/ string labelStr)
+            public Label NewLabel( /*final*/ string labelStr)
             {
                 return new SimpleConstituent(0, 0);
             }
@@ -126,9 +126,9 @@ namespace OpenNLP.Tools.Util.Trees
      * @return The created label
      */
 
-            public Label newLabel( /*final*/ string labelStr, /*final */int options)
+            public Label NewLabel( /*final*/ string labelStr, /*final */int options)
             {
-                return newLabel(labelStr);
+                return NewLabel(labelStr);
             }
 
 
@@ -139,9 +139,9 @@ namespace OpenNLP.Tools.Util.Trees
      * @return The created label
      */
 
-            public Label newLabelFromString( /*final*/ string labelStr)
+            public Label NewLabelFromString( /*final*/ string labelStr)
             {
-                return newLabel(labelStr);
+                return NewLabel(labelStr);
             }
 
 
@@ -152,7 +152,7 @@ namespace OpenNLP.Tools.Util.Trees
      * @return A new <code>SimpleConstituent</code>
      */
 
-            public Label newLabel(Label oldLabel)
+            public Label NewLabel(Label oldLabel)
             {
                 return new SimpleConstituent(0, 0);
             }
@@ -174,7 +174,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the label factory
    */
 
-        public override LabelFactory labelFactory()
+        public override LabelFactory LabelFactory()
         {
             return LabelFactoryHolder.lf;
         }

@@ -23,7 +23,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The created label
    */
 
-        public Label newLabel(string labelStr)
+        public Label NewLabel(string labelStr)
         {
             return new StringLabel(labelStr);
         }
@@ -38,7 +38,7 @@ namespace OpenNLP.Tools.Util.Ling
          * @return The created label
          */
 
-        public Label newLabel(string labelStr, int options)
+        public Label NewLabel(string labelStr, int options)
         {
             return new StringLabel(labelStr);
         }
@@ -53,7 +53,7 @@ namespace OpenNLP.Tools.Util.Ling
          * @return The created label
          */
 
-        public Label newLabelFromString(string labelStr)
+        public Label NewLabelFromString(string labelStr)
         {
             return new StringLabel(labelStr);
         }
@@ -69,7 +69,7 @@ namespace OpenNLP.Tools.Util.Ling
          * @return a new label of a particular type
          */
 
-        public Label newLabel(Label oldLabel)
+        public Label NewLabel(Label oldLabel)
         {
             return new StringLabel(oldLabel);
         }

@@ -81,8 +81,8 @@ namespace OpenNLP.Tools.Util.Trees
             switch (format)
             {
                 case "xml":
-                    return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(governor().value()) +
-                           "</governor>\n    <dependent>" + XMLUtils.XmlEscape(dependent().value()) +
+                    return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(governor().Value()) +
+                           "</governor>\n    <dependent>" + XMLUtils.XmlEscape(dependent().Value()) +
                            "</dependent>\n  </dep>";
                 case "predicate":
                     return "dep(" + governor() + "," + dependent() + "," + name() + ")";

@@ -219,7 +219,7 @@ namespace OpenNLP.Tools.Util.Trees
         protected virtual Tree determineNonTrivialHead(Tree t, Tree parent)
         {
             Tree theHead = null;
-            string motherCat = tlp.basicCategory(t.label().value());
+            string motherCat = tlp.basicCategory(t.Label().Value());
             if (motherCat.StartsWith("@"))
             {
                 motherCat = motherCat.Substring(1);
@@ -362,7 +362,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++)
                 {
-                    string childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
+                    string childCat = tlp.basicCategory(daughterTrees[headIdx].Label().Value());
                     if (how[i].Equals(childCat))
                     {
                         return headIdx;
@@ -376,7 +376,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++)
             {
-                string childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
+                string childCat = tlp.basicCategory(daughterTrees[headIdx].Label().Value());
                 for (int i = 1; i < how.Length; i++)
                 {
                     if (how[i].Equals(childCat))
@@ -392,7 +392,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++)
             {
-                string childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
+                string childCat = tlp.basicCategory(daughterTrees[headIdx].Label().Value());
                 bool found = true;
                 for (int i = 1; i < how.Length; i++)
                 {
@@ -415,7 +415,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--)
                 {
-                    string childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
+                    string childCat = tlp.basicCategory(daughterTrees[headIdx].Label().Value());
                     if (how[i].Equals(childCat))
                     {
                         return headIdx;
@@ -430,7 +430,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--)
             {
-                string childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
+                string childCat = tlp.basicCategory(daughterTrees[headIdx].Label().Value());
                 for (int i = 1; i < how.Length; i++)
                 {
                     if (how[i].Equals(childCat))
@@ -446,7 +446,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--)
             {
-                string childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
+                string childCat = tlp.basicCategory(daughterTrees[headIdx].Label().Value());
                 bool found = true;
                 for (int i = 1; i < how.Length; i++)
                 {

@@ -208,7 +208,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
  * example <code> (NP < NNP=name) </code> will match an NP dominating an NNP
  * and after a match is found, the map can be queried with the
  * name to retreived the matched node using {@link TregexMatcher#getNode(string o)}
- * with (String) argument "name" (<it>not</it> "=name").
+ * with (string) argument "name" (<it>not</it> "=name").
  * Note that you are not allowed to name a node that is under the scope of a negation operator (the semantics would
  * be unclear, since you can't store a node that never gets matched to).
  * Trying to do so will cause a {@link TregexParseException} to be thrown. Named nodes <it>can be put within the scope of an optionality operator</it>.

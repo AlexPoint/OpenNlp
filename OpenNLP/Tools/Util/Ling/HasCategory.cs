@@ -21,7 +21,7 @@ namespace OpenNLP.Tools.Util.Ling
          *
          * @return string the category value for the label
          */
-        string category();
+        string Category();
 
 
         /**
@@ -29,7 +29,7 @@ namespace OpenNLP.Tools.Util.Ling
          *
          * @param category The category value for the label
          */
-        void setCategory(string category);
+        void SetCategory(string category);
 
     }
 }

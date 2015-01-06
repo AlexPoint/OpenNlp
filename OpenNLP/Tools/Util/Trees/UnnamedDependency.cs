@@ -45,13 +45,13 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             CoreLabel headLabel = new CoreLabel();
-            headLabel.setValue(regent);
-            headLabel.setWord(regent);
+            headLabel.SetValue(regent);
+            headLabel.SetWord(regent);
             this.regent = headLabel;
 
             CoreLabel depLabel = new CoreLabel();
-            depLabel.setValue(dependent);
-            depLabel.setWord(dependent);
+            depLabel.SetValue(dependent);
+            depLabel.SetWord(dependent);
             this.vDependent = depLabel;
 
             regentText = regent;
@@ -90,13 +90,13 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (label is HasWord)
             {
-                string word = ((HasWord) label).word();
+                string word = ((HasWord) label).GetWord();
                 if (word != null)
                 {
                     return word;
                 }
             }
-            return label.value();
+            return label.Value();
         }
 
         //@Override
@@ -148,8 +148,8 @@ namespace OpenNLP.Tools.Util.Trees
             switch (format)
             {
                 case "xml":
-                    return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(governor().value()) +
-                           "</governor>\n    <dependent>" + XMLUtils.XmlEscape(dependent().value()) +
+                    return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(governor().Value()) +
+                           "</governor>\n    <dependent>" + XMLUtils.XmlEscape(dependent().Value()) +
                            "</dependent>\n  </dep>";
                 case "predicate":
                     return "dep(" + governor() + "," + dependent() + ")";

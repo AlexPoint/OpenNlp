@@ -175,7 +175,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 {
                     case RelabelMode.FIXED:
                     {
-                        nodeToRelabel.label().setValue(node.newLabel);
+                        nodeToRelabel.Label().SetValue(node.newLabel);
                         break;
                     }
                     case RelabelMode.REGEX:
@@ -196,7 +196,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                 //String name = chunk.Substring(2, chunk.Length - 1);
                                 string name = chunk.Substring(2, chunk.Length - 3);
                                 //label.Append(Matcher.quoteReplacement(tregex.getNode(name).value()));
-                                label.Append(tregex.getNode(name).value().Replace("'", "").Replace("\"", ""));
+                                label.Append(tregex.getNode(name).Value().Replace("'", "").Replace("\"", ""));
                             }
                             else
                             {
@@ -205,8 +205,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         }
                         //var m = node.labelRegex.Match(nodeToRelabel.label().value());
                         //nodeToRelabel.label().setValue(m.replaceAll(label.ToString()));
-                        var newS = node.labelRegex.Replace(nodeToRelabel.label().value(), label.ToString());
-                        nodeToRelabel.label().setValue( /*m.replaceAll(label.ToString())*/newS);
+                        var newS = node.labelRegex.Replace(nodeToRelabel.Label().Value(), label.ToString());
+                        nodeToRelabel.Label().SetValue( /*m.replaceAll(label.ToString())*/newS);
                         break;
                     }
                     default:

@@ -56,7 +56,7 @@ namespace OpenNLP.Tools.Util.Trees
    * access label
    */
 
-        public Label label()
+        public Label Label()
         {
             return null;
         }
@@ -67,7 +67,7 @@ namespace OpenNLP.Tools.Util.Trees
    * if there is one.
    */
 
-        public void setLabel(Label label)
+        public void SetLabel(Label label)
         {
             // a noop
         }
@@ -77,13 +77,13 @@ namespace OpenNLP.Tools.Util.Trees
    * Access labels -- actually always a singleton here.
    */
 
-        public ICollection<Label> labels()
+        public ICollection<Label> Labels()
         {
-            return new List<Label>() {label()};
+            return new List<Label>() {Label()};
         }
 
 
-        public void setLabels(ICollection<Label> labels)
+        public void SetLabels(ICollection<Label> labels)
         {
             throw new InvalidOperationException("Constituent can't be multilabeled");
         }
@@ -93,7 +93,7 @@ namespace OpenNLP.Tools.Util.Trees
    * access score
    */
 
-        public double score()
+        public double Score()
         {
             return Double.NaN;
         }
@@ -118,7 +118,7 @@ namespace OpenNLP.Tools.Util.Trees
         public override string ToString()
         {
             StringBuilder sb;
-            Label lab = label();
+            Label lab = Label();
             if (lab != null)
             {
                 sb = new StringBuilder(lab.ToString());
@@ -176,22 +176,22 @@ namespace OpenNLP.Tools.Util.Trees
                 //	(end() == c.end()) + " score: " + (score() == c.score()));
                 if ((start() == c.start()) && (end() == c.end()))
                 {
-                    Label lab1 = label();
-                    Label lab2 = c.label();
+                    Label lab1 = Label();
+                    Label lab2 = c.Label();
                     if (lab1 == null)
                     {
                         return lab2 == null;
                     }
 
-                    string lv1 = lab1.value();
-                    string lv2 = lab2.value();
+                    string lv1 = lab1.Value();
+                    string lv2 = lab2.Value();
                     if (lv1 == null && lv2 == null)
                     {
                         return true;
                     }
                     if (lv1 != null && lv2 != null)
                     {
-                        return lab1.value().Equals(lab2.value());
+                        return lab1.Value().Equals(lab2.Value());
                     }
                 }
             }
@@ -211,8 +211,8 @@ namespace OpenNLP.Tools.Util.Trees
         public override int GetHashCode()
         {
             int hash = (start() << 16) | end();
-            Label lab = label();
-            return (lab == null || lab.value() == null) ? hash : hash ^ lab.value().GetHashCode();
+            Label lab = Label();
+            return (lab == null || lab.Value() == null) ? hash : hash ^ lab.Value().GetHashCode();
         }
 
 
@@ -279,14 +279,14 @@ namespace OpenNLP.Tools.Util.Trees
    * @return string the value for the label
    */
 
-        public string value()
+        public string Value()
         {
-            Label lab = label();
+            Label lab = Label();
             if (lab == null)
             {
                 return null;
             }
-            return lab.value();
+            return lab.Value();
         }
 
 
@@ -296,12 +296,12 @@ namespace OpenNLP.Tools.Util.Trees
    * @param value The value for the label
    */
 
-        public void setValue(string value)
+        public void SetValue(string value)
         {
-            Label lab = label();
+            Label lab = Label();
             if (lab != null)
             {
-                lab.setValue(value);
+                lab.SetValue(value);
             }
         }
 
@@ -314,16 +314,16 @@ namespace OpenNLP.Tools.Util.Trees
    *                 label
    */
 
-        public void setFromString(string labelStr)
+        public void SetFromString(string labelStr)
         {
-            Label lab = label();
+            Label lab = Label();
             if (lab != null)
             {
-                lab.setFromString(labelStr);
+                lab.SetFromString(labelStr);
             }
         }
 
-        public abstract LabelFactory labelFactory();
+        public abstract LabelFactory LabelFactory();
 
 
         /**

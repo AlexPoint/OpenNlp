@@ -178,8 +178,8 @@ namespace OpenNLP.Tools.Util.Trees
                 return false;
             }
             Tree t = (Tree) o;
-            string value1 = this.value();
-            string value2 = t.value();
+            string value1 = this.Value();
+            string value2 = t.Value();
             if (value1 != null || value2 != null)
             {
                 if (value1 == null || value2 == null || !value1.Equals(value2))
@@ -215,12 +215,12 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override int GetHashCode()
         {
-            string v = this.value();
+            string v = this.Value();
             int hc = (v == null) ? 1 : v.GetHashCode();
             Tree[] kids = children();
             for (int i = 0; i < kids.Length; i++)
             {
-                v = kids[i].value();
+                v = kids[i].Value();
                 int hc2 = (v == null) ? i : v.GetHashCode();
                 hc ^= (hc2 << i);
             }
@@ -351,7 +351,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The label of the node
    */
         //@Override
-        public virtual Label label()
+        public virtual Label Label()
         {
             return null;
         }
@@ -364,7 +364,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param label The label
    */
         //@Override
-        public virtual void setLabel(Label label)
+        public virtual void SetLabel(Label label)
         {
             // a noop
         }
@@ -377,7 +377,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The score
    */
         //@Override
-        public virtual double score()
+        public virtual double Score()
         {
             return Double.NaN;
         }
@@ -562,9 +562,9 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (isLeaf())
             {
-                if (label() is CoreLabel)
+                if (Label() is CoreLabel)
                 {
-                    ((CoreLabel) label()).Set(typeof (CoreAnnotations.SpanAnnotation), new IntPair(left, left));
+                    ((CoreLabel) Label()).Set(typeof (CoreAnnotations.SpanAnnotation), new IntPair(left, left));
                 }
                 else
                 {
@@ -580,9 +580,9 @@ namespace OpenNLP.Tools.Util.Trees
                 position = kid.constituentsNodes(position);
 
             //Parent span
-            if (label() is CoreLabel)
+            if (Label() is CoreLabel)
             {
-                ((CoreLabel) label()).Set(typeof (CoreAnnotations.SpanAnnotation), new IntPair(left, position - 1));
+                ((CoreLabel) Label()).Set(typeof (CoreAnnotations.SpanAnnotation), new IntPair(left, position - 1));
             }
             else
             {
@@ -616,7 +616,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
 
             if (isPreTerminal())
-                return left + ((charLevel) ? firstChild().value().Length : 1);
+                return left + ((charLevel) ? firstChild().Value().Length : 1);
 
             int position = left;
 
@@ -634,7 +634,7 @@ namespace OpenNLP.Tools.Util.Trees
                 (maxDepth < 0 || depth <= maxDepth))
             {
                 //Compute span of entire tree at the end of recursion
-                constituentsSet.Add(cf.newConstituent(left, position - 1, label(), score()));
+                constituentsSet.Add(cf.newConstituent(left, position - 1, Label(), Score()));
             }
             // System.err.println("  added " + label());
             return position;
@@ -657,9 +657,9 @@ namespace OpenNLP.Tools.Util.Trees
             TreeFactory tf = treeFactory();
             for (int i = 0, n = kids.Length; i < n; i++)
             {
-                newKids[i] = tf.newTreeNode(kids[i].label(), EMPTY_TREE_ARRAY.ToList());
+                newKids[i] = tf.newTreeNode(kids[i].Label(), EMPTY_TREE_ARRAY.ToList());
             }
-            return tf.newTreeNode(label(), newKids.ToList());
+            return tf.newTreeNode(Label(), newKids.ToList());
         }
 
 
@@ -724,15 +724,15 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (isLeaf())
             {
-                if (label() != null)
+                if (Label() != null)
                 {
                     if (printOnlyLabelValue)
                     {
-                        sb.Append(label().value());
+                        sb.Append(Label().Value());
                     }
                     else
                     {
-                        sb.Append(label());
+                        sb.Append(Label());
                     }
                 }
                 return sb;
@@ -740,19 +740,19 @@ namespace OpenNLP.Tools.Util.Trees
             else
             {
                 sb.Append('(');
-                if (label() != null)
+                if (Label() != null)
                 {
                     if (printOnlyLabelValue)
                     {
-                        if (value() != null)
+                        if (Value() != null)
                         {
-                            sb.Append(label().value());
+                            sb.Append(Label().Value());
                         }
                         // don't print a null, just nothing!
                     }
                     else
                     {
-                        sb.Append(label());
+                        sb.Append(Label());
                     }
                 }
                 Tree[] kids = children();
@@ -967,7 +967,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public virtual string nodeString()
         {
-            return (value() == null) ? "" : value();
+            return (Value() == null) ? "" : Value();
         }
 
         /**
@@ -1219,11 +1219,11 @@ namespace OpenNLP.Tools.Util.Trees
 
         public void percolateHeadAnnotations(HeadFinder hf)
         {
-            if (!(label() is CoreLabel))
+            if (!(Label() is CoreLabel))
             {
                 throw new ArgumentException("Expected CoreLabels in the trees");
             }
-            CoreLabel nodeLabel = (CoreLabel) label();
+            CoreLabel nodeLabel = (CoreLabel) Label();
 
             if (isLeaf())
             {
@@ -1260,11 +1260,11 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else
             {
-                if (!(head.label() is CoreLabel))
+                if (!(head.Label() is CoreLabel))
                 {
                     throw new SystemException("Horrible bug");
                 }
-                CoreLabel headLabel = (CoreLabel) head.label();
+                CoreLabel headLabel = (CoreLabel) head.Label();
                 nodeLabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation),
                     headLabel.Get(typeof (TreeCoreAnnotations.HeadWordAnnotation)));
                 nodeLabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation),
@@ -1286,16 +1286,16 @@ namespace OpenNLP.Tools.Util.Trees
 
         public virtual void percolateHeads(HeadFinder hf)
         {
-            Label nodeLabel = label();
+            Label nodeLabel = Label();
             if (isLeaf())
             {
                 // Sanity check: word() is usually set by the TreeReader.
                 if (nodeLabel is HasWord)
                 {
                     HasWord w = (HasWord) nodeLabel;
-                    if (w.word() == null)
+                    if (w.GetWord() == null)
                     {
-                        w.setWord(nodeLabel.value());
+                        w.SetWord(nodeLabel.Value());
                     }
                 }
 
@@ -1312,40 +1312,40 @@ namespace OpenNLP.Tools.Util.Trees
                 if (head != null)
                 {
                     /*readonly*/
-                    Label headLabel = head.label();
+                    Label headLabel = head.Label();
 
                     // Set the head tag.
-                    string headTag = (headLabel is HasTag) ? ((HasTag) headLabel).tag() : null;
+                    string headTag = (headLabel is HasTag) ? ((HasTag) headLabel).Tag() : null;
                     if (headTag == null && head.isLeaf())
                     {
                         // below us is a leaf
-                        headTag = nodeLabel.value();
+                        headTag = nodeLabel.Value();
                     }
 
                     // Set the head word
-                    string headWord = (headLabel is HasWord) ? ((HasWord) headLabel).word() : null;
+                    string headWord = (headLabel is HasWord) ? ((HasWord) headLabel).GetWord() : null;
                     if (headWord == null && head.isLeaf())
                     {
                         // below us is a leaf
                         // this might be useful despite case for leaf above in
                         // case the leaf label type doesn't support word()
-                        headWord = headLabel.value();
+                        headWord = headLabel.Value();
                     }
 
                     // Set the head index
-                    int headIndex = (headLabel is HasIndex) ? ((HasIndex) headLabel).index() : -1;
+                    int headIndex = (headLabel is HasIndex) ? ((HasIndex) headLabel).Index() : -1;
 
                     if (nodeLabel is HasWord)
                     {
-                        ((HasWord) nodeLabel).setWord(headWord);
+                        ((HasWord) nodeLabel).SetWord(headWord);
                     }
                     if (nodeLabel is HasTag)
                     {
-                        ((HasTag) nodeLabel).setTag(headTag);
+                        ((HasTag) nodeLabel).SetTag(headTag);
                     }
                     if (nodeLabel is HasIndex && headIndex >= 0)
                     {
-                        ((HasIndex) nodeLabel).setIndex(headIndex);
+                        ((HasIndex) nodeLabel).SetIndex(headIndex);
                     }
 
                 }
@@ -1391,18 +1391,18 @@ namespace OpenNLP.Tools.Util.Trees
             if (! copyLabel)
                 return oldLabel;
 
-            string wordForm = (oldLabel is HasWord) ? ((HasWord) oldLabel).word() : oldLabel.value();
-            Label newLabel = oldLabel.labelFactory().newLabel(wordForm);
-            if (newLabel is HasWord) ((HasWord) newLabel).setWord(wordForm);
+            string wordForm = (oldLabel is HasWord) ? ((HasWord) oldLabel).GetWord() : oldLabel.Value();
+            Label newLabel = oldLabel.LabelFactory().NewLabel(wordForm);
+            if (newLabel is HasWord) ((HasWord) newLabel).SetWord(wordForm);
             if (copyPosTag && newLabel is HasTag && oldLabel is HasTag)
             {
-                string tag = ((HasTag) oldLabel).tag();
-                ((HasTag) newLabel).setTag(tag);
+                string tag = ((HasTag) oldLabel).Tag();
+                ((HasTag) newLabel).SetTag(tag);
             }
             if (copyIndex && newLabel is HasIndex && oldLabel is HasIndex)
             {
-                int index = ((HasIndex) oldLabel).index();
-                ((HasIndex) newLabel).setIndex(index);
+                int index = ((HasIndex) oldLabel).Index();
+                ((HasIndex) newLabel).SetIndex(index);
             }
 
             return newLabel;
@@ -1431,25 +1431,25 @@ namespace OpenNLP.Tools.Util.Trees
                     continue;
                 }
                 // Create the head label (percolateHeads has already been executed)
-                Label headLabel = makeDependencyLabel(node.label(), copyLabel, isConcrete, copyPosTag);
-                string headWord = ((HasWord) headLabel).word();
+                Label headLabel = makeDependencyLabel(node.Label(), copyLabel, isConcrete, copyPosTag);
+                string headWord = ((HasWord) headLabel).GetWord();
                 if (headWord == null)
                 {
-                    headWord = headLabel.value();
+                    headWord = headLabel.Value();
                 }
-                int headIndex = (isConcrete && (headLabel is HasIndex)) ? ((HasIndex) headLabel).index() : -1;
+                int headIndex = (isConcrete && (headLabel is HasIndex)) ? ((HasIndex) headLabel).Index() : -1;
 
                 // every child with a different (or repeated) head is an argument
                 bool seenHead = false;
                 foreach (Tree child in node.children())
                 {
-                    Label depLabel = makeDependencyLabel(child.label(), copyLabel, isConcrete, copyPosTag);
-                    string depWord = ((HasWord) depLabel).word();
+                    Label depLabel = makeDependencyLabel(child.Label(), copyLabel, isConcrete, copyPosTag);
+                    string depWord = ((HasWord) depLabel).GetWord();
                     if (depWord == null)
                     {
-                        depWord = depLabel.value();
+                        depWord = depLabel.Value();
                     }
-                    int depIndex = (isConcrete && (depLabel is HasIndex)) ? ((HasIndex) depLabel).index() : -1;
+                    int depIndex = (isConcrete && (depLabel is HasIndex)) ? ((HasIndex) depLabel).Index() : -1;
 
                     if (!seenHead && headIndex == depIndex && headWord.Equals(depWord))
                     {
@@ -1524,7 +1524,7 @@ namespace OpenNLP.Tools.Util.Trees
                     //System.err.println("transformed to " + dml.ToString("value{map}"));
                     if (dwt != hwt)
                     {
-                        Dependency<Label, Label, Object> p = new UnnamedDependency(hwt.label(), dwt.label());
+                        Dependency<Label, Label, Object> p = new UnnamedDependency(hwt.Label(), dwt.Label());
                         if (f(p))
                         {
                             deps.Add(p);
@@ -1559,7 +1559,7 @@ namespace OpenNLP.Tools.Util.Trees
             Set<Dependency<Label, Label, Object>> deps = mapDependencies(f, hf);
             if (rootName != null)
             {
-                Label hl = headTerminal(hf).label();
+                Label hl = headTerminal(hf).Label();
                 CoreLabel rl = new CoreLabel();
                 rl.Set(typeof (CoreAnnotations.TextAnnotation), rootName);
                 rl.Set(typeof (CoreAnnotations.IndexAnnotation), 0);
@@ -1604,7 +1604,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (isLeaf())
             {
-                y.Add(label());
+                y.Add(Label());
 
             }
             else
@@ -1627,7 +1627,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (isLeaf())
             {
-                y.Add(new Word(label()));
+                y.Add(new Word(Label()));
             }
             else
             {
@@ -1649,7 +1649,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (isLeaf())
             {
-                Label lab = label();
+                Label lab = Label();
                 // cdm: this is new hacked in stuff in Mar 2007 so we can now have a
                 // well-typed version of a Sentence, whose objects MUST implement HasWord
                 //
@@ -1661,8 +1661,8 @@ namespace OpenNLP.Tools.Util.Trees
                     if (lab is CoreLabel)
                     {
                         CoreLabel cl = (CoreLabel) lab;
-                        if (cl.word() == null)
-                            cl.setWord(cl.value());
+                        if (cl.GetWord() == null)
+                            cl.SetWord(cl.Value());
                         y.Add((HasWord) cl);
                     }
                     else
@@ -1707,12 +1707,12 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (isLeaf())
             {
-                if (label() is HasWord)
+                if (Label() is HasWord)
                 {
-                    HasWord hw = (HasWord) label();
-                    hw.setWord(label().value());
+                    HasWord hw = (HasWord) Label();
+                    hw.SetWord(Label().Value());
                 }
-                y.Add((T) label());
+                y.Add((T) Label());
 
             }
             else
@@ -1770,7 +1770,7 @@ namespace OpenNLP.Tools.Util.Trees
             // this inlines the content of isPreTerminal()
             if (kids.Length == 1 && kids[0].isLeaf())
             {
-                ty.Add(new Ling.TaggedWord(kids[0].label(), label()));
+                ty.Add(new Ling.TaggedWord(kids[0].Label(), Label()));
             }
             else
             {
@@ -1788,7 +1788,7 @@ namespace OpenNLP.Tools.Util.Trees
             // this inlines the content of isPreTerminal()
             if (kids.Length == 1 && kids[0].isLeaf())
             {
-                ty.Add(new LabeledWord(kids[0].label(), label()));
+                ty.Add(new LabeledWord(kids[0].Label(), Label()));
             }
             else
             {
@@ -1813,11 +1813,11 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 CoreLabel taggedWord = new CoreLabel();
                 /*readonly*/
-                string tag = (value() == null) ? "" : value();
-                taggedWord.setValue(tag);
-                taggedWord.setTag(tag);
-                taggedWord.setIndex(termIdx);
-                taggedWord.setWord(firstChild().value());
+                string tag = (Value() == null) ? "" : Value();
+                taggedWord.SetValue(tag);
+                taggedWord.SetTag(tag);
+                taggedWord.SetIndex(termIdx);
+                taggedWord.SetWord(firstChild().Value());
                 ty.Add(taggedWord);
 
                 return termIdx + 1;
@@ -1863,7 +1863,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (isPreTerminal())
             {
-                y.Add(label());
+                y.Add(Label());
             }
             else
             {
@@ -1923,21 +1923,21 @@ namespace OpenNLP.Tools.Util.Trees
    *         in the tree.
    */
         //@Override
-        public ICollection<Label> labels()
+        public ICollection<Label> Labels()
         {
             Set<Label> n = new Set<Label>();
-            n.Add(label());
+            n.Add(Label());
             Tree[] kids = children();
             foreach (Tree kid in kids)
             {
-                n.AddAll(kid.labels());
+                n.AddAll(kid.Labels());
             }
             return n;
         }
 
 
         //@Override
-        public void setLabels(ICollection<Label> c)
+        public void SetLabels(ICollection<Label> c)
         {
             throw new InvalidOperationException("Can't set Tree labels");
         }
@@ -1996,7 +1996,7 @@ namespace OpenNLP.Tools.Util.Trees
                 else
                 {
                     Tree newChild = child.flatten(tf);
-                    if (label().Equals(newChild.label()))
+                    if (Label().Equals(newChild.Label()))
                     {
                         newChildren.AddRange(newChild.getChildrenAsList());
                     }
@@ -2006,7 +2006,7 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                 }
             }
-            return tf.newTreeNode(label(), newChildren);
+            return tf.newTreeNode(Label(), newChildren);
         }
 
 
@@ -2102,7 +2102,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public Tree deepCopy(TreeFactory tf)
         {
-            return deepCopy(tf, label().labelFactory());
+            return deepCopy(tf, Label().LabelFactory());
         }
 
 
@@ -2124,7 +2124,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@SuppressWarnings({"unchecked"})
         public Tree deepCopy(TreeFactory tf, LabelFactory lf)
         {
-            Label lab = lf.newLabel(label());
+            Label lab = lf.NewLabel(Label());
             if (isLeaf())
             {
                 return tf.newLeaf(lab);
@@ -2171,7 +2171,7 @@ namespace OpenNLP.Tools.Util.Trees
             Tree t;
             if (isLeaf())
             {
-                t = tf.newLeaf(label());
+                t = tf.newLeaf(Label());
             }
             else
             {
@@ -2181,7 +2181,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     newKids.Add(kid.treeSkeletonCopy(tf));
                 }
-                t = tf.newTreeNode(label(), newKids);
+                t = tf.newTreeNode(Label(), newKids);
             }
             return t;
         }
@@ -2222,7 +2222,7 @@ namespace OpenNLP.Tools.Util.Trees
             Tree t;
             if (isLeaf())
             {
-                t = tf.newLeaf(label());
+                t = tf.newLeaf(Label());
             }
             else
             {
@@ -2232,7 +2232,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     newKids.Add(kid.transform(transformer, tf));
                 }
-                t = tf.newTreeNode(label(), newKids);
+                t = tf.newTreeNode(Label(), newKids);
             }
             return transformer.transformTree(t);
         }
@@ -2304,11 +2304,11 @@ namespace OpenNLP.Tools.Util.Trees
                 Tree t;
                 if (l.Any())
                 {
-                    t = tf.newTreeNode(label(), l);
+                    t = tf.newTreeNode(Label(), l);
                 }
                 else
                 {
-                    t = tf.newLeaf(label());
+                    t = tf.newLeaf(Label());
                 }
                 l = new List<Tree>(1);
                 l.Add(t);
@@ -2388,9 +2388,9 @@ namespace OpenNLP.Tools.Util.Trees
             // if we're still ok, copy the node
             if (isLeaf())
             {
-                return tf.newLeaf(label());
+                return tf.newLeaf(Label());
             }
-            return tf.newTreeNode(label(), l);
+            return tf.newTreeNode(Label(), l);
         }
 
         /**
@@ -2405,7 +2405,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (!isUnaryRewrite())
                 return this;
-            string lab = label().value();
+            string lab = Label().Value();
             return (lab == null || !lab.Any() || "ROOT".Equals(lab)) ? firstChild() : this;
         }
 
@@ -3068,35 +3068,35 @@ namespace OpenNLP.Tools.Util.Trees
         // --- composition methods to implement Label interface
 
         //@Override
-        public string value()
+        public string Value()
         {
-            Label lab = label();
+            Label lab = Label();
             if (lab == null)
             {
                 return null;
             }
-            return lab.value();
+            return lab.Value();
         }
 
 
         //@Override
-        public void setValue(string value)
+        public void SetValue(string value)
         {
-            Label lab = label();
+            Label lab = Label();
             if (lab != null)
             {
-                lab.setValue(value);
+                lab.SetValue(value);
             }
         }
 
 
         //@Override
-        public void setFromString(string labelStr)
+        public void SetFromString(string labelStr)
         {
-            Label lab = label();
+            Label lab = Label();
             if (lab != null)
             {
-                lab.setFromString(labelStr);
+                lab.SetFromString(labelStr);
             }
         }
 
@@ -3107,14 +3107,14 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the LabelFactory for this kind of label
    */
         //@Override
-        public LabelFactory labelFactory()
+        public LabelFactory LabelFactory()
         {
-            Label lab = label();
+            Label lab = Label();
             if (lab == null)
             {
                 return null;
             }
-            return lab.labelFactory();
+            return lab.LabelFactory();
         }
 
         /**
@@ -3140,7 +3140,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else if (isLeaf())
             {
-                i.SetValue(i.Value() + value().Length);
+                i.SetValue(i.Value() + Value().Length);
                 return false;
             }
             else
@@ -3173,7 +3173,7 @@ namespace OpenNLP.Tools.Util.Trees
             int length = 0;
             foreach (Tree leaf in s)
             {
-                length += leaf.label().value().Length;
+                length += leaf.Label().Value().Length;
             }
             MutableWrapper<int> i = new MutableWrapper<int>(length);
             if (rightCharEdge(node, i))
@@ -3191,7 +3191,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else if (isLeaf())
             {
-                i.SetValue(i.Value() - label().value().Length);
+                i.SetValue(i.Value() - Label().Value().Length);
                 return false;
             }
             else
@@ -3317,17 +3317,17 @@ namespace OpenNLP.Tools.Util.Trees
         afl.set(CoreAnnotations.IndexAnnotation.class, startIndex);
       }*/
 
-                if (label() is HasIndex)
+                if (Label() is HasIndex)
                 {
-                    HasIndex hi = (HasIndex) label();
-                    int oldIndex = hi.index();
+                    HasIndex hi = (HasIndex) Label();
+                    int oldIndex = hi.Index();
                     if (!overWrite && oldIndex >= 0)
                     {
                         startIndex = oldIndex;
                     }
                     else
                     {
-                        hi.setIndex(startIndex);
+                        hi.SetIndex(startIndex);
                     }
                     startIndex++;
                 }
@@ -3353,33 +3353,33 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (isPreTerminal())
             {
-                int nodeIndex = ((HasIndex) firstChild().label()).index();
-                ((HasIndex) label()).setIndex(nodeIndex);
+                int nodeIndex = ((HasIndex) firstChild().Label()).Index();
+                ((HasIndex) Label()).SetIndex(nodeIndex);
                 return;
             }
 
             // Assign the head index to the first child that we encounter with a matching
             // surface form. Obviously a head can have the same surface form as its dependent,
             // and in this case the head index is ambiguous.
-            string wordAnnotation = ((HasWord) label()).word();
+            string wordAnnotation = ((HasWord) Label()).GetWord();
             if (wordAnnotation == null)
             {
-                wordAnnotation = value();
+                wordAnnotation = Value();
             }
             bool seenHead = false;
             foreach (Tree child in children())
             {
                 child.percolateHeadIndices();
-                string childWordAnnotation = ((HasWord) child.label()).word();
+                string childWordAnnotation = ((HasWord) child.Label()).GetWord();
                 if (childWordAnnotation == null)
                 {
-                    childWordAnnotation = child.value();
+                    childWordAnnotation = child.Value();
                 }
                 if (!seenHead && wordAnnotation.Equals(childWordAnnotation))
                 {
                     seenHead = true;
-                    int nodeIndex = ((HasIndex) child.label()).index();
-                    ((HasIndex) label()).setIndex(nodeIndex);
+                    int nodeIndex = ((HasIndex) child.Label()).Index();
+                    ((HasIndex) Label()).SetIndex(nodeIndex);
                 }
             }
         }
@@ -3422,10 +3422,10 @@ namespace OpenNLP.Tools.Util.Trees
                 }
             }
 
-            Label lab = label();
+            Label lab = Label();
             if (lab is CoreMap)
             {
-                CoreMap afl = (CoreMap) label();
+                CoreMap afl = (CoreMap) Label();
                 afl.Set(typeof (CoreAnnotations.BeginIndexAnnotation), start);
                 afl.Set(typeof (CoreAnnotations.EndIndexAnnotation), end);
             }

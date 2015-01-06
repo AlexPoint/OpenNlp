@@ -937,8 +937,8 @@ namespace OpenNLP.Tools.Util
               result.load(reader);
               // trim all values
               for(Object propKey : result.keySet()){
-                string newVal = result.getProperty((String)propKey);
-                result.setProperty((String)propKey,newVal.Trim());
+                string newVal = result.getProperty((string)propKey);
+                result.setProperty((string)propKey,newVal.Trim());
               }
               is.close();
             } catch (IOException e) {
@@ -961,7 +961,7 @@ namespace OpenNLP.Tools.Util
       result.remove(PROP);
       Properties toAdd = argsToProperties(new string[]{"-prop", file});
       for (Enumeration<?> e = toAdd.propertyNames(); e.hasMoreElements(); ) {
-        string key = (String) e.nextElement();
+        string key = (string) e.nextElement();
         string val = toAdd.getProperty(key);
         if (!result.containsKey(key)) {
           result.setProperty(key, val);
@@ -987,8 +987,8 @@ namespace OpenNLP.Tools.Util
       result.load(is);
       // trim all values
       for (Object propKey : result.keySet()){
-        string newVal = result.getProperty((String)propKey);
-        result.setProperty((String)propKey,newVal.Trim());
+        string newVal = result.getProperty((string)propKey);
+        result.setProperty((string)propKey,newVal.Trim());
       }
       is.close();
       return result;
@@ -2118,7 +2118,7 @@ namespace OpenNLP.Tools.Util
       string vrValue;
       //either in the props file
       if (props.containsKey(varName)) {
-        vrValue = ((String) props.get(varName));
+        vrValue = ((string) props.get(varName));
       } else {
         //or as the environment variable
         vrValue = System.getenv(varName);

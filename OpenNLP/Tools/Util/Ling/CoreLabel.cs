@@ -98,7 +98,7 @@ namespace OpenNLP.Tools.Util.Ling
         {
             if (label is CoreMap)
             {
-                CoreMap cl = (CoreMap) label;
+                var cl = (CoreMap) label;
                 SetCapacity(cl.Size());
                 foreach (var key in cl.KeySet())
                 {
@@ -109,9 +109,9 @@ namespace OpenNLP.Tools.Util.Ling
             {
                 if (label is HasWord)
                 {
-                    setWord(((HasWord) label).word());
+                    SetWord(((HasWord) label).GetWord());
                 }
-                setValue(label.value());
+                SetValue(label.Value());
             }
         }
 
@@ -211,21 +211,21 @@ namespace OpenNLP.Tools.Util.Ling
         {
 
             //@Override
-            public Label newLabel(string labelStr)
+            public Label NewLabel(string labelStr)
             {
-                CoreLabel label = new CoreLabel();
-                label.setValue(labelStr);
+                var label = new CoreLabel();
+                label.SetValue(labelStr);
                 return label;
             }
 
             //@Override
-            public Label newLabel(string labelStr, int options)
+            public Label NewLabel(string labelStr, int options)
             {
-                return newLabel(labelStr);
+                return NewLabel(labelStr);
             }
 
             //@Override
-            public Label newLabel(Label oldLabel)
+            public Label NewLabel(Label oldLabel)
             {
                 if (oldLabel is CoreLabel)
                 {
@@ -236,29 +236,29 @@ namespace OpenNLP.Tools.Util.Ling
                 {
                     //Map the old interfaces to the correct key/value pairs
                     //Don't need to worry about HasIndex, which doesn't appear in any legacy code
-                    CoreLabel label = new CoreLabel();
+                    var label = new CoreLabel();
                     if (oldLabel is HasWord)
-                        label.setWord(((HasWord) oldLabel).word());
+                        label.SetWord(((HasWord) oldLabel).GetWord());
                     if (oldLabel is HasTag)
-                        label.setTag(((HasTag) oldLabel).tag());
+                        label.SetTag(((HasTag) oldLabel).Tag());
                     if (oldLabel is HasOffset)
                     {
-                        label.setBeginPosition(((HasOffset) oldLabel).beginPosition());
-                        label.setEndPosition(((HasOffset) oldLabel).endPosition());
+                        label.SetBeginPosition(((HasOffset) oldLabel).BeginPosition());
+                        label.SetEndPosition(((HasOffset) oldLabel).EndPosition());
                     }
                     if (oldLabel is HasCategory)
-                        label.setCategory(((HasCategory) oldLabel).category());
+                        label.SetCategory(((HasCategory) oldLabel).Category());
                     if (oldLabel is HasIndex)
-                        label.setIndex(((HasIndex) oldLabel).index());
+                        label.SetIndex(((HasIndex) oldLabel).Index());
 
-                    label.setValue(oldLabel.value());
+                    label.SetValue(oldLabel.Value());
 
                     return label;
                 }
             }
 
             //@Override
-            public Label newLabelFromString(string encodedLabelStr)
+            public Label NewLabelFromString(string encodedLabelStr)
             {
                 throw new InvalidOperationException("This code branch left blank" +
                                                     " because we do not understand what this method should do.");
@@ -273,7 +273,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The label factory
    */
 
-        public static LabelFactory factory()
+        public static LabelFactory Factory()
         {
             return new CoreLabelFactory();
         }
@@ -282,9 +282,9 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public LabelFactory labelFactory()
+        public LabelFactory LabelFactory()
         {
-            return CoreLabel.factory();
+            return CoreLabel.Factory();
         }
 
         /**
@@ -300,7 +300,7 @@ namespace OpenNLP.Tools.Util.Ling
    *     and the string value of the key otherwise
    */
         //@Override
-        public /*<KEY extends Key<string>>*/ string getString(Type key)
+        public /*<KEY extends Key<string>>*/ string GetString(Type key)
         {
             string value = (string) Get(key);
             if (value == null)
@@ -322,7 +322,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setFromString(string labelStr)
+        public void SetFromString(string labelStr)
         {
             throw new InvalidOperationException("Cannot set from string");
         }
@@ -331,7 +331,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setValue(string value)
+        public void SetValue(string value)
         {
             Set(typeof (CoreAnnotations.ValueAnnotation), value);
         }
@@ -340,9 +340,9 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public string value()
+        public string Value()
         {
-            return (String) Get(typeof (CoreAnnotations.ValueAnnotation));
+            return (string) Get(typeof (CoreAnnotations.ValueAnnotation));
         }
 
         /**
@@ -350,9 +350,9 @@ namespace OpenNLP.Tools.Util.Ling
    * that may have changed if the word changed.
    */
         //@Override
-        public void setWord(string word)
+        public void SetWord(string word)
         {
-            string originalWord = (String) Get(typeof (CoreAnnotations.TextAnnotation));
+            var originalWord = (string) Get(typeof (CoreAnnotations.TextAnnotation));
             Set(typeof (CoreAnnotations.TextAnnotation), word);
             // pado feb 09: if you change the word, delete the lemma.
             // gabor dec 2012: check if there was a real change -- this remove is actually rather expensive if it gets called a lot
@@ -366,16 +366,16 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public string word()
+        public string GetWord()
         {
-            return (String) Get(typeof (CoreAnnotations.TextAnnotation));
+            return (string) Get(typeof (CoreAnnotations.TextAnnotation));
         }
 
         /**
    * {@inheritDoc}
    */
         //@Override
-        public void setTag(string tag)
+        public void SetTag(string tag)
         {
             Set(typeof (CoreAnnotations.PartOfSpeechAnnotation), tag);
         }
@@ -384,16 +384,16 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public string tag()
+        public string Tag()
         {
-            return (String) Get(typeof (CoreAnnotations.PartOfSpeechAnnotation));
+            return (string) Get(typeof (CoreAnnotations.PartOfSpeechAnnotation));
         }
 
         /**
    * {@inheritDoc}
    */
         //@Override
-        public void setCategory(string category)
+        public void SetCategory(string category)
         {
             Set(typeof (CoreAnnotations.CategoryAnnotation), category);
         }
@@ -402,16 +402,16 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public string category()
+        public string Category()
         {
-            return (String) Get(typeof (CoreAnnotations.CategoryAnnotation));
+            return (string) Get(typeof (CoreAnnotations.CategoryAnnotation));
         }
 
         /**
    * {@inheritDoc}
    */
         //@Override
-        public void setAfter(string after)
+        public void SetAfter(string after)
         {
             Set(typeof (CoreAnnotations.AfterAnnotation), after);
         }
@@ -420,16 +420,16 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public string after()
+        public string After()
         {
-            return getString(typeof (CoreAnnotations.AfterAnnotation));
+            return GetString(typeof (CoreAnnotations.AfterAnnotation));
         }
 
         /**
    * {@inheritDoc}
    */
         //@Override
-        public void setBefore(string before)
+        public void SetBefore(string before)
         {
             Set(typeof (CoreAnnotations.BeforeAnnotation), before);
         }
@@ -439,16 +439,16 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public string before()
+        public string Before()
         {
-            return getString(typeof (CoreAnnotations.BeforeAnnotation));
+            return GetString(typeof (CoreAnnotations.BeforeAnnotation));
         }
 
         /**
    * {@inheritDoc}
    */
         //@Override
-        public void setOriginalText(string originalText)
+        public void SetOriginalText(string originalText)
         {
             Set(typeof (CoreAnnotations.OriginalTextAnnotation), originalText);
         }
@@ -457,25 +457,25 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public string originalText()
+        public string OriginalText()
         {
-            return getString(typeof (CoreAnnotations.OriginalTextAnnotation));
+            return GetString(typeof (CoreAnnotations.OriginalTextAnnotation));
         }
 
         /**
    * {@inheritDoc}
    */
         //@Override
-        public string docID()
+        public string DocID()
         {
-            return (String) Get(typeof (CoreAnnotations.DocIDAnnotation));
+            return (string) Get(typeof (CoreAnnotations.DocIDAnnotation));
         }
 
         /**
    * {@inheritDoc}
    */
         //@Override
-        public void setDocID(string docID)
+        public void SetDocID(string docID)
         {
             //set(CoreAnnotations.DocIDAnnotation.class, docID);
         }
@@ -486,12 +486,12 @@ namespace OpenNLP.Tools.Util.Ling
    * @return string the word value for the label
    */
 
-        public string ner()
+        public string Ner()
         {
-            return (String) Get(typeof (CoreAnnotations.NamedEntityTagAnnotation));
+            return (string) Get(typeof (CoreAnnotations.NamedEntityTagAnnotation));
         }
 
-        public void setNER(string ner)
+        public void SetNER(string ner)
         {
             Set(typeof (CoreAnnotations.NamedEntityTagAnnotation), ner);
         }
@@ -500,16 +500,16 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public string lemma()
+        public string Lemma()
         {
-            return (String) Get(typeof (CoreAnnotations.LemmaAnnotation));
+            return (string) Get(typeof (CoreAnnotations.LemmaAnnotation));
         }
 
         /**
    * {@inheritDoc}
    */
         //@Override
-        public void setLemma(string lemma)
+        public void SetLemma(string lemma)
         {
             Set(typeof (CoreAnnotations.LemmaAnnotation), lemma);
         }
@@ -519,7 +519,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public int index()
+        public int Index()
         {
             var n = Get(typeof (CoreAnnotations.IndexAnnotation));
             if (n == null)
@@ -536,7 +536,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setIndex(int index)
+        public void SetIndex(int index)
         {
             Set(typeof (CoreAnnotations.IndexAnnotation), index);
         }
@@ -545,7 +545,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public int sentIndex()
+        public int SentIndex()
         {
             var n = Get(typeof (CoreAnnotations.SentenceIndexAnnotation));
             if (n == null)
@@ -558,7 +558,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setSentIndex(int sentIndex)
+        public void SetSentIndex(int sentIndex)
         {
             Set(typeof (CoreAnnotations.SentenceIndexAnnotation), sentIndex);
         }
@@ -567,7 +567,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public int beginPosition()
+        public int BeginPosition()
         {
             var i = Get(typeof (CoreAnnotations.CharacterOffsetBeginAnnotation));
             if (i != null)
@@ -580,7 +580,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public int endPosition()
+        public int EndPosition()
         {
             var i = Get(typeof (CoreAnnotations.CharacterOffsetEndAnnotation));
             if (i != null)
@@ -592,7 +592,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setBeginPosition(int beginPos)
+        public void SetBeginPosition(int beginPos)
         {
             Set(typeof (CoreAnnotations.CharacterOffsetBeginAnnotation), beginPos);
         }
@@ -601,12 +601,12 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setEndPosition(int endPos)
+        public void SetEndPosition(int endPos)
         {
             Set(typeof (CoreAnnotations.CharacterOffsetEndAnnotation), endPos);
         }
 
-        public int copyCount()
+        public int CopyCount()
         {
             var copy = Get(typeof (CoreAnnotations.CopyAnnotation));
             if (copy == null)
@@ -614,7 +614,7 @@ namespace OpenNLP.Tools.Util.Ling
             else return (int) copy;
         }
 
-        public void setCopyCount(int count)
+        public void SetCopyCount(int count)
         {
             Set(typeof (CoreAnnotations.CopyAnnotation), count);
         }
@@ -669,15 +669,15 @@ namespace OpenNLP.Tools.Util.Ling
         //@SuppressWarnings("unchecked")
         public string ToString(OutputFormat format)
         {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
             switch (format)
             {
                 case OutputFormat.VALUE:
-                    buf.Append(value());
+                    buf.Append(Value());
                     break;
                 case OutputFormat.MAP:
                 {
-                    Dictionary<string, object> map2 = new Dictionary<string, object>();
+                    var map2 = new Dictionary<string, object>();
                     foreach (var key in this.KeySet())
                     {
                         map2.Add(key.Name, Get(key));
@@ -687,8 +687,8 @@ namespace OpenNLP.Tools.Util.Ling
                 }
                 case OutputFormat.VALUE_MAP:
                 {
-                    buf.Append(value());
-                    Dictionary<Type, object> map2 = new Dictionary<Type, object>(asClassComparator);
+                    buf.Append(Value());
+                    var map2 = new Dictionary<Type, object>(asClassComparator);
                     foreach (var key in this.KeySet())
                     {
                         map2.Add(key, Get(key));
@@ -699,20 +699,20 @@ namespace OpenNLP.Tools.Util.Ling
                 }
                 case OutputFormat.VALUE_INDEX:
                 {
-                    buf.Append(value());
+                    buf.Append(Value());
                     var index = this.Get(typeof (CoreAnnotations.IndexAnnotation));
                     if (index != null)
                     {
                         buf.Append('-').Append((int) index);
                     }
-                    buf.Append(toPrimes());
+                    buf.Append(ToPrimes());
                     break;
                 }
                 case OutputFormat.VALUE_TAG:
                 {
-                    buf.Append(value());
-                    buf.Append(toPrimes());
-                    string ltag = tag();
+                    buf.Append(Value());
+                    buf.Append(ToPrimes());
+                    string ltag = Tag();
                     if (ltag != null)
                     {
                         buf.Append(TAG_SEPARATOR).Append(ltag);
@@ -721,8 +721,8 @@ namespace OpenNLP.Tools.Util.Ling
                 }
                 case OutputFormat.VALUE_TAG_INDEX:
                 {
-                    buf.Append(value());
-                    string ltag = tag();
+                    buf.Append(Value());
+                    string ltag = Tag();
                     if (ltag != null)
                     {
                         buf.Append(TAG_SEPARATOR).Append(ltag);
@@ -732,18 +732,18 @@ namespace OpenNLP.Tools.Util.Ling
                     {
                         buf.Append('-').Append((int) index);
                     }
-                    buf.Append(toPrimes());
+                    buf.Append(ToPrimes());
                     break;
                 }
                 case OutputFormat.VALUE_INDEX_MAP:
                 {
-                    buf.Append(value());
+                    buf.Append(Value());
                     var index = this.Get(typeof (CoreAnnotations.IndexAnnotation));
                     if (index != null)
                     {
                         buf.Append('-').Append((int) index);
                     }
-                    Dictionary<string, Object> map2 = new Dictionary<string, Object>();
+                    var map2 = new Dictionary<string, Object>();
                     foreach (var key in this.KeySet())
                     {
                         string cls = key.Name;
@@ -765,7 +765,7 @@ namespace OpenNLP.Tools.Util.Ling
                 }
                 case OutputFormat.WORD:
                     // TODO: we should unify word() and value()
-                    buf.Append(word());
+                    buf.Append(GetWord());
                     break;
                 case OutputFormat.WORD_INDEX:
                 {
@@ -775,7 +775,7 @@ namespace OpenNLP.Tools.Util.Ling
                     {
                         buf.Append('-').Append((int) index);
                     }
-                    buf.Append(toPrimes());
+                    buf.Append(ToPrimes());
                     break;
                 }
                 default:
@@ -784,9 +784,9 @@ namespace OpenNLP.Tools.Util.Ling
             return buf.ToString();
         }
 
-        public string toPrimes()
+        public string ToPrimes()
         {
-            return StringUtils.Repeat('\'', copyCount());
+            return StringUtils.Repeat('\'', CopyCount());
         }
 
         private class NameComparer : IEqualityComparer<Type>

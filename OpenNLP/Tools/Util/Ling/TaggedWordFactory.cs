@@ -56,7 +56,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The new TaggedWord (tag will be <code>null</code>)
    */
 
-        public Label newLabel(string labelStr)
+        public Label NewLabel(string labelStr)
         {
             return new TaggedWord(labelStr);
         }
@@ -71,7 +71,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The new TaggedWord (tag or word will be <code>null</code>)
    */
 
-        public Label newLabel(string labelStr, int options)
+        public Label NewLabel(string labelStr, int options)
         {
             if (options == TAG_LABEL)
             {
@@ -94,7 +94,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The new TaggedWord
    */
 
-        public Label newLabelFromString(string word)
+        public Label NewLabelFromString(string word)
         {
             int where = word.LastIndexOf(divider);
             if (where >= 0)
@@ -118,7 +118,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return a new label of a particular type
    */
 
-        public Label newLabel(Label oldLabel)
+        public Label NewLabel(Label oldLabel)
         {
             return new TaggedWord(oldLabel);
         }

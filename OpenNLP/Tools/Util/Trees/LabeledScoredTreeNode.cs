@@ -108,7 +108,7 @@ namespace OpenNLP.Tools.Util.Trees
    * if there is no label
    */
         //@Override
-        public override Label label()
+        public override Label Label()
         {
             return p_label;
         }
@@ -117,7 +117,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Sets the label associated with the current node, if there is one.
    */
         //@Override
-        public override void setLabel( /*final */ Label label)
+        public override void SetLabel( /*final */ Label label)
         {
             this.p_label = label;
         }
@@ -127,7 +127,7 @@ namespace OpenNLP.Tools.Util.Trees
    * if there is no score
    */
         //@Override
-        public override double score()
+        public override double Score()
         {
             return p_score;
         }
@@ -160,7 +160,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override TreeFactory treeFactory()
         {
-            LabelFactory lf = (label() == null) ? CoreLabel.factory() : label().labelFactory();
+            LabelFactory lf = (Label() == null) ? CoreLabel.Factory() : Label().LabelFactory();
             return new LabeledScoredTreeFactory(lf);
         }
 

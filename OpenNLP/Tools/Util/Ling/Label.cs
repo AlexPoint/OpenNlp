@@ -36,7 +36,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @return the "value" of the label
    */
-        string value();
+        string Value();
 
 
         /**
@@ -44,7 +44,7 @@ namespace OpenNLP.Tools.Util.Ling
          *
          * @param value - the value for the label
          */
-        void setValue(string value);
+        void SetValue(string value);
 
 
         /**
@@ -71,7 +71,7 @@ namespace OpenNLP.Tools.Util.Ling
          * @param labelStr the string that translates into the content of the
          *                 label
          */
-        void setFromString(string labelStr);
+        void SetFromString(string labelStr);
 
         /**
          * Returns a factory that makes labels of the exact same type as this one.
@@ -79,6 +79,6 @@ namespace OpenNLP.Tools.Util.Ling
          *
          * @return the LabelFactory for this kind of label
          */
-        LabelFactory labelFactory();
+        LabelFactory LabelFactory();
     }
 }

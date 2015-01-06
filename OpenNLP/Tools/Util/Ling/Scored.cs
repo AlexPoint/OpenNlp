@@ -23,6 +23,6 @@ namespace OpenNLP.Tools.Util.Ling
         /**
    * @return The score of this thing.
    */
-        double score();
+        double Score();
     }
 }

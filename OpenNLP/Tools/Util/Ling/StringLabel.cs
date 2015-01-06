@@ -62,8 +62,8 @@ namespace OpenNLP.Tools.Util.Ling
         public StringLabel(string str, int beginPosition, int endPosition)
         {
             this.str = str;
-            setBeginPosition(beginPosition);
-            setEndPosition(endPosition);
+            SetBeginPosition(beginPosition);
+            SetEndPosition(endPosition);
         }
 
 
@@ -76,12 +76,12 @@ namespace OpenNLP.Tools.Util.Ling
 
         public StringLabel(Label label)
         {
-            this.str = label.value();
+            this.str = label.Value();
             if (label is HasOffset)
             {
-                HasOffset ofs = (HasOffset) label;
-                setBeginPosition(ofs.beginPosition());
-                setEndPosition(ofs.endPosition());
+                var ofs = (HasOffset) label;
+                SetBeginPosition(ofs.BeginPosition());
+                SetEndPosition(ofs.EndPosition());
             }
         }
 
@@ -92,7 +92,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return string the word value for the label
    */
         //@Override
-        public override string value()
+        public override string Value()
         {
             return str;
         }
@@ -104,7 +104,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param value The value for the label
    */
         //@Override
-        public override void setValue( /*final */ string value)
+        public override void SetValue( /*final */ string value)
         {
             str = value;
         }
@@ -116,7 +116,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param str The str for the label
    */
         //@Override
-        public override void setFromString( /*final */ string str)
+        public override void SetFromString( /*final */ string str)
         {
             this.str = str;
         }
@@ -144,7 +144,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The label factory
    */
         //@Override
-        public override LabelFactory labelFactory()
+        public override LabelFactory LabelFactory()
         {
             return StringLabelFactoryHolder.lf;
         }
@@ -156,27 +156,27 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The label factory
    */
 
-        public static LabelFactory factory()
+        public static LabelFactory Factory()
         {
             return StringLabelFactoryHolder.lf;
         }
 
-        public int beginPosition()
+        public int BeginPosition()
         {
             return pbeginPosition;
         }
 
-        public int endPosition()
+        public int EndPosition()
         {
             return pendPosition;
         }
 
-        public void setBeginPosition(int beginPosition)
+        public void SetBeginPosition(int beginPosition)
         {
             this.pbeginPosition = beginPosition;
         }
 
-        public void setEndPosition(int endPosition)
+        public void SetEndPosition(int endPosition)
         {
             this.pendPosition = endPosition;
         }

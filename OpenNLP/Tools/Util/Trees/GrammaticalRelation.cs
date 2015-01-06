@@ -150,10 +150,10 @@ namespace OpenNLP.Tools.Util.Trees
         /**
    * This function is used to determine whether the GrammaticalRelation in
    * question is one that was created to be a thin wrapper around a String
-   * representation by valueOf(String), or whether it is a full-fledged
+   * representation by valueOf(string), or whether it is a full-fledged
    * GrammaticalRelation created by direct invocation of the constructor.
    *
-   * @return Whether this relation is just a wrapper created by valueOf(String)
+   * @return Whether this relation is just a wrapper created by valueOf(string)
    */
 
         public bool isFromString()
@@ -358,8 +358,8 @@ namespace OpenNLP.Tools.Util.Trees
         public bool isApplicable(Tree t)
         {
             // System.err.println("Testing whether " + sourcePattern + " matches " + ((TreeGraphNode) t).toOneLineString());
-            return (sourcePattern != null) && (t.value() != null) &&
-                   sourcePattern.IsMatch(t.value()) /*matcher(t.value()).matches()*/;
+            return (sourcePattern != null) && (t.Value() != null) &&
+                   sourcePattern.IsMatch(t.Value()) /*matcher(t.value()).matches()*/;
         }
 
         /** Returns whether this is equal to or an ancestor of gr in the grammatical relations hierarchy. */
@@ -384,7 +384,7 @@ namespace OpenNLP.Tools.Util.Trees
    * relations will include the word that was collapsed.
    * <br/>
    * <i>Implementation note:</i> Note that this method must be synced with
-   * the Equals() and valueOf(String) methods
+   * the Equals() and valueOf(string) methods
    */
         //@Override
         public override string ToString()
@@ -441,7 +441,7 @@ namespace OpenNLP.Tools.Util.Trees
         /** Grammatical relations are equal with other grammatical relations if they
    *  have the same shortName and specific (if present).
    *  <i>Implementation note:</i> Note that this method must be synced with
-   *  the ToString() and valueOf(String) methods
+   *  the ToString() and valueOf(string) methods
    *
    *  @param o Object to be compared
    *  @return Whether equal

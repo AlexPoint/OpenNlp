@@ -263,15 +263,15 @@ namespace OpenNLP.Tools.Util.Trees
                         terminal = STAR_PATTERN.Replace(terminal, "*");
                         terminal = SLASH_PATTERN.Replace(terminal, "/");
                         Tree leaf = treeFactory.newLeaf(terminal);
-                        if (leaf.label() is HasIndex)
+                        if (leaf.Label() is HasIndex)
                         {
-                            HasIndex hi = (HasIndex) leaf.label();
-                            hi.setIndex(wordIndex);
+                            HasIndex hi = (HasIndex) leaf.Label();
+                            hi.SetIndex(wordIndex);
                         }
-                        if (leaf.label() is HasWord)
+                        if (leaf.Label() is HasWord)
                         {
-                            HasWord hw = (HasWord) leaf.label();
-                            hw.setWord(leaf.label().value());
+                            HasWord hw = (HasWord) leaf.Label();
+                            hw.SetWord(leaf.Label().Value());
                         }
                         wordIndex++;
 

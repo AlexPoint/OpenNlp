@@ -25,7 +25,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param labelStr The string that will be used for value
    * @return The new Label
    */
-        Label newLabel(string labelStr);
+        Label NewLabel(string labelStr);
 
 
         /**
@@ -37,7 +37,7 @@ namespace OpenNLP.Tools.Util.Ling
          * @param options  May determine what kind of label is created
          * @return The new Label
          */
-        Label newLabel(string labelStr, int options);
+        Label NewLabel(string labelStr, int options);
 
 
         /**
@@ -49,7 +49,7 @@ namespace OpenNLP.Tools.Util.Ling
          *                        object (by decoding it into parts)
          * @return The new Label
          */
-        Label newLabelFromString(string encodedLabelStr);
+        Label NewLabelFromString(string encodedLabelStr);
 
 
         /**
@@ -67,6 +67,6 @@ namespace OpenNLP.Tools.Util.Ling
          * @param oldLabel The Label that the new label is being created from
          * @return The new label of a particular type
          */
-        Label newLabel(Label oldLabel);
+        Label NewLabel(Label oldLabel);
     }
 }

@@ -71,16 +71,16 @@ namespace OpenNLP.Tools.Util.Ling
 
 
         //@Override
-        public string word()
+        public string GetWord()
         {
-            return value();
+            return Value();
         }
 
 
         //@Override
-        public void setWord(string word)
+        public void SetWord(string word)
         {
-            setValue(word);
+            SetValue(word);
         }
 
         // extra class guarantees correct lazy loading (Bloch p.194)
@@ -100,7 +100,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The label factory
    */
         //@Override
-        public override LabelFactory labelFactory()
+        public override LabelFactory LabelFactory()
         {
             return WordFactoryHolder.lf;
         }
@@ -112,7 +112,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The label factory
    */
 
-        public new static LabelFactory factory()
+        public new static LabelFactory Factory()
         {
             return WordFactoryHolder.lf;
         }

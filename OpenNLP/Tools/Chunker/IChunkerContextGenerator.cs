@@ -34,7 +34,7 @@ namespace OpenNLP.Tools.Chunker
 		/// The index of the token in the specified toks array for which the context should be constructed. 
 		/// </param>
 		/// <param name="tokens">
-		/// The tokens of the sentence.  The <code>toString</code> methods of these objects should return the token text.
+		/// The tokens of the sentence.  The <code>ToString</code> methods of these objects should return the token text.
 		/// </param>
 		/// <param name="tags">
 		/// The POS tags for the the specified tokens.

@@ -52,11 +52,11 @@ namespace OpenNLP.Tools.Util.Trees
         /**
          * Provide different printing options via a String keyword.
          * The main recognized option currently is "xml".  Otherwise the
-         * default toString() is used.
+         * default ToString() is used.
          * @param format A format string, either "xml" or you get the default
          * @return A String representation of the dependency
          */
-        String toString(String format);
+        String ToString(String format);
 
         /**
          * Provide a factory for this kind of dependency

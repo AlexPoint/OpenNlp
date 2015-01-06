@@ -131,7 +131,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         matchString.append(thisLine);
       }
     }
-    return matchString.toString();
+    return matchString.ToString();
   }*/
 
         /**
@@ -187,7 +187,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
       sb.append(thisLine);
       sb.append('\n');
     }
-    return sb.toString();
+    return sb.ToString();
   }*/
 
         /**

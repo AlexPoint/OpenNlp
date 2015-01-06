@@ -1731,7 +1731,7 @@ namespace OpenNLP.Tools.Util.Trees
         /*new ConcurrentHashMap<String, GrammaticalRelation>();
   static {
     for (GrammaticalRelation gr : values()) {
-      shortNameToGRel.put(gr.toString().toLowerCase(), gr);
+      shortNameToGRel.put(gr.ToString().toLowerCase(), gr);
     }
   }*/
 
@@ -1763,7 +1763,7 @@ namespace OpenNLP.Tools.Util.Trees
     valuesLock.writeLock().lock();
     try { // try-readonlyly structure taken from Javadoc code sample for ReentrantReadWriteLock
       synchronizedValues.add(relation);
-      shortNameToGRel.put(relation.toString(), relation);
+      shortNameToGRel.put(relation.ToString(), relation);
     } readonlyly {
       valuesLock.writeLock().unlock();
     }

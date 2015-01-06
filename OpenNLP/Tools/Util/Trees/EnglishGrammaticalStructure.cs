@@ -1089,7 +1089,7 @@ namespace OpenNLP.Tools.Util.Trees
                     // we create a new node;
                     // in order to make a distinction between the original node and its copy
                     // we add a "copy" entry in the CoreLabel
-                    // existence of copy key is checked at printing (toString method of
+                    // existence of copy key is checked at printing (ToString method of
                     // TypedDependency)
                     IndexedWord label = td1.gov().makeCopy(copyNumber);
                     copyNumber++;

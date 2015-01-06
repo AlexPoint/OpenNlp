@@ -316,11 +316,11 @@ namespace OpenNLP.Tools.Util
   }*/
 
         /**
-   * Keeps track of which ArrayCoreMaps have had toString called on
+   * Keeps track of which ArrayCoreMaps have had ToString called on
    * them.  We do not want to loop forever when there are cycles in
    * the annotation graph.  This is kept on a per-thread basis so that
-   * each thread where toString gets called can keep track of its own
-   * state.  When a call to toString is about to return, this is reset
+   * each thread where ToString gets called can keep track of its own
+   * state.  When a call to ToString is about to return, this is reset
    * to null for that particular thread.
    */
 
@@ -516,7 +516,7 @@ namespace OpenNLP.Tools.Util
    * called on them.  We do not want to loop forever when there are
    * cycles in the annotation graph.  This is kept on a per-thread
    * basis so that each thread where equals gets called can keep
-   * track of its own state.  When a call to toString is about to
+   * track of its own state.  When a call to ToString is about to
    * return, this is reset to null for that particular thread.
    */
 
@@ -661,7 +661,7 @@ namespace OpenNLP.Tools.Util
    * them.  We do not want to loop forever when there are cycles in
    * the annotation graph.  This is kept on a per-thread basis so that
    * each thread where hashCode gets called can keep track of its own
-   * state.  When a call to toString is about to return, this is reset
+   * state.  When a call to ToString is about to return, this is reset
    * to null for that particular thread.
    */
 

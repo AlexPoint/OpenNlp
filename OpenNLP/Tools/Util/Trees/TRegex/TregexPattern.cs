@@ -461,7 +461,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @return A single-line string representation of the pattern
    */
         /*@Override
-  public abstract String toString();*/
+  public abstract String ToString();*/
 
         /*/**
    * Print a multi-line representation

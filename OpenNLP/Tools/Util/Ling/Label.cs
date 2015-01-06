@@ -49,7 +49,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         /**
          * Return a String representation of the label.  For a multipart label,
-         * this will return all parts.  The <code>toString()</code> method
+         * this will return all parts.  The <code>ToString()</code> method
          * causes a label to spill its guts.  It should always return an
          * empty string rather than <code>null</code> if there is no value.
          *
@@ -65,7 +65,7 @@ namespace OpenNLP.Tools.Util.Ling
          * throw an <code>UnsupportedOperationException</code> for this
          * method (only).  Typically, this method would do
          * some appropriate decoding of the string in a way that sets
-         * multiple fields in an inverse of the <code>toString()</code>
+         * multiple fields in an inverse of the <code>ToString()</code>
          * method.
          *
          * @param labelStr the String that translates into the content of the

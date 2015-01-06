@@ -3657,7 +3657,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 while (followingNode != null)
                 {
-                    //System.err.println("adding to stack node " + followingNode.toString());
+                    //System.err.println("adding to stack node " + followingNode.ToString());
                     if (! nodesToSearch.contains(followingNode))
                     {
                         stack.Push(followingNode);
@@ -3717,7 +3717,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             followingNode = null;
           }
           while (followingNode != null) {
-            //System.err.println("adding to stack node " + followingNode.toString());
+            //System.err.println("adding to stack node " + followingNode.ToString());
             if (! nodesToSearch.contains(followingNode)) {
               stack.Add(followingNode);
               nodesToSearch.Add(followingNode);
@@ -3856,7 +3856,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 while (precedingNode != null)
                 {
-                    //System.err.println("adding to stack node " + precedingNode.toString());
+                    //System.err.println("adding to stack node " + precedingNode.ToString());
                     if (! nodesToSearch.contains(precedingNode))
                     {
                         stack.Push(precedingNode);
@@ -3916,7 +3916,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             precedingNode = null;
           }
           while (precedingNode != null) {
-            //System.err.println("adding to stack node " + precedingNode.toString());
+            //System.err.println("adding to stack node " + precedingNode.ToString());
             if ( ! nodesToSearch.contains(precedingNode)) {
               stack.Add(precedingNode);
               nodesToSearch.Add(precedingNode);

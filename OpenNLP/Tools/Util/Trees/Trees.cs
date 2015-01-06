@@ -457,7 +457,7 @@ namespace OpenNLP.Tools.Util.Trees
     } else {
       sb.Append(" (and uniform use of these Tree and Label classes throughout the tree).");
     }
-    return sb.toString();
+    return sb.ToString();
   }*/
 
 

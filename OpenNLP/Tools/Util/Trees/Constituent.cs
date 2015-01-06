@@ -115,7 +115,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The full string representation.
    */
         //@Override
-        public /*override*/ String toString()
+        public override String ToString()
         {
             StringBuilder sb;
             Label lab = label();

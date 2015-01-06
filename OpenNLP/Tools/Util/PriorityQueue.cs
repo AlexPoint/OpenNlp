@@ -137,6 +137,6 @@ namespace OpenNLP.Tools.Util
          *     the PriorityQueue are printed.
          * @return A String representation of the high priority items in the queue.
          */
-        String toString(int maxKeysToPrint);
+        String ToString(int maxKeysToPrint);
     }
 }

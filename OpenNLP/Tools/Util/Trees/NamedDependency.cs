@@ -73,7 +73,7 @@ namespace OpenNLP.Tools.Util.Trees
         /**
    * Provide different printing options via a String keyword.
    * The recognized options are currently "xml", and "predicate".
-   * Otherwise the default toString() is used.
+   * Otherwise the default ToString() is used.
    */
         //@Override
         public String ToString(String format)

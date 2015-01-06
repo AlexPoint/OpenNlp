@@ -1114,7 +1114,7 @@ namespace OpenNLP.Tools.Util.Trees
       for (TypedDependency dep : deps) {
         int depPos = indexToPos[dep.dep().index()) - 1;
         govs[depPos] = indexToPos[dep.gov().index());
-        relns[depPos] = dep.reln().toString();
+        relns[depPos] = dep.reln().ToString();
       }
 
       for (int i = 0; i < relns.Length; i++) {
@@ -1153,7 +1153,7 @@ namespace OpenNLP.Tools.Util.Trees
       }
     }
 
-    return bf.toString();
+    return bf.ToString();
   }
 
   private static String toStringIndex(TypedDependency td, Map<Integer, Integer> indexToPos) {
@@ -1420,7 +1420,7 @@ namespace OpenNLP.Tools.Util.Trees
       if (depPrintArgs == null) {
         System.err.printf("Can't find no-argument constructor %s().\n", altDepPrinterName);
       } else {
-        System.err.printf("Can't find constructor %s(%s).\n", altDepPrinterName, Arrays.toString(depPrintArgs));
+        System.err.printf("Can't find constructor %s(%s).\n", altDepPrinterName, Arrays.ToString(depPrintArgs));
       }
       return null;
     }

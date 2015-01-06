@@ -108,7 +108,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * Returns the image.
    */
 
-        public String toString()
+        public override String ToString()
         {
             return image;
         }

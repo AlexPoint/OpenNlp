@@ -57,7 +57,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				MentionContext ec = (MentionContext) ei.next();
 				int headIndex = PTBHeadFinder.getInstance().getHeadIndex(ec.tokens);
 				Parse tok = (Parse) ec.tokens.get(headIndex);
-				featureSet.add("hw=" + tok.toString().toLowerCase());
+				featureSet.add("hw=" + tok.ToString().toLowerCase());
 				if (ec.parse.isCoordinatedNounPhrase()) {
 				featureSet.add("ht=CC");
 				}

@@ -640,9 +640,9 @@ namespace OpenNLP.Tools.Util.Ling
         public static readonly OutputFormat DEFAULT_FORMAT = OutputFormat.VALUE_INDEX;
 
         //@Override
-        public String toString()
+        public String ToString()
         {
-            return toString(DEFAULT_FORMAT);
+            return ToString(DEFAULT_FORMAT);
         }
 
         /**
@@ -667,7 +667,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Map is printed in alphabetical order of keys.
    */
         //@SuppressWarnings("unchecked")
-        public String toString(OutputFormat format)
+        public String ToString(OutputFormat format)
         {
             StringBuilder buf = new StringBuilder();
             switch (format)

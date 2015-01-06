@@ -698,7 +698,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Appends the printed form of a parse tree (as a bracketed String)
    * to a {@code StringBuilder}.
    * The implementation of this may be more efficient than for
-   * {@code toString()} on complex trees.
+   * {@code ToString()} on complex trees.
    *
    * @param sb The {@code StringBuilder} to which the tree will be appended
    * @return Returns the {@code StringBuilder} passed in with extra stuff in it
@@ -713,7 +713,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Appends the printed form of a parse tree (as a bracketed String)
    * to a {@code StringBuilder}.
    * The implementation of this may be more efficient than for
-   * {@code toString()} on complex trees.
+   * {@code ToString()} on complex trees.
    *
    * @param sb The {@code StringBuilder} to which the tree will be appended
    * @param printOnlyLabelValue If true, print only the value() of each node's label
@@ -854,13 +854,13 @@ namespace OpenNLP.Tools.Util.Trees
     StringBuilder sb = new StringBuilder(indent);
     Label label = label();
     if (label != null) {
-      sb.Append(label.toString());
+      sb.Append(label.ToString());
     }
     if (printScores) {
       sb.Append("  ");
       sb.Append(score());
     }
-    pw.println(sb.toString());
+    pw.println(sb.ToString());
     Tree[] children = children();
     String newIndent = indent + pad;
     foreach (Tree child in children) {
@@ -932,7 +932,7 @@ namespace OpenNLP.Tools.Util.Trees
         sb.Append("<leaf/>");
       }
     }
-    pw.println(sb.toString());
+    pw.println(sb.ToString());
     if (children.Length > 0) {
       String newIndent = indent + pad;
       for (Tree child : children) {
@@ -959,7 +959,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         /**
    *  Returns the value of the nodes label as a String.  This is done by
-   *  calling <code>toString()</code> on the value, if it exists. Otherwise,
+   *  calling <code>ToString()</code> on the value, if it exists. Otherwise,
    *  an empty string is returned.
    *
    *  @return The label of a tree node as a String
@@ -989,7 +989,7 @@ namespace OpenNLP.Tools.Util.Trees
       }
     }
     if (isLeaf() || isPreTerminal()) {
-      String terminalString = toStringBuilder(new StringBuilder(), onlyLabelValue).toString();
+      String terminalString = toStringBuilder(new StringBuilder(), onlyLabelValue).ToString();
       pw.print(terminalString);
       pw.flush();
       return;
@@ -1064,7 +1064,7 @@ namespace OpenNLP.Tools.Util.Trees
         /*public String pennString() {
     StringWriter sw = new StringWriter();
     pennPrint(new PrintWriter(sw));
-    return sw.toString();
+    return sw.ToString();
   }*/
 
         /**
@@ -1521,7 +1521,7 @@ namespace OpenNLP.Tools.Util.Trees
                         throw new InvalidDataException("mapDependencies: HeadFinder failed!");
                     }
                     //System.err.println("kid is " + dl);
-                    //System.err.println("transformed to " + dml.toString("value{map}"));
+                    //System.err.println("transformed to " + dml.ToString("value{map}"));
                     if (dwt != hwt)
                     {
                         Dependency<Label, Label, Object> p = new UnnamedDependency(hwt.label(), dwt.label());
@@ -2699,7 +2699,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         /**
    * This gives you a tree from a String representation (as a
-   * bracketed Tree, of the kind produced by <code>toString()</code>,
+   * bracketed Tree, of the kind produced by <code>ToString()</code>,
    * <code>pennPrint()</code>, or as in the Penn Treebank).
    * It's not the most efficient thing to do for heavy duty usage.
    * The Tree returned is created by a
@@ -2719,7 +2719,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         /**
    * This gives you a tree from a String representation (as a
-   * bracketed Tree, of the kind produced by <code>toString()</code>,
+   * bracketed Tree, of the kind produced by <code>ToString()</code>,
    * <code>pennPrint()</code>, or as in the Penn Treebank.
    * It's not the most efficient thing to do for heavy duty usage.
    *

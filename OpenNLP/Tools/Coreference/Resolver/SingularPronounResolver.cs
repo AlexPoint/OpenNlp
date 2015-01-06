@@ -91,11 +91,11 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				int headIndex = PTBHeadFinder.getInstance().getHeadIndex(toks);
 				for (int ti = 0; ti < headIndex; ti++) {
 				tok = (Parse) toks.get(ti);
-				featureSet.add(gen + "mw=" + tok.toString().toLowerCase());
+				featureSet.add(gen + "mw=" + tok.ToString().toLowerCase());
 				featureSet.add(gen + "mt=" + tok.getSyntacticType());
 				}
 				tok = (Parse) toks.get(headIndex);
-				featureSet.add(gen + "hw=" + tok.toString().toLowerCase());
+				featureSet.add(gen + "hw=" + tok.ToString().toLowerCase());
 				featureSet.add(gen + "ht=" + tok.getSyntacticType());
 				//semantic features
 				if (ec.neType != null) {

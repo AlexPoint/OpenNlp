@@ -224,7 +224,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			}
 			}
 			*/
-			//System.err.println("MaxentIsResolver.getFeatures: "+features.toString());
+			//System.err.println("MaxentIsResolver.getFeatures: "+features.ToString());
 			return features;
 		}
 	}

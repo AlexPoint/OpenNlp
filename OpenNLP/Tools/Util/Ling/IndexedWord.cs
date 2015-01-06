@@ -442,13 +442,13 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public override String ToString()
         {
-            return label.toString(CoreLabel.OutputFormat.VALUE_TAG);
+            return label.ToString(CoreLabel.OutputFormat.VALUE_TAG);
             //return label.ToString();
         }
 
-        public String toString(CoreLabel.OutputFormat format)
+        public String ToString(CoreLabel.OutputFormat format)
         {
-            return label.toString(format);
+            return label.ToString(format);
             //return label.ToString();
         }
 

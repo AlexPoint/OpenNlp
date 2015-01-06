@@ -96,7 +96,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     {
                         if (newFoot != null)
                         {
-                            //System.err.println("Error -- two feet found when copying auxiliary tree " + tree.toString() + "; using last foot found.");
+                            //System.err.println("Error -- two feet found when copying auxiliary tree " + tree.ToString() + "; using last foot found.");
                         }
                         newFoot = newChild.Item2;
                     }

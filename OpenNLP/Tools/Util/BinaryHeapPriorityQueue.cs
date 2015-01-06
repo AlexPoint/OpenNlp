@@ -550,14 +550,14 @@ namespace OpenNLP.Tools.Util
         //  }
 
         //@Override
-        public String toString()
+        public override String ToString()
         {
-            return toString(0);
+            return ToString(0);
         }
 
         /** {@inheritDoc} */
         //@Override
-        public String toString(int maxKeysToPrint)
+        public String ToString(int maxKeysToPrint)
         {
             if (maxKeysToPrint <= 0) maxKeysToPrint = int.MaxValue;
             List<E> sortedKeys = toSortedList();

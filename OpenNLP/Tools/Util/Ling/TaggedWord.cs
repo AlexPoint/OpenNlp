@@ -91,12 +91,12 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         //@Override
-        public String toString()
+        public override String ToString()
         {
-            return toString(DIVIDER);
+            return ToString(DIVIDER);
         }
 
-        public String toString(String divider)
+        public String ToString(String divider)
         {
             return word() + divider + vTag;
         }

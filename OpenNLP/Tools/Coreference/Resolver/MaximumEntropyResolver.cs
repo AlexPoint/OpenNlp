@@ -955,7 +955,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				string token = mentionTokens[tokenIndex].ToString();
 				output.Append(" ").Append(token);
 			}
-			//System.err.println("mentionString "+ec+" == "+sb.toString()+" mtokens.length="+mtokens.length);
+			//System.err.println("mentionString "+ec+" == "+sb.ToString()+" mtokens.length="+mtokens.length);
 			return output.ToString();
 		}
 

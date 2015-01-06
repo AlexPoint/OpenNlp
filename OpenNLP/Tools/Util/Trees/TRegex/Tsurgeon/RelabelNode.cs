@@ -204,9 +204,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             }
                         }
                         //var m = node.labelRegex.Match(nodeToRelabel.label().value());
-                        //nodeToRelabel.label().setValue(m.replaceAll(label.toString()));
+                        //nodeToRelabel.label().setValue(m.replaceAll(label.ToString()));
                         var newS = node.labelRegex.Replace(nodeToRelabel.label().value(), label.ToString());
-                        nodeToRelabel.label().setValue( /*m.replaceAll(label.toString())*/newS);
+                        nodeToRelabel.label().setValue( /*m.replaceAll(label.ToString())*/newS);
                         break;
                     }
                     default:

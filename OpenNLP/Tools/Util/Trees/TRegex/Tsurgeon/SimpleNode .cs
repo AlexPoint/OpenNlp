@@ -69,7 +69,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         /* You can override these two methods in subclasses of SimpleNode to
      customize the way the node appears when the tree is dumped.  If
      your output uses more than one line you should override
-     toString(String), otherwise overriding toString() is probably all
+     ToString(String), otherwise overriding ToString() is probably all
      you need to do. */
 
         //@Override
@@ -78,7 +78,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             return TsurgeonParserTreeConstants.jjtNodeName[id];
         }
 
-        public String toString(String prefix)
+        public String ToString(String prefix)
         {
             return prefix + ToString();
         }
@@ -88,7 +88,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         public void dump(String prefix)
         {
-            //System.out.println(toString(prefix));
+            //System.out.println(ToString(prefix));
             if (children != null)
             {
                 for (int i = 0; i < children.Length; ++i)

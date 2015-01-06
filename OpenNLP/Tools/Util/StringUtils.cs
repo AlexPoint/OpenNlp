@@ -208,7 +208,7 @@ namespace OpenNLP.Tools.Util
       }
       sb.Append(o.word());
     }
-    return sb.toString();
+    return sb.ToString();
   }
 
 
@@ -225,7 +225,7 @@ namespace OpenNLP.Tools.Util
       }
       sb.Append(toStringFunc.apply(l.get(i)));
     }
-    return sb.toString();
+    return sb.ToString();
   }
 
   public static String joinWords(List<? extends HasWord> l, String glue, int start, int end) {
@@ -235,7 +235,7 @@ namespace OpenNLP.Tools.Util
   public static readonly Function<Object,String> DEFAULT_TOSTRING = new Function<Object, String>() {
     @Override
     public String apply(Object in) {
-      return in.toString();
+      return in.ToString();
     }
   };
 
@@ -275,7 +275,7 @@ namespace OpenNLP.Tools.Util
           String str = (val != null)? toStringFunc.apply(val):defaultFieldValue;
           sb.Append(str);
         }
-        return sb.toString();
+        return sb.ToString();
       }
     }, start, end);
   }
@@ -318,7 +318,7 @@ namespace OpenNLP.Tools.Util
       lastToken = currentToken;
     }
 
-    return buffer.toString();
+    return buffer.ToString();
   }
 
   /**
@@ -337,7 +337,7 @@ namespace OpenNLP.Tools.Util
       }
       sb.Append(o);
     }
-    return sb.toString();
+    return sb.ToString();
   }
 
 // Omitted; I'm pretty sure this are redundant with the above
@@ -353,9 +353,9 @@ namespace OpenNLP.Tools.Util
 //      if (i > 0) {
 //        sb.Append(glue);
 //      }
-//      sb.Append(l.get(i).toString());
+//      sb.Append(l.get(i).ToString());
 //    }
-//    return sb.toString();
+//    return sb.ToString();
 //  }
 
   /**
@@ -530,7 +530,7 @@ namespace OpenNLP.Tools.Util
         }
 
         /**
-   * Pads the toString value of the given Object.
+   * Pads the ToString value of the given Object.
    */
 
         public static String pad(Object obj, int totalChars)
@@ -607,7 +607,7 @@ namespace OpenNLP.Tools.Util
         }
 
         /**
-   * Pad or trim the toString value of the given Object.
+   * Pad or trim the ToString value of the given Object.
    */
 
         public static String padOrTrim(Object obj, int totalChars)
@@ -1638,7 +1638,7 @@ namespace OpenNLP.Tools.Util
         sb.Append(method.invoke(object));
       }
     }
-    return sb.toString();
+    return sb.ToString();
   }*/
 
         /**
@@ -1720,7 +1720,7 @@ namespace OpenNLP.Tools.Util
         /**
    * Returns a text table containing the matrix of objects passed in.
    * The first dimension of the matrix should represent the rows, and the
-   * second dimension the columns. Each object is printed in a cell with toString().
+   * second dimension the columns. Each object is printed in a cell with ToString().
    * The printing may be padded with spaces on the left and then on the right to
    * ensure that the String form is of length at least padLeft or padRight.
    * If tsv is true, a tab is put between columns.
@@ -1942,7 +1942,7 @@ namespace OpenNLP.Tools.Util
     if (sb == null) {
       return input;
     } else {
-      return sb.toString();
+      return sb.ToString();
     }
   }*/
 
@@ -1963,7 +1963,7 @@ namespace OpenNLP.Tools.Util
         }
 
         /**
-   * Returns the result of calling toString() on the supplied Object, but with
+   * Returns the result of calling ToString() on the supplied Object, but with
    * any trailing '\n' removed.
    */
 
@@ -1985,7 +1985,7 @@ namespace OpenNLP.Tools.Util
     for (String arg : args) {
       sb.Append(' ').Append(arg);
     }
-    return sb.toString();
+    return sb.ToString();
   }*/
 
         /**
@@ -2126,7 +2126,7 @@ namespace OpenNLP.Tools.Util
       m.AppendReplacement(sb, null == vrValue ? "" : vrValue);
     }
     m.AppendTail(sb);
-    return sb.toString();
+    return sb.ToString();
   }*/
 
 

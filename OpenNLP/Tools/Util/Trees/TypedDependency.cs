@@ -124,12 +124,12 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override String ToString()
         {
-            return toString(CoreLabel.OutputFormat.VALUE_INDEX);
+            return ToString(CoreLabel.OutputFormat.VALUE_INDEX);
         }
 
-        public String toString(CoreLabel.OutputFormat format)
+        public String ToString(CoreLabel.OutputFormat format)
         {
-            return preln + "(" + pgov.toString(format) + ", " + pdep.toString(format) + ")";
+            return preln + "(" + pgov.ToString(format) + ", " + pdep.ToString(format) + ")";
         }
 
         public int CompareTo(TypedDependency tdArg)

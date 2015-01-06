@@ -58,23 +58,23 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
       }*/
                 if (topNode == tree)
                 {
-                    if (bottomNode.children().Length == 1)
+                    if (bottomNode.Children().Length == 1)
                     {
-                        return bottomNode.children()[0];
+                        return bottomNode.Children()[0];
                     }
                     else
                     {
                         return null;
                     }
                 }
-                Tree parent = topNode.parent(tree);
+                Tree parent = topNode.Parent(tree);
                 /*if(Tsurgeon.verbose)
         System.err.println("Parent: " + parent);*/
-                int i = Trees.objectEqualityIndexOf(parent, topNode);
-                parent.removeChild(i);
-                foreach (Tree child in bottomNode.children())
+                int i = Trees.ObjectEqualityIndexOf(parent, topNode);
+                parent.RemoveChild(i);
+                foreach (Tree child in bottomNode.Children())
                 {
-                    parent.addChild(i, child);
+                    parent.AddChild(i, child);
                     i++;
                 }
                 /*if(Tsurgeon.verbose)

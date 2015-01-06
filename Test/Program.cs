@@ -90,7 +90,7 @@ namespace Test
             var parse = parser.DoParse(sentence);
             // Extract dependencies from lexical tree
             var tlp = new PennTreebankLanguagePack();
-            var gsf = tlp.grammaticalStructureFactory();
+            var gsf = tlp.GrammaticalStructureFactory();
             var tree = new ParseTree(parse);
             Console.WriteLine(tree);
             var gs = gsf.newGrammaticalStructure(tree);

@@ -38,7 +38,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         //@Override
-        public override Object name()
+        public override Object Name()
         {
             return vName;
         }
@@ -61,7 +61,7 @@ namespace OpenNLP.Tools.Util.Trees
                 return false;
             }
             NamedDependency d = (NamedDependency) o;
-            return equalsIgnoreName(o) && vName.Equals(d.vName);
+            return EqualsIgnoreName(o) && vName.Equals(d.vName);
         }
 
         //@Override
@@ -81,18 +81,18 @@ namespace OpenNLP.Tools.Util.Trees
             switch (format)
             {
                 case "xml":
-                    return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(governor().Value()) +
-                           "</governor>\n    <dependent>" + XMLUtils.XmlEscape(dependent().Value()) +
+                    return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(Governor().Value()) +
+                           "</governor>\n    <dependent>" + XMLUtils.XmlEscape(Dependent().Value()) +
                            "</dependent>\n  </dep>";
                 case "predicate":
-                    return "dep(" + governor() + "," + dependent() + "," + name() + ")";
+                    return "dep(" + Governor() + "," + Dependent() + "," + Name() + ")";
                 default:
                     return ToString();
             }
         }
 
         //@Override
-        public override DependencyFactory dependencyFactory()
+        public override DependencyFactory DependencyFactory()
         {
             return DependencyFactoryHolder.df;
         }
@@ -119,16 +119,16 @@ namespace OpenNLP.Tools.Util.Trees
      * Create a new <code>Dependency</code>.
      */
 
-            public Dependency<Label, Label, Object> newDependency(Label regent, Label dependent)
+            public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent)
             {
-                return newDependency(regent, dependent, null);
+                return NewDependency(regent, dependent, null);
             }
 
             /**
      * Create a new <code>Dependency</code>.
      */
 
-            public Dependency<Label, Label, Object> newDependency(Label regent, Label dependent, Object name)
+            public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent, Object name)
             {
                 return new NamedDependency(regent, dependent, name);
             }

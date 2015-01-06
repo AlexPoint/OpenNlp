@@ -54,29 +54,29 @@ namespace OpenNLP.Tools.Util.Trees
         /* A few times the apostrophe is missing on "'s", so we have "s" */
         /* Tricky auxiliaries: "na" is from "gonna", "ve" from "Weve", etc.  "of" as non-standard for "have" */
 
-        private static readonly string[] auxiliaries =
+        private static readonly string[] Auxiliaries =
         {
             "will", "wo", "shall", "sha", "may", "might", "should", "would",
             "can", "could", "ca", "must", "has", "have", "had", "having", "get", "gets", "getting", "got", "gotten",
             "do", "does", "did", "to", "'ve", "ve", "v", "'d", "d", "'ll", "ll", "na", "of", "hav", "hvae", "as"
         };
 
-        private static readonly string[] beGetVerbs =
+        private static readonly string[] BeGetVerbs =
         {
             "be", "being", "been", "am", "are", "r", "is", "ai", "was",
             "were", "'m", "m", "'re", "'s", "s", "art", "ar", "get", "getting", "gets", "got"
         };
 
-        public static readonly string[] copulaVerbs =
+        public static readonly string[] CopulaVerbs =
         {
             "be", "being", "been", "am", "are", "r", "is", "ai", "was",
             "were", "'m", "m", "ar", "art", "'re", "'s", "s", "wase"
         };
 
         // include Charniak tags so can do BLLIP right
-        private static readonly string[] verbTags = {"TO", "MD", "VB", "VBD", "VBP", "VBZ", "VBG", "VBN", "AUX", "AUXG"};
+        private static readonly string[] VerbTags = {"TO", "MD", "VB", "VBD", "VBP", "VBZ", "VBG", "VBN", "AUX", "AUXG"};
         // These ones are always auxiliaries, even if the word is "too", "my", or whatever else appears in web text.
-        private static readonly string[] unambiguousAuxTags = {"TO", "MD", "AUX", "AUXG"};
+        private static readonly string[] UnambiguousAuxTags = {"TO", "MD", "AUX", "AUXG"};
 
 
         private readonly Set<string> verbalAuxiliaries;
@@ -110,36 +110,36 @@ namespace OpenNLP.Tools.Util.Trees
 
         public SemanticHeadFinder(AbstractTreebankLanguagePack tlp, bool noCopulaHead) : base(tlp)
         {
-            ruleChanges();
+            RuleChanges();
 
             // make a distinction between auxiliaries and copula verbs to
             // get the NP has semantic head in sentences like "Bill is an honest man".  (Added "sha" for "shan't" May 2009
-            verbalAuxiliaries = new HashSet<string>(auxiliaries);
+            verbalAuxiliaries = new HashSet<string>(Auxiliaries);
 
-            passiveAuxiliaries = new HashSet<string>(beGetVerbs);
+            passiveAuxiliaries = new HashSet<string>(BeGetVerbs);
 
             //copula verbs having an NP complement
             copulars = new HashSet<string>();
             if (noCopulaHead)
             {
-                copulars.AddAll(copulaVerbs);
+                copulars.AddAll(CopulaVerbs);
             }
 
             // TODO: reverse the polarity of noCopulaHead
             this.makeCopulaHead = !noCopulaHead;
 
-            verbalTags = new HashSet<string>(verbTags);
-            unambiguousAuxiliaryTags = new HashSet<string>(unambiguousAuxTags);
+            verbalTags = new HashSet<string>(VerbTags);
+            unambiguousAuxiliaryTags = new HashSet<string>(UnambiguousAuxTags);
         }
 
         //@Override
-        public override bool makesCopulaHead()
+        public override bool MakesCopulaHead()
         {
             return makeCopulaHead;
         }
 
         //makes modifications of Collins' rules to better fit with semantic notions of heads
-        private void ruleChanges()
+        private void RuleChanges()
         {
             //  NP: don't want a POS to be the head
             // verbs are here so that POS isn't favored in the case of bad parses
@@ -228,14 +228,14 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
 
-        private bool shouldSkip(Tree t, bool origWasInterjection)
+        private bool ShouldSkip(Tree t, bool origWasInterjection)
         {
-            return t.isPreTerminal() &&
-                   (tlp.isPunctuationTag(t.Value()) || ! origWasInterjection && "UH".Equals(t.Value())) ||
+            return t.IsPreTerminal() &&
+                   (tlp.IsPunctuationTag(t.Value()) || ! origWasInterjection && "UH".Equals(t.Value())) ||
                    "INTJ".Equals(t.Value()) && ! origWasInterjection;
         }
 
-        private int findPreviousHead(int headIdx, Tree[] daughterTrees, bool origWasInterjection)
+        private int FindPreviousHead(int headIdx, Tree[] daughterTrees, bool origWasInterjection)
         {
             bool seenSeparator = false;
             int newHeadIdx = headIdx;
@@ -246,13 +246,13 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     return newHeadIdx;
                 }
-                string label = tlp.basicCategory(daughterTrees[newHeadIdx].Value());
+                string label = tlp.BasicCategory(daughterTrees[newHeadIdx].Value());
                 if (",".Equals(label) || ":".Equals(label))
                 {
                     seenSeparator = true;
                 }
-                else if (daughterTrees[newHeadIdx].isPreTerminal() &&
-                         (tlp.isPunctuationTag(label) || ! origWasInterjection && "UH".Equals(label)) ||
+                else if (daughterTrees[newHeadIdx].IsPreTerminal() &&
+                         (tlp.IsPunctuationTag(label) || ! origWasInterjection && "UH".Equals(label)) ||
                          "INTJ".Equals(label) && ! origWasInterjection)
                 {
                     // keep looping
@@ -273,18 +273,18 @@ namespace OpenNLP.Tools.Util.Trees
    * Overwrite the postOperationFix method.  For "a, b and c" or similar: we want "a" to be the head.
    */
         //@Override
-        protected override int postOperationFix(int headIdx, Tree[] daughterTrees)
+        protected override int PostOperationFix(int headIdx, Tree[] daughterTrees)
         {
             if (headIdx >= 2)
             {
-                string prevLab = tlp.basicCategory(daughterTrees[headIdx - 1].Value());
+                string prevLab = tlp.BasicCategory(daughterTrees[headIdx - 1].Value());
                 if (prevLab.Equals("CC") || prevLab.Equals("CONJP"))
                 {
-                    bool origWasInterjection = "UH".Equals(tlp.basicCategory(daughterTrees[headIdx].Value()));
+                    bool origWasInterjection = "UH".Equals(tlp.BasicCategory(daughterTrees[headIdx].Value()));
                     int newHeadIdx = headIdx - 2;
                     // newHeadIdx is now left of conjunction.  Now try going back over commas, etc. for 3+ conjuncts
                     // Don't allow INTJ unless conjoined with INTJ - important in informal genres "Oh and don't forget to call!"
-                    while (newHeadIdx >= 0 && shouldSkip(daughterTrees[newHeadIdx], origWasInterjection))
+                    while (newHeadIdx >= 0 && ShouldSkip(daughterTrees[newHeadIdx], origWasInterjection))
                     {
                         newHeadIdx--;
                     }
@@ -292,7 +292,7 @@ namespace OpenNLP.Tools.Util.Trees
                     // Now consider going back some number of punct that includes a , or : tagged thing and then find non-punct
                     while (newHeadIdx >= 2)
                     {
-                        int nextHead = findPreviousHead(newHeadIdx, daughterTrees, origWasInterjection);
+                        int nextHead = FindPreviousHead(newHeadIdx, daughterTrees, origWasInterjection);
                         if (nextHead < 0)
                         {
                             break;
@@ -339,7 +339,7 @@ namespace OpenNLP.Tools.Util.Trees
    * we want to avoid using "hands down" as the head.
    */
 
-        private static readonly Predicate<Tree> REMOVE_TMP_AND_ADV = tree =>
+        private static readonly Predicate<Tree> RemoveTmpAndAdv = tree =>
         {
             if (tree == null)
             {
@@ -373,9 +373,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The parse tree that is the head
    */
         //@Override
-        protected override Tree determineNonTrivialHead(Tree t, Tree parent)
+        protected override Tree DetermineNonTrivialHead(Tree t, Tree parent)
         {
-            string motherCat = tlp.basicCategory(t.Label().Value());
+            string motherCat = tlp.BasicCategory(t.Label().Value());
 
             /*if (DEBUG) {
       System.err.println("At " + motherCat + ", my parent is " + parent);
@@ -444,7 +444,7 @@ namespace OpenNLP.Tools.Util.Trees
             // do VPs with auxiliary as special case
             if ((motherCat.Equals("VP") || motherCat.Equals("SQ") || motherCat.Equals("SINV")))
             {
-                Tree[] kids = t.children();
+                Tree[] kids = t.Children();
                 // try to find if there is an auxiliary verb
 
                 /*if (DEBUG) {
@@ -455,7 +455,7 @@ namespace OpenNLP.Tools.Util.Trees
       }*/
 
                 // looks for auxiliaries
-                if (hasVerbalAuxiliary(kids, verbalAuxiliaries, true) || hasPassiveProgressiveAuxiliary(kids))
+                if (HasVerbalAuxiliary(kids, verbalAuxiliaries, true) || HasPassiveProgressiveAuxiliary(kids))
                 {
                     // string[] how = new string[] {"left", "VP", "ADJP", "NP"};
                     // Including NP etc seems okay for copular sentences but is
@@ -465,7 +465,7 @@ namespace OpenNLP.Tools.Util.Trees
                     if (tmpFilteredChildren == null)
                     {
                         //tmpFilteredChildren = ArrayUtils.filter(kids, REMOVE_TMP_AND_ADV);
-                        tmpFilteredChildren = kids.Where(k => REMOVE_TMP_AND_ADV(k)).ToArray();
+                        tmpFilteredChildren = kids.Where(k => RemoveTmpAndAdv(k)).ToArray();
                     }
                     Tree pti = traverseLocate(tmpFilteredChildren, how, false);
                     /*if (DEBUG) {
@@ -483,7 +483,7 @@ namespace OpenNLP.Tools.Util.Trees
                 }
 
                 // looks for copular verbs
-                if (hasVerbalAuxiliary(kids, copulars, false) && ! isExistential(t, parent) && ! isWHQ(t, parent))
+                if (HasVerbalAuxiliary(kids, copulars, false) && ! IsExistential(t, parent) && ! IsWHQ(t, parent))
                 {
                     string[] how;
                     if (motherCat.Equals("SQ"))
@@ -498,7 +498,7 @@ namespace OpenNLP.Tools.Util.Trees
                     if (tmpFilteredChildren == null)
                     {
                         //tmpFilteredChildren = ArrayUtils.filter(kids, REMOVE_TMP_AND_ADV);
-                        tmpFilteredChildren = kids.Where(k => REMOVE_TMP_AND_ADV(k)).ToArray();
+                        tmpFilteredChildren = kids.Where(k => RemoveTmpAndAdv(k)).ToArray();
                     }
                     Tree pti = traverseLocate(tmpFilteredChildren, how, false);
                     // In SQ, only allow an NP to become head if there is another one to the left (then it's probably predicative)
@@ -543,7 +543,7 @@ namespace OpenNLP.Tools.Util.Trees
                 }
             }
 
-            Tree hd = base.determineNonTrivialHead(t, parent);
+            Tree hd = base.DetermineNonTrivialHead(t, parent);
 
             /* ----
     // This should now be handled at the AbstractCollinsHeadFinder level, so see if we can comment this out
@@ -582,24 +582,24 @@ namespace OpenNLP.Tools.Util.Trees
    *
    */
 
-        private bool isExistential(Tree t, Tree parent)
+        private bool IsExistential(Tree t, Tree parent)
         {
             /*if (DEBUG) {
       System.err.println("isExistential: " + t + ' ' + parent);
     }*/
             bool toReturn = false;
-            string motherCat = tlp.basicCategory(t.Label().Value());
+            string motherCat = tlp.BasicCategory(t.Label().Value());
             // affirmative case
             if (motherCat.Equals("VP") && parent != null)
             {
                 //take t and the sisters
-                Tree[] kids = parent.children();
+                Tree[] kids = parent.Children();
                 // iterate over the sisters before t and checks if existential
                 foreach (Tree kid in kids)
                 {
                     if (!kid.Value().Equals("VP"))
                     {
-                        List<Label> tags = kid.preTerminalYield();
+                        List<Label> tags = kid.PreTerminalYield();
                         foreach (Label tag in tags)
                         {
                             if (tag.Value().Equals("EX"))
@@ -618,14 +618,14 @@ namespace OpenNLP.Tools.Util.Trees
             else if (motherCat.StartsWith("SQ") && parent != null)
             {
                 //take the daughters
-                Tree[] kids = parent.children();
+                Tree[] kids = parent.Children();
                 // iterate over the daughters and checks if existential
                 foreach (Tree kid in kids)
                 {
                     if (!kid.Value().StartsWith("VB"))
                     {
 //not necessary to look into the verb
-                        List<Label> tags = kid.preTerminalYield();
+                        List<Label> tags = kid.PreTerminalYield();
                         foreach (Label tag in tags)
                         {
                             if (tag.Value().Equals("EX"))
@@ -652,7 +652,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    */
 
-        private static bool isWHQ(Tree t, Tree parent)
+        private static bool IsWHQ(Tree t, Tree parent)
         {
             if (t == null)
             {
@@ -663,7 +663,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 if (parent != null && parent.Value().Equals("SBARQ"))
                 {
-                    Tree[] kids = parent.children();
+                    Tree[] kids = parent.Children();
                     foreach (Tree kid in kids)
                     {
                         // looks for a WH.*
@@ -682,9 +682,9 @@ namespace OpenNLP.Tools.Util.Trees
             return toReturn;
         }
 
-        private bool isVerbalAuxiliary(Tree preterminal, Set<string> verbalSet, bool allowJustTagMatch)
+        private bool IsVerbalAuxiliary(Tree preterminal, Set<string> verbalSet, bool allowJustTagMatch)
         {
-            if (preterminal.isPreTerminal())
+            if (preterminal.IsPreTerminal())
             {
                 Label kidLabel = preterminal.Label();
                 string tag = null;
@@ -696,7 +696,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     tag = preterminal.Value();
                 }
-                Label wordLabel = preterminal.firstChild().Label();
+                Label wordLabel = preterminal.FirstChild().Label();
                 string word = null;
                 if (wordLabel is HasWord)
                 {
@@ -730,14 +730,14 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether it is a verbal auxiliary (be, do, have, get)
    */
 
-        public bool isVerbalAuxiliary(Tree t)
+        public bool IsVerbalAuxiliary(Tree t)
         {
-            return isVerbalAuxiliary(t, verbalAuxiliaries, true);
+            return IsVerbalAuxiliary(t, verbalAuxiliaries, true);
         }
 
 
         // now overly complex so it deals with coordinations.  Maybe change this class to use tregrex?
-        private bool hasPassiveProgressiveAuxiliary(Tree[] kids)
+        private bool HasPassiveProgressiveAuxiliary(Tree[] kids)
         {
             /*if (DEBUG) {
       System.err.println("Checking for passive/progressive auxiliary");
@@ -749,11 +749,11 @@ namespace OpenNLP.Tools.Util.Trees
                 /*if (DEBUG) {
         System.err.println("  checking in " + kid);
       }*/
-                if (isVerbalAuxiliary(kid, passiveAuxiliaries, false))
+                if (IsVerbalAuxiliary(kid, passiveAuxiliaries, false))
                 {
                     foundPassiveAux = true;
                 }
-                else if (kid.isPhrasal())
+                else if (kid.IsPhrasal())
                 {
                     Label kidLabel = kid.Label();
                     string cat = null;
@@ -772,14 +772,14 @@ namespace OpenNLP.Tools.Util.Trees
                     /*if (DEBUG) {
           System.err.println("hasPassiveProgressiveAuxiliary found VP");
         }*/
-                    Tree[] kidkids = kid.children();
+                    Tree[] kidkids = kid.Children();
                     bool foundParticipleInVp = false;
                     foreach (Tree kidkid in kidkids)
                     {
                         /*if (DEBUG) {
             System.err.println("  hasPassiveProgressiveAuxiliary examining " + kidkid);
           }*/
-                        if (kidkid.isPreTerminal())
+                        if (kidkid.IsPreTerminal())
                         {
                             Label kidkidLabel = kidkid.Label();
                             string tag = null;
@@ -809,7 +809,7 @@ namespace OpenNLP.Tools.Util.Trees
                                 break;
                             }
                         }
-                        else if (kidkid.isPhrasal())
+                        else if (kidkid.IsPhrasal())
                         {
                             string catcat = null;
                             if (kidLabel is HasCategory)
@@ -825,7 +825,7 @@ namespace OpenNLP.Tools.Util.Trees
                                 /*if (DEBUG) {
                 System.err.println("hasPassiveAuxiliary found (VP (VP)), recursing");
               }*/
-                                foundParticipleInVp = vpContainsParticiple(kidkid);
+                                foundParticipleInVp = VpContainsParticiple(kidkid);
                             }
                             else if (("CONJP".Equals(catcat) || "PRN".Equals(catcat)) && foundParticipleInVp)
                             {
@@ -850,14 +850,14 @@ namespace OpenNLP.Tools.Util.Trees
             return foundPassiveAux && foundPassiveVP;
         }
 
-        private static bool vpContainsParticiple(Tree t)
+        private static bool VpContainsParticiple(Tree t)
         {
-            foreach (Tree kid in t.children())
+            foreach (Tree kid in t.Children())
             {
                 /*if (DEBUG) {
         System.err.println("vpContainsParticiple examining " + kid);
       }*/
-                if (kid.isPreTerminal())
+                if (kid.IsPreTerminal())
                 {
                     Label kidLabel = kid.Label();
                     string tag = null;
@@ -895,7 +895,7 @@ namespace OpenNLP.Tools.Util.Trees
    *      by a word in verbalSet
    */
 
-        private bool hasVerbalAuxiliary(Tree[] kids, Set<string> verbalSet, bool allowTagOnlyMatch)
+        private bool HasVerbalAuxiliary(Tree[] kids, Set<string> verbalSet, bool allowTagOnlyMatch)
         {
             /*if (DEBUG) {
       System.err.println("Checking for verbal auxiliary");
@@ -905,7 +905,7 @@ namespace OpenNLP.Tools.Util.Trees
                 /*if (DEBUG) {
         System.err.println("  checking in " + kid);
       }*/
-                if (isVerbalAuxiliary(kid, verbalSet, allowTagOnlyMatch))
+                if (IsVerbalAuxiliary(kid, verbalSet, allowTagOnlyMatch))
                 {
                     return true;
                 }

@@ -60,7 +60,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             {
                 Tree nodeToInsert = childMatcher[0].evaluate(tree, tregex);
                 Tuple<Tree, int> position = locationMatcher.evaluate(tree, tregex);
-                position.Item1.insertDtr(this.node.needsCopy ? nodeToInsert.deepCopy() : nodeToInsert,
+                position.Item1.InsertDtr(this.node.needsCopy ? nodeToInsert.DeepCopy() : nodeToInsert,
                     position.Item2);
                 return tree;
             }

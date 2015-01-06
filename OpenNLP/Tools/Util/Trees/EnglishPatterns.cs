@@ -18,7 +18,7 @@ namespace OpenNLP.Tools.Util.Trees
         // TODO: remove everything but "to be".  Must do this carefully to
         // make sure we like all the dependency changes that happen
         public static readonly string copularWordRegex =
-            "/^(?i:" + string.Join("|", SemanticHeadFinder.copulaVerbs) + ")$/";
+            "/^(?i:" + string.Join("|", SemanticHeadFinder.CopulaVerbs) + ")$/";
 
         public static readonly string clausalComplementRegex =
             "/^(?i:seem|seems|seemed|seeming|resemble|resembles|resembled|resembling|become|becomes|became|becoming|remain|remains|remained|remaining)$/";

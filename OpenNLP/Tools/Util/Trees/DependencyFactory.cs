@@ -15,8 +15,8 @@ namespace OpenNLP.Tools.Util.Trees
 
     public interface DependencyFactory
     {
-        Dependency<Label, Label, Object> newDependency(Label regent, Label dependent);
+        Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent);
 
-        Dependency<Label, Label, Object> newDependency(Label regent, Label dependent, Object name);
+        Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent, Object name);
     }
 }

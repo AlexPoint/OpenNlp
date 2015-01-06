@@ -48,13 +48,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     }
                     return childMatcher[1].evaluate(tree, tregex);
                 }
-                Tree parent = oldNode.parent(tree);
-                int i = parent.objectIndexOf(oldNode);
-                parent.removeChild(i);
+                Tree parent = oldNode.Parent(tree);
+                int i = parent.ObjectIndexOf(oldNode);
+                parent.RemoveChild(i);
                 for (int j = 1; j < node.children.Length; ++j)
                 {
                     Tree newNode = childMatcher[j].evaluate(tree, tregex);
-                    parent.insertDtr(newNode.deepCopy(), i + j - 1);
+                    parent.InsertDtr(newNode.DeepCopy(), i + j - 1);
                 }
                 return tree;
             }

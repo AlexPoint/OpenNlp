@@ -54,7 +54,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param str The string to check
    * @return Whether this is a punctuation tag
    */
-        bool isPunctuationTag(string str);
+        bool IsPunctuationTag(string str);
 
 
         /**
@@ -66,7 +66,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param str The string to check
    * @return Whether this is a punctuation word
    */
-        bool isPunctuationWord(string str);
+        bool IsPunctuationWord(string str);
 
 
         /**
@@ -76,7 +76,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param str The string to check
    * @return Whether this is a sentence readonly punctuation tag
    */
-        bool isSentenceFinalPunctuationTag(string str);
+        bool IsSentenceFinalPunctuationTag(string str);
 
 
         /**
@@ -90,7 +90,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param str The string to check
    * @return Whether this is a EVALB-ignored punctuation tag
    */
-        bool isEvalBIgnoredPunctuationTag(string str);
+        bool IsEvalBIgnoredPunctuationTag(string str);
 
 
         /**
@@ -99,7 +99,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The filter
    */
-        Predicate<string> punctuationTagAcceptFilter();
+        Predicate<string> PunctuationTagAcceptFilter();
 
 
         /**
@@ -108,7 +108,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The filter
    */
-        Predicate<string> punctuationTagRejectFilter();
+        Predicate<string> PunctuationTagRejectFilter();
 
         /**
    * Returns a filter that accepts a string that is a punctuation
@@ -118,7 +118,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The Filter
    */
-        Predicate<string> punctuationWordAcceptFilter();
+        Predicate<string> PunctuationWordAcceptFilter();
 
 
         /**
@@ -129,7 +129,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The Filter
    */
-        Predicate<string> punctuationWordRejectFilter();
+        Predicate<string> PunctuationWordRejectFilter();
 
 
         /**
@@ -138,7 +138,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The Filter
    */
-        Predicate<string> sentenceFinalPunctuationTagAcceptFilter();
+        Predicate<string> SentenceFinalPunctuationTagAcceptFilter();
 
 
         /**
@@ -151,7 +151,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The Filter
    */
-        Predicate<string> evalBIgnoredPunctuationTagAcceptFilter();
+        Predicate<string> EvalBIgnoredPunctuationTagAcceptFilter();
 
 
         /**
@@ -163,7 +163,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The Filter
    */
-        Predicate<string> evalBIgnoredPunctuationTagRejectFilter();
+        Predicate<string> EvalBIgnoredPunctuationTagRejectFilter();
 
 
         /**
@@ -171,7 +171,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The punctuation tags
    */
-        string[] punctuationTags();
+        string[] PunctuationTags();
 
 
         /**
@@ -179,7 +179,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The punctuation words
    */
-        string[] punctuationWords();
+        string[] PunctuationWords();
 
 
         /**
@@ -189,7 +189,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The sentence readonly punctuation tags
    */
-        string[] sentenceFinalPunctuationTags();
+        string[] SentenceFinalPunctuationTags();
 
 
         /**
@@ -198,7 +198,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The punctuation words
    */
-        string[] sentenceFinalPunctuationWords();
+        string[] SentenceFinalPunctuationWords();
 
         /**
    * Returns a string array of punctuation tags that EVALB-style evaluation
@@ -209,7 +209,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return Whether this is a EVALB-ignored punctuation tag
    */
-        string[] evalBIgnoredPunctuationTags();
+        string[] EvalBIgnoredPunctuationTags();
 
 
         /**
@@ -217,7 +217,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return A GrammaticalStructureFactory suitable for this language/treebank
    */
-        GrammaticalStructureFactory grammaticalStructureFactory();
+        GrammaticalStructureFactory GrammaticalStructureFactory();
 
 
         /**
@@ -226,7 +226,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param puncFilter A filter which should reject punctuation words (as Strings)
    * @return A GrammaticalStructureFactory suitable for this language/treebank
    */
-        GrammaticalStructureFactory grammaticalStructureFactory(Predicate<string> puncFilter);
+        GrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilter);
 
 
         /**
@@ -237,7 +237,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A GrammaticalStructureFactory suitable for this language/treebank
    */
 
-        GrammaticalStructureFactory grammaticalStructureFactory(Predicate<string> puncFilter,
+        GrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilter,
             HeadFinder typedDependencyHF);
 
         /**
@@ -245,7 +245,7 @@ namespace OpenNLP.Tools.Util.Trees
    * this method returns false, a call to grammaticalStructureFactory
    * will cause an exception.
    */
-        bool supportsGrammaticalStructures();
+        bool SupportsGrammaticalStructures();
 
         /**
    * Return the charset encoding of the Treebank.  See
@@ -253,7 +253,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return Name of Charset
    */
-        string getEncoding();
+        string GetEncoding();
 
 
         /**
@@ -264,7 +264,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return A tokenizer
    */
-        TokenizerFactory<HasWord> getTokenizerFactory();
+        TokenizerFactory<HasWord> GetTokenizerFactory();
 
         /**
    * Return an array of characters at which a string should be
@@ -279,7 +279,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return An array of characters that set off label name suffixes
    */
-        char[] labelAnnotationIntroducingCharacters();
+        char[] LabelAnnotationIntroducingCharacters();
 
 
         /**
@@ -289,7 +289,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param ch A char
    * @return Whether this char introduces functional annotations
    */
-        bool isLabelAnnotationIntroducingCharacter(char ch);
+        bool IsLabelAnnotationIntroducingCharacter(char ch);
 
 
         /**
@@ -303,7 +303,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param category The whole string name of the label
    * @return The basic category of the String
    */
-        string basicCategory(string category);
+        string BasicCategory(string category);
 
         /**
    * Returns the category for a string with everything following
@@ -312,7 +312,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param category The string name of the label (may previously have had basic category called on it)
    * @return The string stripped of grammatical functions
    */
-        string stripGF(string category);
+        string StripGF(string category);
 
 
         /**
@@ -322,7 +322,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the String->String Function object
    */
         /*Func<string,String>*/
-        AbstractTreebankLanguagePack.BasicCategoryStringFunction getBasicCategoryFunction();
+        AbstractTreebankLanguagePack.BasicCategoryStringFunction GetBasicCategoryFunction();
 
         /**
    * Returns the syntactic category and 'function' of a string.
@@ -334,7 +334,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param category The whole string name of the label
    * @return A string giving the category and function
    */
-        string categoryAndFunction(string category);
+        string CategoryAndFunction(string category);
 
         /**
    * Returns a {@link Function Function} object that maps Strings to Strings according
@@ -343,7 +343,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the String->String Function object
    */
         /*Func<string,String>*/
-        AbstractTreebankLanguagePack.CategoryAndFunctionStringFunction getCategoryAndFunctionFunction();
+        AbstractTreebankLanguagePack.CategoryAndFunctionStringFunction GetCategoryAndFunctionFunction();
 
         /**
    * Accepts a string that is a start symbol of the treebank.
@@ -351,7 +351,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param str The str to test
    * @return Whether this is a start symbol
    */
-        bool isStartSymbol(string str);
+        bool IsStartSymbol(string str);
 
 
         /**
@@ -360,7 +360,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The filter
    */
-        Predicate<string> startSymbolAcceptFilter();
+        Predicate<string> StartSymbolAcceptFilter();
 
 
         /**
@@ -368,7 +368,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The start symbols
    */
-        string[] startSymbols();
+        string[] StartSymbols();
 
         /**
    * Returns a string which is the first (perhaps unique) start symbol
@@ -376,7 +376,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The start symbol
    */
-        string startSymbol();
+        string StartSymbol();
 
 
         /**
@@ -386,7 +386,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return the extension on files for this treebank
    */
-        string treebankFileExtension();
+        string TreebankFileExtension();
 
         /**
    * Sets the grammatical function indicating character to gfCharacter.
@@ -394,7 +394,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param gfCharacter Sets the character in label names that sets of
    *         grammatical function marking (from the phrase label).
    */
-        void setGfCharacter(char gfCharacter);
+        void SetGfCharacter(char gfCharacter);
 
         /** Returns a TreeReaderFactory suitable for general purpose use
    *  with this language/treebank.
@@ -408,7 +408,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return A TokenizerFactory for Trees of this language/treebank.
    */
-        TokenizerFactory<Tree> treeTokenizerFactory();
+        TokenizerFactory<Tree> TreeTokenizerFactory();
 
         /**
    * The HeadFinder to use for your treebank.
@@ -416,7 +416,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A suitable HeadFinder
    */
         /*abstract*/
-        HeadFinder headFinder();
+        HeadFinder HeadFinder();
 
 
         /**
@@ -425,7 +425,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A suitable HeadFinder
    */
         /*abstract*/
-        HeadFinder typedDependencyHeadFinder();
+        HeadFinder TypedDependencyHeadFinder();
 
 
         /**

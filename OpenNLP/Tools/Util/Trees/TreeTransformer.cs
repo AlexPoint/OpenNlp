@@ -28,6 +28,6 @@ namespace OpenNLP.Tools.Util.Trees
    *           that the tree passed in is not <code>null</code>.
    * @return the transformed <code>Tree</code>
    */
-        Tree transformTree(Tree t);
+        Tree TransformTree(Tree t);
     }
 }

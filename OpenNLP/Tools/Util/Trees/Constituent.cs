@@ -32,24 +32,24 @@ namespace OpenNLP.Tools.Util.Trees
         /**
    * access start node.
    */
-        public abstract int start();
+        public abstract int Start();
 
         /**
    * set start node.
    */
-        public abstract void setStart(int start);
+        public abstract void SetStart(int start);
 
 
         /**
    * access end node.
    */
-        public abstract int end();
+        public abstract int End();
 
 
         /**
    * set end node.
    */
-        public abstract void setEnd(int end);
+        public abstract void SetEnd(int end);
 
 
         /**
@@ -127,7 +127,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 sb = new StringBuilder();
             }
-            sb.Append("(").Append(start()).Append(",").Append(end()).Append(")");
+            sb.Append("(").Append(Start()).Append(",").Append(End()).Append(")");
             return sb.ToString();
         }
 
@@ -138,7 +138,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public int size()
         {
-            return end() - start();
+            return End() - Start();
         }
 
 
@@ -174,7 +174,7 @@ namespace OpenNLP.Tools.Util.Trees
                 // System.out.println("Comparing " + this + " to " + c + "\n  " +
                 //	"start: " + (start() == c.start()) + " end: " +
                 //	(end() == c.end()) + " score: " + (score() == c.score()));
-                if ((start() == c.start()) && (end() == c.end()))
+                if ((Start() == c.Start()) && (End() == c.End()))
                 {
                     Label lab1 = Label();
                     Label lab2 = c.Label();
@@ -210,7 +210,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override int GetHashCode()
         {
-            int hash = (start() << 16) | end();
+            int hash = (Start() << 16) | End();
             Label lab = Label();
             return (lab == null || lab.Value() == null) ? hash : hash ^ lab.Value().GetHashCode();
         }
@@ -226,8 +226,8 @@ namespace OpenNLP.Tools.Util.Trees
 
         public bool crosses(Constituent c)
         {
-            return (start() < c.start() && c.start() < end() && end() < c.end()) ||
-                   (c.start() < start() && start() < c.end() && c.end() < end());
+            return (Start() < c.Start() && c.Start() < End() && End() < c.End()) ||
+                   (c.Start() < Start() && Start() < c.End() && c.End() < End());
         }
 
 
@@ -266,7 +266,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public bool contains(Constituent c)
         {
-            return start() <= c.start() && end() >= c.end();
+            return Start() <= c.Start() && End() >= c.End();
         }
 
 
@@ -336,7 +336,7 @@ namespace OpenNLP.Tools.Util.Trees
         public string toSentenceString(List<string> s)
         {
             StringBuilder sb = new StringBuilder();
-            for (int wordNum = start(), vEnd = end(); wordNum <= vEnd; wordNum++)
+            for (int wordNum = Start(), vEnd = End(); wordNum <= vEnd; wordNum++)
             {
                 sb.Append(s[wordNum]);
                 if (wordNum != vEnd)

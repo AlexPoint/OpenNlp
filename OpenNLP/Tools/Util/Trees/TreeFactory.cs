@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param word The word that will go into the tree label.
    * @return The new leaf
    */
-        Tree newLeaf(string word);
+        Tree NewLeaf(string word);
 
 
         /**
@@ -29,7 +29,7 @@ namespace OpenNLP.Tools.Util.Trees
          *                 <code>null</code>
          * @return The new interior tree node
          */
-        Tree newTreeNode(string parent, List<Tree> children);
+        Tree NewTreeNode(string parent, List<Tree> children);
 
 
         /**
@@ -38,7 +38,7 @@ namespace OpenNLP.Tools.Util.Trees
          * @param label The label for the leaf node
          * @return The new leaf
          */
-        Tree newLeaf(Label label);
+        Tree NewLeaf(Label label);
 
 
         /**
@@ -50,6 +50,6 @@ namespace OpenNLP.Tools.Util.Trees
          *                 <code>null</code>
          * @return The new interior tree node
          */
-        Tree newTreeNode(Label label, List<Tree> children);
+        Tree NewTreeNode(Label label, List<Tree> children);
     }
 }

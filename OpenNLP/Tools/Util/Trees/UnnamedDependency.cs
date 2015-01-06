@@ -44,12 +44,12 @@ namespace OpenNLP.Tools.Util.Trees
                 throw new ArgumentException("governor or dependent cannot be null");
             }
 
-            CoreLabel headLabel = new CoreLabel();
+            var headLabel = new CoreLabel();
             headLabel.SetValue(regent);
             headLabel.SetWord(regent);
             this.regent = headLabel;
 
-            CoreLabel depLabel = new CoreLabel();
+            var depLabel = new CoreLabel();
             depLabel.SetValue(dependent);
             depLabel.SetWord(dependent);
             this.vDependent = depLabel;
@@ -67,26 +67,26 @@ namespace OpenNLP.Tools.Util.Trees
             this.regent = regent;
             this.vDependent = dependent;
 
-            regentText = getText(regent);
-            dependentText = getText(dependent);
+            regentText = GetText(regent);
+            dependentText = GetText(dependent);
         }
 
-        public Label governor()
+        public Label Governor()
         {
             return regent;
         }
 
-        public Label dependent()
+        public Label Dependent()
         {
             return vDependent;
         }
 
-        public virtual Object name()
+        public virtual Object Name()
         {
             return null;
         }
 
-        protected string getText(Label label)
+        protected string GetText(Label label)
         {
             if (label is HasWord)
             {
@@ -108,10 +108,10 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override bool Equals(Object o)
         {
-            return equalsIgnoreName(o);
+            return EqualsIgnoreName(o);
         }
 
-        public bool equalsIgnoreName(Object o)
+        public bool EqualsIgnoreName(Object o)
         {
             if (this == o)
             {
@@ -121,7 +121,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return false;
             }
-            UnnamedDependency d = (UnnamedDependency) o;
+            var d = (UnnamedDependency) o;
 
             string thisHeadWord = regentText;
             string thisDepWord = dependentText;
@@ -148,22 +148,22 @@ namespace OpenNLP.Tools.Util.Trees
             switch (format)
             {
                 case "xml":
-                    return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(governor().Value()) +
-                           "</governor>\n    <dependent>" + XMLUtils.XmlEscape(dependent().Value()) +
+                    return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(Governor().Value()) +
+                           "</governor>\n    <dependent>" + XMLUtils.XmlEscape(Dependent().Value()) +
                            "</dependent>\n  </dep>";
                 case "predicate":
-                    return "dep(" + governor() + "," + dependent() + ")";
+                    return "dep(" + Governor() + "," + Dependent() + ")";
                 default:
                     return ToString();
             }
         }
 
-        public virtual DependencyFactory dependencyFactory()
+        public virtual DependencyFactory DependencyFactory()
         {
             return DependencyFactoryHolder.df;
         }
 
-        public static DependencyFactory factory()
+        public static DependencyFactory Factory()
         {
             return DependencyFactoryHolder.df;
         }
@@ -185,16 +185,16 @@ namespace OpenNLP.Tools.Util.Trees
      * Create a new <code>Dependency</code>.
      */
 
-            public Dependency<Label, Label, Object> newDependency(Label regent, Label dependent)
+            public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent)
             {
-                return newDependency(regent, dependent, null);
+                return NewDependency(regent, dependent, null);
             }
 
             /**
      * Create a new <code>Dependency</code>.
      */
 
-            public Dependency<Label, Label, Object> newDependency(Label regent, Label dependent, Object name)
+            public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent, Object name)
             {
                 return new UnnamedDependency(regent, dependent);
             }

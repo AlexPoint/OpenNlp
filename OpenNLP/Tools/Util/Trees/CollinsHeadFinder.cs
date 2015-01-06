@@ -127,17 +127,17 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         //@Override
-        protected override int postOperationFix(int headIdx, Tree[] daughterTrees)
+        protected override int PostOperationFix(int headIdx, Tree[] daughterTrees)
         {
             if (headIdx >= 2)
             {
-                string prevLab = tlp.basicCategory(daughterTrees[headIdx - 1].Value());
+                string prevLab = tlp.BasicCategory(daughterTrees[headIdx - 1].Value());
                 if (prevLab.Equals("CC") || prevLab.Equals("CONJP"))
                 {
                     int newHeadIdx = headIdx - 2;
                     Tree t = daughterTrees[newHeadIdx];
-                    while (newHeadIdx >= 0 && t.isPreTerminal() &&
-                           tlp.isPunctuationTag(t.Value()))
+                    while (newHeadIdx >= 0 && t.IsPreTerminal() &&
+                           tlp.IsPunctuationTag(t.Value()))
                     {
                         newHeadIdx--;
                     }

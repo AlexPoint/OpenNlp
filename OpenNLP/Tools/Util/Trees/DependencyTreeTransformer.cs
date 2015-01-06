@@ -34,7 +34,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         //@Override
-        public Tree transformTree(Tree t)
+        public Tree TransformTree(Tree t)
         {
             //deal with empty root
             t.SetValue(cleanUpRoot(t.Value()));
@@ -68,7 +68,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
             bool nptemp = TmpPattern.IsMatch(label);
             bool npadv = AdvPattern.IsMatch(label);
-            label = tlp.basicCategory(label);
+            label = tlp.BasicCategory(label);
             if (nptemp)
             {
                 label = label + "-TMP";
@@ -82,11 +82,11 @@ namespace OpenNLP.Tools.Util.Trees
 
         protected void stripTag(Tree t)
         {
-            if (! t.isLeaf())
+            if (! t.IsLeaf())
             {
                 string label = cleanUpLabel(t.Value());
                 t.SetValue(label);
-                foreach (Tree child in t.getChildrenAsList())
+                foreach (Tree child in t.GetChildrenAsList())
                 {
                     stripTag(child);
                 }

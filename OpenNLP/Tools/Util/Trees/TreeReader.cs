@@ -23,13 +23,13 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A single tree, or <code>null</code> at end of file.
    * @throws java.io.IOException If I/O problem
    */
-        Tree readTree() /* throws IOException*/;
+        Tree ReadTree() /* throws IOException*/;
 
 
         /**
    * Close the Reader behind this <code>TreeReader</code>.
    */
         //@Override
-        void close() /* throws IOException*/;
+        void Close() /* throws IOException*/;
     }
 }

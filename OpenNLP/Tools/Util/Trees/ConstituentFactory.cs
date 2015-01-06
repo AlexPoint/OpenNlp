@@ -23,7 +23,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param start Start position
    * @param end   End position
    */
-        Constituent newConstituent(int start, int end);
+        Constituent NewConstituent(int start, int end);
 
         /**
          * Build a constituent with this start and end.
@@ -33,6 +33,6 @@ namespace OpenNLP.Tools.Util.Trees
          * @param label Label
          * @param score Score
          */
-        Constituent newConstituent(int start, int end, Label label, double score);
+        Constituent NewConstituent(int start, int end, Label label, double score);
     }
 }

@@ -12,7 +12,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     public class TregexPatternCompiler
     {
         public static readonly AbstractTreebankLanguagePack.BasicCategoryStringFunction DEFAULT_BASIC_CAT_FUNCTION =
-            new PennTreebankLanguagePack().getBasicCategoryFunction();
+            new PennTreebankLanguagePack().GetBasicCategoryFunction();
 
         public static readonly HeadFinder DEFAULT_HEAD_FINDER = new CollinsHeadFinder();
 

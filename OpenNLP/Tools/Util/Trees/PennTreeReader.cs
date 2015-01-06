@@ -144,7 +144,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A single tree, or <code>null</code> at end of token stream.
    */
         //@Override
-        public Tree readTree() /*throws IOException*/
+        public Tree ReadTree() /*throws IOException*/
         {
             Tree t = null;
 
@@ -173,9 +173,9 @@ namespace OpenNLP.Tools.Util.Trees
 
                     if (treeNormalizer != null && treeFactory != null)
                     {
-                        t = treeNormalizer.normalizeWholeTree(t, treeFactory);
+                        t = treeNormalizer.NormalizeWholeTree(t, treeFactory);
                     }
-                    t.indexLeaves(true);
+                    t.IndexLeaves(true);
                 }
             }
 
@@ -209,7 +209,7 @@ namespace OpenNLP.Tools.Util.Trees
                         }
                         else if (treeNormalizer != null)
                         {
-                            label = treeNormalizer.normalizeNonterminal(label);
+                            label = treeNormalizer.NormalizeNonterminal(label);
                         }
 
                         if (label != null)
@@ -218,13 +218,13 @@ namespace OpenNLP.Tools.Util.Trees
                             label = SLASH_PATTERN.Replace(label, "/");
                         }
 
-                        Tree newTree = treeFactory.newTreeNode(label, null); // dtrs are added below
+                        Tree newTree = treeFactory.NewTreeNode(label, null); // dtrs are added below
 
                         if (currentTree == null)
                             stack.Add(newTree);
                         else
                         {
-                            currentTree.addChild(newTree);
+                            currentTree.AddChild(newTree);
                             stack.Add(currentTree);
                         }
 
@@ -259,10 +259,10 @@ namespace OpenNLP.Tools.Util.Trees
                             goto post_while_label;
                         }
 
-                        string terminal = (treeNormalizer == null) ? token : treeNormalizer.normalizeTerminal(token);
+                        string terminal = (treeNormalizer == null) ? token : treeNormalizer.NormalizeTerminal(token);
                         terminal = STAR_PATTERN.Replace(terminal, "*");
                         terminal = SLASH_PATTERN.Replace(terminal, "/");
-                        Tree leaf = treeFactory.newLeaf(terminal);
+                        Tree leaf = treeFactory.NewLeaf(terminal);
                         if (leaf.Label() is HasIndex)
                         {
                             HasIndex hi = (HasIndex) leaf.Label();
@@ -275,7 +275,7 @@ namespace OpenNLP.Tools.Util.Trees
                         }
                         wordIndex++;
 
-                        currentTree.addChild(leaf);
+                        currentTree.AddChild(leaf);
                         // cdm: Note: this implementation just isn't as efficient as the old recursive descent parser (see 2008 code), where all the daughters are gathered before the tree is made....
                         break;
                 }
@@ -298,7 +298,7 @@ namespace OpenNLP.Tools.Util.Trees
    * class.
    */
         //@Override
-        public void close() /*throws IOException*/
+        public void Close() /*throws IOException*/
         {
             reader.Close();
         }

@@ -369,7 +369,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override IEnumerator<Tree> searchNodeIterator(Tree t, TregexMatcher matcher)
             {
-                return matcher.getRoot().iterator();
+                return matcher.getRoot().Iterator();
             }
         }
 
@@ -399,7 +399,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, TregexMatcher matcher)
             {
-                return t1 != t2 && t1.dominates(t2);
+                return t1 != t2 && t1.Dominates(t2);
             }
 
             public override IEnumerator<Tree> searchNodeIterator(Tree t, TregexMatcher matcher)
@@ -415,9 +415,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             public StackSearchNodeIterator(Tree t)
             {
                 searchStack = new Stack<Tree>();
-                for (int i = t.numChildren() - 1; i >= 0; i--)
+                for (int i = t.NumChildren() - 1; i >= 0; i--)
                 {
-                    searchStack.Push(t.getChild(i));
+                    searchStack.Push(t.GetChild(i));
                 }
             }
 
@@ -435,9 +435,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 else
                 {
                     var elt = searchStack.Pop();
-                    for (int i = elt.numChildren() - 1; i >= 0; i--)
+                    for (int i = elt.NumChildren() - 1; i >= 0; i--)
                     {
-                        searchStack.Push(elt.getChild(i));
+                        searchStack.Push(elt.GetChild(i));
                     }
                     this.Current = elt;
                     return true;
@@ -592,7 +592,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, TregexMatcher matcher)
             {
-                Tree[] kids = t1.children();
+                Tree[] kids = t1.Children();
                 for (int i = 0, n = kids.Length; i < n; i++)
                 {
                     if (kids[i] == t2)
@@ -605,7 +605,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override IEnumerator<Tree> searchNodeIterator(Tree t, TregexMatcher matcher)
             {
-                return t.getChildrenAsList().GetEnumerator();
+                return t.GetChildrenAsList().GetEnumerator();
             }
         }
 
@@ -700,9 +700,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 Tree parent = matcher.getParent(t);
                 while (parent != null)
                 {
-                    for (int i = parent.numChildren() - 1; parent.getChild(i) != current; i--)
+                    for (int i = parent.NumChildren() - 1; parent.GetChild(i) != current; i--)
                     {
-                        searchStack.Push(parent.getChild(i));
+                        searchStack.Push(parent.GetChild(i));
                     }
                     current = parent;
                     parent = matcher.getParent(parent);
@@ -723,9 +723,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 else
                 {
                     this.Current = searchStack.Pop();
-                    for (int i = this.Current.numChildren() - 1; i >= 0; i--)
+                    for (int i = this.Current.NumChildren() - 1; i >= 0; i--)
                     {
-                        searchStack.Push(this.Current.getChild(i));
+                        searchStack.Push(this.Current.GetChild(i));
                     }
                     return true;
                 }
@@ -752,7 +752,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, TregexMatcher matcher)
             {
-                return Trees.rightEdge(t1, root) <= Trees.leftEdge(t2, root);
+                return Trees.RightEdge(t1, root) <= Trees.LeftEdge(t2, root);
             }
 
             public override IEnumerator<Tree> searchNodeIterator(Tree t, TregexMatcher matcher)
@@ -823,13 +823,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         firstNode = null;
                         return;
                     }
-                } while (parent.lastChild() == current);
+                } while (parent.LastChild() == current);
 
-                for (int i = 1, n = parent.numChildren(); i < n; i++)
+                for (int i = 1, n = parent.NumChildren(); i < n; i++)
                 {
-                    if (parent.getChild(i - 1) == current)
+                    if (parent.GetChild(i - 1) == current)
                     {
-                        firstNode = parent.getChild(i);
+                        firstNode = parent.GetChild(i);
                         return;
                     }
                 }
@@ -848,14 +848,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     this.Current = firstNode;
                     return true;
                 }
-                else if (this.Current.isLeaf())
+                else if (this.Current.IsLeaf())
                 {
                     this.Current = null;
                     return false;
                 }
                 else
                 {
-                    this.Current = this.Current.firstChild();
+                    this.Current = this.Current.FirstChild();
                     return true;
                 }
             }
@@ -881,7 +881,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, TregexMatcher matcher)
             {
-                return Trees.leftEdge(t2, root) == Trees.rightEdge(t1, root);
+                return Trees.LeftEdge(t2, root) == Trees.RightEdge(t1, root);
             }
 
             public override IEnumerator<Tree> searchNodeIterator(Tree t, TregexMatcher matcher)
@@ -947,9 +947,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 Tree parent = matcher.getParent(t);
                 while (parent != null)
                 {
-                    for (int i = 0; parent.getChild(i) != current; i++)
+                    for (int i = 0; parent.GetChild(i) != current; i++)
                     {
-                        searchStack.Push(parent.getChild(i));
+                        searchStack.Push(parent.GetChild(i));
                     }
                     current = parent;
                     parent = matcher.getParent(parent);
@@ -971,9 +971,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 else
                 {
                     this.Current = searchStack.Pop();
-                    for (int i = this.Current.numChildren() - 1; i >= 0; i--)
+                    for (int i = this.Current.NumChildren() - 1; i >= 0; i--)
                     {
-                        searchStack.Push(this.Current.getChild(i));
+                        searchStack.Push(this.Current.GetChild(i));
                     }
                     return true;
                 }
@@ -1000,7 +1000,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, TregexMatcher matcher)
             {
-                return Trees.rightEdge(t2, root) <= Trees.leftEdge(t1, root);
+                return Trees.RightEdge(t2, root) <= Trees.LeftEdge(t1, root);
             }
 
             public override IEnumerator<Tree> searchNodeIterator(Tree t, TregexMatcher matcher)
@@ -1071,13 +1071,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         firstNode = null;
                         return;
                     }
-                } while (parent.firstChild() == current);
+                } while (parent.FirstChild() == current);
 
-                for (int i = 0, n = parent.numChildren() - 1; i < n; i++)
+                for (int i = 0, n = parent.NumChildren() - 1; i < n; i++)
                 {
-                    if (parent.getChild(i + 1) == current)
+                    if (parent.GetChild(i + 1) == current)
                     {
-                        firstNode = parent.getChild(i);
+                        firstNode = parent.GetChild(i);
                         return;
                     }
                 }
@@ -1095,14 +1095,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     this.Current = firstNode;
                     return true;
                 }
-                if (this.Current.isLeaf())
+                if (this.Current.IsLeaf())
                 {
                     this.Current = null;
                     return false;
                 }
                 else
                 {
-                    this.Current = this.Current.lastChild();
+                    this.Current = this.Current.LastChild();
                     return true;
                 }
             }
@@ -1128,7 +1128,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, TregexMatcher matcher)
             {
-                return Trees.leftEdge(t1, root) == Trees.rightEdge(t2, root);
+                return Trees.LeftEdge(t1, root) == Trees.RightEdge(t2, root);
             }
 
             public override IEnumerator<Tree> searchNodeIterator(Tree t, TregexMatcher matcher)
@@ -1202,14 +1202,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     return false;
                 }
-                else if (this.Current.isLeaf())
+                else if (this.Current.IsLeaf())
                 {
                     this.Current = null;
                     return false;
                 }
                 else
                 {
-                    this.Current = this.Current.firstChild();
+                    this.Current = this.Current.FirstChild();
                     return true;
                 }
             }
@@ -1235,13 +1235,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, TregexMatcher matcher)
             {
-                if (t1.isLeaf())
+                if (t1.IsLeaf())
                 {
                     return false;
                 }
                 else
                 {
-                    return (t1.children()[0] == t2) || satisfies(t1.children()[0], t2, root, matcher);
+                    return (t1.Children()[0] == t2) || satisfies(t1.Children()[0], t2, root, matcher);
                 }
             }
 
@@ -1304,14 +1304,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     return false;
                 }
-                else if (this.Current.isLeaf())
+                else if (this.Current.IsLeaf())
                 {
                     this.Current = null;
                     return false;
                 }
                 else
                 {
-                    this.Current = this.Current.lastChild();
+                    this.Current = this.Current.LastChild();
                     return true;
                 }
             }
@@ -1337,13 +1337,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, TregexMatcher matcher)
             {
-                if (t1.isLeaf())
+                if (t1.IsLeaf())
                 {
                     return false;
                 }
                 else
                 {
-                    Tree lastKid = t1.children()[t1.children().Length - 1];
+                    Tree lastKid = t1.Children()[t1.Children().Length - 1];
                     return (lastKid == t2) || satisfies(lastKid, t2, root, matcher);
                 }
             }
@@ -1416,7 +1416,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     this.Current = next;
                     next = this.matcher.getParent(next);
-                    if (next != null && next.firstChild() != this.Current)
+                    if (next != null && next.FirstChild() != this.Current)
                     {
                         next = null;
                     }
@@ -1511,7 +1511,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     this.Current = next;
                     next = this.matcher.getParent(next);
-                    if (next != null && next.lastChild() != this.Current)
+                    if (next != null && next.LastChild() != this.Current)
                     {
                         next = null;
                     }
@@ -1604,9 +1604,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                if (nextNum < parent.numChildren())
+                if (nextNum < parent.NumChildren())
                 {
-                    this.Current = parent.getChild(nextNum++);
+                    this.Current = parent.GetChild(nextNum++);
                     if (this.Current == originalNode)
                     {
                         return MoveNext();
@@ -1645,7 +1645,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     return false;
                 }
-                Tree parent = t1.parent(root);
+                Tree parent = t1.Parent(root);
                 return PARENT_OF.satisfies(parent, t2, root, matcher);
             }
 
@@ -1712,7 +1712,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 parent = matcher.getParent(t);
                 if (parent != null)
                 {
-                    nextNum = parent.numChildren() - 1;
+                    nextNum = parent.NumChildren() - 1;
                 }
             }
 
@@ -1723,7 +1723,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                this.Current = parent.getChild(nextNum--);
+                this.Current = parent.GetChild(nextNum--);
                 if (this.Current == originalNode)
                 {
                     this.Current = null;
@@ -1757,8 +1757,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     return false;
                 }
-                Tree parent = t1.parent(root);
-                Tree[] kids = parent.children();
+                Tree parent = t1.Parent(root);
+                Tree[] kids = parent.Children();
                 for (int i = kids.Length - 1; i > 0; i--)
                 {
                     if (kids[i] == t1)
@@ -1852,7 +1852,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                this.Current = parent.getChild(nextNum++);
+                this.Current = parent.GetChild(nextNum++);
                 if (this.Current == originalNode)
                 {
                     this.Current = null;
@@ -1940,7 +1940,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     return false;
                 }
-                Tree[] sisters = t1.parent(root).children();
+                Tree[] sisters = t1.Parent(root).Children();
                 for (int i = sisters.Length - 1; i > 0; i--)
                 {
                     if (sisters[i] == t1)
@@ -1961,13 +1961,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     Tree parent = matcher.getParent(t);
                     int i = 0;
-                    while (parent.getChild(i) != t)
+                    while (parent.GetChild(i) != t)
                     {
                         i++;
                     }
-                    if (i + 1 < parent.numChildren())
+                    if (i + 1 < parent.NumChildren())
                     {
-                        var node = parent.getChild(i + 1);
+                        var node = parent.GetChild(i + 1);
                         return new List<Tree>() {node}.GetEnumerator();
                     }
                 }
@@ -2034,13 +2034,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     Tree parent = matcher.getParent(t);
                     int i = 0;
-                    while (parent.getChild(i) != t)
+                    while (parent.GetChild(i) != t)
                     {
                         i++;
                     }
                     if (i > 0)
                     {
-                        var node = parent.getChild(i - 1);
+                        var node = parent.GetChild(i - 1);
                         return new List<Tree>() {node}.GetEnumerator();
                     }
                 }
@@ -2087,7 +2087,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, TregexMatcher matcher)
             {
-                return t2.children().Length == 1 && t2.firstChild() == t1;
+                return t2.Children().Length == 1 && t2.FirstChild() == t1;
             }
 
             public override IEnumerator<Tree> searchNodeIterator(Tree t, TregexMatcher matcher)
@@ -2095,7 +2095,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 if (t != matcher.getRoot())
                 {
                     var next = matcher.getParent(t);
-                    if (next.numChildren() == 1)
+                    if (next.NumChildren() == 1)
                     {
                         return new List<Tree>() {next}.GetEnumerator();
                     }
@@ -2138,14 +2138,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, TregexMatcher matcher)
             {
-                return t1.children().Length == 1 && t1.firstChild() == t2;
+                return t1.Children().Length == 1 && t1.FirstChild() == t2;
             }
 
             public override IEnumerator<Tree> searchNodeIterator(Tree t, TregexMatcher matcher)
             {
-                if (!t.isLeaf() && t.numChildren() == 1)
+                if (!t.IsLeaf() && t.NumChildren() == 1)
                 {
-                    var next = t.firstChild();
+                    var next = t.FirstChild();
                     return new List<Tree>() {next}.GetEnumerator();
                 }
                 else
@@ -2185,8 +2185,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             public UnaryPathAncestorSeachNodeIterator(Tree t)
             {
                 searchStack = new Stack<Tree>();
-                if (!t.isLeaf() && t.children().Length == 1)
-                    searchStack.Push(t.getChild(0));
+                if (!t.IsLeaf() && t.Children().Length == 1)
+                    searchStack.Push(t.GetChild(0));
                 /*if (searchStack.isEmpty()) {
             advance();
           }*/
@@ -2207,9 +2207,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 else
                 {
                     this.Current = searchStack.Pop();
-                    if (!this.Current.isLeaf() && this.Current.children().Length == 1)
+                    if (!this.Current.IsLeaf() && this.Current.Children().Length == 1)
                     {
-                        searchStack.Push(this.Current.getChild(0));
+                        searchStack.Push(this.Current.GetChild(0));
                     }
                     return true;
                 }
@@ -2236,9 +2236,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, TregexMatcher matcher)
             {
-                if (t1.isLeaf() || t1.children().Length > 1)
+                if (t1.IsLeaf() || t1.Children().Length > 1)
                     return false;
-                Tree onlyDtr = t1.children()[0];
+                Tree onlyDtr = t1.Children()[0];
                 if (onlyDtr == t2)
                     return true;
                 else
@@ -2306,7 +2306,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 this.matcher = matcher;
                 searchStack = new Stack<Tree>();
                 Tree parent = matcher.getParent(t);
-                if (parent != null && !parent.isLeaf() && parent.children().Length == 1)
+                if (parent != null && !parent.IsLeaf() && parent.Children().Length == 1)
                 {
                     searchStack.Push(parent);
                 }
@@ -2331,7 +2331,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     this.Current = searchStack.Pop();
                     Tree parent = matcher.getParent(this.Current);
-                    if (parent != null && !parent.isLeaf() && parent.children().Length == 1)
+                    if (parent != null && !parent.IsLeaf() && parent.Children().Length == 1)
                     {
                         searchStack.Push(parent);
                     }
@@ -2360,11 +2360,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, TregexMatcher matcher)
             {
-                if (t2.isLeaf() || t2.children().Length > 1)
+                if (t2.IsLeaf() || t2.Children().Length > 1)
                 {
                     return false;
                 }
-                Tree onlyDtr = t2.children()[0];
+                Tree onlyDtr = t2.Children()[0];
                 if (onlyDtr == t1)
                 {
                     return true;
@@ -2449,7 +2449,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             public override IEnumerator<Tree> searchNodeIterator(Tree t, TregexMatcher matcher)
             {
                 // TODO: check this implementation, sounds strange to me
-                return t.getChildrenAsList().GetEnumerator();
+                return t.GetChildrenAsList().GetEnumerator();
             }
         }
 
@@ -2573,13 +2573,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             //@Override
             public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly*/ TregexMatcher matcher)
             {
-                if (t2.isLeaf())
+                if (t2.IsLeaf())
                 {
                     return false;
                 }
-                else if (t2.isPreTerminal())
+                else if (t2.IsPreTerminal())
                 {
-                    return (t2.firstChild() == t1);
+                    return (t2.FirstChild() == t1);
                 }
                 else
                 {
@@ -2702,7 +2702,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 if (!initialized)
                 {
                     this.initialized = true;
-                    if (this.initialNode.isLeaf())
+                    if (this.initialNode.IsLeaf())
                     {
                         this.Current = null;
                         return false;
@@ -2715,7 +2715,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 else
                 {
-                    if (this.Current.isLeaf())
+                    if (this.Current.IsLeaf())
                     {
                         this.Current = null;
                         return false;
@@ -2950,7 +2950,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             public override IEnumerator<Tree> searchNodeIterator( /*readonly*/ Tree t,
                 /*readonly */TregexMatcher matcher)
             {
-                if (!t.isLeaf())
+                if (!t.IsLeaf())
                 {
                     var headFinder = matcher.getHeadFinder() != null ? matcher.getHeadFinder() : immediatelyHeads.hf;
                     var next = headFinder.determineHead(t);
@@ -3038,7 +3038,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
             {
-                Tree[] kids = t2.children();
+                Tree[] kids = t2.Children();
                 if (kids.Length < Math.Abs(childNum))
                 {
                     return false;
@@ -3063,11 +3063,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     var next = matcher.getParent(t);
                     if (childNum > 0
-                        && (next.numChildren() < childNum || next
-                            .getChild(childNum - 1) != t)
+                        && (next.NumChildren() < childNum || next
+                            .GetChild(childNum - 1) != t)
                         || childNum < 0
-                        && (next.numChildren() < -childNum || next.getChild(next
-                            .numChildren()
+                        && (next.NumChildren() < -childNum || next.GetChild(next
+                            .NumChildren()
                                                                             + childNum) != t))
                     {
                         next = null;
@@ -3156,16 +3156,16 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 /*readonly */TregexMatcher matcher)
             {
                 int childNum = ithChildOf.childNum;
-                if (t.numChildren() >= Math.Abs(childNum))
+                if (t.NumChildren() >= Math.Abs(childNum))
                 {
                     Tree next;
                     if (childNum > 0)
                     {
-                        next = t.getChild(childNum - 1);
+                        next = t.GetChild(childNum - 1);
                     }
                     else
                     {
-                        next = t.getChild(t.numChildren() + childNum);
+                        next = t.GetChild(t.NumChildren() + childNum);
                     }
                     return new List<Tree>() {next}.GetEnumerator();
                 }
@@ -3233,9 +3233,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             public UnbrokenCategoryDominatesIterator(Tree t, Func<Tree, bool> patchMatchesNode)
             {
                 searchStack = new Stack<Tree>();
-                for (int i = t.numChildren() - 1; i >= 0; i--)
+                for (int i = t.NumChildren() - 1; i >= 0; i--)
                 {
-                    searchStack.Push(t.getChild(i));
+                    searchStack.Push(t.GetChild(i));
                 }
                 /*if (!searchStack.isEmpty()) {
             advance();
@@ -3260,9 +3260,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     this.Current = searchStack.Pop();
                     if (this.patchMatchesNode(this.Current))
                     {
-                        for (int i = this.Current.numChildren() - 1; i >= 0; i--)
+                        for (int i = this.Current.NumChildren() - 1; i >= 0; i--)
                         {
-                            searchStack.Push(this.Current.getChild(i));
+                            searchStack.Push(this.Current.GetChild(i));
                         }
                     }
                     return true;
@@ -3343,7 +3343,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public override bool satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
             {
-                foreach (Tree kid in t1.children())
+                foreach (Tree kid in t1.Children())
                 {
                     if (kid == t2)
                     {
@@ -3639,17 +3639,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     return;
                 }
                 Tree parent = matcher.getParent(node);
-                int i = parent.objectIndexOf(node);
-                while (i == parent.children().Length - 1 && parent != root)
+                int i = parent.ObjectIndexOf(node);
+                while (i == parent.Children().Length - 1 && parent != root)
                 {
                     node = parent;
                     parent = matcher.getParent(parent);
-                    i = parent.objectIndexOf(node);
+                    i = parent.ObjectIndexOf(node);
                 }
                 Tree followingNode;
-                if (i + 1 < parent.children().Length)
+                if (i + 1 < parent.Children().Length)
                 {
-                    followingNode = parent.children()[i + 1];
+                    followingNode = parent.Children()[i + 1];
                 }
                 else
                 {
@@ -3667,9 +3667,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     {
                         initializeHelper(stack, followingNode, root, matcher, nodesToSearch);
                     }
-                    if (! followingNode.isLeaf())
+                    if (! followingNode.IsLeaf())
                     {
-                        followingNode = followingNode.children()[0];
+                        followingNode = followingNode.Children()[0];
                     }
                     else
                     {
@@ -3838,17 +3838,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     return;
                 }
                 Tree parent = matcher.getParent(node);
-                int i = parent.objectIndexOf(node);
+                int i = parent.ObjectIndexOf(node);
                 while (i == 0 && parent != root)
                 {
                     node = parent;
                     parent = matcher.getParent(parent);
-                    i = parent.objectIndexOf(node);
+                    i = parent.ObjectIndexOf(node);
                 }
                 Tree precedingNode;
                 if (i > 0)
                 {
-                    precedingNode = parent.children()[i - 1];
+                    precedingNode = parent.Children()[i - 1];
                 }
                 else
                 {
@@ -3866,9 +3866,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     {
                         initializeHelper(stack, precedingNode, root, matcher, nodesToSearch);
                     }
-                    if (! precedingNode.isLeaf())
+                    if (! precedingNode.IsLeaf())
                     {
-                        precedingNode = precedingNode.children()[0];
+                        precedingNode = precedingNode.Children()[0];
                     }
                     else
                     {

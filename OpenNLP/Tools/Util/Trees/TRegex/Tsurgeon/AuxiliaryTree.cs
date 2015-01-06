@@ -72,23 +72,23 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
             Tree clone;
             Tree newFoot = null;
-            if (node.isLeaf())
+            if (node.IsLeaf())
             {
                 if (node == foot)
                 {
                     // found the foot node; pass it up.
-                    clone = node.treeFactory().newTreeNode(node.Label(), new List<Tree>(0));
+                    clone = node.TreeFactory().NewTreeNode(node.Label(), new List<Tree>(0));
                     newFoot = clone;
                 }
                 else
                 {
-                    clone = node.treeFactory().newLeaf(node.Label().LabelFactory().NewLabel(node.Label()));
+                    clone = node.TreeFactory().NewLeaf(node.Label().LabelFactory().NewLabel(node.Label()));
                 }
             }
             else
             {
-                List<Tree> newChildren = new List<Tree>(node.children().Length);
-                foreach (Tree child in node.children())
+                List<Tree> newChildren = new List<Tree>(node.Children().Length);
+                foreach (Tree child in node.Children())
                 {
                     Tuple<Tree, Tree> newChild = copyHelper(child, newNamesToNodes);
                     newChildren.Add(newChild.Item1);
@@ -101,7 +101,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         newFoot = newChild.Item2;
                     }
                 }
-                clone = node.treeFactory().newTreeNode(node.Label().LabelFactory().NewLabel(node.Label()), newChildren);
+                clone = node.TreeFactory().NewTreeNode(node.Label().LabelFactory().NewLabel(node.Label()), newChildren);
             }
 
             if (nodesToNames.ContainsKey(node))
@@ -139,13 +139,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             Tree result = footNode;
             if (footNode != null)
             {
-                Tree newFootNode = footNode.treeFactory().newTreeNode(footNode.Label(), new List<Tree>());
+                Tree newFootNode = footNode.TreeFactory().NewTreeNode(footNode.Label(), new List<Tree>());
 
-                Tree parent = footNode.parent(t);
+                Tree parent = footNode.Parent(t);
                 if (parent != null)
                 {
-                    int i = parent.objectIndexOf(footNode);
-                    parent.setChild(i, newFootNode);
+                    int i = parent.ObjectIndexOf(footNode);
+                    parent.SetChild(i, newFootNode);
                 }
 
                 result = newFootNode;
@@ -156,7 +156,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         private static Tree findFootNodeHelper(Tree t)
         {
             Tree foundDtr = null;
-            if (t.isLeaf())
+            if (t.IsLeaf())
             {
                 var match = footNodeLabelPattern.Match(t.Label().Value());
                 if (match.Success)
@@ -169,7 +169,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     return null;
                 }
             }
-            foreach (Tree child in t.children())
+            foreach (Tree child in t.Children())
             {
                 Tree thisFoundDtr = findFootNodeHelper(child);
                 if (thisFoundDtr != null)
@@ -214,7 +214,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         private void initializeNamesNodesMaps(Tree t)
         {
-            foreach (Tree node in t.subTreeList())
+            foreach (Tree node in t.SubTreeList())
             {
                 var m = namePattern.Match(node.Label().Value());
                 if (m.Success)

@@ -67,9 +67,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return true if this object is a leaf
    */
 
-        public bool isLeaf()
+        public bool IsLeaf()
         {
-            return numChildren() == 0;
+            return NumChildren() == 0;
         }
 
 
@@ -81,9 +81,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The number of direct children of the tree node
    */
 
-        public int numChildren()
+        public int NumChildren()
         {
-            return children().Length;
+            return Children().Length;
         }
 
 
@@ -94,9 +94,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether the node heads a unary rewrite
    */
 
-        public bool isUnaryRewrite()
+        public bool IsUnaryRewrite()
         {
-            return numChildren() == 1;
+            return NumChildren() == 1;
         }
 
 
@@ -107,10 +107,10 @@ namespace OpenNLP.Tools.Util.Trees
    * @return true if the node is a preterminal; false otherwise
    */
 
-        public bool isPreTerminal()
+        public bool IsPreTerminal()
         {
-            Tree[] kids = children();
-            return (kids.Length == 1) && (kids[0].isLeaf());
+            Tree[] kids = Children();
+            return (kids.Length == 1) && (kids[0].IsLeaf());
         }
 
 
@@ -123,16 +123,16 @@ namespace OpenNLP.Tools.Util.Trees
    * @return true if the node is a prepreterminal; false otherwise
    */
 
-        public bool isPrePreTerminal()
+        public bool IsPrePreTerminal()
         {
-            Tree[] kids = children();
+            Tree[] kids = Children();
             if (kids.Length == 0)
             {
                 return false;
             }
             foreach (Tree kid in kids)
             {
-                if (! kid.isPreTerminal())
+                if (! kid.IsPreTerminal())
                 {
                     return false;
                 }
@@ -151,10 +151,10 @@ namespace OpenNLP.Tools.Util.Trees
    *         <code>false</code> otherwise
    */
 
-        public bool isPhrasal()
+        public bool IsPhrasal()
         {
-            Tree[] kids = children();
-            return !(kids == null || kids.Length == 0 || (kids.Length == 1 && kids[0].isLeaf()));
+            Tree[] kids = Children();
+            return !(kids == null || kids.Length == 0 || (kids.Length == 1 && kids[0].IsLeaf()));
         }
 
 
@@ -177,7 +177,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return false;
             }
-            Tree t = (Tree) o;
+            var t = (Tree) o;
             string value1 = this.Value();
             string value2 = t.Value();
             if (value1 != null || value2 != null)
@@ -187,8 +187,8 @@ namespace OpenNLP.Tools.Util.Trees
                     return false;
                 }
             }
-            Tree[] mykids = children();
-            Tree[] theirkids = t.children();
+            Tree[] mykids = Children();
+            Tree[] theirkids = t.Children();
             //if((mykids == null && (theirkids == null || theirkids.Length != 0)) || (theirkids == null && mykids.Length != 0) || (mykids.Length != theirkids.Length)){
             if (mykids.Length != theirkids.Length)
             {
@@ -217,7 +217,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             string v = this.Value();
             int hc = (v == null) ? 1 : v.GetHashCode();
-            Tree[] kids = children();
+            Tree[] kids = Children();
             for (int i = 0; i < kids.Length; i++)
             {
                 v = kids[i].Value();
@@ -242,9 +242,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Its index in the list or -1
    */
 
-        public int objectIndexOf(Tree tree)
+        public int ObjectIndexOf(Tree tree)
         {
-            Tree[] kids = children();
+            Tree[] kids = Children();
             for (int i = 0; i < kids.Length; i++)
             {
                 if (kids[i] == tree)
@@ -267,7 +267,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The children of the node
    * @see #getChildrenAsList()
    */
-        public abstract Tree[] children();
+        public abstract Tree[] Children();
 
 
         /**
@@ -281,9 +281,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The children of the node
    */
 
-        public List<Tree> getChildrenAsList()
+        public List<Tree> GetChildrenAsList()
         {
-            return new List<Tree>(children());
+            return new List<Tree>(Children());
         }
 
 
@@ -302,7 +302,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @see #setChildren(List)
    */
 
-        public virtual void setChildren(Tree[] children)
+        public virtual void SetChildren(Tree[] children)
         {
             throw new InvalidOperationException();
         }
@@ -326,11 +326,11 @@ namespace OpenNLP.Tools.Util.Trees
    * @see #setChildren(Tree[])
    */
 
-        public virtual void setChildren(List<Tree> childTreesList)
+        public virtual void SetChildren(List<Tree> childTreesList)
         {
             if (childTreesList == null || !childTreesList.Any())
             {
-                setChildren(EMPTY_TREE_ARRAY);
+                SetChildren(EMPTY_TREE_ARRAY);
             }
             else
             {
@@ -338,7 +338,7 @@ namespace OpenNLP.Tools.Util.Trees
       Tree[] childTrees = new Tree[leng];
       childTreesList.toArray(childTrees);
       setChildren(childTrees);*/
-                setChildren(childTreesList.ToArray());
+                SetChildren(childTreesList.ToArray());
             }
         }
 
@@ -389,7 +389,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param score The score
    */
 
-        public virtual void setScore(double score)
+        public virtual void SetScore(double score)
         {
             throw new InvalidOperationException(
                 "You must use a tree type that implements scoring in order call setScore()");
@@ -402,9 +402,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The first child
    */
 
-        public Tree firstChild()
+        public Tree FirstChild()
         {
-            Tree[] kids = children();
+            Tree[] kids = Children();
             if (kids.Length == 0)
             {
                 return null;
@@ -419,9 +419,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The last child
    */
 
-        public Tree lastChild()
+        public Tree LastChild()
         {
-            Tree[] kids = children();
+            Tree[] kids = Children();
             if (kids.Length == 0)
             {
                 return null;
@@ -440,18 +440,18 @@ namespace OpenNLP.Tools.Util.Trees
    *         chain, or else the current node
    */
 
-        public Tree upperMostUnary(Tree root)
+        public Tree UpperMostUnary(Tree root)
         {
-            Tree p = parent(root);
+            Tree p = Parent(root);
             if (p == null)
             {
                 return this;
             }
-            if (p.numChildren() > 1)
+            if (p.NumChildren() > 1)
             {
                 return this;
             }
-            return p.upperMostUnary(root);
+            return p.UpperMostUnary(root);
         }
 
         /**
@@ -459,9 +459,9 @@ namespace OpenNLP.Tools.Util.Trees
    *  The index starts at zero.
    */
 
-        public void setSpans()
+        public void SetSpans()
         {
-            constituentsNodes(0);
+            ConstituentsNodes(0);
         }
 
         /**
@@ -484,9 +484,9 @@ namespace OpenNLP.Tools.Util.Trees
    *         type <code>Constituent</code>
    */
 
-        public Set<Constituent> constituents()
+        public Set<Constituent> Constituents()
         {
-            return constituents(new SimpleConstituentFactory());
+            return Constituents(new SimpleConstituentFactory());
         }
 
 
@@ -500,9 +500,9 @@ namespace OpenNLP.Tools.Util.Trees
    *         (in the current implementation, a <code>HashSet</code>
    */
 
-        public Set<Constituent> constituents(ConstituentFactory cf)
+        public Set<Constituent> Constituents(ConstituentFactory cf)
         {
-            return constituents(cf, false);
+            return Constituents(cf, false);
         }
 
         /**
@@ -518,10 +518,10 @@ namespace OpenNLP.Tools.Util.Trees
    *         (in the current implementation, a <code>HashSet</code>
    */
 
-        public Set<Constituent> constituents(ConstituentFactory cf, int maxDepth)
+        public Set<Constituent> Constituents(ConstituentFactory cf, int maxDepth)
         {
             Set<Constituent> constituentsSet = new HashSet<Constituent>();
-            constituents(constituentsSet, 0, cf, false, null, maxDepth, 0);
+            Constituents(constituentsSet, 0, cf, false, null, maxDepth, 0);
             return constituentsSet;
         }
 
@@ -536,17 +536,17 @@ namespace OpenNLP.Tools.Util.Trees
    *         (in the current implementation, a <code>HashSet</code>
    */
 
-        public Set<Constituent> constituents(ConstituentFactory cf, bool charLevel)
+        public Set<Constituent> Constituents(ConstituentFactory cf, bool charLevel)
         {
             Set<Constituent> constituentsSet = new HashSet<Constituent>();
-            constituents(constituentsSet, 0, cf, charLevel, null, -1, 0);
+            Constituents(constituentsSet, 0, cf, charLevel, null, -1, 0);
             return constituentsSet;
         }
 
-        public Set<Constituent> constituents(ConstituentFactory cf, bool charLevel, Predicate<Tree> filter)
+        public Set<Constituent> Constituents(ConstituentFactory cf, bool charLevel, Predicate<Tree> filter)
         {
             Set<Constituent> constituentsSet = new HashSet<Constituent>();
-            constituents(constituentsSet, 0, cf, charLevel, filter, -1, 0);
+            Constituents(constituentsSet, 0, cf, charLevel, filter, -1, 0);
             return constituentsSet;
         }
 
@@ -558,9 +558,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The index of the right frontier of the constituent
    */
 
-        private int constituentsNodes(int left)
+        private int ConstituentsNodes(int left)
         {
-            if (isLeaf())
+            if (IsLeaf())
             {
                 if (Label() is CoreLabel)
                 {
@@ -575,9 +575,9 @@ namespace OpenNLP.Tools.Util.Trees
             int position = left;
 
             // enumerate through daughter trees
-            Tree[] kids = children();
+            Tree[] kids = Children();
             foreach (Tree kid in kids)
-                position = kid.constituentsNodes(position);
+                position = kid.ConstituentsNodes(position);
 
             //Parent span
             if (Label() is CoreLabel)
@@ -611,22 +611,22 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Index of right frontier of Constituent
    */
 
-        private int constituents(Set<Constituent> constituentsSet, int left, ConstituentFactory cf, bool charLevel,
+        private int Constituents(Set<Constituent> constituentsSet, int left, ConstituentFactory cf, bool charLevel,
             Predicate<Tree> filter, int maxDepth, int depth)
         {
 
-            if (isPreTerminal())
-                return left + ((charLevel) ? firstChild().Value().Length : 1);
+            if (IsPreTerminal())
+                return left + ((charLevel) ? FirstChild().Value().Length : 1);
 
             int position = left;
 
             // System.err.println("In bracketing trees left is " + left);
             // System.err.println("  label is " + label() +
             //                       "; num daughters: " + children().Length);
-            Tree[] kids = children();
+            Tree[] kids = Children();
             foreach (Tree kid in kids)
             {
-                position = kid.constituents(constituentsSet, position, cf, charLevel, filter, maxDepth, depth + 1);
+                position = kid.Constituents(constituentsSet, position, cf, charLevel, filter, maxDepth, depth + 1);
                 // System.err.println("  position went to " + position);
             }
 
@@ -634,7 +634,7 @@ namespace OpenNLP.Tools.Util.Trees
                 (maxDepth < 0 || depth <= maxDepth))
             {
                 //Compute span of entire tree at the end of recursion
-                constituentsSet.Add(cf.newConstituent(left, position - 1, Label(), Score()));
+                constituentsSet.Add(cf.NewConstituent(left, position - 1, Label(), Score()));
             }
             // System.err.println("  added " + label());
             return position;
@@ -650,16 +650,16 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A local tree
    */
 
-        public Tree localTree()
+        public Tree LocalTree()
         {
-            Tree[] kids = children();
-            Tree[] newKids = new Tree[kids.Length];
-            TreeFactory tf = treeFactory();
+            Tree[] kids = Children();
+            var newKids = new Tree[kids.Length];
+            TreeFactory tf = TreeFactory();
             for (int i = 0, n = kids.Length; i < n; i++)
             {
-                newKids[i] = tf.newTreeNode(kids[i].Label(), EMPTY_TREE_ARRAY.ToList());
+                newKids[i] = tf.NewTreeNode(kids[i].Label(), EMPTY_TREE_ARRAY.ToList());
             }
-            return tf.newTreeNode(Label(), newKids.ToList());
+            return tf.NewTreeNode(Label(), newKids.ToList());
         }
 
 
@@ -673,14 +673,14 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A set of local tree
    */
 
-        public Set<Tree> localTrees()
+        public Set<Tree> LocalTrees()
         {
-            Set<Tree> set = new Set<Tree>();
+            var set = new Set<Tree>();
             foreach (Tree st in this)
             {
-                if (st.isPhrasal())
+                if (st.IsPhrasal())
                 {
-                    set.Add(st.localTree());
+                    set.Add(st.LocalTree());
                 }
             }
             return set;
@@ -692,7 +692,7 @@ namespace OpenNLP.Tools.Util.Trees
    * than the default <code>StringBuffer</code> size of 16 to print
    * as an indented list of the whole tree, so we enlarge the default.
    */
-        private static readonly int initialPrintStringBuilderSize = 500;
+        private const int InitialPrintStringBuilderSize = 500;
 
         /**
    * Appends the printed form of a parse tree (as a bracketed String)
@@ -704,9 +704,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Returns the {@code StringBuilder} passed in with extra stuff in it
    */
 
-        public StringBuilder toStringBuilder(StringBuilder sb)
+        public StringBuilder ToStringBuilder(StringBuilder sb)
         {
-            return toStringBuilder(sb, true);
+            return ToStringBuilder(sb, true);
         }
 
         /**
@@ -720,9 +720,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Returns the {@code StringBuilder} passed in with extra stuff in it
    */
 
-        public StringBuilder toStringBuilder(StringBuilder sb, bool printOnlyLabelValue)
+        public StringBuilder ToStringBuilder(StringBuilder sb, bool printOnlyLabelValue)
         {
-            if (isLeaf())
+            if (IsLeaf())
             {
                 if (Label() != null)
                 {
@@ -755,13 +755,13 @@ namespace OpenNLP.Tools.Util.Trees
                         sb.Append(Label());
                     }
                 }
-                Tree[] kids = children();
+                Tree[] kids = Children();
                 if (kids != null)
                 {
                     foreach (Tree kid in kids)
                     {
                         sb.Append(' ');
-                        kid.toStringBuilder(sb, printOnlyLabelValue);
+                        kid.ToStringBuilder(sb, printOnlyLabelValue);
                     }
                 }
                 return sb.Append(')');
@@ -781,17 +781,17 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override string ToString()
         {
-            return toStringBuilder(new StringBuilder(Tree.initialPrintStringBuilderSize)).ToString();
+            return ToStringBuilder(new StringBuilder(Tree.InitialPrintStringBuilderSize)).ToString();
         }
 
 
-        private static readonly int indentIncr = 2;
+        private const int IndentIncr = 2;
 
 
-        private static string makeIndentString(int indent)
+        private static string MakeIndentString(int indent)
         {
-            StringBuilder sb = new StringBuilder(indent);
-            for (int i = 0; i < indentIncr; i++)
+            var sb = new StringBuilder(indent);
+            for (int i = 0; i < IndentIncr; i++)
             {
                 sb.Append(' ');
             }
@@ -965,7 +965,7 @@ namespace OpenNLP.Tools.Util.Trees
    *  @return The label of a tree node as a String
    */
 
-        public virtual string nodeString()
+        public virtual string NodeString()
         {
             return (Value() == null) ? "" : Value();
         }
@@ -1093,17 +1093,17 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the depth
    */
 
-        public int depth()
+        public int Depth()
         {
-            if (isLeaf())
+            if (IsLeaf())
             {
                 return 0;
             }
             int maxDepth = 0;
-            Tree[] kids = children();
+            Tree[] kids = Children();
             foreach (Tree kid in kids)
             {
-                int curDepth = kid.depth();
+                int curDepth = kid.Depth();
                 if (curDepth > maxDepth)
                 {
                     maxDepth = curDepth;
@@ -1120,9 +1120,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the depth
    */
 
-        public int depth(Tree node)
+        public int Depth(Tree node)
         {
-            Tree p = node.parent(this);
+            Tree p = node.Parent(this);
             if (this == node)
             {
                 return 0;
@@ -1134,7 +1134,7 @@ namespace OpenNLP.Tools.Util.Trees
             int depth = 1;
             while (this != p)
             {
-                p = p.parent(this);
+                p = p.Parent(this);
                 depth++;
             }
             return depth;
@@ -1149,16 +1149,16 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The head tree leaf if any, else <code>null</code>
    */
 
-        public Tree headTerminal(HeadFinder hf, Tree parent)
+        public Tree HeadTerminal(HeadFinder hf, Tree parent)
         {
-            if (isLeaf())
+            if (IsLeaf())
             {
                 return this;
             }
             Tree head = hf.determineHead(this, parent);
             if (head != null)
             {
-                return head.headTerminal(hf, parent);
+                return head.HeadTerminal(hf, parent);
             }
             //System.err.println("Head is null: " + this);
             return null;
@@ -1171,9 +1171,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The head tree leaf if any, else <code>null</code>
    */
 
-        public Tree headTerminal(HeadFinder hf)
+        public Tree HeadTerminal(HeadFinder hf)
         {
-            return headTerminal(hf, null);
+            return HeadTerminal(hf, null);
         }
 
 
@@ -1188,13 +1188,13 @@ namespace OpenNLP.Tools.Util.Trees
    * @throws IllegalArgumentException if called on a leaf node
    */
 
-        public Tree headPreTerminal(HeadFinder hf)
+        public Tree HeadPreTerminal(HeadFinder hf)
         {
-            if (isPreTerminal())
+            if (IsPreTerminal())
             {
                 return this;
             }
-            else if (isLeaf())
+            else if (IsLeaf())
             {
                 throw new ArgumentException("Called headPreTerminal on a leaf: " + this);
             }
@@ -1203,7 +1203,7 @@ namespace OpenNLP.Tools.Util.Trees
                 Tree head = hf.determineHead(this);
                 if (head != null)
                 {
-                    return head.headPreTerminal(hf);
+                    return head.HeadPreTerminal(hf);
                 }
                 //System.err.println("Head preterminal is null: " + this);
                 return null;
@@ -1217,29 +1217,29 @@ namespace OpenNLP.Tools.Util.Trees
    * if this is ever not true.
    */
 
-        public void percolateHeadAnnotations(HeadFinder hf)
+        public void PercolateHeadAnnotations(HeadFinder hf)
         {
             if (!(Label() is CoreLabel))
             {
                 throw new ArgumentException("Expected CoreLabels in the trees");
             }
-            CoreLabel nodeLabel = (CoreLabel) Label();
+            var nodeLabel = (CoreLabel) Label();
 
-            if (isLeaf())
+            if (IsLeaf())
             {
                 return;
             }
 
-            if (isPreTerminal())
+            if (IsPreTerminal())
             {
-                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), children()[0]);
+                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), Children()[0]);
                 nodeLabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation), this);
                 return;
             }
 
-            foreach (Tree kid in children())
+            foreach (Tree kid in Children())
             {
-                kid.percolateHeadAnnotations(hf);
+                kid.PercolateHeadAnnotations(hf);
             }
 
             /*readonly */
@@ -1248,14 +1248,14 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 throw new NullReferenceException("HeadFinder " + hf + " returned null for " + this);
             }
-            else if (head.isLeaf())
+            else if (head.IsLeaf())
             {
                 nodeLabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), head);
-                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation), head.parent(this));
+                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation), head.Parent(this));
             }
-            else if (head.isPreTerminal())
+            else if (head.IsPreTerminal())
             {
-                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), head.children()[0]);
+                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), head.Children()[0]);
                 nodeLabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation), head);
             }
             else
@@ -1264,7 +1264,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     throw new SystemException("Horrible bug");
                 }
-                CoreLabel headLabel = (CoreLabel) head.Label();
+                var headLabel = (CoreLabel) head.Label();
                 nodeLabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation),
                     headLabel.Get(typeof (TreeCoreAnnotations.HeadWordAnnotation)));
                 nodeLabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation),
@@ -1284,15 +1284,15 @@ namespace OpenNLP.Tools.Util.Trees
    * @param hf The headfinding algorithm to use
    */
 
-        public virtual void percolateHeads(HeadFinder hf)
+        public virtual void PercolateHeads(HeadFinder hf)
         {
             Label nodeLabel = Label();
-            if (isLeaf())
+            if (IsLeaf())
             {
                 // Sanity check: word() is usually set by the TreeReader.
                 if (nodeLabel is HasWord)
                 {
-                    HasWord w = (HasWord) nodeLabel;
+                    var w = (HasWord) nodeLabel;
                     if (w.GetWord() == null)
                     {
                         w.SetWord(nodeLabel.Value());
@@ -1302,9 +1302,9 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else
             {
-                foreach (Tree kid in children())
+                foreach (Tree kid in Children())
                 {
-                    kid.percolateHeads(hf);
+                    kid.PercolateHeads(hf);
                 }
 
                 /*readonly*/
@@ -1316,7 +1316,7 @@ namespace OpenNLP.Tools.Util.Trees
 
                     // Set the head tag.
                     string headTag = (headLabel is HasTag) ? ((HasTag) headLabel).Tag() : null;
-                    if (headTag == null && head.isLeaf())
+                    if (headTag == null && head.IsLeaf())
                     {
                         // below us is a leaf
                         headTag = nodeLabel.Value();
@@ -1324,7 +1324,7 @@ namespace OpenNLP.Tools.Util.Trees
 
                     // Set the head word
                     string headWord = (headLabel is HasWord) ? ((HasWord) headLabel).GetWord() : null;
-                    if (headWord == null && head.isLeaf())
+                    if (headWord == null && head.IsLeaf())
                     {
                         // below us is a leaf
                         // this might be useful despite case for leaf above in
@@ -1366,14 +1366,14 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Set of dependencies (each a Dependency)
    */
 
-        public Set<Dependency<Label, Label, Object>> dependencies()
+        public Set<Dependency<Label, Label, Object>> Dependencies()
         {
-            return dependencies(Filters.AcceptFilter<Dependency<Label, Label, Object>>());
+            return Dependencies(Filters.AcceptFilter<Dependency<Label, Label, Object>>());
         }
 
-        public Set<Dependency<Label, Label, Object>> dependencies(Predicate<Dependency<Label, Label, Object>> f)
+        public Set<Dependency<Label, Label, Object>> Dependencies(Predicate<Dependency<Label, Label, Object>> f)
         {
-            return dependencies(f, true, true, false);
+            return Dependencies(f, true, true, false);
         }
 
         /**
@@ -1386,7 +1386,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param copyPosTag
    */
 
-        private static Label makeDependencyLabel(Label oldLabel, bool copyLabel, bool copyIndex, bool copyPosTag)
+        private static Label MakeDependencyLabel(Label oldLabel, bool copyLabel, bool copyIndex, bool copyPosTag)
         {
             if (! copyLabel)
                 return oldLabel;
@@ -1419,19 +1419,19 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Set of dependencies (each a Dependency)
    */
 
-        public Set<Dependency<Label, Label, Object>> dependencies(Predicate<Dependency<Label, Label, Object>> f,
+        public Set<Dependency<Label, Label, Object>> Dependencies(Predicate<Dependency<Label, Label, Object>> f,
             bool isConcrete, bool copyLabel, bool copyPosTag)
         {
-            Set<Dependency<Label, Label, Object>> deps = new Set<Dependency<Label, Label, object>>();
+            var deps = new Set<Dependency<Label, Label, object>>();
             foreach (Tree node in this)
             {
                 // Skip leaves and unary re-writes
-                if (node.isLeaf() || node.children().Length < 2)
+                if (node.IsLeaf() || node.Children().Length < 2)
                 {
                     continue;
                 }
                 // Create the head label (percolateHeads has already been executed)
-                Label headLabel = makeDependencyLabel(node.Label(), copyLabel, isConcrete, copyPosTag);
+                Label headLabel = MakeDependencyLabel(node.Label(), copyLabel, isConcrete, copyPosTag);
                 string headWord = ((HasWord) headLabel).GetWord();
                 if (headWord == null)
                 {
@@ -1441,9 +1441,9 @@ namespace OpenNLP.Tools.Util.Trees
 
                 // every child with a different (or repeated) head is an argument
                 bool seenHead = false;
-                foreach (Tree child in node.children())
+                foreach (Tree child in node.Children())
                 {
-                    Label depLabel = makeDependencyLabel(child.Label(), copyLabel, isConcrete, copyPosTag);
+                    Label depLabel = MakeDependencyLabel(child.Label(), copyLabel, isConcrete, copyPosTag);
                     string depWord = ((HasWord) depLabel).GetWord();
                     if (depWord == null)
                     {
@@ -1487,7 +1487,7 @@ namespace OpenNLP.Tools.Util.Trees
    *           and value(), the last two of which are identical).
    */
 
-        public Set<Dependency<Label, Label, Object>> mapDependencies(Predicate<Dependency<Label, Label, Object>> f,
+        public Set<Dependency<Label, Label, Object>> MapDependencies(Predicate<Dependency<Label, Label, Object>> f,
             HeadFinder hf)
         {
             if (hf == null)
@@ -1497,25 +1497,25 @@ namespace OpenNLP.Tools.Util.Trees
             Set<Dependency<Label, Label, Object>> deps = new HashSet<Dependency<Label, Label, object>>();
             foreach (Tree node in this)
             {
-                if (node.isLeaf() || node.children().Length < 2)
+                if (node.IsLeaf() || node.Children().Length < 2)
                 {
                     continue;
                 }
                 // Label l = node.label();
                 // System.err.println("doing kids of label: " + l);
                 //Tree hwt = node.headPreTerminal(hf);
-                Tree hwt = node.headTerminal(hf);
+                Tree hwt = node.HeadTerminal(hf);
                 // System.err.println("have hf, found head preterm: " + hwt);
                 if (hwt == null)
                 {
                     throw new InvalidDataException("mapDependencies: HeadFinder failed!");
                 }
 
-                foreach (Tree child in node.children())
+                foreach (Tree child in node.Children())
                 {
                     // Label dl = child.label();
                     // Tree dwt = child.headPreTerminal(hf);
-                    Tree dwt = child.headTerminal(hf);
+                    Tree dwt = child.HeadTerminal(hf);
                     if (dwt == null)
                     {
                         throw new InvalidDataException("mapDependencies: HeadFinder failed!");
@@ -1553,14 +1553,14 @@ namespace OpenNLP.Tools.Util.Trees
    *           and value(), the last two of which are identical).
    */
 
-        public Set<Dependency<Label, Label, Object>> mapDependencies(Predicate<Dependency<Label, Label, Object>> f,
+        public Set<Dependency<Label, Label, Object>> MapDependencies(Predicate<Dependency<Label, Label, Object>> f,
             HeadFinder hf, string rootName)
         {
-            Set<Dependency<Label, Label, Object>> deps = mapDependencies(f, hf);
+            Set<Dependency<Label, Label, Object>> deps = MapDependencies(f, hf);
             if (rootName != null)
             {
-                Label hl = headTerminal(hf).Label();
-                CoreLabel rl = new CoreLabel();
+                Label hl = HeadTerminal(hf).Label();
+                var rl = new CoreLabel();
                 rl.Set(typeof (CoreAnnotations.TextAnnotation), rootName);
                 rl.Set(typeof (CoreAnnotations.IndexAnnotation), 0);
                 deps.Add(new NamedDependency(rl, hl, rootName));
@@ -1578,9 +1578,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a <code>List</code> of the data in the tree's leaves.
    */
 
-        public List<Label> yield()
+        public List<Label> Yield()
         {
-            return yield(new List<Label>());
+            return Yield(new List<Label>());
         }
 
         /**
@@ -1600,54 +1600,54 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a <code>List</code> of the data in the tree's leaves.
    */
 
-        public List<Label> yield(List<Label> y)
+        public List<Label> Yield(List<Label> y)
         {
-            if (isLeaf())
+            if (IsLeaf())
             {
                 y.Add(Label());
 
             }
             else
             {
-                Tree[] kids = children();
+                Tree[] kids = Children();
                 foreach (Tree kid in kids)
                 {
-                    kid.yield(y);
+                    kid.Yield(y);
                 }
             }
             return y;
         }
 
-        public List<Word> yieldWords()
+        public List<Word> YieldWords()
         {
-            return yieldWords(new List<Word>());
+            return YieldWords(new List<Word>());
         }
 
-        public List<Word> yieldWords(List<Word> y)
+        public List<Word> YieldWords(List<Word> y)
         {
-            if (isLeaf())
+            if (IsLeaf())
             {
                 y.Add(new Word(Label()));
             }
             else
             {
-                foreach (Tree kid in children())
+                foreach (Tree kid in Children())
                 {
-                    kid.yieldWords(y);
+                    kid.YieldWords(y);
                 }
             }
             return y;
         }
 
-        public /*<X extends HasWord>*/ List<HasWord> yieldHasWord()
+        public /*<X extends HasWord>*/ List<HasWord> YieldHasWord()
         {
-            return yieldHasWord(new List<HasWord>());
+            return YieldHasWord(new List<HasWord>());
         }
 
         //@SuppressWarnings("unchecked")
-        public /*<X extends HasWord>*/ List<HasWord> yieldHasWord(List<HasWord> y)
+        public /*<X extends HasWord>*/ List<HasWord> YieldHasWord(List<HasWord> y)
         {
-            if (isLeaf())
+            if (IsLeaf())
             {
                 Label lab = Label();
                 // cdm: this is new hacked in stuff in Mar 2007 so we can now have a
@@ -1660,7 +1660,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     if (lab is CoreLabel)
                     {
-                        CoreLabel cl = (CoreLabel) lab;
+                        var cl = (CoreLabel) lab;
                         if (cl.GetWord() == null)
                             cl.SetWord(cl.Value());
                         y.Add((HasWord) cl);
@@ -1679,10 +1679,10 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else
             {
-                Tree[] kids = children();
+                Tree[] kids = Children();
                 foreach (Tree kid in kids)
                 {
-                    kid.yield(y);
+                    kid.Yield(y);
                 }
             }
             return y;
@@ -1703,13 +1703,13 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a <code>List</code> of the data in the tree's leaves.
    */
         //@SuppressWarnings("unchecked")
-        public /*<T>*/ List<T> yield<T>(List<T> y)
+        public /*<T>*/ List<T> Yield<T>(List<T> y)
         {
-            if (isLeaf())
+            if (IsLeaf())
             {
                 if (Label() is HasWord)
                 {
-                    HasWord hw = (HasWord) Label();
+                    var hw = (HasWord) Label();
                     hw.SetWord(Label().Value());
                 }
                 y.Add((T) Label());
@@ -1717,10 +1717,10 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else
             {
-                Tree[] kids = children();
+                Tree[] kids = Children();
                 foreach (Tree kid in kids)
                 {
-                    kid.yield(y);
+                    kid.Yield(y);
                 }
             }
             return y;
@@ -1736,14 +1736,14 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a <code>List</code> of the data in the tree's leaves.
    */
 
-        public List<Ling.TaggedWord> taggedYield()
+        public List<Ling.TaggedWord> TaggedYield()
         {
-            return taggedYield(new List<Ling.TaggedWord>());
+            return TaggedYield(new List<Ling.TaggedWord>());
         }
 
-        public List<LabeledWord> labeledYield()
+        public List<LabeledWord> LabeledYield()
         {
-            return labeledYield(new List<LabeledWord>());
+            return LabeledYield(new List<LabeledWord>());
         }
 
         /**
@@ -1764,11 +1764,11 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a <code>List</code> of the data in the tree's leaves.
    */
 
-        public /*<X extends List<TaggedWord>>*/ List<Ling.TaggedWord> taggedYield(List<Ling.TaggedWord> ty)
+        public /*<X extends List<TaggedWord>>*/ List<Ling.TaggedWord> TaggedYield(List<Ling.TaggedWord> ty)
         {
-            Tree[] kids = children();
+            Tree[] kids = Children();
             // this inlines the content of isPreTerminal()
-            if (kids.Length == 1 && kids[0].isLeaf())
+            if (kids.Length == 1 && kids[0].IsLeaf())
             {
                 ty.Add(new Ling.TaggedWord(kids[0].Label(), Label()));
             }
@@ -1776,17 +1776,17 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 foreach (Tree kid in kids)
                 {
-                    kid.taggedYield(ty);
+                    kid.TaggedYield(ty);
                 }
             }
             return ty;
         }
 
-        public List<LabeledWord> labeledYield(List<LabeledWord> ty)
+        public List<LabeledWord> LabeledYield(List<LabeledWord> ty)
         {
-            Tree[] kids = children();
+            Tree[] kids = Children();
             // this inlines the content of isPreTerminal()
-            if (kids.Length == 1 && kids[0].isLeaf())
+            if (kids.Length == 1 && kids[0].IsLeaf())
             {
                 ty.Add(new LabeledWord(kids[0].Label(), Label()));
             }
@@ -1794,30 +1794,30 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 foreach (Tree kid in kids)
                 {
-                    kid.labeledYield(ty);
+                    kid.LabeledYield(ty);
                 }
             }
             return ty;
         }
 
-        public List<CoreLabel> taggedLabeledYield()
+        public List<CoreLabel> TaggedLabeledYield()
         {
-            List<CoreLabel> ty = new List<CoreLabel>();
-            taggedLabeledYield(ty, 0);
+            var ty = new List<CoreLabel>();
+            TaggedLabeledYield(ty, 0);
             return ty;
         }
 
-        private int taggedLabeledYield(List<CoreLabel> ty, int termIdx)
+        private int TaggedLabeledYield(List<CoreLabel> ty, int termIdx)
         {
-            if (isPreTerminal())
+            if (IsPreTerminal())
             {
-                CoreLabel taggedWord = new CoreLabel();
+                var taggedWord = new CoreLabel();
                 /*readonly*/
                 string tag = (Value() == null) ? "" : Value();
                 taggedWord.SetValue(tag);
                 taggedWord.SetTag(tag);
                 taggedWord.SetIndex(termIdx);
-                taggedWord.SetWord(firstChild().Value());
+                taggedWord.SetWord(FirstChild().Value());
                 ty.Add(taggedWord);
 
                 return termIdx + 1;
@@ -1825,8 +1825,10 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else
             {
-                foreach (Tree kid in getChildrenAsList())
-                    termIdx = kid.taggedLabeledYield(ty, termIdx);
+                foreach (Tree kid in GetChildrenAsList())
+                {
+                    termIdx = kid.TaggedLabeledYield(ty, termIdx);
+                }
             }
 
             return termIdx;
@@ -1841,9 +1843,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a {@code List} of the data in the tree's pre-leaves.
    */
 
-        public List<Label> preTerminalYield()
+        public List<Label> PreTerminalYield()
         {
-            return preTerminalYield(new List<Label>());
+            return PreTerminalYield(new List<Label>());
         }
 
 
@@ -1859,18 +1861,18 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a <code>List</code> of the data in the tree's pre-leaves.
    */
 
-        public List<Label> preTerminalYield(List<Label> y)
+        public List<Label> PreTerminalYield(List<Label> y)
         {
-            if (isPreTerminal())
+            if (IsPreTerminal())
             {
                 y.Add(Label());
             }
             else
             {
-                Tree[] kids = children();
+                Tree[] kids = Children();
                 foreach (Tree kid in kids)
                 {
-                    kid.preTerminalYield(y);
+                    kid.PreTerminalYield(y);
                 }
             }
             return y;
@@ -1884,9 +1886,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a <code>List</code> of the leaves.
    */
 
-        public /*<T extends Tree>*/ List<Tree> getLeaves()
+        public /*<T extends Tree>*/ List<Tree> GetLeaves()
         {
-            return getLeaves(new List<Tree>());
+            return GetLeaves(new List<Tree>());
         }
 
         /**
@@ -1898,17 +1900,17 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a <code>List</code> of the leaves.
    */
         //@SuppressWarnings("unchecked")
-        public /*<T extends Tree>*/ List<Tree> getLeaves(List<Tree> list)
+        public /*<T extends Tree>*/ List<Tree> GetLeaves(List<Tree> list)
         {
-            if (isLeaf())
+            if (IsLeaf())
             {
                 list.Add((Tree) this);
             }
             else
             {
-                foreach (Tree kid in children())
+                foreach (Tree kid in Children())
                 {
-                    kid.getLeaves(list);
+                    kid.GetLeaves(list);
                 }
             }
             return list;
@@ -1925,9 +1927,9 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public ICollection<Label> Labels()
         {
-            Set<Label> n = new Set<Label>();
+            var n = new Set<Label>();
             n.Add(Label());
-            Tree[] kids = children();
+            Tree[] kids = Children();
             foreach (Tree kid in kids)
             {
                 n.AddAll(kid.Labels());
@@ -1957,9 +1959,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A flattened version of this tree.
    */
 
-        public Tree flatten()
+        public Tree Flatten()
         {
-            return flatten(treeFactory());
+            return Flatten(TreeFactory());
         }
 
         /**
@@ -1979,26 +1981,26 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A flattened version of this tree.
    */
 
-        public Tree flatten(TreeFactory tf)
+        public Tree Flatten(TreeFactory tf)
         {
-            if (isLeaf() || isPreTerminal())
+            if (IsLeaf() || IsPreTerminal())
             {
                 return this;
             }
-            Tree[] kids = children();
-            List<Tree> newChildren = new List<Tree>(kids.Length);
+            Tree[] kids = Children();
+            var newChildren = new List<Tree>(kids.Length);
             foreach (Tree child in kids)
             {
-                if (child.isLeaf() || child.isPreTerminal())
+                if (child.IsLeaf() || child.IsPreTerminal())
                 {
                     newChildren.Add(child);
                 }
                 else
                 {
-                    Tree newChild = child.flatten(tf);
+                    Tree newChild = child.Flatten(tf);
                     if (Label().Equals(newChild.Label()))
                     {
-                        newChildren.AddRange(newChild.getChildrenAsList());
+                        newChildren.AddRange(newChild.GetChildrenAsList());
                     }
                     else
                     {
@@ -2006,7 +2008,7 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                 }
             }
-            return tf.newTreeNode(Label(), newChildren);
+            return tf.NewTreeNode(Label(), newChildren);
         }
 
 
@@ -2023,9 +2025,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the <code>Set</code> of all subtrees in the tree.
    */
 
-        public Set<Tree> subTrees()
+        public Set<Tree> SubTrees()
         {
-            return subTrees(new HashSet<Tree>());
+            return SubTrees(new HashSet<Tree>());
         }
 
         /**
@@ -2041,9 +2043,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the <code>List</code> of all subtrees in the tree.
    */
 
-        public List<Tree> subTreeList()
+        public List<Tree> SubTreeList()
         {
-            return subTrees(new List<Tree>());
+            return SubTrees(new List<Tree>());
         }
 
 
@@ -2060,13 +2062,13 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The collection parameter with the subtrees added.
    */
 
-        public /*<T extends Collection<Tree>>*/ T subTrees<T>(T n) where T : ICollection<Tree>
+        public /*<T extends Collection<Tree>>*/ T SubTrees<T>(T n) where T : ICollection<Tree>
         {
             n.Add(this);
-            Tree[] kids = children();
+            Tree[] kids = Children();
             foreach (Tree kid in kids)
             {
-                kid.subTrees(n);
+                kid.SubTrees(n);
             }
             return n;
         }
@@ -2080,9 +2082,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A deep copy of the tree structure and its labels
    */
 
-        public Tree deepCopy()
+        public Tree DeepCopy()
         {
-            return deepCopy(treeFactory());
+            return DeepCopy(TreeFactory());
         }
 
 
@@ -2100,9 +2102,9 @@ namespace OpenNLP.Tools.Util.Trees
    *         Labels of the original tree.
    */
 
-        public Tree deepCopy(TreeFactory tf)
+        public Tree DeepCopy(TreeFactory tf)
         {
-            return deepCopy(tf, Label().LabelFactory());
+            return DeepCopy(tf, Label().LabelFactory());
         }
 
 
@@ -2122,21 +2124,21 @@ namespace OpenNLP.Tools.Util.Trees
    */
 
         //@SuppressWarnings({"unchecked"})
-        public Tree deepCopy(TreeFactory tf, LabelFactory lf)
+        public Tree DeepCopy(TreeFactory tf, LabelFactory lf)
         {
             Label lab = lf.NewLabel(Label());
-            if (isLeaf())
+            if (IsLeaf())
             {
-                return tf.newLeaf(lab);
+                return tf.NewLeaf(lab);
             }
-            Tree[] kids = children();
+            Tree[] kids = Children();
             // NB: The below list may not be of type Tree but TreeGraphNode, so we leave it untyped
-            List<Tree> newKids = new List<Tree>(kids.Length);
+            var newKids = new List<Tree>(kids.Length);
             foreach (Tree kid in kids)
             {
-                newKids.Add(kid.deepCopy(tf, lf));
+                newKids.Add(kid.DeepCopy(tf, lf));
             }
-            return tf.newTreeNode(lab, newKids);
+            return tf.NewTreeNode(lab, newKids);
         }
 
 
@@ -2149,9 +2151,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A deep copy of the tree structure (but not its labels).
    */
 
-        public Tree treeSkeletonCopy()
+        public Tree TreeSkeletonCopy()
         {
-            return treeSkeletonCopy(treeFactory());
+            return TreeSkeletonCopy(TreeFactory());
         }
 
 
@@ -2166,22 +2168,22 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A deep copy of the tree structure (but not its labels).
    */
 
-        public Tree treeSkeletonCopy(TreeFactory tf)
+        public Tree TreeSkeletonCopy(TreeFactory tf)
         {
             Tree t;
-            if (isLeaf())
+            if (IsLeaf())
             {
-                t = tf.newLeaf(Label());
+                t = tf.NewLeaf(Label());
             }
             else
             {
-                Tree[] kids = children();
-                List<Tree> newKids = new List<Tree>(kids.Length);
+                Tree[] kids = Children();
+                var newKids = new List<Tree>(kids.Length);
                 foreach (Tree kid in kids)
                 {
-                    newKids.Add(kid.treeSkeletonCopy(tf));
+                    newKids.Add(kid.TreeSkeletonCopy(tf));
                 }
-                t = tf.newTreeNode(Label(), newKids);
+                t = tf.NewTreeNode(Label(), newKids);
             }
             return t;
         }
@@ -2198,9 +2200,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a transformation of this <code>Tree</code>
    */
 
-        public Tree transform( /*readonly*/ TreeTransformer transformer)
+        public Tree Transform( /*readonly*/ TreeTransformer transformer)
         {
-            return transform(transformer, treeFactory());
+            return Transform(transformer, TreeFactory());
         }
 
 
@@ -2217,24 +2219,24 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a transformation of this <code>Tree</code>
    */
 
-        public Tree transform( /*readonly*/ TreeTransformer transformer, /*readonly */TreeFactory tf)
+        public Tree Transform( /*readonly*/ TreeTransformer transformer, /*readonly */TreeFactory tf)
         {
             Tree t;
-            if (isLeaf())
+            if (IsLeaf())
             {
-                t = tf.newLeaf(Label());
+                t = tf.NewLeaf(Label());
             }
             else
             {
-                Tree[] kids = children();
-                List<Tree> newKids = new List<Tree>(kids.Length);
+                Tree[] kids = Children();
+                var newKids = new List<Tree>(kids.Length);
                 foreach (Tree kid in kids)
                 {
-                    newKids.Add(kid.transform(transformer, tf));
+                    newKids.Add(kid.Transform(transformer, tf));
                 }
-                t = tf.newTreeNode(Label(), newKids);
+                t = tf.NewTreeNode(Label(), newKids);
             }
-            return transformer.transformTree(t);
+            return transformer.TransformTree(t);
         }
 
 
@@ -2248,9 +2250,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a filtered copy of the tree
    */
 
-        public Tree spliceOut( /*readonly*/ Predicate<Tree> nodeFilter)
+        public Tree SpliceOut( /*readonly*/ Predicate<Tree> nodeFilter)
         {
-            return spliceOut(nodeFilter, treeFactory());
+            return SpliceOut(nodeFilter, TreeFactory());
         }
 
 
@@ -2272,9 +2274,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a filtered copy of the tree.
    */
 
-        public Tree spliceOut( /*readonly*/ Predicate<Tree> nodeFilter, /*readonly */TreeFactory tf)
+        public Tree SpliceOut( /*readonly*/ Predicate<Tree> nodeFilter, /*readonly */TreeFactory tf)
         {
-            List<Tree> l = spliceOutHelper(nodeFilter, tf);
+            List<Tree> l = SpliceOutHelper(nodeFilter, tf);
             if (!l.Any())
             {
                 return null;
@@ -2284,18 +2286,18 @@ namespace OpenNLP.Tools.Util.Trees
                 return l[0];
             }
             // for a forest, make a new root
-            return tf.newTreeNode((Label) null, l);
+            return tf.NewTreeNode((Label) null, l);
         }
 
 
-        private List<Tree> spliceOutHelper(Predicate<Tree> nodeFilter, TreeFactory tf)
+        private List<Tree> SpliceOutHelper(Predicate<Tree> nodeFilter, TreeFactory tf)
         {
             // recurse over all children first
-            Tree[] kids = children();
-            List<Tree> l = new List<Tree>();
+            Tree[] kids = Children();
+            var l = new List<Tree>();
             foreach (Tree kid in kids)
             {
-                l.AddRange(kid.spliceOutHelper(nodeFilter, tf));
+                l.AddRange(kid.SpliceOutHelper(nodeFilter, tf));
             }
             // check if this node is being spliced out
             if (nodeFilter(this))
@@ -2304,11 +2306,11 @@ namespace OpenNLP.Tools.Util.Trees
                 Tree t;
                 if (l.Any())
                 {
-                    t = tf.newTreeNode(Label(), l);
+                    t = tf.NewTreeNode(Label(), l);
                 }
                 else
                 {
-                    t = tf.newLeaf(Label());
+                    t = tf.NewLeaf(Label());
                 }
                 l = new List<Tree>(1);
                 l.Add(t);
@@ -2343,9 +2345,9 @@ namespace OpenNLP.Tools.Util.Trees
    *         <code>null</code> if the root node of the tree is filtered
    */
 
-        public Tree prune( /*readonly*/ Predicate<Tree> filter)
+        public Tree Prune( /*readonly*/ Predicate<Tree> filter)
         {
-            return prune(filter, treeFactory());
+            return Prune(filter, TreeFactory());
         }
 
 
@@ -2362,7 +2364,7 @@ namespace OpenNLP.Tools.Util.Trees
    *         <code>null</code> if the root node of the tree is filtered
    */
 
-        public Tree prune(Predicate<Tree> filter, TreeFactory tf)
+        public Tree Prune(Predicate<Tree> filter, TreeFactory tf)
         {
             // is the current node to be pruned?
             if (! filter(this))
@@ -2370,11 +2372,11 @@ namespace OpenNLP.Tools.Util.Trees
                 return null;
             }
             // if not, recurse over all children
-            List<Tree> l = new List<Tree>();
-            Tree[] kids = children();
+            var l = new List<Tree>();
+            Tree[] kids = Children();
             foreach (Tree kid in kids)
             {
-                Tree prunedChild = kid.prune(filter, tf);
+                Tree prunedChild = kid.Prune(filter, tf);
                 if (prunedChild != null)
                 {
                     l.Add(prunedChild);
@@ -2386,11 +2388,11 @@ namespace OpenNLP.Tools.Util.Trees
                 return null;
             }
             // if we're still ok, copy the node
-            if (isLeaf())
+            if (IsLeaf())
             {
-                return tf.newLeaf(Label());
+                return tf.NewLeaf(Label());
             }
-            return tf.newTreeNode(Label(), l);
+            return tf.NewTreeNode(Label(), l);
         }
 
         /**
@@ -2401,12 +2403,12 @@ namespace OpenNLP.Tools.Util.Trees
    * node is either "ROOT" or empty, else this
    */
 
-        public Tree skipRoot()
+        public Tree SkipRoot()
         {
-            if (!isUnaryRewrite())
+            if (!IsUnaryRewrite())
                 return this;
             string lab = Label().Value();
-            return (lab == null || !lab.Any() || "ROOT".Equals(lab)) ? firstChild() : this;
+            return (lab == null || !lab.Any() || "ROOT".Equals(lab)) ? FirstChild() : this;
         }
 
         /**
@@ -2415,7 +2417,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return A factory to produce Trees
    */
-        public abstract TreeFactory treeFactory();
+        public abstract TreeFactory TreeFactory();
 
 
         /**
@@ -2428,7 +2430,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @see Tree#parent(Tree)
    */
 
-        public virtual Tree parent()
+        public virtual Tree Parent()
         {
             throw new InvalidOperationException();
         }
@@ -2447,14 +2449,14 @@ namespace OpenNLP.Tools.Util.Trees
    *         else <code>null</code>
    */
 
-        public Tree parent(Tree root)
+        public Tree Parent(Tree root)
         {
-            Tree[] kids = root.children();
-            return parentHelper(root, kids, this);
+            Tree[] kids = root.Children();
+            return ParentHelper(root, kids, this);
         }
 
 
-        private static Tree parentHelper(Tree parent, Tree[] kids, Tree node)
+        private static Tree ParentHelper(Tree parent, Tree[] kids, Tree node)
         {
             foreach (Tree kid in kids)
             {
@@ -2462,7 +2464,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     return parent;
                 }
-                Tree ret = node.parent(kid);
+                Tree ret = node.Parent(kid);
                 if (ret != null)
                 {
                     return ret;
@@ -2483,13 +2485,13 @@ namespace OpenNLP.Tools.Util.Trees
    * @see #depth()
    */
         //@Override
-        public int size()
+        public int Size()
         {
             int size = 1;
-            Tree[] kids = children();
+            Tree[] kids = Children();
             foreach (Tree kid in kids)
             {
-                size += kid.size();
+                size += kid.Size();
             }
             return size;
         }
@@ -2505,7 +2507,7 @@ namespace OpenNLP.Tools.Util.Trees
    *         of parents
    */
 
-        public Tree ancestor(int height, Tree root)
+        public Tree Ancestor(int height, Tree root)
         {
             if (height < 0)
             {
@@ -2515,12 +2517,12 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return this;
             }
-            Tree par = parent(root);
+            Tree par = Parent(root);
             if (par == null)
             {
                 return null;
             }
-            return par.ancestor(height - 1, root);
+            return par.Ancestor(height - 1, root);
         }
 
 
@@ -2620,7 +2622,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     this.Current = treeStack.Last();
                     treeStack.Remove(this.Current);
-                    Tree[] kids = this.Current.children();
+                    Tree[] kids = this.Current.Children();
                     // so that we can efficiently use one List, we reverse them
                     for (int i = kids.Length - 1; i >= 0; i--)
                     {
@@ -2660,40 +2662,40 @@ namespace OpenNLP.Tools.Util.Trees
    * @return An iterator over the nodes of the tree
    */
         //@Override
-        public TreeIterator iterator()
+        public TreeIterator Iterator()
         {
             return new TreeIterator(this);
         }
 
-        public List<Tree> postOrderNodeList()
+        public List<Tree> PostOrderNodeList()
         {
-            List<Tree> nodes = new List<Tree>();
-            postOrderRecurse(this, nodes);
+            var nodes = new List<Tree>();
+            PostOrderRecurse(this, nodes);
             return nodes;
         }
 
-        private static void postOrderRecurse(Tree t, List<Tree> nodes)
+        private static void PostOrderRecurse(Tree t, List<Tree> nodes)
         {
-            foreach (Tree c in t.children())
+            foreach (Tree c in t.Children())
             {
-                postOrderRecurse(c, nodes);
+                PostOrderRecurse(c, nodes);
             }
             nodes.Add(t);
         }
 
-        public List<Tree> preOrderNodeList()
+        public List<Tree> PreOrderNodeList()
         {
-            List<Tree> nodes = new List<Tree>();
-            preOrderRecurse(this, nodes);
+            var nodes = new List<Tree>();
+            PreOrderRecurse(this, nodes);
             return nodes;
         }
 
-        private static void preOrderRecurse(Tree t, List<Tree> nodes)
+        private static void PreOrderRecurse(Tree t, List<Tree> nodes)
         {
             nodes.Add(t);
-            foreach (Tree c in t.children())
+            foreach (Tree c in t.Children())
             {
-                preOrderRecurse(c, nodes);
+                PreOrderRecurse(c, nodes);
             }
         }
 
@@ -2712,9 +2714,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @throws RuntimeException If Tree format is not valid
    */
 
-        public static Tree valueOf(string str)
+        public static Tree ValueOf(string str)
         {
-            return valueOf(str, new LabeledScoredTreeReaderFactory());
+            return ValueOf(str, new LabeledScoredTreeReaderFactory());
         }
 
         /**
@@ -2729,11 +2731,11 @@ namespace OpenNLP.Tools.Util.Trees
    * @throws RuntimeException If the Tree format is not valid
    */
 
-        public static Tree valueOf(string str, TreeReaderFactory trf)
+        public static Tree ValueOf(string str, TreeReaderFactory trf)
         {
             try
             {
-                return trf.newTreeReader(new StringReader(str)).readTree();
+                return trf.NewTreeReader(new StringReader(str)).ReadTree();
             }
             catch (IOException ioe)
             {
@@ -2750,9 +2752,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The tree at that daughter index
    */
 
-        public Tree getChild(int i)
+        public Tree GetChild(int i)
         {
-            Tree[] kids = children();
+            Tree[] kids = Children();
             return kids[i];
         }
 
@@ -2766,11 +2768,11 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The tree at that daughter index
    */
 
-        public Tree removeChild(int i)
+        public Tree RemoveChild(int i)
         {
-            Tree[] kids = children();
+            Tree[] kids = Children();
             Tree kid = kids[i];
-            Tree[] newKids = new Tree[kids.Length - 1];
+            var newKids = new Tree[kids.Length - 1];
             for (int j = 0; j < newKids.Length; j++)
             {
                 if (j < i)
@@ -2782,7 +2784,7 @@ namespace OpenNLP.Tools.Util.Trees
                     newKids[j] = kids[j + 1];
                 }
             }
-            setChildren(newKids);
+            SetChildren(newKids);
             return kid;
         }
 
@@ -2795,10 +2797,10 @@ namespace OpenNLP.Tools.Util.Trees
    * @param t the new daughter
    */
 
-        public void addChild(int i, Tree t)
+        public void AddChild(int i, Tree t)
         {
-            Tree[] kids = children();
-            Tree[] newKids = new Tree[kids.Length + 1];
+            Tree[] kids = Children();
+            var newKids = new Tree[kids.Length + 1];
             if (i != 0)
             {
                 Array.Copy(kids, 0, newKids, 0, i);
@@ -2808,7 +2810,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 Array.Copy(kids, i, newKids, i + 1, kids.Length - i);
             }
-            setChildren(newKids);
+            SetChildren(newKids);
         }
 
         /**
@@ -2817,9 +2819,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @param t the new daughter
    */
 
-        public void addChild(Tree t)
+        public void AddChild(Tree t)
         {
-            addChild(children().Length, t);
+            AddChild(Children().Length, t);
         }
 
         /**
@@ -2833,9 +2835,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The tree that was previously the ith d
    */
 
-        public Tree setChild(int i, Tree t)
+        public Tree SetChild(int i, Tree t)
         {
-            Tree[] kids = children();
+            Tree[] kids = Children();
             Tree old = kids[i];
             kids[i] = t;
             return old;
@@ -2848,9 +2850,9 @@ namespace OpenNLP.Tools.Util.Trees
    * t.dominates(t) returns false.
    */
 
-        public bool dominates(Tree t)
+        public bool Dominates(Tree t)
         {
-            List<Tree> dPath = dominationPath(t);
+            List<Tree> dPath = DominationPath(t);
             return dPath != null && dPath.Count > 1;
         }
 
@@ -2862,10 +2864,10 @@ namespace OpenNLP.Tools.Util.Trees
    * t.dominationPath(t) returns null.
    */
 
-        public List<Tree> dominationPath(Tree t)
+        public List<Tree> DominationPath(Tree t)
         {
             //Tree[] result = dominationPathHelper(t, 0);
-            Tree[] result = dominationPath(t, 0);
+            Tree[] result = DominationPath(t, 0);
             if (result == null)
             {
                 return null;
@@ -2873,9 +2875,9 @@ namespace OpenNLP.Tools.Util.Trees
             return result.ToList();
         }
 
-        private Tree[] dominationPathHelper(Tree t, int depth)
+        private Tree[] DominationPathHelper(Tree t, int depth)
         {
-            Tree[] kids = children();
+            Tree[] kids = Children();
             for (int i = kids.Length - 1; i >= 0; i--)
             {
                 Tree t1 = kids[i];
@@ -2884,7 +2886,7 @@ namespace OpenNLP.Tools.Util.Trees
                     return null;
                 }
                 Tree[] result;
-                if ((result = t1.dominationPath(t, depth + 1)) != null)
+                if ((result = t1.DominationPath(t, depth + 1)) != null)
                 {
                     result[depth] = this;
                     return result;
@@ -2893,15 +2895,15 @@ namespace OpenNLP.Tools.Util.Trees
             return null;
         }
 
-        private Tree[] dominationPath(Tree t, int depth)
+        private Tree[] DominationPath(Tree t, int depth)
         {
             if (this == t)
             {
-                Tree[] result = new Tree[depth + 1];
+                var result = new Tree[depth + 1];
                 result[depth] = this;
                 return result;
             }
-            return dominationPathHelper(t, depth);
+            return DominationPathHelper(t, depth);
         }
 
         /**
@@ -2910,7 +2912,7 @@ namespace OpenNLP.Tools.Util.Trees
    * path from t1 to t2, inclusive, or null if none found.
    */
 
-        public List<Tree> pathNodeToNode(Tree t1, Tree t2)
+        public List<Tree> PathNodeToNode(Tree t1, Tree t2)
         {
             if (!Contains(t1) || !Contains(t2))
             {
@@ -2920,28 +2922,28 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return new List<Tree>() {t1};
             }
-            if (t1.dominates(t2))
+            if (t1.Dominates(t2))
             {
-                return t1.dominationPath(t2);
+                return t1.DominationPath(t2);
             }
-            if (t2.dominates(t1))
+            if (t2.Dominates(t1))
             {
-                List<Tree> path1 = t2.dominationPath(t1);
+                List<Tree> path1 = t2.DominationPath(t1);
                 path1.Reverse();
                 return path1;
             }
-            Tree jNode = joinNode(t1, t2);
+            Tree jNode = JoinNode(t1, t2);
             if (jNode == null)
             {
                 return null;
             }
-            List<Tree> t1DomPath = jNode.dominationPath(t1);
-            List<Tree> t2DomPath = jNode.dominationPath(t2);
+            List<Tree> t1DomPath = jNode.DominationPath(t1);
+            List<Tree> t2DomPath = jNode.DominationPath(t2);
             if (t1DomPath == null || t2DomPath == null)
             {
                 return null;
             }
-            List<Tree> path = new List<Tree>();
+            var path = new List<Tree>();
             path.AddRange(t1DomPath);
             path.Reverse();
             path.Remove(jNode);
@@ -2960,7 +2962,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Return <code>null</code> if no such node can be found.
    */
 
-        public Tree joinNode(Tree t1, Tree t2)
+        public Tree JoinNode(Tree t1, Tree t2)
         {
             if (!Contains(t1) || !Contains(t2))
             {
@@ -2971,8 +2973,8 @@ namespace OpenNLP.Tools.Util.Trees
                 return this;
             }
             Tree joinNode = null;
-            List<Tree> t1DomPath = dominationPath(t1);
-            List<Tree> t2DomPath = dominationPath(t2);
+            List<Tree> t1DomPath = DominationPath(t1);
+            List<Tree> t2DomPath = DominationPath(t2);
             if (t1DomPath == null || t2DomPath == null)
             {
                 return null;
@@ -2999,9 +3001,9 @@ namespace OpenNLP.Tools.Util.Trees
    * its sister(s) and any nodes below its sister(s).)
    */
 
-        public bool cCommands(Tree t1, Tree t2)
+        public bool CCommands(Tree t1, Tree t2)
         {
-            List<Tree> sibs = t1.siblings(this);
+            List<Tree> sibs = t1.Siblings(this);
             if (sibs == null)
             {
                 return false;
@@ -3026,14 +3028,14 @@ namespace OpenNLP.Tools.Util.Trees
    *   the actual children.
    */
 
-        public List<Tree> siblings(Tree root)
+        public List<Tree> Siblings(Tree root)
         {
-            Tree par = parent(root);
+            Tree par = Parent(root);
             if (par == null)
             {
                 return null;
             }
-            List<Tree> siblings = par.getChildrenAsList();
+            List<Tree> siblings = par.GetChildrenAsList();
             siblings.Remove(this);
             return siblings;
         }
@@ -3043,15 +3045,15 @@ namespace OpenNLP.Tools.Util.Trees
    * daughters in <code>this</code>.
    */
 
-        public void insertDtr(Tree dtr, int position)
+        public void InsertDtr(Tree dtr, int position)
         {
-            Tree[] kids = children();
+            Tree[] kids = Children();
             if (position > kids.Length)
             {
                 throw new ArgumentException("Can't insert tree after the " + position + "th daughter in " + this +
                                             "; only " + kids.Length + " daughters exist!");
             }
-            Tree[] newKids = new Tree[kids.Length + 1];
+            var newKids = new Tree[kids.Length + 1];
             int i = 0;
             for (; i < position; i++)
             {
@@ -3062,7 +3064,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 newKids[i + 1] = kids[i];
             }
-            setChildren(newKids);
+            SetChildren(newKids);
         }
 
         // --- composition methods to implement Label interface
@@ -3122,32 +3124,32 @@ namespace OpenNLP.Tools.Util.Trees
    * as measured by characters.  Returns -1 if <i>node is not found.</i>
    */
 
-        public int leftCharEdge(Tree node)
+        public int LeftCharEdge(Tree node)
         {
             var i = new MutableWrapper<int>(0);
-            if (leftCharEdge(node, i))
+            if (LeftCharEdge(node, i))
             {
                 return i.Value();
             }
             return -1;
         }
 
-        private bool leftCharEdge(Tree node, MutableWrapper<int> i)
+        private bool LeftCharEdge(Tree node, MutableWrapper<int> i)
         {
             if (this == node)
             {
                 return true;
             }
-            else if (isLeaf())
+            else if (IsLeaf())
             {
                 i.SetValue(i.Value() + Value().Length);
                 return false;
             }
             else
             {
-                foreach (Tree child in children())
+                foreach (Tree child in Children())
                 {
-                    if (child.leftCharEdge(node, i))
+                    if (child.LeftCharEdge(node, i))
                     {
                         return true;
                     }
@@ -3167,38 +3169,38 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The positional index of the right edge of node
    */
 
-        public int rightCharEdge(Tree node)
+        public int RightCharEdge(Tree node)
         {
-            List<Tree> s = getLeaves();
+            List<Tree> s = GetLeaves();
             int length = 0;
             foreach (Tree leaf in s)
             {
                 length += leaf.Label().Value().Length;
             }
-            MutableWrapper<int> i = new MutableWrapper<int>(length);
-            if (rightCharEdge(node, i))
+            var i = new MutableWrapper<int>(length);
+            if (RightCharEdge(node, i))
             {
                 return i.Value();
             }
             return -1;
         }
 
-        private bool rightCharEdge(Tree node, MutableWrapper<int> i)
+        private bool RightCharEdge(Tree node, MutableWrapper<int> i)
         {
             if (this == node)
             {
                 return true;
             }
-            else if (isLeaf())
+            else if (IsLeaf())
             {
                 i.SetValue(i.Value() - Label().Value().Length);
                 return false;
             }
             else
             {
-                for (int j = children().Length - 1; j >= 0; j--)
+                for (int j = Children().Length - 1; j >= 0; j--)
                 {
-                    if (children()[j].rightCharEdge(node, i))
+                    if (Children()[j].RightCharEdge(node, i))
                     {
                         return true;
                     }
@@ -3214,22 +3216,22 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the number of the current node, or -1 if <code>root</code> does not contain <code>this</code>.
    */
 
-        public int nodeNumber(Tree root)
+        public int NodeNumber(Tree root)
         {
-            MutableWrapper<int> i = new MutableWrapper<int>(1);
-            if (nodeNumberHelper(root, i))
+            var i = new MutableWrapper<int>(1);
+            if (NodeNumberHelper(root, i))
                 return i.Value();
             return -1;
         }
 
-        private bool nodeNumberHelper(Tree t, MutableWrapper<int> i)
+        private bool NodeNumberHelper(Tree t, MutableWrapper<int> i)
         {
             if (this == t)
                 return true;
             i.SetValue(i.Value() + 1);
-            for (int j = 0; j < t.children().Length; j++)
+            for (int j = 0; j < t.Children().Length; j++)
             {
-                if (nodeNumberHelper(t.children()[j], i))
+                if (NodeNumberHelper(t.Children()[j], i))
                     return true;
             }
             return false;
@@ -3245,12 +3247,12 @@ namespace OpenNLP.Tools.Util.Trees
    *    the number of nodes (inclusive) contained in <code>this</code>.
    */
 
-        public Tree getNodeNumber(int i)
+        public Tree GetNodeNumber(int i)
         {
-            return getNodeNumberHelper(new MutableWrapper<int>(1), i);
+            return GetNodeNumberHelper(new MutableWrapper<int>(1), i);
         }
 
-        private Tree getNodeNumberHelper(MutableWrapper<int> i, int target)
+        private Tree GetNodeNumberHelper(MutableWrapper<int> i, int target)
         {
             int i1 = i.Value();
             if (i1 == target)
@@ -3258,9 +3260,9 @@ namespace OpenNLP.Tools.Util.Trees
             if (i1 > target)
                 throw new IndexOutOfRangeException("Error -- tree does not contain " + i + " nodes.");
             i.SetValue(i.Value() + 1);
-            for (int j = 0; j < children().Length; j++)
+            for (int j = 0; j < Children().Length; j++)
             {
-                Tree temp = children()[j].getNodeNumberHelper(i, target);
+                Tree temp = Children()[j].GetNodeNumberHelper(i, target);
                 if (temp != null)
                     return temp;
             }
@@ -3275,9 +3277,9 @@ namespace OpenNLP.Tools.Util.Trees
    * This will only work if the leaves extend CoreMap.
    */
 
-        public void indexLeaves()
+        public void IndexLeaves()
         {
-            indexLeaves(1, false);
+            IndexLeaves(1, false);
         }
 
         /**
@@ -3286,9 +3288,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @param overWrite Whether to replace an existing index for a leaf.
    */
 
-        public void indexLeaves(bool overWrite)
+        public void IndexLeaves(bool overWrite)
         {
-            indexLeaves(1, overWrite);
+            IndexLeaves(1, overWrite);
         }
 
         /**
@@ -3304,9 +3306,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the next index still unassigned
    */
 
-        public int indexLeaves(int startIndex, bool overWrite)
+        public int IndexLeaves(int startIndex, bool overWrite)
         {
-            if (isLeaf())
+            if (IsLeaf())
             {
 
                 /*CoreLabel afl = (CoreLabel) label();
@@ -3319,7 +3321,7 @@ namespace OpenNLP.Tools.Util.Trees
 
                 if (Label() is HasIndex)
                 {
-                    HasIndex hi = (HasIndex) Label();
+                    var hi = (HasIndex) Label();
                     int oldIndex = hi.Index();
                     if (!overWrite && oldIndex >= 0)
                     {
@@ -3334,9 +3336,9 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else
             {
-                foreach (Tree kid in children())
+                foreach (Tree kid in Children())
                 {
-                    startIndex = kid.indexLeaves(startIndex, overWrite);
+                    startIndex = kid.IndexLeaves(startIndex, overWrite);
                 }
             }
             return startIndex;
@@ -3349,11 +3351,11 @@ namespace OpenNLP.Tools.Util.Trees
    * This method assumes CoreLabels!
    */
 
-        public void percolateHeadIndices()
+        public void PercolateHeadIndices()
         {
-            if (isPreTerminal())
+            if (IsPreTerminal())
             {
-                int nodeIndex = ((HasIndex) firstChild().Label()).Index();
+                int nodeIndex = ((HasIndex) FirstChild().Label()).Index();
                 ((HasIndex) Label()).SetIndex(nodeIndex);
                 return;
             }
@@ -3367,9 +3369,9 @@ namespace OpenNLP.Tools.Util.Trees
                 wordAnnotation = Value();
             }
             bool seenHead = false;
-            foreach (Tree child in children())
+            foreach (Tree child in Children())
             {
-                child.percolateHeadIndices();
+                child.PercolateHeadIndices();
                 string childWordAnnotation = ((HasWord) child.Label()).GetWord();
                 if (childWordAnnotation == null)
                 {
@@ -3384,14 +3386,14 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        public void indexSpans()
+        public void IndexSpans()
         {
-            indexSpans(0);
+            IndexSpans(0);
         }
 
-        public void indexSpans(int startIndex)
+        public void IndexSpans(int startIndex)
         {
-            indexSpans(new MutableWrapper<int>(startIndex));
+            IndexSpans(new MutableWrapper<int>(startIndex));
         }
 
         /**
@@ -3401,12 +3403,12 @@ namespace OpenNLP.Tools.Util.Trees
    * @param startIndex Begin indexing at this value
    */
 
-        public Tuple<int, int> indexSpans(MutableWrapper<int> startIndex)
+        public Tuple<int, int> IndexSpans(MutableWrapper<int> startIndex)
         {
             int start = int.MaxValue;
             int end = int.MinValue;
 
-            if (isLeaf())
+            if (IsLeaf())
             {
                 start = startIndex.Value();
                 end = startIndex.Value() + 1;
@@ -3414,9 +3416,9 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else
             {
-                foreach (Tree kid in children())
+                foreach (Tree kid in Children())
                 {
-                    Tuple<int, int> span = kid.indexSpans(startIndex);
+                    Tuple<int, int> span = kid.IndexSpans(startIndex);
                     if (span.Item1 < start) start = span.Item1;
                     if (span.Item2 > end) end = span.Item2;
                 }
@@ -3425,7 +3427,7 @@ namespace OpenNLP.Tools.Util.Trees
             Label lab = Label();
             if (lab is CoreMap)
             {
-                CoreMap afl = (CoreMap) Label();
+                var afl = (CoreMap) Label();
                 afl.Set(typeof (CoreAnnotations.BeginIndexAnnotation), start);
                 afl.Set(typeof (CoreAnnotations.EndIndexAnnotation), end);
             }

@@ -41,9 +41,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 Tree targetNode = childMatcher[0].evaluate(tree, tregex);
                 // put children underneath target in foot of auxilary tree
                 AuxiliaryTree ft = node.adjunctionTree().copy(this);
-                ft.foot.setChildren(targetNode.getChildrenAsList());
+                ft.foot.SetChildren(targetNode.GetChildrenAsList());
                 // put children of auxiliary tree under target.  root of auxiliary tree is ignored.  root of original is maintained.
-                targetNode.setChildren(ft.tree.getChildrenAsList());
+                targetNode.SetChildren(ft.tree.GetChildrenAsList());
                 return tree;
             }
         }

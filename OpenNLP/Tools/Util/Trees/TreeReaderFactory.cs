@@ -23,6 +23,6 @@ namespace OpenNLP.Tools.Util.Trees
    * @param in The <code>Reader</code> to build on
    * @return The new TreeReader
    */
-        TreeReader newTreeReader(TextReader reader);
+        TreeReader NewTreeReader(TextReader reader);
     }
 }

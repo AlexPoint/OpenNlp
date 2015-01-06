@@ -48,17 +48,17 @@ namespace OpenNLP.Tools.Util.Trees
             base(regent, dep)
         {
 
-            if (governor() is HasIndex)
+            if (Governor() is HasIndex)
             {
-                headIndex = ((HasIndex) governor()).Index();
+                headIndex = ((HasIndex) Governor()).Index();
             }
             else
             {
                 throw new ArgumentException("Label argument lacks IndexAnnotation.");
             }
-            if (dependent() is HasIndex)
+            if (Dependent() is HasIndex)
             {
-                depIndex = ((HasIndex) dependent()).Index();
+                depIndex = ((HasIndex) Dependent()).Index();
             }
             else
             {
@@ -66,12 +66,12 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        public int getGovernorIndex()
+        public int GetGovernorIndex()
         {
             return headIndex;
         }
 
-        public int getDependentIndex()
+        public int GetDependentIndex()
         {
             return depIndex;
         }
@@ -93,15 +93,15 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return false;
             }
-            UnnamedConcreteDependency d = (UnnamedConcreteDependency) o;
+            var d = (UnnamedConcreteDependency) o;
             return headIndex == d.headIndex && depIndex == d.depIndex;
         }
 
         //@Override
         public override string ToString()
         {
-            string headWord = getText(governor());
-            string depWord = getText(dependent());
+            string headWord = GetText(Governor());
+            string depWord = GetText(Dependent());
             return string.Format("{0} [{1}] --> {2} [{3}]", headWord, headIndex, depWord, depIndex);
         }
 
@@ -118,23 +118,23 @@ namespace OpenNLP.Tools.Util.Trees
                 case "xml":
                     string govIdxStr = " idx=\"" + headIndex + "\"";
                     string depIdxStr = " idx=\"" + depIndex + "\"";
-                    return "  <dep>\n    <governor" + govIdxStr + ">" + XMLUtils.XmlEscape(governor().Value()) +
-                           "</governor>\n    <dependent" + depIdxStr + ">" + XMLUtils.XmlEscape(dependent().Value()) +
+                    return "  <dep>\n    <governor" + govIdxStr + ">" + XMLUtils.XmlEscape(Governor().Value()) +
+                           "</governor>\n    <dependent" + depIdxStr + ">" + XMLUtils.XmlEscape(Dependent().Value()) +
                            "</dependent>\n  </dep>";
                 case "predicate":
-                    return "dep(" + governor() + "," + dependent() + ")";
+                    return "dep(" + Governor() + "," + Dependent() + ")";
                 default:
                     return ToString();
             }
         }
 
         //@Override
-        public override DependencyFactory dependencyFactory()
+        public override DependencyFactory DependencyFactory()
         {
             return DependencyFactoryHolder.df;
         }
 
-        public new static DependencyFactory factory()
+        public new static DependencyFactory Factory()
         {
             return DependencyFactoryHolder.df;
         }
@@ -156,16 +156,16 @@ namespace OpenNLP.Tools.Util.Trees
      * Create a new <code>Dependency</code>.
      */
 
-            public Dependency<Label, Label, Object> newDependency(Label regent, Label dependent)
+            public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent)
             {
-                return newDependency(regent, dependent, null);
+                return NewDependency(regent, dependent, null);
             }
 
             /**
      * Create a new <code>Dependency</code>.
      */
 
-            public Dependency<Label, Label, Object> newDependency(Label regent, Label dependent, Object name)
+            public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent, Object name)
             {
                 return new UnnamedConcreteDependency(regent, dependent);
             }

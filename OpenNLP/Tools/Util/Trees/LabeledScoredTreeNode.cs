@@ -32,7 +32,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public LabeledScoredTreeNode()
         {
-            setChildren(EMPTY_TREE_ARRAY);
+            SetChildren(EMPTY_TREE_ARRAY);
         }
 
         /**
@@ -70,7 +70,7 @@ namespace OpenNLP.Tools.Util.Trees
         public LabeledScoredTreeNode(Label label, List<Tree> daughterTreesList)
         {
             this.p_label = label;
-            setChildren(daughterTreesList);
+            SetChildren(daughterTreesList);
         }
 
         /**
@@ -78,7 +78,7 @@ namespace OpenNLP.Tools.Util.Trees
    * if it is a leaf.
    */
         //@Override
-        public override Tree[] children()
+        public override Tree[] Children()
         {
             return daughterTrees;
         }
@@ -91,7 +91,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param children An array of child trees
    */
         //@Override
-        public override void setChildren(Tree[] children)
+        public override void SetChildren(Tree[] children)
         {
             if (children == null)
             {
@@ -136,7 +136,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Sets the score associated with the current node, if there is one
    */
         //@Override
-        public override void setScore(double score)
+        public override void SetScore(double score)
         {
             this.p_score = score;
         }
@@ -158,7 +158,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a factory to produce labeled, scored trees
    */
         //@Override
-        public override TreeFactory treeFactory()
+        public override TreeFactory TreeFactory()
         {
             LabelFactory lf = (Label() == null) ? CoreLabel.Factory() : Label().LabelFactory();
             return new LabeledScoredTreeFactory(lf);
@@ -202,10 +202,10 @@ namespace OpenNLP.Tools.Util.Trees
         private static readonly string nf = "#.###";
 
         //@Override
-        public override string nodeString()
+        public override string NodeString()
         {
             StringBuilder buff = new StringBuilder();
-            buff.Append(base.nodeString());
+            buff.Append(base.NodeString());
             if (! double.IsNaN(p_score))
             {
                 buff.Append(" [").Append((-p_score).ToString(nf)).Append("]");

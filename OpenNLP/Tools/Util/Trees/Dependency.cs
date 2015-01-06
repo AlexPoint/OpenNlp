@@ -25,14 +25,14 @@ namespace OpenNLP.Tools.Util.Trees
    * Describes the governor (regent/head) of the dependency relation.
    * @return The governor of this dependency
    */
-        G governor();
+        G Governor();
 
         /**
          * Describes the dependent (argument/modifier) of
          * the dependency relation.
          * @return the dependent of this dependency
          */
-        D dependent();
+        D Dependent();
 
         /**
          * Names the type of dependency (subject, instrument, ...).
@@ -40,14 +40,14 @@ namespace OpenNLP.Tools.Util.Trees
          * arbitrary object types.
          * @return the name for this dependency type
          */
-        N name();
+        N Name();
 
         /**
          * Are two dependencies equal if you ignore the dependency name.
          * @param o The thing to compare against ignoring name
          * @return true iff the head and dependent are the same.
          */
-        bool equalsIgnoreName(Object o);
+        bool EqualsIgnoreName(Object o);
 
         /**
          * Provide different printing options via a string keyword.
@@ -62,6 +62,6 @@ namespace OpenNLP.Tools.Util.Trees
          * Provide a factory for this kind of dependency
          * @return A DependencyFactory
          */
-        DependencyFactory dependencyFactory();
+        DependencyFactory DependencyFactory();
     }
 }

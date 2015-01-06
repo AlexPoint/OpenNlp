@@ -39,27 +39,27 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             {
                 // find match and get its parent
                 Tree targetNode = childMatcher[0].evaluate(tree, tregex);
-                Tree parent = targetNode.parent(tree);
+                Tree parent = targetNode.Parent(tree);
                 // substitute original node for foot of auxiliary tree.  Foot node is ignored
                 AuxiliaryTree ft = node.adjunctionTree().copy(this);
                 // System.err.println("ft=" + ft + "; ft.foot=" + ft.foot + "; ft.tree=" + ft.tree);
-                Tree parentOfFoot = ft.foot.parent(ft.tree);
+                Tree parentOfFoot = ft.foot.Parent(ft.tree);
                 if (parentOfFoot == null)
                 {
                     //System.err.println("Warning: adjoin to foot for depth-1 auxiliary tree has no effect.");
                     return tree;
                 }
-                int i = parentOfFoot.objectIndexOf(ft.foot);
+                int i = parentOfFoot.ObjectIndexOf(ft.foot);
                 if (parent == null)
                 {
-                    parentOfFoot.setChild(i, targetNode);
+                    parentOfFoot.SetChild(i, targetNode);
                     return ft.tree;
                 }
                 else
                 {
-                    int j = parent.objectIndexOf(targetNode);
-                    parent.setChild(j, ft.tree);
-                    parentOfFoot.setChild(i, targetNode);
+                    int j = parent.ObjectIndexOf(targetNode);
+                    parent.SetChild(j, ft.tree);
+                    parentOfFoot.SetChild(i, targetNode);
                     return tree;
                 }
             }

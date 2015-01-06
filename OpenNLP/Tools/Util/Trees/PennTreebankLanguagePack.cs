@@ -56,7 +56,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The punctuation tags
    */
         //@Override
-        public override string[] punctuationTags()
+        public override string[] PunctuationTags()
         {
             return pennPunctTags;
         }
@@ -68,7 +68,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The punctuation words
    */
         //@Override
-        public override string[] punctuationWords()
+        public override string[] PunctuationWords()
         {
             return pennPunctWords;
         }
@@ -81,7 +81,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The sentence readonly punctuation tags
    */
         //@Override
-        public override string[] sentenceFinalPunctuationTags()
+        public override string[] SentenceFinalPunctuationTags()
         {
             return pennSFPunctTags;
         }
@@ -93,7 +93,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The sentence readonly punctuation tags
    */
         //@Override
-        public override string[] sentenceFinalPunctuationWords()
+        public override string[] SentenceFinalPunctuationWords()
         {
             return pennSFPunctWords;
         }
@@ -108,7 +108,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a EVALB-ignored punctuation tag
    */
         //@Override
-        public override string[] evalBIgnoredPunctuationTags()
+        public override string[] EvalBIgnoredPunctuationTags()
         {
             return collinsPunctTags;
         }
@@ -125,7 +125,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return An array of characters that set off label name suffixes
    */
         //@Override
-        public override char[] labelAnnotationIntroducingCharacters()
+        public override char[] LabelAnnotationIntroducingCharacters()
         {
             return annotationIntroducingChars;
         }
@@ -137,7 +137,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The start symbols
    */
         //@Override
-        public override string[] startSymbols()
+        public override string[] StartSymbols()
         {
             return pennStartSymbols;
         }
@@ -152,7 +152,7 @@ namespace OpenNLP.Tools.Util.Trees
     return PTBTokenizer.coreLabelFactory();
   }*/
 
-        public override TokenizerFactory<HasWord> getTokenizerFactory()
+        public override TokenizerFactory<HasWord> GetTokenizerFactory()
         {
             throw new NotImplementedException();
         }
@@ -162,7 +162,7 @@ namespace OpenNLP.Tools.Util.Trees
    * This is "mrg".
    */
         //@Override
-        public override string treebankFileExtension()
+        public override string TreebankFileExtension()
         {
             return "mrg";
         }
@@ -173,7 +173,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A GrammaticalStructure suitable for this language/treebank.
    */
         //@Override
-        public override GrammaticalStructureFactory grammaticalStructureFactory()
+        public override GrammaticalStructureFactory GrammaticalStructureFactory()
         {
             return new EnglishGrammaticalStructureFactory();
         }
@@ -196,21 +196,21 @@ namespace OpenNLP.Tools.Util.Trees
   }*/
 
         //@Override
-        public override bool supportsGrammaticalStructures()
+        public override bool SupportsGrammaticalStructures()
         {
             return true;
         }
 
         /** {@inheritDoc} */
         //@Override
-        public override HeadFinder headFinder()
+        public override HeadFinder HeadFinder()
         {
             return new ModCollinsHeadFinder(this);
         }
 
         /** {@inheritDoc} */
         //@Override
-        public override HeadFinder typedDependencyHeadFinder()
+        public override HeadFinder TypedDependencyHeadFinder()
         {
             return new SemanticHeadFinder(this, true);
         }

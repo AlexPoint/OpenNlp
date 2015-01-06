@@ -53,7 +53,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
         }
 
-        public ModCollinsHeadFinder(AbstractTreebankLanguagePack tlp) : base(tlp, tlp.punctuationTags())
+        public ModCollinsHeadFinder(AbstractTreebankLanguagePack tlp) : base(tlp, tlp.PunctuationTags())
         {
             // avoid punctuation as head in readonly default rule
 

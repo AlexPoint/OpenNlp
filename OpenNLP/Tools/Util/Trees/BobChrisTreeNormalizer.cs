@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util.Trees
    * This implementation interns the leaf.
    */
         //@Override
-        public override string normalizeTerminal(string leaf)
+        public override string NormalizeTerminal(string leaf)
         {
             // We could unquote * and / with backslash \ in front of them
             return leaf /*.intern()*/;
@@ -76,7 +76,7 @@ namespace OpenNLP.Tools.Util.Trees
    * nonterminal.
    */
         //@Override
-        public override string normalizeNonterminal(string category)
+        public override string NormalizeNonterminal(string category)
         {
             return cleanUpLabel(category) /*.intern()*/;
         }
@@ -100,7 +100,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else
             {
-                return tlp.basicCategory(label);
+                return tlp.BasicCategory(label);
             }
         }
 
@@ -112,15 +112,15 @@ namespace OpenNLP.Tools.Util.Trees
    * unary A over A nodes.  It does work for a null tree.
    */
         //@Override
-        public override Tree normalizeWholeTree(Tree tree, TreeFactory tf)
+        public override Tree NormalizeWholeTree(Tree tree, TreeFactory tf)
         {
-            return tree.prune(emptyFilter.test, tf).spliceOut(aOverAFilter.test, tf);
+            return tree.Prune(emptyFilter.test, tf).SpliceOut(aOverAFilter.test, tf);
         }
 
         //@Override
-        public Tree transformTree(Tree tree)
+        public Tree TransformTree(Tree tree)
         {
-            return normalizeWholeTree(tree, tree.treeFactory());
+            return NormalizeWholeTree(tree, tree.TreeFactory());
         }
 
 
@@ -140,11 +140,11 @@ namespace OpenNLP.Tools.Util.Trees
 
             public bool test(Tree t)
             {
-                Tree[] kids = t.children();
+                Tree[] kids = t.Children();
                 Label l = t.Label();
                 // Delete (return false for) empty/trace nodes (ones marked '-NONE-')
                 return
-                    ! ((l != null) && "-NONE-".Equals(l.Value()) && !t.isLeaf() && kids.Length == 1 && kids[0].isLeaf());
+                    ! ((l != null) && "-NONE-".Equals(l.Value()) && !t.IsLeaf() && kids.Length == 1 && kids[0].IsLeaf());
             }
 
             //    private static readonly long serialVersionUID = 1L;
@@ -161,7 +161,7 @@ namespace OpenNLP.Tools.Util.Trees
 
             public bool test(Tree t)
             {
-                if (t.isLeaf() || t.isPreTerminal())
+                if (t.IsLeaf() || t.IsPreTerminal())
                 {
                     return true;
                 }
@@ -170,13 +170,13 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     return false;
                 }
-                if (t.numChildren() != 1)
+                if (t.NumChildren() != 1)
                 {
                     return true;
                 }
                 return
                     ! (t.Label() != null && t.Label().Value() != null &&
-                       t.Label().Value().Equals(t.getChild(0).Label().Value()));
+                       t.Label().Value().Equals(t.GetChild(0).Label().Value()));
             }
 
             private static readonly long serialVersionUID = 1L;

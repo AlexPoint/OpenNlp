@@ -23,7 +23,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
 
         public EnglishGrammaticalStructure(Tree t) :
-            this(t, new PennTreebankLanguagePack().punctuationWordRejectFilter())
+            this(t, new PennTreebankLanguagePack().PunctuationWordRejectFilter())
         {
         }
 
@@ -69,7 +69,7 @@ namespace OpenNLP.Tools.Util.Trees
          */
 
         public EnglishGrammaticalStructure(Tree t, Predicate<string> puncFilter, HeadFinder hf, bool threadSafe) :
-            base((new CoordinationTransformer(hf)).transformTree(t.deepCopy()),
+            base((new CoordinationTransformer(hf)).TransformTree(t.DeepCopy()),
                 EnglishGrammaticalRelations.Values(threadSafe),
                 threadSafe ? EnglishGrammaticalRelations.valuesLock : null,
                 hf, puncFilter)
@@ -262,11 +262,11 @@ namespace OpenNLP.Tools.Util.Trees
                 // first find the multi_preposition: dep(mpw[1], mwp[0])
                 foreach (TypedDependency td in list)
                 {
-                    if (Math.Abs(td.gov().Index() - td.dep().Index()) == 1 &&
-                        td.gov().Value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
-                        && td.dep().Value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase))
+                    if (Math.Abs(td.Gov().Index() - td.Dep().Index()) == 1 &&
+                        td.Gov().Value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
+                        && td.Dep().Value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase))
                     {
-                        mwp1 = td.gov();
+                        mwp1 = td.Gov();
                         dep = td;
                     }
                 }
@@ -279,11 +279,11 @@ namespace OpenNLP.Tools.Util.Trees
                 // now search for prep(gov, mwp1)
                 foreach (TypedDependency td1 in list)
                 {
-                    if (td1.dep().Equals(mwp1) && td1.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER)
+                    if (td1.Dep().Equals(mwp1) && td1.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER)
                     {
                         // we found prep(gov, mwp1)
                         prep = td1;
-                        governor = prep.gov();
+                        governor = prep.Gov();
                     }
                 }
 
@@ -295,19 +295,19 @@ namespace OpenNLP.Tools.Util.Trees
                 // search for the complement: pobj|pcomp(mwp1,X)
                 foreach (TypedDependency td2 in list)
                 {
-                    if (td2.gov().Equals(mwp1) && td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT)
+                    if (td2.Gov().Equals(mwp1) && td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT)
                     {
                         pobj = td2;
                         // create the new gr relation
                         GrammaticalRelation gr = EnglishGrammaticalRelations.getPrep(mwp[0] + '_' + mwp[1]);
-                        newTypedDeps.Add(new TypedDependency(gr, governor, pobj.dep()));
+                        newTypedDeps.Add(new TypedDependency(gr, governor, pobj.Dep()));
                     }
-                    if (td2.gov().Equals(mwp1) && td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT)
+                    if (td2.Gov().Equals(mwp1) && td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT)
                     {
                         pobj = td2;
                         // create the new gr relation
                         GrammaticalRelation gr = EnglishGrammaticalRelations.getPrepC(mwp[0] + '_' + mwp[1]);
-                        newTypedDeps.Add(new TypedDependency(gr, governor, pobj.dep()));
+                        newTypedDeps.Add(new TypedDependency(gr, governor, pobj.Dep()));
                     }
                 }
 
@@ -317,19 +317,19 @@ namespace OpenNLP.Tools.Util.Trees
                 }
                 // only if we found the three parts, set to KILL and remove
                 // we know prep != null && dep != null && dep != null
-                prep.setReln(GrammaticalRelation.KILL);
-                dep.setReln(GrammaticalRelation.KILL);
-                pobj.setReln(GrammaticalRelation.KILL);
+                prep.SetReln(GrammaticalRelation.KILL);
+                dep.SetReln(GrammaticalRelation.KILL);
+                pobj.SetReln(GrammaticalRelation.KILL);
 
                 // now remove typed dependencies with reln "kill"
                 // and promote possible orphans
                 foreach (TypedDependency td1 in list)
                 {
-                    if (td1.reln() != GrammaticalRelation.KILL)
+                    if (td1.Reln() != GrammaticalRelation.KILL)
                     {
-                        if (td1.gov().Equals(mwp1))
+                        if (td1.Gov().Equals(mwp1))
                         {
-                            td1.setGov(governor);
+                            td1.SetGov(governor);
                         }
                         if (!newTypedDeps.Contains(td1))
                         {
@@ -373,16 +373,16 @@ namespace OpenNLP.Tools.Util.Trees
 
                 foreach (TypedDependency td in list)
                 {
-                    if (td.dep().Value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase)
+                    if (td.Dep().Value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase)
                         &&
-                        (td.reln() == EnglishGrammaticalRelations.PHRASAL_VERB_PARTICLE ||
-                         td.reln() == EnglishGrammaticalRelations.ADVERBIAL_MODIFIER
-                         || td.reln() == GrammaticalRelation.DEPENDENT ||
-                         td.reln() == EnglishGrammaticalRelations.MULTI_WORD_EXPRESSION))
+                        (td.Reln() == EnglishGrammaticalRelations.PHRASAL_VERB_PARTICLE ||
+                         td.Reln() == EnglishGrammaticalRelations.ADVERBIAL_MODIFIER
+                         || td.Reln() == GrammaticalRelation.DEPENDENT ||
+                         td.Reln() == EnglishGrammaticalRelations.MULTI_WORD_EXPRESSION))
                     {
                         // we found advmod(gov, mwp0) or prt(gov, mwp0)
-                        governor = td.gov();
-                        mwp0 = td.dep();
+                        governor = td.Gov();
+                        mwp0 = td.Dep();
                         dep = td;
                     }
                 }
@@ -398,15 +398,15 @@ namespace OpenNLP.Tools.Util.Trees
 
                 foreach (TypedDependency td1 in list)
                 {
-                    if (td1.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER
-                        && td1.dep().Value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
-                        && Math.Abs(td1.dep().Index() - mwp0.Index()) == 1 && td1.gov().Equals(governor))
+                    if (td1.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER
+                        && td1.Dep().Value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
+                        && Math.Abs(td1.Dep().Index() - mwp0.Index()) == 1 && td1.Gov().Equals(governor))
                     {
 // we
                         // found
                         // prep(gov,
                         // mwp1)
-                        mwp1 = td1.dep();
+                        mwp1 = td1.Dep();
                         prep = td1;
                     }
                 }
@@ -419,19 +419,19 @@ namespace OpenNLP.Tools.Util.Trees
                 // search for the complement: pobj|pcomp(mwp1,X)
                 foreach (TypedDependency td2 in list)
                 {
-                    if (td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT && td2.gov().Equals(mwp1))
+                    if (td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT && td2.Gov().Equals(mwp1))
                     {
                         pobj = td2;
                         // create the new gr relation
                         GrammaticalRelation gr = EnglishGrammaticalRelations.getPrep(mwp[0] + '_' + mwp[1]);
-                        newtd = new TypedDependency(gr, governor, pobj.dep());
+                        newtd = new TypedDependency(gr, governor, pobj.Dep());
                     }
-                    if (td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT && td2.gov().Equals(mwp1))
+                    if (td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT && td2.Gov().Equals(mwp1))
                     {
                         pobj = td2;
                         // create the new gr relation
                         GrammaticalRelation gr = EnglishGrammaticalRelations.getPrepC(mwp[0] + '_' + mwp[1]);
-                        newtd = new TypedDependency(gr, governor, pobj.dep());
+                        newtd = new TypedDependency(gr, governor, pobj.Dep());
                     }
                 }
 
@@ -444,20 +444,20 @@ namespace OpenNLP.Tools.Util.Trees
                 // and add the new one
                 // now prep != null, pobj != null and newtd != null
 
-                prep.setReln(GrammaticalRelation.KILL);
-                dep.setReln(GrammaticalRelation.KILL);
-                pobj.setReln(GrammaticalRelation.KILL);
+                prep.SetReln(GrammaticalRelation.KILL);
+                dep.SetReln(GrammaticalRelation.KILL);
+                pobj.SetReln(GrammaticalRelation.KILL);
                 newTypedDeps.Add(newtd);
 
                 // now remove typed dependencies with reln "kill"
                 // and promote possible orphans
                 foreach (TypedDependency td1 in list)
                 {
-                    if (td1.reln() != GrammaticalRelation.KILL)
+                    if (td1.Reln() != GrammaticalRelation.KILL)
                     {
-                        if (td1.gov().Equals(mwp0) || td1.gov().Equals(mwp1))
+                        if (td1.Gov().Equals(mwp0) || td1.Gov().Equals(mwp1))
                         {
-                            td1.setGov(governor);
+                            td1.SetGov(governor);
                         }
                         if (!newTypedDeps.Contains(td1))
                         {
@@ -515,12 +515,12 @@ namespace OpenNLP.Tools.Util.Trees
 
                 foreach (TypedDependency td in list)
                 {
-                    if (td.gov().Value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase)
-                        && td.dep().Value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
-                        && Math.Abs(td.gov().Index() - td.dep().Index()) == 1)
+                    if (td.Gov().Value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase)
+                        && td.Dep().Value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
+                        && Math.Abs(td.Gov().Index() - td.Dep().Index()) == 1)
                     {
-                        mwp0 = td.gov();
-                        mwp1 = td.dep();
+                        mwp0 = td.Gov();
+                        mwp1 = td.Dep();
                         dep1 = td;
                     }
                 }
@@ -531,11 +531,11 @@ namespace OpenNLP.Tools.Util.Trees
 
                 foreach (TypedDependency td in list)
                 {
-                    if (td.gov().Equals(mwp1) &&
-                        td.dep().Value().Equals(mwp[2], StringComparison.InvariantCultureIgnoreCase)
-                        && Math.Abs(td.gov().Index() - td.dep().Index()) == 1)
+                    if (td.Gov().Equals(mwp1) &&
+                        td.Dep().Value().Equals(mwp[2], StringComparison.InvariantCultureIgnoreCase)
+                        && Math.Abs(td.Gov().Index() - td.Dep().Index()) == 1)
                     {
-                        mwp2 = td.dep();
+                        mwp2 = td.Dep();
                         dep2 = td;
                     }
                 }
@@ -548,14 +548,14 @@ namespace OpenNLP.Tools.Util.Trees
                     TypedDependency prep = null;
                     foreach (TypedDependency td1 in list)
                     {
-                        if (td1.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER && td1.dep().Equals(mwp0))
+                        if (td1.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER && td1.Dep().Equals(mwp0))
                         {
 // we
                             // found
                             // prep(gov,
                             // mwp0)
                             prep = td1;
-                            governor = prep.gov();
+                            governor = prep.Gov();
                         }
                     }
 
@@ -565,7 +565,7 @@ namespace OpenNLP.Tools.Util.Trees
                     TypedDependency newtd = null;
                     foreach (TypedDependency td2 in list)
                     {
-                        if (td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT && td2.gov().Equals(mwp2))
+                        if (td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT && td2.Gov().Equals(mwp2))
                         {
                             pobj = td2;
                             // create the new gr relation
@@ -573,10 +573,10 @@ namespace OpenNLP.Tools.Util.Trees
                                 EnglishGrammaticalRelations.getPrep(mwp[0] + '_' + mwp[1] + '_' + mwp[2]);
                             if (governor != null)
                             {
-                                newtd = new TypedDependency(gr, governor, pobj.dep());
+                                newtd = new TypedDependency(gr, governor, pobj.Dep());
                             }
                         }
-                        if (td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT && td2.gov().Equals(mwp2))
+                        if (td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT && td2.Gov().Equals(mwp2))
                         {
                             pobj = td2;
                             // create the new gr relation
@@ -584,7 +584,7 @@ namespace OpenNLP.Tools.Util.Trees
                                 EnglishGrammaticalRelations.getPrepC(mwp[0] + '_' + mwp[1] + '_' + mwp[2]);
                             if (governor != null)
                             {
-                                newtd = new TypedDependency(gr, governor, pobj.dep());
+                                newtd = new TypedDependency(gr, governor, pobj.Dep());
                             }
                         }
                     }
@@ -594,21 +594,21 @@ namespace OpenNLP.Tools.Util.Trees
                     // and add the new one
                     if (prep != null && pobj != null && newtd != null)
                     {
-                        prep.setReln(GrammaticalRelation.KILL);
-                        dep1.setReln(GrammaticalRelation.KILL);
-                        dep2.setReln(GrammaticalRelation.KILL);
-                        pobj.setReln(GrammaticalRelation.KILL);
+                        prep.SetReln(GrammaticalRelation.KILL);
+                        dep1.SetReln(GrammaticalRelation.KILL);
+                        dep2.SetReln(GrammaticalRelation.KILL);
+                        pobj.SetReln(GrammaticalRelation.KILL);
                         newTypedDeps.Add(newtd);
 
                         // now remove typed dependencies with reln "kill"
                         // and promote possible orphans
                         foreach (TypedDependency td1 in list)
                         {
-                            if (td1.reln() != GrammaticalRelation.KILL)
+                            if (td1.Reln() != GrammaticalRelation.KILL)
                             {
-                                if (td1.gov().Equals(mwp0) || td1.gov().Equals(mwp1) || td1.gov().Equals(mwp2))
+                                if (td1.Gov().Equals(mwp0) || td1.Gov().Equals(mwp1) || td1.Gov().Equals(mwp2))
                                 {
-                                    td1.setGov(governor);
+                                    td1.SetGov(governor);
                                 }
                                 if (!newTypedDeps.Contains(td1))
                                 {
@@ -639,12 +639,12 @@ namespace OpenNLP.Tools.Util.Trees
                 // indexes = 1)
                 foreach (TypedDependency td in list)
                 {
-                    if (td.gov().Value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase)
-                        && td.dep().Value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
-                        && Math.Abs(td.gov().Index() - td.dep().Index()) == 1)
+                    if (td.Gov().Value().Equals(mwp[0], StringComparison.InvariantCultureIgnoreCase)
+                        && td.Dep().Value().Equals(mwp[1], StringComparison.InvariantCultureIgnoreCase)
+                        && Math.Abs(td.Gov().Index() - td.Dep().Index()) == 1)
                     {
-                        mwp0 = td.gov();
-                        mwp1 = td.dep();
+                        mwp0 = td.Gov();
+                        mwp1 = td.Dep();
                         dep1 = td;
                     }
                 }
@@ -654,11 +654,11 @@ namespace OpenNLP.Tools.Util.Trees
                 // indexes = 2)
                 foreach (TypedDependency td in list)
                 {
-                    if (td.gov().Equals(mwp0) &&
-                        td.dep().Value().Equals(mwp[2], StringComparison.InvariantCultureIgnoreCase)
-                        && Math.Abs(td.gov().Index() - td.dep().Index()) == 2)
+                    if (td.Gov().Equals(mwp0) &&
+                        td.Dep().Value().Equals(mwp[2], StringComparison.InvariantCultureIgnoreCase)
+                        && Math.Abs(td.Gov().Index() - td.Dep().Index()) == 2)
                     {
-                        mwp2 = td.dep();
+                        mwp2 = td.Dep();
                         dep2 = td;
                     }
                 }
@@ -671,14 +671,14 @@ namespace OpenNLP.Tools.Util.Trees
                     TypedDependency prep = null;
                     foreach (TypedDependency td1 in list)
                     {
-                        if (td1.dep().Equals(mwp0) && td1.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER)
+                        if (td1.Dep().Equals(mwp0) && td1.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER)
                         {
 // we
                             // found
                             // prep(gov,
                             // mwp0)
                             prep = td1;
-                            governor = prep.gov();
+                            governor = prep.Gov();
                         }
                     }
 
@@ -688,7 +688,7 @@ namespace OpenNLP.Tools.Util.Trees
                     TypedDependency newtd = null;
                     foreach (TypedDependency td2 in list)
                     {
-                        if (td2.gov().Equals(mwp0) && td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT)
+                        if (td2.Gov().Equals(mwp0) && td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT)
                         {
                             pobj = td2;
                             // create the new gr relation
@@ -696,10 +696,10 @@ namespace OpenNLP.Tools.Util.Trees
                                 EnglishGrammaticalRelations.getPrep(mwp[0] + '_' + mwp[1] + '_' + mwp[2]);
                             if (governor != null)
                             {
-                                newtd = new TypedDependency(gr, governor, pobj.dep());
+                                newtd = new TypedDependency(gr, governor, pobj.Dep());
                             }
                         }
-                        if (td2.gov().Equals(mwp0) && td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT)
+                        if (td2.Gov().Equals(mwp0) && td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT)
                         {
                             pobj = td2;
                             // create the new gr relation
@@ -707,7 +707,7 @@ namespace OpenNLP.Tools.Util.Trees
                                 EnglishGrammaticalRelations.getPrepC(mwp[0] + '_' + mwp[1] + '_' + mwp[2]);
                             if (governor != null)
                             {
-                                newtd = new TypedDependency(gr, governor, pobj.dep());
+                                newtd = new TypedDependency(gr, governor, pobj.Dep());
                             }
                         }
                     }
@@ -717,21 +717,21 @@ namespace OpenNLP.Tools.Util.Trees
                     // and add the new one
                     if (prep != null && pobj != null && newtd != null)
                     {
-                        prep.setReln(GrammaticalRelation.KILL);
-                        dep1.setReln(GrammaticalRelation.KILL);
-                        dep2.setReln(GrammaticalRelation.KILL);
-                        pobj.setReln(GrammaticalRelation.KILL);
+                        prep.SetReln(GrammaticalRelation.KILL);
+                        dep1.SetReln(GrammaticalRelation.KILL);
+                        dep2.SetReln(GrammaticalRelation.KILL);
+                        pobj.SetReln(GrammaticalRelation.KILL);
                         newTypedDeps.Add(newtd);
 
                         // now remove typed dependencies with reln "kill"
                         // and promote possible orphans
                         foreach (TypedDependency td1 in list)
                         {
-                            if (td1.reln() != GrammaticalRelation.KILL)
+                            if (td1.Reln() != GrammaticalRelation.KILL)
                             {
-                                if (td1.gov().Equals(mwp0) || td1.gov().Equals(mwp1) || td1.gov().Equals(mwp2))
+                                if (td1.Gov().Equals(mwp0) || td1.Gov().Equals(mwp1) || td1.Gov().Equals(mwp2))
                                 {
-                                    td1.setGov(governor);
+                                    td1.SetGov(governor);
                                 }
                                 if (!newTypedDeps.Contains(td1))
                                 {
@@ -762,24 +762,24 @@ namespace OpenNLP.Tools.Util.Trees
 
             foreach (TypedDependency typedDep in list)
             {
-                if (!map.ContainsKey(typedDep.gov()))
+                if (!map.ContainsKey(typedDep.Gov()))
                 {
-                    map.Add(typedDep.gov(), new TreeSet<TypedDependency>());
+                    map.Add(typedDep.Gov(), new TreeSet<TypedDependency>());
                 }
-                map[typedDep.gov()].Add(typedDep);
+                map[typedDep.Gov()].Add(typedDep);
 
-                if (typedDep.reln() == EnglishGrammaticalRelations.VERBAL_MODIFIER)
+                if (typedDep.Reln() == EnglishGrammaticalRelations.VERBAL_MODIFIER)
                 {
                     // look for aux deps which indicate this was a to-be verb
                     bool foundAux = false;
                     foreach (TypedDependency auxDep in list)
                     {
-                        if (auxDep.reln() != EnglishGrammaticalRelations.AUX_MODIFIER)
+                        if (auxDep.Reln() != EnglishGrammaticalRelations.AUX_MODIFIER)
                         {
                             continue;
                         }
-                        if (!auxDep.gov().Equals(typedDep.dep()) ||
-                            !auxDep.dep().Value().Equals("to", StringComparison.InvariantCultureIgnoreCase))
+                        if (!auxDep.Gov().Equals(typedDep.Dep()) ||
+                            !auxDep.Dep().Value().Equals("to", StringComparison.InvariantCultureIgnoreCase))
                         {
                             continue;
                         }
@@ -788,7 +788,7 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                     if (!foundAux)
                     {
-                        vmod.Add(typedDep.dep());
+                        vmod.Add(typedDep.Dep());
                     }
                 }
             }
@@ -799,16 +799,16 @@ namespace OpenNLP.Tools.Util.Trees
 
             foreach (TypedDependency td1 in list)
             {
-                if (td1.reln() != EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER)
+                if (td1.Reln() != EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER)
                 {
                     continue;
                 }
-                if (td1.reln() == GrammaticalRelation.KILL)
+                if (td1.Reln() == GrammaticalRelation.KILL)
                 {
                     continue;
                 }
 
-                IndexedWord td1Dep = td1.dep();
+                IndexedWord td1Dep = td1.Dep();
                 SortedSet<TypedDependency> possibles = map[td1Dep];
                 if (possibles == null)
                 {
@@ -830,9 +830,9 @@ namespace OpenNLP.Tools.Util.Trees
                 int conjIndex = -1;
                 foreach (TypedDependency td2 in possibles)
                 {
-                    if (td2.reln() == EnglishGrammaticalRelations.CONJUNCT)
+                    if (td2.Reln() == EnglishGrammaticalRelations.CONJUNCT)
                     {
-                        IndexedWord td2Dep = td2.dep();
+                        IndexedWord td2Dep = td2.Dep();
                         string td2DepPOS = td2Dep.Tag();
                         if (td2DepPOS.Equals("IN") || td2DepPOS.Equals("TO"))
                         {
@@ -845,19 +845,19 @@ namespace OpenNLP.Tools.Util.Trees
                             {
                                 foreach (TypedDependency td3 in possibles2)
                                 {
-                                    IndexedWord td3Dep = td3.dep();
+                                    IndexedWord td3Dep = td3.Dep();
                                     string td3DepPOS = td3Dep.Tag();
                                     // CDM Mar 2006: I put in disjunction here when I added in
                                     // PREPOSITIONAL_OBJECT. If it catches all cases, we should
                                     // be able to delete the DEPENDENT disjunct
                                     // maybe better to delete the DEPENDENT disjunct - it creates
                                     // problem with multiple prep (mcdm)
-                                    if ((td3.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT ||
-                                         td3.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT) &&
+                                    if ((td3.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT ||
+                                         td3.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT) &&
                                         (!(td3DepPOS.Equals("IN") || td3DepPOS.Equals("TO"))) && prepOtherDep == null)
                                     {
                                         prepOtherDep = td3;
-                                        if (td3.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT)
+                                        if (td3.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT)
                                         {
                                             pobj = false;
                                         }
@@ -890,21 +890,21 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     // we look for the cc linked to this conjDep
                     // the cc dep must have an index smaller than the dep of conjDep
-                    if (td2.reln() == EnglishGrammaticalRelations.COORDINATION && td2.dep().Index() < conjIndex)
+                    if (td2.Reln() == EnglishGrammaticalRelations.COORDINATION && td2.Dep().Index() < conjIndex)
                     {
                         ccDep = td2;
                     }
                     else
                     {
-                        IndexedWord td2Dep = td2.dep();
+                        IndexedWord td2Dep = td2.Dep();
                         string td2DepPOS = td2Dep.Tag();
                         // System.err.println("prepDep find: td1.reln: " + td1.reln() +
                         // "; td2.reln: " + td2.reln() + "; td1DepPos: " + td1DepPOS +
                         // "; td2DepPos: " + td2DepPOS + "; index " + index +
                         // "; td2.dep().index(): " + td2.dep().index());
-                        if ((td2.reln() == GrammaticalRelation.DEPENDENT ||
-                             td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT ||
-                             td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT) &&
+                        if ((td2.Reln() == GrammaticalRelation.DEPENDENT ||
+                             td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT ||
+                             td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT) &&
                             (td1DepPOS.Equals("IN") || td1DepPOS.Equals("TO") || td1DepPOS.Equals("VBG")) &&
                             prepDep == null &&
                             (!(td2DepPOS.Equals("RB") || td2DepPOS.Equals("IN") || td2DepPOS.Equals("TO"))))
@@ -913,7 +913,7 @@ namespace OpenNLP.Tools.Util.Trees
                             // I deleted this to see if it helped [cdm Jan 2010] &&
                             // td2.dep().index() < index)
                             prepDep = new Tuple<TypedDependency, Boolean>(td2,
-                                td2.reln() != EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT);
+                                td2.Reln() != EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT);
                         }
                         else if (!inConjDeps(td2, conjs))
                         {
@@ -952,15 +952,15 @@ namespace OpenNLP.Tools.Util.Trees
                     // to Serbia.
                     GrammaticalRelation reln = determinePrepRelation(map, vmod, td1, td1, prepDep.Item2);
 
-                    TypedDependency tdNew = new TypedDependency(reln, td1.gov(), prepDep.Item1.dep());
+                    TypedDependency tdNew = new TypedDependency(reln, td1.Gov(), prepDep.Item1.Dep());
                     newTypedDeps.Add(tdNew);
                     /*if (DEBUG) {
           System.err.println("PrepPoss Conj branch (two parallel PPs) adding: " + tdNew);
           System.err.println("  removing: " + td1 + "  " + prepDep + "  " + ccDep);
         }*/
-                    td1.setReln(GrammaticalRelation.KILL); // remember these are "used up"
-                    prepDep.Item1.setReln(GrammaticalRelation.KILL);
-                    ccDep.setReln(GrammaticalRelation.KILL);
+                    td1.SetReln(GrammaticalRelation.KILL); // remember these are "used up"
+                    prepDep.Item1.SetReln(GrammaticalRelation.KILL);
+                    ccDep.SetReln(GrammaticalRelation.KILL);
 
                     foreach (Tuple<TypedDependency, TypedDependency, Boolean> trip in conjs)
                     {
@@ -976,20 +976,20 @@ namespace OpenNLP.Tools.Util.Trees
               System.err.println("  apparent misparse: same P twice with only one NP object (prepOtherDep is null)");
               System.err.println("  removing: " + conjDep);
             }*/
-                            ccDep.setReln(GrammaticalRelation.KILL);
+                            ccDep.SetReln(GrammaticalRelation.KILL);
                         }
                         else
                         {
-                            TypedDependency tdNew2 = new TypedDependency(conjValue(ccDep.dep().Value()),
-                                prepDep.Item1.dep(), prepOtherDep.dep());
+                            TypedDependency tdNew2 = new TypedDependency(conjValue(ccDep.Dep().Value()),
+                                prepDep.Item1.Dep(), prepOtherDep.Dep());
                             newTypedDeps.Add(tdNew2);
                             /*if (DEBUG) {
               System.err.println("  adding: " + tdNew2);
               System.err.println("  removing: " + conjDep + "  " + prepOtherDep);
             }*/
-                            prepOtherDep.setReln(GrammaticalRelation.KILL);
+                            prepOtherDep.SetReln(GrammaticalRelation.KILL);
                         }
-                        conjDep.setReln(GrammaticalRelation.KILL);
+                        conjDep.SetReln(GrammaticalRelation.KILL);
                     }
 
                     // promote dtrs that would be orphaned
@@ -998,7 +998,7 @@ namespace OpenNLP.Tools.Util.Trees
                         /*if (DEBUG) {
             System.err.print("Changed " + otd);
           }*/
-                        otd.setGov(td1.gov());
+                        otd.SetGov(td1.Gov());
                         /*if (DEBUG) {
             System.err.println(" to " + otd);
           }*/
@@ -1024,7 +1024,7 @@ namespace OpenNLP.Tools.Util.Trees
                         // System.err.println("[a] td2.reln " + td2.reln() + " td2.gov " +
                         // td2.gov() + " td1.dep " + td1.dep());
                         // }
-                        if (td2.reln() != GrammaticalRelation.KILL && td2.gov().Equals(td1.dep()))
+                        if (td2.Reln() != GrammaticalRelation.KILL && td2.Gov().Equals(td1.Dep()))
                         {
                             // && td2.reln()
                             // != COORDINATION
@@ -1033,7 +1033,7 @@ namespace OpenNLP.Tools.Util.Trees
                             /*if (DEBUG) {
               System.err.println("Changing " + td2 + " to have governor of " + td1 + " [a]");
             }*/
-                            td2.setGov(td1.gov());
+                            td2.SetGov(td1.Gov());
                         }
                     }
                     continue; // This one has been dealt with successfully
@@ -1050,7 +1050,7 @@ namespace OpenNLP.Tools.Util.Trees
                         /*trip.Item2 = new TypedDependency(prepDep.Item1.reln(), trip.Item1.dep(), prepDep.Item1.dep());
           trip.Item3 = prepDep.Item2;*/
                         newConjList.Add(new Tuple<TypedDependency, TypedDependency, bool>(trip.Item1,
-                            new TypedDependency(prepDep.Item1.reln(), trip.Item1.dep(), prepDep.Item1.dep()),
+                            new TypedDependency(prepDep.Item1.Reln(), trip.Item1.Dep(), prepDep.Item1.Dep()),
                             prepDep.Item2));
                     }
                     else
@@ -1068,15 +1068,15 @@ namespace OpenNLP.Tools.Util.Trees
                 // prep_through(jumped, hoop)
 
                 GrammaticalRelation _reln = determinePrepRelation(map, vmod, td1, td1, prepDep.Item2);
-                TypedDependency _tdNew = new TypedDependency(_reln, td1.gov(), prepDep.Item1.dep());
+                TypedDependency _tdNew = new TypedDependency(_reln, td1.Gov(), prepDep.Item1.Dep());
                 newTypedDeps.Add(_tdNew);
                 /*if (DEBUG) {
         System.err.println("ConjPP (different preps) adding: " + tdNew);
         System.err.println("  deleting: " + td1 + "  " + prepDep.first() + "  " + ccDep);
       }*/
-                td1.setReln(GrammaticalRelation.KILL); // remember these are "used up"
-                prepDep.Item1.setReln(GrammaticalRelation.KILL);
-                ccDep.setReln(GrammaticalRelation.KILL);
+                td1.SetReln(GrammaticalRelation.KILL); // remember these are "used up"
+                prepDep.Item1.SetReln(GrammaticalRelation.KILL);
+                ccDep.SetReln(GrammaticalRelation.KILL);
                 // so far we added the first prep grammatical relation
 
                 int copyNumber = 1;
@@ -1091,12 +1091,12 @@ namespace OpenNLP.Tools.Util.Trees
                     // we add a "copy" entry in the CoreLabel
                     // existence of copy key is checked at printing (ToString method of
                     // TypedDependency)
-                    IndexedWord label = td1.gov().MakeCopy(copyNumber);
+                    IndexedWord label = td1.Gov().MakeCopy(copyNumber);
                     copyNumber++;
 
                     // now we add the conjunction relation between td1.gov and the copy
                     // the copy has the same label as td1.gov() but is another TreeGraphNode
-                    TypedDependency tdNew2 = new TypedDependency(conjValue(ccDep.dep().Value()), td1.gov(), label);
+                    TypedDependency tdNew2 = new TypedDependency(conjValue(ccDep.Dep().Value()), td1.Gov(), label);
                     newTypedDeps.Add(tdNew2);
 
                     // now we still need to add the second prep grammatical relation
@@ -1104,26 +1104,26 @@ namespace OpenNLP.Tools.Util.Trees
                     TypedDependency tdNew3;
 
                     GrammaticalRelation reln2 = determinePrepRelation(map, vmod, conjDep, td1, pobj);
-                    tdNew3 = new TypedDependency(reln2, label, prepOtherDep.dep());
+                    tdNew3 = new TypedDependency(reln2, label, prepOtherDep.Dep());
                     newTypedDeps.Add(tdNew3);
 
                     /*if (DEBUG) {
           System.err.println("  adding: " + tdNew2 + "  " + tdNew3);
           System.err.println("  deleting: " + conjDep + "  " + prepOtherDep);
         }*/
-                    conjDep.setReln(GrammaticalRelation.KILL);
-                    prepOtherDep.setReln(GrammaticalRelation.KILL);
+                    conjDep.SetReln(GrammaticalRelation.KILL);
+                    prepOtherDep.SetReln(GrammaticalRelation.KILL);
 
                     // promote dtrs that would be orphaned
                     foreach (TypedDependency otd in otherDtrs)
                     {
                         // special treatment for prepositions: the original relation is
                         // likely to be a "dep" and we want this to be a "prep"
-                        if (otd.dep().Tag().Equals("IN"))
+                        if (otd.Dep().Tag().Equals("IN"))
                         {
-                            otd.setReln(EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER);
+                            otd.SetReln(EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER);
                         }
-                        otd.setGov(td1.gov());
+                        otd.SetGov(td1.Gov());
                     }
                 }
 
@@ -1140,14 +1140,14 @@ namespace OpenNLP.Tools.Util.Trees
                 // it does, since they're not automatically deleted
                 foreach (TypedDependency td2 in possibles)
                 {
-                    if (td2.reln() != GrammaticalRelation.KILL)
+                    if (td2.Reln() != GrammaticalRelation.KILL)
                     {
                         // && td2.reln() != COORDINATION &&
                         // td2.reln() != CONJUNCT) {
                         /*if (DEBUG) {
             System.err.println("Changing " + td2 + " to have governor of " + td1 + " [b]");
           }*/
-                        td2.setGov(td1.gov());
+                        td2.SetGov(td1.Gov());
                     }
                 }
                 // end for different prepositions
@@ -1156,49 +1156,49 @@ namespace OpenNLP.Tools.Util.Trees
             // below here is the single preposition/possessor basic case!!
             foreach (TypedDependency td1 in list)
             {
-                if (td1.reln() == GrammaticalRelation.KILL)
+                if (td1.Reln() == GrammaticalRelation.KILL)
                 {
                     continue;
                 }
 
-                IndexedWord td1Dep = td1.dep();
+                IndexedWord td1Dep = td1.Dep();
                 string td1DepPOS = td1Dep.Tag();
                 // find all other typedDeps having our dep as gov
                 Set<TypedDependency> possibles = map[td1Dep];
 
                 if (possibles != null &&
-                    (td1.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER ||
-                     td1.reln() == EnglishGrammaticalRelations.POSSESSION_MODIFIER ||
-                     td1.reln() == EnglishGrammaticalRelations.CONJUNCT))
+                    (td1.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER ||
+                     td1.Reln() == EnglishGrammaticalRelations.POSSESSION_MODIFIER ||
+                     td1.Reln() == EnglishGrammaticalRelations.CONJUNCT))
                 {
 
                     // look for the "second half"
                     bool pobj = true; // default for prep relation is prep_
                     foreach (TypedDependency td2 in possibles)
                     {
-                        if (td2.reln() != EnglishGrammaticalRelations.COORDINATION &&
-                            td2.reln() != EnglishGrammaticalRelations.CONJUNCT)
+                        if (td2.Reln() != EnglishGrammaticalRelations.COORDINATION &&
+                            td2.Reln() != EnglishGrammaticalRelations.CONJUNCT)
                         {
 
-                            IndexedWord td2Dep = td2.dep();
+                            IndexedWord td2Dep = td2.Dep();
                             string td2DepPOS = td2Dep.Tag();
-                            if ((td1.reln() == EnglishGrammaticalRelations.POSSESSION_MODIFIER ||
-                                 td1.reln() == EnglishGrammaticalRelations.CONJUNCT))
+                            if ((td1.Reln() == EnglishGrammaticalRelations.POSSESSION_MODIFIER ||
+                                 td1.Reln() == EnglishGrammaticalRelations.CONJUNCT))
                             {
-                                if (td2.reln() == EnglishGrammaticalRelations.POSSESSIVE_MODIFIER)
+                                if (td2.Reln() == EnglishGrammaticalRelations.POSSESSIVE_MODIFIER)
                                 {
                                     if (! map.ContainsKey(td2Dep))
                                     {
                                         // if 's has no kids of its own (it shouldn't!)
-                                        td2.setReln(GrammaticalRelation.KILL);
+                                        td2.SetReln(GrammaticalRelation.KILL);
                                     }
                                 }
                             }
-                            else if ((td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT ||
-                                      td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT) &&
+                            else if ((td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT ||
+                                      td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT) &&
                                      (td1DepPOS.Equals("IN") || td1DepPOS.Equals("TO") || td1DepPOS.Equals("VBG")) &&
                                      (!(td2DepPOS.Equals("RB") || td2DepPOS.Equals("IN") || td2DepPOS.Equals("TO"))) &&
-                                     !isConjWithNoPrep(td2.gov(), possibles))
+                                     !isConjWithNoPrep(td2.Gov(), possibles))
                             {
                                 // we don't collapse preposition conjoined with a non-preposition
                                 // to avoid disconnected constituents
@@ -1208,22 +1208,22 @@ namespace OpenNLP.Tools.Util.Trees
               }*/
 
                                 // check whether we are in a pcomp case:
-                                if (td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT)
+                                if (td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT)
                                 {
                                     pobj = false;
                                 }
 
                                 GrammaticalRelation reln = determinePrepRelation(map, vmod, td1, td1, pobj);
-                                TypedDependency td3 = new TypedDependency(reln, td1.gov(), td2.dep());
+                                TypedDependency td3 = new TypedDependency(reln, td1.Gov(), td2.Dep());
                                 /*if (DEBUG) {
                 System.err.println("PP adding: " + td3 + " deleting: " + td1 + ' ' + td2);
               }*/
                                 // add it to map to deal with recursive cases like "achieved this (PP (PP in part) with talent)"
-                                map[td3.gov()].Add(td3);
+                                map[td3.Gov()].Add(td3);
 
                                 newTypedDeps.Add(td3);
-                                td1.setReln(GrammaticalRelation.KILL); // remember these are "used up"
-                                td2.setReln(GrammaticalRelation.KILL); // remember these are "used up"
+                                td1.SetReln(GrammaticalRelation.KILL); // remember these are "used up"
+                                td2.SetReln(GrammaticalRelation.KILL); // remember these are "used up"
                             }
                         }
                     } // for TypedDependency td2
@@ -1239,18 +1239,18 @@ namespace OpenNLP.Tools.Util.Trees
                 // longer appears. So, change its governor to 'drew'.
                 // CDM Feb 2010: This used to not move COORDINATION OR CONJUNCT, but now
                 // it does, since they're not automatically deleted
-                if (possibles != null && td1.reln() == GrammaticalRelation.KILL)
+                if (possibles != null && td1.Reln() == GrammaticalRelation.KILL)
                 {
                     foreach (TypedDependency td2 in possibles)
                     {
-                        if (td2.reln() != GrammaticalRelation.KILL)
+                        if (td2.Reln() != GrammaticalRelation.KILL)
                         {
                             // && td2.reln() != COORDINATION &&
                             // td2.reln() != CONJUNCT) {
                             /*if (DEBUG) {
               System.err.println("Changing " + td2 + " to have governor of " + td1 + " [c]");
             }*/
-                            td2.setGov(td1.gov());
+                            td2.SetGov(td1.Gov());
                         }
                     }
                 }
@@ -1267,7 +1267,7 @@ namespace OpenNLP.Tools.Util.Trees
         iter.remove();
       }
     }*/
-            list.RemoveAll(td => td.reln() == GrammaticalRelation.KILL);
+            list.RemoveAll(td => td.Reln() == GrammaticalRelation.KILL);
             list.AddRange(newTypedDeps);
         } // end collapsePrepAndPoss()
 
@@ -1299,11 +1299,11 @@ namespace OpenNLP.Tools.Util.Trees
         {
             foreach (TypedDependency td in list)
             {
-                if (td.gov().Equals(node) && td.reln() == EnglishGrammaticalRelations.CONJUNCT)
+                if (td.Gov().Equals(node) && td.Reln() == EnglishGrammaticalRelations.CONJUNCT)
                 {
                     // we have a conjunct
                     // check the POS of the dependent
-                    string tdDepPOS = td.dep().Tag();
+                    string tdDepPOS = td.Dep().Tag();
                     if (!(tdDepPOS.Equals("IN") || tdDepPOS.Equals("TO")))
                     {
                         return true;
@@ -1327,23 +1327,23 @@ namespace OpenNLP.Tools.Util.Trees
             // or be the dependent of a "vmod" relation
             // if it is the case, the "agent" variable becomes true
             bool agent = false;
-            string preposition = pc.dep().Value().ToLower();
+            string preposition = pc.Dep().Value().ToLower();
             if (preposition.Equals("by"))
             {
                 // look if we have an auxpass
-                Set<TypedDependency> aux_pass_poss = map[topPrep.gov()];
+                Set<TypedDependency> aux_pass_poss = map[topPrep.Gov()];
                 if (aux_pass_poss != null)
                 {
                     foreach (TypedDependency td_pass in aux_pass_poss)
                     {
-                        if (td_pass.reln() == EnglishGrammaticalRelations.AUX_PASSIVE_MODIFIER)
+                        if (td_pass.Reln() == EnglishGrammaticalRelations.AUX_PASSIVE_MODIFIER)
                         {
                             agent = true;
                         }
                     }
                 }
                 // look if we have a vmod
-                if (vmod.Any() && vmod.Contains(topPrep.gov()))
+                if (vmod.Any() && vmod.Contains(topPrep.Gov()))
                 {
                     agent = true;
                 }
@@ -1385,11 +1385,11 @@ namespace OpenNLP.Tools.Util.Trees
             // find typed deps of form cc(gov, dep)
             foreach (TypedDependency td in list)
             {
-                if (td.reln() == EnglishGrammaticalRelations.COORDINATION)
+                if (td.Reln() == EnglishGrammaticalRelations.COORDINATION)
                 {
                     // i.e. "cc"
-                    IndexedWord gov = td.gov();
-                    GrammaticalRelation conj = conjValue(td.dep().Value());
+                    IndexedWord gov = td.Gov();
+                    GrammaticalRelation conj = conjValue(td.Dep().Value());
                     /*if (DEBUG) {
           System.err.println("Set conj to " + conj + " based on " + td);
         }*/
@@ -1398,21 +1398,21 @@ namespace OpenNLP.Tools.Util.Trees
                     bool foundOne = false;
                     foreach (TypedDependency td1 in list)
                     {
-                        if (td1.gov().Equals(gov))
+                        if (td1.Gov().Equals(gov))
                         {
-                            if (td1.reln() == EnglishGrammaticalRelations.CONJUNCT)
+                            if (td1.Reln() == EnglishGrammaticalRelations.CONJUNCT)
                             {
                                 // i.e., "conj"
                                 // change "conj" to the actual (lexical) conjunction
                                 /*if (DEBUG) {
                 System.err.println("Changing " + td1 + " to have relation " + conj);
               }*/
-                                td1.setReln(conj);
+                                td1.SetReln(conj);
                                 foundOne = true;
                             }
-                            else if (td1.reln() == EnglishGrammaticalRelations.COORDINATION)
+                            else if (td1.Reln() == EnglishGrammaticalRelations.COORDINATION)
                             {
-                                conj = conjValue(td1.dep().Value());
+                                conj = conjValue(td1.Dep().Value());
                                 /*if (DEBUG) {
                 System.err.println("Set conj to " + conj + " based on " + td1);
               }*/
@@ -1436,7 +1436,7 @@ namespace OpenNLP.Tools.Util.Trees
         iter.remove();
       }
     }*/
-            list.RemoveAll(td => td.reln() == EnglishGrammaticalRelations.COORDINATION && govs.Contains(td.gov()));
+            list.RemoveAll(td => td.Reln() == EnglishGrammaticalRelations.COORDINATION && govs.Contains(td.Gov()));
         }
 
         /**
@@ -1478,21 +1478,21 @@ namespace OpenNLP.Tools.Util.Trees
 
             foreach (TypedDependency rcmod in list)
             {
-                if (rcmod.reln() != EnglishGrammaticalRelations.RELATIVE_CLAUSE_MODIFIER)
+                if (rcmod.Reln() != EnglishGrammaticalRelations.RELATIVE_CLAUSE_MODIFIER)
                 {
                     // we only add ref dependencies across relative clauses
                     continue;
                 }
 
-                IndexedWord head = rcmod.gov();
-                IndexedWord modifier = rcmod.dep();
+                IndexedWord head = rcmod.Gov();
+                IndexedWord modifier = rcmod.Dep();
 
                 TypedDependency leftChild = null;
                 foreach (TypedDependency child in list)
                 {
-                    if (child.gov().Equals(modifier) &&
-                        EnglishPatterns.RELATIVIZING_WORD_PATTERN.IsMatch(child.dep().Value()) &&
-                        (leftChild == null || child.dep().Index() < leftChild.dep().Index()))
+                    if (child.Gov().Equals(modifier) &&
+                        EnglishPatterns.RELATIVIZING_WORD_PATTERN.IsMatch(child.Dep().Value()) &&
+                        (leftChild == null || child.Dep().Index() < leftChild.Dep().Index()))
                     {
                         leftChild = child;
                     }
@@ -1502,15 +1502,15 @@ namespace OpenNLP.Tools.Util.Trees
                 TypedDependency leftGrandchild = null;
                 foreach (TypedDependency child in list)
                 {
-                    if (!child.gov().Equals(modifier))
+                    if (!child.Gov().Equals(modifier))
                     {
                         continue;
                     }
                     foreach (TypedDependency grandchild in list)
                     {
-                        if (grandchild.gov().Equals(child.dep()) &&
-                            EnglishPatterns.RELATIVIZING_WORD_PATTERN.IsMatch(grandchild.dep().Value()) &&
-                            (leftGrandchild == null || grandchild.dep().Index() < leftGrandchild.dep().Index()))
+                        if (grandchild.Gov().Equals(child.Dep()) &&
+                            EnglishPatterns.RELATIVIZING_WORD_PATTERN.IsMatch(grandchild.Dep().Value()) &&
+                            (leftGrandchild == null || grandchild.Dep().Index() < leftGrandchild.Dep().Index()))
                         {
                             leftGrandchild = grandchild;
                         }
@@ -1519,13 +1519,13 @@ namespace OpenNLP.Tools.Util.Trees
 
                 TypedDependency newDep = null;
                 if (leftGrandchild != null &&
-                    (leftChild == null || leftGrandchild.dep().Index() < leftChild.dep().Index()))
+                    (leftChild == null || leftGrandchild.Dep().Index() < leftChild.Dep().Index()))
                 {
-                    newDep = new TypedDependency(EnglishGrammaticalRelations.REFERENT, head, leftGrandchild.dep());
+                    newDep = new TypedDependency(EnglishGrammaticalRelations.REFERENT, head, leftGrandchild.Dep());
                 }
                 else if (leftChild != null)
                 {
-                    newDep = new TypedDependency(EnglishGrammaticalRelations.REFERENT, head, leftChild.dep());
+                    newDep = new TypedDependency(EnglishGrammaticalRelations.REFERENT, head, leftChild.Dep());
                 }
                 if (newDep != null)
                 {
@@ -1537,7 +1537,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 if (!list.Contains(newDep))
                 {
-                    newDep.setExtra();
+                    newDep.SetExtra();
                     list.Add(newDep);
                 }
             }
@@ -1554,8 +1554,8 @@ namespace OpenNLP.Tools.Util.Trees
             // find typed deps of form ref(gov, dep)
             // put them in a List for processing; remove them from the set of deps
             List<TypedDependency> refs = new List<TypedDependency>();
-            refs.AddRange(list.Where(td => td.reln() == EnglishGrammaticalRelations.REFERENT));
-            list.RemoveAll(td => td.reln() == EnglishGrammaticalRelations.REFERENT);
+            refs.AddRange(list.Where(td => td.Reln() == EnglishGrammaticalRelations.REFERENT));
+            list.RemoveAll(td => td.Reln() == EnglishGrammaticalRelations.REFERENT);
             /*for (Iterator<TypedDependency> iter = list.iterator(); iter.hasNext();) {
       TypedDependency td = iter.next();
       if (td.reln() == REFERENT) {
@@ -1567,20 +1567,20 @@ namespace OpenNLP.Tools.Util.Trees
             // now substitute target of referent where possible
             foreach (TypedDependency re in refs)
             {
-                IndexedWord dep = re.dep(); // take the relative word
-                IndexedWord ant = re.gov(); // take the antecedent
+                IndexedWord dep = re.Dep(); // take the relative word
+                IndexedWord ant = re.Gov(); // take the antecedent
                 foreach (TypedDependency td in list)
                 {
                     // the last condition below maybe shouldn't be necessary, but it has
                     // helped stop things going haywire a couple of times (it stops the
                     // creation of a unit cycle that probably leaves something else
                     // disconnected) [cdm Jan 2010]
-                    if (td.dep().Equals(dep) && td.reln() != EnglishGrammaticalRelations.REFERENT &&
-                        !td.gov().Equals(ant))
+                    if (td.Dep().Equals(dep) && td.Reln() != EnglishGrammaticalRelations.REFERENT &&
+                        !td.Gov().Equals(ant))
                     {
                         /*if (DEBUG)
             System.err.print("referent: changing " + td);*/
-                        td.setDep(ant);
+                        td.SetDep(ant);
                         /*if (DEBUG)
             System.err.println(" to " + td);*/
                     }
@@ -1608,27 +1608,27 @@ namespace OpenNLP.Tools.Util.Trees
 
             foreach (TypedDependency typedDep in list)
             {
-                if (!map.ContainsKey(typedDep.dep()))
+                if (!map.ContainsKey(typedDep.Dep()))
                 {
                     // NB: Here and in other places below, we use a TreeSet (which extends
                     // SortedSet) to guarantee that results are deterministic)
-                    map.Add(typedDep.dep(), new TreeSet<TypedDependency>());
+                    map.Add(typedDep.Dep(), new TreeSet<TypedDependency>());
                 }
-                map[typedDep.dep()].Add(typedDep);
+                map[typedDep.Dep()].Add(typedDep);
 
-                if (typedDep.reln().Equals(EnglishGrammaticalRelations.AUX_PASSIVE_MODIFIER))
+                if (typedDep.Reln().Equals(EnglishGrammaticalRelations.AUX_PASSIVE_MODIFIER))
                 {
-                    withPassiveAuxiliary.Add(typedDep.gov());
+                    withPassiveAuxiliary.Add(typedDep.Gov());
                 }
 
                 // look for subjects
-                if (typedDep.reln().getParent() == EnglishGrammaticalRelations.NOMINAL_SUBJECT ||
-                    typedDep.reln().getParent() == EnglishGrammaticalRelations.SUBJECT ||
-                    typedDep.reln().getParent() == EnglishGrammaticalRelations.CLAUSAL_SUBJECT)
+                if (typedDep.Reln().getParent() == EnglishGrammaticalRelations.NOMINAL_SUBJECT ||
+                    typedDep.Reln().getParent() == EnglishGrammaticalRelations.SUBJECT ||
+                    typedDep.Reln().getParent() == EnglishGrammaticalRelations.CLAUSAL_SUBJECT)
                 {
-                    if (!subjectMap.ContainsKey(typedDep.gov()))
+                    if (!subjectMap.ContainsKey(typedDep.Gov()))
                     {
-                        subjectMap.Add(typedDep.gov(), typedDep);
+                        subjectMap.Add(typedDep.Gov(), typedDep);
                     }
                 }
 
@@ -1642,16 +1642,16 @@ namespace OpenNLP.Tools.Util.Trees
                 // }
 
                 // look for rcmod relations
-                if (typedDep.reln() == EnglishGrammaticalRelations.RELATIVE_CLAUSE_MODIFIER)
+                if (typedDep.Reln() == EnglishGrammaticalRelations.RELATIVE_CLAUSE_MODIFIER)
                 {
-                    rcmodHeads.Add(typedDep.gov());
+                    rcmodHeads.Add(typedDep.Gov());
                 }
                 // look for prepc relations: put the dependent of such a relation in the
                 // list
                 // to avoid wrong propagation of dobj
-                if (typedDep.reln().ToString().StartsWith("prepc"))
+                if (typedDep.Reln().ToString().StartsWith("prepc"))
                 {
-                    prepcDep.Add(typedDep.dep());
+                    prepcDep.Add(typedDep.Dep());
                 }
             }
 
@@ -1666,10 +1666,10 @@ namespace OpenNLP.Tools.Util.Trees
             // find typed deps of form conj(gov,dep)
             foreach (TypedDependency td in list)
             {
-                if (EnglishGrammaticalRelations.getConjs().Contains(td.reln()))
+                if (EnglishGrammaticalRelations.getConjs().Contains(td.Reln()))
                 {
-                    IndexedWord gov = td.gov();
-                    IndexedWord dep = td.dep();
+                    IndexedWord gov = td.Gov();
+                    IndexedWord dep = td.Dep();
 
                     // look at the dep in the conjunct
                     Set<TypedDependency> gov_relations = map[gov];
@@ -1679,14 +1679,14 @@ namespace OpenNLP.Tools.Util.Trees
                         foreach (TypedDependency td1 in gov_relations)
                         {
                             // System.err.println("gov rel " + td1);
-                            IndexedWord newGov = td1.gov();
+                            IndexedWord newGov = td1.Gov();
                             // in the case of errors in the basic dependencies, it
                             // is possible to have overlapping newGov & dep
                             if (newGov.Equals(dep))
                             {
                                 continue;
                             }
-                            GrammaticalRelation newRel = td1.reln();
+                            GrammaticalRelation newRel = td1.Reln();
                             if (newRel != GrammaticalRelation.ROOT)
                             {
                                 if (rcmodHeads.Contains(gov) && rcmodHeads.Contains(dep))
@@ -1729,7 +1729,7 @@ namespace OpenNLP.Tools.Util.Trees
                         TypedDependency tdsubj = subjectMap[gov];
                         // check for wrong nsubjpass: if the new verb is VB or VBZ or VBP or JJ, then
                         // add nsubj (if it is tagged correctly, should do this for VBD too, but we don't)
-                        GrammaticalRelation relation = tdsubj.reln();
+                        GrammaticalRelation relation = tdsubj.Reln();
                         if (relation == EnglishGrammaticalRelations.NOMINAL_PASSIVE_SUBJECT)
                         {
                             if (isDefinitelyActive(tag))
@@ -1761,7 +1761,7 @@ namespace OpenNLP.Tools.Util.Trees
                         /*if (DEBUG) {
             System.err.println("Adding new " + relation + " dependency from " + dep + " to " + tdsubj.dep() + " (subj propagation case)");
           }*/
-                        newTypedDeps.Add(new TypedDependency(relation, dep, tdsubj.dep()));
+                        newTypedDeps.Add(new TypedDependency(relation, dep, tdsubj.Dep()));
                     }
 
                     // propagate objects
@@ -1816,14 +1816,14 @@ namespace OpenNLP.Tools.Util.Trees
 
             foreach (TypedDependency xcomp in list)
             {
-                if (xcomp.reln() != EnglishGrammaticalRelations.XCLAUSAL_COMPLEMENT)
+                if (xcomp.Reln() != EnglishGrammaticalRelations.XCLAUSAL_COMPLEMENT)
                 {
                     // we only add extra nsubj dependencies to some xcomp dependencies
                     continue;
                 }
 
-                IndexedWord modifier = xcomp.dep();
-                IndexedWord head = xcomp.gov();
+                IndexedWord modifier = xcomp.Dep();
+                IndexedWord head = xcomp.Gov();
 
                 bool hasSubjectDaughter = false;
                 bool hasAux = false;
@@ -1832,28 +1832,28 @@ namespace OpenNLP.Tools.Util.Trees
                 foreach (TypedDependency dep in list)
                 {
                     // already have a subject dependency
-                    if ((dep.reln() == EnglishGrammaticalRelations.NOMINAL_SUBJECT ||
-                         dep.reln() == EnglishGrammaticalRelations.NOMINAL_PASSIVE_SUBJECT) &&
-                        dep.gov().Equals(modifier))
+                    if ((dep.Reln() == EnglishGrammaticalRelations.NOMINAL_SUBJECT ||
+                         dep.Reln() == EnglishGrammaticalRelations.NOMINAL_PASSIVE_SUBJECT) &&
+                        dep.Gov().Equals(modifier))
                     {
                         hasSubjectDaughter = true;
                         break;
                     }
 
-                    if (dep.reln() == EnglishGrammaticalRelations.AUX_MODIFIER && dep.gov().Equals(modifier))
+                    if (dep.Reln() == EnglishGrammaticalRelations.AUX_MODIFIER && dep.Gov().Equals(modifier))
                     {
                         hasAux = true;
                     }
 
-                    if ((dep.reln() == EnglishGrammaticalRelations.NOMINAL_SUBJECT ||
-                         dep.reln() == EnglishGrammaticalRelations.NOMINAL_PASSIVE_SUBJECT) && dep.gov().Equals(head))
+                    if ((dep.Reln() == EnglishGrammaticalRelations.NOMINAL_SUBJECT ||
+                         dep.Reln() == EnglishGrammaticalRelations.NOMINAL_PASSIVE_SUBJECT) && dep.Gov().Equals(head))
                     {
-                        subjects.Add(dep.dep());
+                        subjects.Add(dep.Dep());
                     }
 
-                    if (dep.reln() == EnglishGrammaticalRelations.DIRECT_OBJECT && dep.gov().Equals(head))
+                    if (dep.Reln() == EnglishGrammaticalRelations.DIRECT_OBJECT && dep.Gov().Equals(head))
                     {
-                        objects.Add(dep.dep());
+                        objects.Add(dep.Dep());
                     }
                 }
 
@@ -1899,7 +1899,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 if (!list.Contains(newDep))
                 {
-                    newDep.setExtra();
+                    newDep.SetExtra();
                     list.Add(newDep);
                 }
             }
@@ -1918,23 +1918,23 @@ namespace OpenNLP.Tools.Util.Trees
             List<IndexedWord> list_auxpass = new List<IndexedWord>();
             foreach (TypedDependency td in list)
             {
-                if (td.reln() == EnglishGrammaticalRelations.AUX_PASSIVE_MODIFIER)
+                if (td.Reln() == EnglishGrammaticalRelations.AUX_PASSIVE_MODIFIER)
                 {
-                    list_auxpass.Add(td.gov());
+                    list_auxpass.Add(td.Gov());
                 }
             }
             foreach (TypedDependency td in list)
             {
                 // correct nsubj
-                if (td.reln() == EnglishGrammaticalRelations.NOMINAL_SUBJECT && list_auxpass.Contains(td.gov()))
+                if (td.Reln() == EnglishGrammaticalRelations.NOMINAL_SUBJECT && list_auxpass.Contains(td.Gov()))
                 {
                     // System.err.println("%%% Changing subj to passive: " + td);
-                    td.setReln(EnglishGrammaticalRelations.NOMINAL_PASSIVE_SUBJECT);
+                    td.SetReln(EnglishGrammaticalRelations.NOMINAL_PASSIVE_SUBJECT);
                 }
-                if (td.reln() == EnglishGrammaticalRelations.CLAUSAL_SUBJECT && list_auxpass.Contains(td.gov()))
+                if (td.Reln() == EnglishGrammaticalRelations.CLAUSAL_SUBJECT && list_auxpass.Contains(td.Gov()))
                 {
                     // System.err.println("%%% Changing subj to passive: " + td);
-                    td.setReln(EnglishGrammaticalRelations.CLAUSAL_PASSIVE_SUBJECT);
+                    td.SetReln(EnglishGrammaticalRelations.CLAUSAL_PASSIVE_SUBJECT);
                 }
 
                 // correct unretrieved poss: dep relation in which the dependent is a
@@ -1965,18 +1965,18 @@ namespace OpenNLP.Tools.Util.Trees
             prepRels.AddAll(EnglishGrammaticalRelations.getPrepsC());
             foreach (TypedDependency td1 in list)
             {
-                if (prepRels.Contains(td1.reln()))
+                if (prepRels.Contains(td1.Reln()))
                 {
                     // if we have a prep_ relation
-                    IndexedWord gov = td1.gov();
-                    IndexedWord dep = td1.dep();
+                    IndexedWord gov = td1.Gov();
+                    IndexedWord dep = td1.Dep();
 
                     foreach (TypedDependency td2 in list)
                     {
-                        if (td2.reln() == GrammaticalRelation.DEPENDENT && td2.gov().Equals(gov) &&
-                            td2.dep().Equals(dep))
+                        if (td2.Reln() == GrammaticalRelation.DEPENDENT && td2.Gov().Equals(gov) &&
+                            td2.Dep().Equals(dep))
                         {
-                            td2.setReln(GrammaticalRelation.KILL);
+                            td2.SetReln(GrammaticalRelation.KILL);
                         }
                     }
                 }
@@ -1992,7 +1992,7 @@ namespace OpenNLP.Tools.Util.Trees
         iter.remove();
       }
     }*/
-            list.RemoveAll(td => td.reln() == GrammaticalRelation.KILL);
+            list.RemoveAll(td => td.Reln() == GrammaticalRelation.KILL);
         }
 
         //@Override
@@ -2016,21 +2016,21 @@ namespace OpenNLP.Tools.Util.Trees
             // find typed deps of form cc(gov, x)
             foreach (TypedDependency td1 in list)
             {
-                if (td1.reln() == EnglishGrammaticalRelations.COORDINATION)
+                if (td1.Reln() == EnglishGrammaticalRelations.COORDINATION)
                 {
-                    IndexedWord x = td1.dep();
+                    IndexedWord x = td1.Dep();
                     // find typed deps of form dep(x,y) and kill them
                     foreach (TypedDependency td2 in list)
                     {
-                        if (td2.gov().Equals(x) &&
-                            (td2.reln() == GrammaticalRelation.DEPENDENT ||
-                             td2.reln() == EnglishGrammaticalRelations.MULTI_WORD_EXPRESSION ||
-                             td2.reln() == EnglishGrammaticalRelations.COORDINATION ||
-                             td2.reln() == EnglishGrammaticalRelations.ADVERBIAL_MODIFIER ||
-                             td2.reln() == EnglishGrammaticalRelations.NEGATION_MODIFIER ||
-                             td2.reln() == EnglishGrammaticalRelations.AUX_MODIFIER))
+                        if (td2.Gov().Equals(x) &&
+                            (td2.Reln() == GrammaticalRelation.DEPENDENT ||
+                             td2.Reln() == EnglishGrammaticalRelations.MULTI_WORD_EXPRESSION ||
+                             td2.Reln() == EnglishGrammaticalRelations.COORDINATION ||
+                             td2.Reln() == EnglishGrammaticalRelations.ADVERBIAL_MODIFIER ||
+                             td2.Reln() == EnglishGrammaticalRelations.NEGATION_MODIFIER ||
+                             td2.Reln() == EnglishGrammaticalRelations.AUX_MODIFIER))
                         {
-                            td2.setReln(GrammaticalRelation.KILL);
+                            td2.SetReln(GrammaticalRelation.KILL);
                         }
                     }
                 }
@@ -2048,7 +2048,7 @@ namespace OpenNLP.Tools.Util.Trees
             List<TypedDependency> filtered = new List<TypedDependency>();
             foreach (TypedDependency dep in deps)
             {
-                if (dep.reln() != GrammaticalRelation.KILL)
+                if (dep.Reln() != GrammaticalRelation.KILL)
                 {
                     filtered.Add(dep);
                 }
@@ -2168,12 +2168,12 @@ namespace OpenNLP.Tools.Util.Trees
             TypedDependency dep = null;
             foreach (TypedDependency td in list)
             {
-                if (td.gov().Value().Equals(w_mwp0, StringComparison.InvariantCultureIgnoreCase) &&
-                    td.dep().Value().Equals(w_mwp1, StringComparison.InvariantCultureIgnoreCase) &&
-                    Math.Abs(td.gov().Index() - td.dep().Index()) == 1)
+                if (td.Gov().Value().Equals(w_mwp0, StringComparison.InvariantCultureIgnoreCase) &&
+                    td.Dep().Value().Equals(w_mwp1, StringComparison.InvariantCultureIgnoreCase) &&
+                    Math.Abs(td.Gov().Index() - td.Dep().Index()) == 1)
                 {
-                    mwp0 = td.gov();
-                    mwp1 = td.dep();
+                    mwp0 = td.Gov();
+                    mwp1 = td.Dep();
                     dep = td;
                 }
             }
@@ -2188,15 +2188,15 @@ namespace OpenNLP.Tools.Util.Trees
             TypedDependency prep = null;
             foreach (TypedDependency td1 in list)
             {
-                if ((td1.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER ||
-                     td1.reln() == EnglishGrammaticalRelations.ADVERBIAL_MODIFIER ||
-                     td1.reln() == EnglishGrammaticalRelations.ADJECTIVAL_MODIFIER ||
-                     td1.reln() == GrammaticalRelation.DEPENDENT ||
-                     td1.reln() == EnglishGrammaticalRelations.MULTI_WORD_EXPRESSION) && td1.dep().Equals(mwp0))
+                if ((td1.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER ||
+                     td1.Reln() == EnglishGrammaticalRelations.ADVERBIAL_MODIFIER ||
+                     td1.Reln() == EnglishGrammaticalRelations.ADJECTIVAL_MODIFIER ||
+                     td1.Reln() == GrammaticalRelation.DEPENDENT ||
+                     td1.Reln() == EnglishGrammaticalRelations.MULTI_WORD_EXPRESSION) && td1.Dep().Equals(mwp0))
                 {
                     // we found prep|advmod|dep|amod(gov, mwp0)
                     prep = td1;
-                    governor = prep.gov();
+                    governor = prep.Gov();
                 }
             }
 
@@ -2213,16 +2213,16 @@ namespace OpenNLP.Tools.Util.Trees
             TypedDependency newtd = null;
             foreach (TypedDependency td2 in list)
             {
-                if ((td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT ||
-                     td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT) &&
-                    (td2.gov().Equals(mwp1) || td2.gov().Equals(mwp0)))
+                if ((td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT ||
+                     td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT) &&
+                    (td2.Gov().Equals(mwp1) || td2.Gov().Equals(mwp0)))
                 {
-                    if (pobj == null || pobj.dep().Index() > td2.dep().Index())
+                    if (pobj == null || pobj.Dep().Index() > td2.Dep().Index())
                     {
                         pobj = td2;
                         // create the new gr relation
                         GrammaticalRelation gr;
-                        if (td2.reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT)
+                        if (td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT)
                         {
                             gr = EnglishGrammaticalRelations.getPrepC(str_mwp0 + '_' + str_mwp1);
                         }
@@ -2232,7 +2232,7 @@ namespace OpenNLP.Tools.Util.Trees
                         }
                         if (governor != null)
                         {
-                            newtd = new TypedDependency(gr, governor, pobj.dep());
+                            newtd = new TypedDependency(gr, governor, pobj.Dep());
                         }
                     }
                 }
@@ -2251,32 +2251,32 @@ namespace OpenNLP.Tools.Util.Trees
       System.err.println("Removing " + prep + ", " + dep + ", and " + pobj);
       System.err.println("  and adding " + newtd);
     }*/
-            prep.setReln(GrammaticalRelation.KILL);
-            dep.setReln(GrammaticalRelation.KILL);
-            pobj.setReln(GrammaticalRelation.KILL);
+            prep.SetReln(GrammaticalRelation.KILL);
+            dep.SetReln(GrammaticalRelation.KILL);
+            pobj.SetReln(GrammaticalRelation.KILL);
             newTypedDeps.Add(newtd);
 
             // now remove typed dependencies with reln "kill"
             // and promote possible orphans
             foreach (TypedDependency td1 in list)
             {
-                if (td1.reln() != GrammaticalRelation.KILL)
+                if (td1.Reln() != GrammaticalRelation.KILL)
                 {
-                    if (td1.gov().Equals(mwp0) || td1.gov().Equals(mwp1))
+                    if (td1.Gov().Equals(mwp0) || td1.Gov().Equals(mwp1))
                     {
                         // CDM: Thought of adding this in Jan 2010, but it causes
                         // conflicting relations tmod vs. pobj. Needs more thought
                         // maybe restrict pobj to first NP in PP, and allow tmod for a later
                         // one?
-                        if (td1.reln() == EnglishGrammaticalRelations.TEMPORAL_MODIFIER)
+                        if (td1.Reln() == EnglishGrammaticalRelations.TEMPORAL_MODIFIER)
                         {
                             // special case when an extra NP-TMP is buried in a PP for
                             // "during the same period last year"
-                            td1.setGov(pobj.dep());
+                            td1.SetGov(pobj.Dep());
                         }
                         else
                         {
-                            td1.setGov(governor);
+                            td1.SetGov(governor);
                         }
                     }
                     if (!newTypedDeps.Contains(td1))

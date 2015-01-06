@@ -60,7 +60,7 @@ namespace OpenNLP.Tools.Util.Trees
    * construction).
    */
 
-        public TreeReader newTreeReader(TextReader input)
+        public TreeReader NewTreeReader(TextReader input)
         {
             return new PennTreeReader(input, new LabeledScoredTreeFactory(lf), tm);
         }

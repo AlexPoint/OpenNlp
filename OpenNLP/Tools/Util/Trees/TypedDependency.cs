@@ -34,49 +34,49 @@ namespace OpenNLP.Tools.Util.Trees
 
         public TypedDependency(TypedDependency other)
         {
-            this.preln = other.reln();
-            this.pgov = other.gov();
-            this.pdep = other.dep();
-            this.pextra = other.extra();
+            this.preln = other.Reln();
+            this.pgov = other.Gov();
+            this.pdep = other.Dep();
+            this.pextra = other.Extra();
         }
 
-        public GrammaticalRelation reln()
+        public GrammaticalRelation Reln()
         {
             return preln;
         }
 
-        public void setGov(IndexedWord gov)
+        public void SetGov(IndexedWord gov)
         {
             this.pgov = gov;
         }
 
-        public void setDep(IndexedWord dep)
+        public void SetDep(IndexedWord dep)
         {
             this.pdep = dep;
         }
 
 
-        public IndexedWord gov()
+        public IndexedWord Gov()
         {
             return pgov;
         }
 
-        public IndexedWord dep()
+        public IndexedWord Dep()
         {
             return pdep;
         }
 
-        public bool extra()
+        public bool Extra()
         {
             return pextra;
         }
 
-        public void setReln(GrammaticalRelation reln)
+        public void SetReln(GrammaticalRelation reln)
         {
             this.preln = reln;
         }
 
-        public void setExtra()
+        public void SetExtra()
         {
             this.pextra = true;
         }
@@ -94,17 +94,17 @@ namespace OpenNLP.Tools.Util.Trees
                 return false;
             }
             /*final*/
-            TypedDependency typedDep = (TypedDependency) o;
+            var typedDep = (TypedDependency) o;
 
-            if (preln != null ? !preln.Equals(typedDep.reln()) : typedDep.reln() != null)
+            if (preln != null ? !preln.Equals(typedDep.Reln()) : typedDep.Reln() != null)
             {
                 return false;
             }
-            if (pgov != null ? !pgov.Equals(typedDep.gov()) : typedDep.gov() != null)
+            if (pgov != null ? !pgov.Equals(typedDep.Gov()) : typedDep.Gov() != null)
             {
                 return false;
             }
-            if (pdep != null ? !pdep.Equals(typedDep.dep()) : typedDep.dep() != null)
+            if (pdep != null ? !pdep.Equals(typedDep.Dep()) : typedDep.Dep() != null)
             {
                 return false;
             }
@@ -134,8 +134,8 @@ namespace OpenNLP.Tools.Util.Trees
 
         public int CompareTo(TypedDependency tdArg)
         {
-            IndexedWord depArg = tdArg.dep();
-            IndexedWord depThis = this.dep();
+            IndexedWord depArg = tdArg.Dep();
+            IndexedWord depThis = this.Dep();
             int indexArg = depArg.Index();
             int indexThis = depThis.Index();
 
@@ -149,8 +149,8 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             // dependent indices are equal, check governor
-            int govIndexArg = tdArg.gov().Index();
-            int govIndexThis = this.gov().Index();
+            int govIndexArg = tdArg.Gov().Index();
+            int govIndexThis = this.Gov().Index();
             if (govIndexThis > govIndexArg)
             {
                 return 1;
@@ -161,7 +161,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             // dependent and governor indices equal, the relation decides
-            return this.reln().CompareTo(tdArg.reln());
+            return this.Reln().CompareTo(tdArg.Reln());
         }
     }
 }

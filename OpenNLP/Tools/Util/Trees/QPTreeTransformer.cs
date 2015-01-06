@@ -40,7 +40,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The tree t with an extra layer if there was a QP structure matching the ones mentioned above
    */
         //@Override
-        public Tree transformTree(Tree t)
+        public Tree TransformTree(Tree t)
         {
             return QPtransform(t);
         }

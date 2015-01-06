@@ -56,9 +56,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
             if (nodeToPrune == root)
                 return null;
-            Tree parent = nodeToPrune.parent(root);
-            parent.removeChild(Trees.objectEqualityIndexOf(parent, nodeToPrune));
-            if (parent.children().Length == 0)
+            Tree parent = nodeToPrune.Parent(root);
+            parent.RemoveChild(Trees.ObjectEqualityIndexOf(parent, nodeToPrune));
+            if (parent.Children().Length == 0)
                 return pruneHelper(root, parent);
             return root;
         }

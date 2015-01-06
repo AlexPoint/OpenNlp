@@ -117,7 +117,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
             if (findIterator == null)
             {
-                findIterator = root.iterator();
+                findIterator = root.Iterator();
             }
             if (findCurrent != null && matches())
             {
@@ -206,7 +206,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
             if (node is HasParent)
             {
-                return node.parent();
+                return node.Parent();
             }
             if (nodesToParents == null)
             {
@@ -222,7 +222,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private void fillNodesToParents(Tree node, Tree parent)
         {
             nodesToParents.Add(node, parent);
-            foreach (Tree child in node.children())
+            foreach (Tree child in node.Children())
             {
                 fillNodesToParents(child, node);
             }

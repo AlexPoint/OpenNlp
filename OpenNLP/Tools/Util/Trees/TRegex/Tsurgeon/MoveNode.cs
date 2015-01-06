@@ -49,10 +49,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             public override Tree evaluate(Tree tree, TregexMatcher tregex)
             {
                 Tree nodeToMove = childMatcher[0].evaluate(tree, tregex);
-                Tree oldParent = nodeToMove.parent(tree);
-                oldParent.removeChild(Trees.objectEqualityIndexOf(oldParent, nodeToMove));
+                Tree oldParent = nodeToMove.Parent(tree);
+                oldParent.RemoveChild(Trees.ObjectEqualityIndexOf(oldParent, nodeToMove));
                 Tuple<Tree, int> position = locationMatcher.evaluate(tree, tregex);
-                position.Item1.insertDtr(nodeToMove, position.Item2);
+                position.Item1.InsertDtr(nodeToMove, position.Item2);
                 return tree;
             }
         }

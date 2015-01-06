@@ -38,25 +38,25 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         // docs inherited
-        public Tree newLeaf( /*final*/ string word)
+        public Tree NewLeaf( /*final*/ string word)
         {
-            return newLeaf(mlf.NewLabel(word));
+            return NewLeaf(mlf.NewLabel(word));
         }
 
         // docs inherited
-        public Tree newLeaf(Label label)
+        public Tree NewLeaf(Label label)
         {
             return new TreeGraphNode(label);
         }
 
         // docs inherited
-        public Tree newTreeNode( /*final*/ string parent, /*final*/ List<Tree> children)
+        public Tree NewTreeNode( /*final*/ string parent, /*final*/ List<Tree> children)
         {
-            return newTreeNode(mlf.NewLabel(parent), children);
+            return NewTreeNode(mlf.NewLabel(parent), children);
         }
 
         // docs inherited
-        public Tree newTreeNode(Label parentLabel, List<Tree> children)
+        public Tree NewTreeNode(Label parentLabel, List<Tree> children)
         {
             return new TreeGraphNode(parentLabel, children);
         }

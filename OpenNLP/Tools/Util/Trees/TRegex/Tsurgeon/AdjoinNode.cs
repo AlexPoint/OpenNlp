@@ -56,10 +56,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             {
                 // find match and get its parent
                 Tree targetNode = childMatcher[0].evaluate(tree, tregex);
-                Tree parent = targetNode.parent(tree);
+                Tree parent = targetNode.Parent(tree);
                 // put children underneath target in foot of auxilary tree
                 AuxiliaryTree ft = node.padjunctionTree.copy(this);
-                ft.foot.setChildren(targetNode.getChildrenAsList());
+                ft.foot.SetChildren(targetNode.GetChildrenAsList());
                 // replace match with root of auxiliary tree
                 if (parent == null)
                 {
@@ -67,8 +67,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 }
                 else
                 {
-                    int i = parent.objectIndexOf(targetNode);
-                    parent.setChild(i, ft.tree);
+                    int i = parent.ObjectIndexOf(targetNode);
+                    parent.SetChild(i, ft.tree);
                     return tree;
                 }
             }

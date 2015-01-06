@@ -45,8 +45,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     {
                         result = null;
                     }
-                    Tree parent = nodeToDelete.parent(tree);
-                    parent.removeChild(Trees.objectEqualityIndexOf(parent, nodeToDelete));
+                    Tree parent = nodeToDelete.Parent(tree);
+                    parent.RemoveChild(Trees.ObjectEqualityIndexOf(parent, nodeToDelete));
                 }
                 return result;
             }

@@ -46,7 +46,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The normalized form of this leaf String
    */
 
-        public virtual string normalizeTerminal(string leaf)
+        public virtual string NormalizeTerminal(string leaf)
         {
             return leaf;
         }
@@ -58,7 +58,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The normalized form of this nonterminal String
    */
 
-        public virtual string normalizeNonterminal(string category)
+        public virtual string NormalizeNonterminal(string category)
         {
             return category;
         }
@@ -77,7 +77,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Tree the normalized tree
    */
 
-        public virtual Tree normalizeWholeTree(Tree tree, TreeFactory tf)
+        public virtual Tree NormalizeWholeTree(Tree tree, TreeFactory tf)
         {
             return tree;
         }

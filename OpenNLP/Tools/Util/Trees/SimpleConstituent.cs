@@ -61,7 +61,7 @@ namespace OpenNLP.Tools.Util.Trees
    * access start node.
    */
         //@Override
-        public override int start()
+        public override int Start()
         {
             return vStart;
         }
@@ -71,7 +71,7 @@ namespace OpenNLP.Tools.Util.Trees
    * set start node.
    */
         //@Override
-        public override void setStart(int start)
+        public override void SetStart(int start)
         {
             this.vStart = start;
         }
@@ -81,7 +81,7 @@ namespace OpenNLP.Tools.Util.Trees
    * access end node.
    */
         //@Override
-        public override int end()
+        public override int End()
         {
             return vEnd;
         }
@@ -91,7 +91,7 @@ namespace OpenNLP.Tools.Util.Trees
    * set end node.
    */
         //@Override
-        public override void setEnd(int end)
+        public override void SetEnd(int end)
         {
             this.vEnd = end;
         }
@@ -192,12 +192,12 @@ namespace OpenNLP.Tools.Util.Trees
             private /*static*/ class SimpleConstituentFactory : ConstituentFactory
             {
 
-                public Constituent newConstituent(int start, int end)
+                public Constituent NewConstituent(int start, int end)
                 {
                     return new SimpleConstituent(start, end);
                 }
 
-                public Constituent newConstituent(int start, int end, Label label, double score)
+                public Constituent NewConstituent(int start, int end, Label label, double score)
                 {
                     return new SimpleConstituent(start, end);
                 }
@@ -215,7 +215,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The constituent factory
    */
 
-        public ConstituentFactory constituentFactory()
+        public ConstituentFactory ConstituentFactory()
         {
             return ConstituentFactoryHolder.cf;
         }
@@ -228,7 +228,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The constituent factory
    */
 
-        public static ConstituentFactory factory()
+        public static ConstituentFactory Factory()
         {
             return ConstituentFactoryHolder.cf;
         }

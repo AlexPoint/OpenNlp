@@ -63,17 +63,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     newIndex = int.Parse(daughterPattern.Match(location.relation).Groups[1].Value) - 1;
                     parent = relativeNode;
                     if (location.relation[1] == '-') // backwards.
-                        newIndex = parent.children().Length - newIndex;
+                        newIndex = parent.Children().Length - newIndex;
                 }
                 else
                 {
-                    parent = relativeNode.parent(tree);
+                    parent = relativeNode.Parent(tree);
                     if (parent == null)
                     {
                         throw new SystemException("Error: looking for a non-existent parent in tree " + tree + " for \"" +
                                                   ToString() + "\"");
                     }
-                    int index = parent.objectIndexOf(relativeNode);
+                    int index = parent.ObjectIndexOf(relativeNode);
                     if (location.relation.Equals("$+"))
                     {
                         newIndex = index;

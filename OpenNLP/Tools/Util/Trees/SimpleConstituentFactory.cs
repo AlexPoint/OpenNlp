@@ -17,13 +17,13 @@ namespace OpenNLP.Tools.Util.Trees
 
     public class SimpleConstituentFactory : ConstituentFactory
     {
-        public Constituent newConstituent(int start, int end)
+        public Constituent NewConstituent(int start, int end)
         {
             return new SimpleConstituent(start, end);
         }
 
 
-        public Constituent newConstituent(int start, int end, Label label, double score)
+        public Constituent NewConstituent(int start, int end, Label label, double score)
         {
             return new SimpleConstituent(start, end);
         }

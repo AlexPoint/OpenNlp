@@ -21,7 +21,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         public void setLastIndex(Tree t)
         {
             lastIndex = 0;
-            var iterator = t.iterator();
+            var iterator = t.Iterator();
             while (iterator.MoveNext())
             {
                 var node = iterator.Current;

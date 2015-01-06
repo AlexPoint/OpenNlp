@@ -43,7 +43,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
             if (auxTree.foot == null)
             {
-                if (!auxTree.tree.isLeaf())
+                if (!auxTree.tree.IsLeaf())
                     throw new TsurgeonParseException("No foot node found for " + auxTree);
 
                 // Pretend this leaf is a foot node
@@ -79,10 +79,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 Tree startChild = childMatcher[0].evaluate(tree, tregex);
                 Tree endChild = (childMatcher.Length == 2) ? childMatcher[1].evaluate(tree, tregex) : startChild;
 
-                Tree parent = startChild.parent(tree);
+                Tree parent = startChild.Parent(tree);
 
                 // sanity check
-                if (parent != endChild.parent(tree))
+                if (parent != endChild.Parent(tree))
                 {
                     throw new TsurgeonRuntimeException("Parents did not match for trees when applied to " + this);
                 }
@@ -99,7 +99,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 List<Tree> children = new List<Tree>();
                 List<Tree> innerChildren = new List<Tree>();
                 bool insideSpan = false;
-                foreach (Tree child in parent.children())
+                foreach (Tree child in parent.Children())
                 {
                     if (child == startChild || child == endChild)
                     {
@@ -114,7 +114,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             innerChildren.Add(child);
 
                             // All children have been collected; place these beneath the foot of the auxiliary tree
-                            treeCopy.foot.setChildren(innerChildren);
+                            treeCopy.foot.SetChildren(innerChildren);
                             children.Add(treeCopy.tree);
                         }
                     }
@@ -128,7 +128,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     }
                 }
 
-                parent.setChildren(children);
+                parent.SetChildren(children);
 
                 return tree;
             }

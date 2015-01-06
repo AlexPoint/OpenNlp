@@ -65,7 +65,7 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         //@Override
-        public TreeReader newTreeReader(TextReader input)
+        public TreeReader NewTreeReader(TextReader input)
         {
             return new PennTreeReader(input, tf, tn, new PennTreebankTokenizer(input));
         }

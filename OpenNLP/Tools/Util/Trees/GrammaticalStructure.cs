@@ -88,7 +88,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 throw new InvalidDataException("Cannot use null HeadFinder");
             }
-            root.percolateHeads(hf);
+            root.PercolateHeads(hf);
             if (root.Value() == null)
             {
                 root.SetValue("ROOT"); // todo: cdm: it doesn't seem like this line should be here
@@ -154,23 +154,23 @@ namespace OpenNLP.Tools.Util.Trees
 
         private int indexLeaves(TreeGraphNode tree, int startIndex)
         {
-            if (tree.isLeaf())
+            if (tree.IsLeaf())
             {
-                int oldIndex = tree.index();
+                int oldIndex = tree.Index();
                 if (oldIndex >= 0)
                 {
                     startIndex = oldIndex;
                 }
                 else
                 {
-                    tree.setIndex(startIndex);
+                    tree.SetIndex(startIndex);
                 }
                 addNodeToIndexMap(startIndex, tree);
                 startIndex++;
             }
             else
             {
-                foreach (TreeGraphNode child in tree.children())
+                foreach (TreeGraphNode child in tree.Children())
                 {
                     startIndex = indexLeaves(child, startIndex);
                 }
@@ -192,15 +192,15 @@ namespace OpenNLP.Tools.Util.Trees
 
         private int indexNodes(TreeGraphNode tree, int startIndex)
         {
-            if (tree.index() < 0)
+            if (tree.Index() < 0)
             {
                 // if this node has no index
                 addNodeToIndexMap(startIndex, tree);
-                tree.setIndex(startIndex++);
+                tree.SetIndex(startIndex++);
             }
-            if (!tree.isLeaf())
+            if (!tree.IsLeaf())
             {
-                foreach (TreeGraphNode child in tree.children())
+                foreach (TreeGraphNode child in tree.Children())
                 {
                     startIndex = indexNodes(child, startIndex);
                 }
@@ -305,17 +305,17 @@ namespace OpenNLP.Tools.Util.Trees
                 tgWordNodes.Add(word);
                 tgPOSNodes.Add(pos);
                 TreeGraphNode[] childArr = {word};
-                pos.setChildren(childArr);
-                word.setParent(pos);
-                pos.percolateHeads(headFinder);
+                pos.SetChildren(childArr);
+                word.SetParent(pos);
+                pos.PercolateHeads(headFinder);
                 nodeWords.Add(new IndexedWord(wordLabel));
             }
 
             TreeGraphNode root = new TreeGraphNode(rootLabel);
 
-            root.setChildren(tgPOSNodes.ToArray());
+            root.SetChildren(tgPOSNodes.ToArray());
 
-            root.setIndex(0);
+            root.SetIndex(0);
 
             // Build list of TypedDependencies
             List<TypedDependency> tdeps = new List<TypedDependency>(deps.Count);
@@ -379,7 +379,7 @@ namespace OpenNLP.Tools.Util.Trees
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(root.toPrettyString(0).Substring(1));
+            sb.Append(root.ToPrettyString(0).Substring(1));
             sb.Append("Typed Dependencies:\n");
             sb.Append(typedDependencies);
             return sb.ToString();
@@ -388,20 +388,20 @@ namespace OpenNLP.Tools.Util.Trees
         private static void attachStrandedNodes(TreeGraphNode t, TreeGraphNode root, bool attach,
             Predicate<string> puncFilter, DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph)
         {
-            if (t.isLeaf())
+            if (t.IsLeaf())
             {
                 return;
             }
-            if (attach && puncFilter(t.headWordNode().Label().Value()))
+            if (attach && puncFilter(t.HeadWordNode().Label().Value()))
             {
                 // make faster by first looking for links from parent
                 // it is necessary to look for paths using all directions
                 // because sometimes there are edges created from lower nodes to
                 // nodes higher up
-                var parentAsTreeGraphNode = t.parent() as TreeGraphNode;
+                var parentAsTreeGraphNode = t.Parent() as TreeGraphNode;
                 if (parentAsTreeGraphNode != null)
                 {
-                    TreeGraphNode parent = parentAsTreeGraphNode.highestNodeWithSameHead();
+                    TreeGraphNode parent = parentAsTreeGraphNode.HighestNodeWithSameHead();
                     if (!basicGraph.IsEdge(parent, t) && basicGraph.GetShortestPath(root, t, false) == null)
                     {
                         basicGraph.Add(parent, t, GrammaticalRelation.DEPENDENT);
@@ -412,9 +412,9 @@ namespace OpenNLP.Tools.Util.Trees
                     throw new SystemException("Should never be here.");
                 }
             }
-            foreach (TreeGraphNode kid in t.children())
+            foreach (TreeGraphNode kid in t.Children())
             {
-                attachStrandedNodes(kid, root, (kid.headWordNode() != t.headWordNode()), puncFilter, basicGraph);
+                attachStrandedNodes(kid, root, (kid.HeadWordNode() != t.HeadWordNode()), puncFilter, basicGraph);
             }
         }
 
@@ -425,11 +425,11 @@ namespace OpenNLP.Tools.Util.Trees
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> completeGraph)
         {
             //Console.WriteLine("analyzeNode()");
-            if (t.isPhrasal())
+            if (t.IsPhrasal())
             {
                 // don't do leaves or preterminals!
                 //Console.WriteLine("isPhrasal = true");
-                TreeGraphNode tHigh = t.highestNodeWithSameHead();
+                TreeGraphNode tHigh = t.HighestNodeWithSameHead();
                 foreach (GrammaticalRelation egr in relations)
                 {
                     if (egr.isApplicable(t))
@@ -437,12 +437,12 @@ namespace OpenNLP.Tools.Util.Trees
                         //Console.WriteLine("isApplicable = true");
                         foreach (TreeGraphNode u in egr.getRelatedNodes(t, root, hf))
                         {
-                            TreeGraphNode uHigh = u.highestNodeWithSameHead();
+                            TreeGraphNode uHigh = u.HighestNodeWithSameHead();
                             if (uHigh == tHigh)
                             {
                                 continue;
                             }
-                            if (!puncFilter(uHigh.headWordNode().Label().Value()))
+                            if (!puncFilter(uHigh.HeadWordNode().Label().Value()))
                             {
                                 continue;
                             }
@@ -460,7 +460,7 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                 }
                 // now recurse into children
-                foreach (TreeGraphNode kid in t.children())
+                foreach (TreeGraphNode kid in t.Children())
                 {
                     analyzeNode(kid, root, relations, hf, puncFilter, basicGraph, completeGraph);
                 }
@@ -498,8 +498,8 @@ namespace OpenNLP.Tools.Util.Trees
                         GrammaticalRelation reln = getGrammaticalRelationCommonAncestor(govCLabel, depCLabel,
                             basicGraph.GetEdges(gov, dep).ToList());
                         // System.err.println("  Gov: " + gov + " Dep: " + dep + " Reln: " + reln);
-                        basicDep.Add(new TypedDependency(reln, new IndexedWord(gov.headWordNode().Label()),
-                            new IndexedWord(dep.headWordNode().Label())));
+                        basicDep.Add(new TypedDependency(reln, new IndexedWord(gov.HeadWordNode().Label()),
+                            new IndexedWord(dep.HeadWordNode().Label())));
                     }
                     else
                     {
@@ -510,11 +510,11 @@ namespace OpenNLP.Tools.Util.Trees
 
             // add the root
             TreeGraphNode dependencyRoot = new TreeGraphNode(new Word("ROOT"));
-            dependencyRoot.setIndex(0);
-            TreeGraphNode rootDep = mroot().headWordNode();
+            dependencyRoot.SetIndex(0);
+            TreeGraphNode rootDep = mroot().HeadWordNode();
             if (rootDep == null)
             {
-                List<Tree> leaves = Trees.leaves(mroot());
+                List<Tree> leaves = Trees.Leaves(mroot());
                 if (leaves.Count > 0)
                 {
                     Tree leaf = leaves[0];
@@ -523,9 +523,9 @@ namespace OpenNLP.Tools.Util.Trees
                         throw new InvalidDataException("Leaves should be TreeGraphNodes");
                     }
                     rootDep = (TreeGraphNode) leaf;
-                    if (rootDep.headWordNode() != null)
+                    if (rootDep.HeadWordNode() != null)
                     {
-                        rootDep = rootDep.headWordNode();
+                        rootDep = rootDep.HeadWordNode();
                     }
                 }
             }
@@ -607,11 +607,11 @@ namespace OpenNLP.Tools.Util.Trees
                         GrammaticalRelation rel in
                             removeGrammaticalRelationAncestors(completeGraph.GetEdges(gov, dep).ToList()))
                     {
-                        TypedDependency newDep = new TypedDependency(rel, new IndexedWord(gov.headWordNode().Label()),
-                            new IndexedWord(dep.headWordNode().Label()));
+                        TypedDependency newDep = new TypedDependency(rel, new IndexedWord(gov.HeadWordNode().Label()),
+                            new IndexedWord(dep.HeadWordNode().Label()));
                         if (!deps.Contains(newDep) && puncTypedDepFilter(newDep) && extraTreeDepFilter(newDep))
                         {
-                            newDep.setExtra();
+                            newDep.SetExtra();
                             deps.Add(newDep);
                         }
                     }
@@ -635,7 +635,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     return false;
                 }
-                Label lab = d.dependent();
+                Label lab = d.Dependent();
                 if (lab == null)
                 {
                     return false;
@@ -666,7 +666,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 if (d == null) return false;
 
-                IndexedWord l = d.dep();
+                IndexedWord l = d.Dep();
                 if (l == null) return false;
 
                 return npf(l.Value());
@@ -700,9 +700,9 @@ namespace OpenNLP.Tools.Util.Trees
             List<GrammaticalRelation> labels = new List<GrammaticalRelation>();
             foreach (TypedDependency dependency in mtypedDependencies(true))
             {
-                if (dependency.gov().Equals(gov) && dependency.dep().Equals(dep))
+                if (dependency.Gov().Equals(gov) && dependency.Dep().Equals(dep))
                 {
-                    labels.Add(dependency.reln());
+                    labels.Add(dependency.Reln());
                 }
             }
 
@@ -1029,14 +1029,14 @@ namespace OpenNLP.Tools.Util.Trees
             ICollection<IndexedWord> deps = new HashSet<IndexedWord>();
             foreach (TypedDependency typedDep in list)
             {
-                deps.Add(typedDep.dep());
+                deps.Add(typedDep.Dep());
             }
 
             // go through the list and add typedDependency for which the gov is not a dep
             ICollection<IndexedWord> govs = new HashSet<IndexedWord>();
             foreach (TypedDependency typedDep in list)
             {
-                IndexedWord gov = typedDep.gov();
+                IndexedWord gov = typedDep.Gov();
                 if (!deps.Contains(gov) && !govs.Contains(gov))
                 {
                     roots.Add(typedDep);

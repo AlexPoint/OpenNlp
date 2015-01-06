@@ -47,7 +47,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public SimpleTree(Label label, List<Tree> daughterTreesList)
         {
-            setChildren(daughterTreesList.ToArray());
+            SetChildren(daughterTreesList.ToArray());
         }
 
 
@@ -56,7 +56,7 @@ namespace OpenNLP.Tools.Util.Trees
    * if it is a leaf.
    */
         //@Override
-        public override Tree[] children()
+        public override Tree[] Children()
         {
             return daughterTrees;
         }
@@ -69,7 +69,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param children An array of child trees
    */
         //@Override
-        public override void setChildren(Tree[] children)
+        public override void SetChildren(Tree[] children)
         {
             if (children == null)
             {
@@ -98,7 +98,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a factory to produce simple (unlabelled) trees
    */
         //@Override
-        public override TreeFactory treeFactory()
+        public override TreeFactory TreeFactory()
         {
             return TreeFactoryHolder.tf;
         }
@@ -112,7 +112,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a factory to produce simple (unlabelled) trees
    */
 
-        public static TreeFactory factory()
+        public static TreeFactory Factory()
         {
             return TreeFactoryHolder.tf;
         }

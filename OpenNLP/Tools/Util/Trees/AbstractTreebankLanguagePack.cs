@@ -59,7 +59,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The punctuation tags
    */
         //@Override
-        public abstract string[] punctuationTags();
+        public abstract string[] PunctuationTags();
 
         /**
    * Returns a string array of punctuation words for this treebank/language.
@@ -67,7 +67,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The punctuation words
    */
         //@Override
-        public abstract string[] punctuationWords();
+        public abstract string[] PunctuationWords();
 
         /**
    * Returns a string array of sentence readonly punctuation tags for this
@@ -76,9 +76,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The sentence readonly punctuation tags
    */
         //@Override
-        public abstract string[] sentenceFinalPunctuationTags();
+        public abstract string[] SentenceFinalPunctuationTags();
 
-        public abstract string[] sentenceFinalPunctuationWords();
+        public abstract string[] SentenceFinalPunctuationWords();
 
         /**
    * Returns a string array of punctuation tags that EVALB-style evaluation
@@ -90,9 +90,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a EVALB-ignored punctuation tag
    */
         //@Override
-        public virtual string[] evalBIgnoredPunctuationTags()
+        public virtual string[] EvalBIgnoredPunctuationTags()
         {
-            return punctuationTags();
+            return PunctuationTags();
         }
 
 
@@ -103,7 +103,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a punctuation tag
    */
         //@Override
-        public bool isPunctuationTag(string str)
+        public bool IsPunctuationTag(string str)
         {
             return punctTagStringAcceptFilter()(str);
         }
@@ -118,7 +118,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a punctuation word
    */
         //@Override
-        public bool isPunctuationWord(string str)
+        public bool IsPunctuationWord(string str)
         {
             return punctWordStringAcceptFilter()(str);
         }
@@ -131,7 +131,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a sentence readonly punctuation tag
    */
         //@Override
-        public bool isSentenceFinalPunctuationTag(string str)
+        public bool IsSentenceFinalPunctuationTag(string str)
         {
             return sFPunctTagStringAcceptFilter()(str);
         }
@@ -148,7 +148,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a EVALB-ignored punctuation tag
    */
         //@Override
-        public bool isEvalBIgnoredPunctuationTag(string str)
+        public bool IsEvalBIgnoredPunctuationTag(string str)
         {
             return eIPunctTagStringAcceptFilter()(str);
         }
@@ -161,7 +161,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The filter
    */
         //@Override
-        public Predicate<string> punctuationTagAcceptFilter()
+        public Predicate<string> PunctuationTagAcceptFilter()
         {
             return punctTagStringAcceptFilter();
         }
@@ -174,7 +174,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The filter
    */
         //@Override
-        public Predicate<string> punctuationTagRejectFilter()
+        public Predicate<string> PunctuationTagRejectFilter()
         {
             return Filters.NotFilter(punctTagStringAcceptFilter());
         }
@@ -189,7 +189,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The Filter
    */
         //@Override
-        public Predicate<string> punctuationWordAcceptFilter()
+        public Predicate<string> PunctuationWordAcceptFilter()
         {
             return punctWordStringAcceptFilter();
         }
@@ -204,7 +204,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The Filter
    */
         //@Override
-        public Predicate<string> punctuationWordRejectFilter()
+        public Predicate<string> PunctuationWordRejectFilter()
         {
             return Filters.NotFilter(punctWordStringAcceptFilter());
         }
@@ -217,7 +217,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The Filter
    */
         //@Override
-        public Predicate<string> sentenceFinalPunctuationTagAcceptFilter()
+        public Predicate<string> SentenceFinalPunctuationTagAcceptFilter()
         {
             return sFPunctTagStringAcceptFilter();
         }
@@ -234,7 +234,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The Filter
    */
         //@Override
-        public Predicate<string> evalBIgnoredPunctuationTagAcceptFilter()
+        public Predicate<string> EvalBIgnoredPunctuationTagAcceptFilter()
         {
             return eIPunctTagStringAcceptFilter();
         }
@@ -250,7 +250,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The Filter
    */
         //@Override
-        public Predicate<string> evalBIgnoredPunctuationTagRejectFilter()
+        public Predicate<string> EvalBIgnoredPunctuationTagRejectFilter()
         {
             return Filters.NotFilter(eIPunctTagStringAcceptFilter());
         }
@@ -263,12 +263,12 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Name of Charset
    */
         //@Override
-        public string getEncoding()
+        public string GetEncoding()
         {
             return DEFAULT_ENCODING;
         }
 
-        public abstract TokenizerFactory<HasWord> getTokenizerFactory();
+        public abstract TokenizerFactory<HasWord> GetTokenizerFactory();
 
 
         private static readonly char[] EMPTY_CHAR_ARRAY = new char[0];
@@ -284,7 +284,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return An array of characters that set off label name suffixes
    */
         //@Override
-        public virtual char[] labelAnnotationIntroducingCharacters()
+        public virtual char[] LabelAnnotationIntroducingCharacters()
         {
             return EMPTY_CHAR_ARRAY;
         }
@@ -318,7 +318,7 @@ namespace OpenNLP.Tools.Util.Trees
             for (int leng = category.Length; i < leng; i++)
             {
                 char ch = category[i];
-                if (isLabelAnnotationIntroducingCharacter(ch))
+                if (IsLabelAnnotationIntroducingCharacter(ch))
                 {
                     if (i == 0)
                     {
@@ -359,7 +359,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The basic category of the String
    */
         //@Override
-        public string basicCategory(string category)
+        public string BasicCategory(string category)
         {
             if (category == null)
             {
@@ -370,7 +370,7 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         //@Override
-        public string stripGF(string category)
+        public string StripGF(string category)
         {
             if (category == null)
             {
@@ -391,7 +391,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The String->String Function object
    */
         //@Override
-        public BasicCategoryStringFunction getBasicCategoryFunction()
+        public BasicCategoryStringFunction GetBasicCategoryFunction()
         {
             return new BasicCategoryStringFunction(this);
         }
@@ -412,7 +412,7 @@ namespace OpenNLP.Tools.Util.Trees
             //@Override
             public string apply(string input)
             {
-                return tlp.basicCategory(input);
+                return tlp.BasicCategory(input);
             }
 
         }
@@ -433,7 +433,7 @@ namespace OpenNLP.Tools.Util.Trees
             //@Override
             public string apply(string input)
             {
-                return tlp.categoryAndFunction(input);
+                return tlp.CategoryAndFunction(input);
             }
 
         }
@@ -453,7 +453,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A string giving the category and function
    */
         //@Override
-        public string categoryAndFunction(string category)
+        public string CategoryAndFunction(string category)
         {
             if (category == null)
             {
@@ -491,7 +491,7 @@ namespace OpenNLP.Tools.Util.Trees
             int last = -1;
             for (int i = category.Length - 1; i >= 0; i--)
             {
-                if (isLabelAnnotationIntroducingCharacter(category[i]))
+                if (IsLabelAnnotationIntroducingCharacter(category[i]))
                 {
                     bool onlyDigitsFollow = false;
                     for (int j = i + 1; j < category.Length; j++)
@@ -519,7 +519,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The String->String Function object
    */
         //@Override
-        public CategoryAndFunctionStringFunction getCategoryAndFunctionFunction()
+        public CategoryAndFunctionStringFunction GetCategoryAndFunctionFunction()
         {
             return new CategoryAndFunctionStringFunction(this);
         }
@@ -533,9 +533,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether it is an annotation introducing character
    */
         //@Override
-        public bool isLabelAnnotationIntroducingCharacter(char ch)
+        public bool IsLabelAnnotationIntroducingCharacter(char ch)
         {
-            char[] cutChars = labelAnnotationIntroducingCharacters();
+            char[] cutChars = LabelAnnotationIntroducingCharacters();
             foreach (char cutChar in cutChars)
             {
                 if (ch == cutChar)
@@ -553,9 +553,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a start symbol
    */
         //@Override
-        public bool isStartSymbol(string str)
+        public bool IsStartSymbol(string str)
         {
-            return startSymbolAcceptFilter()(str);
+            return StartSymbolAcceptFilter()(str);
         }
 
 
@@ -577,7 +577,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The start symbols
    */
         //@Override
-        public abstract string[] startSymbols();
+        public abstract string[] StartSymbols();
 
 
         /**
@@ -587,9 +587,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The start symbol
    */
         //@Override
-        public string startSymbol()
+        public string StartSymbol()
         {
-            string[] ssyms = startSymbols();
+            string[] ssyms = StartSymbols();
             if (ssyms == null || ssyms.Length == 0)
             {
                 return null;
@@ -597,31 +597,31 @@ namespace OpenNLP.Tools.Util.Trees
             return ssyms[0];
         }
 
-        public abstract string treebankFileExtension();
+        public abstract string TreebankFileExtension();
 
         private Predicate<string> punctTagStringAcceptFilter()
         {
-            return Filters.CollectionAcceptFilter(punctuationTags());
+            return Filters.CollectionAcceptFilter(PunctuationTags());
         }
 
         private Predicate<string> punctWordStringAcceptFilter()
         {
-            return Filters.CollectionAcceptFilter(punctuationWords());
+            return Filters.CollectionAcceptFilter(PunctuationWords());
         }
 
         private Predicate<string> sFPunctTagStringAcceptFilter()
         {
-            return Filters.CollectionAcceptFilter(sentenceFinalPunctuationTags());
+            return Filters.CollectionAcceptFilter(SentenceFinalPunctuationTags());
         }
 
         private Predicate<string> eIPunctTagStringAcceptFilter()
         {
-            return Filters.CollectionAcceptFilter(evalBIgnoredPunctuationTags());
+            return Filters.CollectionAcceptFilter(EvalBIgnoredPunctuationTags());
         }
 
-        public Predicate<string> startSymbolAcceptFilter()
+        public Predicate<string> StartSymbolAcceptFilter()
         {
-            return Filters.CollectionAcceptFilter(startSymbols());
+            return Filters.CollectionAcceptFilter(StartSymbols());
         }
 
         /**
@@ -643,7 +643,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A GrammaticalStructureFactory suitable for this language/treebank
    */
         //@Override
-        public virtual GrammaticalStructureFactory grammaticalStructureFactory()
+        public virtual GrammaticalStructureFactory GrammaticalStructureFactory()
         {
             throw new InvalidOperationException("No GrammaticalStructureFactory defined for " /*+ getClass().getName()*/);
         }
@@ -655,9 +655,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A GrammaticalStructureFactory suitable for this language/treebank
    */
         //@Override
-        public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<string> puncFilt)
+        public GrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilt)
         {
-            return grammaticalStructureFactory();
+            return GrammaticalStructureFactory();
         }
 
         /**
@@ -667,14 +667,14 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A GrammaticalStructureFactory suitable for this language/treebank
    */
         //@Override
-        public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<string> puncFilt,
+        public GrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilt,
             HeadFinder typedDependencyHeadFinder)
         {
-            return grammaticalStructureFactory();
+            return GrammaticalStructureFactory();
         }
 
         //@Override
-        public virtual bool supportsGrammaticalStructures()
+        public virtual bool SupportsGrammaticalStructures()
         {
             return false;
         }
@@ -686,7 +686,7 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         //@Override
-        public void setGfCharacter(char gfCharacter)
+        public void SetGfCharacter(char gfCharacter)
         {
             this.gfCharacter = gfCharacter;
         }
@@ -700,13 +700,13 @@ namespace OpenNLP.Tools.Util.Trees
 
         /** {@inheritDoc} */
         //@Override
-        public TokenizerFactory<Tree> treeTokenizerFactory()
+        public TokenizerFactory<Tree> TreeTokenizerFactory()
         {
             return new TreeTokenizerFactory(treeReaderFactory());
         }
 
-        public abstract HeadFinder headFinder();
-        public abstract HeadFinder typedDependencyHeadFinder();
+        public abstract HeadFinder HeadFinder();
+        public abstract HeadFinder TypedDependencyHeadFinder();
 
         /**
    * Returns a morphological feature specification for words in this language.

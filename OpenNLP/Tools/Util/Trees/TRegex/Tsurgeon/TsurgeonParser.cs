@@ -839,7 +839,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         jjtree.closeNodeScope(jjtn000, true);
                         jjtc000 = false;
                         {
-                            if ("" != null) return treeFactory.newTreeNode(label.image.Substring(1), dtrs);
+                            if ("" != null) return treeFactory.NewTreeNode(label.image.Substring(1), dtrs);
                         }
                         break;
                     }
@@ -849,7 +849,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         jjtree.closeNodeScope(jjtn000, true);
                         jjtc000 = false;
                         {
-                            if ("" != null) return treeFactory.newTreeNode(label.image, new List<Tree>());
+                            if ("" != null) return treeFactory.NewTreeNode(label.image, new List<Tree>());
                         }
                         break;
                     }
@@ -859,7 +859,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         jjtree.closeNodeScope(jjtn000, true);
                         jjtc000 = false;
                         {
-                            if ("" != null) return treeFactory.newTreeNode(label.image, new List<Tree>());
+                            if ("" != null) return treeFactory.NewTreeNode(label.image, new List<Tree>());
                         }
                         break;
                     }

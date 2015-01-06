@@ -17,7 +17,7 @@ namespace OpenNLP.Tools.Util.Trees
             this.parse = p;
         }
 
-        public override Tree[] children()
+        public override Tree[] Children()
         {
             return this.parse.GetChildren().Select(ch => new ParseTree(ch)).ToArray();
         }
@@ -40,7 +40,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 cLabel.SetCategory(this.parse.Type);
                 cLabel.SetValue(this.parse.Type);
-                if (this.depth() == 1)
+                if (this.Depth() == 1)
                 {
                     cLabel.SetTag(this.parse.Type);
                 }
@@ -48,7 +48,7 @@ namespace OpenNLP.Tools.Util.Trees
             return cLabel;
         }
 
-        public override TreeFactory treeFactory()
+        public override TreeFactory TreeFactory()
         {
             LabelFactory lf = (Label() == null) ? CoreLabel.Factory() : Label().LabelFactory();
             //return new LabeledScoredTreeFactory(lf);

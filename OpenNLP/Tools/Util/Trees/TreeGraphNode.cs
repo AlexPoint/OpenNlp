@@ -39,7 +39,7 @@ namespace OpenNLP.Tools.Util.Trees
         /**
    * Children of this node.
    */
-        protected TreeGraphNode[] pchildren = ZERO_TGN_CHILDREN;
+        protected TreeGraphNode[] pchildren = ZeroTgnChildren;
 
         /**
    * The {@link GrammaticalStructure <code>GrammaticalStructure</code>} of which this
@@ -53,7 +53,7 @@ namespace OpenNLP.Tools.Util.Trees
    * return value for children() for leaf nodes if desired. Should
    * this be public instead?
    */
-        protected static readonly TreeGraphNode[] ZERO_TGN_CHILDREN = new TreeGraphNode[0];
+        protected static readonly TreeGraphNode[] ZeroTgnChildren = new TreeGraphNode[0];
 
         private static LabelFactory mlf = CoreLabel.Factory();
 
@@ -89,7 +89,7 @@ namespace OpenNLP.Tools.Util.Trees
         public TreeGraphNode(Label label, List<Tree> children) :
             this(label)
         {
-            setChildren(children);
+            SetChildren(children);
         }
 
         /**
@@ -103,14 +103,14 @@ namespace OpenNLP.Tools.Util.Trees
         public TreeGraphNode(Tree t, GrammaticalStructure graph) :
             this(t, (TreeGraphNode) null)
         {
-            this.setTreeGraph(graph);
+            this.SetTreeGraph(graph);
         }
 
         // XXX TODO it's not really clear what graph the copy should be a part of
         public TreeGraphNode(TreeGraphNode t) :
             this(t, t.pparent)
         {
-            this.setTreeGraph(t.treeGraph());
+            this.SetTreeGraph(t.TreeGraph());
         }
 
         /**
@@ -126,13 +126,13 @@ namespace OpenNLP.Tools.Util.Trees
         protected TreeGraphNode(Tree t, TreeGraphNode parent)
         {
             this.pparent = parent;
-            Tree[] tKids = t.children();
+            Tree[] tKids = t.Children();
             int numKids = tKids.Length;
             pchildren = new TreeGraphNode[numKids];
             for (int i = 0; i < numKids; i++)
             {
                 pchildren[i] = new TreeGraphNode(tKids[i], this);
-                if (t.isPreTerminal())
+                if (t.IsPreTerminal())
                 {
                     // add the tags to the leaves
                     pchildren[i].plabel.SetTag(t.Label().Value());
@@ -179,7 +179,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param label the new label to use.
    */
 
-        public void setLabel( /*readonly*/ CoreLabel label)
+        public void SetLabel( /*readonly*/ CoreLabel label)
         {
             this.plabel = label;
         }
@@ -188,7 +188,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Get the index for the current node.
    */
 
-        public int index()
+        public int Index()
         {
             return plabel.Index();
         }
@@ -197,7 +197,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Set the index for the current node.
    */
 
-        public void setIndex(int index)
+        public void SetIndex(int index)
         {
             plabel.SetIndex(index);
         }
@@ -206,7 +206,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Get the parent for the current node.
    */
         //@Override
-        public override /*TreeGraphNode*/ Tree parent()
+        public override /*TreeGraphNode*/ Tree Parent()
         {
             return pparent;
         }
@@ -215,7 +215,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Set the parent for the current node.
    */
 
-        public void setParent(TreeGraphNode parent)
+        public void SetParent(TreeGraphNode parent)
         {
             this.pparent = parent;
         }
@@ -224,7 +224,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Returns an array of the children of this node.
    */
         //@Override
-        public override Tree[] children()
+        public override Tree[] Children()
         {
             return pchildren;
         }
@@ -237,11 +237,11 @@ namespace OpenNLP.Tools.Util.Trees
    * @param children an array of child trees
    */
         //@Override
-        public override void setChildren(Tree[] children)
+        public override void SetChildren(Tree[] children)
         {
             if (children == null || children.Length == 0)
             {
-                this.pchildren = ZERO_TGN_CHILDREN;
+                this.pchildren = ZeroTgnChildren;
             }
             else
             {
@@ -262,16 +262,16 @@ namespace OpenNLP.Tools.Util.Trees
 
         /** {@inheritDoc} */
         //@Override
-        public void setChildren(List<TreeGraphNode> childTreesList)
+        public void SetChildren(List<TreeGraphNode> childTreesList)
         {
             if (childTreesList == null || !childTreesList.Any())
             {
-                setChildren(ZERO_TGN_CHILDREN);
+                SetChildren(ZeroTgnChildren);
             }
             else
             {
                 TreeGraphNode[] childTrees = childTreesList.ToArray();
-                setChildren(childTrees);
+                SetChildren(childTrees);
             }
         }
 
@@ -280,7 +280,7 @@ namespace OpenNLP.Tools.Util.Trees
    * part.
    */
 
-        protected GrammaticalStructure treeGraph()
+        protected GrammaticalStructure TreeGraph()
         {
             return tg;
         }
@@ -291,12 +291,12 @@ namespace OpenNLP.Tools.Util.Trees
    * descendants too.
    */
 
-        protected void setTreeGraph(GrammaticalStructure tg)
+        protected void SetTreeGraph(GrammaticalStructure tg)
         {
             this.tg = tg;
             foreach (TreeGraphNode child in pchildren)
             {
-                child.setTreeGraph(tg);
+                child.SetTreeGraph(tg);
             }
         }
 
@@ -319,46 +319,46 @@ namespace OpenNLP.Tools.Util.Trees
    * @param hf The headfinding algorithm to use
    */
         //@Override
-        public override void percolateHeads(HeadFinder hf)
+        public override void PercolateHeads(HeadFinder hf)
         {
-            if (isLeaf())
+            if (IsLeaf())
             {
-                TreeGraphNode hwn = headWordNode();
+                TreeGraphNode hwn = HeadWordNode();
                 if (hwn == null)
                 {
-                    setHeadWordNode(this);
+                    SetHeadWordNode(this);
                 }
             }
             else
             {
-                foreach (Tree child in children())
+                foreach (Tree child in Children())
                 {
-                    child.percolateHeads(hf);
+                    child.PercolateHeads(hf);
                 }
-                TreeGraphNode head = safeCast(hf.determineHead(this, pparent));
+                TreeGraphNode head = SafeCast(hf.determineHead(this, pparent));
                 if (head != null)
                 {
 
-                    TreeGraphNode hwn = head.headWordNode();
-                    if (hwn == null && head.isLeaf())
+                    TreeGraphNode hwn = head.HeadWordNode();
+                    if (hwn == null && head.IsLeaf())
                     {
                         // below us is a leaf
-                        setHeadWordNode(head);
+                        SetHeadWordNode(head);
                     }
                     else
                     {
-                        setHeadWordNode(hwn);
+                        SetHeadWordNode(hwn);
                     }
 
-                    TreeGraphNode htn = head.headTagNode();
-                    if (htn == null && head.isLeaf())
+                    TreeGraphNode htn = head.HeadTagNode();
+                    if (htn == null && head.IsLeaf())
                     {
                         // below us is a leaf
-                        setHeadTagNode(this);
+                        SetHeadTagNode(this);
                     }
                     else
                     {
-                        setHeadTagNode(htn);
+                        SetHeadTagNode(htn);
                     }
 
                 }
@@ -381,10 +381,10 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the node containing the head word for this node
    */
 
-        public TreeGraphNode headWordNode()
+        public TreeGraphNode HeadWordNode()
         {
-            TreeGraphNode hwn = safeCast(plabel.Get(typeof (TreeCoreAnnotations.HeadWordAnnotation)));
-            if (hwn == null || (hwn.treeGraph() != null && !(hwn.treeGraph().Equals(this.treeGraph()))))
+            TreeGraphNode hwn = SafeCast(plabel.Get(typeof (TreeCoreAnnotations.HeadWordAnnotation)));
+            if (hwn == null || (hwn.TreeGraph() != null && !(hwn.TreeGraph().Equals(this.TreeGraph()))))
             {
                 return null;
             }
@@ -403,7 +403,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param hwn the node containing the head word for this node
    */
 
-        private void setHeadWordNode( /*readonly*/ TreeGraphNode hwn)
+        private void SetHeadWordNode( /*readonly*/ TreeGraphNode hwn)
         {
             plabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), hwn);
         }
@@ -420,10 +420,10 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the node containing the head tag for this node
    */
 
-        public TreeGraphNode headTagNode()
+        public TreeGraphNode HeadTagNode()
         {
-            TreeGraphNode htn = safeCast(plabel.Get(typeof (TreeCoreAnnotations.HeadTagAnnotation)));
-            if (htn == null || (htn.treeGraph() != null && !(htn.treeGraph().Equals(this.treeGraph()))))
+            TreeGraphNode htn = SafeCast(plabel.Get(typeof (TreeCoreAnnotations.HeadTagAnnotation)));
+            if (htn == null || (htn.TreeGraph() != null && !(htn.TreeGraph().Equals(this.TreeGraph()))))
             {
                 return null;
             }
@@ -442,7 +442,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param htn the node containing the head tag for this node
    */
 
-        private void setHeadTagNode( /*readonly*/ TreeGraphNode htn)
+        private void SetHeadTagNode( /*readonly*/ TreeGraphNode htn)
         {
             plabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation), htn);
         }
@@ -457,7 +457,7 @@ namespace OpenNLP.Tools.Util.Trees
    *         <code>null</code> otherwise
    */
 
-        private static TreeGraphNode safeCast(Object t)
+        private static TreeGraphNode SafeCast(Object t)
         {
             if (t == null || !(t is TreeGraphNode))
             {
@@ -471,13 +471,13 @@ namespace OpenNLP.Tools.Util.Trees
    * same <code>headWordNode</code> as this node.
    */
 
-        public TreeGraphNode highestNodeWithSameHead()
+        public TreeGraphNode HighestNodeWithSameHead()
         {
             TreeGraphNode node = this;
             while (true)
             {
-                TreeGraphNode parent = safeCast(node.parent());
-                if (parent == null || parent.headWordNode() != node.headWordNode())
+                TreeGraphNode parent = SafeCast(node.Parent());
+                if (parent == null || parent.HeadWordNode() != node.HeadWordNode())
                 {
                     return node;
                 }
@@ -511,7 +511,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a factory to produce treegraphs
    */
         //@Override
-        public override TreeFactory treeFactory()
+        public override TreeFactory TreeFactory()
         {
             LabelFactory lf;
             if (Label() != null)
@@ -533,7 +533,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a factory to produce treegraphs
    */
 
-        public static TreeFactory factory()
+        public static TreeFactory Factory()
         {
             return TreeFactoryHolder.tgnf;
         }
@@ -548,7 +548,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a factory to produce treegraphs
    */
 
-        public static TreeFactory factory(LabelFactory lf)
+        public static TreeFactory Factory(LabelFactory lf)
         {
             return new TreeGraphNodeFactory(lf);
         }
@@ -562,9 +562,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return <code>string</code> representation of this subtree
    */
 
-        public string toPrettyString(int indentLevel)
+        public string ToPrettyString(int indentLevel)
         {
-            StringBuilder buf = new StringBuilder("\n");
+            var buf = new StringBuilder("\n");
             for (int i = 0; i < indentLevel; i++)
             {
                 buf.Append("  ");
@@ -578,7 +578,7 @@ namespace OpenNLP.Tools.Util.Trees
                 buf.Append('(').Append(plabel.ToString(CoreLabel.OutputFormat.VALUE_INDEX_MAP));
                 foreach (TreeGraphNode child in pchildren)
                 {
-                    buf.Append(' ').Append(child.toPrettyString(indentLevel + 1));
+                    buf.Append(' ').Append(child.ToPrettyString(indentLevel + 1));
                 }
                 buf.Append(')');
             }
@@ -592,9 +592,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return <code>string</code> representation of this subtree
    */
 
-        public string toOneLineString()
+        public string ToOneLineString()
         {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
             if (pchildren == null || pchildren.Length == 0)
             {
                 buf.Append(plabel);
@@ -604,14 +604,14 @@ namespace OpenNLP.Tools.Util.Trees
                 buf.Append('(').Append(plabel);
                 foreach (TreeGraphNode child in pchildren)
                 {
-                    buf.Append(' ').Append(child.toOneLineString());
+                    buf.Append(' ').Append(child.ToOneLineString());
                 }
                 buf.Append(')');
             }
             return buf.ToString();
         }
 
-        public string toPrimes()
+        public string ToPrimes()
         {
             var coreLabel = Label() as CoreLabel;
             if (coreLabel != null)

@@ -30,7 +30,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Use this as the default encoding for Readers and Writers of
    * Treebank data.
    */
-        public static readonly String DEFAULT_ENCODING = "UTF-8";
+        public static readonly string DEFAULT_ENCODING = "UTF-8";
 
 
         /**
@@ -54,34 +54,34 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
-   * Returns a String array of punctuation tags for this treebank/language.
+   * Returns a string array of punctuation tags for this treebank/language.
    *
    * @return The punctuation tags
    */
         //@Override
-        public abstract String[] punctuationTags();
+        public abstract string[] punctuationTags();
 
         /**
-   * Returns a String array of punctuation words for this treebank/language.
+   * Returns a string array of punctuation words for this treebank/language.
    *
    * @return The punctuation words
    */
         //@Override
-        public abstract String[] punctuationWords();
+        public abstract string[] punctuationWords();
 
         /**
-   * Returns a String array of sentence readonly punctuation tags for this
+   * Returns a string array of sentence readonly punctuation tags for this
    * treebank/language.
    *
    * @return The sentence readonly punctuation tags
    */
         //@Override
-        public abstract String[] sentenceFinalPunctuationTags();
+        public abstract string[] sentenceFinalPunctuationTags();
 
         public abstract string[] sentenceFinalPunctuationWords();
 
         /**
-   * Returns a String array of punctuation tags that EVALB-style evaluation
+   * Returns a string array of punctuation tags that EVALB-style evaluation
    * should ignore for this treebank/language.
    * Traditionally, EVALB has ignored a subset of the total set of
    * punctuation tags in the English Penn Treebank (quotes and
@@ -90,27 +90,27 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a EVALB-ignored punctuation tag
    */
         //@Override
-        public virtual String[] evalBIgnoredPunctuationTags()
+        public virtual string[] evalBIgnoredPunctuationTags()
         {
             return punctuationTags();
         }
 
 
         /**
-   * Accepts a String that is a punctuation
+   * Accepts a string that is a punctuation
    * tag name, and rejects everything else.
    *
    * @return Whether this is a punctuation tag
    */
         //@Override
-        public bool isPunctuationTag(String str)
+        public bool isPunctuationTag(string str)
         {
             return punctTagStringAcceptFilter()(str);
         }
 
 
         /**
-   * Accepts a String that is a punctuation
+   * Accepts a string that is a punctuation
    * word, and rejects everything else.
    * If one can't tell for sure (as for ' in the Penn Treebank), it
    * maks the best guess that it can.
@@ -118,27 +118,27 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a punctuation word
    */
         //@Override
-        public bool isPunctuationWord(String str)
+        public bool isPunctuationWord(string str)
         {
             return punctWordStringAcceptFilter()(str);
         }
 
 
         /**
-   * Accepts a String that is a sentence end
+   * Accepts a string that is a sentence end
    * punctuation tag, and rejects everything else.
    *
    * @return Whether this is a sentence readonly punctuation tag
    */
         //@Override
-        public bool isSentenceFinalPunctuationTag(String str)
+        public bool isSentenceFinalPunctuationTag(string str)
         {
             return sFPunctTagStringAcceptFilter()(str);
         }
 
 
         /**
-   * Accepts a String that is a punctuation
+   * Accepts a string that is a punctuation
    * tag that should be ignored by EVALB-style evaluation,
    * and rejects everything else.
    * Traditionally, EVALB has ignored a subset of the total set of
@@ -148,40 +148,40 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a EVALB-ignored punctuation tag
    */
         //@Override
-        public bool isEvalBIgnoredPunctuationTag(String str)
+        public bool isEvalBIgnoredPunctuationTag(string str)
         {
             return eIPunctTagStringAcceptFilter()(str);
         }
 
 
         /**
-   * Return a filter that accepts a String that is a punctuation
+   * Return a filter that accepts a string that is a punctuation
    * tag name, and rejects everything else.
    *
    * @return The filter
    */
         //@Override
-        public Predicate<String> punctuationTagAcceptFilter()
+        public Predicate<string> punctuationTagAcceptFilter()
         {
             return punctTagStringAcceptFilter();
         }
 
 
         /**
-   * Return a filter that rejects a String that is a punctuation
+   * Return a filter that rejects a string that is a punctuation
    * tag name, and rejects everything else.
    *
    * @return The filter
    */
         //@Override
-        public Predicate<String> punctuationTagRejectFilter()
+        public Predicate<string> punctuationTagRejectFilter()
         {
             return Filters.notFilter(punctTagStringAcceptFilter());
         }
 
 
         /**
-   * Returns a filter that accepts a String that is a punctuation
+   * Returns a filter that accepts a string that is a punctuation
    * word, and rejects everything else.
    * If one can't tell for sure (as for ' in the Penn Treebank), it
    * makes the best guess that it can.
@@ -189,14 +189,14 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The Filter
    */
         //@Override
-        public Predicate<String> punctuationWordAcceptFilter()
+        public Predicate<string> punctuationWordAcceptFilter()
         {
             return punctWordStringAcceptFilter();
         }
 
 
         /**
-   * Returns a filter that accepts a String that is not a punctuation
+   * Returns a filter that accepts a string that is not a punctuation
    * word, and rejects punctuation.
    * If one can't tell for sure (as for ' in the Penn Treebank), it
    * makes the best guess that it can.
@@ -204,27 +204,27 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The Filter
    */
         //@Override
-        public Predicate<String> punctuationWordRejectFilter()
+        public Predicate<string> punctuationWordRejectFilter()
         {
             return Filters.notFilter(punctWordStringAcceptFilter());
         }
 
 
         /**
-   * Returns a filter that accepts a String that is a sentence end
+   * Returns a filter that accepts a string that is a sentence end
    * punctuation tag, and rejects everything else.
    *
    * @return The Filter
    */
         //@Override
-        public Predicate<String> sentenceFinalPunctuationTagAcceptFilter()
+        public Predicate<string> sentenceFinalPunctuationTagAcceptFilter()
         {
             return sFPunctTagStringAcceptFilter();
         }
 
 
         /**
-   * Returns a filter that accepts a String that is a punctuation
+   * Returns a filter that accepts a string that is a punctuation
    * tag that should be ignored by EVALB-style evaluation,
    * and rejects everything else.
    * Traditionally, EVALB has ignored a subset of the total set of
@@ -234,14 +234,14 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The Filter
    */
         //@Override
-        public Predicate<String> evalBIgnoredPunctuationTagAcceptFilter()
+        public Predicate<string> evalBIgnoredPunctuationTagAcceptFilter()
         {
             return eIPunctTagStringAcceptFilter();
         }
 
 
         /**
-   * Returns a filter that accepts everything except a String that is a
+   * Returns a filter that accepts everything except a string that is a
    * punctuation tag that should be ignored by EVALB-style evaluation.
    * Traditionally, EVALB has ignored a subset of the total set of
    * punctuation tags in the English Penn Treebank (quotes and
@@ -250,7 +250,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The Filter
    */
         //@Override
-        public Predicate<String> evalBIgnoredPunctuationTagRejectFilter()
+        public Predicate<string> evalBIgnoredPunctuationTagRejectFilter()
         {
             return Filters.notFilter(eIPunctTagStringAcceptFilter());
         }
@@ -263,7 +263,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Name of Charset
    */
         //@Override
-        public String getEncoding()
+        public string getEncoding()
         {
             return DEFAULT_ENCODING;
         }
@@ -274,7 +274,7 @@ namespace OpenNLP.Tools.Util.Trees
         private static readonly char[] EMPTY_CHAR_ARRAY = new char[0];
 
         /**
-   * Return an array of characters at which a String should be
+   * Return an array of characters at which a string should be
    * truncated to give the basic syntactic category of a label.
    * The idea here is that Penn treebank style labels follow a syntactic
    * category with various functional and crossreferencing information
@@ -294,7 +294,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Returns the index of the first character that is after the basic
    * label.  That is, if category is "NP-LGS", it returns 2.
    * This routine assumes category != null.
-   * This routine returns 0 iff the String is of length 0.
+   * This routine returns 0 iff the string is of length 0.
    * This routine always returns a number &lt;= category.length(), and
    * so it is safe to pass it as an argument to category.substring().
    * <p>
@@ -310,7 +310,7 @@ namespace OpenNLP.Tools.Util.Trees
    *     label
    */
 
-        private int postBasicCategoryIndex(String category)
+        private int postBasicCategoryIndex(string category)
         {
             bool sawAtZero = false;
             char seenAtZero = '\u0000';
@@ -344,7 +344,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
-   * Returns the basic syntactic category of a String.
+   * Returns the basic syntactic category of a string.
    * This implementation basically truncates
    * stuff after an occurrence of one of the
    * <code>labelAnnotationIntroducingCharacters()</code>.
@@ -355,11 +355,11 @@ namespace OpenNLP.Tools.Util.Trees
    * one of this set, a second instance of the same item from this set is
    * also excluded (to deal with '-LLB-', '-RCB-', etc.).
    *
-   * @param category The whole String name of the label
+   * @param category The whole string name of the label
    * @return The basic category of the String
    */
         //@Override
-        public String basicCategory(String category)
+        public string basicCategory(string category)
         {
             if (category == null)
             {
@@ -370,7 +370,7 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         //@Override
-        public String stripGF(String category)
+        public string stripGF(string category)
         {
             if (category == null)
             {
@@ -397,7 +397,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
 
-        public class BasicCategoryStringFunction /*:Func<String,String>, Serializables*/
+        public class BasicCategoryStringFunction /*:Func<string,String>, Serializables*/
         {
 
             private static readonly long serialVersionUID = 1L;
@@ -410,7 +410,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             //@Override
-            public String apply(String input)
+            public string apply(string input)
             {
                 return tlp.basicCategory(input);
             }
@@ -418,7 +418,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
 
-        public /*static*/ class CategoryAndFunctionStringFunction /*implements Function<String,String>, Serializable */
+        public /*static*/ class CategoryAndFunctionStringFunction /*implements Function<string,String>, Serializable */
         {
 
             private static readonly long serialVersionUID = 1L;
@@ -431,7 +431,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             //@Override
-            public String apply(String input)
+            public string apply(string input)
             {
                 return tlp.categoryAndFunction(input);
             }
@@ -440,7 +440,7 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         /**
-   * Returns the syntactic category and 'function' of a String.
+   * Returns the syntactic category and 'function' of a string.
    * This normally involves truncating numerical coindexation
    * showing coreference, etc.  By 'function', this means
    * keeping, say, Penn Treebank functional tags or ICE phrasal functions,
@@ -449,17 +449,17 @@ namespace OpenNLP.Tools.Util.Trees
    * This implementation strips numeric tags after label introducing
    * characters (assuming that non-numeric things are functional tags).
    *
-   * @param category The whole String name of the label
-   * @return A String giving the category and function
+   * @param category The whole string name of the label
+   * @return A string giving the category and function
    */
         //@Override
-        public String categoryAndFunction(String category)
+        public string categoryAndFunction(string category)
         {
             if (category == null)
             {
                 return null;
             }
-            String catFunc = category;
+            string catFunc = category;
             int i = lastIndexOfNumericTag(catFunc);
             while (i >= 0)
             {
@@ -476,13 +476,13 @@ namespace OpenNLP.Tools.Util.Trees
    * Example: <code>lastIndexOfNumericTag("NP-TMP-1") returns
    * 6</code>.
    *
-   * @param category A String category
+   * @param category A string category
    * @return The index within this string of the last occurrence of a
    *     isLabelAnnotationIntroducingCharacter which is followed by only
    *     digits
    */
 
-        private int lastIndexOfNumericTag(String category)
+        private int lastIndexOfNumericTag(string category)
         {
             if (category == null)
             {
@@ -548,48 +548,48 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         /**
-   * Accepts a String that is a start symbol of the treebank.
+   * Accepts a string that is a start symbol of the treebank.
    *
    * @return Whether this is a start symbol
    */
         //@Override
-        public bool isStartSymbol(String str)
+        public bool isStartSymbol(string str)
         {
             return startSymbolAcceptFilter()(str);
         }
 
 
         /**
-   * Return a filter that accepts a String that is a start symbol
+   * Return a filter that accepts a string that is a start symbol
    * of the treebank, and rejects everything else.
    *
    * @return The filter
    */
         //@Override
-        /*public Predicate<String> startSymbolAcceptFilter() {
+        /*public Predicate<string> startSymbolAcceptFilter() {
     return startSymbolAcceptFilter;
   }*/
 
 
         /**
-   * Returns a String array of treebank start symbols.
+   * Returns a string array of treebank start symbols.
    *
    * @return The start symbols
    */
         //@Override
-        public abstract String[] startSymbols();
+        public abstract string[] startSymbols();
 
 
         /**
-   * Returns a String which is the first (perhaps unique) start symbol
+   * Returns a string which is the first (perhaps unique) start symbol
    * of the treebank, or null if none is defined.
    *
    * @return The start symbol
    */
         //@Override
-        public String startSymbol()
+        public string startSymbol()
         {
-            String[] ssyms = startSymbols();
+            string[] ssyms = startSymbols();
             if (ssyms == null || ssyms.Length == 0)
             {
                 return null;
@@ -604,22 +604,22 @@ namespace OpenNLP.Tools.Util.Trees
             return Filters.collectionAcceptFilter(punctuationTags());
         }
 
-        private Predicate<String> punctWordStringAcceptFilter()
+        private Predicate<string> punctWordStringAcceptFilter()
         {
             return Filters.collectionAcceptFilter(punctuationWords());
         }
 
-        private Predicate<String> sFPunctTagStringAcceptFilter()
+        private Predicate<string> sFPunctTagStringAcceptFilter()
         {
             return Filters.collectionAcceptFilter(sentenceFinalPunctuationTags());
         }
 
-        private Predicate<String> eIPunctTagStringAcceptFilter()
+        private Predicate<string> eIPunctTagStringAcceptFilter()
         {
             return Filters.collectionAcceptFilter(evalBIgnoredPunctuationTags());
         }
 
-        public Predicate<String> startSymbolAcceptFilter()
+        public Predicate<string> startSymbolAcceptFilter()
         {
             return Filters.collectionAcceptFilter(startSymbols());
         }
@@ -655,7 +655,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A GrammaticalStructureFactory suitable for this language/treebank
    */
         //@Override
-        public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<String> puncFilt)
+        public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<string> puncFilt)
         {
             return grammaticalStructureFactory();
         }
@@ -667,7 +667,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A GrammaticalStructureFactory suitable for this language/treebank
    */
         //@Override
-        public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<String> puncFilt,
+        public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<string> puncFilt,
             HeadFinder typedDependencyHeadFinder)
         {
             return grammaticalStructureFactory();

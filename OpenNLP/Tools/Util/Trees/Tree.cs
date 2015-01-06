@@ -178,8 +178,8 @@ namespace OpenNLP.Tools.Util.Trees
                 return false;
             }
             Tree t = (Tree) o;
-            String value1 = this.value();
-            String value2 = t.value();
+            string value1 = this.value();
+            string value2 = t.value();
             if (value1 != null || value2 != null)
             {
                 if (value1 == null || value2 == null || !value1.Equals(value2))
@@ -215,7 +215,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override int GetHashCode()
         {
-            String v = this.value();
+            string v = this.value();
             int hc = (v == null) ? 1 : v.GetHashCode();
             Tree[] kids = children();
             for (int i = 0; i < kids.Length; i++)
@@ -779,7 +779,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the tree as a bracketed list on one line
    */
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return toStringBuilder(new StringBuilder(Tree.initialPrintStringBuilderSize)).ToString();
         }
@@ -788,7 +788,7 @@ namespace OpenNLP.Tools.Util.Trees
         private static readonly int indentIncr = 2;
 
 
-        private static String makeIndentString(int indent)
+        private static string makeIndentString(int indent)
         {
             StringBuilder sb = new StringBuilder(indent);
             for (int i = 0; i < indentIncr; i++)
@@ -841,16 +841,16 @@ namespace OpenNLP.Tools.Util.Trees
         /**
    * Indented list printing of a tree.  The tree is printed in an
    * indented list notation, with node labels followed by node scores.
-   * String parameters are used rather than integer levels for efficiency.
+   * string parameters are used rather than integer levels for efficiency.
    *
-   * @param indent The base <code>String</code> (normally just spaces)
+   * @param indent The base <code>string</code> (normally just spaces)
    *               to print before each line of tree
-   * @param pad    The additional <code>String</code> (normally just more
+   * @param pad    The additional <code>string</code> (normally just more
    *               spaces) to add when going to a deeper level of <code>Tree</code>.
    * @param pw     The PrintWriter to print the tree to
    * @param printScores Whether to print the scores (log probs) of tree nodes
    */
-        /*private void indentedListPrint(String indent, String pad, PrintWriter pw, bool printScores) {
+        /*private void indentedListPrint(string indent, string pad, PrintWriter pw, bool printScores) {
     StringBuilder sb = new StringBuilder(indent);
     Label label = label();
     if (label != null) {
@@ -862,7 +862,7 @@ namespace OpenNLP.Tools.Util.Trees
     }
     pw.println(sb.ToString());
     Tree[] children = children();
-    String newIndent = indent + pad;
+    string newIndent = indent + pad;
     foreach (Tree child in children) {
       child.indentedListPrint(newIndent, pad, pw, printScores);
     }
@@ -892,17 +892,17 @@ namespace OpenNLP.Tools.Util.Trees
         /**
    * Indented xml printing of a tree.  The tree is printed in an
    * indented xml notation, with node labels followed by node scores.
-   * String parameters are used rather than integer levels for efficiency.
+   * string parameters are used rather than integer levels for efficiency.
    *
-   * @param indent The base <code>String</code> (normally just spaces)
+   * @param indent The base <code>string</code> (normally just spaces)
    *               to print before each line of tree
-   * @param pad    The additional <code>String</code> (normally just more
+   * @param pad    The additional <code>string</code> (normally just more
    *               spaces) to add when going to a deeper level of
    *               <code>Tree</code>.
    * @param pw     The PrintWriter to print the tree to
    * @param printScores Whether to print the scores (log probs) of tree nodes
    */
-        /*private void indentedXMLPrint(String indent, String pad,
+        /*private void indentedXMLPrint(string indent, string pad,
                                 PrintWriter pw, bool printScores) {
     StringBuilder sb = new StringBuilder(indent);
     Tree[] children = children();
@@ -934,7 +934,7 @@ namespace OpenNLP.Tools.Util.Trees
     }
     pw.println(sb.ToString());
     if (children.Length > 0) {
-      String newIndent = indent + pad;
+      string newIndent = indent + pad;
       for (Tree child : children) {
         child.indentedXMLPrint(newIndent, pad, pw, printScores);
       }
@@ -958,14 +958,14 @@ namespace OpenNLP.Tools.Util.Trees
   }*/
 
         /**
-   *  Returns the value of the nodes label as a String.  This is done by
+   *  Returns the value of the nodes label as a string.  This is done by
    *  calling <code>ToString()</code> on the value, if it exists. Otherwise,
    *  an empty string is returned.
    *
    *  @return The label of a tree node as a String
    */
 
-        public virtual String nodeString()
+        public virtual string nodeString()
         {
             return (value() == null) ? "" : value();
         }
@@ -989,15 +989,15 @@ namespace OpenNLP.Tools.Util.Trees
       }
     }
     if (isLeaf() || isPreTerminal()) {
-      String terminalString = toStringBuilder(new StringBuilder(), onlyLabelValue).ToString();
+      string terminalString = toStringBuilder(new StringBuilder(), onlyLabelValue).ToString();
       pw.print(terminalString);
       pw.flush();
       return;
     }
     pw.print("(");
-    String nodeString;
+    string nodeString;
     if (onlyLabelValue) {
-      String value = value();
+      string value = value();
       nodeString = (value == null) ? "" : value;
     } else {
       nodeString = nodeString();
@@ -1061,7 +1061,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The indent S-expression representation of a Tree
    */
-        /*public String pennString() {
+        /*public string pennString() {
     StringWriter sw = new StringWriter();
     pennPrint(new PrintWriter(sw));
     return sw.ToString();
@@ -1315,7 +1315,7 @@ namespace OpenNLP.Tools.Util.Trees
                     Label headLabel = head.label();
 
                     // Set the head tag.
-                    String headTag = (headLabel is HasTag) ? ((HasTag) headLabel).tag() : null;
+                    string headTag = (headLabel is HasTag) ? ((HasTag) headLabel).tag() : null;
                     if (headTag == null && head.isLeaf())
                     {
                         // below us is a leaf
@@ -1323,7 +1323,7 @@ namespace OpenNLP.Tools.Util.Trees
                     }
 
                     // Set the head word
-                    String headWord = (headLabel is HasWord) ? ((HasWord) headLabel).word() : null;
+                    string headWord = (headLabel is HasWord) ? ((HasWord) headLabel).word() : null;
                     if (headWord == null && head.isLeaf())
                     {
                         // below us is a leaf
@@ -1391,12 +1391,12 @@ namespace OpenNLP.Tools.Util.Trees
             if (! copyLabel)
                 return oldLabel;
 
-            String wordForm = (oldLabel is HasWord) ? ((HasWord) oldLabel).word() : oldLabel.value();
+            string wordForm = (oldLabel is HasWord) ? ((HasWord) oldLabel).word() : oldLabel.value();
             Label newLabel = oldLabel.labelFactory().newLabel(wordForm);
             if (newLabel is HasWord) ((HasWord) newLabel).setWord(wordForm);
             if (copyPosTag && newLabel is HasTag && oldLabel is HasTag)
             {
-                String tag = ((HasTag) oldLabel).tag();
+                string tag = ((HasTag) oldLabel).tag();
                 ((HasTag) newLabel).setTag(tag);
             }
             if (copyIndex && newLabel is HasIndex && oldLabel is HasIndex)
@@ -1432,7 +1432,7 @@ namespace OpenNLP.Tools.Util.Trees
                 }
                 // Create the head label (percolateHeads has already been executed)
                 Label headLabel = makeDependencyLabel(node.label(), copyLabel, isConcrete, copyPosTag);
-                String headWord = ((HasWord) headLabel).word();
+                string headWord = ((HasWord) headLabel).word();
                 if (headWord == null)
                 {
                     headWord = headLabel.value();
@@ -1444,7 +1444,7 @@ namespace OpenNLP.Tools.Util.Trees
                 foreach (Tree child in node.children())
                 {
                     Label depLabel = makeDependencyLabel(child.label(), copyLabel, isConcrete, copyPosTag);
-                    String depWord = ((HasWord) depLabel).word();
+                    string depWord = ((HasWord) depLabel).word();
                     if (depWord == null)
                     {
                         depWord = depLabel.value();
@@ -1554,7 +1554,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
 
         public Set<Dependency<Label, Label, Object>> mapDependencies(Predicate<Dependency<Label, Label, Object>> f,
-            HeadFinder hf, String rootName)
+            HeadFinder hf, string rootName)
         {
             Set<Dependency<Label, Label, Object>> deps = mapDependencies(f, hf);
             if (rootName != null)
@@ -1813,7 +1813,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 CoreLabel taggedWord = new CoreLabel();
                 /*readonly*/
-                String tag = (value() == null) ? "" : value();
+                string tag = (value() == null) ? "" : value();
                 taggedWord.setValue(tag);
                 taggedWord.setTag(tag);
                 taggedWord.setIndex(termIdx);
@@ -2405,7 +2405,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (!isUnaryRewrite())
                 return this;
-            String lab = label().value();
+            string lab = label().value();
             return (lab == null || !lab.Any() || "ROOT".Equals(lab)) ? firstChild() : this;
         }
 
@@ -2562,7 +2562,7 @@ namespace OpenNLP.Tools.Util.Trees
     }
 
     //@Override
-    public override String ToString() {
+    public override string ToString() {
       return "TreeIterator";
     }
 
@@ -2698,7 +2698,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
-   * This gives you a tree from a String representation (as a
+   * This gives you a tree from a string representation (as a
    * bracketed Tree, of the kind produced by <code>ToString()</code>,
    * <code>pennPrint()</code>, or as in the Penn Treebank).
    * It's not the most efficient thing to do for heavy duty usage.
@@ -2707,29 +2707,29 @@ namespace OpenNLP.Tools.Util.Trees
    * normalizations (stripping functional categories, indices,
    * empty nodes, and A-over-A nodes) will be done on it.
    *
-   * @param str The tree as a bracketed list in a String.
+   * @param str The tree as a bracketed list in a string.
    * @return The Tree
    * @throws RuntimeException If Tree format is not valid
    */
 
-        public static Tree valueOf(String str)
+        public static Tree valueOf(string str)
         {
             return valueOf(str, new LabeledScoredTreeReaderFactory());
         }
 
         /**
-   * This gives you a tree from a String representation (as a
+   * This gives you a tree from a string representation (as a
    * bracketed Tree, of the kind produced by <code>ToString()</code>,
    * <code>pennPrint()</code>, or as in the Penn Treebank.
    * It's not the most efficient thing to do for heavy duty usage.
    *
-   * @param str The tree as a bracketed list in a String.
+   * @param str The tree as a bracketed list in a string.
    * @param trf The TreeFactory used to make the new Tree
    * @return The Tree
    * @throws RuntimeException If the Tree format is not valid
    */
 
-        public static Tree valueOf(String str, TreeReaderFactory trf)
+        public static Tree valueOf(string str, TreeReaderFactory trf)
         {
             try
             {
@@ -3068,7 +3068,7 @@ namespace OpenNLP.Tools.Util.Trees
         // --- composition methods to implement Label interface
 
         //@Override
-        public String value()
+        public string value()
         {
             Label lab = label();
             if (lab == null)
@@ -3080,7 +3080,7 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         //@Override
-        public void setValue(String value)
+        public void setValue(string value)
         {
             Label lab = label();
             if (lab != null)
@@ -3091,7 +3091,7 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         //@Override
-        public void setFromString(String labelStr)
+        public void setFromString(string labelStr)
         {
             Label lab = label();
             if (lab != null)
@@ -3361,7 +3361,7 @@ namespace OpenNLP.Tools.Util.Trees
             // Assign the head index to the first child that we encounter with a matching
             // surface form. Obviously a head can have the same surface form as its dependent,
             // and in this case the head index is ambiguous.
-            String wordAnnotation = ((HasWord) label()).word();
+            string wordAnnotation = ((HasWord) label()).word();
             if (wordAnnotation == null)
             {
                 wordAnnotation = value();
@@ -3370,7 +3370,7 @@ namespace OpenNLP.Tools.Util.Trees
             foreach (Tree child in children())
             {
                 child.percolateHeadIndices();
-                String childWordAnnotation = ((HasWord) child.label()).word();
+                string childWordAnnotation = ((HasWord) child.label()).word();
                 if (childWordAnnotation == null)
                 {
                     childWordAnnotation = child.value();

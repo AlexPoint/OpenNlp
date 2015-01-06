@@ -199,10 +199,10 @@ namespace OpenNLP.Tools.Util.Trees
             return new LabeledScoredTreeFactory(lf);
         }
 
-        private static readonly String nf = "#.###";
+        private static readonly string nf = "#.###";
 
         //@Override
-        public override String nodeString()
+        public override string nodeString()
         {
             StringBuilder buff = new StringBuilder();
             buff.Append(base.nodeString());

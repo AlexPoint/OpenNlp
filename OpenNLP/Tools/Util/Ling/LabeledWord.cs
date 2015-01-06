@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.Ling
     {
         private Label vTag;
 
-        private static readonly String DIVIDER = "/";
+        private static readonly string DIVIDER = "/";
 
         /**
    * Create a new <code>TaggedWord</code>.
@@ -33,7 +33,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param word The word, which will have a <code>null</code> tag
    */
 
-        public LabeledWord(String word) :
+        public LabeledWord(string word) :
             base(word)
         {
         }
@@ -45,7 +45,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param tag  The tag
    */
 
-        public LabeledWord(String word, Label tag) :
+        public LabeledWord(string word, Label tag) :
             base(word)
         {
             this.vTag = tag;
@@ -68,12 +68,12 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return ToString(DIVIDER);
         }
 
-        public String ToString(String divider)
+        public string ToString(string divider)
         {
             return word() + divider + vTag;
         }

@@ -115,7 +115,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The full string representation.
    */
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder sb;
             Label lab = label();
@@ -183,8 +183,8 @@ namespace OpenNLP.Tools.Util.Trees
                         return lab2 == null;
                     }
 
-                    String lv1 = lab1.value();
-                    String lv2 = lab2.value();
+                    string lv1 = lab1.value();
+                    string lv2 = lab2.value();
                     if (lv1 == null && lv2 == null)
                     {
                         return true;
@@ -276,10 +276,10 @@ namespace OpenNLP.Tools.Util.Trees
         /**
    * Return the value of the label (or null if none).
    *
-   * @return String the value for the label
+   * @return string the value for the label
    */
 
-        public String value()
+        public string value()
         {
             Label lab = label();
             if (lab == null)
@@ -296,7 +296,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param value The value for the label
    */
 
-        public void setValue(String value)
+        public void setValue(string value)
         {
             Label lab = label();
             if (lab != null)
@@ -307,14 +307,14 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         /**
-   * Make a new label with this <code>String</code> as the "name", perhaps
+   * Make a new label with this <code>string</code> as the "name", perhaps
    * by doing some appropriate decoding of the string.
    *
-   * @param labelStr the String that translates into the content of the
+   * @param labelStr the string that translates into the content of the
    *                 label
    */
 
-        public void setFromString(String labelStr)
+        public void setFromString(string labelStr)
         {
             Label lab = label();
             if (lab != null)
@@ -333,7 +333,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The subpart of the sentence
    */
         // TODO: genericize this!
-        public String toSentenceString(List<string> s)
+        public string toSentenceString(List<string> s)
         {
             StringBuilder sb = new StringBuilder();
             for (int wordNum = start(), vEnd = end(); wordNum <= vEnd; wordNum++)

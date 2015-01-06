@@ -116,16 +116,16 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         /**
-   * This constructor attempts to parse the String keys
+   * This constructor attempts to parse the string keys
    * into Class keys.  It's mainly useful for reading from
    * a file.  A best effort attempt is made to correctly
-   * parse the keys according to the String lookup function
+   * parse the keys according to the string lookup function
    * in {@link CoreAnnotations}.
    *
    * @param keys Array of Strings that are class names
    * @param values Array of values (as String)
    */
-        /*public CoreLabel(String[] keys, String[] values):base(keys.Length){
+        /*public CoreLabel(string[] keys, string[] values):base(keys.Length){
     //this.map = new ArrayCoreMap();
     initFromStrings(keys, values);
   }*/
@@ -142,16 +142,16 @@ namespace OpenNLP.Tools.Util.Ling
 
         //Unchecked is below because eclipse can't handle the level of type inference if we correctly parameterize GenericAnnotation with String
         //@SuppressWarnings("unchecked")
-        /*public static /*readonly #1#Dictionary<String, typeof(GenericAnnotation)> genericKeys = Generics.newHashMap();
+        /*public static /*readonly #1#Dictionary<string, typeof(GenericAnnotation)> genericKeys = Generics.newHashMap();
   //@SuppressWarnings("unchecked")
-  public static /*readonly #1#Dictionary<Class<? extends GenericAnnotation>, String> genericValues = Generics.newHashMap();*/
+  public static /*readonly #1#Dictionary<Class<? extends GenericAnnotation>, string> genericValues = Generics.newHashMap();*/
 
 
         //@SuppressWarnings("unchecked")
-        /*private void initFromStrings(String[] keys, String[] values) {
+        /*private void initFromStrings(string[] keys, string[] values) {
     for(int i = 0; i < Math.Min(keys.Length, values.Length); i++) {
-      String key = keys[i];
-      String value = values[i];
+      string key = keys[i];
+      string value = values[i];
       AnnotationLookup.KeyLookup lookup = AnnotationLookup.getCoreKey(key);
 
       //now work with the key we got above
@@ -171,8 +171,8 @@ namespace OpenNLP.Tools.Util.Ling
         //if(genericKeys.containsKey(key)) {
         //  this.set(genericKeys.get(key), value);
         //} else {
-        //  GenericAnnotation<String> newKey = new GenericAnnotation<String>() {
-        //    public Class<String> getType() { return String.class;} };
+        //  GenericAnnotation<string> newKey = new GenericAnnotation<string>() {
+        //    public Class<string> getType() { return string.class;} };
         //  this.set(newKey.getClass(), values[i]);
         //  genericKeys.put(keys[i], newKey.getClass());
         //  genericValues.put(newKey.getClass(), keys[i]);
@@ -211,7 +211,7 @@ namespace OpenNLP.Tools.Util.Ling
         {
 
             //@Override
-            public Label newLabel(String labelStr)
+            public Label newLabel(string labelStr)
             {
                 CoreLabel label = new CoreLabel();
                 label.setValue(labelStr);
@@ -219,7 +219,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
 
             //@Override
-            public Label newLabel(String labelStr, int options)
+            public Label newLabel(string labelStr, int options)
             {
                 return newLabel(labelStr);
             }
@@ -258,7 +258,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
 
             //@Override
-            public Label newLabelFromString(String encodedLabelStr)
+            public Label newLabelFromString(string encodedLabelStr)
             {
                 throw new InvalidOperationException("This code branch left blank" +
                                                     " because we do not understand what this method should do.");
@@ -288,21 +288,21 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         /**
-   * Return a non-null String value for a key.
+   * Return a non-null string value for a key.
    * This method is included for backwards compatibility with AbstractMapLabel.
    * It is guaranteed to not return null; if the key is not present or
    * has a null value, it returns the empty string ("").  It is only valid to
-   * call this method when key is paired with a value of type String.
+   * call this method when key is paired with a value of type string.
    *
-   * @param <KEY> A key type with a String value
+   * @param <KEY> A key type with a string value
    * @param key The key to return the value of.
    * @return "" if the key is not in the map or has the value <code>null</code>
-   *     and the String value of the key otherwise
+   *     and the string value of the key otherwise
    */
         //@Override
-        public /*<KEY extends Key<String>>*/ String getString(Type key)
+        public /*<KEY extends Key<string>>*/ string getString(Type key)
         {
-            String value = (string) get(key);
+            string value = (string) get(key);
             if (value == null)
             {
                 return "";
@@ -322,7 +322,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setFromString(String labelStr)
+        public void setFromString(string labelStr)
         {
             throw new InvalidOperationException("Cannot set from string");
         }
@@ -331,7 +331,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setValue(String value)
+        public void setValue(string value)
         {
             set(typeof (CoreAnnotations.ValueAnnotation), value);
         }
@@ -340,7 +340,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public String value()
+        public string value()
         {
             return (String) get(typeof (CoreAnnotations.ValueAnnotation));
         }
@@ -350,9 +350,9 @@ namespace OpenNLP.Tools.Util.Ling
    * that may have changed if the word changed.
    */
         //@Override
-        public void setWord(String word)
+        public void setWord(string word)
         {
-            String originalWord = (String) get(typeof (CoreAnnotations.TextAnnotation));
+            string originalWord = (String) get(typeof (CoreAnnotations.TextAnnotation));
             set(typeof (CoreAnnotations.TextAnnotation), word);
             // pado feb 09: if you change the word, delete the lemma.
             // gabor dec 2012: check if there was a real change -- this remove is actually rather expensive if it gets called a lot
@@ -366,7 +366,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public String word()
+        public string word()
         {
             return (String) get(typeof (CoreAnnotations.TextAnnotation));
         }
@@ -375,7 +375,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setTag(String tag)
+        public void setTag(string tag)
         {
             set(typeof (CoreAnnotations.PartOfSpeechAnnotation), tag);
         }
@@ -384,7 +384,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public String tag()
+        public string tag()
         {
             return (String) get(typeof (CoreAnnotations.PartOfSpeechAnnotation));
         }
@@ -393,7 +393,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setCategory(String category)
+        public void setCategory(string category)
         {
             set(typeof (CoreAnnotations.CategoryAnnotation), category);
         }
@@ -402,7 +402,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public String category()
+        public string category()
         {
             return (String) get(typeof (CoreAnnotations.CategoryAnnotation));
         }
@@ -411,7 +411,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setAfter(String after)
+        public void setAfter(string after)
         {
             set(typeof (CoreAnnotations.AfterAnnotation), after);
         }
@@ -420,7 +420,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public String after()
+        public string after()
         {
             return getString(typeof (CoreAnnotations.AfterAnnotation));
         }
@@ -429,7 +429,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setBefore(String before)
+        public void setBefore(string before)
         {
             set(typeof (CoreAnnotations.BeforeAnnotation), before);
         }
@@ -439,7 +439,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public String before()
+        public string before()
         {
             return getString(typeof (CoreAnnotations.BeforeAnnotation));
         }
@@ -448,7 +448,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setOriginalText(String originalText)
+        public void setOriginalText(string originalText)
         {
             set(typeof (CoreAnnotations.OriginalTextAnnotation), originalText);
         }
@@ -457,7 +457,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public String originalText()
+        public string originalText()
         {
             return getString(typeof (CoreAnnotations.OriginalTextAnnotation));
         }
@@ -466,7 +466,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public String docID()
+        public string docID()
         {
             return (String) get(typeof (CoreAnnotations.DocIDAnnotation));
         }
@@ -475,7 +475,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setDocID(String docID)
+        public void setDocID(string docID)
         {
             //set(CoreAnnotations.DocIDAnnotation.class, docID);
         }
@@ -483,15 +483,15 @@ namespace OpenNLP.Tools.Util.Ling
         /**
    * Return the named entity class of the label (or null if none).
    *
-   * @return String the word value for the label
+   * @return string the word value for the label
    */
 
-        public String ner()
+        public string ner()
         {
             return (String) get(typeof (CoreAnnotations.NamedEntityTagAnnotation));
         }
 
-        public void setNER(String ner)
+        public void setNER(string ner)
         {
             set(typeof (CoreAnnotations.NamedEntityTagAnnotation), ner);
         }
@@ -500,7 +500,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public String lemma()
+        public string lemma()
         {
             return (String) get(typeof (CoreAnnotations.LemmaAnnotation));
         }
@@ -509,7 +509,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setLemma(String lemma)
+        public void setLemma(string lemma)
         {
             set(typeof (CoreAnnotations.LemmaAnnotation), lemma);
         }
@@ -622,7 +622,7 @@ namespace OpenNLP.Tools.Util.Ling
         /**
    * Tag separator to use by default
    */
-        public static readonly String TAG_SEPARATOR = "/";
+        public static readonly string TAG_SEPARATOR = "/";
 
         public enum OutputFormat
         {
@@ -640,14 +640,14 @@ namespace OpenNLP.Tools.Util.Ling
         public static readonly OutputFormat DEFAULT_FORMAT = OutputFormat.VALUE_INDEX;
 
         //@Override
-        public String ToString()
+        public string ToString()
         {
             return ToString(DEFAULT_FORMAT);
         }
 
         /**
    * Returns a formatted string representing this label.  The
-   * desired format is passed in as a <code>String</code>.
+   * desired format is passed in as a <code>string</code>.
    * Currently supported formats include:
    * <ul>
    * <li>"value": just prints the value</li>
@@ -667,7 +667,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Map is printed in alphabetical order of keys.
    */
         //@SuppressWarnings("unchecked")
-        public String ToString(OutputFormat format)
+        public string ToString(OutputFormat format)
         {
             StringBuilder buf = new StringBuilder();
             switch (format)
@@ -677,7 +677,7 @@ namespace OpenNLP.Tools.Util.Ling
                     break;
                 case OutputFormat.MAP:
                 {
-                    Dictionary<String, object> map2 = new Dictionary<string, object>();
+                    Dictionary<string, object> map2 = new Dictionary<string, object>();
                     foreach (var key in this.keySet())
                     {
                         map2.Add(key.Name, get(key));
@@ -712,7 +712,7 @@ namespace OpenNLP.Tools.Util.Ling
                 {
                     buf.Append(value());
                     buf.Append(toPrimes());
-                    String ltag = tag();
+                    string ltag = tag();
                     if (ltag != null)
                     {
                         buf.Append(TAG_SEPARATOR).Append(ltag);
@@ -722,7 +722,7 @@ namespace OpenNLP.Tools.Util.Ling
                 case OutputFormat.VALUE_TAG_INDEX:
                 {
                     buf.Append(value());
-                    String ltag = tag();
+                    string ltag = tag();
                     if (ltag != null)
                     {
                         buf.Append(TAG_SEPARATOR).Append(ltag);
@@ -743,10 +743,10 @@ namespace OpenNLP.Tools.Util.Ling
                     {
                         buf.Append('-').Append((int) index);
                     }
-                    Dictionary<String, Object> map2 = new Dictionary<String, Object>();
+                    Dictionary<string, Object> map2 = new Dictionary<string, Object>();
                     foreach (var key in this.keySet())
                     {
-                        String cls = key.Name;
+                        string cls = key.Name;
                         // special shortening of all the Annotation classes
                         int idx = cls.IndexOf('$');
                         if (idx >= 0)
@@ -784,7 +784,7 @@ namespace OpenNLP.Tools.Util.Ling
             return buf.ToString();
         }
 
-        public String toPrimes()
+        public string toPrimes()
         {
             return StringUtils.repeat('\'', copyCount());
         }

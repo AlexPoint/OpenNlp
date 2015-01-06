@@ -351,7 +351,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Constructor. */
 
-        public SimpleCharStream( /*java.io.InputStream*/ Stream dstream, String encoding, int startline,
+        public SimpleCharStream( /*java.io.InputStream*/ Stream dstream, string encoding, int startline,
             int startcolumn, int buffersize) /*throws java.io.UnsupportedEncodingException*/ :
                 this(encoding == null
                     ? new /*java.io.InputStreamReader(dstream)*/ StreamReader(dstream)
@@ -370,7 +370,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Constructor. */
 
-        public SimpleCharStream( /*java.io.InputStream*/ Stream dstream, String encoding, int startline,
+        public SimpleCharStream( /*java.io.InputStream*/ Stream dstream, string encoding, int startline,
             int startcolumn) /*throws java.io.UnsupportedEncodingException*/ :
                 this(dstream, encoding, startline, startcolumn, 4096)
         {
@@ -386,7 +386,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Constructor. */
 
-        public SimpleCharStream( /*java.io.InputStream*/ Stream dstream, String encoding)
+        public SimpleCharStream( /*java.io.InputStream*/ Stream dstream, string encoding)
             /*throws java.io.UnsupportedEncodingException*/ :
                 this(dstream, encoding, 1, 1, 4096)
         {
@@ -401,7 +401,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Reinitialise. */
 
-        public void ReInit( /*java.io.InputStream*/ Stream dstream, String encoding, int startline,
+        public void ReInit( /*java.io.InputStream*/ Stream dstream, string encoding, int startline,
             int startcolumn, int buffersize) /*throws java.io.UnsupportedEncodingException*/
         {
             ReInit(
@@ -421,7 +421,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Reinitialise. */
 
-        public void ReInit( /*java.io.InputStream*/ Stream dstream, String encoding)
+        public void ReInit( /*java.io.InputStream*/ Stream dstream, string encoding)
             /*throws java.io.UnsupportedEncodingException*/
         {
             ReInit(dstream, encoding, 1, 1, 4096);
@@ -436,7 +436,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Reinitialise. */
 
-        public void ReInit( /*java.io.InputStream*/ Stream dstream, String encoding, int startline,
+        public void ReInit( /*java.io.InputStream*/ Stream dstream, string encoding, int startline,
             int startcolumn) /*throws java.io.UnsupportedEncodingException*/
         {
             ReInit(dstream, encoding, startline, startcolumn, 4096);
@@ -452,13 +452,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Get token literal value. */
 
-        public String GetImage()
+        public string GetImage()
         {
             if (bufpos >= tokenBegin)
-                return new String(buffer, tokenBegin, bufpos - tokenBegin + 1);
+                return new string(buffer, tokenBegin, bufpos - tokenBegin + 1);
             else
-                return new String(buffer, tokenBegin, bufsize - tokenBegin) +
-                       new String(buffer, 0, bufpos + 1);
+                return new string(buffer, tokenBegin, bufsize - tokenBegin) +
+                       new string(buffer, 0, bufpos + 1);
         }
 
         /** Get the suffix. */

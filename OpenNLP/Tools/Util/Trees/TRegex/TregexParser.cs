@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         // because labeling nodes under negation is illegal
         private bool underNegation = false;
 
-        private Func<String, String> basicCatFunction =
+        private Func<string, string> basicCatFunction =
             TregexPatternCompiler.DEFAULT_BASIC_CAT_FUNCTION.apply;
 
         private HeadFinder headFinder =
@@ -24,10 +24,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         // keep track of which variables we've seen, so that we can reject
         // some nonsense patterns such as ones that reset variables or link
         // to variables that haven't been set
-        private Set<String> knownVariables = new Set<string>();
+        private Set<string> knownVariables = new Set<string>();
 
         public TregexParser(TextReader stream,
-            Func<String, String> basicCatFunction,
+            Func<string, string> basicCatFunction,
             HeadFinder headFinder) :
                 this(stream)
         {
@@ -248,7 +248,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             bool link = false;
             Token groupNum;
             Token groupVar;
-            List<Tuple<int, String>> varGroups = new List<Tuple<int, String>>();
+            List<Tuple<int, string>> varGroups = new List<Tuple<int, string>>();
             switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
             {
                 case IDENTIFIER:
@@ -296,7 +296,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         groupNum = jj_consume_token(NUMBER);
                         jj_consume_token(19);
                         groupVar = jj_consume_token(IDENTIFIER);
-                        varGroups.Add(new Tuple<int, String>(int.Parse(groupNum.image), groupVar.image));
+                        varGroups.Add(new Tuple<int, string>(int.Parse(groupNum.image), groupVar.image));
                     }
                     post_label_2:
                     {
@@ -414,10 +414,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             // variables, we want to separate those done in different parts of the
             // disjunction.  Variables set in one part won't be set in the next
             // part if it gets there, since disjunctions exit once known.
-            Set<String> originalKnownVariables = new Set<string>(knownVariables);
+            Set<string> originalKnownVariables = new Set<string>(knownVariables);
             // However, we want to keep track of all the known variables, so that after
             // the disjunction is over, we know them all.
-            Set<String> allKnownVariables = new Set<string>(knownVariables);
+            Set<string> allKnownVariables = new Set<string>(knownVariables);
             child = ChildrenConj();
             children.Add(child);
             allKnownVariables.AddAll(knownVariables);
@@ -762,8 +762,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     }
                     if (strArg != null)
                     {
-                        String negStr = negation == null ? "" : "!";
-                        String catStr = cat == null ? "" : "@";
+                        string negStr = negation == null ? "" : "!";
+                        string catStr = cat == null ? "" : "@";
                         r = TRegex.Relation.getRelation(t.image, negStr + catStr + strArg.image,
                             basicCatFunction, headFinder);
                     }
@@ -1138,7 +1138,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Constructor with InputStream and supplied encoding */
 
-        public TregexParser(Stream stream, String encoding)
+        public TregexParser(Stream stream, string encoding)
         {
             try
             {
@@ -1165,7 +1165,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Reinitialise. */
 
-        public void ReInit(Stream stream, String encoding)
+        public void ReInit(Stream stream, string encoding)
         {
             try
             {

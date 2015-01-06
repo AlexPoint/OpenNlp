@@ -39,7 +39,7 @@ namespace OpenNLP.Tools.Util.Trees
             throw new NotImplementedException();
         }
 
-        public Tokenizer<Tree> getTokenizer( /*final*/ TextReader r, String extraOptions)
+        public Tokenizer<Tree> getTokenizer( /*final*/ TextReader r, string extraOptions)
         {
             // Silently ignore extra options
             return getTokenizer(r);
@@ -52,7 +52,7 @@ namespace OpenNLP.Tools.Util.Trees
             return null;
         }
 
-        public void setOptions(String options)
+        public void setOptions(string options)
         {
             //Silently ignore
         }

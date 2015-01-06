@@ -31,13 +31,13 @@ namespace OpenNLP.Tools.Util.Trees
         // UnnamedDependency, which then uses an unfilled member of the same
         // TreeGraphNode to get the hash code.  Keeping the text of the
         // labels breaks that possible cycle.
-        protected readonly String regentText;
-        protected readonly String dependentText;
+        protected readonly string regentText;
+        protected readonly string dependentText;
 
         private readonly Label regent;
         private readonly Label vDependent;
 
-        public UnnamedDependency(String regent, String dependent)
+        public UnnamedDependency(string regent, string dependent)
         {
             if (regent == null || dependent == null)
             {
@@ -86,11 +86,11 @@ namespace OpenNLP.Tools.Util.Trees
             return null;
         }
 
-        protected String getText(Label label)
+        protected string getText(Label label)
         {
             if (label is HasWord)
             {
-                String word = ((HasWord) label).word();
+                string word = ((HasWord) label).word();
                 if (word != null)
                 {
                     return word;
@@ -123,27 +123,27 @@ namespace OpenNLP.Tools.Util.Trees
             }
             UnnamedDependency d = (UnnamedDependency) o;
 
-            String thisHeadWord = regentText;
-            String thisDepWord = dependentText;
-            String headWord = d.regentText;
-            String depWord = d.dependentText;
+            string thisHeadWord = regentText;
+            string thisDepWord = dependentText;
+            string headWord = d.regentText;
+            string depWord = d.dependentText;
 
             return thisHeadWord.Equals(headWord) && thisDepWord.Equals(depWord);
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
-            return String.Format("{0} --> {1}", regentText, dependentText);
+            return string.Format("{0} --> {1}", regentText, dependentText);
         }
 
         /**
-   * Provide different printing options via a String keyword.
+   * Provide different printing options via a string keyword.
    * The recognized options are currently "xml", and "predicate".
    * Otherwise the default ToString() is used.
    */
 
-        public virtual String ToString(String format)
+        public virtual string ToString(string format)
         {
             switch (format)
             {

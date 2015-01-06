@@ -33,7 +33,7 @@ namespace OpenNLP.Tools.Util
 
     public interface CoreMap : TypesafeMap
     {
-        /** Attempt to provide a briefer and more human readable String for the contents of
+        /** Attempt to provide a briefer and more human readable string for the contents of
    *  a CoreMap.
    *  The method may not be capable of printing circular dependencies in CoreMaps.
    *
@@ -43,10 +43,10 @@ namespace OpenNLP.Tools.Util
    *     "Annotation". That is,
    *     edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation --&gt; PartOfSpeech
    *     . As a special case, an empty array means to print everything, not nothing.
-   *  @return A more human readable String giving possibly partial contents of a
+   *  @return A more human readable string giving possibly partial contents of a
    *     CoreMap.
    */
 
-        String toShorterString(String[] what);
+        string toShorterString(string[] what);
     }
 }

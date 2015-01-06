@@ -18,9 +18,9 @@ namespace OpenNLP.Tools.Util.Ling
         /**
    * Return the word value of the label (or null if none).
    *
-   * @return String the word value for the label
+   * @return string the word value for the label
    */
-        String word();
+        string word();
 
 
         /**
@@ -28,6 +28,6 @@ namespace OpenNLP.Tools.Util.Ling
          *
          * @param word The word value for the label
          */
-        void setWord(String word);
+        void setWord(string word);
     }
 }

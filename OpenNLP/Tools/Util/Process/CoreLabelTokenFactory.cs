@@ -48,22 +48,22 @@ namespace OpenNLP.Tools.Util.Process
         }
 
         /**
-   * Constructs a CoreLabel as a String with a corresponding BEGIN and END position.
+   * Constructs a CoreLabel as a string with a corresponding BEGIN and END position.
    * (Does not take substring).
    */
 
-        public CoreLabel makeToken(String tokenText, int begin, int length)
+        public CoreLabel makeToken(string tokenText, int begin, int length)
         {
             return makeToken(tokenText, tokenText, begin, length);
         }
 
         /**
-   * Constructs a CoreLabel as a String with a corresponding BEGIN and END position, 
+   * Constructs a CoreLabel as a string with a corresponding BEGIN and END position, 
    * when the original OriginalTextAnnotation is different from TextAnnotation
    * (Does not take substring).
    */
 
-        public CoreLabel makeToken(String tokenText, String originalText, int begin, int length)
+        public CoreLabel makeToken(string tokenText, string originalText, int begin, int length)
         {
             CoreLabel cl = addIndices ? new CoreLabel(5) : new CoreLabel();
             cl.setValue(tokenText);
@@ -83,7 +83,7 @@ namespace OpenNLP.Tools.Util.Process
             return l;
         }
 
-        /*public CoreLabel makeToken(String[] keys, String[] values) {
+        /*public CoreLabel makeToken(string[] keys, string[] values) {
     CoreLabel l = new CoreLabel(keys, values);
     return l;
   }*/

@@ -35,7 +35,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    */
         private static readonly long serialVersionUID = -1564793674551362909L;
 
-        private readonly String symbol;
+        private readonly string symbol;
 
         /** Whether this relationship is satisfied between two trees.
    *
@@ -72,13 +72,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * HEADS, HEADED_BY, IMMEDIATELY_HEADS, IMMEDIATELY_HEADED_BY, ONLY_CHILD_OF,
    * HAS_ONLY_CHILD, EQUALS
    *
-   * @param s The String representation of the relation
+   * @param s The string representation of the relation
    * @return The singleton static relation of the specified type
    * @throws ParseException If bad relation s
    */
 
-        public static Relation getRelation(String s,
-            Func<String, String> basicCatFunction,
+        public static Relation getRelation(string s,
+            Func<string, string> basicCatFunction,
             HeadFinder headFinder)
             /*throws ParseException*/
         {
@@ -133,7 +133,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * HAS_ITH_CHILD, ITH_CHILD_OF, UNBROKEN_CATEGORY_DOMINATES,
    * UNBROKEN_CATEGORY_DOMINATED_BY.
    *
-   * @param s The String representation of the relation
+   * @param s The string representation of the relation
    * @param arg The argument to the relation, as a string; could be a node
    *          description or an integer
    * @return The singleton static relation of the specified type with the
@@ -141,8 +141,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @throws ParseException If bad relation s
    */
 
-        public static Relation getRelation(String s, String arg,
-            Func<String, String> basicCatFunction,
+        public static Relation getRelation(string s, string arg,
+            Func<string, string> basicCatFunction,
             HeadFinder headFinder)
             /*throws ParseException*/
         {
@@ -183,8 +183,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * and its children
    */
 
-        public static TregexPattern constructMultiRelation(String s, List<DescriptionPattern> children,
-            Func<String, String> basicCatFunction,
+        public static TregexPattern constructMultiRelation(string s, List<DescriptionPattern> children,
+            Func<string, string> basicCatFunction,
             HeadFinder headFinder) /*throws ParseException */
         {
             if (s.Equals("<..."))
@@ -210,13 +210,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private Relation(String symbol)
+        private Relation(string symbol)
         {
             this.symbol = symbol;
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return symbol;
         }
@@ -2501,7 +2501,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             PARENT_EQUALS
         };
 
-        private static readonly Dictionary<String, Relation> ADDITIONAL_RELATION_MAP = new Dictionary<string, Relation>()
+        private static readonly Dictionary<string, Relation> ADDITIONAL_RELATION_MAP = new Dictionary<string, Relation>()
         {
             {"<<`", HAS_RIGHTMOST_DESCENDANT},
             {"<<,", HAS_LEFTMOST_DESCENDANT},
@@ -2513,7 +2513,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             {"$,", IMMEDIATE_RIGHT_SISTER_OF}
         };
 
-        private static readonly Dictionary<String, Relation> SIMPLE_RELATIONS_MAP = SIMPLE_RELATIONS
+        private static readonly Dictionary<string, Relation> SIMPLE_RELATIONS_MAP = SIMPLE_RELATIONS
             .ToDictionary(r => r.symbol, r => r)
             .Union(ADDITIONAL_RELATION_MAP)
             .ToDictionary(ent => ent.Key, ent => ent.Value);
@@ -3292,7 +3292,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             private readonly Regex pattern;
             private readonly bool negatedPattern;
             private readonly bool basicCat;
-            private Func<String, String> basicCatFunction;
+            private Func<string, string> basicCatFunction;
 
 
             /**
@@ -3301,8 +3301,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
      *            identifier or regex
      */
 
-            public UnbrokenCategoryDominates(String arg,
-                Func<String, String> basicCatFunction) : base("<+(" + arg + ')')
+            public UnbrokenCategoryDominates(string arg,
+                Func<string, string> basicCatFunction) : base("<+(" + arg + ')')
             {
                 if (arg.StartsWith("!"))
                 {
@@ -3362,7 +3362,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool pathMatchesNode(Tree node)
             {
-                String lab = node.value();
+                string lab = node.value();
                 // added this code to not crash if null node, even though there probably should be null nodes in the tree
                 if (lab == null)
                 {
@@ -3465,8 +3465,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             private readonly UnbrokenCategoryDominates unbrokenCategoryDominates;
 
-            public UnbrokenCategoryIsDominatedBy(String arg,
-                Func<String, String> basicCatFunction) : base(">+(" + arg + ')')
+            public UnbrokenCategoryIsDominatedBy(string arg,
+                Func<string, string> basicCatFunction) : base(">+(" + arg + ')')
             {
                 unbrokenCategoryDominates = Interner<UnbrokenCategoryDominates>
                     .globalIntern((new UnbrokenCategoryDominates(arg, basicCatFunction)));
@@ -3560,14 +3560,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             private readonly Regex pattern;
             private readonly bool negatedPattern;
             private readonly bool basicCat;
-            private Func<String, String> basicCatFunction;
+            private Func<string, string> basicCatFunction;
 
             /**
      * @param arg The pattern to match, perhaps preceded by ! and/or @
      */
 
-            public UnbrokenCategoryPrecedes(String arg,
-                Func<String, String> basicCatFunction) : base(".+(" + arg + ')')
+            public UnbrokenCategoryPrecedes(string arg,
+                Func<string, string> basicCatFunction) : base(".+(" + arg + ')')
             {
                 if (arg.StartsWith("!"))
                 {
@@ -3613,7 +3613,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             private bool pathMatchesNode(Tree node)
             {
-                String lab = node.value();
+                string lab = node.value();
                 // added this code to not crash if null node, even though there probably should be null nodes in the tree
                 if (lab == null)
                 {
@@ -3760,14 +3760,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             private readonly Regex pattern;
             private readonly bool negatedPattern;
             private readonly bool basicCat;
-            private Func<String, String> basicCatFunction;
+            private Func<string, string> basicCatFunction;
 
             /**
      * @param arg The pattern to match, perhaps preceded by ! and/or @
      */
 
-            public UnbrokenCategoryFollows(String arg,
-                Func<String, String> basicCatFunction) : base(",+(" + arg + ')')
+            public UnbrokenCategoryFollows(string arg,
+                Func<string, string> basicCatFunction) : base(",+(" + arg + ')')
             {
                 if (arg.StartsWith("!"))
                 {
@@ -3812,7 +3812,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             private bool pathMatchesNode(Tree node)
             {
-                String lab = node.value();
+                string lab = node.value();
                 // added this code to not crash if null node, even though there probably should be null nodes in the tree
                 if (lab == null)
                 {

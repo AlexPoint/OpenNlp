@@ -11,12 +11,12 @@ namespace OpenNLP.Tools.Util.Trees
  * Other tree normalizers will change various node labels, or perhaps the
  * whole tree geometry (by doing such things as deleting functional tags or
  * empty elements).  Another operation that a <code>TreeNormalizer</code>
- * may wish to perform is interning the <code>String</code>s passed to
+ * may wish to perform is interning the <code>string</code>s passed to
  * it.  Can be reused as a Singleton.  Designed to be extended.
  * <p/>
  * The <code>TreeNormalizer</code> methods are in two groups.
  * The contract for this class is that first normalizeTerminal or
- * normalizeNonterminal will be called on each <code>String</code> that will
+ * normalizeNonterminal will be called on each <code>string</code> that will
  * be put into a <code>Tree</code>, when they are read from files or
  * otherwise created.  Then <code>normalizeWholeTree</code> will
  * be called on the <code>Tree</code>.  It normally walks the
@@ -27,7 +27,7 @@ namespace OpenNLP.Tools.Util.Trees
  * <p/>
  * <i>Implementation note:</i> This is a very old legacy class used in conjunction
  * with PennTreeReader.  It seems now that it would be better to move the
- * String normalization into the tokenizer, and then we are just left with a
+ * string normalization into the tokenizer, and then we are just left with a
  * (possibly destructive) TreeTransformer.
  *
  * @author Christopher Manning
@@ -42,11 +42,11 @@ namespace OpenNLP.Tools.Util.Trees
         /**
    * Normalizes a leaf contents (and maybe intern it).
    *
-   * @param leaf The String that decorates the leaf
+   * @param leaf The string that decorates the leaf
    * @return The normalized form of this leaf String
    */
 
-        public virtual String normalizeTerminal(String leaf)
+        public virtual string normalizeTerminal(string leaf)
         {
             return leaf;
         }
@@ -54,11 +54,11 @@ namespace OpenNLP.Tools.Util.Trees
         /**
    * Normalizes a nonterminal contents (and maybe intern it).
    *
-   * @param category The String that decorates this nonterminal node
+   * @param category The string that decorates this nonterminal node
    * @return The normalized form of this nonterminal String
    */
 
-        public virtual String normalizeNonterminal(String category)
+        public virtual string normalizeNonterminal(string category)
         {
             return category;
         }

@@ -37,7 +37,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return the value for the label
    */
 
-        public virtual String value()
+        public virtual string value()
         {
             return null;
         }
@@ -49,7 +49,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param value - the value for the label
    */
 
-        public virtual void setValue(String value)
+        public virtual void setValue(string value)
         {
         }
 
@@ -62,14 +62,14 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The string representation
    */
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
-            String val = value();
+            string val = value();
             return (val == null) ? "" : val;
         }
 
 
-        public virtual void setFromString(String labelStr)
+        public virtual void setFromString(string labelStr)
         {
             throw new NotSupportedException();
         }
@@ -77,7 +77,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         /**
    * Equality for <code>ValueLabel</code>s is defined in the first instance
-   * as equality of their <code>String</code> <code>value()</code>.
+   * as equality of their <code>string</code> <code>value()</code>.
    * Now rewritten to correctly enforce the contract of equals in Object.
    * Equality for a <code>ValueLabel</code> is determined simply by String
    * equality of its <code>value()</code>.  Subclasses should not redefine
@@ -90,21 +90,21 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public override bool Equals(Object obj)
         {
-            String val = value();
+            string val = value();
             return (obj is ValueLabel) &&
                    (val == null ? ((Label) obj).value() == null : val.Equals(((Label) obj).value()));
         }
 
 
         /**
-   * Return the hashCode of the String value providing there is one.
+   * Return the hashCode of the string value providing there is one.
    * Otherwise, returns an arbitrary constant for the case of
    * <code>null</code>.
    */
         //@Override
         public override int GetHashCode()
         {
-            String val = value();
+            string val = value();
             return val == null ? 3 : val.GetHashCode();
         }
 

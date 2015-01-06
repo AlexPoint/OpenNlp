@@ -707,14 +707,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
 /** Token literal values. */
 
-        /*public static readonly String[] jjstrLiteralImages =
+        /*public static readonly string[] jjstrLiteralImages =
         {
             "", null, null, null, null, @"\74\56\56\56", null, null, null, @"\137\137", null,
             null, @"\174", @"\12", @"\50", @"\51", @"\41", @"\100", @"\43", @"\45", @"\75", @"\176",
             @"\46", @"\77", @"\133", @"\135", @"\173", @"\73", @"\175",
         };*/
 
-        public static readonly String[] jjstrLiteralImages =
+        public static readonly string[] jjstrLiteralImages =
         {
             "", null, null, null, null, "<...", null, null, null, "__", null,
             null, "|", "\n", "(", ")", "!", "@", "#", "%", "=", "~",
@@ -726,7 +726,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             /*readonly*/
             Token t;
             /*readonly */
-            String curTokenImage;
+            string curTokenImage;
             /*readonly */
             int beginLine;
             /*readonly */
@@ -735,7 +735,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             int beginColumn;
             /*readonly */
             int endColumn;
-            String im = jjstrLiteralImages[jjmatchedKind];
+            string im = jjstrLiteralImages[jjmatchedKind];
             curTokenImage = (im == null) ? input_stream.GetImage() : im;
             beginLine = input_stream.getBeginLine();
             beginColumn = input_stream.getBeginColumn();
@@ -815,7 +815,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 int error_line = input_stream.getEndLine();
                 int error_column = input_stream.getEndColumn();
-                String error_after = null;
+                string error_after = null;
                 bool EOFSeen = false;
                 try
                 {
@@ -934,7 +934,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
 /** Lexer state names. */
 
-        public static readonly String[] lexStateNames =
+        public static readonly string[] lexStateNames =
         {
             "DEFAULT",
         };

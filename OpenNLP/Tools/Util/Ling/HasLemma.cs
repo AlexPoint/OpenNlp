@@ -19,9 +19,9 @@ namespace OpenNLP.Tools.Util.Ling
         /**
    * Return the lemma value of the label (or null if none).
    *
-   * @return String the lemma value for the label
+   * @return string the lemma value for the label
    */
-        String lemma();
+        string lemma();
 
 
         /**
@@ -29,7 +29,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    * @param lemma The lemma value for the label
    */
-        void setLemma(String lemma);
+        void setLemma(string lemma);
 
     }
 }

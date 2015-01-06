@@ -76,7 +76,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         /** Literal token values. */
 
-        public String[] tokenImage =
+        public string[] tokenImage =
         {
             "<EOF>",
             "\" \"",

@@ -44,21 +44,21 @@ namespace OpenNLP.Tools.Util.Trees
    * Use this as the default encoding for Readers and Writers of
    * Treebank data.
    */
-        //static readonly String DEFAULT_ENCODING = "UTF-8";
+        //static readonly string DEFAULT_ENCODING = "UTF-8";
 
 
         /**
-   * Accepts a String that is a punctuation
+   * Accepts a string that is a punctuation
    * tag name, and rejects everything else.
    *
    * @param str The string to check
    * @return Whether this is a punctuation tag
    */
-        bool isPunctuationTag(String str);
+        bool isPunctuationTag(string str);
 
 
         /**
-   * Accepts a String that is a punctuation
+   * Accepts a string that is a punctuation
    * word, and rejects everything else.
    * If one can't tell for sure (as for ' in the Penn Treebank), it
    * maks the best guess that it can.
@@ -66,21 +66,21 @@ namespace OpenNLP.Tools.Util.Trees
    * @param str The string to check
    * @return Whether this is a punctuation word
    */
-        bool isPunctuationWord(String str);
+        bool isPunctuationWord(string str);
 
 
         /**
-   * Accepts a String that is a sentence end
+   * Accepts a string that is a sentence end
    * punctuation tag, and rejects everything else.
    *
    * @param str The string to check
    * @return Whether this is a sentence readonly punctuation tag
    */
-        bool isSentenceFinalPunctuationTag(String str);
+        bool isSentenceFinalPunctuationTag(string str);
 
 
         /**
-   * Accepts a String that is a punctuation
+   * Accepts a string that is a punctuation
    * tag that should be ignored by EVALB-style evaluation,
    * and rejects everything else.
    * Traditionally, EVALB has ignored a subset of the total set of
@@ -90,59 +90,59 @@ namespace OpenNLP.Tools.Util.Trees
    * @param str The string to check
    * @return Whether this is a EVALB-ignored punctuation tag
    */
-        bool isEvalBIgnoredPunctuationTag(String str);
+        bool isEvalBIgnoredPunctuationTag(string str);
 
 
         /**
-   * Return a filter that accepts a String that is a punctuation
+   * Return a filter that accepts a string that is a punctuation
    * tag name, and rejects everything else.
    *
    * @return The filter
    */
-        Predicate<String> punctuationTagAcceptFilter();
+        Predicate<string> punctuationTagAcceptFilter();
 
 
         /**
-   * Return a filter that rejects a String that is a punctuation
+   * Return a filter that rejects a string that is a punctuation
    * tag name, and accepts everything else.
    *
    * @return The filter
    */
-        Predicate<String> punctuationTagRejectFilter();
+        Predicate<string> punctuationTagRejectFilter();
 
         /**
-   * Returns a filter that accepts a String that is a punctuation
+   * Returns a filter that accepts a string that is a punctuation
    * word, and rejects everything else.
    * If one can't tell for sure (as for ' in the Penn Treebank), it
    * maks the best guess that it can.
    *
    * @return The Filter
    */
-        Predicate<String> punctuationWordAcceptFilter();
+        Predicate<string> punctuationWordAcceptFilter();
 
 
         /**
-   * Returns a filter that accepts a String that is not a punctuation
+   * Returns a filter that accepts a string that is not a punctuation
    * word, and rejects punctuation.
    * If one can't tell for sure (as for ' in the Penn Treebank), it
    * makes the best guess that it can.
    *
    * @return The Filter
    */
-        Predicate<String> punctuationWordRejectFilter();
+        Predicate<string> punctuationWordRejectFilter();
 
 
         /**
-   * Returns a filter that accepts a String that is a sentence end
+   * Returns a filter that accepts a string that is a sentence end
    * punctuation tag, and rejects everything else.
    *
    * @return The Filter
    */
-        Predicate<String> sentenceFinalPunctuationTagAcceptFilter();
+        Predicate<string> sentenceFinalPunctuationTagAcceptFilter();
 
 
         /**
-   * Returns a filter that accepts a String that is a punctuation
+   * Returns a filter that accepts a string that is a punctuation
    * tag that should be ignored by EVALB-style evaluation,
    * and rejects everything else.
    * Traditionally, EVALB has ignored a subset of the total set of
@@ -151,11 +151,11 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The Filter
    */
-        Predicate<String> evalBIgnoredPunctuationTagAcceptFilter();
+        Predicate<string> evalBIgnoredPunctuationTagAcceptFilter();
 
 
         /**
-   * Returns a filter that accepts everything except a String that is a
+   * Returns a filter that accepts everything except a string that is a
    * punctuation tag that should be ignored by EVALB-style evaluation.
    * Traditionally, EVALB has ignored a subset of the total set of
    * punctuation tags in the English Penn Treebank (quotes and
@@ -163,45 +163,45 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return The Filter
    */
-        Predicate<String> evalBIgnoredPunctuationTagRejectFilter();
+        Predicate<string> evalBIgnoredPunctuationTagRejectFilter();
 
 
         /**
-   * Returns a String array of punctuation tags for this treebank/language.
+   * Returns a string array of punctuation tags for this treebank/language.
    *
    * @return The punctuation tags
    */
-        String[] punctuationTags();
+        string[] punctuationTags();
 
 
         /**
-   * Returns a String array of punctuation words for this treebank/language.
+   * Returns a string array of punctuation words for this treebank/language.
    *
    * @return The punctuation words
    */
-        String[] punctuationWords();
+        string[] punctuationWords();
 
 
         /**
-   * Returns a String array of sentence readonly punctuation tags for this
+   * Returns a string array of sentence readonly punctuation tags for this
    * treebank/language.  The first in the list is assumed to be the most
    * basic one.
    *
    * @return The sentence readonly punctuation tags
    */
-        String[] sentenceFinalPunctuationTags();
+        string[] sentenceFinalPunctuationTags();
 
 
         /**
-   * Returns a String array of sentence readonly punctuation words for
+   * Returns a string array of sentence readonly punctuation words for
    * this treebank/language.
    *
    * @return The punctuation words
    */
-        String[] sentenceFinalPunctuationWords();
+        string[] sentenceFinalPunctuationWords();
 
         /**
-   * Returns a String array of punctuation tags that EVALB-style evaluation
+   * Returns a string array of punctuation tags that EVALB-style evaluation
    * should ignore for this treebank/language.
    * Traditionally, EVALB has ignored a subset of the total set of
    * punctuation tags in the English Penn Treebank (quotes and
@@ -209,7 +209,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return Whether this is a EVALB-ignored punctuation tag
    */
-        String[] evalBIgnoredPunctuationTags();
+        string[] evalBIgnoredPunctuationTags();
 
 
         /**
@@ -226,7 +226,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param puncFilter A filter which should reject punctuation words (as Strings)
    * @return A GrammaticalStructureFactory suitable for this language/treebank
    */
-        GrammaticalStructureFactory grammaticalStructureFactory(Predicate<String> puncFilter);
+        GrammaticalStructureFactory grammaticalStructureFactory(Predicate<string> puncFilter);
 
 
         /**
@@ -237,7 +237,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A GrammaticalStructureFactory suitable for this language/treebank
    */
 
-        GrammaticalStructureFactory grammaticalStructureFactory(Predicate<String> puncFilter,
+        GrammaticalStructureFactory grammaticalStructureFactory(Predicate<string> puncFilter,
             HeadFinder typedDependencyHF);
 
         /**
@@ -253,7 +253,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return Name of Charset
    */
-        String getEncoding();
+        string getEncoding();
 
 
         /**
@@ -267,7 +267,7 @@ namespace OpenNLP.Tools.Util.Trees
         TokenizerFactory<HasWord> getTokenizerFactory();
 
         /**
-   * Return an array of characters at which a String should be
+   * Return an array of characters at which a string should be
    * truncated to give the basic syntactic category of a label.
    * The idea here is that Penn treebank style labels follow a syntactic
    * category with various functional and crossreferencing information
@@ -293,26 +293,26 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         /**
-   * Returns the basic syntactic category of a String by truncating
+   * Returns the basic syntactic category of a string by truncating
    * stuff after a (non-word-initial) occurrence of one of the
    * <code>labelAnnotationIntroducingCharacters()</code>.  This
    * function should work on phrasal category and POS tag labels,
    * but needn't (and couldn't be expected to) work on arbitrary
    * Word strings.
    *
-   * @param category The whole String name of the label
+   * @param category The whole string name of the label
    * @return The basic category of the String
    */
-        String basicCategory(String category);
+        string basicCategory(string category);
 
         /**
-   * Returns the category for a String with everything following
+   * Returns the category for a string with everything following
    * the gf character (which may be language specific) stripped.
    *
-   * @param category The String name of the label (may previously have had basic category called on it)
-   * @return The String stripped of grammatical functions
+   * @param category The string name of the label (may previously have had basic category called on it)
+   * @return The string stripped of grammatical functions
    */
-        String stripGF(String category);
+        string stripGF(string category);
 
 
         /**
@@ -321,20 +321,20 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return the String->String Function object
    */
-        /*Func<String,String>*/
+        /*Func<string,String>*/
         AbstractTreebankLanguagePack.BasicCategoryStringFunction getBasicCategoryFunction();
 
         /**
-   * Returns the syntactic category and 'function' of a String.
+   * Returns the syntactic category and 'function' of a string.
    * This normally involves truncating numerical coindexation
    * showing coreference, etc.  By 'function', this means
    * keeping, say, Penn Treebank functional tags or ICE phrasal functions,
    * perhaps returning them as <code>category-function</code>.
    *
-   * @param category The whole String name of the label
-   * @return A String giving the category and function
+   * @param category The whole string name of the label
+   * @return A string giving the category and function
    */
-        String categoryAndFunction(String category);
+        string categoryAndFunction(string category);
 
         /**
    * Returns a {@link Function Function} object that maps Strings to Strings according
@@ -342,41 +342,41 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return the String->String Function object
    */
-        /*Func<String,String>*/
+        /*Func<string,String>*/
         AbstractTreebankLanguagePack.CategoryAndFunctionStringFunction getCategoryAndFunctionFunction();
 
         /**
-   * Accepts a String that is a start symbol of the treebank.
+   * Accepts a string that is a start symbol of the treebank.
    *
    * @param str The str to test
    * @return Whether this is a start symbol
    */
-        bool isStartSymbol(String str);
+        bool isStartSymbol(string str);
 
 
         /**
-   * Return a filter that accepts a String that is a start symbol
+   * Return a filter that accepts a string that is a start symbol
    * of the treebank, and rejects everything else.
    *
    * @return The filter
    */
-        Predicate<String> startSymbolAcceptFilter();
+        Predicate<string> startSymbolAcceptFilter();
 
 
         /**
-   * Returns a String array of treebank start symbols.
+   * Returns a string array of treebank start symbols.
    *
    * @return The start symbols
    */
-        String[] startSymbols();
+        string[] startSymbols();
 
         /**
-   * Returns a String which is the first (perhaps unique) start symbol
+   * Returns a string which is the first (perhaps unique) start symbol
    * of the treebank, or null if none is defined.
    *
    * @return The start symbol
    */
-        String startSymbol();
+        string startSymbol();
 
 
         /**
@@ -386,7 +386,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @return the extension on files for this treebank
    */
-        String treebankFileExtension();
+        string treebankFileExtension();
 
         /**
    * Sets the grammatical function indicating character to gfCharacter.

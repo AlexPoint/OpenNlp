@@ -79,7 +79,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         private static bool verbose; // = false;
 
         private static readonly Regex emptyLinePattern = new Regex("^\\s*$", RegexOptions.Compiled);
-        private static readonly String commentIntroducingCharacter = "%";
+        private static readonly string commentIntroducingCharacter = "%";
         private static readonly Regex commentPattern = new Regex("(?<!\\\\)%.*$", RegexOptions.Compiled);
 
         private static readonly Regex escapedCommentCharacterPattern = new Regex("\\\\" + commentIntroducingCharacter,
@@ -99,7 +99,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * @throws IOException If any IO problem
    */
         /*public static Tuple<TregexPattern, TsurgeonPattern> getOperationFromReader(BufferedReader reader, TregexPatternCompiler compiler) /*throws IOException#1# {
-    String patternString = getTregexPatternFromReader(reader);
+    string patternString = getTregexPatternFromReader(reader);
     // System.err.println("Read tregex pattern: " + patternString);
     if ("".equals(patternString)) {
       return null;
@@ -115,9 +115,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * tregex pattern leading the file
    * @return tregex pattern string
    */
-        /*public static String getTregexPatternFromReader(BufferedReader reader) throws IOException {
+        /*public static string getTregexPatternFromReader(BufferedReader reader) throws IOException {
     StringBuilder matchString = new StringBuilder();
-    for (String thisLine; (thisLine = reader.readLine()) != null; ) {
+    for (string thisLine; (thisLine = reader.readLine()) != null; ) {
       if (matchString.length() > 0 && emptyLinePattern.matcher(thisLine).matches()) {
         // A blank line after getting some real content (not just comments or nothing)
         break;
@@ -142,7 +142,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    */
         /*public static TsurgeonPattern getTsurgeonOperationsFromReader(BufferedReader reader) throws IOException {
     List<TsurgeonPattern> operations = new ArrayList<TsurgeonPattern>();
-    for (String thisLine; (thisLine = reader.readLine()) != null; ) {
+    for (string thisLine; (thisLine = reader.readLine()) != null; ) {
       if (emptyLinePattern.matcher(thisLine).matches()) {
         break;
       }
@@ -161,7 +161,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
   }*/
 
 
-        /*private static String removeComments(String line) {
+        /*private static string removeComments(string line) {
     Matcher m = commentPattern.matcher(line);
     line = m.replaceFirst("");
     Matcher m1 = escapedCommentCharacterPattern.matcher(line);
@@ -177,9 +177,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * because you do not parse the operations on load.  Comments are still excised.
    * @throws IOException
    */
-        /*public static String getTsurgeonTextFromReader(BufferedReader reader) throws IOException {
+        /*public static string getTsurgeonTextFromReader(BufferedReader reader) throws IOException {
     StringBuilder sb = new StringBuilder();
-    for (String thisLine; (thisLine = reader.readLine()) != null; ) {
+    for (string thisLine; (thisLine = reader.readLine()) != null; ) {
       thisLine = removeComments(thisLine);
       if (emptyLinePattern.matcher(thisLine).matches()) {
         continue;
@@ -198,7 +198,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * @return A pair of a tregex and tsurgeon pattern read from a file
    * @throws IOException If there is any I/O problem
    */
-        /*public static List<Pair<TregexPattern, TsurgeonPattern>> getOperationsFromFile(String filename, String encoding, TregexPatternCompiler compiler) throws IOException {
+        /*public static List<Pair<TregexPattern, TsurgeonPattern>> getOperationsFromFile(string filename, string encoding, TregexPatternCompiler compiler) throws IOException {
     List<Pair<TregexPattern,TsurgeonPattern>> operations = new ArrayList<Pair<TregexPattern, TsurgeonPattern>>();
     BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filename), encoding));
     for ( ; ; ) {
@@ -303,7 +303,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * @return the operation pattern.
    */
 
-        public static TsurgeonPattern parseOperation(String operationString)
+        public static TsurgeonPattern parseOperation(string operationString)
         {
             try
             {

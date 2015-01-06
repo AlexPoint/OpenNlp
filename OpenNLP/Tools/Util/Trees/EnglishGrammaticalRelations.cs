@@ -113,19 +113,19 @@ namespace OpenNLP.Tools.Util.Trees
                 });
 
 
-        private static readonly String ETC_PAT = "(FW < /^(?i:etc)$/)";
-        private static readonly String ETC_PAT_target = "(FW=target < /^(?i:etc)$/)";
+        private static readonly string ETC_PAT = "(FW < /^(?i:etc)$/)";
+        private static readonly string ETC_PAT_target = "(FW=target < /^(?i:etc)$/)";
 
-        private static readonly String FW_ETC_PAT = "(ADVP|NP <1 (FW < /^(?i:etc)$/))";
-        private static readonly String FW_ETC_PAT_target = "(ADVP|NP=target <1 (FW < /^(?i:etc)$/))";
+        private static readonly string FW_ETC_PAT = "(ADVP|NP <1 (FW < /^(?i:etc)$/))";
+        private static readonly string FW_ETC_PAT_target = "(ADVP|NP=target <1 (FW < /^(?i:etc)$/))";
 
         // match "not", "n't", "nt" (for informal writing), or "never" as _complete_ string
-        private static readonly String NOT_PAT = "/^(?i:n[o']?t|never)$/";
+        private static readonly string NOT_PAT = "/^(?i:n[o']?t|never)$/";
 
-        private static readonly String WESTERN_SMILEY =
+        private static readonly string WESTERN_SMILEY =
             "/^(?:[<>]?[:;=8][\\-o\\*']?(?:-RRB-|-LRB-|[DPdpO\\/\\\\\\:}{@\\|\\[\\]])|(?:-RRB-|-LRB-|[DPdpO\\/\\\\\\:}{@\\|\\[\\]])[\\-o\\*']?[:;=8][<>]?)$/";
 
-        private static readonly String ASIAN_SMILEY =
+        private static readonly string ASIAN_SMILEY =
             "/(?!^--$)^(?:-LRB-)?[\\-\\^x=~<>'][_.]?[\\-\\^x=~<>'](?:-RRB-)?$/";
 
         /**
@@ -610,7 +610,7 @@ namespace OpenNLP.Tools.Util.Trees
         // public static readonly GrammaticalRelation ATTRIBUTIVE =
         //   new GrammaticalRelation(Language.English, "attr", "attributive",
         //       COMPLEMENT, "VP|SBARQ|SQ", tregexCompiler,
-        //       new String[] {
+        //       new string[] {
         //         "VP < NP=target <(/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + ") !$ (NP < EX)",
         //         // "What is that?"
         //         "SBARQ < (WHNP|WHADJP=target $+ (SQ < (/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + " !$++ VP) !< (VP <- (PP <:IN)) !<- (PP <: IN)))",
@@ -1395,7 +1395,7 @@ namespace OpenNLP.Tools.Util.Trees
   public static readonly GrammaticalRelation MEASURE_PHRASE =
     new GrammaticalRelation(Language.English, "measure", "measure-phrase",
         MODIFIER, "ADJP|ADVP", tregexCompiler,
-        new String[] {
+        new string[] {
           "ADJP <- JJ <, (NP=target !< NNP)",
           "ADVP|ADJP <# (JJ|IN $- NP=target)"
         });
@@ -1725,10 +1725,10 @@ namespace OpenNLP.Tools.Util.Trees
 
         // Map from English GrammaticalRelation short names to their corresponding
         // GrammaticalRelation objects
-        public static readonly Dictionary<String, GrammaticalRelation> shortNameToGRel = Values()
+        public static readonly Dictionary<string, GrammaticalRelation> shortNameToGRel = Values()
             .ToDictionary(v => v.ToString().ToLower(), v => v);
 
-        /*new ConcurrentHashMap<String, GrammaticalRelation>();
+        /*new ConcurrentHashMap<string, GrammaticalRelation>();
   static {
     for (GrammaticalRelation gr : values()) {
       shortNameToGRel.put(gr.ToString().toLowerCase(), gr);
@@ -1773,7 +1773,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         // the exhaustive list of conjunction relations
         private static readonly ConcurrentDictionary<string, GrammaticalRelation> conjs =
-            new ConcurrentDictionary<String, GrammaticalRelation>();
+            new ConcurrentDictionary<string, GrammaticalRelation>();
 
         public static ICollection<GrammaticalRelation> getConjs()
         {
@@ -1788,7 +1788,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A grammatical relation for this conjunction
    */
 
-        public static GrammaticalRelation getConj(String conjunctionString)
+        public static GrammaticalRelation getConj(string conjunctionString)
         {
             GrammaticalRelation result = conjs[conjunctionString];
             if (result == null)
@@ -1809,10 +1809,10 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         // the exhaustive list of preposition relations
-        private static readonly ConcurrentDictionary<String, GrammaticalRelation> preps =
-            new ConcurrentDictionary<String, GrammaticalRelation>();
+        private static readonly ConcurrentDictionary<string, GrammaticalRelation> preps =
+            new ConcurrentDictionary<string, GrammaticalRelation>();
 
-        private static readonly ConcurrentDictionary<String, GrammaticalRelation> prepsC =
+        private static readonly ConcurrentDictionary<string, GrammaticalRelation> prepsC =
             new ConcurrentDictionary<string, GrammaticalRelation>();
 
 
@@ -1835,7 +1835,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A grammatical relation for this preposition
    */
 
-        public static GrammaticalRelation getPrep(String prepositionString)
+        public static GrammaticalRelation getPrep(string prepositionString)
         {
             GrammaticalRelation result = preps[prepositionString];
             if (result == null)
@@ -1865,7 +1865,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A grammatical relation for this preposition
    */
 
-        public static GrammaticalRelation getPrepC(String prepositionString)
+        public static GrammaticalRelation getPrepC(string prepositionString)
         {
             GrammaticalRelation result = prepsC[prepositionString];
             if (result == null)
@@ -1894,7 +1894,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The EnglishGrammaticalRelation with that name
    */
 
-        public static GrammaticalRelation valueOf(String s)
+        public static GrammaticalRelation valueOf(string s)
         {
             return GrammaticalRelation.valueOf(s, Values());
 
@@ -1904,10 +1904,10 @@ namespace OpenNLP.Tools.Util.Trees
 //    // the type and the dependent, instantiate a collapsed version.
 //    // Currently handcode against conjunctions and prepositions, but
 //    // should do this in a more robust fashion.
-//    String[] tuples = s.trim().split("_", 2);
+//    string[] tuples = s.trim().split("_", 2);
 //    if (tuples.length == 2) {
-//      String reln = tuples[0];
-//      String specific = tuples[1];
+//      string reln = tuples[0];
+//      string specific = tuples[1];
 //      if (reln.equals(PREPOSITIONAL_MODIFIER.getShortName())) {
 //        return getPrep(specific);
 //      } else if (reln.equals(CONJUNCT.getShortName())) {

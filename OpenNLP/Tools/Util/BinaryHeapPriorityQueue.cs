@@ -32,7 +32,7 @@ namespace OpenNLP.Tools.Util
             public double priority;
 
             //@Override
-            public override String ToString()
+            public override string ToString()
             {
                 return key + " at " + index + " (" + priority + ')';
             }
@@ -550,14 +550,14 @@ namespace OpenNLP.Tools.Util
         //  }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return ToString(0);
         }
 
         /** {@inheritDoc} */
         //@Override
-        public String ToString(int maxKeysToPrint)
+        public string ToString(int maxKeysToPrint)
         {
             if (maxKeysToPrint <= 0) maxKeysToPrint = int.MaxValue;
             List<E> sortedKeys = toSortedList();
@@ -575,7 +575,7 @@ namespace OpenNLP.Tools.Util
             return sb.ToString();
         }
 
-        public String toVerticalString()
+        public string toVerticalString()
         {
             List<E> sortedKeys = toSortedList();
             StringBuilder sb = new StringBuilder();

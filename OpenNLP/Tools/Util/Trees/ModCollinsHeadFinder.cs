@@ -64,9 +64,9 @@ namespace OpenNLP.Tools.Util.Trees
             // QP early isn't; should prefer JJR NN RB
             // remove ADVP; it just shouldn't be there.
             // if two JJ, should take right one (e.g. South Korean)
-            // nonTerminalInfo.Add("ADJP", new String[][]{{"left", "NNS", "NN", "$", "QP"}, {"right", "JJ"}, {"left", "VBN", "VBG", "ADJP", "JJP", "JJR", "NP", "JJS", "DT", "FW", "RBR", "RBS", "SBAR", "RB"}});
+            // nonTerminalInfo.Add("ADJP", new string[][]{{"left", "NNS", "NN", "$", "QP"}, {"right", "JJ"}, {"left", "VBN", "VBG", "ADJP", "JJP", "JJR", "NP", "JJS", "DT", "FW", "RBR", "RBS", "SBAR", "RB"}});
             nonTerminalInfo.Add("ADJP",
-                new String[][]
+                new string[][]
                 {
                     new string[] {"left", "$"}, new string[] {"rightdis", "NNS", "NN", "JJ", "QP", "VBN", "VBG"},
                     new string[] {"left", "ADJP"},
@@ -74,7 +74,7 @@ namespace OpenNLP.Tools.Util.Trees
                     new string[] {"left", "ADVP", "NP"}
                 });
             nonTerminalInfo.Add("JJP",
-                new String[][]
+                new string[][]
                 {
                     new string[]
                     {
@@ -84,16 +84,16 @@ namespace OpenNLP.Tools.Util.Trees
                 });
                 // JJP is introduced for NML-like adjective phrases in Vadas' treebank; Chris wishes he hadn't used JJP which should be a POS-tag.
             // ADVP rule rewritten by Chris in Nov 2010 to be rightdis.  This is right! JJ.* is often head and rightmost.
-            nonTerminalInfo.Add("ADVP", new String[][]
+            nonTerminalInfo.Add("ADVP", new string[][]
             {
                 new string[] {"left", "ADVP", "IN"},
                 new string[] {"rightdis", "RB", "RBR", "RBS", "JJ", "JJR", "JJS"},
                 new string[] {"rightdis", "RP", "DT", "NN", "CD", "NP", "VBN", "NNP", "CC", "FW", "NNS", "ADJP", "NML"}
             });
-            nonTerminalInfo.Add("CONJP", new String[][] {new string[] {"right", "CC", "RB", "IN"}});
-            nonTerminalInfo.Add("FRAG", new String[][] {new string[] {"right"}}); // crap
-            nonTerminalInfo.Add("INTJ", new String[][] {new string[] {"left"}});
-            nonTerminalInfo.Add("LST", new String[][] {new string[] {"right", "LS", ":"}});
+            nonTerminalInfo.Add("CONJP", new string[][] {new string[] {"right", "CC", "RB", "IN"}});
+            nonTerminalInfo.Add("FRAG", new string[][] {new string[] {"right"}}); // crap
+            nonTerminalInfo.Add("INTJ", new string[][] {new string[] {"left"}});
+            nonTerminalInfo.Add("LST", new string[][] {new string[] {"right", "LS", ":"}});
 
             // NML is head in: (NAC-LOC (NML San Antonio) (, ,) (NNP Texas))
             // TODO: NNP should be head (rare cases, could be ignored):
@@ -101,7 +101,7 @@ namespace OpenNLP.Tools.Util.Trees
             //   (NAC (NML Prudential Insurance) (NNP Co.) (PP Of America))
             // Chris: This could maybe still do with more thought, but NAC is rare.
             nonTerminalInfo.Add("NAC",
-                new String[][]
+                new string[][]
                 {
                     new string[]
                     {
@@ -117,11 +117,11 @@ namespace OpenNLP.Tools.Util.Trees
             // added SYM as used in new treebanks for symbols filling role of IN
             // Changed PP search to left -- just what you want for conjunction (and consistent with SemanticHeadFinder)
             nonTerminalInfo.Add("PP",
-                new String[][]
+                new string[][]
                 {new string[] {"right", "IN", "TO", "VBG", "VBN", "RP", "FW", "JJ", "SYM"}, new string[] {"left", "PP"}});
 
             nonTerminalInfo.Add("PRN",
-                new String[][]
+                new string[][]
                 {
                     new string[]
                     {
@@ -129,10 +129,10 @@ namespace OpenNLP.Tools.Util.Trees
                         "VBP", "JJ", "NN", "NNP"
                     }
                 });
-            nonTerminalInfo.Add("PRT", new String[][] {new string[] {"right", "RP"}});
+            nonTerminalInfo.Add("PRT", new string[][] {new string[] {"right", "RP"}});
             // add '#' for pounds!!
             nonTerminalInfo.Add("QP",
-                new String[][]
+                new string[][]
                 {
                     new string[] {"left", "$", "IN", "NNS", "NN", "JJ", "CD", "PDT", "DT", "RB", "NCD", "QP", "JJR", "JJS"}
                 });
@@ -140,33 +140,33 @@ namespace OpenNLP.Tools.Util.Trees
             // For choosing between NP and PP, really need to know which one is temporal and to choose the other.
             // It's not clear ADVP needs to be in the list at all (delete?).
             nonTerminalInfo.Add("RRC",
-                new String[][]
+                new string[][]
                 {new string[] {"left", "RRC"}, new string[] {"right", "VP", "ADJP", "JJP", "NP", "PP", "ADVP"}});
 
             // delete IN -- go for main part of sentence; add FRAG
 
             nonTerminalInfo.Add("S",
-                new String[][] {new string[] {"left", "TO", "VP", "S", "FRAG", "SBAR", "ADJP", "JJP", "UCP", "NP"}});
+                new string[][] {new string[] {"left", "TO", "VP", "S", "FRAG", "SBAR", "ADJP", "JJP", "UCP", "NP"}});
             nonTerminalInfo.Add("SBAR",
-                new String[][]
+                new string[][]
                 {
                     new string[]
                     {"left", "WHNP", "WHPP", "WHADVP", "WHADJP", "IN", "DT", "S", "SQ", "SINV", "SBAR", "FRAG"}
                 });
             nonTerminalInfo.Add("SBARQ",
-                new String[][] {new string[] {"left", "SQ", "S", "SINV", "SBARQ", "FRAG", "SBAR"}});
+                new string[][] {new string[] {"left", "SQ", "S", "SINV", "SBARQ", "FRAG", "SBAR"}});
             // cdm: if you have 2 VP under an SINV, you should really take the 2nd as syntactic head, because the first is a topicalized VP complement of the second, but for now I didn't change this, since it didn't help parsing.  (If it were changed, it'd need to be also changed to the opposite in SemanticHeadFinder.)
             nonTerminalInfo.Add("SINV",
-                new String[][]
+                new string[][]
                 {new string[] {"left", "VBZ", "VBD", "VBP", "VB", "MD", "VBN", "VP", "S", "SINV", "ADJP", "JJP", "NP"}});
             nonTerminalInfo.Add("SQ",
-                new String[][] {new string[] {"left", "VBZ", "VBD", "VBP", "VB", "MD", "AUX", "AUXG", "VP", "SQ"}});
+                new string[][] {new string[] {"left", "VBZ", "VBD", "VBP", "VB", "MD", "AUX", "AUXG", "VP", "SQ"}});
                 // TODO: Should maybe put S before SQ for tag questions. Check.
-            nonTerminalInfo.Add("UCP", new String[][] {new string[] {"right"}});
+            nonTerminalInfo.Add("UCP", new string[][] {new string[] {"right"}});
             // below is weird!! Make 2 lists, one for good and one for bad heads??
             // VP: added AUX and AUXG to work with Charniak tags
             nonTerminalInfo.Add("VP",
-                new String[][]
+                new string[][]
                 {
                     new string[]
                     {
@@ -175,15 +175,15 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                 });
             nonTerminalInfo.Add("WHADJP",
-                new String[][] {new string[] {"left", "WRB", "WHADVP", "RB", "JJ", "ADJP", "JJP", "JJR"}});
-            nonTerminalInfo.Add("WHADVP", new String[][] {new string[] {"right", "WRB", "WHADVP"}});
+                new string[][] {new string[] {"left", "WRB", "WHADVP", "RB", "JJ", "ADJP", "JJP", "JJR"}});
+            nonTerminalInfo.Add("WHADVP", new string[][] {new string[] {"right", "WRB", "WHADVP"}});
             nonTerminalInfo.Add("WHNP",
-                new String[][] {new string[] {"left", "WDT", "WP", "WP$", "WHADJP", "WHPP", "WHNP"}});
-            nonTerminalInfo.Add("WHPP", new String[][] {new string[] {"right", "IN", "TO", "FW"}});
+                new string[][] {new string[] {"left", "WDT", "WP", "WP$", "WHADJP", "WHPP", "WHNP"}});
+            nonTerminalInfo.Add("WHPP", new string[][] {new string[] {"right", "IN", "TO", "FW"}});
             nonTerminalInfo.Add("X",
-                new String[][] {new string[] {"right", "S", "VP", "ADJP", "JJP", "NP", "SBAR", "PP", "X"}});
+                new string[][] {new string[] {"right", "S", "VP", "ADJP", "JJP", "NP", "SBAR", "PP", "X"}});
             nonTerminalInfo.Add("NP",
-                new String[][]
+                new string[][]
                 {
                     new string[] {"rightdis", "NN", "NNP", "NNPS", "NNS", "NML", "NX", "POS", "JJR"},
                     new string[] {"left", "NP", "PRP"}, new string[] {"rightdis", "$", "ADJP", "JJP", "PRN", "FW"},
@@ -197,13 +197,13 @@ namespace OpenNLP.Tools.Util.Trees
             nonTerminalInfo.Add("NML", nonTerminalInfo["NP"]);
 
 
-            nonTerminalInfo.Add("POSSP", new String[][] {new string[] {"right", "POS"}});
+            nonTerminalInfo.Add("POSSP", new string[][] {new string[] {"right", "POS"}});
 
             /* HJT: Adding the following to deal with oddly formed data in (for example) the Brown corpus */
-            nonTerminalInfo.Add("ROOT", new String[][] {new string[] {"left", "S", "SQ", "SINV", "SBAR", "FRAG"}});
+            nonTerminalInfo.Add("ROOT", new string[][] {new string[] {"left", "S", "SQ", "SINV", "SBAR", "FRAG"}});
             // Just to handle trees which have TOP instead of ROOT at the root
             nonTerminalInfo.Add("TOP", nonTerminalInfo["ROOT"]);
-            nonTerminalInfo.Add("TYPO", new String[][]
+            nonTerminalInfo.Add("TYPO", new string[][]
             {
                 new string[]
                 {
@@ -211,7 +211,7 @@ namespace OpenNLP.Tools.Util.Trees
                     "VBD", "VBN", "MD", "VBZ", "VB", "VBG", "VBP", "VP", "ADJP", "JJP", "FRAG"
                 }
             }); // for Brown (Roger)
-            nonTerminalInfo.Add("ADV", new String[][]
+            nonTerminalInfo.Add("ADV", new string[][]
             {
                 new string[]
                 {
@@ -221,11 +221,11 @@ namespace OpenNLP.Tools.Util.Trees
             });
 
             // SWBD
-            nonTerminalInfo.Add("EDITED", new String[][] {new string[] {"left"}});
+            nonTerminalInfo.Add("EDITED", new string[][] {new string[] {"left"}});
                 // crap rule for Switchboard (if don't delete EDITED nodes)
             // in sw2756, a "VB". (copy "VP" to handle this problem, though should really fix it on reading)
             nonTerminalInfo.Add("VB",
-                new String[][]
+                new string[][]
                 {
                     new string[]
                     {
@@ -234,11 +234,11 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                 });
 
-            nonTerminalInfo.Add("META", new String[][] {new string[] {"left"}});
+            nonTerminalInfo.Add("META", new string[][] {new string[] {"left"}});
                 // rule for OntoNotes, but maybe should just be deleted in TreeReader??
-            nonTerminalInfo.Add("XS", new String[][] {new string[] {"right", "IN"}});
+            nonTerminalInfo.Add("XS", new string[][] {new string[] {"right", "IN"}});
                 // rule for new structure in QP, introduced by Stanford in QPTreeTransformer
-            // nonTerminalInfo.Add(null, new String[][] {{"left"}});  // rule for OntoNotes from Michel, but it would be better to fix this in TreeReader or to use a default rule?
+            // nonTerminalInfo.Add(null, new string[][] {{"left"}});  // rule for OntoNotes from Michel, but it would be better to fix this in TreeReader or to use a default rule?
 
             // todo: Uncomment this line if we always want to take the leftmost if no head rule is defined for the mother category.
             // defaultRule = defaultLeftRule; // Don't exception, take leftmost if no rule defined for a certain parent category

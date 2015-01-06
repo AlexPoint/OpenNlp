@@ -1385,7 +1385,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         /** Constructor with InputStream and supplied encoding */
 
-        public TsurgeonParser( /*java.io.InputStream*/ Stream stream, String encoding)
+        public TsurgeonParser( /*java.io.InputStream*/ Stream stream, string encoding)
         {
             try
             {
@@ -1408,7 +1408,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
      ReInit(stream, null);
   }*/
         /** Reinitialise. */
-        /*public void ReInit(java.io.InputStream stream, String encoding) {
+        /*public void ReInit(java.io.InputStream stream, string encoding) {
     try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new SystemException(e); }
     token_source.ReInit(jj_input_stream);
     token = new Token();

@@ -11,10 +11,10 @@ namespace OpenNLP.Tools.Util.International.Morph
     {
         private static readonly long serialVersionUID = -3893316324305154940L;
 
-        public static readonly String KEY_VAL_DELIM = ":";
+        public static readonly string KEY_VAL_DELIM = ":";
 
-        protected readonly Dictionary<MorphoFeatureSpecification.MorphoFeatureType, String> fSpec;
-        protected String altTag;
+        protected readonly Dictionary<MorphoFeatureSpecification.MorphoFeatureType, string> fSpec;
+        protected string altTag;
 
         public MorphoFeatures()
         {
@@ -28,7 +28,7 @@ namespace OpenNLP.Tools.Util.International.Morph
             this.altTag = other.altTag;
         }
 
-        public void addFeature(MorphoFeatureSpecification.MorphoFeatureType feat, String val)
+        public void addFeature(MorphoFeatureSpecification.MorphoFeatureType feat, string val)
         {
             fSpec.Add(feat, val);
         }
@@ -38,7 +38,7 @@ namespace OpenNLP.Tools.Util.International.Morph
             return fSpec.ContainsKey(feat);
         }
 
-        public String getValue(MorphoFeatureSpecification.MorphoFeatureType feat)
+        public string getValue(MorphoFeatureSpecification.MorphoFeatureType feat)
         {
             return hasFeature(feat) ? fSpec[feat] : "";
         }
@@ -67,12 +67,12 @@ namespace OpenNLP.Tools.Util.International.Morph
    * @return the tag
    */
 
-        public String getTag(String baseTag)
+        public string getTag(string baseTag)
         {
             return baseTag + ToString();
         }
 
-        public void setAltTag(String tag)
+        public void setAltTag(string tag)
         {
             altTag = tag;
         }
@@ -85,7 +85,7 @@ namespace OpenNLP.Tools.Util.International.Morph
    * @return the tag
    */
 
-        public String getAltTag()
+        public string getAltTag()
         {
             return altTag;
         }
@@ -101,14 +101,14 @@ namespace OpenNLP.Tools.Util.International.Morph
    * @param str
    */
 
-        public MorphoFeatures fromTagString(String str)
+        public MorphoFeatures fromTagString(string str)
         {
-            //List<String> feats = str.Split(new string[]{"\\-"}, StringSplitOptions.None).ToList();
-            List<String> feats = str.Split('-').ToList();
+            //List<string> feats = str.Split(new string[]{"\\-"}, StringSplitOptions.None).ToList();
+            List<string> feats = str.Split('-').ToList();
             MorphoFeatures mFeats = new MorphoFeatures();
-            foreach (String fPair in feats)
+            foreach (string fPair in feats)
             {
-                String[] keyValue = Regex.Split(fPair, KEY_VAL_DELIM);
+                string[] keyValue = Regex.Split(fPair, KEY_VAL_DELIM);
                 if (keyValue.Length != 2) //Manual state split annotations
                     continue;
                 MorphoFeatureSpecification.MorphoFeatureType fName;
@@ -133,7 +133,7 @@ namespace OpenNLP.Tools.Util.International.Morph
    *    -feat2:B-feat1:A
    */
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             foreach (var entry in fSpec)

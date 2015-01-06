@@ -93,7 +93,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param index The index of the word in the sentence (normally 0-based)
    */
 
-        public IndexedWord(String docID, int sentenceIndex, int index)
+        public IndexedWord(string docID, int sentenceIndex, int index)
         {
             label = new CoreLabel();
             label.set(typeof (CoreAnnotations.DocIDAnnotation), docID);
@@ -134,7 +134,7 @@ namespace OpenNLP.Tools.Util.Ling
             return label.set(key, value);
         }
 
-        public /*<KEY extends TypesafeMap.Key<String>>*/ String getString( /*Class<KEY>*/ Type key)
+        public /*<KEY extends TypesafeMap.Key<string>>*/ string getString( /*Class<KEY>*/ Type key)
         {
             return label.getString(key);
         }
@@ -155,73 +155,73 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         //@Override
-        public String value()
+        public string value()
         {
             return label.value();
         }
 
         //@Override
-        public void setValue(String value)
+        public void setValue(string value)
         {
             label.setValue(value);
         }
 
         //@Override
-        public String tag()
+        public string tag()
         {
             return label.tag();
         }
 
         //@Override
-        public void setTag(String tag)
+        public void setTag(string tag)
         {
             label.setTag(tag);
         }
 
         //@Override
-        public String word()
+        public string word()
         {
             return label.word();
         }
 
         //@Override
-        public void setWord(String word)
+        public void setWord(string word)
         {
             label.setWord(word);
         }
 
         //@Override
-        public String lemma()
+        public string lemma()
         {
             return label.lemma();
         }
 
         //@Override
-        public void setLemma(String lemma)
+        public void setLemma(string lemma)
         {
             label.setLemma(lemma);
         }
 
         //@Override
-        public String ner()
+        public string ner()
         {
             return label.ner();
         }
 
         //@Override
-        public void setNER(String ner)
+        public void setNER(string ner)
         {
             label.setNER(ner);
         }
 
         //@Override
-        public String docID()
+        public string docID()
         {
             return label.docID();
         }
 
         //@Override
-        public void setDocID(String docID)
+        public void setDocID(string docID)
         {
             label.setDocID(docID);
         }
@@ -251,13 +251,13 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         //@Override
-        public String originalText()
+        public string originalText()
         {
             return label.originalText();
         }
 
         //@Override
-        public void setOriginalText(String originalText)
+        public void setOriginalText(string originalText)
         {
             label.setOriginalText(originalText);
         }
@@ -296,7 +296,7 @@ namespace OpenNLP.Tools.Util.Ling
             label.setCopyCount(count);
         }
 
-        public String toPrimes()
+        public string toPrimes()
         {
             int copy = label.copyCount();
             return StringUtils.repeat('\'', copy);
@@ -338,8 +338,8 @@ namespace OpenNLP.Tools.Util.Ling
             {
                 return false;
             }
-            String myDocID = getString(typeof (CoreAnnotations.DocIDAnnotation));
-            String otherDocID = otherWord.getString(typeof (CoreAnnotations.DocIDAnnotation));
+            string myDocID = getString(typeof (CoreAnnotations.DocIDAnnotation));
+            string otherDocID = otherWord.getString(typeof (CoreAnnotations.DocIDAnnotation));
             if (myDocID == null)
             {
                 if (otherDocID != null)
@@ -423,7 +423,7 @@ namespace OpenNLP.Tools.Util.Ling
                 return 1;
             }
 
-            String docID = this.getString(typeof (CoreAnnotations.DocIDAnnotation));
+            string docID = this.getString(typeof (CoreAnnotations.DocIDAnnotation));
             int docComp = docID.CompareTo(w.getString(typeof (CoreAnnotations.DocIDAnnotation)));
             if (docComp != 0) return docComp;
 
@@ -440,13 +440,13 @@ namespace OpenNLP.Tools.Util.Ling
    * Returns the value-tag of this label.
    */
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return label.ToString(CoreLabel.OutputFormat.VALUE_TAG);
             //return label.ToString();
         }
 
-        public String ToString(CoreLabel.OutputFormat format)
+        public string ToString(CoreLabel.OutputFormat format)
         {
             return label.ToString(format);
             //return label.ToString();
@@ -456,7 +456,7 @@ namespace OpenNLP.Tools.Util.Ling
    * {@inheritDoc}
    */
         //@Override
-        public void setFromString(String labelStr)
+        public void setFromString(string labelStr)
         {
             throw new InvalidOperationException("Cannot set from string");
         }
@@ -491,13 +491,13 @@ namespace OpenNLP.Tools.Util.Ling
         /*public static LabelFactory factory() {
     return new LabelFactory() {
 
-      public Label newLabel(String labelStr) {
+      public Label newLabel(string labelStr) {
         CoreLabel label = new CoreLabel();
         label.setValue(labelStr);
         return new IndexedWord(label);
       }
 
-      public Label newLabel(String labelStr, int options) {
+      public Label newLabel(string labelStr, int options) {
         return newLabel(labelStr);
       }
 
@@ -505,7 +505,7 @@ namespace OpenNLP.Tools.Util.Ling
         return new IndexedWord(oldLabel);
       }
 
-      public Label newLabelFromString(String encodedLabelStr) {
+      public Label newLabelFromString(string encodedLabelStr) {
         throw new UnsupportedOperationException("This code branch left blank" +
         " because we do not understand what this method should do.");
       }

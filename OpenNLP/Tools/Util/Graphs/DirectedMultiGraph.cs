@@ -671,7 +671,7 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder s = new StringBuilder();
             s.Append("{\n");

@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Util.Trees
         protected readonly List<TypedDependency> typedDependencies;
         protected readonly List<TypedDependency> allTypedDependencies;
 
-        protected readonly Predicate<String> puncFilter;
+        protected readonly Predicate<string> puncFilter;
 
         /**
    * The root Tree node for this GrammaticalStructure.
@@ -79,7 +79,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
 
         public GrammaticalStructure(Tree t, ICollection<GrammaticalRelation> relations,
-            Object relationsLock, HeadFinder hf, Predicate<String> puncFilter)
+            Object relationsLock, HeadFinder hf, Predicate<string> puncFilter)
         {
             this.root = new TreeGraphNode(t, this);
             indexNodes(this.root);
@@ -249,10 +249,10 @@ namespace OpenNLP.Tools.Util.Trees
             return root;
         }
 
-        private static void throwDepFormatException(String dep)
+        private static void throwDepFormatException(string dep)
         {
             throw new SystemException(
-                String.Format("Dependencies should be for the format 'type(arg-idx, arg-idx)'. Could not parse '{0}'",
+                string.Format("Dependencies should be for the format 'type(arg-idx, arg-idx)'. Could not parse '{0}'",
                     dep));
         }
 
@@ -270,7 +270,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param deps
    */
 
-        public static GrammaticalStructure fromStringReps(List<String> tokens, List<String> posTags, List<String> deps)
+        public static GrammaticalStructure fromStringReps(List<string> tokens, List<string> posTags, List<string> deps)
         {
             if (tokens.Count != posTags.Count)
             {
@@ -288,10 +288,10 @@ namespace OpenNLP.Tools.Util.Trees
 
             SemanticHeadFinder headFinder = new SemanticHeadFinder();
 
-            IEnumerator<String> posIter = posTags.GetEnumerator();
-            foreach (String wordString in tokens)
+            IEnumerator<string> posIter = posTags.GetEnumerator();
+            foreach (string wordString in tokens)
             {
-                String posString = posIter.Current;
+                string posString = posIter.Current;
                 posIter.MoveNext();
                 CoreLabel wordLabel = new CoreLabel();
                 wordLabel.setWord(wordString);
@@ -320,23 +320,23 @@ namespace OpenNLP.Tools.Util.Trees
             // Build list of TypedDependencies
             List<TypedDependency> tdeps = new List<TypedDependency>(deps.Count);
 
-            foreach (String depString in deps)
+            foreach (string depString in deps)
             {
                 int firstBracket = depString.IndexOf('(');
                 if (firstBracket == -1) throwDepFormatException(depString);
 
 
-                String type = depString.Substring(0, firstBracket);
+                string type = depString.Substring(0, firstBracket);
 
                 if (depString[depString.Length - 1] != ')') throwDepFormatException(depString);
 
-                String args = depString.Substring(firstBracket + 1, depString.Length - 1);
+                string args = depString.Substring(firstBracket + 1, depString.Length - 1);
 
                 int argSep = args.IndexOf(", ");
                 if (argSep == -1) throwDepFormatException(depString);
 
-                String parentArg = args.Substring(0, argSep);
-                String childArg = args.Substring(argSep + 2);
+                string parentArg = args.Substring(0, argSep);
+                string childArg = args.Substring(argSep + 2);
                 int parentDash = parentArg.LastIndexOf('-');
                 if (parentDash == -1) throwDepFormatException(depString);
                 int childDash = childArg.LastIndexOf('-');
@@ -365,18 +365,18 @@ namespace OpenNLP.Tools.Util.Trees
         {
             this.root = root;
             indexNodes(this.root);
-            this.puncFilter = Filters.acceptFilter<String>();
+            this.puncFilter = Filters.acceptFilter<string>();
             allTypedDependencies = typedDependencies = new List<TypedDependency>(projectiveDependencies);
         }
 
         public GrammaticalStructure(Tree t, ICollection<GrammaticalRelation> relations,
-            HeadFinder hf, Predicate<String> puncFilter) :
+            HeadFinder hf, Predicate<string> puncFilter) :
                 this(t, relations, null, hf, puncFilter)
         {
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(root.toPrettyString(0).Substring(1));
@@ -386,7 +386,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         private static void attachStrandedNodes(TreeGraphNode t, TreeGraphNode root, bool attach,
-            Predicate<String> puncFilter, DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph)
+            Predicate<string> puncFilter, DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph)
         {
             if (t.isLeaf())
             {
@@ -420,7 +420,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         // cdm dec 2009: I changed this to automatically fail on preterminal nodes, since they shouldn't match for GR parent patterns.  Should speed it up.
         private static void analyzeNode(TreeGraphNode t, TreeGraphNode root, ICollection<GrammaticalRelation> relations,
-            HeadFinder hf, Predicate<String> puncFilter,
+            HeadFinder hf, Predicate<string> puncFilter,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> completeGraph)
         {
@@ -621,9 +621,9 @@ namespace OpenNLP.Tools.Util.Trees
 
         private /*static*/ class NoPunctFilter : IPredicate<Dependency<Label, Label, Object>> /*, Serializable*/
         {
-            private Predicate<String> npf;
+            private Predicate<string> npf;
 
-            public NoPunctFilter(Predicate<String> f)
+            public NoPunctFilter(Predicate<string> f)
             {
                 this.npf = f;
             }
@@ -654,9 +654,9 @@ namespace OpenNLP.Tools.Util.Trees
 
         private /*static*/ class NoPunctTypedDependencyFilter : IPredicate<TypedDependency> /*, Serializable*/
         {
-            private Predicate<String> npf;
+            private Predicate<string> npf;
 
-            public NoPunctTypedDependencyFilter(Predicate<String> f)
+            public NoPunctTypedDependencyFilter(Predicate<string> f)
             {
                 this.npf = f;
             }
@@ -743,12 +743,12 @@ namespace OpenNLP.Tools.Util.Trees
       }*/
             }
             /*if (PRINT_DEBUGGING && reln.Equals(GrammaticalRelation.DEPENDENT)) {
-      String topCat = govH[CoreAnnotations.ValueAnnotation.class);
-      String topTag = govH[TreeCoreAnnotations.HeadTagAnnotation.class).value();
-      String topWord = govH[TreeCoreAnnotations.HeadWordAnnotation.class).value();
-      String botCat = depH[CoreAnnotations.ValueAnnotation.class);
-      String botTag = depH[TreeCoreAnnotations.HeadTagAnnotation.class).value();
-      String botWord = depH[TreeCoreAnnotations.HeadWordAnnotation.class).value();
+      string topCat = govH[CoreAnnotations.ValueAnnotation.class);
+      string topTag = govH[TreeCoreAnnotations.HeadTagAnnotation.class).value();
+      string topWord = govH[TreeCoreAnnotations.HeadWordAnnotation.class).value();
+      string botCat = depH[CoreAnnotations.ValueAnnotation.class);
+      string botTag = depH[TreeCoreAnnotations.HeadTagAnnotation.class).value();
+      string botWord = depH[TreeCoreAnnotations.HeadWordAnnotation.class).value();
       System.err.println("### dep\t" + topCat + "\t" + topTag + "\t" + topWord +
                          "\t" + botCat + "\t" + botTag + "\t" + botWord + "\t");
     }*/
@@ -1053,14 +1053,14 @@ namespace OpenNLP.Tools.Util.Trees
             //@Override
             public int Compare(X o1, X o2)
             {
-                String n1 = o1.ToString();
-                String n2 = o2.ToString();
+                string n1 = o1.ToString();
+                string n2 = o2.ToString();
                 return n1.CompareTo(n2);
             }
         }
 
 
-        public static readonly String DEFAULT_PARSER_FILE = "/u/nlp/data/lexparser/englishPCFG.ser.gz";
+        public static readonly string DEFAULT_PARSER_FILE = "/u/nlp/data/lexparser/englishPCFG.ser.gz";
 
         /**
    * Print typed dependencies in either the Stanford dependency representation
@@ -1082,7 +1082,7 @@ namespace OpenNLP.Tools.Util.Trees
     System.out.println(dependenciesToString(gs, deps, tree, conllx, extraSep));
   }
 
-  public static String dependenciesToString(GrammaticalStructure gs, Collection<TypedDependency> deps, Tree tree, bool conllx, bool extraSep) {
+  public static string dependenciesToString(GrammaticalStructure gs, Collection<TypedDependency> deps, Tree tree, bool conllx, bool extraSep) {
     StringBuilder bf = new StringBuilder();
 
     Map<Integer, Integer> indexToPos = Generics.newHashMap();
@@ -1095,9 +1095,9 @@ namespace OpenNLP.Tools.Util.Trees
 
     if (conllx) {
       List<Tree> leaves = tree.getLeaves();
-      String[] words = new String[leaves.Count];
-      String[] pos = new String[leaves.Count];
-      String[] relns = new String[leaves.Count];
+      string[] words = new string[leaves.Count];
+      string[] pos = new string[leaves.Count];
+      string[] relns = new string[leaves.Count];
       int[] govs = new int[leaves.Count];
 
       int index = 0;
@@ -1121,7 +1121,7 @@ namespace OpenNLP.Tools.Util.Trees
         if (words[i] == null) {
           continue;
         }
-        String out = String.format("%d\t%s\t_\t%s\t%s\t_\t%d\t%s\t_\t_\n", i + 1, words[i], pos[i], pos[i], govs[i], (relns[i] != null ? relns[i] : "erased"));
+        string out = string.format("%d\t%s\t_\t%s\t%s\t_\t%d\t%s\t_\t_\n", i + 1, words[i], pos[i], pos[i], govs[i], (relns[i] != null ? relns[i] : "erased"));
         bf.Append(out);
       }
 
@@ -1156,7 +1156,7 @@ namespace OpenNLP.Tools.Util.Trees
     return bf.ToString();
   }
 
-  private static String toStringIndex(TypedDependency td, Map<Integer, Integer> indexToPos) {
+  private static string toStringIndex(TypedDependency td, Map<Integer, Integer> indexToPos) {
     IndexedWord gov = td.gov();
     IndexedWord dep = td.dep();
     return td.reln() + "(" + gov.value() + "-" + indexToPos[gov.index()) + gov.toPrimes() + ", " + dep.value() + "-" + indexToPos[dep.index()) + dep.toPrimes() + ")";
@@ -1178,17 +1178,17 @@ namespace OpenNLP.Tools.Util.Trees
    *
    * @throws IOException
    */
-        /*public static List<GrammaticalStructure> readCoNLLXGrammaticalStructureCollection(String fileName, Dictionary<String, GrammaticalRelation> shortNameToGRel, GrammaticalStructureFromDependenciesFactory factory) /*throws IOException#1# {
+        /*public static List<GrammaticalStructure> readCoNLLXGrammaticalStructureCollection(string fileName, Dictionary<string, GrammaticalRelation> shortNameToGRel, GrammaticalStructureFromDependenciesFactory factory) /*throws IOException#1# {
     LineNumberReader reader = new LineNumberReader(new FileReader(fileName));
     List<GrammaticalStructure> gsList = new List<GrammaticalStructure>();
 
-    List<List<String>> tokenFields = new List<List<String>>();
+    List<List<string>> tokenFields = new List<List<string>>();
 
-    for (String inline = reader.readLine(); inline != null;
+    for (string inline = reader.readLine(); inline != null;
          inline = reader.readLine()) {
       if (!"".Equals(inline)) {
         // read in a single sentence token by token
-        List<String> fields = Arrays.asList(inline.split("\t"));
+        List<string> fields = Arrays.asList(inline.split("\t"));
         if (fields.Count != CoNLLX_FieldCount) {
           throw new SystemException(String.format("Error (line %d): 10 fields expected but %d are present", reader.getLineNumber(), fields.Count));
         }
@@ -1198,15 +1198,15 @@ namespace OpenNLP.Tools.Util.Trees
           continue; // skip excess empty lines
 
         gsList.Add(buildCoNLLXGrammaticalStructure(tokenFields, shortNameToGRel, factory));
-        tokenFields = new List<List<String>>();
+        tokenFields = new List<List<string>>();
       }
     }
 
     return gsList;
   }
 
-  public static GrammaticalStructure buildCoNLLXGrammaticalStructure(List<List<String>> tokenFields,
-                                Dictionary<String, GrammaticalRelation> shortNameToGRel,
+  public static GrammaticalStructure buildCoNLLXGrammaticalStructure(List<List<string>> tokenFields,
+                                Dictionary<string, GrammaticalRelation> shortNameToGRel,
                                 GrammaticalStructureFromDependenciesFactory factory) {
     List<IndexedWord> tgWords = new List<IndexedWord>(tokenFields.Count);
     List<TreeGraphNode> tgPOSNodes = new List<TreeGraphNode>(tokenFields.Count);
@@ -1214,7 +1214,7 @@ namespace OpenNLP.Tools.Util.Trees
     SemanticHeadFinder headFinder = new SemanticHeadFinder();
 
     // Construct TreeGraphNodes for words and POS tags
-    foreach (List<String> fields in tokenFields) {
+    foreach (List<string> fields in tokenFields) {
       CoreLabel word = new CoreLabel();
       word.setValue(fields[CoNLLX_WordField]);
       word.setWord(fields[CoNLLX_WordField]);
@@ -1259,11 +1259,11 @@ namespace OpenNLP.Tools.Util.Trees
     rootLabel.setIndex(0);
     IndexedWord dependencyRoot = new IndexedWord(rootLabel);
     for (int i = 0; i < tgWords.Count; i++) {
-      String parentIdStr = tokenFields[i][CoNLLX_GovField];
+      string parentIdStr = tokenFields[i][CoNLLX_GovField];
       if (parentIdStr == null || parentIdStr.Equals(""))
         continue;
       int parentId = int.Parse(parentIdStr) - 1;
-      String grelString = tokenFields[i][CoNLLX_RelnField];
+      string grelString = tokenFields[i][CoNLLX_RelnField];
       if (grelString.Equals("null") || grelString.Equals("erased"))
         continue;
       GrammaticalRelation grel = shortNameToGRel[grelString.ToLower()];
@@ -1293,26 +1293,26 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
 
-  private static String[] parseClassConstructArgs(String namePlusArgs) {
-    String[] args = StringUtils.EMPTY_STRING_ARRAY;
-    String name = namePlusArgs;
+  private static string[] parseClassConstructArgs(string namePlusArgs) {
+    string[] args = StringUtils.EMPTY_STRING_ARRAY;
+    string name = namePlusArgs;
     if (namePlusArgs.matches(".*\\([^)]*\\)$")) {
-      String argStr = namePlusArgs.replaceFirst("^.*\\(([^)]*)\\)$", "$1");
+      string argStr = namePlusArgs.replaceFirst("^.*\\(([^)]*)\\)$", "$1");
       args = argStr.split(",");
       name = namePlusArgs.replaceFirst("\\([^)]*\\)$", "");
     }
-    String[] tokens = new String[1 + args.Length];
+    string[] tokens = new string[1 + args.Length];
     tokens[0] = name;
     Array.Copy(args, 0, tokens, 1, args.Length);
     return tokens;
   }*/
 
 
-        /*private static DependencyReader loadAlternateDependencyReader(String altDepReaderName) {
+        /*private static DependencyReader loadAlternateDependencyReader(string altDepReaderName) {
     DependencyReader altDepReaderClass = null;
-    String[] toks = parseClassConstructArgs(altDepReaderName);
+    string[] toks = parseClassConstructArgs(altDepReaderName);
     altDepReaderName = toks[0];
-    String[] depReaderArgs = new String[toks.Length - 1];
+    string[] depReaderArgs = new string[toks.Length - 1];
     Array.Copy(toks, 1, depReaderArgs, 0, toks.Length - 1);
 
     try {
@@ -1346,7 +1346,7 @@ namespace OpenNLP.Tools.Util.Trees
       }
     } else {
       try {
-        altDepReader = altDepReaderClass.getConstructor(String[].class).newInstance((Object) depReaderArgs);
+        altDepReader = altDepReaderClass.getConstructor(string[].class).newInstance((Object) depReaderArgs);
       } catch (IllegalArgumentException e) {
         throw new SystemException(e);
       } catch (SecurityException e) {
@@ -1368,11 +1368,11 @@ namespace OpenNLP.Tools.Util.Trees
   }
 
 
-  private static DependencyPrinter loadAlternateDependencyPrinter(String altDepPrinterName) {
+  private static DependencyPrinter loadAlternateDependencyPrinter(string altDepPrinterName) {
     Class<? extends DependencyPrinter> altDepPrinterClass = null;
-    String[] toks = parseClassConstructArgs(altDepPrinterName);
+    string[] toks = parseClassConstructArgs(altDepPrinterName);
     altDepPrinterName = toks[0];
-    String[] depPrintArgs = new String[toks.Length - 1];
+    string[] depPrintArgs = new string[toks.Length - 1];
     Array.Copy(toks, 1, depPrintArgs, 0, toks.Length - 1);
 
     try {
@@ -1398,7 +1398,7 @@ namespace OpenNLP.Tools.Util.Trees
       if (depPrintArgs.Length == 0) {
         depPrinter = altDepPrinterClass.newInstance();
       } else {
-        depPrinter = altDepPrinterClass.getConstructor(String[].class).newInstance((Object) depPrintArgs);
+        depPrinter = altDepPrinterClass.getConstructor(string[].class).newInstance((Object) depPrintArgs);
       }
       return depPrinter;
     } catch (IllegalArgumentException e) {
@@ -1426,7 +1426,7 @@ namespace OpenNLP.Tools.Util.Trees
     }
   }
 
-  private static Function<List<? extends HasWord>, Tree> loadParser(String parserFile, String parserOptions, bool makeCopulaHead) {
+  private static Function<List<? extends HasWord>, Tree> loadParser(string parserFile, string parserOptions, bool makeCopulaHead) {
     if (parserFile == null || "".Equals(parserFile)) {
       parserFile = DEFAULT_PARSER_FILE;
       if (parserOptions == null) {
@@ -1449,9 +1449,9 @@ namespace OpenNLP.Tools.Util.Trees
     // would depend on tregex and therefore depend on the parser.
     Function<List<? extends HasWord>, Tree> lp;
     try {
-      Class<?>[] classes = new Class<?>[] { String.class, String[].class };
+      Class<?>[] classes = new Class<?>[] { string.class, string[].class };
       Method method = Class.forName("edu.stanford.nlp.parser.lexparser.LexicalizedParser").getMethod("loadModel", classes);
-      String[] opts = {};
+      string[] opts = {};
       if (parserOptions.Length > 0) {
         opts = parserOptions.split(" +");
       }
@@ -1497,7 +1497,7 @@ namespace OpenNLP.Tools.Util.Trees
     private class GsIterator : IEnumerator<GrammaticalStructure> {
 
       private readonly Iterator<Tree> tbIterator = trees.iterator();
-      private readonly Predicate<String> puncFilter;
+      private readonly Predicate<string> puncFilter;
       private readonly HeadFinder hf;
       private GrammaticalStructure next;
 
@@ -1564,12 +1564,12 @@ namespace OpenNLP.Tools.Util.Trees
         // todo [cdm 2013]: Take this out and make it a trees class: TreeIterableByParsing
         /*/*static#1# class LazyLoadTreesByParsing : IEnumerable<Tree> {
     readonly Reader reader;
-    readonly String filename;
+    readonly string filename;
     readonly bool tokenized;
-    readonly String encoding;
+    readonly string encoding;
     readonly Function<List<? extends HasWord>, Tree> lp;
 
-    public LazyLoadTreesByParsing(String filename, String encoding, bool tokenized, Function<List<? extends HasWord>, Tree> lp) {
+    public LazyLoadTreesByParsing(string filename, string encoding, bool tokenized, Function<List<? extends HasWord>, Tree> lp) {
       this.filename = filename;
       this.encoding = encoding;
       this.reader = null;
@@ -1599,7 +1599,7 @@ namespace OpenNLP.Tools.Util.Trees
 
       return new Iterator<Tree>() {
 
-        String line = null;
+        string line = null;
 
         @Override
         public bool hasNext() {

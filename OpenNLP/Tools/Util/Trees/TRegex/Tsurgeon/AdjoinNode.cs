@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
         }
 
-        public AdjoinNode(String name, AuxiliaryTree t, TsurgeonPattern p) :
+        public AdjoinNode(string name, AuxiliaryTree t, TsurgeonPattern p) :
             base(name, new TsurgeonPattern[] {p})
         {
             if (t == null || p == null)
@@ -36,7 +36,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
@@ -45,7 +45,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
             private AdjoinNode node;
 
-            public Matcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer, AdjoinNode node) :
+            public Matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer, AdjoinNode node) :
                 base(node, newNodeNames, coindexer)
             {
                 this.node = node;
@@ -75,7 +75,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return base.ToString() + "<-" + padjunctionTree.ToString();
         }

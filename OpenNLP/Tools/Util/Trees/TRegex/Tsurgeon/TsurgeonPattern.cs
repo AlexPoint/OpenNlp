@@ -17,7 +17,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     {
         public static readonly TsurgeonPattern[] EMPTY_TSURGEON_PATTERN_ARRAY = new TsurgeonPattern[0];
 
-        public readonly String label;
+        public readonly string label;
         public readonly TsurgeonPattern[] children;
 
         private TsurgeonPattern root; // TODO: can remove?
@@ -38,14 +38,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * evaluate to the replacement.
    */
 
-        public TsurgeonPattern(String label, TsurgeonPattern[] children)
+        public TsurgeonPattern(string label, TsurgeonPattern[] children)
         {
             this.label = label;
             this.children = children;
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder resultSB = new StringBuilder();
             resultSB.Append(label);
@@ -70,6 +70,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             throw new InvalidOperationException("Only the root node can produce the top level matcher");
         }
 
-        public abstract TsurgeonMatcher matcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer);
+        public abstract TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer);
     }
 }

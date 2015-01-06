@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Process
     {
         IN makeToken();
 
-        //IN makeToken(String[] keys, String[] values);
+        //IN makeToken(string[] keys, string[] values);
 
         IN makeToken(IN tokenToBeCopied);
 

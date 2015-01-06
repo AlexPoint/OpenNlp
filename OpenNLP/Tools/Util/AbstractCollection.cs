@@ -426,7 +426,7 @@ namespace OpenNLP.Tools.Util
        }*/
    
    
-       //  String conversion
+       //  string conversion
    
        /**
         * Returns a string representation of this collection.  The string
@@ -440,7 +440,7 @@ namespace OpenNLP.Tools.Util
         */
          public abstract IEnumerator<E> GetEnumerator();
 
-         public override String ToString() {
+         public override string ToString() {
            IEnumerator<E> it = GetEnumerator();
            StringBuilder sb = new StringBuilder();
            sb.Append('[');

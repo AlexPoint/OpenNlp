@@ -311,7 +311,7 @@ namespace OpenNLP.Tools.Util.Trees
    * <code>Tree.percolateHeads()</code>}, which assumes {@link
    * edu.stanford.nlp.ling.CategoryWordTag
    * <code>CategoryWordTag</code>} labels and therefore stores head
-   * words and head tags merely as <code>String</code>s, this
+   * words and head tags merely as <code>string</code>s, this
    * method stores references to the actual nodes.  This mitigates
    * potential problems in sentences which contain the same word
    * more than once.
@@ -376,7 +376,7 @@ namespace OpenNLP.Tools.Util.Trees
    * edu.stanford.nlp.ling.CategoryWordTag
    * <code>CategoryWordTag</code>}, we store head words and head
    * tags as references to nodes, not merely as
-   * <code>String</code>s.)
+   * <code>string</code>s.)
    *
    * @return the node containing the head word for this node
    */
@@ -398,7 +398,7 @@ namespace OpenNLP.Tools.Util.Trees
    * edu.stanford.nlp.ling.CategoryWordTag
    * <code>CategoryWordTag</code>}, we store head words and head
    * tags as references to nodes, not merely as
-   * <code>String</code>s.)
+   * <code>string</code>s.)
    *
    * @param hwn the node containing the head word for this node
    */
@@ -415,7 +415,7 @@ namespace OpenNLP.Tools.Util.Trees
    * edu.stanford.nlp.ling.CategoryWordTag
    * <code>CategoryWordTag</code>}, we store head words and head
    * tags as references to nodes, not merely as
-   * <code>String</code>s.)
+   * <code>string</code>s.)
    *
    * @return the node containing the head tag for this node
    */
@@ -437,7 +437,7 @@ namespace OpenNLP.Tools.Util.Trees
    * edu.stanford.nlp.ling.CategoryWordTag
    * <code>CategoryWordTag</code>}, we store head words and head
    * tags as references to nodes, not merely as
-   * <code>String</code>s.)
+   * <code>string</code>s.)
    *
    * @param htn the node containing the head tag for this node
    */
@@ -554,15 +554,15 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
-   * Returns a <code>String</code> representation of this node and
+   * Returns a <code>string</code> representation of this node and
    * its subtree with one node per line, indented according to
    * <code>indentLevel</code>.
    *
    * @param indentLevel how many levels to indent (0 for root node)
-   * @return <code>String</code> representation of this subtree
+   * @return <code>string</code> representation of this subtree
    */
 
-        public String toPrettyString(int indentLevel)
+        public string toPrettyString(int indentLevel)
         {
             StringBuilder buf = new StringBuilder("\n");
             for (int i = 0; i < indentLevel; i++)
@@ -586,13 +586,13 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
-   * Returns a <code>String</code> representation of this node and
+   * Returns a <code>string</code> representation of this node and
    * its subtree as a one-line parenthesized list.
    *
-   * @return <code>String</code> representation of this subtree
+   * @return <code>string</code> representation of this subtree
    */
 
-        public String toOneLineString()
+        public string toOneLineString()
         {
             StringBuilder buf = new StringBuilder();
             if (pchildren == null || pchildren.Length == 0)
@@ -611,7 +611,7 @@ namespace OpenNLP.Tools.Util.Trees
             return buf.ToString();
         }
 
-        public String toPrimes()
+        public string toPrimes()
         {
             var coreLabel = label() as CoreLabel;
             if (coreLabel != null)
@@ -627,12 +627,12 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return plabel.ToString();
         }
 
-        public String ToString(CoreLabel.OutputFormat format)
+        public string ToString(CoreLabel.OutputFormat format)
         {
             return plabel.ToString(format);
         }

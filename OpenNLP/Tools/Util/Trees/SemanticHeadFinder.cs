@@ -54,36 +54,36 @@ namespace OpenNLP.Tools.Util.Trees
         /* A few times the apostrophe is missing on "'s", so we have "s" */
         /* Tricky auxiliaries: "na" is from "gonna", "ve" from "Weve", etc.  "of" as non-standard for "have" */
 
-        private static readonly String[] auxiliaries =
+        private static readonly string[] auxiliaries =
         {
             "will", "wo", "shall", "sha", "may", "might", "should", "would",
             "can", "could", "ca", "must", "has", "have", "had", "having", "get", "gets", "getting", "got", "gotten",
             "do", "does", "did", "to", "'ve", "ve", "v", "'d", "d", "'ll", "ll", "na", "of", "hav", "hvae", "as"
         };
 
-        private static readonly String[] beGetVerbs =
+        private static readonly string[] beGetVerbs =
         {
             "be", "being", "been", "am", "are", "r", "is", "ai", "was",
             "were", "'m", "m", "'re", "'s", "s", "art", "ar", "get", "getting", "gets", "got"
         };
 
-        public static readonly String[] copulaVerbs =
+        public static readonly string[] copulaVerbs =
         {
             "be", "being", "been", "am", "are", "r", "is", "ai", "was",
             "were", "'m", "m", "ar", "art", "'re", "'s", "s", "wase"
         };
 
         // include Charniak tags so can do BLLIP right
-        private static readonly String[] verbTags = {"TO", "MD", "VB", "VBD", "VBP", "VBZ", "VBG", "VBN", "AUX", "AUXG"};
+        private static readonly string[] verbTags = {"TO", "MD", "VB", "VBD", "VBP", "VBZ", "VBG", "VBN", "AUX", "AUXG"};
         // These ones are always auxiliaries, even if the word is "too", "my", or whatever else appears in web text.
-        private static readonly String[] unambiguousAuxTags = {"TO", "MD", "AUX", "AUXG"};
+        private static readonly string[] unambiguousAuxTags = {"TO", "MD", "AUX", "AUXG"};
 
 
-        private readonly Set<String> verbalAuxiliaries;
-        private readonly Set<String> copulars;
-        private readonly Set<String> passiveAuxiliaries;
-        private readonly Set<String> verbalTags;
-        private readonly Set<String> unambiguousAuxiliaryTags;
+        private readonly Set<string> verbalAuxiliaries;
+        private readonly Set<string> copulars;
+        private readonly Set<string> passiveAuxiliaries;
+        private readonly Set<string> verbalTags;
+        private readonly Set<string> unambiguousAuxiliaryTags;
 
         private readonly bool makeCopulaHead;
 
@@ -144,7 +144,7 @@ namespace OpenNLP.Tools.Util.Trees
             //  NP: don't want a POS to be the head
             // verbs are here so that POS isn't favored in the case of bad parses
             nonTerminalInfo["NP"] =
-                new String[][]
+                new string[][]
                 {
                     new string[] {"rightdis", "NN", "NNP", "NNPS", "NNS", "NX", "NML", "JJR", "WP"},
                     new string[] {"left", "NP", "PRP"}, new string[] {"rightdis", "$", "ADJP", "FW"},
@@ -157,7 +157,7 @@ namespace OpenNLP.Tools.Util.Trees
             nonTerminalInfo["NML"] = nonTerminalInfo["NP"];
             // WHNP clauses should have the same sort of head as an NP
             // but it a WHNP has a NP and a WHNP under it, the WHNP should be the head.  E.g.,  (WHNP (WHNP (WP$ whose) (JJ chief) (JJ executive) (NN officer))(, ,) (NP (NNP James) (NNP Gatward))(, ,))
-            nonTerminalInfo["WHNP"] = new String[][]
+            nonTerminalInfo["WHNP"] = new string[][]
             {
                 new string[] {"rightdis", "NN", "NNP", "NNPS", "NNS", "NX", "NML", "JJR", "WP"},
                 new string[] {"left", "WHNP", "NP"}, new string[] {"rightdis", "$", "ADJP", "PRN", "FW"},
@@ -165,14 +165,14 @@ namespace OpenNLP.Tools.Util.Trees
                 new string[] {"left", "WHPP", "WHADJP", "WP$", "WDT"}
             };
             //WHADJP
-            nonTerminalInfo["WHADJP"] = new String[][]
+            nonTerminalInfo["WHADJP"] = new string[][]
             {new string[] {"left", "ADJP", "JJ", "JJR", "WP"}, new string[] {"right", "RB"}, new string[] {"right"}};
             //WHADJP
-            nonTerminalInfo["WHADVP"] = new String[][] {new string[] {"rightdis", "WRB", "WHADVP", "RB", "JJ"}};
+            nonTerminalInfo["WHADVP"] = new string[][] {new string[] {"rightdis", "WRB", "WHADVP", "RB", "JJ"}};
             // if not WRB or WHADVP, probably has flat NP structure, allow JJ for "how long" constructions
             // QP: we don't want the first CD to be the semantic head (e.g., "three billion": head should be "billion"), so we go from right to left
             nonTerminalInfo["QP"] =
-                new String[][]
+                new string[][]
                 {
                     new string[]
                     {"right", "$", "NNS", "NN", "CD", "JJ", "PDT", "DT", "IN", "RB", "NCD", "QP", "JJR", "JJS"}
@@ -180,37 +180,37 @@ namespace OpenNLP.Tools.Util.Trees
 
             // S, SBAR and SQ clauses should prefer the main verb as the head
             // S: "He considered him a friend" -> we want a friend to be the head
-            nonTerminalInfo["S"] = new String[][]
+            nonTerminalInfo["S"] = new string[][]
             {new string[] {"left", "VP", "S", "FRAG", "SBAR", "ADJP", "UCP", "TO"}, new string[] {"right", "NP"}};
 
-            nonTerminalInfo["SBAR"] = new String[][]
+            nonTerminalInfo["SBAR"] = new string[][]
             {
                 new string[]
                 {"left", "S", "SQ", "SINV", "SBAR", "FRAG", "VP", "WHNP", "WHPP", "WHADVP", "WHADJP", "IN", "DT"}
             };
             // VP shouldn't be needed in SBAR, but occurs in one buggy tree in PTB3 wsj_1457 and otherwise does no harm
 
-            nonTerminalInfo["SQ"] = new String[][]
+            nonTerminalInfo["SQ"] = new string[][]
             {new string[] {"left", "VP", "SQ", "ADJP", "VB", "VBZ", "VBD", "VBP", "MD", "AUX", "AUXG"}};
 
 
             // UCP take the first element as head
-            nonTerminalInfo["UCP"] = new String[][] {new string[] {"left"}};
+            nonTerminalInfo["UCP"] = new string[][] {new string[] {"left"}};
 
             // CONJP: we want different heads for "but also" and "but not" and we don't want "not" to be the head in "not to mention"; now make "mention" head of "not to mention"
-            nonTerminalInfo["CONJP"] = new String[][] {new string[] {"right", "CC", "VB", "JJ", "RB", "IN"}};
+            nonTerminalInfo["CONJP"] = new string[][] {new string[] {"right", "CC", "VB", "JJ", "RB", "IN"}};
 
             // FRAG: crap rule needs to be change if you want to parse
             // glosses; but it is correct to have ADJP and ADVP before S
             // because of weird parses of reduced sentences.
-            nonTerminalInfo["FRAG"] = new String[][]
+            nonTerminalInfo["FRAG"] = new string[][]
             {
                 new string[] {"left", "IN"}, new string[] {"right", "RB"}, new string[] {"left", "NP"},
                 new string[] {"left", "ADJP", "ADVP", "FRAG", "S", "SBAR", "VP"}
             };
 
             // PRN: sentence first
-            nonTerminalInfo["PRN"] = new String[][]
+            nonTerminalInfo["PRN"] = new string[][]
             {
                 new string[]
                 {
@@ -220,10 +220,10 @@ namespace OpenNLP.Tools.Util.Trees
             };
 
             // add the constituent XS (special node to add a layer in a QP tree introduced in our QPTreeTransformer)
-            nonTerminalInfo["XS"] = new String[][] {new string[] {"right", "IN"}};
+            nonTerminalInfo["XS"] = new string[][] {new string[] {"right", "IN"}};
 
             // add a rule to deal with the CoNLL data
-            nonTerminalInfo["EMBED"] = new String[][] {new string[] {"right", "INTJ"}};
+            nonTerminalInfo["EMBED"] = new string[][] {new string[] {"right", "INTJ"}};
 
         }
 
@@ -246,7 +246,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     return newHeadIdx;
                 }
-                String label = tlp.basicCategory(daughterTrees[newHeadIdx].value());
+                string label = tlp.basicCategory(daughterTrees[newHeadIdx].value());
                 if (",".Equals(label) || ":".Equals(label))
                 {
                     seenSeparator = true;
@@ -277,7 +277,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (headIdx >= 2)
             {
-                String prevLab = tlp.basicCategory(daughterTrees[headIdx - 1].value());
+                string prevLab = tlp.basicCategory(daughterTrees[headIdx - 1].value());
                 if (prevLab.Equals("CC") || prevLab.Equals("CONJP"))
                 {
                     bool origWasInterjection = "UH".Equals(tlp.basicCategory(daughterTrees[headIdx].value()));
@@ -375,7 +375,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         protected override Tree determineNonTrivialHead(Tree t, Tree parent)
         {
-            String motherCat = tlp.basicCategory(t.label().value());
+            string motherCat = tlp.basicCategory(t.label().value());
 
             /*if (DEBUG) {
       System.err.println("At " + motherCat + ", my parent is " + parent);
@@ -457,11 +457,11 @@ namespace OpenNLP.Tools.Util.Trees
                 // looks for auxiliaries
                 if (hasVerbalAuxiliary(kids, verbalAuxiliaries, true) || hasPassiveProgressiveAuxiliary(kids))
                 {
-                    // String[] how = new String[] {"left", "VP", "ADJP", "NP"};
+                    // string[] how = new string[] {"left", "VP", "ADJP", "NP"};
                     // Including NP etc seems okay for copular sentences but is
                     // problematic for other auxiliaries, like 'he has an answer'
                     // But maybe doing ADJP is fine!
-                    String[] how = {"left", "VP", "ADJP"};
+                    string[] how = {"left", "VP", "ADJP"};
                     if (tmpFilteredChildren == null)
                     {
                         //tmpFilteredChildren = ArrayUtils.filter(kids, REMOVE_TMP_AND_ADV);
@@ -485,14 +485,14 @@ namespace OpenNLP.Tools.Util.Trees
                 // looks for copular verbs
                 if (hasVerbalAuxiliary(kids, copulars, false) && ! isExistential(t, parent) && ! isWHQ(t, parent))
                 {
-                    String[] how;
+                    string[] how;
                     if (motherCat.Equals("SQ"))
                     {
-                        how = new String[] {"right", "VP", "ADJP", "NP", "WHADJP", "WHNP"};
+                        how = new string[] {"right", "VP", "ADJP", "NP", "WHADJP", "WHNP"};
                     }
                     else
                     {
-                        how = new String[] {"left", "VP", "ADJP", "NP", "WHADJP", "WHNP"};
+                        how = new string[] {"left", "VP", "ADJP", "NP", "WHADJP", "WHNP"};
                     }
                     // Avoid undesirable heads by filtering them from the list of potential children
                     if (tmpFilteredChildren == null)
@@ -588,7 +588,7 @@ namespace OpenNLP.Tools.Util.Trees
       System.err.println("isExistential: " + t + ' ' + parent);
     }*/
             bool toReturn = false;
-            String motherCat = tlp.basicCategory(t.label().value());
+            string motherCat = tlp.basicCategory(t.label().value());
             // affirmative case
             if (motherCat.Equals("VP") && parent != null)
             {
@@ -682,12 +682,12 @@ namespace OpenNLP.Tools.Util.Trees
             return toReturn;
         }
 
-        private bool isVerbalAuxiliary(Tree preterminal, Set<String> verbalSet, bool allowJustTagMatch)
+        private bool isVerbalAuxiliary(Tree preterminal, Set<string> verbalSet, bool allowJustTagMatch)
         {
             if (preterminal.isPreTerminal())
             {
                 Label kidLabel = preterminal.label();
-                String tag = null;
+                string tag = null;
                 if (kidLabel is HasTag)
                 {
                     tag = ((HasTag) kidLabel).tag();
@@ -697,7 +697,7 @@ namespace OpenNLP.Tools.Util.Trees
                     tag = preterminal.value();
                 }
                 Label wordLabel = preterminal.firstChild().label();
-                String word = null;
+                string word = null;
                 if (wordLabel is HasWord)
                 {
                     word = ((HasWord) wordLabel).word();
@@ -710,7 +710,7 @@ namespace OpenNLP.Tools.Util.Trees
                 /*if (DEBUG) {
         System.err.println("Checking " + preterminal.value() + " head is " + word + '/' + tag);
       }*/
-                String lcWord = word.ToLower();
+                string lcWord = word.ToLower();
                 if (allowJustTagMatch && unambiguousAuxiliaryTags.Contains(tag) ||
                     verbalTags.Contains(tag) && verbalSet.Contains(lcWord))
                 {
@@ -756,7 +756,7 @@ namespace OpenNLP.Tools.Util.Trees
                 else if (kid.isPhrasal())
                 {
                     Label kidLabel = kid.label();
-                    String cat = null;
+                    string cat = null;
                     if (kidLabel is HasCategory)
                     {
                         cat = ((HasCategory) kidLabel).category();
@@ -782,7 +782,7 @@ namespace OpenNLP.Tools.Util.Trees
                         if (kidkid.isPreTerminal())
                         {
                             Label kidkidLabel = kidkid.label();
-                            String tag = null;
+                            string tag = null;
                             if (kidkidLabel is HasTag)
                             {
                                 tag = ((HasTag) kidkidLabel).tag();
@@ -811,7 +811,7 @@ namespace OpenNLP.Tools.Util.Trees
                         }
                         else if (kidkid.isPhrasal())
                         {
-                            String catcat = null;
+                            string catcat = null;
                             if (kidLabel is HasCategory)
                             {
                                 catcat = ((HasCategory) kidLabel).category();
@@ -860,7 +860,7 @@ namespace OpenNLP.Tools.Util.Trees
                 if (kid.isPreTerminal())
                 {
                     Label kidLabel = kid.label();
-                    String tag = null;
+                    string tag = null;
                     if (kidLabel is HasTag)
                     {
                         tag = ((HasTag) kidLabel).tag();
@@ -895,7 +895,7 @@ namespace OpenNLP.Tools.Util.Trees
    *      by a word in verbalSet
    */
 
-        private bool hasVerbalAuxiliary(Tree[] kids, Set<String> verbalSet, bool allowTagOnlyMatch)
+        private bool hasVerbalAuxiliary(Tree[] kids, Set<string> verbalSet, bool allowTagOnlyMatch)
         {
             /*if (DEBUG) {
       System.err.println("Checking for verbal auxiliary");

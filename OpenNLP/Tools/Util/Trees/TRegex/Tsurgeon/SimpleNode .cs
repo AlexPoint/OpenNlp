@@ -73,12 +73,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
      you need to do. */
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return TsurgeonParserTreeConstants.jjtNodeName[id];
         }
 
-        public String ToString(String prefix)
+        public string ToString(string prefix)
         {
             return prefix + ToString();
         }
@@ -86,7 +86,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         /* Override this method if you want to customize how the node dumps
      out its children. */
 
-        public void dump(String prefix)
+        public void dump(string prefix)
         {
             //System.out.println(ToString(prefix));
             if (children != null)

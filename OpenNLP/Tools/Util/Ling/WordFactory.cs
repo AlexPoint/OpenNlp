@@ -27,13 +27,13 @@ namespace OpenNLP.Tools.Util.Ling
 
         /**
          * Create a new word, where the label is formed from
-         * the <code>String</code> passed in.
+         * the <code>string</code> passed in.
          *
          * @param word The word that will go into the <code>Word</code>
          * @return The new label
          */
 
-        public Label newLabel(String word)
+        public Label newLabel(string word)
         {
             return new Word(word);
         }
@@ -41,14 +41,14 @@ namespace OpenNLP.Tools.Util.Ling
 
         /**
          * Create a new word, where the label is formed from
-         * the <code>String</code> passed in.
+         * the <code>string</code> passed in.
          *
          * @param word    The word that will go into the <code>Word</code>
          * @param options is ignored by a WordFactory
          * @return The new label
          */
 
-        public Label newLabel(String word, int options)
+        public Label newLabel(string word, int options)
         {
             return new Word(word);
         }
@@ -56,13 +56,13 @@ namespace OpenNLP.Tools.Util.Ling
 
         /**
          * Create a new word, where the label is formed from
-         * the <code>String</code> passed in.
+         * the <code>string</code> passed in.
          *
          * @param word The word that will go into the <code>Word</code>
          * @return The new label
          */
 
-        public Label newLabelFromString(String word)
+        public Label newLabelFromString(string word)
         {
             return new Word(word);
         }

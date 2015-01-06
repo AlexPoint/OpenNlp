@@ -12,8 +12,8 @@ namespace OpenNLP.Tools.Util.Ling
 
     public interface HasIndex
     {
-        String docID();
-        void setDocID(String docID);
+        string docID();
+        void setDocID(string docID);
         int sentIndex();
         void setSentIndex(int sentIndex);
         int index();

@@ -34,7 +34,7 @@ namespace OpenNLP.Tools.Util.Trees
          * @param puncFilter Filter to remove punctuation dependencies
          */
 
-        public EnglishGrammaticalStructure(Tree t, Predicate<String> puncFilter) :
+        public EnglishGrammaticalStructure(Tree t, Predicate<string> puncFilter) :
             this(t, puncFilter, new SemanticHeadFinder(true), true)
         {
         }
@@ -47,7 +47,7 @@ namespace OpenNLP.Tools.Util.Trees
          * @param hf HeadFinder to use when building it
          */
 
-        public EnglishGrammaticalStructure(Tree t, Predicate<String> puncFilter, HeadFinder hf) :
+        public EnglishGrammaticalStructure(Tree t, Predicate<string> puncFilter, HeadFinder hf) :
             this(t, puncFilter, hf, true)
         {
         }
@@ -68,7 +68,7 @@ namespace OpenNLP.Tools.Util.Trees
          *          threads
          */
 
-        public EnglishGrammaticalStructure(Tree t, Predicate<String> puncFilter, HeadFinder hf, bool threadSafe) :
+        public EnglishGrammaticalStructure(Tree t, Predicate<string> puncFilter, HeadFinder hf, bool threadSafe) :
             base((new CoordinationTransformer(hf)).transformTree(t.deepCopy()),
                 EnglishGrammaticalRelations.Values(threadSafe),
                 threadSafe ? EnglishGrammaticalRelations.valuesLock : null,
@@ -248,7 +248,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             List<TypedDependency> newTypedDeps = new List<TypedDependency>();
 
-            foreach (String[] mwp in MULTIWORD_PREPS)
+            foreach (string[] mwp in MULTIWORD_PREPS)
             {
                 newTypedDeps.Clear();
 
@@ -356,7 +356,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             List<TypedDependency> newTypedDeps = new List<TypedDependency>();
 
-            foreach (String[] mwp in MULTIWORD_PREPS)
+            foreach (string[] mwp in MULTIWORD_PREPS)
             {
                 newTypedDeps.Clear();
 
@@ -498,7 +498,7 @@ namespace OpenNLP.Tools.Util.Trees
             List<TypedDependency> newTypedDeps = new List<TypedDependency>();
 
             // first, loop over the prepositions for NP annotation
-            foreach (String[] mwp in THREEWORD_PREPS)
+            foreach (string[] mwp in THREEWORD_PREPS)
             {
                 newTypedDeps.Clear();
 
@@ -623,7 +623,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             // second, loop again looking at flat annotation
-            foreach (String[] mwp in THREEWORD_PREPS)
+            foreach (string[] mwp in THREEWORD_PREPS)
             {
                 newTypedDeps.Clear();
 
@@ -833,7 +833,7 @@ namespace OpenNLP.Tools.Util.Trees
                     if (td2.reln() == EnglishGrammaticalRelations.CONJUNCT)
                     {
                         IndexedWord td2Dep = td2.dep();
-                        String td2DepPOS = td2Dep.tag();
+                        string td2DepPOS = td2Dep.tag();
                         if (td2DepPOS.Equals("IN") || td2DepPOS.Equals("TO"))
                         {
                             samePrepositionInEachConjunct = samePrepositionInEachConjunct &&
@@ -846,7 +846,7 @@ namespace OpenNLP.Tools.Util.Trees
                                 foreach (TypedDependency td3 in possibles2)
                                 {
                                     IndexedWord td3Dep = td3.dep();
-                                    String td3DepPOS = td3Dep.tag();
+                                    string td3DepPOS = td3Dep.tag();
                                     // CDM Mar 2006: I put in disjunction here when I added in
                                     // PREPOSITIONAL_OBJECT. If it catches all cases, we should
                                     // be able to delete the DEPENDENT disjunct
@@ -885,7 +885,7 @@ namespace OpenNLP.Tools.Util.Trees
                 // if we have a conj under a preposition dependency, we look for the other
                 // parts
 
-                String td1DepPOS = td1Dep.tag();
+                string td1DepPOS = td1Dep.tag();
                 foreach (TypedDependency td2 in possibles)
                 {
                     // we look for the cc linked to this conjDep
@@ -897,7 +897,7 @@ namespace OpenNLP.Tools.Util.Trees
                     else
                     {
                         IndexedWord td2Dep = td2.dep();
-                        String td2DepPOS = td2Dep.tag();
+                        string td2DepPOS = td2Dep.tag();
                         // System.err.println("prepDep find: td1.reln: " + td1.reln() +
                         // "; td2.reln: " + td2.reln() + "; td1DepPos: " + td1DepPOS +
                         // "; td2DepPos: " + td2DepPOS + "; index " + index +
@@ -1162,7 +1162,7 @@ namespace OpenNLP.Tools.Util.Trees
                 }
 
                 IndexedWord td1Dep = td1.dep();
-                String td1DepPOS = td1Dep.tag();
+                string td1DepPOS = td1Dep.tag();
                 // find all other typedDeps having our dep as gov
                 Set<TypedDependency> possibles = map[td1Dep];
 
@@ -1181,7 +1181,7 @@ namespace OpenNLP.Tools.Util.Trees
                         {
 
                             IndexedWord td2Dep = td2.dep();
-                            String td2DepPOS = td2Dep.tag();
+                            string td2DepPOS = td2Dep.tag();
                             if ((td1.reln() == EnglishGrammaticalRelations.POSSESSION_MODIFIER ||
                                  td1.reln() == EnglishGrammaticalRelations.CONJUNCT))
                             {
@@ -1303,7 +1303,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     // we have a conjunct
                     // check the POS of the dependent
-                    String tdDepPOS = td.dep().tag();
+                    string tdDepPOS = td.dep().tag();
                     if (!(tdDepPOS.Equals("IN") || tdDepPOS.Equals("TO")))
                     {
                         return true;
@@ -1327,7 +1327,7 @@ namespace OpenNLP.Tools.Util.Trees
             // or be the dependent of a "vmod" relation
             // if it is the case, the "agent" variable becomes true
             bool agent = false;
-            String preposition = pc.dep().value().ToLower();
+            string preposition = pc.dep().value().ToLower();
             if (preposition.Equals("by"))
             {
                 // look if we have an auxpass
@@ -1449,9 +1449,9 @@ namespace OpenNLP.Tools.Util.Trees
 *         conjunction.
 */
 
-        private static GrammaticalRelation conjValue(String conj)
+        private static GrammaticalRelation conjValue(string conj)
         {
-            String newConj = conj.ToLower();
+            string newConj = conj.ToLower();
             if (newConj.Equals("not") || newConj.Equals("instead") || newConj.Equals("rather"))
             {
                 newConj = "negcc";
@@ -1722,7 +1722,7 @@ namespace OpenNLP.Tools.Util.Trees
                     // part)
                     // CDM 2008: I also added in JJ, since participial verbs are often
                     // tagged JJ
-                    String tag = dep.tag();
+                    string tag = dep.tag();
                     if (subjectMap.ContainsKey(gov) && (tag.StartsWith("VB") || tag.StartsWith("JJ")) &&
                         ! subjectMap.ContainsKey(dep))
                     {
@@ -1790,7 +1790,7 @@ namespace OpenNLP.Tools.Util.Trees
             list.AddRange(newTypedDeps);
         }
 
-        private static bool isDefinitelyActive(String tag)
+        private static bool isDefinitelyActive(string tag)
         {
             // we should include VBD, but don't as it is often a tagging mistake.
             return tag.Equals("VB") || tag.Equals("VBZ") || tag.Equals("VBP") || tag.StartsWith("JJ");
@@ -1943,7 +1943,7 @@ namespace OpenNLP.Tools.Util.Trees
                 // are (1) tagging mistakes where PRP in dobj position is mistagged PRP$
                 // or a couple of parsing errors where the dependency is wrong anyway, so
                 // it's probably okay to keep it a dep.  So I'm disabling this.
-                // String tag = td.dep().tag();
+                // string tag = td.dep().tag();
                 // if (td.reln() == DEPENDENT && (tag.equals("PRP$") || tag.equals("WP$"))) {
                 //  System.err.println("%%% Unrecognized basic possessive pronoun: " + td);
                 //  td.setReln(POSSESSION_MODIFIER);
@@ -2059,7 +2059,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         // used by collapse2WP(), collapseFlatMWP(), collapse2WPbis() KEPT IN
         // ALPHABETICAL ORDER
-        private static readonly String[][] MULTIWORD_PREPS =
+        private static readonly string[][] MULTIWORD_PREPS =
         {
             new string[] {"according", "to"}, new string[] {"across", "from"}, new string[] {"ahead", "of"},
             new string[] {"along", "with"}, new string[] {"alongside", "of"}, new string[] {"apart", "from"},
@@ -2079,7 +2079,7 @@ namespace OpenNLP.Tools.Util.Trees
         };
 
         // used by collapse3WP() KEPT IN ALPHABETICAL ORDER
-        private static readonly String[][] THREEWORD_PREPS =
+        private static readonly string[][] THREEWORD_PREPS =
         {
             new string[] {"by", "means", "of"},
             new string[] {"in", "accordance", "with"}, new string[] {"in", "addition", "to"},
@@ -2116,7 +2116,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             List<TypedDependency> newTypedDeps = new List<TypedDependency>();
 
-            foreach (String[] mwp in MULTIWORD_PREPS)
+            foreach (string[] mwp in MULTIWORD_PREPS)
             {
                 // first look for patterns such as:
                 // X(gov, mwp[0])
@@ -2157,7 +2157,7 @@ namespace OpenNLP.Tools.Util.Trees
 */
 
         private static void collapseMultiWordPrep(List<TypedDependency> list, List<TypedDependency> newTypedDeps,
-            String str_mwp0, String str_mwp1, String w_mwp0, String w_mwp1)
+            string str_mwp0, string str_mwp1, string w_mwp0, string w_mwp1)
         {
 
             // first find the multiword_preposition: dep(mpw[0], mwp[1])

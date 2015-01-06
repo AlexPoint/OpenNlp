@@ -135,8 +135,8 @@ namespace OpenNLP.Tools.Util
          *     printed if there are less than this number of items in the
          *     PriorityQueue. If this number is non-positive, then all elements in
          *     the PriorityQueue are printed.
-         * @return A String representation of the high priority items in the queue.
+         * @return A string representation of the high priority items in the queue.
          */
-        String ToString(int maxKeysToPrint);
+        string ToString(int maxKeysToPrint);
     }
 }

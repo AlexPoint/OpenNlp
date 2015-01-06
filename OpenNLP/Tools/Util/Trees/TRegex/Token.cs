@@ -38,7 +38,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /**
    * The string image of the token.
    */
-        public String image;
+        public string image;
 
         /**
    * A reference to the next regular (non-special) token from the input
@@ -98,7 +98,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * Constructs a new token for the specified Image and Kind.
    */
 
-        public Token(int kind, String image)
+        public Token(int kind, string image)
         {
             this.kind = kind;
             this.image = image;
@@ -108,7 +108,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * Returns the image.
    */
 
-        public override String ToString()
+        public override string ToString()
         {
             return image;
         }
@@ -126,7 +126,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * variable to the appropriate type and use sit in your lexical actions.
    */
 
-        public static Token newToken(int ofKind, String image)
+        public static Token newToken(int ofKind, string image)
         {
             switch (ofKind)
             {

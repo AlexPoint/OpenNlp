@@ -28,7 +28,7 @@ namespace OpenNLP.Tools.Util.Trees
         private readonly int headIndex;
         private readonly int depIndex;
 
-        public UnnamedConcreteDependency(String regent, int regentIndex, String dependent, int dependentIndex) :
+        public UnnamedConcreteDependency(string regent, int regentIndex, string dependent, int dependentIndex) :
             base(regent, dependent)
         {
 
@@ -98,26 +98,26 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
-            String headWord = getText(governor());
-            String depWord = getText(dependent());
-            return String.Format("{0} [{1}] --> {2} [{3}]", headWord, headIndex, depWord, depIndex);
+            string headWord = getText(governor());
+            string depWord = getText(dependent());
+            return string.Format("{0} [{1}] --> {2} [{3}]", headWord, headIndex, depWord, depIndex);
         }
 
         /**
-   * Provide different printing options via a String keyword.
+   * Provide different printing options via a string keyword.
    * The recognized options are currently "xml", and "predicate".
    * Otherwise the default ToString() is used.
    */
         //@Override
-        public override String ToString(String format)
+        public override string ToString(string format)
         {
             switch (format)
             {
                 case "xml":
-                    String govIdxStr = " idx=\"" + headIndex + "\"";
-                    String depIdxStr = " idx=\"" + depIndex + "\"";
+                    string govIdxStr = " idx=\"" + headIndex + "\"";
+                    string depIdxStr = " idx=\"" + depIndex + "\"";
                     return "  <dep>\n    <governor" + govIdxStr + ">" + XMLUtils.XmlEscape(governor().value()) +
                            "</governor>\n    <dependent" + depIdxStr + ">" + XMLUtils.XmlEscape(dependent().value()) +
                            "</dependent>\n  </dep>";

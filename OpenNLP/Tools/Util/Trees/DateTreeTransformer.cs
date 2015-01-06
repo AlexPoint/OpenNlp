@@ -30,7 +30,7 @@ namespace OpenNLP.Tools.Util.Trees
 
     public class DateTreeTransformer : TreeTransformer
     {
-        private static readonly String MONTH_REGEX =
+        private static readonly string MONTH_REGEX =
             "January|February|March|April|May|June|July|August|September|October|November|December|Jan\\.|Feb\\.|Mar\\.|Apr\\.|Aug\\.|Sep\\.|Sept\\.|Oct\\.|Nov\\.|Dec\\.";
 
         private static readonly TregexPattern tregexMonthYear =

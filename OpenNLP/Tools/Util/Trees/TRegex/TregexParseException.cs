@@ -8,7 +8,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 {
     public class TregexParseException : SystemException
     {
-        public TregexParseException(String message) : base(message)
+        public TregexParseException(string message) : base(message)
         {
         }
     }

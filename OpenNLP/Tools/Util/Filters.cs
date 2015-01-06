@@ -54,7 +54,7 @@ namespace OpenNLP.Tools.Util
     }
 
     //@Override
-    public String ToString() {
+    public string ToString() {
       return "CategoricalFilter(" + judgment + ")";
     }
 
@@ -135,7 +135,7 @@ namespace OpenNLP.Tools.Util
       return !judgment;
     }
 
-    public String ToString() {
+    public string ToString() {
       return "(" + judgment +":" + args + ")";
     }
 
@@ -285,7 +285,7 @@ namespace OpenNLP.Tools.Util
       return (negated ^ filter.test(o)); // xor
     }
 
-    public String ToString() {
+    public string ToString() {
       return "NOT(" + filter.ToString() + ")";
     }
   

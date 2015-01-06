@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util.Trees
    * This implementation interns the leaf.
    */
         //@Override
-        public override String normalizeTerminal(String leaf)
+        public override string normalizeTerminal(string leaf)
         {
             // We could unquote * and / with backslash \ in front of them
             return leaf /*.intern()*/;
@@ -76,7 +76,7 @@ namespace OpenNLP.Tools.Util.Trees
    * nonterminal.
    */
         //@Override
-        public override String normalizeNonterminal(String category)
+        public override string normalizeNonterminal(string category)
         {
             return cleanUpLabel(category) /*.intern()*/;
         }
@@ -91,12 +91,12 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The cleaned up label (phrase structure category)
    */
 
-        protected String cleanUpLabel( /*readonly */ String label)
+        protected string cleanUpLabel( /*readonly */ string label)
         {
             if (label == null || label.Length == 0)
             {
                 return "ROOT";
-                // String constants are always interned
+                // string constants are always interned
             }
             else
             {

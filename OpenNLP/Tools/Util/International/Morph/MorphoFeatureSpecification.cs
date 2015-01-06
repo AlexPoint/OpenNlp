@@ -25,11 +25,11 @@ namespace OpenNLP.Tools.Util.International.Morph
         //
         //     his~#PRP_3ms
         //
-        public static readonly String MORPHO_MARK = "~#";
+        public static readonly string MORPHO_MARK = "~#";
 
-        public static readonly String LEMMA_MARK = "|||";
+        public static readonly string LEMMA_MARK = "|||";
 
-        public static readonly String NO_ANALYSIS = "XXX";
+        public static readonly string NO_ANALYSIS = "XXX";
 
         // WSGDEBUG --
         //   Added NNUM and NGEN for nominals in Arabic
@@ -69,31 +69,31 @@ namespace OpenNLP.Tools.Util.International.Morph
             return activeFeatures.Contains(feat);
         }
 
-        public abstract List<String> getValues(MorphoFeatureType feat);
+        public abstract List<string> getValues(MorphoFeatureType feat);
 
-        public abstract MorphoFeatures strToFeatures(String spec);
+        public abstract MorphoFeatures strToFeatures(string spec);
 
         /**
    * Returns the lemma as pair.first() and the morph analysis as pair.second().
    */
 
-        public static Tuple<String, String> splitMorphString(String word, String morphStr)
+        public static Tuple<string, string> splitMorphString(string word, string morphStr)
         {
             if (morphStr == null || morphStr.Trim().Equals(""))
             {
-                return new Tuple<String, String>(word, NO_ANALYSIS);
+                return new Tuple<string, string>(word, NO_ANALYSIS);
             }
-            String[] toks = morphStr.Split(new[] {ToLiteral(LEMMA_MARK)}, StringSplitOptions.None);
+            string[] toks = morphStr.Split(new[] {ToLiteral(LEMMA_MARK)}, StringSplitOptions.None);
             if (toks.Length != 2)
             {
                 throw new Exception("Invalid morphology string: " + morphStr);
             }
-            return new Tuple<String, String>(toks[0], toks[1]);
+            return new Tuple<string, string>(toks[0], toks[1]);
         }
 
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return activeFeatures.ToString();
         }

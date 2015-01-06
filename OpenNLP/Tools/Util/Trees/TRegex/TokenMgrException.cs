@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * equivalents in the given string
    */
 
-        protected static String addEscapes(String str)
+        protected static string addEscapes(string str)
         {
             StringBuilder retval = new StringBuilder();
             char ch;
@@ -87,7 +87,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     default:
                         if ((ch = str[i]) < 0x20 || ch > 0x7e)
                         {
-                            String s = "0000" + Convert.ToString(ch, 16);
+                            string s = "0000" + Convert.ToString(ch, 16);
                             retval.Append("\\u" + s.Substring(s.Length - 4, s.Length));
                         }
                         else
@@ -113,8 +113,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * Note: You can customize the lexical error message by modifying this method.
    */
 
-        protected static String LexicalError(bool EOFSeen, int lexState, int errorLine, int errorColumn,
-            String errorAfter, char curChar)
+        protected static string LexicalError(bool EOFSeen, int lexState, int errorLine, int errorColumn,
+            string errorAfter, char curChar)
         {
             return ("Lexical error at line " +
                     errorLine + ", column " +
@@ -133,7 +133,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * from this method for such cases in the release version of your parser.
    */
 
-        public String getMessage()
+        public string getMessage()
         {
             return base.Message;
         }
@@ -150,14 +150,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Constructor with message and reason. */
 
-        public TokenMgrException(String message, int reason) : base(message)
+        public TokenMgrException(string message, int reason) : base(message)
         {
             errorCode = reason;
         }
 
         /** Full Constructor. */
 
-        public TokenMgrException(bool EOFSeen, int lexState, int errorLine, int errorColumn, String errorAfter,
+        public TokenMgrException(bool EOFSeen, int lexState, int errorLine, int errorColumn, string errorAfter,
             char curChar, int reason) :
                 this(LexicalError(EOFSeen, lexState, errorLine, errorColumn, errorAfter, curChar), reason)
         {

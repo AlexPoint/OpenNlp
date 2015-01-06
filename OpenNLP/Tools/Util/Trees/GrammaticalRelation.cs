@@ -15,8 +15,8 @@ namespace OpenNLP.Tools.Util.Trees
 
         //private static readonly bool DEBUG = System.getProperty("GrammaticalRelation", null) != null;
 
-        private static readonly Dictionary<Language, Dictionary<String, GrammaticalRelation>>
-            stringsToRelations = new Dictionary<Language, Dictionary<String, GrammaticalRelation>>( /*Language.class*/);
+        private static readonly Dictionary<Language, Dictionary<string, GrammaticalRelation>>
+            stringsToRelations = new Dictionary<Language, Dictionary<string, GrammaticalRelation>>( /*Language.class*/);
 
         /**
    * The "governor" grammatical relation, which is the inverse of "dependent".<p>
@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The GrammaticalRelation with that name
    */
 
-        public static GrammaticalRelation valueOf(String s, ICollection<GrammaticalRelation> values)
+        public static GrammaticalRelation valueOf(string s, ICollection<GrammaticalRelation> values)
         {
             foreach (GrammaticalRelation reln in values)
             {
@@ -73,21 +73,21 @@ namespace OpenNLP.Tools.Util.Trees
             return null;
         }
 
-        /** Convert from a String representation of a GrammaticalRelation to a
+        /** Convert from a string representation of a GrammaticalRelation to a
    *  GrammaticalRelation.  Where possible, you should avoid using this
    *  method and simply work with true GrammaticalRelations rather than
-   *  String representations.  Correct behavior of this method depends
+   *  string representations.  Correct behavior of this method depends
    *  on the underlying data structure resources used being kept in sync
    *  with the ToString() and Equals() methods.  However, there is really
    *  no choice but to use this method when storing GrammaticalRelations
    *  to text files and then reading them back in, so this method is not
    *  deprecated.
    *
-   *  @param s The String representation of a GrammaticalRelation
+   *  @param s The string representation of a GrammaticalRelation
    *  @return The grammatical relation represented by this String
    */
 
-        public static GrammaticalRelation valueOf(Language language, String s)
+        public static GrammaticalRelation valueOf(Language language, string s)
         {
             GrammaticalRelation reln = (stringsToRelations[language] != null
                 ? valueOf(s, stringsToRelations[language].Values)
@@ -103,12 +103,12 @@ namespace OpenNLP.Tools.Util.Trees
                 // the block below fails when 'specific' includes underscores.
                 // this is possible on weird web text, which generates relations such as prep______
                 /*
-      String[] names = s.split("_");
-      String specific = names.length > 1? names[1] : null;
+      string[] names = s.split("_");
+      string specific = names.length > 1? names[1] : null;
       reln = new GrammaticalRelation(language, names[0], null, null, null, specific);
       */
-                String name;
-                String specific;
+                string name;
+                string specific;
                 int underscorePosition = s.IndexOf('_');
                 if (underscorePosition > 0)
                 {
@@ -126,10 +126,10 @@ namespace OpenNLP.Tools.Util.Trees
             return reln;
         }
 
-        private static Dictionary<String, GrammaticalRelation> valueOfCache =
+        private static Dictionary<string, GrammaticalRelation> valueOfCache =
             new Dictionary<string, GrammaticalRelation>();
 
-        public static GrammaticalRelation valueOf(String s)
+        public static GrammaticalRelation valueOf(string s)
         {
             if (!valueOfCache.ContainsKey(s))
             {
@@ -172,27 +172,27 @@ namespace OpenNLP.Tools.Util.Trees
 
         /* Non-static stuff */
         private readonly Language? language;
-        private readonly String shortName;
-        private readonly String longName;
+        private readonly string shortName;
+        private readonly string longName;
         private readonly GrammaticalRelation parent;
         private readonly List<GrammaticalRelation> children = new List<GrammaticalRelation>();
         // a regexp for node values at which this relation can hold
         private readonly Regex sourcePattern;
         private readonly List<TregexPattern> targetPatterns = new List<TregexPattern>();
 
-        private readonly String specific;
+        private readonly string specific;
             // to hold the specific prep or conjunction associated with the grammatical relation
 
         // TODO document constructor
-        // TODO change to put specificString after longName, and then use String... for targetPatterns
+        // TODO change to put specificString after longName, and then use string... for targetPatterns
         private GrammaticalRelation(Language language,
-            String shortName,
-            String longName,
+            string shortName,
+            string longName,
             GrammaticalRelation parent,
-            String sourcePattern,
+            string sourcePattern,
             TregexPatternCompiler tregexCompiler,
-            String[] targetPatterns,
-            String specificString)
+            string[] targetPatterns,
+            string specificString)
         {
             this.language = language;
             this.shortName = shortName;
@@ -218,7 +218,7 @@ namespace OpenNLP.Tools.Util.Trees
                 this.sourcePattern = null;
             }
 
-            foreach (String pattern in targetPatterns)
+            foreach (string pattern in targetPatterns)
             {
                 try
                 {
@@ -231,7 +231,7 @@ namespace OpenNLP.Tools.Util.Trees
                 }
             }
 
-            Dictionary<String, GrammaticalRelation> sToR;
+            Dictionary<string, GrammaticalRelation> sToR;
             stringsToRelations.TryGetValue(language, out sToR);
             if (sToR == null)
             {
@@ -275,30 +275,30 @@ namespace OpenNLP.Tools.Util.Trees
 
         // This is the main constructor used
         public GrammaticalRelation(Language language,
-            String shortName,
-            String longName,
+            string shortName,
+            string longName,
             GrammaticalRelation parent,
-            String sourcePattern,
+            string sourcePattern,
             TregexPatternCompiler tregexCompiler,
-            String[] targetPatterns) :
+            string[] targetPatterns) :
                 this(language, shortName, longName, parent, sourcePattern, tregexCompiler, targetPatterns, null)
         {
         }
 
         // Used for non-leaf relations with no patterns
         public GrammaticalRelation(Language language,
-            String shortName,
-            String longName,
+            string shortName,
+            string longName,
             GrammaticalRelation parent) : this(language, shortName, longName, parent, null, null, new string[0], null)
         {
         }
 
         // used to create collapsed relations with specificString
         public GrammaticalRelation(Language language,
-            String shortName,
-            String longName,
+            string shortName,
+            string longName,
             GrammaticalRelation parent,
-            String specificString) :
+            string specificString) :
                 this(language, shortName, longName, parent, null, null, new string[0], specificString)
         {
         }
@@ -337,7 +337,7 @@ namespace OpenNLP.Tools.Util.Trees
                     nodeList.Add(target);
                     /*if (DEBUG) {
           System.err.println("found " + this + "(" + t + "-" + t.headWordNode() + ", " + m.getNode("target") + "-" + ((TreeGraphNode) m.getNode("target")).headWordNode() + ") using pattern " + p);
-          foreach(String nodeName : m.getNodeNames()) {
+          foreach(string nodeName : m.getNodeNames()) {
             if (nodeName.Equals("target"))
               continue;
             System.err.println("  node " + nodeName + ": " + m.getNode(nodeName));
@@ -387,7 +387,7 @@ namespace OpenNLP.Tools.Util.Trees
    * the Equals() and valueOf(String) methods
    */
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             if (specific == null)
             {
@@ -400,15 +400,15 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
-   * Returns a <code>String</code> representation of this
+   * Returns a <code>string</code> representation of this
    * <code>GrammaticalRelation</code> and the hierarchy below
    * it, with one node per line, indented according to level.
    *
-   * @return <code>String</code> representation of this
+   * @return <code>string</code> representation of this
    *         <code>GrammaticalRelation</code>
    */
 
-        public String toPrettyString()
+        public string toPrettyString()
         {
             StringBuilder buf = new StringBuilder("\n");
             toPrettyString(0, buf);
@@ -416,7 +416,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
-   * Returns a <code>String</code> representation of this
+   * Returns a <code>string</code> representation of this
    * <code>GrammaticalRelation</code> and the hierarchy below
    * it, with one node per line, indented according to
    * <code>indentLevel</code>.
@@ -481,22 +481,22 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public int CompareTo(GrammaticalRelation o)
         {
-            String thisN = this.ToString();
-            String oN = o.ToString();
+            string thisN = this.ToString();
+            string oN = o.ToString();
             return thisN.CompareTo(oN);
         }
 
-        public String getLongName()
+        public string getLongName()
         {
             return longName;
         }
 
-        public String getShortName()
+        public string getShortName()
         {
             return shortName;
         }
 
-        public String getSpecific()
+        public string getSpecific()
         {
             return specific;
         }

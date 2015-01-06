@@ -19,7 +19,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
@@ -28,7 +28,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
             private HoldTreeNode node;
 
-            public Matcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer, HoldTreeNode node) :
+            public Matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer, HoldTreeNode node) :
                 base(node, newNodeNames, coindexer)
             {
                 this.node = node;
@@ -42,7 +42,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return subTree.ToString();
         }

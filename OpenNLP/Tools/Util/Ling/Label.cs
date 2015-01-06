@@ -9,13 +9,13 @@ namespace OpenNLP.Tools.Util.Ling
     /**
  * Something that implements the <code>Label</code> interface can act as a
  * constituent, node, or word label with linguistic attributes.
- * A <code>Label</code> is required to have a "primary" <code>String</code>
+ * A <code>Label</code> is required to have a "primary" <code>string</code>
  * <code>value()</code> (although this may be null).  This is referred to as
  * its <code>value</code>.
  * <p>
  * Implementations of Label split into two groups with
  * respect to equality. Classes that extend ValueLabel define equality
- * solely in terms of String equality of its value (secondary facets may be
+ * solely in terms of string equality of its value (secondary facets may be
  * present but are ignored for purposes of equality), and have equals and
  * compareTo defined across all subclasses of ValueLabel. This behavior
  * should not be changed. Other classes that implement Label define equality only
@@ -32,11 +32,11 @@ namespace OpenNLP.Tools.Util.Ling
     public interface Label
     {
         /**
-   * Return a String representation of just the "main" value of this label.
+   * Return a string representation of just the "main" value of this label.
    *
    * @return the "value" of the label
    */
-        String value();
+        string value();
 
 
         /**
@@ -44,22 +44,22 @@ namespace OpenNLP.Tools.Util.Ling
          *
          * @param value - the value for the label
          */
-        void setValue(String value);
+        void setValue(string value);
 
 
         /**
-         * Return a String representation of the label.  For a multipart label,
+         * Return a string representation of the label.  For a multipart label,
          * this will return all parts.  The <code>ToString()</code> method
          * causes a label to spill its guts.  It should always return an
          * empty string rather than <code>null</code> if there is no value.
          *
          * @return a text representation of the full label contents
          */
-        String ToString();
+        string ToString();
 
 
         /**
-         * Set the contents of this label to this <code>String</code>
+         * Set the contents of this label to this <code>string</code>
          * representing the
          * complete contents of the label.  A class implementing label may
          * throw an <code>UnsupportedOperationException</code> for this
@@ -68,10 +68,10 @@ namespace OpenNLP.Tools.Util.Ling
          * multiple fields in an inverse of the <code>ToString()</code>
          * method.
          *
-         * @param labelStr the String that translates into the content of the
+         * @param labelStr the string that translates into the content of the
          *                 label
          */
-        void setFromString(String labelStr);
+        void setFromString(string labelStr);
 
         /**
          * Returns a factory that makes labels of the exact same type as this one.

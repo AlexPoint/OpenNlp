@@ -8,7 +8,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
     public class CoindexNodes : TsurgeonPattern
     {
-        private static readonly String coindexationIntroductionString = "-";
+        private static readonly string coindexationIntroductionString = "-";
 
         public CoindexNodes(TsurgeonPattern[] children) :
             base("coindex", children)
@@ -23,7 +23,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
@@ -32,7 +32,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
             private CoindexNodes node;
 
-            public Matcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer, CoindexNodes node) :
+            public Matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer, CoindexNodes node) :
                 base(node, newNodeNames, coindexer)
             {
                 this.node = node;

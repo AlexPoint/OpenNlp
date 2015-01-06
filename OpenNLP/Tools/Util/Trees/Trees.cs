@@ -346,9 +346,9 @@ namespace OpenNLP.Tools.Util.Trees
    * returns the syntactic category of the tree as a list of the syntactic categories of the mother and the daughters
    */
 
-        public static List<String> localTreeAsCatList(Tree t)
+        public static List<string> localTreeAsCatList(Tree t)
         {
-            List<String> l = new List<String>(t.children().Length + 1);
+            List<string> l = new List<string>(t.children().Length + 1);
             l.Add(t.label().value());
             for (int i = 0; i < t.children().Length; i++)
             {
@@ -374,29 +374,29 @@ namespace OpenNLP.Tools.Util.Trees
             return -1;
         }
 
-        /** Returns a String reporting what kinds of Tree and Label nodes this
+        /** Returns a string reporting what kinds of Tree and Label nodes this
    *  Tree contains.
    *
    *  @param t The tree to examine.
-   *  @return A human-readable String reporting what kinds of Tree and Label nodes this
+   *  @return A human-readable string reporting what kinds of Tree and Label nodes this
    *      Tree contains.
    */
-        /*public static String toStructureDebugString(Tree t) {
-    String tCl = StringUtils.getShortClassName(t);
-    String tfCl = StringUtils.getShortClassName(t.treeFactory());
-    String lCl = StringUtils.getShortClassName(t.label());
-    String lfCl = StringUtils.getShortClassName(t.label().labelFactory());
-    Set<String> otherClasses = Generics.newHashSet();
-    String leafLabels = null;
-    String tagLabels = null;
-    String phraseLabels = null;
-    String leaves = null;
-    String nodes = null;
+        /*public static string toStructureDebugString(Tree t) {
+    string tCl = StringUtils.getShortClassName(t);
+    string tfCl = StringUtils.getShortClassName(t.treeFactory());
+    string lCl = StringUtils.getShortClassName(t.label());
+    string lfCl = StringUtils.getShortClassName(t.label().labelFactory());
+    Set<string> otherClasses = Generics.newHashSet();
+    string leafLabels = null;
+    string tagLabels = null;
+    string phraseLabels = null;
+    string leaves = null;
+    string nodes = null;
     for (Tree st : t) {
-      String stCl = StringUtils.getShortClassName(st);
-      String stfCl = StringUtils.getShortClassName(st.treeFactory());
-      String slCl = StringUtils.getShortClassName(st.label());
-      String slfCl = StringUtils.getShortClassName(st.label().labelFactory());
+      string stCl = StringUtils.getShortClassName(st);
+      string stfCl = StringUtils.getShortClassName(st.treeFactory());
+      string slCl = StringUtils.getShortClassName(st.label());
+      string slfCl = StringUtils.getShortClassName(st.label().labelFactory());
       if ( ! tCl.equals(stCl)) {
         otherClasses.Add(stCl);
       }
@@ -498,7 +498,7 @@ namespace OpenNLP.Tools.Util.Trees
   }*/
 
 
-        public static String treeToLatex(Tree t)
+        public static string treeToLatex(Tree t)
         {
             StringBuilder connections = new StringBuilder();
             StringBuilder hierarchy = new StringBuilder();
@@ -533,7 +533,7 @@ namespace OpenNLP.Tools.Util.Trees
             return nextN;
         }
 
-        public static String treeToLatexEven(Tree t)
+        public static string treeToLatexEven(Tree t)
         {
             StringBuilder connections = new StringBuilder();
             StringBuilder hierarchy = new StringBuilder();
@@ -579,12 +579,12 @@ namespace OpenNLP.Tools.Util.Trees
             return nextN;
         }
 
-        private static String texTree(Tree t)
+        private static string texTree(Tree t)
         {
             return treeToLatex(t);
         }
 
-        private static String escape(String s)
+        private static string escape(string s)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < s.Length; i++)
@@ -673,7 +673,7 @@ namespace OpenNLP.Tools.Util.Trees
    * returns null.  Otherwise includes both from and to in the list.
    */
 
-        public static List<String> pathNodeToNode(Tree from, Tree to, Tree root)
+        public static List<string> pathNodeToNode(Tree from, Tree to, Tree root)
         {
             List<Tree> fromPath = pathFromRoot(from, root);
             //System.out.println(treeListToCatList(fromPath));
@@ -704,7 +704,7 @@ namespace OpenNLP.Tools.Util.Trees
 
             //System.out.println(treeListToCatList(fromPath));
             //System.out.println(treeListToCatList(toPath));
-            List<String> totalPath = new List<String>();
+            List<string> totalPath = new List<string>();
 
             for (int i = fromPath.Count - 1; i >= last; i--)
             {
@@ -812,7 +812,7 @@ namespace OpenNLP.Tools.Util.Trees
         /*/**
    * Simple tree reading utility method.  Given a tree formatted as a PTB string, returns a Tree made by a specific TreeFactory.
    #1#
-  public static Tree readTree(String ptbTreeString, TreeFactory treeFactory) {
+  public static Tree readTree(string ptbTreeString, TreeFactory treeFactory) {
     try {
       PennTreeReader ptr = new PennTreeReader(new StringReader(ptbTreeString), treeFactory);
       return ptr.readTree();
@@ -824,7 +824,7 @@ namespace OpenNLP.Tools.Util.Trees
         /**
    * Simple tree reading utility method.  Given a tree formatted as a PTB string, returns a Tree made by the default TreeFactory (LabeledScoredTreeFactory)
    */
-        /*public static Tree readTree(String str) {
+        /*public static Tree readTree(string str) {
     return readTree(str, defaultTreeFactory);
   }*/
 

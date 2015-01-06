@@ -34,7 +34,7 @@ namespace OpenNLP.Tools.Util.Trees
     public class PennTreeReader : TreeReader
     {
         private readonly TextReader reader;
-        private readonly Tokenizer<String> tokenizer;
+        private readonly Tokenizer<string> tokenizer;
         private readonly TreeNormalizer treeNormalizer;
         private readonly TreeFactory treeFactory;
 
@@ -43,8 +43,8 @@ namespace OpenNLP.Tools.Util.Trees
         private Tree currentTree;
         // misuse a list as a stack, since we want to avoid the synchronized and old Stack, but don't need the power and JDK 1.6 dependency of a Deque
         private List<Tree> stack;
-        private const String leftParen = "(";
-        private const String rightParen = ")";
+        private const string leftParen = "(";
+        private const string rightParen = ")";
 
         /**
    * Read parse trees from a <code>Reader</code>.
@@ -96,7 +96,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param st Tokenizer that divides up Reader
    */
 
-        public PennTreeReader(TextReader input, TreeFactory tf, TreeNormalizer tn, Tokenizer<String> st)
+        public PennTreeReader(TextReader input, TreeFactory tf, TreeNormalizer tn, Tokenizer<string> st)
         {
             reader = input;
             treeFactory = tf;
@@ -104,7 +104,7 @@ namespace OpenNLP.Tools.Util.Trees
             tokenizer = st;
 
             // check for whacked out headers still present in Brown corpus in Treebank 3
-            String first = (st.hasNext() ? st.peek() : null);
+            string first = (st.hasNext() ? st.peek() : null);
             if (first != null && first.StartsWith("*x*x*x"))
             {
                 /*if (DEBUG) {
@@ -194,14 +194,14 @@ namespace OpenNLP.Tools.Util.Trees
             //label:
             while (tokenizer.hasNext())
             {
-                String token = tokenizer.next();
+                string token = tokenizer.next();
 
                 switch (token)
                 {
                     case leftParen:
 
                         // cdm 20100225: This next line used to have "" instead of null, but the traditional and current tree normalizers depend on the label being null not "" when there is no label on a tree (like the outermost English PTB level)
-                        String label = (tokenizer.peek().Equals(leftParen)) ? null : tokenizer.next();
+                        string label = (tokenizer.peek().Equals(leftParen)) ? null : tokenizer.next();
                         if (rightParen.Equals(label))
                         {
 //Skip past empty trees
@@ -259,7 +259,7 @@ namespace OpenNLP.Tools.Util.Trees
                             goto post_while_label;
                         }
 
-                        String terminal = (treeNormalizer == null) ? token : treeNormalizer.normalizeTerminal(token);
+                        string terminal = (treeNormalizer == null) ? token : treeNormalizer.normalizeTerminal(token);
                         terminal = STAR_PATTERN.Replace(terminal, "*");
                         terminal = SLASH_PATTERN.Replace(terminal, "/");
                         Tree leaf = treeFactory.newLeaf(terminal);

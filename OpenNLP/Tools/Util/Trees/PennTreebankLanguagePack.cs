@@ -19,19 +19,19 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
 
-        private static readonly String[] pennPunctTags = {"''", "``", "-LRB-", "-RRB-", ".", ":", ","};
+        private static readonly string[] pennPunctTags = {"''", "``", "-LRB-", "-RRB-", ".", ":", ","};
 
-        private static readonly String[] pennSFPunctTags = {"."};
+        private static readonly string[] pennSFPunctTags = {"."};
 
-        private static readonly String[] collinsPunctTags = {"''", "``", ".", ":", ","};
+        private static readonly string[] collinsPunctTags = {"''", "``", ".", ":", ","};
 
-        private static readonly String[] pennPunctWords =
+        private static readonly string[] pennPunctWords =
         {
             "''", "'", "``", "`", "-LRB-", "-RRB-", "-LCB-", "-RCB-", ".",
             "?", "!", ",", ":", "-", "--", "...", ";"
         };
 
-        private static readonly String[] pennSFPunctWords = {".", "!", "?"};
+        private static readonly string[] pennSFPunctWords = {".", "!", "?"};
 
 
         /**
@@ -47,59 +47,59 @@ namespace OpenNLP.Tools.Util.Trees
         /**
    * This is valid for "BobChrisTreeNormalizer" conventions only.
    */
-        private static readonly String[] pennStartSymbols = {"ROOT", "TOP"};
+        private static readonly string[] pennStartSymbols = {"ROOT", "TOP"};
 
 
         /**
-   * Returns a String array of punctuation tags for this treebank/language.
+   * Returns a string array of punctuation tags for this treebank/language.
    *
    * @return The punctuation tags
    */
         //@Override
-        public override String[] punctuationTags()
+        public override string[] punctuationTags()
         {
             return pennPunctTags;
         }
 
 
         /**
-   * Returns a String array of punctuation words for this treebank/language.
+   * Returns a string array of punctuation words for this treebank/language.
    *
    * @return The punctuation words
    */
         //@Override
-        public override String[] punctuationWords()
+        public override string[] punctuationWords()
         {
             return pennPunctWords;
         }
 
 
         /**
-   * Returns a String array of sentence readonly punctuation tags for this
+   * Returns a string array of sentence readonly punctuation tags for this
    * treebank/language.
    *
    * @return The sentence readonly punctuation tags
    */
         //@Override
-        public override String[] sentenceFinalPunctuationTags()
+        public override string[] sentenceFinalPunctuationTags()
         {
             return pennSFPunctTags;
         }
 
         /**
-   * Returns a String array of sentence readonly punctuation words for this
+   * Returns a string array of sentence readonly punctuation words for this
    * treebank/language.
    *
    * @return The sentence readonly punctuation tags
    */
         //@Override
-        public override String[] sentenceFinalPunctuationWords()
+        public override string[] sentenceFinalPunctuationWords()
         {
             return pennSFPunctWords;
         }
 
         /**
-   * Returns a String array of punctuation tags that EVALB-style evaluation
+   * Returns a string array of punctuation tags that EVALB-style evaluation
    * should ignore for this treebank/language.
    * Traditionally, EVALB has ignored a subset of the total set of
    * punctuation tags in the English Penn Treebank (quotes and
@@ -108,14 +108,14 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this is a EVALB-ignored punctuation tag
    */
         //@Override
-        public override String[] evalBIgnoredPunctuationTags()
+        public override string[] evalBIgnoredPunctuationTags()
         {
             return collinsPunctTags;
         }
 
 
         /**
-   * Return an array of characters at which a String should be
+   * Return an array of characters at which a string should be
    * truncated to give the basic syntactic category of a label.
    * The idea here is that Penn treebank style labels follow a syntactic
    * category with various functional and crossreferencing information
@@ -132,12 +132,12 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         /**
-   * Returns a String array of treebank start symbols.
+   * Returns a string array of treebank start symbols.
    *
    * @return The start symbols
    */
         //@Override
-        public override String[] startSymbols()
+        public override string[] startSymbols()
         {
             return pennStartSymbols;
         }
@@ -162,7 +162,7 @@ namespace OpenNLP.Tools.Util.Trees
    * This is "mrg".
    */
         //@Override
-        public override String treebankFileExtension()
+        public override string treebankFileExtension()
         {
             return "mrg";
         }
@@ -186,12 +186,12 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A GrammaticalStructure suitable for this language/treebank.
    */
         //@Override
-        /*public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<String> puncFilter) {
+        /*public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<string> puncFilter) {
     return new EnglishGrammaticalStructureFactory(puncFilter);
   }*/
 
         //@Override
-        /*public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<String> puncFilter, HeadFinder hf) {
+        /*public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<string> puncFilter, HeadFinder hf) {
     return new EnglishGrammaticalStructureFactory(puncFilter, hf);
   }*/
 

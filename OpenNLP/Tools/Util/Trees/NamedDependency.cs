@@ -25,7 +25,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         private readonly Object vName;
 
-        public NamedDependency(String regent, String dependent, Object name) :
+        public NamedDependency(string regent, string dependent, Object name) :
             base(regent, dependent)
         {
             this.vName = name;
@@ -65,18 +65,18 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
-            return String.Format("{0} --{1}--> {2}", regentText, vName.ToString(), dependentText);
+            return string.Format("{0} --{1}--> {2}", regentText, vName.ToString(), dependentText);
         }
 
         /**
-   * Provide different printing options via a String keyword.
+   * Provide different printing options via a string keyword.
    * The recognized options are currently "xml", and "predicate".
    * Otherwise the default ToString() is used.
    */
         //@Override
-        public String ToString(String format)
+        public string ToString(string format)
         {
             switch (format)
             {

@@ -9,18 +9,18 @@ namespace OpenNLP.Tools.Util.Trees
 {
     public class EnglishGrammaticalStructureFactory : GrammaticalStructureFactory
     {
-        /*private readonly Predicate<String> puncFilter;
+        /*private readonly Predicate<string> puncFilter;
   private readonly HeadFinder hf;*/
 
         public EnglishGrammaticalStructureFactory() /*:this(null, null)*/
         {
         }
 
-        /*public EnglishGrammaticalStructureFactory(Predicate<String> puncFilter):
+        /*public EnglishGrammaticalStructureFactory(Predicate<string> puncFilter):
     this(puncFilter, null){
   }
 
-  public EnglishGrammaticalStructureFactory(Predicate<String> puncFilter, HeadFinder hf) {
+  public EnglishGrammaticalStructureFactory(Predicate<string> puncFilter, HeadFinder hf) {
     this.puncFilter = puncFilter;
     this.hf = hf;
   }*/

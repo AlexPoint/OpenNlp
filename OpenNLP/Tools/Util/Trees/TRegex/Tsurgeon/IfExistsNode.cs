@@ -16,10 +16,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
     public class IfExistsNode : TsurgeonPattern
     {
-        private readonly String name;
+        private readonly string name;
         private readonly bool invert;
 
-        public IfExistsNode(String name, bool invert, TsurgeonPattern[] children) :
+        public IfExistsNode(string name, bool invert, TsurgeonPattern[] children) :
             base("if " + (invert ? "not " : "") + "exists " + name, children)
         {
             this.name = name;
@@ -27,7 +27,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
@@ -36,7 +36,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
             private IfExistsNode node;
 
-            public Matcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer, IfExistsNode node) :
+            public Matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer, IfExistsNode node) :
                 base(node, newNodeNames, coindexer)
             {
                 this.node = node;

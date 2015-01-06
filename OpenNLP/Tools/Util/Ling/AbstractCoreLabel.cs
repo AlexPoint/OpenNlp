@@ -8,14 +8,14 @@ namespace OpenNLP.Tools.Util.Ling
 {
     public interface AbstractCoreLabel : Label, HasWord, HasIndex, HasTag, HasLemma, HasOffset, TypesafeMap
     {
-        String ner();
+        string ner();
 
-        void setNER(String ner);
+        void setNER(string ner);
 
-        String originalText();
+        string originalText();
 
-        void setOriginalText(String originalText);
+        void setOriginalText(string originalText);
 
-        String getString(Type key);
+        string getString(Type key);
     }
 }

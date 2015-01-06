@@ -74,7 +74,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
  * </table>
  * <p> Label descriptions can be literal strings, which much match labels
  * exactly, or regular expressions in regular expression bars: /regex/.
- * Literal string matching proceeds as String equality.
+ * Literal string matching proceeds as string equality.
  * In order to prevent ambiguity with other Tregex symbols, ASCII symbols are
  * not allowed in literal strings, and they cannot begin with ASCII digits.
  * (That is literals can be standard "identifiers" matching
@@ -207,7 +207,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
  * corresponding to the named node can be extracted from the map.  For
  * example <code> (NP < NNP=name) </code> will match an NP dominating an NNP
  * and after a match is found, the map can be queried with the
- * name to retreived the matched node using {@link TregexMatcher#getNode(String o)}
+ * name to retreived the matched node using {@link TregexMatcher#getNode(string o)}
  * with (String) argument "name" (<it>not</it> "=name").
  * Note that you are not allowed to name a node that is under the scope of a negation operator (the semantics would
  * be unclear, since you can't store a node that never gets matched to).
@@ -310,7 +310,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     {
         private bool neg = false;
         private bool opt = false;
-        private String patternString;
+        private string patternString;
 
         public void negate()
         {
@@ -353,7 +353,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         public abstract List<TregexPattern> getChildren();
 
-        public abstract String localString();
+        public abstract string localString();
 
         public bool isNegated()
         {
@@ -367,7 +367,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         public abstract TregexMatcher matcher(Tree root, Tree tree,
             IdentityDictionary<Tree, Tree> nodesToParents,
-            Dictionary<String, Tree> namesToNodes,
+            Dictionary<string, Tree> namesToNodes,
             VariableStrings variableStrings,
             HeadFinder headFinder);
 
@@ -410,7 +410,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @throws TregexParseException if the string does not parse
    */
 
-        public static TregexPattern compile(String tregex)
+        public static TregexPattern compile(string tregex)
         {
             return TregexPatternCompiler.defaultCompiler.compile(tregex);
         }
@@ -427,7 +427,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @return a TregexPattern for the string, or null if the string does not parse.
    */
 
-        public static TregexPattern safeCompile(String tregex, bool verbose)
+        public static TregexPattern safeCompile(string tregex, bool verbose)
         {
             TregexPattern result = null;
             try
@@ -445,14 +445,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return result;
         }
 
-        public String pattern()
+        public string pattern()
         {
             return patternString;
         }
 
         /** Only used by the TregexPatternCompiler to set the pattern. Pseudo-final. */
 
-        public void setPatternString(String patternString)
+        public void setPatternString(string patternString)
         {
             this.patternString = patternString;
         }
@@ -461,7 +461,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @return A single-line string representation of the pattern
    */
         /*@Override
-  public abstract String ToString();*/
+  public abstract string ToString();*/
 
         /*/**
    * Print a multi-line representation
@@ -490,9 +490,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private static readonly Regex codePattern = new Regex("([0-9]+):([0-9]+)", RegexOptions.Compiled);
 
-        /*private static void extractSubtrees(List<String> codeStrings, String treeFile) {
+        /*private static void extractSubtrees(List<string> codeStrings, string treeFile) {
     List<Tuple<int,int>> codes = new List<Tuple<int,int>>();
-    foreach(String s in codeStrings) {
+    foreach(string s in codeStrings) {
       //Matcher m = codePattern.matcher(s);
         var match = codePattern.Match(s);
         if (match.Success)
@@ -509,7 +509,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     }
   }*/
 
-        /*private static TreeReaderFactory getTreeReaderFactory(String treeReaderFactoryClassName) {
+        /*private static TreeReaderFactory getTreeReaderFactory(string treeReaderFactoryClassName) {
     TreeReaderFactory trf = new TRegexTreeReaderFactory();
     if (treeReaderFactoryClassName != null) {
       try {
@@ -542,10 +542,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     int treeNumber = 0;
 
     private readonly TregexPattern p;
-    String[] handles;
+    string[] handles;
     int numMatches;
 
-    TRegexTreeVisitor(TregexPattern p, String[] handles, String encoding) {
+    TRegexTreeVisitor(TregexPattern p, string[] handles, string encoding) {
       this.p = p;
       this.handles = handles;
       try {
@@ -606,7 +606,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             if (printTree) {
               pw.println("Here's the node you were interested in:");
             }
-            for (String handle : handles) {
+            for (string handle : handles) {
               Tree labeledNode = match.getNode(handle);
               if (labeledNode == null) {
                 System.err.println("Error!!  There is no matched node \"" + handle + "\"!  Did you specify such a label in the pattern?");
@@ -643,7 +643,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private static final long serialVersionUID = -2998972954089638189L;
 
         @Override
-        public String normalizeNonterminal(String str) {
+        public string normalizeNonterminal(string str) {
           if (str == null) {
             return "";
           } else {

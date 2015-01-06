@@ -122,12 +122,12 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return ToString(CoreLabel.OutputFormat.VALUE_INDEX);
         }
 
-        public String ToString(CoreLabel.OutputFormat format)
+        public string ToString(CoreLabel.OutputFormat format)
         {
             return preln + "(" + pgov.ToString(format) + ", " + pdep.ToString(format) + ")";
         }

@@ -13,7 +13,7 @@ namespace OpenNLP.Tools.Util.Ling
  * defined here are typesafe keys for getting and setting annotation
  * values. These classes need not be instantiated outside of this
  * class. e.g {@link TextAnnotation}.class serves as the key and a
- * <code>String</code> serves as the value containing the
+ * <code>string</code> serves as the value containing the
  * corresponding word.
  * </p>
  *
@@ -52,7 +52,7 @@ namespace OpenNLP.Tools.Util.Ling
    * annotations - documents, sentences and tokens all have their own text.
    */
 
-        public class TextAnnotation : CoreAnnotation<String>
+        public class TextAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -69,7 +69,7 @@ namespace OpenNLP.Tools.Util.Ling
    * TODO: merge with StemAnnotation?
    */
 
-        public class LemmaAnnotation : CoreAnnotation<String>
+        public class LemmaAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -83,7 +83,7 @@ namespace OpenNLP.Tools.Util.Ling
    * This key is typically set on token annotations.
    */
 
-        public class PartOfSpeechAnnotation : CoreAnnotation<String>
+        public class PartOfSpeechAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -98,7 +98,7 @@ namespace OpenNLP.Tools.Util.Ling
    * This key is typically set on token annotations.
    */
 
-        public class NamedEntityTagAnnotation : CoreAnnotation<String>
+        public class NamedEntityTagAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -116,7 +116,7 @@ namespace OpenNLP.Tools.Util.Ling
    * This key is typically set on token annotations.
    */
 
-        public class StackedNamedEntityTagAnnotation : CoreAnnotation<String>
+        public class StackedNamedEntityTagAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -131,7 +131,7 @@ namespace OpenNLP.Tools.Util.Ling
    * This key is typically set on token annotations.
    */
 
-        public class TrueCaseAnnotation : CoreAnnotation<String>
+        public class TrueCaseAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -146,7 +146,7 @@ namespace OpenNLP.Tools.Util.Ling
    * annotations - documents, sentences and tokens all have their own text.
    */
 
-        public class TrueCaseTextAnnotation : CoreAnnotation<String>
+        public class TrueCaseTextAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -265,7 +265,7 @@ namespace OpenNLP.Tools.Util.Ling
    * vary based on your application.
    */
 
-        public class DocIDAnnotation : CoreAnnotation<String>
+        public class DocIDAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -386,7 +386,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Contains the "value" - an ill-defined string used widely in MapLabel.
    */
 
-        public class ValueAnnotation : CoreAnnotation<String>
+        public class ValueAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -394,7 +394,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class CategoryAnnotation : CoreAnnotation<String>
+        public class CategoryAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -408,7 +408,7 @@ namespace OpenNLP.Tools.Util.Ling
    * match what appears in the PTB, but this key will hold the original characters.
    */
 
-        public class OriginalTextAnnotation : CoreAnnotation<String>
+        public class OriginalTextAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -422,7 +422,7 @@ namespace OpenNLP.Tools.Util.Ling
    * reconstructed.
    */
 
-        public class BeforeAnnotation : CoreAnnotation<String>
+        public class BeforeAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -436,7 +436,7 @@ namespace OpenNLP.Tools.Util.Ling
    * reconstructed.
    */
 
-        public class AfterAnnotation : CoreAnnotation<String>
+        public class AfterAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -448,7 +448,7 @@ namespace OpenNLP.Tools.Util.Ling
    * CoNLL dep parsing - coarser POS tags.
    */
 
-        public class CoarseTagAnnotation : CoreAnnotation<String>
+        public class CoarseTagAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -485,11 +485,11 @@ namespace OpenNLP.Tools.Util.Ling
    * specific role for each predicate
    */
 
-        public class CoNLLSRLAnnotation : CoreAnnotation<Dictionary<int, String>>
+        public class CoNLLSRLAnnotation : CoreAnnotation<Dictionary<int, string>>
         {
             public Type getType()
             {
-                return typeof (Dictionary<int, String>);
+                return typeof (Dictionary<int, string>);
             }
         }
 
@@ -497,7 +497,7 @@ namespace OpenNLP.Tools.Util.Ling
    * CoNLL dep parsing - the dependency type
    */
 
-        public class CoNLLDepTypeAnnotation : CoreAnnotation<String>
+        public class CoNLLDepTypeAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -534,12 +534,12 @@ namespace OpenNLP.Tools.Util.Ling
    * Keys from AbstractMapLabel (descriptions taken from that class)
    */
         /**
-   * The standard key for storing a projected category in the map, as a String.
+   * The standard key for storing a projected category in the map, as a string.
    * For any word (leaf node), the projected category is the syntactic category
    * of the maximal constituent headed by the word. Used in SemanticGraph.
    */
 
-        public class ProjectedCategoryAnnotation : CoreAnnotation<String>
+        public class ProjectedCategoryAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -551,7 +551,7 @@ namespace OpenNLP.Tools.Util.Ling
    * The standard key for a propbank label which is of type Argument
    */
 
-        public class ArgumentAnnotation : CoreAnnotation<String>
+        public class ArgumentAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -564,7 +564,7 @@ namespace OpenNLP.Tools.Util.Ling
    * nodes
    */
 
-        public class MarkingAnnotation : CoreAnnotation<String>
+        public class MarkingAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -576,7 +576,7 @@ namespace OpenNLP.Tools.Util.Ling
    * The standard key for Semantic Head Word which is a String
    */
 
-        public class SemanticHeadWordAnnotation : CoreAnnotation<String>
+        public class SemanticHeadWordAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -588,7 +588,7 @@ namespace OpenNLP.Tools.Util.Ling
    * The standard key for Semantic Head Word POS which is a String
    */
 
-        public class SemanticHeadTagAnnotation : CoreAnnotation<String>
+        public class SemanticHeadTagAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -601,7 +601,7 @@ namespace OpenNLP.Tools.Util.Ling
    * only be in the verbnode
    */
 
-        public class VerbSenseAnnotation : CoreAnnotation<String>
+        public class VerbSenseAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -613,7 +613,7 @@ namespace OpenNLP.Tools.Util.Ling
    * The standard key for storing category with functional tags.
    */
 
-        public class CategoryFunctionalTagAnnotation : CoreAnnotation<String>
+        public class CategoryFunctionalTagAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -626,7 +626,7 @@ namespace OpenNLP.Tools.Util.Ling
    * for you...)
    */
 
-        public class NERIDAnnotation : CoreAnnotation<String>
+        public class NERIDAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -638,7 +638,7 @@ namespace OpenNLP.Tools.Util.Ling
    * The key for the normalized value of numeric named entities.
    */
 
-        public class NormalizedNamedEntityTagAnnotation : CoreAnnotation<String>
+        public class NormalizedNamedEntityTagAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -668,13 +668,13 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         /**
-   * The standard key for the "shape" of a word: a String representing the type
+   * The standard key for the "shape" of a word: a string representing the type
    * of characters in a word, such as "Xx" for a capitalized word. See
    * {@link edu.stanford.nlp.process.WordShapeClassifier} for functions for
    * making shape strings.
    */
 
-        public class ShapeAnnotation : CoreAnnotation<String>
+        public class ShapeAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -699,7 +699,7 @@ namespace OpenNLP.Tools.Util.Ling
    * The standard key for the parent which is a String
    */
 
-        public class ParentAnnotation : CoreAnnotation<String>
+        public class ParentAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -707,7 +707,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class INAnnotation : CoreAnnotation<String>
+        public class INAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -731,7 +731,7 @@ namespace OpenNLP.Tools.Util.Ling
    * The standard key for the answer which is a String
    */
 
-        public class AnswerAnnotation : CoreAnnotation<String>
+        public class AnswerAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -743,7 +743,7 @@ namespace OpenNLP.Tools.Util.Ling
    * The standard key for gold answer which is a String
    */
 
-        public class GoldAnswerAnnotation : CoreAnnotation<String>
+        public class GoldAnswerAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -755,7 +755,7 @@ namespace OpenNLP.Tools.Util.Ling
    * The standard key for the features which is a Collection
    */
 
-        public class FeaturesAnnotation : CoreAnnotation<String>
+        public class FeaturesAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -767,7 +767,7 @@ namespace OpenNLP.Tools.Util.Ling
    * The standard key for the semantic interpretation
    */
 
-        public class InterpretationAnnotation : CoreAnnotation<String>
+        public class InterpretationAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -779,7 +779,7 @@ namespace OpenNLP.Tools.Util.Ling
    * The standard key for the semantic role label of a phrase.
    */
 
-        public class RoleAnnotation : CoreAnnotation<String>
+        public class RoleAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -791,11 +791,11 @@ namespace OpenNLP.Tools.Util.Ling
    * The standard key for the gazetteer information
    */
 
-        public class GazetteerAnnotation : CoreAnnotation<List<String>>
+        public class GazetteerAnnotation : CoreAnnotation<List<string>>
         {
             public Type getType()
             {
-                return typeof (List<String>);
+                return typeof (List<string>);
             }
         }
 
@@ -803,7 +803,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Morphological stem of the word this label represents
    */
 
-        public class StemAnnotation : CoreAnnotation<String>
+        public class StemAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -811,7 +811,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class PolarityAnnotation : CoreAnnotation<String>
+        public class PolarityAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -819,7 +819,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class MorphoNumAnnotation : CoreAnnotation<String>
+        public class MorphoNumAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -827,7 +827,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class MorphoPersAnnotation : CoreAnnotation<String>
+        public class MorphoPersAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -835,7 +835,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class MorphoGenAnnotation : CoreAnnotation<String>
+        public class MorphoGenAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -843,7 +843,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class MorphoCaseAnnotation : CoreAnnotation<String>
+        public class MorphoCaseAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -855,7 +855,7 @@ namespace OpenNLP.Tools.Util.Ling
    * for Chinese: character level information, segmentation
    */
 
-        public class ChineseCharAnnotation : CoreAnnotation<String>
+        public class ChineseCharAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -863,7 +863,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class ChineseOrigSegAnnotation : CoreAnnotation<String>
+        public class ChineseOrigSegAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -871,7 +871,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class ChineseSegAnnotation : CoreAnnotation<String>
+        public class ChineseSegAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -936,7 +936,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class WordSenseAnnotation : CoreAnnotation<String>
+        public class WordSenseAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -944,7 +944,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        /*public class SRLInstancesAnnotation : CoreAnnotation<List<List<Pair<String, Pair>>>> {
+        /*public class SRLInstancesAnnotation : CoreAnnotation<List<List<Pair<string, Pair>>>> {
     public Type getType() {
       return ErasureUtils.uncheckedCast(List.class);
     }
@@ -981,7 +981,7 @@ namespace OpenNLP.Tools.Util.Ling
    * may be "CharacterAnnotation" - not sure
    */
 
-        public class DomainAnnotation : CoreAnnotation<String>
+        public class DomainAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -989,7 +989,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class PositionAnnotation : CoreAnnotation<String>
+        public class PositionAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -997,7 +997,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class CharAnnotation : CoreAnnotation<String>
+        public class CharAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1007,7 +1007,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         // note: this is not a catchall "unknown" annotation but seems to have a
         // specific meaning for sequence classifiers
-        public class UnknownAnnotation : CoreAnnotation<String>
+        public class UnknownAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1015,7 +1015,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class IDAnnotation : CoreAnnotation<String>
+        public class IDAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1025,7 +1025,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         // possibly this should be grouped with gazetteer annotation - original key
         // was "gaz"
-        public class GazAnnotation : CoreAnnotation<String>
+        public class GazAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1033,7 +1033,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class PossibleAnswersAnnotation : CoreAnnotation<String>
+        public class PossibleAnswersAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1041,7 +1041,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class DistSimAnnotation : CoreAnnotation<String>
+        public class DistSimAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1049,7 +1049,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class AbbrAnnotation : CoreAnnotation<String>
+        public class AbbrAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1057,7 +1057,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class ChunkAnnotation : CoreAnnotation<String>
+        public class ChunkAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1065,7 +1065,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class GovernorAnnotation : CoreAnnotation<String>
+        public class GovernorAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1073,7 +1073,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class AbgeneAnnotation : CoreAnnotation<String>
+        public class AbgeneAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1081,7 +1081,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class GeniaAnnotation : CoreAnnotation<String>
+        public class GeniaAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1089,7 +1089,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class AbstrAnnotation : CoreAnnotation<String>
+        public class AbstrAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1097,7 +1097,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class FreqAnnotation : CoreAnnotation<String>
+        public class FreqAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1105,7 +1105,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class DictAnnotation : CoreAnnotation<String>
+        public class DictAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1113,7 +1113,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class WebAnnotation : CoreAnnotation<String>
+        public class WebAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1121,7 +1121,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class FemaleGazAnnotation : CoreAnnotation<String>
+        public class FemaleGazAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1129,7 +1129,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class MaleGazAnnotation : CoreAnnotation<String>
+        public class MaleGazAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1137,7 +1137,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class LastGazAnnotation : CoreAnnotation<String>
+        public class LastGazAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1149,7 +1149,7 @@ namespace OpenNLP.Tools.Util.Ling
    * it really seems like this should have a different name or else be a boolean
    */
 
-        public class IsURLAnnotation : CoreAnnotation<String>
+        public class IsURLAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1157,7 +1157,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class LinkAnnotation : CoreAnnotation<String>
+        public class LinkAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1173,7 +1173,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class EntityTypeAnnotation : CoreAnnotation<String>
+        public class EntityTypeAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1185,7 +1185,7 @@ namespace OpenNLP.Tools.Util.Ling
    * it really seems like this should have a different name or else be a boolean
    */
 
-        public class IsDateRangeAnnotation : CoreAnnotation<String>
+        public class IsDateRangeAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1193,17 +1193,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class PredictedAnswerAnnotation : CoreAnnotation<String>
-        {
-            public Type getType()
-            {
-                return typeof (String);
-            }
-        }
-
-        /** Seems like this could be consolidated with something else... */
-
-        public class OriginalAnswerAnnotation : CoreAnnotation<String>
+        public class PredictedAnswerAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1213,7 +1203,17 @@ namespace OpenNLP.Tools.Util.Ling
 
         /** Seems like this could be consolidated with something else... */
 
-        public class OriginalCharAnnotation : CoreAnnotation<String>
+        public class OriginalAnswerAnnotation : CoreAnnotation<string>
+        {
+            public Type getType()
+            {
+                return typeof (String);
+            }
+        }
+
+        /** Seems like this could be consolidated with something else... */
+
+        public class OriginalCharAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1229,7 +1229,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class EntityRuleAnnotation : CoreAnnotation<String>
+        public class EntityRuleAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1241,7 +1241,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Section of a document
    */
 
-        public class SectionAnnotation : CoreAnnotation<String>
+        public class SectionAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1253,7 +1253,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Date for a section of a document
    */
 
-        public class SectionDateAnnotation : CoreAnnotation<String>
+        public class SectionDateAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1265,7 +1265,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Id for a section of a document
    */
 
-        public class SectionIDAnnotation : CoreAnnotation<String>
+        public class SectionIDAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1290,7 +1290,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Indicates that the token end a section and the label of the section
    */
 
-        public class SectionEndAnnotation : CoreAnnotation<String>
+        public class SectionEndAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1298,7 +1298,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class WordPositionAnnotation : CoreAnnotation<String>
+        public class WordPositionAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1306,7 +1306,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class ParaPositionAnnotation : CoreAnnotation<String>
+        public class ParaPositionAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1314,7 +1314,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class SentencePositionAnnotation : CoreAnnotation<String>
+        public class SentencePositionAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1325,7 +1325,7 @@ namespace OpenNLP.Tools.Util.Ling
         // Why do both this and sentenceposannotation exist? I don't know, but one
         // class
         // uses both so here they remain for now...
-        public class SentenceIDAnnotation : CoreAnnotation<String>
+        public class SentenceIDAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1333,7 +1333,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class EntityClassAnnotation : CoreAnnotation<String>
+        public class EntityClassAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1353,7 +1353,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Used in Task3 Pascal system
    */
 
-        public class BestCliquesAnnotation : CoreAnnotation<String>
+        public class BestCliquesAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1361,7 +1361,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class BestFullAnnotation : CoreAnnotation<String>
+        public class BestFullAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1369,7 +1369,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class LastTaggedAnnotation : CoreAnnotation<String>
+        public class LastTaggedAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1381,7 +1381,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Used in wsd.supwsd package
    */
 
-        public class LabelAnnotation : CoreAnnotation<String>
+        public class LabelAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1389,30 +1389,30 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        /*public class NeighborsAnnotation : CoreAnnotation<List<Tuple<WordLemmaTag, String>>> {
+        /*public class NeighborsAnnotation : CoreAnnotation<List<Tuple<WordLemmaTag, string>>> {
     public Type getType() {
-      return typeof(List<Tuple<WordLemmaTag, String>>);
+      return typeof(List<Tuple<WordLemmaTag, string>>);
     }
   }*/
 
-        public class ContextsAnnotation : CoreAnnotation<List<Tuple<String, String>>>
+        public class ContextsAnnotation : CoreAnnotation<List<Tuple<string, string>>>
         {
             public Type getType()
             {
-                return typeof (List<Tuple<String, String>>);
+                return typeof (List<Tuple<string, string>>);
             }
         }
 
         public class DependentsAnnotation :
-            CoreAnnotation<List<Tuple<Tuple<String, String, String>, String>>>
+            CoreAnnotation<List<Tuple<Tuple<string, String, string>, string>>>
         {
             public Type getType()
             {
-                return typeof (List<Tuple<Tuple<String, String, String>, String>>);
+                return typeof (List<Tuple<Tuple<string, String, string>, string>>);
             }
         }
 
-        public class WordFormAnnotation : CoreAnnotation<String>
+        public class WordFormAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1420,7 +1420,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class TrueTagAnnotation : CoreAnnotation<String>
+        public class TrueTagAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1428,7 +1428,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class SubcategorizationAnnotation : CoreAnnotation<String>
+        public class SubcategorizationAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1436,11 +1436,11 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class BagOfWordsAnnotation : CoreAnnotation<List<Tuple<String, String>>>
+        public class BagOfWordsAnnotation : CoreAnnotation<List<Tuple<string, string>>>
         {
             public Type getType()
             {
-                return typeof (List<Tuple<String, String>>);
+                return typeof (List<Tuple<string, string>>);
             }
         }
 
@@ -1448,7 +1448,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Used in srl.unsup
    */
 
-        public class HeightAnnotation : CoreAnnotation<String>
+        public class HeightAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1456,7 +1456,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class LengthAnnotation : CoreAnnotation<String>
+        public class LengthAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1468,7 +1468,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Used in Gale2007ChineseSegmenter
    */
 
-        public class LBeginAnnotation : CoreAnnotation<String>
+        public class LBeginAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1476,7 +1476,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class LMiddleAnnotation : CoreAnnotation<String>
+        public class LMiddleAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1484,7 +1484,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class LEndAnnotation : CoreAnnotation<String>
+        public class LEndAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1492,7 +1492,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class D2_LBeginAnnotation : CoreAnnotation<String>
+        public class D2_LBeginAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1500,7 +1500,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class D2_LMiddleAnnotation : CoreAnnotation<String>
+        public class D2_LMiddleAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1508,7 +1508,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class D2_LEndAnnotation : CoreAnnotation<String>
+        public class D2_LEndAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1516,7 +1516,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class UBlockAnnotation : CoreAnnotation<String>
+        public class UBlockAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1526,7 +1526,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         /** Used in Chinese segmenters for whether there was space before a character. */
 
-        public class SpaceBeforeAnnotation : CoreAnnotation<String>
+        public class SpaceBeforeAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1554,7 +1554,7 @@ namespace OpenNLP.Tools.Util.Ling
    * used in binarized trees to say the name of the most recent child
    */
 
-        public class PrevChildAnnotation : CoreAnnotation<String>
+        public class PrevChildAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1567,7 +1567,7 @@ namespace OpenNLP.Tools.Util.Ling
    * this node is the parent
    */
 
-        public class FirstChildAnnotation : CoreAnnotation<String>
+        public class FirstChildAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1651,7 +1651,7 @@ namespace OpenNLP.Tools.Util.Ling
    * specifies the base state of the parent of this node in the parse tree
    */
 
-        public class GrandparentAnnotation : CoreAnnotation<String>
+        public class GrandparentAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1664,7 +1664,7 @@ namespace OpenNLP.Tools.Util.Ling
    * TreeCoreAnnotations.HeadWordAnnotation)
    */
 
-        public class HeadWordStringAnnotation : CoreAnnotation<String>
+        public class HeadWordStringAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1676,7 +1676,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Used in nlp.coref
    */
 
-        public class MonthAnnotation : CoreAnnotation<String>
+        public class MonthAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1684,7 +1684,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class DayAnnotation : CoreAnnotation<String>
+        public class DayAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1692,7 +1692,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class YearAnnotation : CoreAnnotation<String>
+        public class YearAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1704,15 +1704,15 @@ namespace OpenNLP.Tools.Util.Ling
    * Used in propbank.srl
    */
 
-        public class PriorAnnotation : CoreAnnotation<Dictionary<String, Double>>
+        public class PriorAnnotation : CoreAnnotation<Dictionary<string, Double>>
         {
             public Type getType()
             {
-                return typeof (Dictionary<String, Double>);
+                return typeof (Dictionary<string, Double>);
             }
         }
 
-        public class SemanticWordAnnotation : CoreAnnotation<String>
+        public class SemanticWordAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1720,7 +1720,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class SemanticTagAnnotation : CoreAnnotation<String>
+        public class SemanticTagAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1736,12 +1736,12 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class ArgDescendentAnnotation : CoreAnnotation<Tuple<String, Double>>
+        public class ArgDescendentAnnotation : CoreAnnotation<Tuple<string, Double>>
         {
 
             public Type getType()
             {
-                return typeof (Tuple<String, Double>);
+                return typeof (Tuple<string, Double>);
             }
         }
 
@@ -1760,11 +1760,11 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         /**
-   * Used in SimpleXMLAnnotator. The value is an XML element name String for the
+   * Used in SimpleXMLAnnotator. The value is an XML element name string for the
    * innermost element in which this token was contained.
    */
 
-        public class XmlElementAnnotation : CoreAnnotation<String>
+        public class XmlElementAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1777,12 +1777,12 @@ namespace OpenNLP.Tools.Util.Ling
    * the XML tag the token was nested inside.
    */
 
-        public class XmlContextAnnotation : CoreAnnotation<List<String>>
+        public class XmlContextAnnotation : CoreAnnotation<List<string>>
         {
 
             public Type getType()
             {
-                return typeof (List<String>);
+                return typeof (List<string>);
             }
         }
 
@@ -1793,7 +1793,7 @@ namespace OpenNLP.Tools.Util.Ling
    *
    */
 
-        public class TopicAnnotation : CoreAnnotation<String>
+        public class TopicAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1802,7 +1802,7 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         // gets the synonymn of a word in the Wordnet (use a bit differently in sonalg's code)
-        public class WordnetSynAnnotation : CoreAnnotation<String>
+        public class WordnetSynAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1811,7 +1811,7 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         //to get words of the phrase
-        public class PhraseWordsTagAnnotation : CoreAnnotation<String>
+        public class PhraseWordsTagAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1820,16 +1820,16 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         //to get pos tag of the phrase i.e. root of the phrase tree in the parse tree
-        public class PhraseWordsAnnotation : CoreAnnotation<List<String>>
+        public class PhraseWordsAnnotation : CoreAnnotation<List<string>>
         {
             public Type getType()
             {
-                return typeof (List<String>);
+                return typeof (List<string>);
             }
         }
 
         //to get prototype feature, see Haghighi Exemplar driven learning
-        public class ProtoAnnotation : CoreAnnotation<String>
+        public class ProtoAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1838,7 +1838,7 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         //which common words list does this word belong to
-        public class CommonWordsAnnotation : CoreAnnotation<String>
+        public class CommonWordsAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1848,7 +1848,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         // Document date
         // Needed by SUTime
-        public class DocDateAnnotation : CoreAnnotation<String>
+        public class DocDateAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1861,7 +1861,7 @@ namespace OpenNLP.Tools.Util.Ling
    * What kind of document is it: story, multi-part article, listing, email, etc
    */
 
-        public class DocTypeAnnotation : CoreAnnotation<String>
+        public class DocTypeAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1874,7 +1874,7 @@ namespace OpenNLP.Tools.Util.Ling
    * What kind of place did the document come from: newswire, discussion forum, web...
    */
 
-        public class DocSourceTypeAnnotation : CoreAnnotation<String>
+        public class DocSourceTypeAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1887,7 +1887,7 @@ namespace OpenNLP.Tools.Util.Ling
    * What is the document title
    */
 
-        public class DocTitleAnnotation : CoreAnnotation<String>
+        public class DocTitleAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1899,7 +1899,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Reference location for the document
    */
 
-        public class LocationAnnotation : CoreAnnotation<String>
+        public class LocationAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1912,7 +1912,7 @@ namespace OpenNLP.Tools.Util.Ling
    * (really should be a set of authors, but just have single string for simplicity)
    */
 
-        public class AuthorAnnotation : CoreAnnotation<String>
+        public class AuthorAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1924,7 +1924,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         // Per token annotation indicating whether the token represents a NUMBER or ORDINAL
         // (twenty first => NUMBER ORDINAL)
-        public class NumericTypeAnnotation : CoreAnnotation<String>
+        public class NumericTypeAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -1963,7 +1963,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         // Annotation indicating the numeric value of the phrase the token is part of
         // (twenty first => 21 21 )
-        public class NumericCompositeTypeAnnotation : CoreAnnotation<String>
+        public class NumericCompositeTypeAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -2019,7 +2019,7 @@ namespace OpenNLP.Tools.Util.Ling
    * to store speaker information.
    */
 
-        public class SpeakerAnnotation : CoreAnnotation<String>
+        public class SpeakerAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -2054,11 +2054,11 @@ namespace OpenNLP.Tools.Util.Ling
    * used in incremental DAG parser
    */
 
-        public class LeftChildrenNodeAnnotation : CoreAnnotation<SortedSet<Tuple<CoreLabel, String>>>
+        public class LeftChildrenNodeAnnotation : CoreAnnotation<SortedSet<Tuple<CoreLabel, string>>>
         {
             public Type getType()
             {
-                return typeof (SortedSet<Tuple<CoreLabel, String>>);
+                return typeof (SortedSet<Tuple<CoreLabel, string>>);
             }
         }
 
@@ -2078,7 +2078,7 @@ namespace OpenNLP.Tools.Util.Ling
    * Generally, you want to use the usual coref graph annotations
    */
 
-        public class AntecedentAnnotation : CoreAnnotation<String>
+        public class AntecedentAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {
@@ -2094,7 +2094,7 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        public class ColumnDataClassifierAnnotation : CoreAnnotation<String>
+        public class ColumnDataClassifierAnnotation : CoreAnnotation<string>
         {
             public Type getType()
             {

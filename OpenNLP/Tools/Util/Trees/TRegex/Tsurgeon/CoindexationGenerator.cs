@@ -26,7 +26,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             {
                 var node = iterator.Current;
                 /*foreach (Tree node in t) {*/
-                String value = node.label().value();
+                string value = node.label().value();
                 if (value != null)
                 {
                     var m = coindexationPattern.Match(value);

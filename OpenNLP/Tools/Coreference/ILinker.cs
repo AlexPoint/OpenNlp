@@ -46,27 +46,27 @@ namespace OpenNLP.Tools.Coreference
 	public class Linker
     {
 		/// <summary>
-        /// String constant used to label a mention which is a description.
+        /// string constant used to label a mention which is a description.
         /// </summary>
 		public const string Descriptor = "desc";
 		/// <summary>
-        /// String constant used to label an mention in an appositive relationship. 
+        /// string constant used to label an mention in an appositive relationship. 
         /// </summary>
         public const string IsA = "isa";
 		/// <summary>
-        /// String constant used to label a mention which consists of two or more noun phrases. 
+        /// string constant used to label a mention which consists of two or more noun phrases. 
         /// </summary>
         public const string CombinedNounPhrases = "cmbnd";
 		/// <summary>
-        /// String constant used to label a mention which consists of a single noun phrase. 
+        /// string constant used to label a mention which consists of a single noun phrase. 
         /// </summary>
         public const string SingleNounPhrase = "np";
 		/// <summary>
-        /// String constant used to label a mention which is a proper noun modifing another noun. 
+        /// string constant used to label a mention which is a proper noun modifing another noun. 
         /// </summary>
         public const string ProperNounModifier = "pnmod";
 		/// <summary>
-        /// String constatant used to label a mention which is a pronoun.
+        /// string constatant used to label a mention which is a pronoun.
         /// </summary>
         public const string PronounModifier = "np";
 		/// <summary>

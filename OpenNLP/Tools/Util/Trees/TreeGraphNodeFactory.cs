@@ -38,7 +38,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         // docs inherited
-        public Tree newLeaf( /*final*/ String word)
+        public Tree newLeaf( /*final*/ string word)
         {
             return newLeaf(mlf.newLabel(word));
         }
@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         // docs inherited
-        public Tree newTreeNode( /*final*/ String parent, /*final*/ List<Tree> children)
+        public Tree newTreeNode( /*final*/ string parent, /*final*/ List<Tree> children)
         {
             return newTreeNode(mlf.newLabel(parent), children);
         }

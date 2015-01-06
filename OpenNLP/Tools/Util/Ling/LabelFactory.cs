@@ -18,38 +18,38 @@ namespace OpenNLP.Tools.Util.Ling
     public interface LabelFactory
     {
         /**
-   * Make a new label with this <code>String</code> as the
+   * Make a new label with this <code>string</code> as the
    * <code>value</code>.
    * Any other fields of the label would normally be <code>null</code>.
    *
-   * @param labelStr The String that will be used for value
+   * @param labelStr The string that will be used for value
    * @return The new Label
    */
-        Label newLabel(String labelStr);
+        Label newLabel(string labelStr);
 
 
         /**
-         * Make a new label with this <code>String</code> as the value, and
+         * Make a new label with this <code>string</code> as the value, and
          * the type determined in an implementation-dependent way from the
          * options value.
          *
-         * @param labelStr The String that will be used for value
+         * @param labelStr The string that will be used for value
          * @param options  May determine what kind of label is created
          * @return The new Label
          */
-        Label newLabel(String labelStr, int options);
+        Label newLabel(string labelStr, int options);
 
 
         /**
-         * Make a new label.  The String argument will be decomposed into
+         * Make a new label.  The string argument will be decomposed into
          * multiple fields in an implementing class-specific way, in
          * accordance with the class's setFromString() method.
          *
-         * @param encodedLabelStr The String that will be used for labelling the
+         * @param encodedLabelStr The string that will be used for labelling the
          *                        object (by decoding it into parts)
          * @return The new Label
          */
-        Label newLabelFromString(String encodedLabelStr);
+        Label newLabelFromString(string encodedLabelStr);
 
 
         /**

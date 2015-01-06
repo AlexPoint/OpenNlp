@@ -11,17 +11,17 @@ namespace OpenNLP.Tools.Util.Trees
     {
         /**
    * Create a new tree leaf node, where the label is formed from
-   * the <code>String</code> passed in.
+   * the <code>string</code> passed in.
    *
    * @param word The word that will go into the tree label.
    * @return The new leaf
    */
-        Tree newLeaf(String word);
+        Tree newLeaf(string word);
 
 
         /**
          * Create a new tree non-leaf node, where the label is formed from
-         * the <code>String</code> passed in.
+         * the <code>string</code> passed in.
          *
          * @param parent   The string that will go into the parent tree label.
          * @param children The list of daughters of this tree.  The children
@@ -29,7 +29,7 @@ namespace OpenNLP.Tools.Util.Trees
          *                 <code>null</code>
          * @return The new interior tree node
          */
-        Tree newTreeNode(String parent, List<Tree> children);
+        Tree newTreeNode(string parent, List<Tree> children);
 
 
         /**

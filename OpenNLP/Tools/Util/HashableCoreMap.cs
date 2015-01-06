@@ -144,7 +144,7 @@ namespace OpenNLP.Tools.Util
         public class HashableCoreMapException : SystemException
         {
 
-            public HashableCoreMapException(String message) : base(message)
+            public HashableCoreMapException(string message) : base(message)
             {
             }
 

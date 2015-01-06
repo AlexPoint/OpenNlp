@@ -336,10 +336,10 @@ namespace OpenNLP.Tools.Util
         /** Prints a full dump of a CoreMap. This method is robust to
    *  circularity in the CoreMap.
    *
-   *  @return A String representation of the CoreMap
+   *  @return A string representation of the CoreMap
    */
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             IdentityHashSet<CoreMap> calledSet = toStringCalled.Value;
             if (calledSet == null)
@@ -386,12 +386,12 @@ namespace OpenNLP.Tools.Util
    * {@inheritDoc}
    */
         //@Override
-        public String toShorterString(String[] what)
+        public string toShorterString(string[] what)
         {
             StringBuilder s = new StringBuilder("[");
             for (int i = 0; i < psize; i++)
             {
-                String name = keys[i].GetType().Name /*.getSimpleName()*/;
+                string name = keys[i].GetType().Name /*.getSimpleName()*/;
                 int annoIdx = name.LastIndexOf("Annotation");
                 if (annoIdx >= 0)
                 {
@@ -401,7 +401,7 @@ namespace OpenNLP.Tools.Util
                 if (what.Length > 0)
                 {
                     include = false;
-                    foreach (String item in what)
+                    foreach (string item in what)
                     {
                         if (item.Equals(name))
                         {
@@ -429,7 +429,7 @@ namespace OpenNLP.Tools.Util
             return s.ToString();
         }
 
-        /** This gives a very short String representation of a CoreMap
+        /** This gives a very short string representation of a CoreMap
    *  by leaving it to the content to reveal what field is being printed.
    *
    *  @param what An array (varargs) of Strings that say what annotation keys
@@ -443,12 +443,12 @@ namespace OpenNLP.Tools.Util
    *     character. If the string contains spaces, it is wrapped in "{...}".
    */
 
-        public String toShortString(String[] what)
+        public string toShortString(string[] what)
         {
             return toShortString('/', what);
         }
 
-        /** This gives a very short String representation of a CoreMap
+        /** This gives a very short string representation of a CoreMap
    *  by leaving it to the content to reveal what field is being printed.
    *
    *  @param separator Character placed between fields in output
@@ -463,7 +463,7 @@ namespace OpenNLP.Tools.Util
    *     character. If the string contains spaces, it is wrapped in "{...}".
    */
 
-        public String toShortString(char separator, String[] what)
+        public string toShortString(char separator, string[] what)
         {
             StringBuilder s = new StringBuilder();
             for (int i = 0; i < psize; i++)
@@ -471,14 +471,14 @@ namespace OpenNLP.Tools.Util
                 bool include;
                 if (what.Length > 0)
                 {
-                    String name = keys[i].GetType().Name /*.getSimpleName()*/;
+                    string name = keys[i].GetType().Name /*.getSimpleName()*/;
                     int annoIdx = name.LastIndexOf("Annotation");
                     if (annoIdx >= 0)
                     {
                         name = name.Substring(0, annoIdx);
                     }
                     include = false;
-                    foreach (String item in what)
+                    foreach (string item in what)
                     {
                         if (item.Equals(name))
                         {
@@ -500,7 +500,7 @@ namespace OpenNLP.Tools.Util
                     s.Append(values[i]);
                 }
             }
-            String answer = s.ToString();
+            string answer = s.ToString();
             if (answer.IndexOf(' ') < 0)
             {
                 return answer;
@@ -741,7 +741,7 @@ namespace OpenNLP.Tools.Util
    */
         //@Override
         //@SuppressWarnings("unchecked")
-        /*public void prettyLog(RedwoodChannels channels, String description) {
+        /*public void prettyLog(RedwoodChannels channels, string description) {
     Redwood.startTrack(description);
 
     // sort keys by class name
@@ -751,7 +751,7 @@ namespace OpenNLP.Tools.Util
 
     // log key/value pairs
     for (Class key : sortedKeys) {
-      String keyName = key.getCanonicalName().replace("class ", "");
+      string keyName = key.getCanonicalName().replace("class ", "");
       Object value = this.get(key);
       if (PrettyLogger.dispatchable(value)) {
         PrettyLogger.log(channels, keyName, value);

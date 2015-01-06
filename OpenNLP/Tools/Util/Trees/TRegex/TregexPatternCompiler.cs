@@ -19,8 +19,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private readonly AbstractTreebankLanguagePack.BasicCategoryStringFunction basicCatFunction;
         private readonly HeadFinder headFinder;
 
-        private readonly List<Tuple<String, String>> macros =
-            new List<Tuple<String, String>>();
+        private readonly List<Tuple<string, string>> macros =
+            new List<Tuple<string, string>>();
 
         public static readonly TregexPatternCompiler defaultCompiler =
             new TregexPatternCompiler();
@@ -71,21 +71,21 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /** Define a macro for rewriting a pattern in any tregex expression compiled
    *  by this compiler. The semantics of this is that all instances of the
    *  original in the pattern are replaced by the replacement, using exactly
-   *  the semantics of String.replaceAll(original, replacement) and the
+   *  the semantics of string.replaceAll(original, replacement) and the
    *  result will then be compiled by the compiler. As such, note that a
    *  macro can replace any part of a tregex expression, in a syntax
    *  insensitive way.  Here's an example:
    *  {@code tpc.addMacro("FINITE_BE_AUX", "/^(?i:am|is|are|was|were)$/");}
    *
-   *  @param original The String to match; becomes the first argument of a
-   *                  String.replaceAll()
+   *  @param original The string to match; becomes the first argument of a
+   *                  string.replaceAll()
    *  @param replacement The replacement String; becomes the second argument
-   *                  of a String.replaceAll()
+   *                  of a string.replaceAll()
    */
 
-        public void addMacro(String original, String replacement)
+        public void addMacro(string original, string replacement)
         {
-            macros.Add(new Tuple<String, String>(original, replacement));
+            macros.Add(new Tuple<string, string>(original, replacement));
         }
 
 
@@ -104,9 +104,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @throws TregexParseException If the expression is syntactically invalid
    */
 
-        public TregexPattern compile(String tregex)
+        public TregexPattern compile(string tregex)
         {
-            foreach (Tuple<String, String> macro in macros)
+            foreach (Tuple<string, string> macro in macros)
             {
                 //tregex = tregex.replaceAll(macro.first(), macro.second());
                 tregex = Regex.Replace(tregex, macro.Item1, macro.Item2);

@@ -9,11 +9,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
     public class AuxiliaryTree
     {
-        private readonly String originalTreeString;
+        private readonly string originalTreeString;
         public readonly Tree tree;
         public Tree foot;
-        private readonly IdentityDictionary<Tree, String> nodesToNames; // no one else should be able to get this one.
-        private readonly Dictionary<String, Tree> pnamesToNodes; // this one has a getter.
+        private readonly IdentityDictionary<Tree, string> nodesToNames; // no one else should be able to get this one.
+        private readonly Dictionary<string, Tree> pnamesToNodes; // this one has a getter.
 
 
         public AuxiliaryTree(Tree tree, bool mustHaveFoot)
@@ -25,12 +25,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             {
                 throw new TsurgeonParseException("Error -- no foot node found for " + originalTreeString);
             }
-            pnamesToNodes = new Dictionary<String, Tree>();
+            pnamesToNodes = new Dictionary<string, Tree>();
             nodesToNames = new IdentityDictionary<Tree, string>();
             initializeNamesNodesMaps(tree);
         }
 
-        private AuxiliaryTree(Tree tree, Tree foot, Dictionary<String, Tree> namesToNodes, String originalTreeString)
+        private AuxiliaryTree(Tree tree, Tree foot, Dictionary<string, Tree> namesToNodes, string originalTreeString)
         {
             this.originalTreeString = originalTreeString;
             this.tree = tree;
@@ -39,13 +39,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             nodesToNames = null;
         }
 
-        public Dictionary<String, Tree> namesToNodes()
+        public Dictionary<string, Tree> namesToNodes()
         {
             return pnamesToNodes;
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return originalTreeString;
         }
@@ -56,7 +56,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         public AuxiliaryTree copy(TsurgeonMatcher matcher)
         {
-            Dictionary<String, Tree> newNamesToNodes = new Dictionary<string, Tree>();
+            Dictionary<string, Tree> newNamesToNodes = new Dictionary<string, Tree>();
             Tuple<Tree, Tree> result = copyHelper(tree, newNamesToNodes);
             //if(! result.Item1.dominates(result.Item2))
             //System.err.println("Error -- aux tree copy doesn't dominate foot copy.");
@@ -68,7 +68,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         // returns Pair<node,foot>
-        private Tuple<Tree, Tree> copyHelper(Tree node, Dictionary<String, Tree> newNamesToNodes)
+        private Tuple<Tree, Tree> copyHelper(Tree node, Dictionary<string, Tree> newNamesToNodes)
         {
             Tree clone;
             Tree newFoot = null;
@@ -117,7 +117,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         /***********************************************************/
 
 
-        private static readonly String footNodeCharacter = "@";
+        private static readonly string footNodeCharacter = "@";
 
         private static readonly Regex footNodeLabelPattern = new Regex("^(.*)" + footNodeCharacter + '$',
             RegexOptions.Compiled);
@@ -227,7 +227,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
         }
 
-        private static String unescape(String input)
+        private static string unescape(string input)
         {
             return Regex.Replace(input, "\\\\(.)", "$1");
             //return input.Replace("\\\\(.)", "$1");

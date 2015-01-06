@@ -18,7 +18,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         public readonly Tree root;
         public Tree tree;
         public IdentityDictionary<Tree, Tree> nodesToParents;
-        public readonly Dictionary<String, Tree> namesToNodes;
+        public readonly Dictionary<string, Tree> namesToNodes;
         public readonly VariableStrings variableStrings;
 
         // these things are used by "find"
@@ -28,7 +28,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         public readonly HeadFinder headFinder;
 
         public TregexMatcher(Tree root, Tree tree, IdentityDictionary<Tree, Tree> nodesToParents,
-            Dictionary<String, Tree> namesToNodes, VariableStrings variableStrings, HeadFinder headFinder)
+            Dictionary<string, Tree> namesToNodes, VariableStrings variableStrings, HeadFinder headFinder)
         {
             this.root = root;
             this.tree = tree;
@@ -192,12 +192,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @return node labeled by the name
    */
 
-        public Tree getNode(String name)
+        public Tree getNode(string name)
         {
             return namesToNodes[name];
         }
 
-        public List<String> getNodeNames()
+        public List<string> getNodeNames()
         {
             return namesToNodes.Keys.ToList();
         }
@@ -239,7 +239,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * it returns null.
    */
 
-        public String getVariableString(String var)
+        public string getVariableString(string var)
         {
             return variableStrings.getString(var);
         }

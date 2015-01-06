@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         //@Override
-        public virtual Tree newLeaf( /*final*/ String word)
+        public virtual Tree newLeaf( /*final*/ string word)
         {
             return new SimpleTree();
         }
@@ -32,7 +32,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         //@Override
-        public virtual Tree newTreeNode( /*final*/ String parent, /*final */List<Tree> children)
+        public virtual Tree newTreeNode( /*final*/ string parent, /*final */List<Tree> children)
         {
             return new SimpleTree(null, children);
         }

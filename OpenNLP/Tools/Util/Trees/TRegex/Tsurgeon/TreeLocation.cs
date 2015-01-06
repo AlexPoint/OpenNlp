@@ -9,11 +9,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
     public class TreeLocation
     {
-        private readonly String relation;
+        private readonly string relation;
 
         private readonly TsurgeonPattern child;
 
-        public TreeLocation(String relation, TsurgeonPattern p)
+        public TreeLocation(string relation, TsurgeonPattern p)
         {
             this.relation = relation;
             this.child = p;
@@ -26,7 +26,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         private static readonly Regex daughterPattern = new Regex(">-?([0-9]+)", RegexOptions.Compiled);
 
-        public LocationMatcher matcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public LocationMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new LocationMatcher(newNodeNames, coindexer, this);
         }
@@ -35,13 +35,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         public class LocationMatcher
         {
-            private Dictionary<String, Tree> newNodeNames;
+            private Dictionary<string, Tree> newNodeNames;
             private CoindexationGenerator coindexer;
             private TreeLocation location;
 
             private TsurgeonMatcher childMatcher;
 
-            public LocationMatcher(Dictionary<String, Tree> newNodeNames, CoindexationGenerator coindexer,
+            public LocationMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer,
                 TreeLocation location)
             {
                 this.newNodeNames = newNodeNames;
@@ -92,7 +92,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return relation + " " + child;
         }

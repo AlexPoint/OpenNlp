@@ -8,7 +8,7 @@ using OpenNLP.Tools.Util.Ling;
 namespace OpenNLP.Tools.Util.Ling
 {
     /**
- * A <code>Word</code> object acts as a Label by containing a String.
+ * A <code>Word</code> object acts as a Label by containing a string.
  * This class is in essence identical to a <code>StringLabel</code>, but
  * it also uses the value to implement the <code>HasWord</code> interface.
  *
@@ -19,9 +19,9 @@ namespace OpenNLP.Tools.Util.Ling
     public class Word : StringLabel, HasWord
     {
         /**
-   * String representation of an empty.
+   * string representation of an empty.
    */
-        public static readonly String EMPTY_STRING = "*t*";
+        public static readonly string EMPTY_STRING = "*t*";
 
         /**
    * Word representation of an empty.
@@ -39,20 +39,20 @@ namespace OpenNLP.Tools.Util.Ling
         /**
    * Construct a new word, with the given value.
    *
-   * @param word String value of the Word
+   * @param word string value of the Word
    */
 
-        public Word(String word) : base(word)
+        public Word(string word) : base(word)
         {
         }
 
         /**
    * Construct a new word, with the given value.
    *
-   * @param word String value of the Word
+   * @param word string value of the Word
    */
 
-        public Word(String word, int beginPosition, int endPosition) :
+        public Word(string word, int beginPosition, int endPosition) :
             base(word, beginPosition, endPosition)
         {
         }
@@ -71,14 +71,14 @@ namespace OpenNLP.Tools.Util.Ling
 
 
         //@Override
-        public String word()
+        public string word()
         {
             return value();
         }
 
 
         //@Override
-        public void setWord(String word)
+        public void setWord(string word)
         {
             setValue(word);
         }

@@ -112,7 +112,7 @@ namespace OpenNLP.Tools.Util.Trees
      * @return The created label
      */
 
-            public Label newLabel( /*final*/ String labelStr)
+            public Label newLabel( /*final*/ string labelStr)
             {
                 return new SimpleConstituent(0, 0);
             }
@@ -126,7 +126,7 @@ namespace OpenNLP.Tools.Util.Trees
      * @return The created label
      */
 
-            public Label newLabel( /*final*/ String labelStr, /*final */int options)
+            public Label newLabel( /*final*/ string labelStr, /*final */int options)
             {
                 return newLabel(labelStr);
             }
@@ -139,7 +139,7 @@ namespace OpenNLP.Tools.Util.Trees
      * @return The created label
      */
 
-            public Label newLabelFromString( /*final*/ String labelStr)
+            public Label newLabelFromString( /*final*/ string labelStr)
             {
                 return newLabel(labelStr);
             }

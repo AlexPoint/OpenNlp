@@ -18,9 +18,9 @@ namespace OpenNLP.Tools.Util.Ling
         /**
    * Return the tag value of the label (or null if none).
    *
-   * @return String the tag value for the label
+   * @return string the tag value for the label
    */
-        String tag();
+        string tag();
 
 
         /**
@@ -28,6 +28,6 @@ namespace OpenNLP.Tools.Util.Ling
          *
          * @param tag The tag value for the label
          */
-        void setTag(String tag);
+        void setTag(string tag);
     }
 }

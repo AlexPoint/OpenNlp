@@ -13,14 +13,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
     public class VariableStrings
     {
-        private readonly Dictionary<String, String> varsToStrings;
-        //private readonly IntCounter<String> numVarsSet;
-        private readonly Dictionary<String, int> numVarsSet;
+        private readonly Dictionary<string, string> varsToStrings;
+        //private readonly IntCounter<string> numVarsSet;
+        private readonly Dictionary<string, int> numVarsSet;
 
         public VariableStrings()
         {
             varsToStrings = new Dictionary<string, string>();
-            //numVarsSet = new IntCounter<String>(MapFactory.<String, MutableInteger>arrayMapFactory());
+            //numVarsSet = new IntCounter<string>(MapFactory.<string, MutableInteger>arrayMapFactory());
             numVarsSet = new Dictionary<string, int>();
         }
 
@@ -30,15 +30,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             varsToStrings.Clear();
         }
 
-        public bool isSet(String o)
+        public bool isSet(string o)
         {
             return numVarsSet.ContainsKey(o) && numVarsSet[o] >= 1;
             //return numVarsSet.getCount(o) >= 1;
         }
 
-        public void setVar(String var, String string1)
+        public void setVar(string var, string string1)
         {
-            String oldString = null;
+            string oldString = null;
             //var success = varsToStrings.TryGetValue(var,string1);
             if (varsToStrings.ContainsKey(var))
             {
@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        public void unsetVar(String var)
+        public void unsetVar(string var)
         {
             /*if(numVarsSet.getCount(var) > 0)
       numVarsSet.decrementCount(var);
@@ -79,18 +79,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        public String getString(String var)
+        public string getString(string var)
         {
             return varsToStrings[var];
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder s = new StringBuilder();
             s.Append("{");
             bool appended = false;
-            foreach (String key in varsToStrings.Keys)
+            foreach (string key in varsToStrings.Keys)
             {
                 if (appended)
                 {

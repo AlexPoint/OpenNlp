@@ -12,8 +12,8 @@ namespace OpenNLP.Tools.Util.Process
     {
         Tokenizer<T> getTokenizer(TextReader r);
 
-        Tokenizer<T> getTokenizer(TextReader r, String extraOptions);
+        Tokenizer<T> getTokenizer(TextReader r, string extraOptions);
 
-        void setOptions(String options);
+        void setOptions(string options);
     }
 }

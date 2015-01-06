@@ -31,13 +31,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         }
 
         //@Override
-        public override String localString()
+        public override string localString()
         {
             return (isConj ? "and" : "or");
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             if (isConj)
@@ -78,7 +78,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         //@Override
         public override TregexMatcher matcher(Tree root, Tree tree,
             IdentityDictionary<Tree, Tree> nodesToParents,
-            Dictionary<String, Tree> namesToNodes,
+            Dictionary<string, Tree> namesToNodes,
             VariableStrings variableStrings,
             HeadFinder headFinder)
         {
@@ -96,7 +96,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public CoordinationMatcher(CoordinationPattern n, Tree root, Tree tree,
                 IdentityDictionary<Tree, Tree> nodesToParents,
-                Dictionary<String, Tree> namesToNodes,
+                Dictionary<string, Tree> namesToNodes,
                 VariableStrings variableStrings,
                 HeadFinder headFinder) :
                     base(root, tree, nodesToParents, namesToNodes, variableStrings, headFinder)

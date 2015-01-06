@@ -36,7 +36,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         /**
          * Names the type of dependency (subject, instrument, ...).
-         * This might be a String in the simplest case, but can provide for
+         * This might be a string in the simplest case, but can provide for
          * arbitrary object types.
          * @return the name for this dependency type
          */
@@ -50,13 +50,13 @@ namespace OpenNLP.Tools.Util.Trees
         bool equalsIgnoreName(Object o);
 
         /**
-         * Provide different printing options via a String keyword.
+         * Provide different printing options via a string keyword.
          * The main recognized option currently is "xml".  Otherwise the
          * default ToString() is used.
          * @param format A format string, either "xml" or you get the default
-         * @return A String representation of the dependency
+         * @return A string representation of the dependency
          */
-        String ToString(String format);
+        string ToString(string format);
 
         /**
          * Provide a factory for this kind of dependency

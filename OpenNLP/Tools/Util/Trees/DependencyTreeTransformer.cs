@@ -45,12 +45,12 @@ namespace OpenNLP.Tools.Util.Trees
             return stripEmptyNode(t);
         }
 
-        protected static String cleanUpRoot(String label)
+        protected static string cleanUpRoot(string label)
         {
             if (label == null || label.Equals("TOP"))
             {
                 return "ROOT";
-                // String constants are always interned
+                // string constants are always interned
             }
             else
             {
@@ -59,7 +59,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         // only leaves NP-TMP and NP-ADV
-        protected String cleanUpLabel(String label)
+        protected string cleanUpLabel(string label)
         {
             if (label == null)
             {
@@ -84,7 +84,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (! t.isLeaf())
             {
-                String label = cleanUpLabel(t.value());
+                string label = cleanUpLabel(t.value());
                 t.setValue(label);
                 foreach (Tree child in t.getChildrenAsList())
                 {

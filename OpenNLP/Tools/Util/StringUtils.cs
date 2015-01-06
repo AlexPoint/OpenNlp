@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace OpenNLP.Tools.Util
 {
     /**
- * StringUtils is a class for random String things, including output
+ * StringUtils is a class for random string things, including output
  * formatting and command line argument parsing.
  *
  * @author Dan Klein
@@ -20,26 +20,26 @@ namespace OpenNLP.Tools.Util
 
     public static class StringUtils
     {
-        public static readonly String[] EMPTY_STRING_ARRAY = new String[0];
-        private static readonly String PROP = "prop";
-        private static readonly String PROPS = "props";
-        private static readonly String PROPERTIES = "properties";
-        private static readonly String ARGS = "args";
-        private static readonly String ARGUMENTS = "arguments";
+        public static readonly string[] EMPTY_STRING_ARRAY = new string[0];
+        private static readonly string PROP = "prop";
+        private static readonly string PROPS = "props";
+        private static readonly string PROPERTIES = "properties";
+        private static readonly string ARGS = "args";
+        private static readonly string ARGUMENTS = "arguments";
 
         /**
    * Say whether this regular expression can be found inside
-   * this String.  This method provides one of the two "missing"
-   * convenience methods for regular expressions in the String class
+   * this string.  This method provides one of the two "missing"
+   * convenience methods for regular expressions in the string class
    * in JDK1.4.  This is the one you'll want to use all the time if
    * you're used to Perl.  What were they smoking?
    *
-   * @param str   String to search for match in
-   * @param regex String to compile as the regular expression
+   * @param str   string to search for match in
+   * @param regex string to compile as the regular expression
    * @return Whether the regex can be found in str
    */
 
-        public static bool find(String str, String regex)
+        public static bool find(string str, string regex)
         {
             return Regex.IsMatch(str, regex);
         }
@@ -51,9 +51,9 @@ namespace OpenNLP.Tools.Util
    * @return true if s case-insensitively matches a string in c
    */
 
-        public static bool containsIgnoreCase(List<String> c, String s)
+        public static bool containsIgnoreCase(List<string> c, string s)
         {
-            foreach (String squote in c)
+            foreach (string squote in c)
             {
                 if (squote.Equals(s, StringComparison.InvariantCultureIgnoreCase))
                     return true;
@@ -63,16 +63,16 @@ namespace OpenNLP.Tools.Util
 
         /**
    * Say whether this regular expression can be found at the beginning of
-   * this String.  This method provides one of the two "missing"
-   * convenience methods for regular expressions in the String class
+   * this string.  This method provides one of the two "missing"
+   * convenience methods for regular expressions in the string class
    * in JDK1.4.
    *
-   * @param str   String to search for match at start of
-   * @param regex String to compile as the regular expression
+   * @param str   string to search for match at start of
+   * @param regex string to compile as the regular expression
    * @return Whether the regex can be found at the start of str
    */
 
-        public static bool lookingAt(String str, String regex)
+        public static bool lookingAt(string str, string regex)
         {
             return Regex.IsMatch(str, "^" + regex);
             //return Pattern.compile(regex).matcher(str).lookingAt();
@@ -81,17 +81,17 @@ namespace OpenNLP.Tools.Util
         /**
    * Takes a string of the form "x1=y1,x2=y2,..." such
    * that each y is an integer and each x is a key.  A
-   * String[] s is returned such that s[yn]=xn
+   * string[] s is returned such that s[yn]=xn
    * @param map A string of the form "x1=y1,x2=y2,..." such
    *     that each y is an integer and each x is a key.
-   * @return  A String[] s is returned such that s[yn]=xn
+   * @return  A string[] s is returned such that s[yn]=xn
    */
 
-        public static String[] mapStringToArray(String map)
+        public static string[] mapStringToArray(string map)
         {
-            String[] m = map.Split(new[] {'[', ',', ';', ']'});
+            string[] m = map.Split(new[] {'[', ',', ';', ']'});
             int maxIndex = 0;
-            String[] keys = new String[m.Length];
+            string[] keys = new string[m.Length];
             int[] indices = new int[m.Length];
             for (int i = 0; i < m.Length; i++)
             {
@@ -103,7 +103,7 @@ namespace OpenNLP.Tools.Util
                     maxIndex = indices[i];
                 }
             }
-            String[] mapArr = new String[maxIndex + 1];
+            string[] mapArr = new string[maxIndex + 1];
             //Arrays.fill(mapArr, null);
             for (int i = 0; i < m.Length; i++)
             {
@@ -119,24 +119,24 @@ namespace OpenNLP.Tools.Util
    * @return  A Map m is returned such that m.get(xn) = yn
    */
 
-        public static Dictionary<String, String> mapStringToMap(String map)
+        public static Dictionary<string, string> mapStringToMap(string map)
         {
-            String[] m = map.Split(new[] {'[', ',', ';', ']'});
-            Dictionary<String, String> res = new Dictionary<string, string>();
-            foreach (String str in m)
+            string[] m = map.Split(new[] {'[', ',', ';', ']'});
+            Dictionary<string, string> res = new Dictionary<string, string>();
+            foreach (string str in m)
             {
                 int index = str.LastIndexOf('=');
-                String key = str.Substring(0, index);
-                String val = str.Substring(index + 1);
+                string key = str.Substring(0, index);
+                string val = str.Substring(index + 1);
                 res.Add(key.Trim(), val.Trim());
             }
             return res;
         }
 
-        public static List<Regex> regexesToPatterns(IEnumerable<String> regexes)
+        public static List<Regex> regexesToPatterns(IEnumerable<string> regexes)
         {
             List<Regex> patterns = new List<Regex>();
-            foreach (String regex in regexes)
+            foreach (string regex in regexes)
             {
                 patterns.Add(new Regex(regex));
             }
@@ -149,7 +149,7 @@ namespace OpenNLP.Tools.Util
    * null. Note that this uses Matcher.find() rather than Matcher.matches().
    * If str is null, returns null.
    */
-        /*public static List<String> regexGroups(Regex regex, String str) {
+        /*public static List<string> regexGroups(Regex regex, string str) {
     if (str == null) {
       return null;
     }
@@ -159,7 +159,7 @@ namespace OpenNLP.Tools.Util
       return null;
     }
 
-    List<String> groups = new List<String>();
+    List<string> groups = new List<string>();
     for (int index = 1; index <= matcher.groupCount(); index++) {
       groups.Add(matcher.group(index));
     }
@@ -169,26 +169,26 @@ namespace OpenNLP.Tools.Util
 
         /**
    * Say whether this regular expression matches
-   * this String.  This method is the same as the String.matches() method,
+   * this string.  This method is the same as the string.matches() method,
    * and is included just to give a call that is parallel to the other
    * static regex methods in this class.
    *
-   * @param str   String to search for match at start of
-   * @param regex String to compile as the regular expression
+   * @param str   string to search for match at start of
+   * @param regex string to compile as the regular expression
    * @return Whether the regex matches the whole of this str
    */
-        /*public static bool matches(String str, String regex) {
+        /*public static bool matches(string str, string regex) {
     return Pattern.compile(regex).matcher(str).matches();
   }*/
 
 
-        /*public static Set<String> stringToSet(String str, String delimiter)
+        /*public static Set<string> stringToSet(string str, string delimiter)
   {
-    Set<String> ret = null;
+    Set<string> ret = null;
     if (str != null) {
-      String[] fields = str.Split(delimiter);
+      string[] fields = str.Split(delimiter);
       ret = Generics.newHashSet(fields.Length);
-      for (String field:fields) {
+      for (string field:fields) {
         field = field.Trim();
         ret.Add(field);
       }
@@ -197,7 +197,7 @@ namespace OpenNLP.Tools.Util
   }*/
 
 
-        /*public static String joinWords(Iterable<? extends HasWord> l, String glue) {
+        /*public static string joinWords(Iterable<? extends HasWord> l, string glue) {
     StringBuilder sb = new StringBuilder();
     bool first = true;
     for (HasWord o : l) {
@@ -212,7 +212,7 @@ namespace OpenNLP.Tools.Util
   }
 
 
-  public static <E> String join(List<? extends E> l, String glue, Function<E,String> toStringFunc, int start, int end) {
+  public static <E> string join(List<? extends E> l, string glue, Function<E,String> toStringFunc, int start, int end) {
     StringBuilder sb = new StringBuilder();
     bool first = true;
     start = Math.max(start, 0);
@@ -228,51 +228,51 @@ namespace OpenNLP.Tools.Util
     return sb.ToString();
   }
 
-  public static String joinWords(List<? extends HasWord> l, String glue, int start, int end) {
+  public static string joinWords(List<? extends HasWord> l, string glue, int start, int end) {
     return join(l, glue, in -> in.word(), start, end);
   }
 
-  public static readonly Function<Object,String> DEFAULT_TOSTRING = new Function<Object, String>() {
+  public static readonly Function<Object,String> DEFAULT_TOSTRING = new Function<Object, string>() {
     @Override
-    public String apply(Object in) {
+    public string apply(Object in) {
       return in.ToString();
     }
   };
 
-  public static String joinFields(List<? extends CoreMap> l, readonly Class field, readonly String defaultFieldValue,
-                                  String glue, int start, int end, readonly Function<Object,String> toStringFunc) {
-    return join(l, glue, new Function<CoreMap, String>() {
-      public String apply(CoreMap in) {
+  public static string joinFields(List<? extends CoreMap> l, readonly Class field, readonly string defaultFieldValue,
+                                  string glue, int start, int end, readonly Function<Object,String> toStringFunc) {
+    return join(l, glue, new Function<CoreMap, string>() {
+      public string apply(CoreMap in) {
         Object val = in.get(field);
         return (val != null)? toStringFunc.apply(val):defaultFieldValue;
       }
     }, start, end);
   }
 
-  public static String joinFields(List<? extends CoreMap> l, readonly Class field, readonly String defaultFieldValue,
-                                  String glue, int start, int end) {
+  public static string joinFields(List<? extends CoreMap> l, readonly Class field, readonly string defaultFieldValue,
+                                  string glue, int start, int end) {
     return joinFields(l, field, defaultFieldValue, glue, start, end, DEFAULT_TOSTRING);
   }
 
-  public static String joinFields(List<? extends CoreMap> l, readonly Class field, readonly Function<Object,String> toStringFunc) {
+  public static string joinFields(List<? extends CoreMap> l, readonly Class field, readonly Function<Object,String> toStringFunc) {
     return joinFields(l, field, "-", " ", 0, l.size(), toStringFunc);
   }
 
-  public static String joinFields(List<? extends CoreMap> l, readonly Class field) {
+  public static string joinFields(List<? extends CoreMap> l, readonly Class field) {
     return joinFields(l, field, "-", " ", 0, l.size());
   }
 
-  public static String joinMultipleFields(List<? extends CoreMap> l, readonly Class[] fields, readonly String defaultFieldValue,
-                                          readonly String fieldGlue, String glue, int start, int end, readonly Function<Object,String> toStringFunc) {
-    return join(l, glue, new Function<CoreMap, String>() {
-      public String apply(CoreMap in) {
+  public static string joinMultipleFields(List<? extends CoreMap> l, readonly Class[] fields, readonly string defaultFieldValue,
+                                          readonly string fieldGlue, string glue, int start, int end, readonly Function<Object,String> toStringFunc) {
+    return join(l, glue, new Function<CoreMap, string>() {
+      public string apply(CoreMap in) {
         StringBuilder sb = new StringBuilder();
         for (Class field: fields) {
           if (sb.Length() > 0) {
             sb.Append(fieldGlue);
           }
           Object val = in.get(field);
-          String str = (val != null)? toStringFunc.apply(val):defaultFieldValue;
+          string str = (val != null)? toStringFunc.apply(val):defaultFieldValue;
           sb.Append(str);
         }
         return sb.ToString();
@@ -280,16 +280,16 @@ namespace OpenNLP.Tools.Util
     }, start, end);
   }
 
-  public static String joinMultipleFields(List<? extends CoreMap> l, readonly Class[] fields, readonly Function<Object,String> toStringFunc) {
+  public static string joinMultipleFields(List<? extends CoreMap> l, readonly Class[] fields, readonly Function<Object,String> toStringFunc) {
     return joinMultipleFields(l, fields, "-", "/", " ", 0, l.size(), toStringFunc);
   }
 
-  public static String joinMultipleFields(List<? extends CoreMap> l, readonly Class[] fields, readonly String defaultFieldValue,
-                                          readonly String fieldGlue, String glue, int start, int end) {
+  public static string joinMultipleFields(List<? extends CoreMap> l, readonly Class[] fields, readonly string defaultFieldValue,
+                                          readonly string fieldGlue, string glue, int start, int end) {
     return joinMultipleFields(l, fields, defaultFieldValue, fieldGlue, glue, start, end, DEFAULT_TOSTRING);
   }
 
-  public static String joinMultipleFields(List<? extends CoreMap> l, readonly Class[] fields) {
+  public static string joinMultipleFields(List<? extends CoreMap> l, readonly Class[] fields) {
     return joinMultipleFields(l, fields, "-", "/", " ", 0, l.size());
   }
 
@@ -299,7 +299,7 @@ namespace OpenNLP.Tools.Util
    * @param tokens list of tokens which implement {@link HasOffset} and {@link HasWord}
    * @return a string of the tokens with the appropriate amount of spacing
    #1#
-  public static String joinWithOriginalWhiteSpace(List<CoreLabel> tokens) {
+  public static string joinWithOriginalWhiteSpace(List<CoreLabel> tokens) {
     if (tokens.isEmpty()) {
       return "";
     }
@@ -326,7 +326,7 @@ namespace OpenNLP.Tools.Util
    * For example, given a list of {@code Integers}, you can create
    * a comma-separated list by calling {@code join(numbers, ", ")}.
    #1#
-  public static <X> String join(Iterable<X> l, String glue) {
+  public static <X> string join(Iterable<X> l, string glue) {
     StringBuilder sb = new StringBuilder();
     bool first = true;
     for (X o : l) {
@@ -347,7 +347,7 @@ namespace OpenNLP.Tools.Util
 //   * of Integers, you can create a comma-separated list by calling
 //   * <tt>join(numbers, ", ")</tt>.
 //   #1#
-//  public static String join(List l, String glue) {
+//  public static string join(List l, string glue) {
 //    StringBuilder sb = new StringBuilder();
 //    for (int i = 0, sz = l.size(); i < sz; i++) {
 //      if (i > 0) {
@@ -363,56 +363,56 @@ namespace OpenNLP.Tools.Util
    * list of ints, you can create a comma-separated list by calling
    * <code>join(numbers, ", ")</code>.
    #1#
-  public static String join(Object[] elements, String glue) {
+  public static string join(Object[] elements, string glue) {
     return (join(Arrays.asList(elements), glue));
   }
 
   /**
    * Joins elems with a space.
    #1#
-  public static String join(Iterable<?> l) {
+  public static string join(Iterable<?> l) {
     return join(l, " ");
   }
 
   /**
    * Joins elements with a space.
    #1#
-  public static String join(Object[] elements) {
+  public static string join(Object[] elements) {
     return (join(elements, " "));
   }*/
 
 
         /**
    * Splits on whitespace (\\s+).
-   * @param s String to split
-   * @return List<String> of split strings
+   * @param s string to split
+   * @return List<string> of split strings
    */
 
-        public static List<String> split(String s)
+        public static List<string> split(string s)
         {
             return split(s, "\\s+");
         }
 
         /**
    * Splits the given string using the given regex as delimiters.
-   * This method is the same as the String.Split() method (except it throws
+   * This method is the same as the string.Split() method (except it throws
    * the results in a List),
    * and is included just to give a call that is parallel to the other
    * static regex methods in this class.
    *
-   * @param str   String to split up
-   * @param regex String to compile as the regular expression
+   * @param str   string to split up
+   * @param regex string to compile as the regular expression
    * @return List of Strings resulting from splitting on the regex
    */
 
-        public static List<String> split(String str, String regex)
+        public static List<string> split(string str, string regex)
         {
             return Regex.Split(str, regex).ToList();
         }
 
-        /*public static String[] splitOnChar(String input, char delimiter) {
+        /*public static string[] splitOnChar(string input, char delimiter) {
     // State
-    String[] out = new String[input.Length() + 1];
+    string[] out = new string[input.Length() + 1];
     int nextIndex = 0;
     int lastDelimiterIndex = -1;
     char[] chars = input.toCharArray();
@@ -421,13 +421,13 @@ namespace OpenNLP.Tools.Util
       if (i >= chars.Length || chars[i] == delimiter) {
         char[] tokenChars = new char[i - (lastDelimiterIndex + 1)];
         System.arraycopy(chars, lastDelimiterIndex + 1, tokenChars, 0, tokenChars.Length);
-        out[nextIndex] = new String(tokenChars);
+        out[nextIndex] = new string(tokenChars);
         nextIndex += 1;
         lastDelimiterIndex = i;
       }
     }
     // Clean Result
-    String[] trimmedOut = new String[nextIndex];
+    string[] trimmedOut = new string[nextIndex];
     System.arraycopy(out, 0, trimmedOut, 0, trimmedOut.Length);
     return trimmedOut;
   }
@@ -441,12 +441,12 @@ namespace OpenNLP.Tools.Util
    * @param delimiter
    * @return
    #1#
-  public static List<List<String>> splitFieldsFast(String str, String delimiter) {
-    List<List<String>> fields = Generics.newArrayList();
+  public static List<List<string>> splitFieldsFast(string str, string delimiter) {
+    List<List<string>> fields = Generics.newArrayList();
     StringTokenizer tokenizer = new StringTokenizer(str.Trim());
-    List<String> currentField = Generics.newArrayList();
+    List<string> currentField = Generics.newArrayList();
     while(tokenizer.hasMoreTokens()) {
-      String token = tokenizer.nextToken();
+      string token = tokenizer.nextToken();
       if (token.equals(delimiter)) {
         fields.Add(currentField);
         currentField = Generics.newArrayList();
@@ -464,30 +464,30 @@ namespace OpenNLP.Tools.Util
    *  separatorRegex (unlike for the conventional split), you can do things
    *  like correctly split quoted strings or parenthesized arguments.
    *  However, it doesn't do the unquoting of quoted Strings for you.
-   *  An empty String argument is returned at the beginning, if valueRegex
-   *  accepts the empty String and str begins with separatorRegex.
+   *  An empty string argument is returned at the beginning, if valueRegex
+   *  accepts the empty string and str begins with separatorRegex.
    *  But str can end with either valueRegex or separatorRegex and this does
-   *  not generate an empty String at the end (indeed, valueRegex need not
-   *  even accept the empty String in this case.  However, if it does accept
-   *  the empty String and there are multiple trailing separators, then
+   *  not generate an empty string at the end (indeed, valueRegex need not
+   *  even accept the empty string in this case.  However, if it does accept
+   *  the empty string and there are multiple trailing separators, then
    *  empty values will be returned.
    *
-   *  @param str The String to split
+   *  @param str The string to split
    *  @param valueRegex Must match a token. You may wish to let it match the empty String
    *  @param separatorRegex Must match a separator
    *  @return The List of tokens
    *  @throws IllegalArgumentException if str cannot be tokenized by the two regex
    #1#
-  public static List<String> valueSplit(String str, String valueRegex, String separatorRegex) {
+  public static List<string> valueSplit(string str, string valueRegex, string separatorRegex) {
     Pattern vPat = Pattern.compile(valueRegex);
     Pattern sPat = Pattern.compile(separatorRegex);
-    List<String> ret = new ArrayList<String>();
+    List<string> ret = new ArrayList<string>();
     while (str.Length() > 0) {
       Matcher vm = vPat.matcher(str);
       if (vm.lookingAt()) {
         ret.Add(vm.group());
         str = str.Substring(vm.end());
-        // String got = vm.group();
+        // string got = vm.group();
         // System.err.println("vmatched " + got + "; now str is " + str);
       } else {
         throw new IllegalArgumentException("valueSplit: " + valueRegex + " doesn't match " + str);
@@ -496,7 +496,7 @@ namespace OpenNLP.Tools.Util
         Matcher sm = sPat.matcher(str);
         if (sm.lookingAt()) {
           str = str.Substring(sm.end());
-          // String got = sm.group();
+          // string got = sm.group();
           // System.err.println("smatched " + got + "; now str is " + str);
         } else {
           throw new IllegalArgumentException("valueSplit: " + separatorRegex + " doesn't match " + str);
@@ -508,13 +508,13 @@ namespace OpenNLP.Tools.Util
 
 
         /**
-   * Return a String of length a minimum of totalChars characters by
-   * padding the input String str at the right end with spaces.
+   * Return a string of length a minimum of totalChars characters by
+   * padding the input string str at the right end with spaces.
    * If str is already longer
    * than totalChars, it is returned unchanged.
    */
 
-        public static String pad(String str, int totalChars)
+        public static string pad(string str, int totalChars)
         {
             if (str == null)
             {
@@ -533,7 +533,7 @@ namespace OpenNLP.Tools.Util
    * Pads the ToString value of the given Object.
    */
 
-        public static String pad(Object obj, int totalChars)
+        public static string pad(Object obj, int totalChars)
         {
             return pad(obj.ToString(), totalChars);
         }
@@ -542,11 +542,11 @@ namespace OpenNLP.Tools.Util
         /**
    * Pad or trim so as to produce a string of exactly a certain length.
    *
-   * @param str The String to be padded or truncated
+   * @param str The string to be padded or truncated
    * @param num The desired length
    */
 
-        public static String padOrTrim(String str, int num)
+        public static string padOrTrim(string str, int num)
         {
             if (str == null)
             {
@@ -575,11 +575,11 @@ namespace OpenNLP.Tools.Util
         /**
    * Pad or trim so as to produce a string of exactly a certain length.
    *
-   * @param str The String to be padded or truncated
+   * @param str The string to be padded or truncated
    * @param num The desired length
    */
 
-        public static String padLeftOrTrim(String str, int num)
+        public static string padLeftOrTrim(string str, int num)
         {
             if (str == null)
             {
@@ -610,18 +610,18 @@ namespace OpenNLP.Tools.Util
    * Pad or trim the ToString value of the given Object.
    */
 
-        public static String padOrTrim(Object obj, int totalChars)
+        public static string padOrTrim(Object obj, int totalChars)
         {
             return padOrTrim(obj.ToString(), totalChars);
         }
 
 
         /**
-   * Pads the given String to the left with the given character to ensure that
+   * Pads the given string to the left with the given character to ensure that
    * it's at least totalChars long.
    */
 
-        public static String padLeft(String str, int totalChars, char ch)
+        public static string padLeft(string str, int totalChars, char ch)
         {
             if (str == null)
             {
@@ -638,27 +638,27 @@ namespace OpenNLP.Tools.Util
 
 
         /**
-   * Pads the given String to the left with spaces to ensure that it's
+   * Pads the given string to the left with spaces to ensure that it's
    * at least totalChars long.
    */
 
-        public static String padLeft(String str, int totalChars)
+        public static string padLeft(string str, int totalChars)
         {
             return padLeft(str, totalChars, ' ');
         }
 
 
-        public static String padLeft(Object obj, int totalChars)
+        public static string padLeft(Object obj, int totalChars)
         {
             return padLeft(obj.ToString(), totalChars);
         }
 
-        public static String padLeft(int i, int totalChars)
+        public static string padLeft(int i, int totalChars)
         {
             return padLeft(i, totalChars);
         }
 
-        public static String padLeft(double d, int totalChars)
+        public static string padLeft(double d, int totalChars)
         {
             return padLeft(d, totalChars);
         }
@@ -667,7 +667,7 @@ namespace OpenNLP.Tools.Util
    * Returns s if it's at most maxWidth chars, otherwise chops right side to fit.
    */
 
-        public static String Trim(String s, int maxWidth)
+        public static string Trim(string s, int maxWidth)
         {
             if (s.Length <= maxWidth)
             {
@@ -676,12 +676,12 @@ namespace OpenNLP.Tools.Util
             return (s.Substring(0, maxWidth));
         }
 
-        public static String Trim(Object obj, int maxWidth)
+        public static string Trim(Object obj, int maxWidth)
         {
             return Trim(obj.ToString(), maxWidth);
         }
 
-        public static String repeat(String s, int times)
+        public static string repeat(string s, int times)
         {
             if (times == 0)
             {
@@ -695,7 +695,7 @@ namespace OpenNLP.Tools.Util
             return sb.ToString();
         }
 
-        public static String repeat(char ch, int times)
+        public static string repeat(char ch, int times)
         {
             if (times == 0)
             {
@@ -714,7 +714,7 @@ namespace OpenNLP.Tools.Util
    * been converted to dashes and all non-alphanumeric chars are underscores.
    */
 
-        public static String fileNameClean(String s)
+        public static string fileNameClean(string s)
         {
             char[] chars = s.ToCharArray();
             StringBuilder sb = new StringBuilder();
@@ -744,7 +744,7 @@ namespace OpenNLP.Tools.Util
    * if there are less than n occurrences of ch.
    */
 
-        public static int nthIndex(String s, char ch, int n)
+        public static int nthIndex(string s, char ch, int n)
         {
             int index = 0;
             for (int i = 0; i < n; i++)
@@ -771,7 +771,7 @@ namespace OpenNLP.Tools.Util
    * inclusive.
    */
 
-        public static String truncate(int n, int smallestDigit, int biggestDigit)
+        public static string truncate(int n, int smallestDigit, int biggestDigit)
         {
             int numDigits = biggestDigit - smallestDigit + 1;
             char[] result = new char[numDigits];
@@ -784,7 +784,7 @@ namespace OpenNLP.Tools.Util
                 result[j] = (char) (n%10);
                 n = n/10;
             }
-            return new String(result);
+            return new string(result);
         }
 
         /**
@@ -795,7 +795,7 @@ namespace OpenNLP.Tools.Util
    * will be parsed so that the flag is a key in the Map (including
    * the hyphen) and its value will be a {@link String}[] containing
    * the optional arguments (if present).  The non-flag values not
-   * captured as flag arguments are collected into a String[] array
+   * captured as flag arguments are collected into a string[] array
    * and returned as the value of <code>null</code> in the Map.  In
    * this invocation, flags cannot take arguments, so all the {@link
    * String} array values other than the value for <code>null</code>
@@ -805,8 +805,8 @@ namespace OpenNLP.Tools.Util
    * @return a {@link Map} of flag names to flag argument {@link
    *         String} arrays.
    */
-        /*public static Map<String, String[]> argsToMap(String[] args) {
-    return argsToMap(args, Collections.<String,Integer>emptyMap());
+        /*public static Map<string, string[]> argsToMap(string[] args) {
+    return argsToMap(args, Collections.<string,Integer>emptyMap());
   }*/
 
         /**
@@ -817,7 +817,7 @@ namespace OpenNLP.Tools.Util
    * will be parsed so that the flag is a key in the Map (including
    * the hyphen) and its value will be a {@link String}[] containing
    * the optional arguments (if present).  The non-flag values not
-   * captured as flag arguments are collected into a String[] array
+   * captured as flag arguments are collected into a string[] array
    * and returned as the value of <code>null</code> in the Map.  In
    * this invocation, the maximum number of arguments for each flag
    * can be specified as an {@link Integer} value of the appropriate
@@ -834,7 +834,7 @@ namespace OpenNLP.Tools.Util
    * </code>
    * <p/>
    * If a given flag appears more than once, the extra args are appended to
-   * the String[] value for that flag.
+   * the string[] value for that flag.
    *
    * @param args           the argument array to be parsed
    * @param flagsToNumArgs a {@link Map} of flag names to {@link Integer}
@@ -842,21 +842,21 @@ namespace OpenNLP.Tools.Util
    *                       for that flag (default min 0, max 1).
    * @return a {@link Map} of flag names to flag argument {@link String}
    */
-        /*public static Map<String, String[]> argsToMap(String[] args, Map<String, Integer> flagsToNumArgs) {
-    Map<String, String[]> result = Generics.newHashMap();
-    List<String> remainingArgs = new ArrayList<String>();
+        /*public static Map<string, string[]> argsToMap(string[] args, Map<string, Integer> flagsToNumArgs) {
+    Map<string, string[]> result = Generics.newHashMap();
+    List<string> remainingArgs = new ArrayList<string>();
     for (int i = 0; i < args.Length; i++) {
-      String key = args[i];
+      string key = args[i];
       if (key.charAt(0) == '-') { // found a flag
         Integer numFlagArgs = flagsToNumArgs.get(key);
         int max = numFlagArgs == null ? 1 : numFlagArgs.intValue();
         int min = numFlagArgs == null ? 0 : numFlagArgs.intValue();
-        List<String> flagArgs = new ArrayList<String>();
+        List<string> flagArgs = new ArrayList<string>();
         for (int j = 0; j < max && i + 1 < args.Length && (j < min || args[i + 1].Length() == 0 || args[i + 1].charAt(0) != '-'); i++, j++) {
           flagArgs.Add(args[i + 1]);
         }
         if (result.containsKey(key)) { // append the second specification into the args.
-          String[] newFlagArg = new String[result.get(key).Length + flagsToNumArgs.get(key)];
+          string[] newFlagArg = new string[result.get(key).Length + flagsToNumArgs.get(key)];
           int oldNumArgs = result.get(key).Length;
           System.arraycopy(result.get(key), 0, newFlagArg, 0, oldNumArgs);
           for (int j = 0; j < flagArgs.size(); j++) {
@@ -864,33 +864,33 @@ namespace OpenNLP.Tools.Util
           }
           result.put(key, newFlagArg);
         } else {
-          result.put(key, flagArgs.toArray(new String[flagArgs.size()]));
+          result.put(key, flagArgs.toArray(new string[flagArgs.size()]));
         }
       } else {
         remainingArgs.Add(args[i]);
       }
     }
-    result.put(null, remainingArgs.toArray(new String[remainingArgs.size()]));
+    result.put(null, remainingArgs.toArray(new string[remainingArgs.size()]));
     return result;
   }*/
 
         /**
    * In this version each flag has zero or one argument. It has one argument
    * if there is a thing following a flag that does not begin with '-'.  See
-   * {@link #argsToProperties(String[], Map)} for full documentation.
+   * {@link #argsToProperties(string[], Map)} for full documentation.
    *
    * @param args Command line arguments
    * @return A Properties object representing the arguments.
    */
         /*public static Properties argsToProperties(String... args) {
-    return argsToProperties(args, Collections.<String,Integer>emptyMap());
+    return argsToProperties(args, Collections.<string,Integer>emptyMap());
   }*/
 
         /**
    * Analogous to {@link #argsToMap}.  However, there are several key differences between this method and {@link #argsToMap}:
    * <ul>
    * <li> Hyphens are stripped from flag names </li>
-   * <li> Since Properties objects are String to String mappings, the default number of arguments to a flag is
+   * <li> Since Properties objects are string to string mappings, the default number of arguments to a flag is
    * assumed to be 1 and not 0. </li>
    * <li> Furthermore, the list of arguments not bound to a flag is mapped to the "" property, not null </li>
    * <li> The special flags "-prop", "-props", or "-properties" will load the property file specified by its argument. </li>
@@ -905,11 +905,11 @@ namespace OpenNLP.Tools.Util
    * @param flagsToNumArgs Map of how many arguments flags should have. The keys are without the minus signs.
    * @return A Properties object representing the arguments.
    */
-        /*public static Properties argsToProperties(String[] args, Map<String,Integer> flagsToNumArgs) {
+        /*public static Properties argsToProperties(string[] args, Map<string,Integer> flagsToNumArgs) {
     Properties result = new Properties();
-    List<String> remainingArgs = new ArrayList<String>();
+    List<string> remainingArgs = new ArrayList<string>();
     for (int i = 0; i < args.Length; i++) {
-      String key = args[i];
+      string key = args[i];
       if (key.Length() > 0 && key.charAt(0) == '-') { // found a flag
         if (key.Length() > 1 && key.charAt(1) == '-')
           key = key.Substring(2); // strip off 2 hyphens
@@ -919,7 +919,7 @@ namespace OpenNLP.Tools.Util
         Integer maxFlagArgs = flagsToNumArgs.get(key);
         int max = maxFlagArgs == null ? 1 : maxFlagArgs;
         int min = maxFlagArgs == null ? 0 : maxFlagArgs;
-        List<String> flagArgs = new ArrayList<String>();
+        List<string> flagArgs = new ArrayList<string>();
         // cdm oct 2007: add length check to allow for empty string argument!
         for (int j = 0; j < max && i + 1 < args.Length && (j < min || args[i + 1].Length() == 0 || args[i + 1].charAt(0) != '-'); i++, j++) {
           flagArgs.Add(args[i + 1]);
@@ -937,7 +937,7 @@ namespace OpenNLP.Tools.Util
               result.load(reader);
               // trim all values
               for(Object propKey : result.keySet()){
-                String newVal = result.getProperty((String)propKey);
+                string newVal = result.getProperty((String)propKey);
                 result.setProperty((String)propKey,newVal.Trim());
               }
               is.close();
@@ -957,12 +957,12 @@ namespace OpenNLP.Tools.Util
     }
 
     if (result.containsKey(PROP)) {
-      String file = result.getProperty(PROP);
+      string file = result.getProperty(PROP);
       result.remove(PROP);
-      Properties toAdd = argsToProperties(new String[]{"-prop", file});
+      Properties toAdd = argsToProperties(new string[]{"-prop", file});
       for (Enumeration<?> e = toAdd.propertyNames(); e.hasMoreElements(); ) {
-        String key = (String) e.nextElement();
-        String val = toAdd.getProperty(key);
+        string key = (String) e.nextElement();
+        string val = toAdd.getProperty(key);
         if (!result.containsKey(key)) {
           result.setProperty(key, val);
         }
@@ -980,14 +980,14 @@ namespace OpenNLP.Tools.Util
    * @param filename A properties file to read
    * @return The corresponding Properties object
    */
-        /*public static Properties propFileToProperties(String filename) {
+        /*public static Properties propFileToProperties(string filename) {
     Properties result = new Properties();
     try {
       InputStream is = new BufferedInputStream(new FileInputStream(filename));
       result.load(is);
       // trim all values
       for (Object propKey : result.keySet()){
-        String newVal = result.getProperty((String)propKey);
+        string newVal = result.getProperty((String)propKey);
         result.setProperty((String)propKey,newVal.Trim());
       }
       is.close();
@@ -998,14 +998,14 @@ namespace OpenNLP.Tools.Util
   }*/
 
         /**
-   * This method converts a comma-separated String (with whitespace
+   * This method converts a comma-separated string (with whitespace
    * optionally allowed after the comma) representing properties
    * to a Properties object.  Each property is "property=value".  The value
    * for properties without an explicitly given value is set to "true". This can be used for a 2nd level
    * of properties, for example, when you have a commandline argument like "-outputOptions style=xml,tags".
    */
 
-        public static Dictionary<String, String> stringToProperties(String str)
+        public static Dictionary<string, string> stringToProperties(string str)
         {
             var result = new Dictionary<string, string>();
             return stringToProperties(str, result);
@@ -1013,20 +1013,20 @@ namespace OpenNLP.Tools.Util
 
         /**
    * This method updates a Properties object based on
-   * a comma-separated String (with whitespace
+   * a comma-separated string (with whitespace
    * optionally allowed after the comma) representing properties
    * to a Properties object.  Each property is "property=value".  The value
    * for properties without an explicitly given value is set to "true".
    */
 
-        public static Dictionary<String, String> stringToProperties(String str, Dictionary<String, String> props)
+        public static Dictionary<string, string> stringToProperties(string str, Dictionary<string, string> props)
         {
-            String[] propsStr = Regex.Split(str.Trim(), ",\\s*");
-            foreach (String term in propsStr)
+            string[] propsStr = Regex.Split(str.Trim(), ",\\s*");
+            foreach (string term in propsStr)
             {
                 int divLoc = term.IndexOf('=');
-                String key;
-                String value;
+                string key;
+                string value;
                 if (divLoc >= 0)
                 {
                     key = term.Substring(0, divLoc).Trim();
@@ -1046,9 +1046,9 @@ namespace OpenNLP.Tools.Util
    * If any of the given list of properties are not found, returns the
    * name of that property.  Otherwise, returns null.
    */
-        /*public static String checkRequiredProperties(Properties props,
-                                               String ... requiredProps) {
-    for (String required : requiredProps) {
+        /*public static string checkRequiredProperties(Properties props,
+                                               string ... requiredProps) {
+    for (string required : requiredProps) {
       if (props.getProperty(required) == null) {
         return required;
       }
@@ -1061,8 +1061,8 @@ namespace OpenNLP.Tools.Util
    * Prints to a file.  If the file already exists, appends if
    * <code>append=true</code>, and overwrites if <code>append=false</code>.
    */
-        /*public static void printToFile(File file, String message, bool append,
-                                 bool printLn, String encoding) {
+        /*public static void printToFile(File file, string message, bool append,
+                                 bool printLn, string encoding) {
     PrintWriter pw = null;
     try {
       Writer fw;
@@ -1094,7 +1094,7 @@ namespace OpenNLP.Tools.Util
    * Prints to a file.  If the file already exists, appends if
    * <code>append=true</code>, and overwrites if <code>append=false</code>.
    */
-        /*public static void printToFileLn(File file, String message, bool append) {
+        /*public static void printToFileLn(File file, string message, bool append) {
     PrintWriter pw = null;
     try {
       Writer fw = new FileWriter(file, append);
@@ -1115,7 +1115,7 @@ namespace OpenNLP.Tools.Util
    * Prints to a file.  If the file already exists, appends if
    * <code>append=true</code>, and overwrites if <code>append=false</code>.
    */
-        /*public static void printToFile(File file, String message, bool append) {
+        /*public static void printToFile(File file, string message, bool append) {
     PrintWriter pw = null;
     try {
       Writer fw = new FileWriter(file, append);
@@ -1137,7 +1137,7 @@ namespace OpenNLP.Tools.Util
    * Prints to a file.  If the file does not exist, rewrites the file;
    * does not append.
    */
-        /*public static void printToFile(File file, String message) {
+        /*public static void printToFile(File file, string message) {
     printToFile(file, message, false);
   }*/
 
@@ -1145,7 +1145,7 @@ namespace OpenNLP.Tools.Util
    * Prints to a file.  If the file already exists, appends if
    * <code>append=true</code>, and overwrites if <code>append=false</code>
    */
-        /*public static void printToFile(String filename, String message, bool append) {
+        /*public static void printToFile(string filename, string message, bool append) {
     printToFile(new File(filename), message, append);
   }*/
 
@@ -1153,7 +1153,7 @@ namespace OpenNLP.Tools.Util
    * Prints to a file.  If the file already exists, appends if
    * <code>append=true</code>, and overwrites if <code>append=false</code>
    */
-        /*public static void printToFileLn(String filename, String message, bool append) {
+        /*public static void printToFileLn(string filename, string message, bool append) {
     printToFileLn(new File(filename), message, append);
   }*/
 
@@ -1162,7 +1162,7 @@ namespace OpenNLP.Tools.Util
    * Prints to a file.  If the file does not exist, rewrites the file;
    * does not append.
    */
-        /*public static void printToFile(String filename, String message) {
+        /*public static void printToFile(string filename, string message) {
     printToFile(new File(filename), message, false);
   }*/
 
@@ -1176,10 +1176,10 @@ namespace OpenNLP.Tools.Util
    * and the
    * optional argument will be its value (if present).
    *
-   * @return A Map from keys to possible values (String or null)
+   * @return A Map from keys to possible values (string or null)
    */
         /*@SuppressWarnings("unchecked")
-  public static Map<String, String> parseCommandLineArguments(String[] args) {
+  public static Map<string, string> parseCommandLineArguments(string[] args) {
     return (Map)parseCommandLineArguments(args, false);
   }*/
 
@@ -1193,17 +1193,17 @@ namespace OpenNLP.Tools.Util
    * and the
    * optional argument will be its value (if present).
    * In this version, if the argument is numeric, it will be a Double value
-   * in the map, not a String.
+   * in the map, not a string.
    *
-   * @return A Map from keys to possible values (String or null)
+   * @return A Map from keys to possible values (string or null)
    */
-        /*public static Map<String, Object> parseCommandLineArguments(String[] args, bool parseNumbers) {
-    Map<String, Object> result = Generics.newHashMap();
+        /*public static Map<string, Object> parseCommandLineArguments(string[] args, bool parseNumbers) {
+    Map<string, Object> result = Generics.newHashMap();
     for (int i = 0; i < args.Length; i++) {
-      String key = args[i];
+      string key = args[i];
       if (key.charAt(0) == '-') {
         if (i + 1 < args.Length) {
-          String value = args[i + 1];
+          string value = args[i + 1];
           if (value.charAt(0) != '-') {
             if (parseNumbers) {
               Object numericValue = value;
@@ -1228,7 +1228,7 @@ namespace OpenNLP.Tools.Util
     return result;
   }*/
 
-        public static String stripNonAlphaNumerics(String orig)
+        public static string stripNonAlphaNumerics(string orig)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < orig.Length; i++)
@@ -1242,20 +1242,20 @@ namespace OpenNLP.Tools.Util
             return sb.ToString();
         }
 
-        /*public static String stripSGML(String orig) {
+        /*public static string stripSGML(string orig) {
       Pattern sgmlPattern = Pattern.compile("<.*?>", Pattern.DOTALL);
       Matcher sgmlMatcher = sgmlPattern.matcher(orig);
       return sgmlMatcher.replaceAll("");
   }
 
-  public static void printStringOneCharPerLine(String s) {
+  public static void printStringOneCharPerLine(string s) {
     for (int i = 0; i < s.Length(); i++) {
       int c = s.charAt(i);
       System.out.println(c + " \'" + (char) c + "\' ");
     }
   }*/
 
-        public static String escapeString(String s, char[] charsToEscape, char escapeChar)
+        public static string escapeString(string s, char[] charsToEscape, char escapeChar)
         {
             StringBuilder result = new StringBuilder();
             for (int i = 0; i < s.Length; i++)
@@ -1282,23 +1282,23 @@ namespace OpenNLP.Tools.Util
         }
 
         /**
-   * This function splits the String s into multiple Strings using the
+   * This function splits the string s into multiple Strings using the
    * splitChar.  However, it provides a quoting facility: it is possible to
    * quote strings with the quoteChar.
    * If the quoteChar occurs within the quotedExpression, it must be prefaced
    * by the escapeChar.
    * This routine can be useful for processing a line of a CSV file.
    *
-   * @param s         The String to split into fields. Cannot be null.
+   * @param s         The string to split into fields. Cannot be null.
    * @param splitChar The character to split on
    * @param quoteChar The character to quote items with
    * @param escapeChar The character to escape the quoteChar with
    * @return An array of Strings that s is split into
    */
 
-        public static String[] splitOnCharWithQuoting(String s, char splitChar, char quoteChar, char escapeChar)
+        public static string[] splitOnCharWithQuoting(string s, char splitChar, char quoteChar, char escapeChar)
         {
-            List<String> result = new List<String>();
+            List<string> result = new List<string>();
             int i = 0;
             int length = s.Length;
             StringBuilder b = new StringBuilder();
@@ -1363,7 +1363,7 @@ namespace OpenNLP.Tools.Util
    * edit distance but with no substitution and a higher number means
    * more similar. For example, the LCS of "abcD" and "aXbc" is 3 (abc).
    */
-        /*public static int longestCommonSubstring(String s, String t) {
+        /*public static int longestCommonSubstring(string s, string t) {
     int[][] d; // matrix
     int n; // length of s
     int m; // length of t
@@ -1432,7 +1432,7 @@ namespace OpenNLP.Tools.Util
    * of "colo".
    */
 
-        public static int longestCommonContiguousSubstring(String s, String t)
+        public static int longestCommonContiguousSubstring(string s, string t)
         {
             if (string.IsNullOrEmpty(s) || string.IsNullOrEmpty(t))
             {
@@ -1479,7 +1479,7 @@ namespace OpenNLP.Tools.Util
    * This method doesn't allow transposition, so one character transposed between two strings has a cost of 2 (one insertion, one deletion).
    * The EditDistance class also implements the Levenshtein distance, but does allow transposition.
    */
-        /*public static int editDistance(String s, String t) {
+        /*public static int editDistance(string s, string t) {
     // Step 1
     int n = s.Length; // length of s
     int m = t.Length; // length of t
@@ -1526,7 +1526,7 @@ namespace OpenNLP.Tools.Util
    * @param s a Penn TreeBank POS tag.
    */
 
-        public static String pennPOSToWordnetPOS(String s)
+        public static string pennPOSToWordnetPOS(string s)
         {
             if (Regex.IsMatch(s, "NN|NNP|NNS|NNPS"))
             {
@@ -1554,11 +1554,11 @@ namespace OpenNLP.Tools.Util
    * @return The name of the class minus a package name, for example
    *         <code>ArrayList</code>
    */
-        /*public static String getShortClassName(Object o) {
+        /*public static string getShortClassName(Object o) {
     if (o == null) {
       return "null";
     }
-    String name = o.getClass().getName();
+    string name = o.getClass().getName();
     int index = name.LastIndexOf('.');
     if (index >= 0) {
       name = name.Substring(index + 1);
@@ -1578,7 +1578,7 @@ namespace OpenNLP.Tools.Util
    * @param <T> type to return
    * @return Object created from string
    */
-        /*public static <T> T columnStringToObject(Class objClass, String str, String delimiterRegex, String[] fieldNames)
+        /*public static <T> T columnStringToObject(Class objClass, string str, string delimiterRegex, string[] fieldNames)
           throws InstantiationException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException
   {
     Pattern delimiterPattern = Pattern.compile(delimiterRegex);
@@ -1596,17 +1596,17 @@ namespace OpenNLP.Tools.Util
    * @param <T> type to return
    * @return Object created from string
    */
-        /*public static <T> T columnStringToObject(Class<?> objClass, String str, Pattern delimiterPattern, String[] fieldNames)
+        /*public static <T> T columnStringToObject(Class<?> objClass, string str, Pattern delimiterPattern, string[] fieldNames)
           throws InstantiationException, IllegalAccessException, NoSuchMethodException, NoSuchFieldException, InvocationTargetException
   {
-    String[] fields = delimiterPattern.Split(str);
+    string[] fields = delimiterPattern.Split(str);
     T item = ErasureUtils.<T>uncheckedCast(objClass.newInstance());
     for (int i = 0; i < fields.Length; i++) {
       try {
         Field field = objClass.getDeclaredField(fieldNames[i]);
         field.set(item, fields[i]);
       } catch (IllegalAccessException ex) {
-        Method method = objClass.getDeclaredMethod("set" + StringUtils.capitalize(fieldNames[i]), String.class);
+        Method method = objClass.getDeclaredMethod("set" + StringUtils.capitalize(fieldNames[i]), string.class);
         method.invoke(item, fields[i]);
       }
     }
@@ -1620,13 +1620,13 @@ namespace OpenNLP.Tools.Util
    * @param object Object to convert
    * @param delimiter delimiter
    * @param fieldNames fieldnames
-   * @return String representing object
+   * @return string representing object
    */
-        /*public static String objectToColumnString(Object object, String delimiter, String[] fieldNames)
+        /*public static string objectToColumnString(Object object, string delimiter, string[] fieldNames)
           throws IllegalAccessException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException
   {
     StringBuilder sb = new StringBuilder();
-    for (String fieldName : fieldNames) {
+    for (string fieldName : fieldNames) {
       if (sb.Length() > 0) {
         sb.Append(delimiter);
       }
@@ -1648,7 +1648,7 @@ namespace OpenNLP.Tools.Util
    * @return a capitalized version of the string
    */
 
-        public static String capitalize(String s)
+        public static string capitalize(string s)
         {
             if (char.IsLower(s[0]))
             {
@@ -1668,12 +1668,12 @@ namespace OpenNLP.Tools.Util
    *         false otherwise
    */
 
-        public static bool isCapitalized(String s)
+        public static bool isCapitalized(string s)
         {
             return (char.IsUpper(s[0]));
         }
 
-        public static String searchAndReplace(String text, String from, String to)
+        public static string searchAndReplace(string text, string from, string to)
         {
             from = escapeString(from, new char[] {'.', '[', ']', '\\'}, '\\'); // special chars in regex
             var res = Regex.Replace(text, from, to);
@@ -1686,7 +1686,7 @@ namespace OpenNLP.Tools.Util
    * second dimension the columns.
    */
 
-        public static String makeHTMLTable(String[][] table, String[] rowLabels, String[] colLabels)
+        public static string makeHTMLTable(string[][] table, string[] rowLabels, string[] colLabels)
         {
             StringBuilder buff = new StringBuilder();
             buff.Append("<table class=\"auto\" border=\"1\" cellspacing=\"0\">\n");
@@ -1722,13 +1722,13 @@ namespace OpenNLP.Tools.Util
    * The first dimension of the matrix should represent the rows, and the
    * second dimension the columns. Each object is printed in a cell with ToString().
    * The printing may be padded with spaces on the left and then on the right to
-   * ensure that the String form is of length at least padLeft or padRight.
+   * ensure that the string form is of length at least padLeft or padRight.
    * If tsv is true, a tab is put between columns.
    *
-   * @return A String form of the table
+   * @return A string form of the table
    */
 
-        public static String makeTextTable(Object[][] table, Object[] rowLabels, Object[] colLabels, int padLeft,
+        public static string makeTextTable(Object[][] table, Object[] rowLabels, Object[] colLabels, int padLeft,
             int padRight, bool tsv)
         {
             StringBuilder buff = new StringBuilder();
@@ -1755,14 +1755,14 @@ namespace OpenNLP.Tools.Util
         }
 
 
-        /** The cell String is the string representation of the object.
+        /** The cell string is the string representation of the object.
    *  If padLeft is greater than 0, it is padded. Ditto right
    *
    */
 
-        private static String makeAsciiTableCell(Object obj, int padLeft, int padRight, bool tsv)
+        private static string makeAsciiTableCell(Object obj, int padLeft, int padRight, bool tsv)
         {
-            String result = obj.ToString();
+            string result = obj.ToString();
             if (padLeft > 0)
             {
                 result = StringUtils.padLeft(result, padLeft);
@@ -1778,7 +1778,7 @@ namespace OpenNLP.Tools.Util
             return result;
         }
         
-        public static String toAscii(String s)
+        public static string toAscii(string s)
         {
             StringBuilder b = new StringBuilder();
             for (int i = 0; i < s.Length; i++)
@@ -1786,7 +1786,7 @@ namespace OpenNLP.Tools.Util
                 char c = s[i];
                 if (c > 127)
                 {
-                    String result = "?";
+                    string result = "?";
                     if (c >= 0x00c0 && c <= 0x00c5)
                     {
                         result = "A";
@@ -1902,31 +1902,31 @@ namespace OpenNLP.Tools.Util
         }
 
 
-        public static String toCSVString(String[] fields)
+        public static string toCSVString(string[] fields)
         {
             StringBuilder b = new StringBuilder();
-            foreach (String fld in fields)
+            foreach (string fld in fields)
             {
                 if (b.Length > 0)
                 {
                     b.Append(',');
                 }
-                String field = escapeString(fld, new char[] {'\"'}, '\"'); // escape quotes with double quotes
+                string field = escapeString(fld, new char[] {'\"'}, '\"'); // escape quotes with double quotes
                 b.Append('\"').Append(field).Append('\"');
             }
             return b.ToString();
         }
 
         /**
-   * Swap any occurrences of any characters in the from String in the input String with
-   * the corresponding character from the to String.  As Perl tr, for example,
+   * Swap any occurrences of any characters in the from string in the input string with
+   * the corresponding character from the to string.  As Perl tr, for example,
    * tr("chris", "irs", "mop").equals("chomp"), except it does not
    * support regular expression character ranges.
    * <p>
    * <i>Note:</i> This is now optimized to not allocate any objects if the
    * input is returned unchanged.
    */
-        /*public static String tr(String input, String from, String to) {
+        /*public static string tr(string input, string from, string to) {
     assert from.Length() == to.Length();
     StringBuilder sb = null;
     int len = input.Length();
@@ -1950,7 +1950,7 @@ namespace OpenNLP.Tools.Util
    * Returns the supplied string with any trailing '\n' removed.
    */
 
-        public static String chomp(String s)
+        public static string chomp(string s)
         {
             if (s.Length == 0)
                 return s;
@@ -1967,22 +1967,22 @@ namespace OpenNLP.Tools.Util
    * any trailing '\n' removed.
    */
 
-        public static String chomp(Object o)
+        public static string chomp(Object o)
         {
             return chomp(o.ToString());
         }
 
 
-        /*public static void printErrInvocationString(String cls, String[] args) {
+        /*public static void printErrInvocationString(string cls, string[] args) {
     System.err.println(toInvocationString(cls, args));
   }*/
 
 
-        /*public static String toInvocationString(String cls, String[] args) {
+        /*public static string toInvocationString(string cls, string[] args) {
     StringBuilder sb = new StringBuilder();
     sb.Append(cls).Append(" invoked on ").Append(new Date());
     sb.Append(" with arguments:\n  ");
-    for (String arg : args) {
+    for (string arg : args) {
       sb.Append(' ').Append(arg);
     }
     return sb.ToString();
@@ -1994,7 +1994,7 @@ namespace OpenNLP.Tools.Util
    * Example: <code>getBaseName("/u/wcmac/foo.txt") ==> "foo.txt"</code>
    */
 
-        public static String getBaseName(String fileName)
+        public static string getBaseName(string fileName)
         {
             return getBaseName(fileName, "");
         }
@@ -2007,10 +2007,10 @@ namespace OpenNLP.Tools.Util
    * Example: <code>getBaseName("/u/wcmac/foo.txt", ".pdf") ==> "foo.txt"</code><br/>
    */
 
-        public static String getBaseName(String fileName, String suffix)
+        public static string getBaseName(string fileName, string suffix)
         {
-            String[] elts = fileName.Split(new[] {"/"}, StringSplitOptions.None);
-            String lastElt = elts[elts.Length - 1];
+            string[] elts = fileName.Split(new[] {"/"}, StringSplitOptions.None);
+            string lastElt = elts[elts.Length - 1];
             if (lastElt.EndsWith(suffix))
             {
                 lastElt = lastElt.Substring(0, lastElt.Length - suffix.Length);
@@ -2019,13 +2019,13 @@ namespace OpenNLP.Tools.Util
         }
 
         /**
-   * Given a String the method uses Regex to check if the String only contains alphabet characters
+   * Given a string the method uses Regex to check if the string only contains alphabet characters
    *
-   * @param s a String to check using regex
-   * @return true if the String is valid
+   * @param s a string to check using regex
+   * @return true if the string is valid
    */
 
-        public static bool isAlpha(String s)
+        public static bool isAlpha(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Alpha}\\s]+$");
     Matcher m = p.matcher(s);
@@ -2034,13 +2034,13 @@ namespace OpenNLP.Tools.Util
         }
 
         /**
-   * Given a String the method uses Regex to check if the String only contains numeric characters
+   * Given a string the method uses Regex to check if the string only contains numeric characters
    *
-   * @param s a String to check using regex
-   * @return true if the String is valid
+   * @param s a string to check using regex
+   * @return true if the string is valid
    */
 
-        public static bool isNumeric(String s)
+        public static bool isNumeric(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Digit}\\s\\.]+$");
     Matcher m = p.matcher(s);
@@ -2049,13 +2049,13 @@ namespace OpenNLP.Tools.Util
         }
 
         /**
-   * Given a String the method uses Regex to check if the String only contains alphanumeric characters
+   * Given a string the method uses Regex to check if the string only contains alphanumeric characters
    *
-   * @param s a String to check using regex
-   * @return true if the String is valid
+   * @param s a string to check using regex
+   * @return true if the string is valid
    */
 
-        public static bool isAlphanumeric(String s)
+        public static bool isAlphanumeric(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Alnum}\\s\\.]+$");
     Matcher m = p.matcher(s);
@@ -2064,13 +2064,13 @@ namespace OpenNLP.Tools.Util
         }
 
         /**
-   * Given a String the method uses Regex to check if the String only contains punctuation characters
+   * Given a string the method uses Regex to check if the string only contains punctuation characters
    *
-   * @param s a String to check using regex
-   * @return true if the String is valid
+   * @param s a string to check using regex
+   * @return true if the string is valid
    */
 
-        public static bool isPunct(String s)
+        public static bool isPunct(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Punct}]+$");
     Matcher m = p.matcher(s);
@@ -2079,13 +2079,13 @@ namespace OpenNLP.Tools.Util
         }
 
         /**
-   * Given a String the method uses Regex to check if the String looks like an acronym
+   * Given a string the method uses Regex to check if the string looks like an acronym
    *
-   * @param s a String to check using regex
-   * @return true if the String is valid
+   * @param s a string to check using regex
+   * @return true if the string is valid
    */
 
-        public static bool isAcronym(String s)
+        public static bool isAcronym(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Upper}]+$");
     Matcher m = p.matcher(s);
@@ -2093,7 +2093,7 @@ namespace OpenNLP.Tools.Util
             return Regex.IsMatch(s, "^[\\p{Upper}]+$");
         }
 
-        public static String getNotNullString(String s)
+        public static string getNotNullString(string s)
         {
             if (s == null)
                 return "";
@@ -2106,7 +2106,7 @@ namespace OpenNLP.Tools.Util
    * the value mentioned in the props file, otherwise look for the variable in the environment variables.
    * If the variable is not found then substitute it for empty string.
    */
-        /*public static String resolveVars(String str, Map props) {
+        /*public static string resolveVars(string str, Map props) {
     if (str == null)
       return null;
     // ${VAR_NAME} or $VAR_NAME
@@ -2114,8 +2114,8 @@ namespace OpenNLP.Tools.Util
     Matcher m = p.matcher(str);
     StringBuffer sb = new StringBuffer();
     while (m.find()) {
-      String varName = null == m.group(1) ? m.group(2) : m.group(1);
-      String vrValue;
+      string varName = null == m.group(1) ? m.group(2) : m.group(1);
+      string vrValue;
       //either in the props file
       if (props.containsKey(varName)) {
         vrValue = ((String) props.get(varName));
@@ -2136,12 +2136,12 @@ namespace OpenNLP.Tools.Util
    * listed in the props file, and if not found then using the environment
    * variables. if the variable is not found then substitute it for empty string
    */
-        /*public static Properties argsToPropertiesWithResolve(String[] args) {
-    LinkedHashMap<String, String> result = new LinkedHashMap<String, String>();
-    Map<String, String> existingArgs = new LinkedHashMap<String, String>();
+        /*public static Properties argsToPropertiesWithResolve(string[] args) {
+    LinkedHashMap<string, string> result = new LinkedHashMap<string, string>();
+    Map<string, string> existingArgs = new LinkedHashMap<string, string>();
 
     for (int i = 0; i < args.Length; i++) {
-      String key = args[i];
+      string key = args[i];
       if (key.Length() > 0 && key.charAt(0) == '-') { // found a flag
         if (key.Length() > 1 && key.charAt(1) == '-')
           key = key.Substring(2); // strip off 2 hyphens
@@ -2150,7 +2150,7 @@ namespace OpenNLP.Tools.Util
 
         int max = 1;
         int min = 0;
-        List<String> flagArgs = new ArrayList<String>();
+        List<string> flagArgs = new ArrayList<string>();
         // cdm oct 2007: add length check to allow for empty string argument!
         for (int j = 0; j < max && i + 1 < args.Length && (j < min || args[i + 1].Length() == 0 || args[i + 1].charAt(0) != '-'); i++, j++) {
           flagArgs.Add(args[i + 1]);
@@ -2161,7 +2161,7 @@ namespace OpenNLP.Tools.Util
         } else {
 
           if (key.equalsIgnoreCase(PROP) || key.equalsIgnoreCase(PROPS) || key.equalsIgnoreCase(PROPERTIES) || key.equalsIgnoreCase(ARGUMENTS) || key.equalsIgnoreCase(ARGS)) {
-            for(String flagArg: flagArgs)
+            for(string flagArg: flagArgs)
               result.putAll(propFileToLinkedHashMap(flagArg, existingArgs));
 
             existingArgs.clear();
@@ -2172,8 +2172,8 @@ namespace OpenNLP.Tools.Util
     }
     result.putAll(existingArgs);
 
-    for (Entry<String, String> o : result.entrySet()) {
-      String val = resolveVars(o.getValue(), result);
+    for (Entry<string, string> o : result.entrySet()) {
+      string val = resolveVars(o.getValue(), result);
       result.put(o.getKey(), val);
     }
     Properties props = new Properties();
@@ -2190,11 +2190,11 @@ namespace OpenNLP.Tools.Util
    * @return The corresponding LinkedHashMap where the ordering is the same as in the
    *         props file
    */
-        /*public static LinkedHashMap<String, String> propFileToLinkedHashMap(String filename, Map<String, String> existingArgs) {
+        /*public static LinkedHashMap<string, string> propFileToLinkedHashMap(string filename, Map<string, string> existingArgs) {
 
-    LinkedHashMap<String, String> result = new LinkedHashMap<String, String>();
+    LinkedHashMap<string, string> result = new LinkedHashMap<string, string>();
     result.putAll(existingArgs);
-    for (String l : IOUtils.readLines(filename)) {
+    for (string l : IOUtils.readLines(filename)) {
       l = l.Trim();
       if (l.isEmpty() || l.startsWith("#"))
         continue;
@@ -2211,10 +2211,10 @@ namespace OpenNLP.Tools.Util
         /**
    * n grams for already splitted string. the ngrams are joined with a single space
    */
-        /*public static List<String> getNgrams(List<String> words, int minSize, int maxSize){
-    List<List<String>> ng = CollectionUtils.getNGrams(words, minSize, maxSize);
-    List<String> ngrams = new ArrayList<String>();
-    for(List<String> n: ng)
+        /*public static List<string> getNgrams(List<string> words, int minSize, int maxSize){
+    List<List<string>> ng = CollectionUtils.getNGrams(words, minSize, maxSize);
+    List<string> ngrams = new ArrayList<string>();
+    for(List<string> n: ng)
       ngrams.Add(StringUtils.join(n," "));
 
     return ngrams;
@@ -2223,13 +2223,13 @@ namespace OpenNLP.Tools.Util
         /**
    * n grams for already splitted string. the ngrams are joined with a single space
    */
-        /*public static List<String> getNgramsFromTokens(List<CoreLabel> words, int minSize, int maxSize){
-    List<String> wordsStr = new ArrayList<String>();
+        /*public static List<string> getNgramsFromTokens(List<CoreLabel> words, int minSize, int maxSize){
+    List<string> wordsStr = new ArrayList<string>();
     for(CoreLabel l : words)
       wordsStr.Add(l.word());
-    List<List<String>> ng = CollectionUtils.getNGrams(wordsStr, minSize, maxSize);
-    List<String> ngrams = new ArrayList<String>();
-    for(List<String> n: ng)
+    List<List<string>> ng = CollectionUtils.getNGrams(wordsStr, minSize, maxSize);
+    List<string> ngrams = new ArrayList<string>();
+    for(List<string> n: ng)
       ngrams.Add(StringUtils.join(n," "));
 
     return ngrams;
@@ -2238,7 +2238,7 @@ namespace OpenNLP.Tools.Util
         /**
    * The string is split on whitespace and the ngrams are joined with a single space
    */
-        /*public static List<String> getNgramsString(String s, int minSize, int maxSize){
+        /*public static List<string> getNgramsString(string s, int minSize, int maxSize){
     return getNgrams(Arrays.asList(s.Split("\\s+")), minSize, maxSize);
   }*/
 
@@ -2246,9 +2246,9 @@ namespace OpenNLP.Tools.Util
    * Build a list of character-based ngrams from the given string.
    */
 
-        public static List<String> getCharacterNgrams(String s, int minSize, int maxSize)
+        public static List<string> getCharacterNgrams(string s, int minSize, int maxSize)
         {
-            List<String> ngrams = new List<String>();
+            List<string> ngrams = new List<string>();
             int len = s.Length;
 
             for (int i = 0; i < len; i++)
@@ -2265,7 +2265,7 @@ namespace OpenNLP.Tools.Util
         }
 
         //private static Regex diacriticalMarksPattern = new Regex("\\p{InCombiningDiacriticalMarks}", RegexOptions.Compiled);
-        /*public static String normalize(String s) {
+        /*public static string normalize(string s) {
     // Normalizes string and strips diacritics (map to ascii) by
     // 1. taking the NFKD (compatibility decomposition -
     //   in compatibility equivalence, formatting such as subscripting is lost -
@@ -2278,7 +2278,7 @@ namespace OpenNLP.Tools.Util
     //  but it may normalize other stuff as well.
     // A more conservative approach is to do explicit folding just for ascii character
     //   (see RuleBasedNameMatcher.normalize)
-    String d = Normalizer.normalize(s, Normalizer.Form.NFKD);
+    string d = Normalizer.normalize(s, Normalizer.Form.NFKD);
     d = diacriticalMarksPattern.matcher(d).replaceAll("");
     return Normalizer.normalize(d, Normalizer.Form.NFKC);
   }*/

@@ -22,28 +22,28 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private readonly bool negDesc;
 
         private readonly DescriptionMode? descriptionMode;
-        private readonly String exactMatch;
+        private readonly string exactMatch;
         private readonly Regex descPattern;
-        private readonly Predicate<String> stringFilter;
+        private readonly Predicate<string> stringFilter;
 
         // what size string matchers to use before switching to regex for
         // disjunction matches
         private static readonly int MAX_STRING_MATCHER_SIZE = 8;
 
-        private readonly String stringDesc;
+        private readonly string stringDesc;
         /** The name to give the matched node */
-        private readonly String name;
+        private readonly string name;
         /** If this pattern is a link, this is the node linked to */
-        private readonly String linkedName;
+        private readonly string linkedName;
         private readonly bool isLink;
         // todo: conceptually readonly, but we'd need to rewrite TregexParser
         // to make it so.
         private TregexPattern child;
         // also conceptually readonly, but it depends on the child
-        private readonly List<Tuple<int, String>> variableGroups;
+        private readonly List<Tuple<int, string>> variableGroups;
             // specifies the groups in a regex that are captured as matcher-global string variables
 
-        private readonly Func<String, String> basicCatFunction;
+        private readonly Func<string, string> basicCatFunction;
 
         /** Used to detect regex expressions which can be simplified to exact matches */
 
@@ -63,11 +63,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private static readonly Regex PREFIX_PATTERN = new Regex("/\\^([-a-zA-Z|]+)\\/" + "|" + // for example, /^JJ/
                                                                  "/\\^\\(\\?\\:([-a-zA-Z|]+)\\)\\/");
 
-        public DescriptionPattern(Relation rel, bool negDesc, String desc,
-            String name, bool useBasicCat,
-            Func<String, String> basicCatFunction,
-            List<Tuple<int, String>> variableGroups,
-            bool isLink, String linkedName)
+        public DescriptionPattern(Relation rel, bool negDesc, string desc,
+            string name, bool useBasicCat,
+            Func<string, string> basicCatFunction,
+            List<Tuple<int, string>> variableGroups,
+            bool isLink, string linkedName)
         {
             this.rel = rel;
             this.negDesc = negDesc;
@@ -93,7 +93,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     descPattern = null;
                     var matcher = SINGLE_WORD_PATTERN.Match(desc);
                     //matcher.matches();
-                    String matchedGroup = null;
+                    string matchedGroup = null;
                     for (int i = 1; i <= matcher.Groups.Count; ++i)
                     {
                         if (!string.IsNullOrEmpty(matcher.Groups[i].Value))
@@ -110,7 +110,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     var matcher = MULTI_WORD_PATTERN.Match(desc);
                     //matcher.matches();
-                    String matchedGroup = null;
+                    string matchedGroup = null;
                     for (int i = 1; i <= matcher.Groups.Count; ++i)
                     {
                         if (!string.IsNullOrEmpty(matcher.Groups[i].Value))
@@ -145,7 +145,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     var matcher = CASE_INSENSITIVE_PATTERN.Match(desc);
                     //matcher.matches();
-                    String matchedGroup = null;
+                    string matchedGroup = null;
                     for (int i = 1; i <= matcher.Groups.Count; ++i)
                     {
                         if (!string.IsNullOrEmpty(matcher.Groups[i].Value))
@@ -183,7 +183,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     var matcher = PREFIX_PATTERN.Match(desc);
                     //matcher.matches();
-                    String matchedGroup = null;
+                    string matchedGroup = null;
                     for (int i = 1; i <= matcher.Groups.Count; ++i)
                     {
                         if (!string.IsNullOrEmpty(matcher.Groups[i].Value))
@@ -226,8 +226,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     // promote those to regex match or make a string matcher out
                     // of them.  for short enough disjunctions, a simple string
                     // matcher can be more efficient than a regex.
-                    //String[] words = desc.Split(new []{"[|]"}, StringSplitOptions.None);
-                    String[] words = desc.Split('|');
+                    //string[] words = desc.Split(new []{"[|]"}, StringSplitOptions.None);
+                    string[] words = desc.Split('|');
                     if (words.Length <= MAX_STRING_MATCHER_SIZE)
                     {
                         descriptionMode = DescriptionMode.STRINGS;
@@ -291,14 +291,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         }
 
         //@Override
-        public override String localString()
+        public override string localString()
         {
             return rel.ToString() + ' ' + (negDesc ? "!" : "") + (basicCatFunction != null ? "@" : "") + stringDesc +
                    (name == null ? "" : '=' + name);
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             if (isNegated())
@@ -364,7 +364,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         //@Override
         public override TregexMatcher matcher(Tree root, Tree tree,
             IdentityDictionary<Tree, Tree> nodesToParents,
-            Dictionary<String, Tree> namesToNodes,
+            Dictionary<string, Tree> namesToNodes,
             VariableStrings variableStrings,
             HeadFinder headFinder)
         {
@@ -400,7 +400,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public DescriptionMatcher(DescriptionPattern n, Tree root, Tree tree,
                 IdentityDictionary<Tree, Tree> nodesToParents,
-                Dictionary<String, Tree> namesToNodes,
+                Dictionary<string, Tree> namesToNodes,
                 VariableStrings variableStrings,
                 HeadFinder headFinder) :
                     base(root, tree, nodesToParents, namesToNodes, variableStrings, headFinder)
@@ -453,7 +453,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 removeNamedNodes(); // if we named a node, it should now be unnamed
                 finished = true;
                 Match m = null;
-                String value = null;
+                string value = null;
                 if (treeNodeMatchCandidateIterator == null)
                 {
                     treeNodeMatchCandidateIterator = myNode.rel.searchNodeIterator(tree, this);
@@ -475,10 +475,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             if (otherTree != null)
                             {
                                 Console.WriteLine("otherTree != null");
-                                String otherValue = myNode.basicCatFunction == null
+                                string otherValue = myNode.basicCatFunction == null
                                     ? otherTree.value()
                                     : myNode.basicCatFunction(otherTree.value());
-                                String myValue = myNode.basicCatFunction == null
+                                string myValue = myNode.basicCatFunction == null
                                     ? nextTreeNodeMatchCandidate.value()
                                     : myNode.basicCatFunction(nextTreeNodeMatchCandidate.value());
                                 if (otherValue.Equals(myValue))
@@ -500,7 +500,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     {
                         // try to match the description pattern.
                         // cdm: Nov 2006: Check for null label, just make found false
-                        // String value = (myNode.basicCatFunction == null ? nextTreeNodeMatchCandidate.value() : myNode.basicCatFunction.apply(nextTreeNodeMatchCandidate.value()));
+                        // string value = (myNode.basicCatFunction == null ? nextTreeNodeMatchCandidate.value() : myNode.basicCatFunction.apply(nextTreeNodeMatchCandidate.value()));
                         // m = myNode.descPattern.matcher(value);
                         // bool found = m.find();
                         Console.WriteLine("else");
@@ -538,11 +538,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         if (found)
                         {
                             Console.WriteLine("found = true");
-                            foreach (Tuple<int, String> varGroup in myNode.variableGroups)
+                            foreach (Tuple<int, string> varGroup in myNode.variableGroups)
                             {
                                 // if variables have been captured from a regex, they must match any previous matchings
-                                String thisVariable = varGroup.Item2;
-                                String thisVarString = variableStrings.getString(thisVariable);
+                                string thisVariable = varGroup.Item2;
+                                string thisVarString = variableStrings.getString(thisVariable);
                                 if (m != null)
                                 {
                                     if (thisVarString != null &&
@@ -606,17 +606,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             private void commitVariableGroups(Match m)
             {
                 committedVariables = true; // commit all my variable groups.
-                foreach (Tuple<int, String> varGroup in myNode.variableGroups)
+                foreach (Tuple<int, string> varGroup in myNode.variableGroups)
                 {
-                    String thisVarString = m.Groups[varGroup.Item1].Value;
+                    string thisVarString = m.Groups[varGroup.Item1].Value;
                     variableStrings.setVar(varGroup.Item2, thisVarString);
                 }
             }
 
-            private void commitVariableGroups(String value)
+            private void commitVariableGroups(string value)
             {
                 committedVariables = true;
-                foreach (Tuple<int, String> varGroup in myNode.variableGroups)
+                foreach (Tuple<int, string> varGroup in myNode.variableGroups)
                 {
                     variableStrings.setVar(varGroup.Item2, value);
                 }
@@ -626,7 +626,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             {
                 if (committedVariables)
                 {
-                    foreach (Tuple<int, String> varGroup in myNode.variableGroups)
+                    foreach (Tuple<int, string> varGroup in myNode.variableGroups)
                     {
                         variableStrings.unsetVar(varGroup.Item2);
                     }

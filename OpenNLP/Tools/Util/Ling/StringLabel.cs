@@ -18,7 +18,7 @@ namespace OpenNLP.Tools.Util.Ling
 
     public class StringLabel : ValueLabel, HasOffset
     {
-        private String str;
+        private string str;
 
         /**
    * Start position of the word in the original input string
@@ -46,7 +46,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param str The new label's content
    */
 
-        public StringLabel(String str)
+        public StringLabel(string str)
         {
             this.str = str;
         }
@@ -59,7 +59,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param endPosition End offset in original text
    */
 
-        public StringLabel(String str, int beginPosition, int endPosition)
+        public StringLabel(string str, int beginPosition, int endPosition)
         {
             this.str = str;
             setBeginPosition(beginPosition);
@@ -89,10 +89,10 @@ namespace OpenNLP.Tools.Util.Ling
         /**
    * Return the word value of the label (or null if none).
    *
-   * @return String the word value for the label
+   * @return string the word value for the label
    */
         //@Override
-        public override String value()
+        public override string value()
         {
             return str;
         }
@@ -104,25 +104,25 @@ namespace OpenNLP.Tools.Util.Ling
    * @param value The value for the label
    */
         //@Override
-        public override void setValue( /*final */ String value)
+        public override void setValue( /*final */ string value)
         {
             str = value;
         }
 
 
         /**
-   * Set the label from a String.
+   * Set the label from a string.
    *
    * @param str The str for the label
    */
         //@Override
-        public override void setFromString( /*final */ String str)
+        public override void setFromString( /*final */ string str)
         {
             this.str = str;
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return str;
         }

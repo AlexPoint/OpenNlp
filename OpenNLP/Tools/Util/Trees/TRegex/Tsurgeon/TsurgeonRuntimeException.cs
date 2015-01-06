@@ -22,7 +22,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * @param message the message for the exception
    */
 
-        public TsurgeonRuntimeException(String message) : base(message)
+        public TsurgeonRuntimeException(string message) : base(message)
         {
         }
     }

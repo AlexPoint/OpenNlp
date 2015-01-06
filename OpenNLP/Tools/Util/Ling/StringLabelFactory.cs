@@ -8,7 +8,7 @@ namespace OpenNLP.Tools.Util.Ling
 {
     /**
  * A <code>StringLabelFactory</code> object makes a simple
- * <code>StringLabel</code> out of a <code>String</code>.
+ * <code>StringLabel</code> out of a <code>string</code>.
  *
  * @author Christopher Manning
  */
@@ -16,21 +16,21 @@ namespace OpenNLP.Tools.Util.Ling
     public class StringLabelFactory : LabelFactory
     {
         /**
-   * Make a new label with this <code>String</code> as the "name".
+   * Make a new label with this <code>string</code> as the "name".
    *
    * @param labelStr A string that determines the content of the label.
    *                 For a StringLabel, it is exactly the given string
    * @return The created label
    */
 
-        public Label newLabel(String labelStr)
+        public Label newLabel(string labelStr)
         {
             return new StringLabel(labelStr);
         }
 
 
         /**
-         * Make a new label with this <code>String</code> as the "name".
+         * Make a new label with this <code>string</code> as the "name".
          *
          * @param labelStr A string that determines the content of the label.
          *                 For a StringLabel, it is exactly the given string
@@ -38,14 +38,14 @@ namespace OpenNLP.Tools.Util.Ling
          * @return The created label
          */
 
-        public Label newLabel(String labelStr, int options)
+        public Label newLabel(string labelStr, int options)
         {
             return new StringLabel(labelStr);
         }
 
 
         /**
-         * Make a new label with this <code>String</code> as the "name".
+         * Make a new label with this <code>string</code> as the "name".
          * This version does no decoding -- StringLabels just have a value.
          *
          * @param labelStr A string that determines the content of the label.
@@ -53,7 +53,7 @@ namespace OpenNLP.Tools.Util.Ling
          * @return The created label
          */
 
-        public Label newLabelFromString(String labelStr)
+        public Label newLabelFromString(string labelStr)
         {
             return new StringLabel(labelStr);
         }

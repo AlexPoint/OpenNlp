@@ -27,7 +27,7 @@ namespace OpenNLP.Tools.Util.Trees
  * It is up to the overriding base class to initialize the map
  * from constituent type to categoryLists, "nonTerminalInfo",
  * in its constructor.
- * Entries are presumed to be of type String[][].  Each String[] is a list of
+ * Entries are presumed to be of type string[][].  Each string[] is a list of
  * categories, except for the first entry, which specifies direction of
  * traversal and must be one of the following:
  * </p>
@@ -65,14 +65,14 @@ namespace OpenNLP.Tools.Util.Trees
     {
         //private static readonly bool DEBUG = System.getProperty("HeadFinder", null) != null;
         protected readonly AbstractTreebankLanguagePack tlp;
-        protected Dictionary<String, String[][]> nonTerminalInfo;
+        protected Dictionary<string, string[][]> nonTerminalInfo;
 
         /** Default direction if no rule is found for category (the head/parent).
    *  Subclasses can turn it on if they like.
    *  If they don't it is an error if no rule is defined for a category
    *  (null is returned).
    */
-        protected String[] defaultRule; // = null;
+        protected string[] defaultRule; // = null;
 
         /** These are built automatically from categoriesToAvoid and used in a fairly
    *  different fashion from defaultRule (above).  These are used for categories
@@ -80,8 +80,8 @@ namespace OpenNLP.Tools.Util.Trees
    *  than picking the rightmost or leftmost child, we will use these to pick
    *  the the rightmost or leftmost child which isn't in categoriesToAvoid.
    */
-        protected String[] defaultLeftRule;
-        protected String[] defaultRightRule;
+        protected string[] defaultLeftRule;
+        protected string[] defaultRightRule;
 
         /**
    * Construct a HeadFinder.
@@ -95,12 +95,12 @@ namespace OpenNLP.Tools.Util.Trees
    * @param categoriesToAvoid Constituent types to avoid as head
    */
 
-        protected AbstractCollinsHeadFinder(AbstractTreebankLanguagePack tlp, String[] categoriesToAvoid)
+        protected AbstractCollinsHeadFinder(AbstractTreebankLanguagePack tlp, string[] categoriesToAvoid)
         {
             this.tlp = tlp;
             // automatically build defaultLeftRule, defaultRightRule
-            defaultLeftRule = new String[categoriesToAvoid.Length + 1];
-            defaultRightRule = new String[categoriesToAvoid.Length + 1];
+            defaultLeftRule = new string[categoriesToAvoid.Length + 1];
+            defaultRightRule = new string[categoriesToAvoid.Length + 1];
             if (categoriesToAvoid.Length > 0)
             {
                 defaultLeftRule[0] = "leftexcept";
@@ -219,7 +219,7 @@ namespace OpenNLP.Tools.Util.Trees
         protected virtual Tree determineNonTrivialHead(Tree t, Tree parent)
         {
             Tree theHead = null;
-            String motherCat = tlp.basicCategory(t.label().value());
+            string motherCat = tlp.basicCategory(t.label().value());
             if (motherCat.StartsWith("@"))
             {
                 motherCat = motherCat.Substring(1);
@@ -240,7 +240,7 @@ namespace OpenNLP.Tools.Util.Trees
             //    if (tlp.basicCategory(lastDtr.label().value()).equals("POS")) {
             //      theHead = lastDtr;
             //    } else {
-            String[][] how = null;
+            string[][] how = null;
             var success = nonTerminalInfo.TryGetValue(motherCat, out how);
             Tree[] kids = t.children();
             if (!success)
@@ -286,7 +286,7 @@ namespace OpenNLP.Tools.Util.Trees
    * lastResort is true, otherwise return <code>null</code>.
    */
 
-        protected Tree traverseLocate(Tree[] daughterTrees, String[] how, bool lastResort)
+        protected Tree traverseLocate(Tree[] daughterTrees, string[] how, bool lastResort)
         {
             int headIdx;
             switch (how[0])
@@ -323,7 +323,7 @@ namespace OpenNLP.Tools.Util.Trees
                     // if that doesn't match, we'll return the left or rightmost child (by
                     // setting headIdx).  We want to be careful to ensure that postOperationFix
                     // runs exactly once.
-                    String[] rule;
+                    string[] rule;
                     if (how[0].StartsWith("left"))
                     {
                         headIdx = 0;
@@ -356,13 +356,13 @@ namespace OpenNLP.Tools.Util.Trees
             return daughterTrees[headIdx];
         }
 
-        private int findLeftHead(Tree[] daughterTrees, String[] how)
+        private int findLeftHead(Tree[] daughterTrees, string[] how)
         {
             for (int i = 1; i < how.Length; i++)
             {
                 for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++)
                 {
-                    String childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
+                    string childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
                     if (how[i].Equals(childCat))
                     {
                         return headIdx;
@@ -372,11 +372,11 @@ namespace OpenNLP.Tools.Util.Trees
             return -1;
         }
 
-        private int findLeftDisHead(Tree[] daughterTrees, String[] how)
+        private int findLeftDisHead(Tree[] daughterTrees, string[] how)
         {
             for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++)
             {
-                String childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
+                string childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
                 for (int i = 1; i < how.Length; i++)
                 {
                     if (how[i].Equals(childCat))
@@ -388,11 +388,11 @@ namespace OpenNLP.Tools.Util.Trees
             return -1;
         }
 
-        private int findLeftExceptHead(Tree[] daughterTrees, String[] how)
+        private int findLeftExceptHead(Tree[] daughterTrees, string[] how)
         {
             for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++)
             {
-                String childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
+                string childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
                 bool found = true;
                 for (int i = 1; i < how.Length; i++)
                 {
@@ -409,13 +409,13 @@ namespace OpenNLP.Tools.Util.Trees
             return -1;
         }
 
-        private int findRightHead(Tree[] daughterTrees, String[] how)
+        private int findRightHead(Tree[] daughterTrees, string[] how)
         {
             for (int i = 1; i < how.Length; i++)
             {
                 for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--)
                 {
-                    String childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
+                    string childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
                     if (how[i].Equals(childCat))
                     {
                         return headIdx;
@@ -426,11 +426,11 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         // from right, but search for any of the categories, not by category in turn
-        private int findRightDisHead(Tree[] daughterTrees, String[] how)
+        private int findRightDisHead(Tree[] daughterTrees, string[] how)
         {
             for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--)
             {
-                String childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
+                string childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
                 for (int i = 1; i < how.Length; i++)
                 {
                     if (how[i].Equals(childCat))
@@ -442,11 +442,11 @@ namespace OpenNLP.Tools.Util.Trees
             return -1;
         }
 
-        private int findRightExceptHead(Tree[] daughterTrees, String[] how)
+        private int findRightExceptHead(Tree[] daughterTrees, string[] how)
         {
             for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--)
             {
-                String childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
+                string childCat = tlp.basicCategory(daughterTrees[headIdx].label().value());
                 bool found = true;
                 for (int i = 1; i < how.Length; i++)
                 {

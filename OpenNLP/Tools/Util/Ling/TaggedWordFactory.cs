@@ -49,29 +49,29 @@ namespace OpenNLP.Tools.Util.Ling
 
 
         /**
-   * Make a new label with this <code>String</code> as the value (word).
+   * Make a new label with this <code>string</code> as the value (word).
    * Any other fields of the label would normally be null.
    *
-   * @param labelStr The String that will be used for value
+   * @param labelStr The string that will be used for value
    * @return The new TaggedWord (tag will be <code>null</code>)
    */
 
-        public Label newLabel(String labelStr)
+        public Label newLabel(string labelStr)
         {
             return new TaggedWord(labelStr);
         }
 
 
         /**
-   * Make a new label with this <code>String</code> as a value component.
+   * Make a new label with this <code>string</code> as a value component.
    * Any other fields of the label would normally be null.
    *
-   * @param labelStr The String that will be used for value
+   * @param labelStr The string that will be used for value
    * @param options  what to make (use labelStr as word or tag)
    * @return The new TaggedWord (tag or word will be <code>null</code>)
    */
 
-        public Label newLabel(String labelStr, int options)
+        public Label newLabel(string labelStr, int options)
         {
             if (options == TAG_LABEL)
             {
@@ -83,7 +83,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         /**
    * Create a new word, where the label is formed from
-   * the <code>String</code> passed in.  The String is divided according
+   * the <code>string</code> passed in.  The string is divided according
    * to the divider character.  We assume that we can always just
    * divide on the rightmost divider character, rather than trying to
    * parse up escape sequences.  If the divider character isn't found
@@ -94,7 +94,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @return The new TaggedWord
    */
 
-        public Label newLabelFromString(String word)
+        public Label newLabelFromString(string word)
         {
             int where = word.LastIndexOf(divider);
             if (where >= 0)

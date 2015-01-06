@@ -322,7 +322,7 @@ namespace OpenNLP.Tools.Util.Trees
             return t;
         }
 
-        private static String getHeadTag(Tree t)
+        private static string getHeadTag(Tree t)
         {
             if (t.value().StartsWith("NN"))
             {
@@ -372,7 +372,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             // a CC b c ... -> (a CC b) c ...  with b not a DT
-            String beforeSibling = ccSiblings[ccIndex - 1].value();
+            string beforeSibling = ccSiblings[ccIndex - 1].value();
             if (ccIndex == 1 &&
                 (beforeSibling.Equals("DT") || beforeSibling.Equals("JJ") || beforeSibling.Equals("RB") ||
                  ! (ccSiblings[ccIndex + 1].value().Equals("DT"))) && ! (beforeSibling.StartsWith("NP")
@@ -380,7 +380,7 @@ namespace OpenNLP.Tools.Util.Trees
                                                                          || beforeSibling.Equals("NNS")))
             {
                 // && (ccSiblings.Length == ccIndex + 3 || !ccPositions.isEmpty())) {  // something like "soya or maize oil"
-                String leftHead = getHeadTag(ccSiblings[ccIndex - 1]);
+                string leftHead = getHeadTag(ccSiblings[ccIndex - 1]);
                 //create a new tree to be inserted as first child of t
                 Tree left = tf.newTreeNode(lf.newLabel(leftHead), null);
                 for (int i = 0; i < ccIndex + 2; i++)
@@ -417,7 +417,7 @@ namespace OpenNLP.Tools.Util.Trees
                         comma = true;
                     }
                     /*if (VERBOSE) {System.err.println("more CC index " +  index);}*/
-                    String head = getHeadTag(ccSiblings[index - 1]);
+                    string head = getHeadTag(ccSiblings[index - 1]);
 
                     if (ccIndex + 2 < index)
                     {
@@ -472,7 +472,7 @@ namespace OpenNLP.Tools.Util.Trees
                      !ccSiblings[ccIndex - 1].value().Equals("NNS") &&
                      (ccSiblings.Length == 5 || (ccPositions.Any() && ccPositions[0] == 5)))
             {
-                String head = getHeadTag(ccSiblings[ccIndex - 1]);
+                string head = getHeadTag(ccSiblings[ccIndex - 1]);
                 //create a new tree to be inserted as second child of t (after the determiner
                 Tree child = tf.newTreeNode(lf.newLabel(head), null);
 
@@ -498,7 +498,7 @@ namespace OpenNLP.Tools.Util.Trees
             else if (ccIndex > 2 && ccSiblings[ccIndex - 2].value().Equals(",") &&
                      !ccSiblings[ccIndex - 1].value().Equals("NNS"))
             {
-                String head = getHeadTag(ccSiblings[ccIndex - 1]);
+                string head = getHeadTag(ccSiblings[ccIndex - 1]);
                 Tree child = tf.newTreeNode(lf.newLabel(head), null);
 
                 for (int j = ccIndex - 3; j < ccIndex + 2; j++)
@@ -540,13 +540,13 @@ namespace OpenNLP.Tools.Util.Trees
                 Tree conjT = tf.newTreeNode(lf.newLabel("CC"), null);
 
                 // create the left tree
-                String leftHead = getHeadTag(ccSiblings[ccIndex - 1]);
+                string leftHead = getHeadTag(ccSiblings[ccIndex - 1]);
                 Tree left = tf.newTreeNode(lf.newLabel(leftHead), null);
 
 
                 // handle the case of a preconjunct (either, both, neither)
                 Tree first = ccSiblings[0];
-                String leaf = first.firstChild().value().ToLower();
+                string leaf = first.firstChild().value().ToLower();
                 if (leaf.Equals("either") || leaf.Equals("neither") || leaf.Equals("both"))
                 {
                     preconj = true;
@@ -581,7 +581,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     nextCC = ccPositions[0];
                 }
-                String rightHead = getHeadTag(ccSiblings[nextCC - 1]);
+                string rightHead = getHeadTag(ccSiblings[nextCC - 1]);
                 Tree right = tf.newTreeNode(lf.newLabel(rightHead), null);
                 for (int i = ccIndex + 1; i < nextCC - 1; i++)
                 {

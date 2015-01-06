@@ -23,9 +23,9 @@ namespace OpenNLP.Tools.Util
    * key (name), and its value is not "false" or "no" or "off".
    */
 
-        public static bool hasProperty(Dictionary<String, String> props, String key)
+        public static bool hasProperty(Dictionary<string, string> props, string key)
         {
-            String value = props[key];
+            string value = props[key];
             if (value == null)
             {
                 return false;
@@ -35,7 +35,7 @@ namespace OpenNLP.Tools.Util
         }
 
         // Convert from properties to string and from string to properties
-        public static String asString(Dictionary<String, String> props)
+        public static string asString(Dictionary<string, string> props)
         {
             try
             {
@@ -49,10 +49,10 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        /*public static Dictionary<String,String> fromString(String str) {
+        /*public static Dictionary<string,String> fromString(string str) {
     try {
       StringReader sr = new StringReader(str);
-      Dictionary<String,String> props = new Dictionary<String,String>();
+      Dictionary<string,String> props = new Dictionary<string,String>();
       props.load(sr);
       return props;
     } catch (IOException ex) {
@@ -62,7 +62,7 @@ namespace OpenNLP.Tools.Util
 
         // printing -------------------------------------------------------------------
 
-        /*public static void printProperties(String message, Dictionary<String,String> properties,
+        /*public static void printProperties(string message, Dictionary<string,String> properties,
                                      PrintStream stream) {
     if (message != null) {
       stream.println(message);
@@ -70,8 +70,8 @@ namespace OpenNLP.Tools.Util
     if (properties.isEmpty()) {
       stream.println("  [empty]");
     } else {
-      List<Map.Entry<String, String>> entries = getSortedEntries(properties);
-      for (Map.Entry<String, String> entry : entries) {
+      List<Map.Entry<string, string>> entries = getSortedEntries(properties);
+      for (Map.Entry<string, string> entry : entries) {
         if ( ! "".equals(entry.getKey())) {
           stream.format("  %-30s = %s%n", entry.getKey(), entry.getValue());
         }
@@ -80,17 +80,17 @@ namespace OpenNLP.Tools.Util
     stream.println();
   }*/
 
-        /* public static void printProperties(String message, Dictionary<String,String> properties) {
+        /* public static void printProperties(string message, Dictionary<string,String> properties) {
     printProperties(message, properties, System.out);
   }*/
 
         /**
-   * Tired of Properties not behaving like {@code Map<String,String>}s?  This method will solve that problem for you.
+   * Tired of Properties not behaving like {@code Map<string,String>}s?  This method will solve that problem for you.
    */
 
-        public static Dictionary<String, String> asMap(Dictionary<String, String> properties)
+        public static Dictionary<string, string> asMap(Dictionary<string, string> properties)
         {
-            /*Map<String, String> map = Generics.newHashMap();
+            /*Map<string, string> map = Generics.newHashMap();
     foreach (Entry<Object, Object> entry in properties.entrySet()) {
       map.put((String)entry.getKey(), (String)entry.getValue());
     }
@@ -98,7 +98,7 @@ namespace OpenNLP.Tools.Util
             return properties.ToDictionary(ent => ent.Key, ent => ent.Value);
         }
 
-        public static List<KeyValuePair<String, String>> getSortedEntries(Dictionary<String, String> properties)
+        public static List<KeyValuePair<string, string>> getSortedEntries(Dictionary<string, string> properties)
         {
             //return Maps.sortedEntries(asMap(properties));
             return asMap(properties).Select(e => e).ToList();
@@ -113,13 +113,13 @@ namespace OpenNLP.Tools.Util
    * @param defaults Default properties which lists all known keys
    */
         //@SuppressWarnings("unchecked")
-        /*public static void checkProperties(Dictionary<String,String> properties, Dictionary<String,String> defaults) {
-    Set<String> names = Generics.newHashSet();
-    for (Enumeration<String> e = (Enumeration<String>) properties.propertyNames();
+        /*public static void checkProperties(Dictionary<string,String> properties, Dictionary<string,String> defaults) {
+    Set<string> names = Generics.newHashSet();
+    for (Enumeration<string> e = (Enumeration<string>) properties.propertyNames();
          e.hasMoreElements(); ) {
       names.add(e.nextElement());
     }
-    for (Enumeration<String> e = (Enumeration<String>) defaults.propertyNames();
+    for (Enumeration<string> e = (Enumeration<string>) defaults.propertyNames();
          e.hasMoreElements(); ) {
       names.remove(e.nextElement());
     }
@@ -147,18 +147,18 @@ namespace OpenNLP.Tools.Util
    *         the returned structure.
    */
 
-        public static Dictionary<String, String> extractPrefixedProperties(Dictionary<String, String> properties,
-            String prefix)
+        public static Dictionary<string, string> extractPrefixedProperties(Dictionary<string, string> properties,
+            string prefix)
         {
-            Dictionary<String, String> ret = new Dictionary<String, String>();
+            Dictionary<string, string> ret = new Dictionary<string, string>();
 
             foreach (var entry in properties)
             {
-                String keyStr = entry.Key;
+                string keyStr = entry.Key;
 
                 if (keyStr.StartsWith(prefix))
                 {
-                    String newStr = keyStr.Substring(prefix.Length);
+                    string newStr = keyStr.Substring(prefix.Length);
                     ret[newStr] = entry.Value;
                 }
             }
@@ -171,12 +171,12 @@ namespace OpenNLP.Tools.Util
    * Get the value of a property and automatically cast it to a specific type.
    * This differs from the original Properties.getProperty() method in that you
    * need to specify the desired type (e.g. Double.class) and the default value
-   * is an object of that type, i.e. a double 0.0 instead of the String "0.0".
+   * is an object of that type, i.e. a double 0.0 instead of the string "0.0".
    */
         //@SuppressWarnings("unchecked")
-        public static /*<E>*/ E get<E>(Dictionary<String, String> props, String key, E defaultValue, Type type)
+        public static /*<E>*/ E get<E>(Dictionary<string, string> props, string key, E defaultValue, Type type)
         {
-            String value = props[key];
+            string value = props[key];
             if (value == null)
             {
                 return defaultValue;
@@ -192,9 +192,9 @@ namespace OpenNLP.Tools.Util
    * Load an integer property.  If the key is not present, returns defaultValue.
    */
 
-        public static String getString(Dictionary<String, String> props, String key, String defaultValue)
+        public static string getString(Dictionary<string, string> props, string key, string defaultValue)
         {
-            String value = props[key];
+            string value = props[key];
             if (value != null)
             {
                 return value;
@@ -209,7 +209,7 @@ namespace OpenNLP.Tools.Util
    * Load an integer property.  If the key is not present, returns 0.
    */
 
-        public static int getInt(Dictionary<String, String> props, String key)
+        public static int getInt(Dictionary<string, string> props, string key)
         {
             return getInt(props, key, 0);
         }
@@ -218,9 +218,9 @@ namespace OpenNLP.Tools.Util
    * Load an integer property.  If the key is not present, returns defaultValue.
    */
 
-        public static int getInt(Dictionary<String, String> props, String key, int defaultValue)
+        public static int getInt(Dictionary<string, string> props, string key, int defaultValue)
         {
-            String value = props[key];
+            string value = props[key];
             if (value != null)
             {
                 return int.Parse(value);
@@ -236,9 +236,9 @@ namespace OpenNLP.Tools.Util
    * If the key is not present, returns defaultValue.
    */
 
-        public static long getLong(Dictionary<String, String> props, String key, long defaultValue)
+        public static long getLong(Dictionary<string, string> props, string key, long defaultValue)
         {
-            String value = props[key];
+            string value = props[key];
             if (value != null)
             {
                 return long.Parse(value);
@@ -253,7 +253,7 @@ namespace OpenNLP.Tools.Util
    * Load a double property.  If the key is not present, returns 0.0.
    */
 
-        public static double getDouble(Dictionary<String, String> props, String key)
+        public static double getDouble(Dictionary<string, string> props, string key)
         {
             return getDouble(props, key, 0.0);
         }
@@ -262,9 +262,9 @@ namespace OpenNLP.Tools.Util
    * Load a double property.  If the key is not present, returns defaultValue.
    */
 
-        public static double getDouble(Dictionary<String, String> props, String key, double defaultValue)
+        public static double getDouble(Dictionary<string, string> props, string key, double defaultValue)
         {
-            String value = props[key];
+            string value = props[key];
             if (value != null)
             {
                 return Double.Parse(value);
@@ -279,7 +279,7 @@ namespace OpenNLP.Tools.Util
    * Load a bool property.  If the key is not present, returns false.
    */
 
-        public static bool getBool(Dictionary<String, String> props, String key)
+        public static bool getBool(Dictionary<string, string> props, string key)
         {
             return getBool(props, key, false);
         }
@@ -288,10 +288,10 @@ namespace OpenNLP.Tools.Util
    * Load a bool property.  If the key is not present, returns defaultValue.
    */
 
-        public static bool getBool(Dictionary<String, String> props, String key,
+        public static bool getBool(Dictionary<string, string> props, string key,
             bool defaultValue)
         {
-            String value = props[key];
+            string value = props[key];
             if (value != null)
             {
                 return bool.Parse(value);
@@ -305,7 +305,7 @@ namespace OpenNLP.Tools.Util
         /**
    * Loads a comma-separated list of integers from Properties.  The list cannot include any whitespace.
    */
-        /*public static int[] getIntArray(Dictionary<String,String> props, String key) {
+        /*public static int[] getIntArray(Dictionary<string,String> props, string key) {
     Integer[] result = MetaClass.cast(props[key], Integer [].class);
     return ArrayUtils.toPrimitive(result);
   }*/
@@ -313,7 +313,7 @@ namespace OpenNLP.Tools.Util
         /**
    * Loads a comma-separated list of doubles from Properties.  The list cannot include any whitespace.
    */
-        /*public static double[] getDoubleArray(Dictionary<String,String> props, String key) {
+        /*public static double[] getDoubleArray(Dictionary<string,String> props, string key) {
     Double[] result = MetaClass.cast(props[key], Double [].class);
     return ArrayUtils.toPrimitive(result);
   }*/
@@ -323,18 +323,18 @@ namespace OpenNLP.Tools.Util
    *    property1 = value1,value2,"a quoted value",'another quoted value'
    *    
    * getStringArray(props, "property1") should return the same thing as
-   *    new String[] { "value1", "value2", "a quoted value", "another quoted value" };
+   *    new string[] { "value1", "value2", "a quoted value", "another quoted value" };
    */
-        /*public static String[] getStringArray(Dictionary<String,String> props, String key) {
-    String[] results = MetaClass.cast(props[key], String [].class);
+        /*public static string[] getStringArray(Dictionary<string,String> props, string key) {
+    string[] results = MetaClass.cast(props[key], string [].class);
     if (results == null) {
-      results = new String[]{};
+      results = new string[]{};
     }
     return results;
   }*/
 
-        /*public static String[] getStringArray(Dictionary<String,String> props, String key, String[] defaults) {
-    String[] results = MetaClass.cast(props[key], String [].class);
+        /*public static string[] getStringArray(Dictionary<string,String> props, string key, string[] defaults) {
+    string[] results = MetaClass.cast(props[key], string [].class);
     if (results == null) {
       results = defaults;
     }
@@ -343,11 +343,11 @@ namespace OpenNLP.Tools.Util
 
         public /*static*/ class Property
         {
-            public String name;
-            public String defaultValue;
-            public String description;
+            public string name;
+            public string defaultValue;
+            public string description;
 
-            public Property(String name, String defaultValue, String description)
+            public Property(string name, string defaultValue, string description)
             {
                 this.name = name;
                 this.defaultValue = defaultValue;
@@ -355,13 +355,13 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        /*public static String getSignature(String name, Dictionary<String,String> properties, Dictionary<String,String>[] supportedProperties) {
-    String prefix = (name != null && name.Any())? name + ".":"";
+        /*public static string getSignature(string name, Dictionary<string,String> properties, Dictionary<string,String>[] supportedProperties) {
+    string prefix = (name != null && name.Any())? name + ".":"";
     // keep track of all relevant properties for this annotator here!
     StringBuilder sb = new StringBuilder();
-    foreach (Dictionary<String,String> p in supportedProperties) {
-      String pname = prefix + p.name;
-      String pvalue = properties[pname] = p.defaultValue;
+    foreach (Dictionary<string,String> p in supportedProperties) {
+      string pname = prefix + p.name;
+      string pvalue = properties[pname] = p.defaultValue;
       sb.Append(pname).Append(":").Append(pvalue);
     }
     return sb.ToString();

@@ -34,7 +34,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         public ParseException(Token currentTokenVal,
             int[][] expectedTokenSequencesVal,
-            String[] tokenImageVal) :
+            string[] tokenImageVal) :
                 base(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal))
         {
             currentToken = currentTokenVal;
@@ -58,7 +58,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Constructor with message. */
 
-        public ParseException(String message) :
+        public ParseException(string message) :
             base(message)
         {
         }
@@ -83,7 +83,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * parser within which the parse error occurred.  This array is
    * defined in the generated ...Constants interface.
    */
-        public String[] tokenImage;
+        public string[] tokenImage;
 
         /**
    * It uses "currentToken" and "expectedTokenSequences" to generate a parse
@@ -93,11 +93,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * gets displayed.
    */
 
-        private static String initialise(Token currentToken,
+        private static string initialise(Token currentToken,
             int[][] expectedTokenSequences,
-            String[] tokenImage)
+            string[] tokenImage)
         {
-            String eol = /*System.getProperty("line.separator", "\n");*/ Environment.NewLine;
+            string eol = /*System.getProperty("line.separator", "\n");*/ Environment.NewLine;
             var expected = new StringBuilder();
             int maxSize = 0;
             for (int i = 0; i < expectedTokenSequences.Length; i++)
@@ -116,7 +116,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 expected.Append(eol).Append("    ");
             }
-            String retval = "Encountered \"";
+            string retval = "Encountered \"";
             Token tok = currentToken.next;
             for (int i = 0; i < maxSize; i++)
             {
@@ -149,8 +149,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /**
    * The end of line string for this machine.
    */
-        //protected String eol = System.getProperty("line.separator", "\n");
-        protected String eol = Environment.NewLine;
+        //protected string eol = System.getProperty("line.separator", "\n");
+        protected string eol = Environment.NewLine;
 
         /**
    * Used to convert raw characters to their escaped version
@@ -158,7 +158,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * string literal.
    */
 
-        private static String add_escapes(String str)
+        private static string add_escapes(string str)
         {
             var retval = new StringBuilder();
             char ch;
@@ -195,7 +195,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     default:
                         if ((ch = str[i]) < 0x20 || ch > 0x7e)
                         {
-                            String s = "0000" + Convert.ToString(ch, 16);
+                            string s = "0000" + Convert.ToString(ch, 16);
                             retval.Append("\\u" + s.Substring(s.Length - 4, s.Length));
                         }
                         else

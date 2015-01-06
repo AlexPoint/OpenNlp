@@ -14,43 +14,43 @@ namespace OpenNLP.Tools.Util.Ling
     {
 
         /**
-         * @return the String before the word
+         * @return the string before the word
          */
-        String before();
+        string before();
 
         /**
-         * Set the whitespace String before the word.
-         * @param before the whitespace String before the word
+         * Set the whitespace string before the word.
+         * @param before the whitespace string before the word
          */
-        void setBefore(String before);
+        void setBefore(string before);
 
         /**
-         * Return the String which is the original character sequence of the token.
+         * Return the string which is the original character sequence of the token.
          *
          * @return The original character sequence of the token
          */
-        String originalText();
+        string originalText();
 
         /**
-         * Set the String which is the original character sequence of the token.
+         * Set the string which is the original character sequence of the token.
          *
          * @param originalText The original character sequence of the token
          */
-        void setOriginalText(String originalText);
+        void setOriginalText(string originalText);
 
         /**
-         * Return the whitespace String after the word.
+         * Return the whitespace string after the word.
          *
-         * @return The whitespace String after the word
+         * @return The whitespace string after the word
          */
-        String after();
+        string after();
 
         /**
-         * Set the whitespace String after the word.
+         * Set the whitespace string after the word.
          *
-         * @param after The whitespace String after the word
+         * @param after The whitespace string after the word
          */
-        void setAfter(String after);
+        void setAfter(string after);
 
     }
 }

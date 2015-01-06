@@ -208,7 +208,7 @@ namespace OpenNLP.Tools.Util
 
         public void print()
         {
-            String s = ToString();
+            string s = ToString();
             //System.out.print(s);
         }
     }

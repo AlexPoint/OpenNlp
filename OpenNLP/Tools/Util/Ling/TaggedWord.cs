@@ -16,9 +16,9 @@ namespace OpenNLP.Tools.Util.Ling
 
     public class TaggedWord : Word, HasTag
     {
-        private String vTag;
+        private string vTag;
 
-        private static readonly String DIVIDER = "/";
+        private static readonly string DIVIDER = "/";
 
         /**
    * Create a new <code>TaggedWord</code>.
@@ -35,7 +35,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param word The word, which will have a <code>null</code> tag
    */
 
-        public TaggedWord(String word) : base(word)
+        public TaggedWord(string word) : base(word)
         {
         }
 
@@ -46,7 +46,7 @@ namespace OpenNLP.Tools.Util.Ling
    * @param tag  The tag
    */
 
-        public TaggedWord(String word, String vTag) :
+        public TaggedWord(string word, string vTag) :
             base(word)
         {
             this.vTag = vTag;
@@ -80,23 +80,23 @@ namespace OpenNLP.Tools.Util.Ling
             this.vTag = tag.value();
         }
 
-        public String tag()
+        public string tag()
         {
             return vTag;
         }
 
-        public void setTag(String tag)
+        public void setTag(string tag)
         {
             this.vTag = tag;
         }
 
         //@Override
-        public override String ToString()
+        public override string ToString()
         {
             return ToString(DIVIDER);
         }
 
-        public String ToString(String divider)
+        public string ToString(string divider)
         {
             return word() + divider + vTag;
         }
@@ -104,7 +104,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         /**
    * Sets a TaggedWord from decoding
-   * the <code>String</code> passed in.  The String is divided according
+   * the <code>string</code> passed in.  The string is divided according
    * to the divider character (usually, "/").  We assume that we can
    * always just
    * divide on the rightmost divider character, rather than trying to
@@ -115,12 +115,12 @@ namespace OpenNLP.Tools.Util.Ling
    * @param taggedWord The word that will go into the <code>Word</code>
    */
 
-        public override void setFromString(String taggedWord)
+        public override void setFromString(string taggedWord)
         {
             setFromString(taggedWord, DIVIDER);
         }
 
-        public void setFromString(String taggedWord, String divider)
+        public void setFromString(string taggedWord, string divider)
         {
             int where = taggedWord.LastIndexOf(divider);
             if (where >= 0)

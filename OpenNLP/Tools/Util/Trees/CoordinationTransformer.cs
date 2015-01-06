@@ -113,7 +113,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         private static readonly TregexPattern RearrangeNowThatTregex =
-            TregexPattern.compile("ADVP=advp <1 (RB < /^(?i:now)$/) <2 (SBAR=sbar <1 (IN < /^(?i:that)$/))");
+            TregexPattern.Compile("ADVP=advp <1 (RB < /^(?i:now)$/) <2 (SBAR=sbar <1 (IN < /^(?i:that)$/))");
 
         private static readonly TsurgeonPattern RearrangeNowThatTsurgeon =
             Tsurgeon.parseOperation("[relabel advp SBAR] [excise sbar sbar]");
@@ -129,7 +129,7 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         private static readonly TregexPattern ChangeSbarToPpTregex =
-            TregexPattern.compile("NP < (NP $++ (SBAR=sbar < (IN < /^(?i:after|before|until|since|during)$/ $++ S)))");
+            TregexPattern.Compile("NP < (NP $++ (SBAR=sbar < (IN < /^(?i:after|before|until|since|during)$/ $++ S)))");
 
         private static readonly TsurgeonPattern ChangeSbarToPpTsurgeon =
             Tsurgeon.parseOperation("relabel sbar PP");
@@ -157,7 +157,7 @@ namespace OpenNLP.Tools.Util.Trees
             // generally add the "not" to the following tree with moveRB, or
             // should we make "and not" a CONJP?
             // also, perhaps look at ADVP
-            TregexPattern.compile("/^(S|PP|VP)/ < (/^(S|PP|VP)/ $++ (CC=start $+ (RB|ADVP $+ /^(S|PP|VP)/) " +
+            TregexPattern.Compile("/^(S|PP|VP)/ < (/^(S|PP|VP)/ $++ (CC=start $+ (RB|ADVP $+ /^(S|PP|VP)/) " +
                                   "[ (< and $+ (RB=end < yet)) | " + // TODO: what should be the head of "and yet"?
                                   "  (< and $+ (RB=end < so)) | " +
                                   "  (< and $+ (ADVP=end < (RB|IN < so))) ] ))");
@@ -177,11 +177,11 @@ namespace OpenNLP.Tools.Util.Trees
 
         private static readonly TregexPattern[] MoveRbTregex =
         {
-            TregexPattern.compile(
+            TregexPattern.Compile(
                 "/^S|PP|VP|NP/ < (/^(S|PP|VP|NP)/ $++ (/^(,|CC|CONJP)$/ [ $+ (RB=adv [ < not | < then ]) | $+ (ADVP=adv <: RB) ])) : (=adv $+ /^(S|PP|VP|NP)/=dest) "),
-            TregexPattern.compile(
+            TregexPattern.Compile(
                 "/^ADVP/ < (/^ADVP/ $++ (/^(,|CC|CONJP)$/ [$+ (RB=adv [ < not | < then ]) | $+ (ADVP=adv <: RB)])) : (=adv $+ /^NP-ADV|ADVP|PP/=dest)"),
-            TregexPattern.compile("/^FRAG/ < (ADVP|RB=adv $+ VP=dest)"),
+            TregexPattern.Compile("/^FRAG/ < (ADVP|RB=adv $+ VP=dest)"),
         };
 
         private static readonly TsurgeonPattern MoveRbTsurgeon =
@@ -206,7 +206,7 @@ namespace OpenNLP.Tools.Util.Trees
         // TODO: maybe we want to catch more complicated tree structures
         // with something in between the WH and the actual question.
         private static readonly TregexPattern FlattenSqTregex =
-            TregexPattern.compile("SBARQ < ((WHNP=what < WP) $+ (SQ=sq < (/^VB/=verb < " +
+            TregexPattern.Compile("SBARQ < ((WHNP=what < WP) $+ (SQ=sq < (/^VB/=verb < " +
                                   EnglishPatterns.copularWordRegex + ") " +
                                   // match against "is running" if the verb is under just a VBG
                                   " !< (/^VB/ < !" + EnglishPatterns.copularWordRegex + ") " +
@@ -245,7 +245,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         private static readonly TregexPattern RemoveXOverXTregex =
-            TregexPattern.compile("__=repeat <: (~repeat < __)");
+            TregexPattern.Compile("__=repeat <: (~repeat < __)");
 
         private static readonly TsurgeonPattern RemoveXOverXTsurgeon = Tsurgeon.parseOperation("excise repeat repeat");
 
@@ -266,7 +266,7 @@ namespace OpenNLP.Tools.Util.Trees
         // By searching for everything at once, then using one tsurgeon
         // which fixes everything at once, we can save quite a bit of time
         private static readonly TregexPattern UcpRenameTregex =
-            TregexPattern.compile("/^UCP/=ucp [ <, /^JJ|ADJP/=adjp | ( <1 DT <2 /^JJ|ADJP/=adjp ) |" +
+            TregexPattern.Compile("/^UCP/=ucp [ <, /^JJ|ADJP/=adjp | ( <1 DT <2 /^JJ|ADJP/=adjp ) |" +
                                   " <- (ADJP=adjp < (JJR < /^(?i:younger|older)$/)) |" +
                                   " <, /^N/=np | ( <1 DT <2 /^N/=np ) | " +
                                   " <, /^ADVP/=advp ]");

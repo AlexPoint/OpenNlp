@@ -239,16 +239,16 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         public static Tree processPattern(TregexPattern matchPattern, TsurgeonPattern p, Tree t)
         {
-            TregexMatcher m = matchPattern.matcher(t);
+            TregexMatcher m = matchPattern.Matcher(t);
             TsurgeonMatcher tsm = p.matcher();
-            while (m.find())
+            while (m.Find())
             {
                 t = tsm.evaluate(t, m);
                 if (t == null)
                 {
                     break;
                 }
-                m = matchPattern.matcher(t);
+                m = matchPattern.Matcher(t);
             }
             return t;
         }
@@ -265,9 +265,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     /*if (DEBUG) {
           System.err.println("Running pattern " + op.first());
         }*/
-                    TregexMatcher m = op.Item1.matcher(t);
+                    TregexMatcher m = op.Item1.Matcher(t);
                     TsurgeonMatcher tsm = op.Item2.matcher();
-                    while (m.find())
+                    while (m.Find())
                     {
                         matchedOnTree = true;
                         t = tsm.evaluate(t, m);
@@ -275,7 +275,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         {
                             return null;
                         }
-                        m = op.Item1.matcher(t);
+                        m = op.Item1.Matcher(t);
                     }
                 }
                 catch (NullReferenceException npe)

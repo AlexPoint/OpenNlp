@@ -355,8 +355,8 @@ namespace OpenNLP.Tools.Util.Trees
                 return false;
             }
             TregexPattern noVerbOverTempTregex =
-                TregexPattern.compile("/^VP/ < NP-TMP !< /^V/ !< NNP|NN|NNPS|NNS|NP|JJ|ADJP|S");
-            if (label.Value().StartsWith("VP") && noVerbOverTempTregex.matcher(tree).matches())
+                TregexPattern.Compile("/^VP/ < NP-TMP !< /^V/ !< NNP|NN|NNPS|NNS|NP|JJ|ADJP|S");
+            if (label.Value().StartsWith("VP") && noVerbOverTempTregex.Matcher(tree).Matches())
             {
                 return false;
             }
@@ -389,18 +389,18 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 var headOfConjpTregex = new TregexPattern[]
                 {
-                    TregexPattern.compile("CONJP < (CC <: /^(?i:but|and)$/ $+ (RB=head <: /^(?i:not)$/))"),
-                    TregexPattern.compile(
+                    TregexPattern.Compile("CONJP < (CC <: /^(?i:but|and)$/ $+ (RB=head <: /^(?i:not)$/))"),
+                    TregexPattern.Compile(
                         "CONJP < (CC <: /^(?i:but)$/ [ ($+ (RB=head <: /^(?i:also|rather)$/)) | ($+ (ADVP=head <: (RB <: /^(?i:also|rather)$/))) ])"),
-                    TregexPattern.compile(
+                    TregexPattern.Compile(
                         "CONJP < (CC <: /^(?i:and)$/ [ ($+ (RB=head <: /^(?i:yet)$/)) | ($+ (ADVP=head <: (RB <: /^(?i:yet)$/))) ])"),
                 };
                 foreach (TregexPattern pattern in headOfConjpTregex)
                 {
-                    TregexMatcher matcher = pattern.matcher(t);
-                    if (matcher.matchesAt(t))
+                    TregexMatcher matcher = pattern.Matcher(t);
+                    if (matcher.MatchesAt(t))
                     {
-                        return matcher.getNode("head");
+                        return matcher.GetNode("head");
                     }
                 }
                 // if none of the above patterns match, use the standard method
@@ -413,26 +413,26 @@ namespace OpenNLP.Tools.Util.Trees
                     var headOfCopulaTregex = new TregexPattern[]
                     {
                         // Matches phrases such as "what is wrong"
-                        TregexPattern.compile("SBARQ < (WHNP $++ (/^VB/ < " + EnglishPatterns.copularWordRegex +
+                        TregexPattern.Compile("SBARQ < (WHNP $++ (/^VB/ < " + EnglishPatterns.copularWordRegex +
                                               " $++ ADJP=head))"),
 
                         // matches WHNP $+ VB<copula $+ NP
                         // for example, "Who am I to judge?"
                         // !$++ ADJP matches against "Why is the dog pink?"
-                        TregexPattern.compile("SBARQ < (WHNP=head $++ (/^VB/ < " + EnglishPatterns.copularWordRegex +
+                        TregexPattern.Compile("SBARQ < (WHNP=head $++ (/^VB/ < " + EnglishPatterns.copularWordRegex +
                                               " $+ NP !$++ ADJP))"),
 
                         // Actually somewhat limited in scope, this detects "Tuesday it is",
                         // "Such a great idea this was", etc
-                        TregexPattern.compile("SINV < (NP=head $++ (NP $++ (VP < (/^(?:VB|AUX)/ < " +
+                        TregexPattern.Compile("SINV < (NP=head $++ (NP $++ (VP < (/^(?:VB|AUX)/ < " +
                                               EnglishPatterns.copularWordRegex + "))))"),
                     };
                     foreach (TregexPattern pattern in headOfCopulaTregex)
                     {
-                        TregexMatcher matcher = pattern.matcher(t);
-                        if (matcher.matchesAt(t))
+                        TregexMatcher matcher = pattern.Matcher(t);
+                        if (matcher.MatchesAt(t))
                         {
-                            return matcher.getNode("head");
+                            return matcher.GetNode("head");
                         }
                     }
                 }

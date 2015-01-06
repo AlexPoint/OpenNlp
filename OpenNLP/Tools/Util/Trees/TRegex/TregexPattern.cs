@@ -312,7 +312,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private bool opt = false;
         private string patternString;
 
-        public void negate()
+        public void Negate()
         {
             neg = true;
             if (opt)
@@ -321,7 +321,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        public void makeOptional()
+        public void MakeOptional()
         {
             opt = true;
             if (neg)
@@ -351,21 +351,21 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
         }
 
-        public abstract List<TregexPattern> getChildren();
+        public abstract List<TregexPattern> GetChildren();
 
-        public abstract string localString();
+        public abstract string LocalString();
 
-        public bool isNegated()
+        public bool IsNegated()
         {
             return neg;
         }
 
-        public bool isOptional()
+        public bool IsOptional()
         {
             return opt;
         }
 
-        public abstract TregexMatcher matcher(Tree root, Tree tree,
+        public abstract TregexMatcher Matcher(Tree root, Tree tree,
             IdentityDictionary<Tree, Tree> nodesToParents,
             Dictionary<string, Tree> namesToNodes,
             VariableStrings variableStrings,
@@ -378,13 +378,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @return a TregexMatcher
    */
 
-        public TregexMatcher matcher(Tree t)
+        public TregexMatcher Matcher(Tree t)
         {
             // In the assumption that there will usually be very few names in
             // the pattern, we use an ArrayMap instead of a hash map
             // TODO: it would be even more efficient if we set this to be
             // exactly the right size
-            return matcher(t, t, null, new Dictionary<string, Tree>(), new VariableStrings(), null);
+            return Matcher(t, t, null, new Dictionary<string, Tree>(), new VariableStrings(), null);
         }
 
         /**
@@ -395,9 +395,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @return a TregexMatcher
    */
 
-        public TregexMatcher matcher(Tree t, HeadFinder headFinder)
+        public TregexMatcher Matcher(Tree t, HeadFinder headFinder)
         {
-            return matcher(t, t, null, new Dictionary<string, Tree>(), new VariableStrings(), headFinder);
+            return Matcher(t, t, null, new Dictionary<string, Tree>(), new VariableStrings(), headFinder);
         }
 
         /**
@@ -410,9 +410,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @throws TregexParseException if the string does not parse
    */
 
-        public static TregexPattern compile(string tregex)
+        public static TregexPattern Compile(string tregex)
         {
-            return TregexPatternCompiler.defaultCompiler.compile(tregex);
+            return TregexPatternCompiler.defaultCompiler.Compile(tregex);
         }
 
         /**
@@ -427,12 +427,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @return a TregexPattern for the string, or null if the string does not parse.
    */
 
-        public static TregexPattern safeCompile(string tregex, bool verbose)
+        public static TregexPattern SafeCompile(string tregex, bool verbose)
         {
             TregexPattern result = null;
             try
             {
-                result = TregexPatternCompiler.defaultCompiler.compile(tregex);
+                result = TregexPatternCompiler.defaultCompiler.Compile(tregex);
             }
             catch (TregexParseException ex)
             {
@@ -445,14 +445,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return result;
         }
 
-        public string pattern()
+        public string Pattern()
         {
             return patternString;
         }
 
         /** Only used by the TregexPatternCompiler to set the pattern. Pseudo-final. */
 
-        public void setPatternString(string patternString)
+        public void SetPatternString(string patternString)
         {
             this.patternString = patternString;
         }
@@ -488,7 +488,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   }*/
 
 
-        private static readonly Regex codePattern = new Regex("([0-9]+):([0-9]+)", RegexOptions.Compiled);
+        private static readonly Regex CodePattern = new Regex("([0-9]+):([0-9]+)", RegexOptions.Compiled);
 
         /*private static void extractSubtrees(List<string> codeStrings, string treeFile) {
     List<Tuple<int,int>> codes = new List<Tuple<int,int>>();

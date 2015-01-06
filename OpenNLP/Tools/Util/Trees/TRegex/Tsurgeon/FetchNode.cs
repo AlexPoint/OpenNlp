@@ -36,7 +36,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 Tree result = newNodeNames[node.label];
                 if (result == null)
                 {
-                    result = tregex.getNode(node.label);
+                    result = tregex.GetNode(node.label);
                 }
                 /*if (result == null) {
         System.err.println("Warning -- null node fetched by Tsurgeon operation for node: " + this +

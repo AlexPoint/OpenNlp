@@ -50,9 +50,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * equivalents in the given string
    */
 
-        protected static string addEscapes(string str)
+        protected static string AddEscapes(string str)
         {
-            StringBuilder retval = new StringBuilder();
+            var retval = new StringBuilder();
             char ch;
             for (int i = 0; i < str.Length; i++)
             {
@@ -119,8 +119,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return ("Lexical error at line " +
                     errorLine + ", column " +
                     errorColumn + ".  Encountered: " +
-                    (EOFSeen ? "<EOF> " : ("\"" + addEscapes(curChar.ToString()) + "\"") + " (" + (int) curChar + "), ") +
-                    "after : \"" + addEscapes(errorAfter) + "\"");
+                    (EOFSeen ? "<EOF> " : ("\"" + AddEscapes(curChar.ToString()) + "\"") + " (" + (int) curChar + "), ") +
+                    "after : \"" + AddEscapes(errorAfter) + "\"");
         }
 
         /**
@@ -133,7 +133,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * from this method for such cases in the release version of your parser.
    */
 
-        public string getMessage()
+        public string GetMessage()
         {
             return base.Message;
         }
@@ -157,9 +157,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Full Constructor. */
 
-        public TokenMgrException(bool EOFSeen, int lexState, int errorLine, int errorColumn, string errorAfter,
+        public TokenMgrException(bool eofSeen, int lexState, int errorLine, int errorColumn, string errorAfter,
             char curChar, int reason) :
-                this(LexicalError(EOFSeen, lexState, errorLine, errorColumn, errorAfter, curChar), reason)
+                this(LexicalError(eofSeen, lexState, errorLine, errorColumn, errorAfter, curChar), reason)
         {
         }
     }

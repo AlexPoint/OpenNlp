@@ -222,7 +222,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 try
                 {
-                    TregexPattern p = tregexCompiler.compile(pattern);
+                    TregexPattern p = tregexCompiler.Compile(pattern);
                     this.targetPatterns.Add(p);
                 }
                 catch (TregexParseException pe)
@@ -326,10 +326,10 @@ namespace OpenNLP.Tools.Util.Trees
                 // Initialize the TregexMatcher with the HeadFinder so that we
                 // can use the same HeadFinder through the entire process of
                 // building the dependencies
-                TregexMatcher m = p.matcher(root, headFinder);
-                while (m.findAt(t))
+                TregexMatcher m = p.Matcher(root, headFinder);
+                while (m.FindAt(t))
                 {
-                    var target = (TreeGraphNode) m.getNode("target");
+                    var target = (TreeGraphNode) m.GetNode("target");
                     if (target == null)
                     {
                         throw new InvalidDataException("Expression has no target: " + p);

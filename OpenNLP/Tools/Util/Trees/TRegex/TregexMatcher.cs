@@ -38,7 +38,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             this.headFinder = headFinder;
         }
 
-        public HeadFinder getHeadFinder()
+        public HeadFinder GetHeadFinder()
         {
             return this.headFinder;
         }
@@ -47,12 +47,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * Resets the matcher so that its search starts over.
    */
 
-        public void reset()
+        public void Reset()
         {
             findIterator = null;
             findCurrent = null;
             namesToNodes.Clear();
-            variableStrings.reset();
+            variableStrings.Reset();
         }
 
         /**
@@ -61,17 +61,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @param tree The tree to start searching on
    */
 
-        public virtual void resetChildIter(Tree tree)
+        public virtual void ResetChildIter(Tree tree)
         {
             this.tree = tree;
-            resetChildIter();
+            ResetChildIter();
         }
 
         /**
    * Resets the matcher to restart search for matching subexpressions
    */
 
-        public virtual void resetChildIter()
+        public virtual void ResetChildIter()
         {
         }
 
@@ -84,7 +84,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    *
    * @return whether the tree matches the pattern
    */
-        public abstract bool matches();
+        public abstract bool Matches();
 
         /** Rests the matcher and tests if it matches on the tree when rooted at <code>node</code>.
    *
@@ -92,10 +92,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    *  @return whether the matcher matches at node
    */
 
-        public bool matchesAt(Tree node)
+        public bool MatchesAt(Tree node)
         {
-            resetChildIter(node);
-            return matches();
+            ResetChildIter(node);
+            return Matches();
         }
 
         /**
@@ -104,7 +104,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    *
    * @return last match
    */
-        public abstract Tree getMatch();
+        public abstract Tree GetMatch();
 
 
         /**
@@ -113,21 +113,21 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @return whether there is a match somewhere in the tree
    */
 
-        public bool find()
+        public bool Find()
         {
             if (findIterator == null)
             {
                 findIterator = root.Iterator();
             }
-            if (findCurrent != null && matches())
+            if (findCurrent != null && Matches())
             {
                 return true;
             }
             while (findIterator.MoveNext())
             {
                 findCurrent = findIterator.Current;
-                resetChildIter(findCurrent);
-                if (matches())
+                ResetChildIter(findCurrent);
+                if (Matches())
                 {
                     return true;
                 }
@@ -150,7 +150,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * otherwise, an AssertionError will be thrown.
    */
 
-        public bool findAt(Tree node)
+        public bool FindAt(Tree node)
         {
             //Console.WriteLine("findAt() on '" + node);
             if (findCurrent != null && findCurrent != node)
@@ -160,11 +160,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
             if (findCurrent != null)
             {
-                return matches();
+                return Matches();
             }
             findCurrent = node;
-            resetChildIter(findCurrent);
-            return matches();
+            ResetChildIter(findCurrent);
+            return Matches();
         }
 
         /**
@@ -174,12 +174,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @return true iff another matching node is found.
    */
 
-        public bool findNextMatchingNode()
+        public bool FindNextMatchingNode()
         {
-            Tree lastMatchingNode = getMatch();
-            while (find())
+            Tree lastMatchingNode = GetMatch();
+            while (Find())
             {
-                if (getMatch() != lastMatchingNode)
+                if (GetMatch() != lastMatchingNode)
                     return true;
             }
             return false;
@@ -192,17 +192,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @return node labeled by the name
    */
 
-        public Tree getNode(string name)
+        public Tree GetNode(string name)
         {
             return namesToNodes[name];
         }
 
-        public List<string> getNodeNames()
+        public List<string> GetNodeNames()
         {
             return namesToNodes.Keys.ToList();
         }
 
-        public Tree getParent(Tree node)
+        public Tree GetParent(Tree node)
         {
             if (node is HasParent)
             {
@@ -214,21 +214,21 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
             if (nodesToParents.Count == 0)
             {
-                fillNodesToParents(root, null);
+                FillNodesToParents(root, null);
             }
             return nodesToParents[node];
         }
 
-        private void fillNodesToParents(Tree node, Tree parent)
+        private void FillNodesToParents(Tree node, Tree parent)
         {
             nodesToParents.Add(node, parent);
             foreach (Tree child in node.Children())
             {
-                fillNodesToParents(child, node);
+                FillNodesToParents(child, node);
             }
         }
 
-        public Tree getRoot()
+        public Tree GetRoot()
         {
             return root;
         }
@@ -239,9 +239,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * it returns null.
    */
 
-        public string getVariableString(string var)
+        public string GetVariableString(string var)
         {
-            return variableStrings.getString(var);
+            return variableStrings.GetString(var);
         }
     }
 }

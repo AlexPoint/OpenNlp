@@ -73,7 +73,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * override this method as appropriate.
    */
 
-        public Object getValue()
+        public Object GetValue()
         {
             return null;
         }
@@ -126,7 +126,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * variable to the appropriate type and use sit in your lexical actions.
    */
 
-        public static Token newToken(int ofKind, string image)
+        public static Token NewToken(int ofKind, string image)
         {
             switch (ofKind)
             {
@@ -135,9 +135,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        public static Token newToken(int ofKind)
+        public static Token NewToken(int ofKind)
         {
-            return newToken(ofKind, null);
+            return NewToken(ofKind, null);
         }
     }
 }

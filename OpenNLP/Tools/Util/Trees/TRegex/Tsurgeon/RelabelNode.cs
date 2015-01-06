@@ -189,14 +189,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                                 //String name = chunk.Substring(2, chunk.Length - 1);
                                 string name = chunk.Substring(2, chunk.Length - 3);
                                 //label.Append(Matcher.quoteReplacement(tregex.getVariableString(name)));
-                                label.Append(tregex.getVariableString(name).Replace("'", "").Replace("\"", ""));
+                                label.Append(tregex.GetVariableString(name).Replace("'", "").Replace("\"", ""));
                             }
                             else if (nodePattern.IsMatch(chunk))
                             {
                                 //String name = chunk.Substring(2, chunk.Length - 1);
                                 string name = chunk.Substring(2, chunk.Length - 3);
                                 //label.Append(Matcher.quoteReplacement(tregex.getNode(name).value()));
-                                label.Append(tregex.getNode(name).Value().Replace("'", "").Replace("\"", ""));
+                                label.Append(tregex.GetNode(name).Value().Replace("'", "").Replace("\"", ""));
                             }
                             else
                             {

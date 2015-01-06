@@ -45,7 +45,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             //@Override
             public override Tree evaluate(Tree tree, TregexMatcher tregex)
             {
-                if (node.invert ^ (tregex.getNode(node.name) != null))
+                if (node.invert ^ (tregex.GetNode(node.name) != null))
                 {
                     foreach (TsurgeonMatcher child in childMatcher)
                     {

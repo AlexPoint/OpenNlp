@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
   /** Set debug output. #1#
   public  void setDebugStream(java.io.PrintStream ds) { debugStream = ds; }*/
 
-        private int jjStopStringLiteralDfa_0(int pos, long active0)
+        private int JjStopStringLiteralDfa_0(int pos, long active0)
         {
             switch (pos)
             {
@@ -57,167 +57,167 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private int jjStartNfa_0(int pos, long active0)
+        private int JjStartNfa_0(int pos, long active0)
         {
-            return jjMoveNfa_0(jjStopStringLiteralDfa_0(pos, active0), pos + 1);
+            return JjMoveNfa_0(JjStopStringLiteralDfa_0(pos, active0), pos + 1);
         }
 
-        private int jjStopAtPos(int pos, int kind)
+        private int JjStopAtPos(int pos, int kind)
         {
             jjmatchedKind = kind;
             jjmatchedPos = pos;
             return pos + 1;
         }
 
-        private int jjMoveStringLiteralDfa0_0()
+        private int JjMoveStringLiteralDfa0_0()
         {
-            switch (curChar)
+            switch (CurChar)
             {
                 case (char) 9:
-                    return jjStartNfaWithStates_0(0, 3, 6);
+                    return JjStartNfaWithStates_0(0, 3, 6);
                 case (char) 10:
-                    return jjStopAtPos(0, 13);
+                    return JjStopAtPos(0, 13);
                 case (char) 33:
-                    return jjStopAtPos(0, 16);
+                    return JjStopAtPos(0, 16);
                 case (char) 35:
-                    return jjStopAtPos(0, 18);
+                    return JjStopAtPos(0, 18);
                 case (char) 37:
-                    return jjStopAtPos(0, 19);
+                    return JjStopAtPos(0, 19);
                 case (char) 38:
-                    return jjStopAtPos(0, 22);
+                    return JjStopAtPos(0, 22);
                 case (char) 40:
-                    return jjStopAtPos(0, 14);
+                    return JjStopAtPos(0, 14);
                 case (char) 41:
-                    return jjStopAtPos(0, 15);
+                    return JjStopAtPos(0, 15);
                 case (char) 59:
-                    return jjStopAtPos(0, 27);
+                    return JjStopAtPos(0, 27);
                 case (char) 60:
-                    return jjMoveStringLiteralDfa1_0(0x20L);
+                    return JjMoveStringLiteralDfa1_0(0x20L);
                 case (char) 61:
-                    return jjStartNfaWithStates_0(0, 20, 1);
+                    return JjStartNfaWithStates_0(0, 20, 1);
                 case (char) 63:
-                    return jjStopAtPos(0, 23);
+                    return JjStopAtPos(0, 23);
                 case (char) 64:
-                    return jjStopAtPos(0, 17);
+                    return JjStopAtPos(0, 17);
                 case (char) 91:
-                    return jjStopAtPos(0, 24);
+                    return JjStopAtPos(0, 24);
                 case (char) 93:
-                    return jjStopAtPos(0, 25);
+                    return JjStopAtPos(0, 25);
                 case (char) 95:
-                    return jjMoveStringLiteralDfa1_0(0x200L);
+                    return JjMoveStringLiteralDfa1_0(0x200L);
                 case (char) 123:
-                    return jjStopAtPos(0, 26);
+                    return JjStopAtPos(0, 26);
                 case (char) 124:
-                    return jjStopAtPos(0, 12);
+                    return JjStopAtPos(0, 12);
                 case (char) 125:
-                    return jjStopAtPos(0, 28);
+                    return JjStopAtPos(0, 28);
                 case (char) 126:
-                    return jjStopAtPos(0, 21);
+                    return JjStopAtPos(0, 21);
                 default:
-                    return jjMoveNfa_0(0, 0);
+                    return JjMoveNfa_0(0, 0);
             }
         }
 
-        private int jjMoveStringLiteralDfa1_0(long active0)
+        private int JjMoveStringLiteralDfa1_0(long active0)
         {
             try
             {
-                curChar = input_stream.readChar();
+                CurChar = InputStream.ReadChar();
             }
             catch (IOException e)
             {
-                jjStopStringLiteralDfa_0(0, active0);
+                JjStopStringLiteralDfa_0(0, active0);
                 return 1;
             }
-            switch (curChar)
+            switch (CurChar)
             {
                 case (char) 46:
-                    return jjMoveStringLiteralDfa2_0(active0, 0x20L);
+                    return JjMoveStringLiteralDfa2_0(active0, 0x20L);
                 case (char) 95:
                     if ((active0 & 0x200L) != 0L)
-                        return jjStopAtPos(1, 9);
+                        return JjStopAtPos(1, 9);
                     break;
                 default:
                     break;
             }
-            return jjStartNfa_0(0, active0);
+            return JjStartNfa_0(0, active0);
         }
 
-        private int jjMoveStringLiteralDfa2_0(long old0, long active0)
+        private int JjMoveStringLiteralDfa2_0(long old0, long active0)
         {
             if (((active0 &= old0)) == 0L)
-                return jjStartNfa_0(0, old0);
+                return JjStartNfa_0(0, old0);
             try
             {
-                curChar = input_stream.readChar();
+                CurChar = InputStream.ReadChar();
             }
             catch (IOException e)
             {
-                jjStopStringLiteralDfa_0(1, active0);
+                JjStopStringLiteralDfa_0(1, active0);
                 return 2;
             }
-            switch (curChar)
+            switch (CurChar)
             {
                 case (char) 46:
-                    return jjMoveStringLiteralDfa3_0(active0, 0x20L);
+                    return JjMoveStringLiteralDfa3_0(active0, 0x20L);
                 default:
                     break;
             }
-            return jjStartNfa_0(1, active0);
+            return JjStartNfa_0(1, active0);
         }
 
-        private int jjMoveStringLiteralDfa3_0(long old0, long active0)
+        private int JjMoveStringLiteralDfa3_0(long old0, long active0)
         {
             if (((active0 &= old0)) == 0L)
-                return jjStartNfa_0(1, old0);
+                return JjStartNfa_0(1, old0);
             try
             {
-                curChar = input_stream.readChar();
+                CurChar = InputStream.ReadChar();
             }
             catch (IOException e)
             {
-                jjStopStringLiteralDfa_0(2, active0);
+                JjStopStringLiteralDfa_0(2, active0);
                 return 3;
             }
-            switch (curChar)
+            switch (CurChar)
             {
                 case (char) 46:
                     if ((active0 & 0x20L) != 0L)
-                        return jjStopAtPos(3, 5);
+                        return JjStopAtPos(3, 5);
                     break;
                 default:
                     break;
             }
-            return jjStartNfa_0(2, active0);
+            return JjStartNfa_0(2, active0);
         }
 
-        private int jjStartNfaWithStates_0(int pos, int kind, int state)
+        private int JjStartNfaWithStates_0(int pos, int kind, int state)
         {
             jjmatchedKind = kind;
             jjmatchedPos = pos;
             try
             {
-                curChar = input_stream.readChar();
+                CurChar = InputStream.ReadChar();
             }
             catch (IOException e)
             {
                 return pos + 1;
             }
-            return jjMoveNfa_0(state, pos + 1);
+            return JjMoveNfa_0(state, pos + 1);
         }
 
-        private static readonly long[] jjbitVec0 =
+        private static readonly long[] JjbitVec0 =
         {
             unchecked((long) 0xfffffffffffffffeL), unchecked((long) 0xffffffffffffffffL),
             unchecked((long) 0xffffffffffffffffL), unchecked((long) 0xffffffffffffffffL)
         };
 
-        private static readonly long[] jjbitVec2 =
+        private static readonly long[] JjbitVec2 =
         {
             0x0L, 0x0L, unchecked((long) 0xffffffffffffffffL), unchecked((long) 0xffffffffffffffffL)
         };
 
-        private int jjMoveNfa_0(int startState, int curPos)
+        private int JjMoveNfa_0(int startState, int curPos)
         {
             int startsAt = 0;
             jjnewStateCnt = 42;
@@ -228,65 +228,65 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             {
                 if (++jjround == 0x7fffffff)
                     ReInitRounds();
-                if (curChar < 64)
+                if (CurChar < 64)
                 {
-                    var l = 1L << curChar;
+                    var l = 1L << CurChar;
                     do
                     {
                         switch (jjstateSet[--i])
                         {
                             case 26:
-                                if (curChar == 43)
+                                if (CurChar == 43)
                                 {
                                     if (kind > 6)
                                         kind = 6;
                                 }
-                                else if (curChar == 61)
+                                else if (CurChar == 61)
                                 {
                                     if (kind > 4)
                                         kind = 4;
                                 }
-                                else if (curChar == 60)
+                                else if (CurChar == 60)
                                 {
-                                    jjCheckNAdd(33);
+                                    JjCheckNAdd(33);
                                 }
-                                else if (curChar == 35)
-                                {
-                                    if (kind > 4)
-                                        kind = 4;
-                                }
-                                else if (curChar == 58)
+                                else if (CurChar == 35)
                                 {
                                     if (kind > 4)
                                         kind = 4;
                                 }
-                                else if (curChar == 45)
+                                else if (CurChar == 58)
                                 {
                                     if (kind > 4)
                                         kind = 4;
                                 }
-                                else if (curChar == 44)
+                                else if (CurChar == 45)
                                 {
                                     if (kind > 4)
                                         kind = 4;
                                 }
-                                if (curChar == 60)
+                                else if (CurChar == 44)
                                 {
-                                    jjCheckNAdd(31);
+                                    if (kind > 4)
+                                        kind = 4;
                                 }
-                                if (curChar == 60)
+                                if (CurChar == 60)
                                 {
-                                    jjCheckNAdd(29);
+                                    JjCheckNAdd(31);
                                 }
-                                if (curChar == 60)
+                                if (CurChar == 60)
                                 {
-                                    jjCheckNAdd(16);
+                                    JjCheckNAdd(29);
                                 }
-                                if (curChar == 60)
+                                if (CurChar == 60)
                                 {
-                                    jjCheckNAdd(20);
+                                    JjCheckNAdd(16);
                                 }
-                                if (curChar == 60)
+                                if (CurChar == 60)
+                                {
+                                    JjCheckNAdd(20);
+                                }
+                                if (CurChar == 60)
                                 {
                                     if (kind > 4)
                                         kind = 4;
@@ -298,7 +298,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                     if (kind > 8)
                                         kind = 8;
                                     {
-                                        jjCheckNAdd(6);
+                                        JjCheckNAdd(6);
                                     }
                                 }
                                 else if ((0x3ff000000000000L & l) != 0L)
@@ -306,7 +306,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                     if (kind > 7)
                                         kind = 7;
                                     {
-                                        jjCheckNAdd(4);
+                                        JjCheckNAdd(4);
                                     }
                                 }
                                 else if ((0x5400501000000000L & l) != 0L)
@@ -314,53 +314,53 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                     if (kind > 4)
                                         kind = 4;
                                 }
-                                else if (curChar == 47)
+                                else if (CurChar == 47)
                                 {
-                                    jjCheckNAddStates(0, 2);
+                                    JjCheckNAddStates(0, 2);
                                 }
-                                else if (curChar == 61)
+                                else if (CurChar == 61)
                                 {
-                                    jjCheckNAdd(1);
+                                    JjCheckNAdd(1);
                                 }
-                                if (curChar == 62)
+                                if (CurChar == 62)
                                 {
-                                    jjCheckNAddStates(3, 14);
+                                    JjCheckNAddStates(3, 14);
                                 }
-                                else if (curChar == 60)
+                                else if (CurChar == 60)
                                 {
-                                    jjCheckNAddStates(15, 27);
+                                    JjCheckNAddStates(15, 27);
                                 }
-                                else if (curChar == 44)
+                                else if (CurChar == 44)
                                 {
-                                    jjCheckNAddTwoStates(20, 23);
+                                    JjCheckNAddTwoStates(20, 23);
                                 }
-                                else if (curChar == 46)
+                                else if (CurChar == 46)
                                 {
-                                    jjCheckNAddTwoStates(18, 23);
+                                    JjCheckNAddTwoStates(18, 23);
                                 }
-                                else if (curChar == 36)
+                                else if (CurChar == 36)
                                 {
-                                    jjCheckNAddStates(28, 35);
+                                    JjCheckNAddStates(28, 35);
                                 }
-                                else if (curChar == 45)
+                                else if (CurChar == 45)
                                 {
-                                    jjCheckNAdd(4);
+                                    JjCheckNAdd(4);
                                 }
                                 break;
                             case 1:
-                                if (curChar == 61 && kind > 4)
+                                if (CurChar == 61 && kind > 4)
                                     kind = 4;
                                 break;
                             case 2:
-                                if (curChar == 61)
+                                if (CurChar == 61)
                                 {
-                                    jjCheckNAdd(1);
+                                    JjCheckNAdd(1);
                                 }
                                 break;
                             case 3:
-                                if (curChar == 45)
+                                if (CurChar == 45)
                                 {
-                                    jjCheckNAdd(4);
+                                    JjCheckNAdd(4);
                                 }
                                 break;
                             case 4:
@@ -369,7 +369,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                 if (kind > 7)
                                     kind = 7;
                             {
-                                jjCheckNAdd(4);
+                                JjCheckNAdd(4);
                             }
                                 break;
                             case 5:
@@ -378,7 +378,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                 if (kind > 8)
                                     kind = 8;
                             {
-                                jjCheckNAdd(6);
+                                JjCheckNAdd(6);
                             }
                                 break;
                             case 6:
@@ -387,170 +387,170 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                 if (kind > 8)
                                     kind = 8;
                             {
-                                jjCheckNAdd(6);
+                                JjCheckNAdd(6);
                             }
                                 break;
                             case 7:
                             case 8:
-                                if (curChar == 47)
+                                if (CurChar == 47)
                                 {
-                                    jjCheckNAddStates(0, 2);
+                                    JjCheckNAddStates(0, 2);
                                 }
                                 break;
                             case 10:
                                 if ((unchecked((long) 0xffff7fffffffdbffL) & l) != 0L)
                                 {
-                                    jjCheckNAddStates(0, 2);
+                                    JjCheckNAddStates(0, 2);
                                 }
                                 break;
                             case 11:
-                                if (curChar == 47 && kind > 10)
+                                if (CurChar == 47 && kind > 10)
                                     kind = 10;
                                 break;
                             case 13:
-                                if (curChar == 36)
+                                if (CurChar == 36)
                                 {
-                                    jjCheckNAddStates(28, 35);
+                                    JjCheckNAddStates(28, 35);
                                 }
                                 break;
                             case 14:
-                                if (curChar == 43 && kind > 4)
+                                if (CurChar == 43 && kind > 4)
                                     kind = 4;
                                 break;
                             case 15:
-                                if (curChar == 43)
+                                if (CurChar == 43)
                                 {
-                                    jjCheckNAdd(14);
+                                    JjCheckNAdd(14);
                                 }
                                 break;
                             case 16:
-                                if (curChar == 45 && kind > 4)
+                                if (CurChar == 45 && kind > 4)
                                     kind = 4;
                                 break;
                             case 17:
-                                if (curChar == 45)
+                                if (CurChar == 45)
                                 {
-                                    jjCheckNAdd(16);
+                                    JjCheckNAdd(16);
                                 }
                                 break;
                             case 18:
-                                if (curChar == 46 && kind > 4)
+                                if (CurChar == 46 && kind > 4)
                                     kind = 4;
                                 break;
                             case 19:
-                                if (curChar == 46)
+                                if (CurChar == 46)
                                 {
-                                    jjCheckNAdd(18);
+                                    JjCheckNAdd(18);
                                 }
                                 break;
                             case 20:
-                                if (curChar == 44 && kind > 4)
+                                if (CurChar == 44 && kind > 4)
                                     kind = 4;
                                 break;
                             case 21:
-                                if (curChar == 44)
+                                if (CurChar == 44)
                                 {
-                                    jjCheckNAdd(20);
+                                    JjCheckNAdd(20);
                                 }
                                 break;
                             case 22:
-                                if (curChar == 46)
+                                if (CurChar == 46)
                                 {
-                                    jjCheckNAddTwoStates(18, 23);
+                                    JjCheckNAddTwoStates(18, 23);
                                 }
                                 break;
                             case 23:
-                                if (curChar == 43 && kind > 6)
+                                if (CurChar == 43 && kind > 6)
                                     kind = 6;
                                 break;
                             case 24:
-                                if (curChar == 44)
+                                if (CurChar == 44)
                                 {
-                                    jjCheckNAddTwoStates(20, 23);
+                                    JjCheckNAddTwoStates(20, 23);
                                 }
                                 break;
                             case 25:
-                                if (curChar == 60)
+                                if (CurChar == 60)
                                 {
-                                    jjCheckNAddStates(15, 27);
+                                    JjCheckNAddStates(15, 27);
                                 }
                                 break;
                             case 27:
-                                if (curChar == 60)
+                                if (CurChar == 60)
                                 {
-                                    jjCheckNAdd(20);
+                                    JjCheckNAdd(20);
                                 }
                                 break;
                             case 28:
-                                if (curChar == 60)
+                                if (CurChar == 60)
                                 {
-                                    jjCheckNAdd(16);
+                                    JjCheckNAdd(16);
                                 }
                                 break;
                             case 30:
-                                if (curChar == 60)
+                                if (CurChar == 60)
                                 {
-                                    jjCheckNAdd(29);
+                                    JjCheckNAdd(29);
                                 }
                                 break;
                             case 31:
-                                if (curChar == 58 && kind > 4)
+                                if (CurChar == 58 && kind > 4)
                                     kind = 4;
                                 break;
                             case 32:
-                                if (curChar == 60)
+                                if (CurChar == 60)
                                 {
-                                    jjCheckNAdd(31);
+                                    JjCheckNAdd(31);
                                 }
                                 break;
                             case 33:
-                                if (curChar == 35 && kind > 4)
+                                if (CurChar == 35 && kind > 4)
                                     kind = 4;
                                 break;
                             case 34:
-                                if (curChar == 60)
+                                if (CurChar == 60)
                                 {
-                                    jjCheckNAdd(33);
+                                    JjCheckNAdd(33);
                                 }
                                 break;
                             case 35:
-                                if (curChar == 62)
+                                if (CurChar == 62)
                                 {
-                                    jjCheckNAddStates(3, 14);
+                                    JjCheckNAddStates(3, 14);
                                 }
                                 break;
                             case 36:
-                                if (curChar == 62 && kind > 4)
+                                if (CurChar == 62 && kind > 4)
                                     kind = 4;
                                 break;
                             case 37:
-                                if (curChar == 62)
+                                if (CurChar == 62)
                                 {
-                                    jjCheckNAdd(20);
+                                    JjCheckNAdd(20);
                                 }
                                 break;
                             case 38:
-                                if (curChar == 62)
+                                if (CurChar == 62)
                                 {
-                                    jjCheckNAdd(16);
+                                    JjCheckNAdd(16);
                                 }
                                 break;
                             case 39:
-                                if (curChar == 62)
+                                if (CurChar == 62)
                                 {
-                                    jjCheckNAdd(29);
+                                    JjCheckNAdd(29);
                                 }
                                 break;
                             case 40:
-                                if (curChar == 62)
+                                if (CurChar == 62)
                                 {
-                                    jjCheckNAdd(31);
+                                    JjCheckNAdd(31);
                                 }
                                 break;
                             case 41:
-                                if (curChar == 62)
+                                if (CurChar == 62)
                                 {
-                                    jjCheckNAdd(33);
+                                    JjCheckNAdd(33);
                                 }
                                 break;
                             default:
@@ -558,17 +558,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         }
                     } while (i != startsAt);
                 }
-                else if (curChar < 128)
+                else if (CurChar < 128)
                 {
                     //var l = 1L << (curChar & 077);
-                    var l = 1L << (curChar%64);
+                    var l = 1L << (CurChar%64);
                     do
                     {
                         switch (jjstateSet[--i])
                         {
                             case 26:
                             case 29:
-                                if (curChar == 96 && kind > 4)
+                                if (CurChar == 96 && kind > 4)
                                     kind = 4;
                                 break;
                             case 0:
@@ -577,7 +577,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                     if (kind > 8)
                                         kind = 8;
                                     {
-                                        jjCheckNAdd(6);
+                                        JjCheckNAdd(6);
                                     }
                                 }
                                 if ((0x7fffffe07fffffeL & l) != 0L)
@@ -585,7 +585,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                     if (kind > 11)
                                         kind = 11;
                                     {
-                                        jjCheckNAdd(12);
+                                        JjCheckNAdd(12);
                                     }
                                 }
                                 break;
@@ -595,7 +595,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                 if (kind > 8)
                                     kind = 8;
                             {
-                                jjCheckNAdd(6);
+                                JjCheckNAdd(6);
                             }
                                 break;
                             case 6:
@@ -604,16 +604,16 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                 if (kind > 8)
                                     kind = 8;
                             {
-                                jjCheckNAdd(6);
+                                JjCheckNAdd(6);
                             }
                                 break;
                             case 9:
-                                if (curChar == 92)
+                                if (CurChar == 92)
                                     jjstateSet[jjnewStateCnt++] = 8;
                                 break;
                             case 10:
                             {
-                                jjAddStates(0, 2);
+                                JjAddStates(0, 2);
                             }
                                 break;
                             case 12:
@@ -622,7 +622,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                 if (kind > 11)
                                     kind = 11;
                             {
-                                jjCheckNAdd(12);
+                                JjCheckNAdd(12);
                             }
                                 break;
                             default:
@@ -632,31 +632,31 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 else
                 {
-                    int hiByte = (curChar >> 8);
+                    int hiByte = (CurChar >> 8);
                     int i1 = hiByte >> 6;
                     //var l1 = 1L << (hiByte & 077);
                     var l1 = 1L << (hiByte%64);
-                    int i2 = (curChar & 0xff) >> 6;
+                    int i2 = (CurChar & 0xff) >> 6;
                     //var l2 = 1L << (curChar & 077);
-                    var l2 = 1L << (curChar%64);
+                    var l2 = 1L << (CurChar%64);
                     do
                     {
                         switch (jjstateSet[--i])
                         {
                             case 0:
                             case 6:
-                                if (!jjCanMove_0(hiByte, i1, i2, l1, l2))
+                                if (!JjCanMove_0(hiByte, i1, i2, l1, l2))
                                     break;
                                 if (kind > 8)
                                     kind = 8;
                             {
-                                jjCheckNAdd(6);
+                                JjCheckNAdd(6);
                             }
                                 break;
                             case 10:
-                                if (jjCanMove_0(hiByte, i1, i2, l1, l2))
+                                if (JjCanMove_0(hiByte, i1, i2, l1, l2))
                                 {
-                                    jjAddStates(0, 2);
+                                    JjAddStates(0, 2);
                                 }
                                 break;
                             default:
@@ -676,7 +676,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     return curPos;
                 try
                 {
-                    curChar = input_stream.readChar();
+                    CurChar = InputStream.ReadChar();
                 }
                 catch (IOException e)
                 {
@@ -685,28 +685,26 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly int[] jjnextStates =
+        private static readonly int[] JjnextStates =
         {
             9, 10, 11, 36, 37, 38, 20, 16, 29, 39, 31, 40, 33, 41, 23, 26,
             27, 28, 20, 16, 29, 30, 31, 32, 33, 34, 1, 23, 15, 17, 14, 16,
             18, 19, 20, 21,
         };
 
-        private static /*readonly*/ bool jjCanMove_0(int hiByte, int i1, int i2, long l1, long l2)
+        private static /*readonly*/ bool JjCanMove_0(int hiByte, int i1, int i2, long l1, long l2)
         {
             switch (hiByte)
             {
                 case 0:
-                    return ((jjbitVec2[i2] & l2) != 0L);
+                    return ((JjbitVec2[i2] & l2) != 0L);
                 default:
-                    if ((jjbitVec0[i1] & l1) != 0L)
+                    if ((JjbitVec0[i1] & l1) != 0L)
                         return true;
                     return false;
             }
         }
-
-/** Token literal values. */
-
+        
         /*public static readonly string[] jjstrLiteralImages =
         {
             "", null, null, null, null, @"\74\56\56\56", null, null, null, @"\137\137", null,
@@ -714,14 +712,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             @"\46", @"\77", @"\133", @"\135", @"\173", @"\73", @"\175",
         };*/
 
-        public static readonly string[] jjstrLiteralImages =
+        /// <summary>
+        /// Token literal values
+        /// </summary>
+        public static readonly string[] JjstrLiteralImages =
         {
             "", null, null, null, null, "<...", null, null, null, "__", null,
             null, "|", "\n", "(", ")", "!", "@", "#", "%", "=", "~",
             "&", "?", "[", "]", "{", ";", "}",
         };
 
-        protected Token jjFillToken()
+        protected Token JjFillToken()
         {
             /*readonly*/
             Token t;
@@ -735,13 +736,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             int beginColumn;
             /*readonly */
             int endColumn;
-            string im = jjstrLiteralImages[jjmatchedKind];
-            curTokenImage = (im == null) ? input_stream.GetImage() : im;
-            beginLine = input_stream.getBeginLine();
-            beginColumn = input_stream.getBeginColumn();
-            endLine = input_stream.getEndLine();
-            endColumn = input_stream.getEndColumn();
-            t = Token.newToken(jjmatchedKind, curTokenImage);
+            string im = JjstrLiteralImages[jjmatchedKind];
+            curTokenImage = (im == null) ? InputStream.GetImage() : im;
+            beginLine = InputStream.GetBeginLine();
+            beginColumn = InputStream.GetBeginColumn();
+            endLine = InputStream.GetEndLine();
+            endColumn = InputStream.GetEndColumn();
+            t = Token.NewToken(jjmatchedKind, curTokenImage);
 
             t.beginLine = beginLine;
             t.endLine = endLine;
@@ -760,7 +761,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
 /** Get the next Token. */
 
-        public Token getNextToken()
+        public Token GetNextToken()
         {
             Token matchedToken;
             int curPos = 0;
@@ -773,21 +774,21 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 try
                 {
-                    curChar = input_stream.BeginToken();
+                    CurChar = InputStream.BeginToken();
                 }
                 catch (IOException e)
                 {
                     jjmatchedKind = 0;
                     jjmatchedPos = -1;
-                    matchedToken = jjFillToken();
+                    matchedToken = JjFillToken();
                     return matchedToken;
                 }
 
                 try
                 {
-                    input_stream.backup(0);
-                    while (curChar <= 32 && (0x100002000L & (1L << curChar)) != 0L)
-                        curChar = input_stream.BeginToken();
+                    InputStream.Backup(0);
+                    while (CurChar <= 32 && (0x100002000L & (1L << CurChar)) != 0L)
+                        CurChar = InputStream.BeginToken();
                 }
                 catch (IOException e1)
                 {
@@ -796,15 +797,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 jjmatchedKind = 0x7fffffff;
                 jjmatchedPos = 0;
-                curPos = jjMoveStringLiteralDfa0_0();
+                curPos = JjMoveStringLiteralDfa0_0();
                 if (jjmatchedKind != 0x7fffffff)
                 {
                     if (jjmatchedPos + 1 < curPos)
-                        input_stream.backup(curPos - jjmatchedPos - 1);
+                        InputStream.Backup(curPos - jjmatchedPos - 1);
                     //if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
-                    if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind%64))) != 0L)
+                    if ((JjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind%64))) != 0L)
                     {
-                        matchedToken = jjFillToken();
+                        matchedToken = JjFillToken();
                         return matchedToken;
                     }
                     else
@@ -813,20 +814,20 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         goto start_EOF_loop;
                     }
                 }
-                int error_line = input_stream.getEndLine();
-                int error_column = input_stream.getEndColumn();
+                int error_line = InputStream.GetEndLine();
+                int error_column = InputStream.GetEndColumn();
                 string error_after = null;
                 bool EOFSeen = false;
                 try
                 {
-                    input_stream.readChar();
-                    input_stream.backup(1);
+                    InputStream.ReadChar();
+                    InputStream.Backup(1);
                 }
                 catch (IOException e1)
                 {
                     EOFSeen = true;
-                    error_after = curPos <= 1 ? "" : input_stream.GetImage();
-                    if (curChar == '\n' || curChar == '\r')
+                    error_after = curPos <= 1 ? "" : InputStream.GetImage();
+                    if (CurChar == '\n' || CurChar == '\r')
                     {
                         error_line++;
                         error_column = 0;
@@ -836,15 +837,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 if (!EOFSeen)
                 {
-                    input_stream.backup(1);
-                    error_after = curPos <= 1 ? "" : input_stream.GetImage();
+                    InputStream.Backup(1);
+                    error_after = curPos <= 1 ? "" : InputStream.GetImage();
                 }
-                throw new TokenMgrException(EOFSeen, curLexState, error_line, error_column, error_after, curChar,
+                throw new TokenMgrException(EOFSeen, curLexState, error_line, error_column, error_after, CurChar,
                     TokenMgrException.LEXICAL_ERROR);
             }
         }
 
-        private void jjCheckNAdd(int state)
+        private void JjCheckNAdd(int state)
         {
             if (jjrounds[state] != jjround)
             {
@@ -853,25 +854,25 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private void jjAddStates(int start, int end)
+        private void JjAddStates(int start, int end)
         {
             do
             {
-                jjstateSet[jjnewStateCnt++] = jjnextStates[start];
+                jjstateSet[jjnewStateCnt++] = JjnextStates[start];
             } while (start++ != end);
         }
 
-        private void jjCheckNAddTwoStates(int state1, int state2)
+        private void JjCheckNAddTwoStates(int state1, int state2)
         {
-            jjCheckNAdd(state1);
-            jjCheckNAdd(state2);
+            JjCheckNAdd(state1);
+            JjCheckNAdd(state2);
         }
 
-        private void jjCheckNAddStates(int start, int end)
+        private void JjCheckNAddStates(int start, int end)
         {
             do
             {
-                jjCheckNAdd(jjnextStates[start]);
+                JjCheckNAdd(JjnextStates[start]);
             } while (start++ != end);
         }
 
@@ -881,9 +882,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
 
             if (SimpleCharStream.staticFlag)
+            {
                 throw new Exception("ERROR: Cannot use a static CharStream class with a non-static lexical analyzer.");
+            }
 
-            input_stream = stream;
+            InputStream = stream;
         }
 
         /** Constructor. */
@@ -900,7 +903,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
             jjmatchedPos = jjnewStateCnt = 0;
             curLexState = defaultLexState;
-            input_stream = stream;
+            InputStream = stream;
             ReInitRounds();
         }
 
@@ -931,30 +934,31 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             else
                 curLexState = lexState;
         }
-
-/** Lexer state names. */
-
-        public static readonly string[] lexStateNames =
+        
+        /// <summary>
+        /// Lexer state names.
+        /// </summary>
+        public static readonly string[] LexStateNames =
         {
             "DEFAULT",
         };
 
-        private static readonly long[] jjtoToken =
+        private static readonly long[] JjtoToken =
         {
             0x1ffffff1L,
         };
 
-        private static readonly long[] jjtoSkip =
+        private static readonly long[] JjtoSkip =
         {
             0xeL,
         };
 
-        protected SimpleCharStream input_stream;
+        protected SimpleCharStream InputStream;
 
         private readonly uint[] jjrounds = new uint[42];
         private readonly int[] jjstateSet = new int[2*42];
 
 
-        protected char curChar;
+        protected char CurChar;
     }
 }

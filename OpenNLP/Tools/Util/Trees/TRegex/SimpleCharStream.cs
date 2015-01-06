@@ -39,12 +39,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         protected int tabSize = 8;
         protected bool trackLineColumn = true;
 
-        public void setTabSize(int i)
+        public void SetTabSize(int i)
         {
             tabSize = i;
         }
 
-        public int getTabSize()
+        public int GetTabSize()
         {
             return tabSize;
         }
@@ -52,9 +52,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         protected void ExpandBuff(bool wrapAround)
         {
-            char[] newbuffer = new char[bufsize + 2048];
-            int[] newbufline = new int[bufsize + 2048];
-            int[] newbufcolumn = new int[bufsize + 2048];
+            var newbuffer = new char[bufsize + 2048];
+            var newbufline = new int[bufsize + 2048];
+            var newbufcolumn = new int[bufsize + 2048];
 
             try
             {
@@ -141,7 +141,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 if (e is IOException || e is ObjectDisposedException)
                 {
                     --bufpos;
-                    backup(0);
+                    Backup(0);
                     if (tokenBegin == -1)
                         tokenBegin = bufpos;
                 }
@@ -154,7 +154,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         public char BeginToken() /*throws java.io.IOException*/
         {
             tokenBegin = -1;
-            char c = readChar();
+            char c = ReadChar();
             tokenBegin = bufpos;
 
             return c;
@@ -202,7 +202,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
 /** Read a character. */
 
-        public char readChar() /*throws java.io.IOException*/
+        public char ReadChar() /*throws java.io.IOException*/
         {
             if (inBuf > 0)
             {
@@ -229,7 +229,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @see #getEndColumn
    */
 
-        public int getColumn()
+        public int GetColumn()
         {
             return bufcolumn[bufpos];
         }
@@ -240,42 +240,42 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @see #getEndLine
    */
 
-        public int getLine()
+        public int GetLine()
         {
             return bufline[bufpos];
         }
 
         /** Get token end column number. */
 
-        public int getEndColumn()
+        public int GetEndColumn()
         {
             return bufcolumn[bufpos];
         }
 
         /** Get token end line number. */
 
-        public int getEndLine()
+        public int GetEndLine()
         {
             return bufline[bufpos];
         }
 
         /** Get token beginning column number. */
 
-        public int getBeginColumn()
+        public int GetBeginColumn()
         {
             return bufcolumn[tokenBegin];
         }
 
         /** Get token beginning line number. */
 
-        public int getBeginLine()
+        public int GetBeginLine()
         {
             return bufline[tokenBegin];
         }
 
 /** Backup a number of characters. */
 
-        public void backup(int amount)
+        public void Backup(int amount)
         {
 
             inBuf += amount;
@@ -492,7 +492,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * Method to adjust line and column numbers for the start of a token.
    */
 
-        public void adjustBeginLineColumn(int newLine, int newCol)
+        public void AdjustBeginLineColumn(int newLine, int newCol)
         {
             int start = tokenBegin;
             int len;
@@ -536,12 +536,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             column = bufcolumn[j];
         }
 
-        private bool getTrackLineColumn()
+        private bool GetTrackLineColumn()
         {
             return trackLineColumn;
         }
 
-        private void setTrackLineColumn(bool tlc)
+        private void SetTrackLineColumn(bool tlc)
         {
             trackLineColumn = tlc;
         }

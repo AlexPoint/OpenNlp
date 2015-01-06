@@ -15,10 +15,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         // because labeling nodes under negation is illegal
         private bool underNegation = false;
 
-        private Func<string, string> basicCatFunction =
+        private readonly Func<string, string> basicCatFunction =
             TregexPatternCompiler.DEFAULT_BASIC_CAT_FUNCTION.Apply;
 
-        private HeadFinder headFinder =
+        private readonly HeadFinder headFinder =
             TregexPatternCompiler.DEFAULT_HEAD_FINDER;
 
         // keep track of which variables we've seen, so that we can reject
@@ -44,7 +44,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         public TregexPattern Root() /*throws ParseException*/
         {
             TregexPattern node;
-            List<TregexPattern> nodes = new List<TregexPattern>();
+            var nodes = new List<TregexPattern>();
             // a local variable
 
             node = SubNode(TRegex.Relation.ROOT);
@@ -52,7 +52,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             //label_1:
             while (true)
             {
-                if (jj_2_1(2))
+                if (Jj_2_1(2))
                 {
                     ;
                 }
@@ -61,24 +61,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     //break label_1;
                     break;
                 }
-                jj_consume_token(12);
+                Jj_consume_token(12);
                 node = SubNode(TRegex.Relation.ROOT);
                 nodes.Add(node);
             }
-            jj_consume_token(13);
+            Jj_consume_token(13);
             if (nodes.Count == 1)
             {
-                {
-                    if ("" != null) return nodes[0];
-                }
+                return nodes[0];
             }
             else
             {
-                {
-                    if ("" != null) return new CoordinationPattern(nodes, false);
-                }
+                return new CoordinationPattern(nodes, false);
             }
-            throw new Exception("Missing return statement in function");
         }
 
 // passing arguments down the tree - in this case the relation that
@@ -88,13 +83,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         public DescriptionPattern Node(Relation r) /*throws ParseException */
         {
             DescriptionPattern node;
-            switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+            switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
             {
                 case 14:
                 {
-                    jj_consume_token(14);
+                    Jj_consume_token(14);
                     node = SubNode(r);
-                    jj_consume_token(15);
+                    Jj_consume_token(15);
                     break;
                 }
                 case IDENTIFIER:
@@ -110,13 +105,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 default:
                     jj_la1[0] = jj_gen;
-                    jj_consume_token(-1);
+                    Jj_consume_token(-1);
                     throw new ParseException();
             }
-            {
-                if ("" != null) return node;
-            }
-            throw new Exception("Missing return statement in function");
+            return node;
         }
 
         /*readonly */
@@ -125,14 +117,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
             DescriptionPattern result = null;
             TregexPattern child = null;
-            switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+            switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
             {
                 case 14:
                 {
-                    jj_consume_token(14);
+                    Jj_consume_token(14);
                     result = SubNode(r);
-                    jj_consume_token(15);
-                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                    Jj_consume_token(15);
+                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                     {
                         case RELATION:
                         case MULTI_RELATION:
@@ -151,15 +143,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     }
                     if (child != null)
                     {
-                        List<TregexPattern> newChildren = new List<TregexPattern>();
-                        newChildren.AddRange(result.getChildren());
+                        var newChildren = new List<TregexPattern>();
+                        newChildren.AddRange(result.GetChildren());
                         newChildren.Add(child);
-                        result.setChild(new CoordinationPattern(newChildren, true));
+                        result.SetChild(new CoordinationPattern(newChildren, true));
                     }
-                    {
-                        if ("" != null) return result;
-                    }
-                    break;
+                    return result;
                 }
                 case IDENTIFIER:
                 case BLANK:
@@ -170,7 +159,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 case 21:
                 {
                     result = ModDescription(r);
-                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                     {
                         case RELATION:
                         case MULTI_RELATION:
@@ -187,18 +176,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             jj_la1[2] = jj_gen;
                             break;
                     }
-                    if (child != null) result.setChild(child);
-                    {
-                        if ("" != null) return result;
-                    }
-                    break;
+                    if (child != null) result.SetChild(child);
+                    return result;
                 }
                 default:
                     jj_la1[3] = jj_gen;
-                    jj_consume_token(-1);
+                    Jj_consume_token(-1);
                     throw new ParseException();
             }
-            throw new Exception("Missing return statement in function");
         }
 
         /*readonly*/
@@ -207,11 +192,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
             DescriptionPattern node;
             bool neg = false, cat = false;
-            switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+            switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
             {
                 case 16:
                 {
-                    jj_consume_token(16);
+                    Jj_consume_token(16);
                     neg = true;
                     break;
                 }
@@ -219,11 +204,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     jj_la1[4] = jj_gen;
                     break;
             }
-            switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+            switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
             {
                 case 17:
                 {
-                    jj_consume_token(17);
+                    Jj_consume_token(17);
                     cat = true;
                     break;
                 }
@@ -232,10 +217,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     break;
             }
             node = Description(r, neg, cat);
-            {
-                if ("" != null) return node;
-            }
-            throw new Exception("Missing return statement in function");
+            return node;
         }
 
         /*readonly*/
@@ -248,39 +230,39 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             bool link = false;
             Token groupNum;
             Token groupVar;
-            List<Tuple<int, string>> varGroups = new List<Tuple<int, string>>();
-            switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+            var varGroups = new List<Tuple<int, string>>();
+            switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
             {
                 case IDENTIFIER:
                 case BLANK:
                 case REGEX:
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                     {
                         case IDENTIFIER:
                         {
-                            desc = jj_consume_token(IDENTIFIER);
+                            desc = Jj_consume_token(IDENTIFIER);
                             break;
                         }
                         case REGEX:
                         {
-                            desc = jj_consume_token(REGEX);
+                            desc = Jj_consume_token(REGEX);
                             break;
                         }
                         case BLANK:
                         {
-                            desc = jj_consume_token(BLANK);
+                            desc = Jj_consume_token(BLANK);
                             break;
                         }
                         default:
                             jj_la1[6] = jj_gen;
-                            jj_consume_token(-1);
+                            Jj_consume_token(-1);
                             throw new ParseException();
                     }
                     //label_2:
                     while (true)
                     {
-                        switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                        switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                         {
                             case 18:
                             {
@@ -292,20 +274,20 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                 //break label_2;
                                 goto post_label_2;
                         }
-                        jj_consume_token(18);
-                        groupNum = jj_consume_token(NUMBER);
-                        jj_consume_token(19);
-                        groupVar = jj_consume_token(IDENTIFIER);
+                        Jj_consume_token(18);
+                        groupNum = Jj_consume_token(NUMBER);
+                        Jj_consume_token(19);
+                        groupVar = Jj_consume_token(IDENTIFIER);
                         varGroups.Add(new Tuple<int, string>(int.Parse(groupNum.image), groupVar.image));
                     }
                     post_label_2:
                     {
-                        switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                        switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                         {
                             case 20:
                             {
-                                jj_consume_token(20);
-                                name = jj_consume_token(IDENTIFIER);
+                                Jj_consume_token(20);
+                                name = Jj_consume_token(IDENTIFIER);
                                 if (knownVariables.Contains(name.image))
                                 {
                                     {
@@ -335,14 +317,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 case 21:
                 {
-                    jj_consume_token(21);
-                    linkedName = jj_consume_token(IDENTIFIER);
-                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                    Jj_consume_token(21);
+                    linkedName = Jj_consume_token(IDENTIFIER);
+                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                     {
                         case 20:
                         {
-                            jj_consume_token(20);
-                            name = jj_consume_token(IDENTIFIER);
+                            Jj_consume_token(20);
+                            name = Jj_consume_token(IDENTIFIER);
                             break;
                         }
                         default:
@@ -377,8 +359,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 case 20:
                 {
-                    jj_consume_token(20);
-                    name = jj_consume_token(IDENTIFIER);
+                    Jj_consume_token(20);
+                    name = Jj_consume_token(IDENTIFIER);
                     if (!knownVariables.Contains(name.image))
                     {
                         {
@@ -391,16 +373,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 default:
                     jj_la1[10] = jj_gen;
-                    jj_consume_token(-1);
+                    Jj_consume_token(-1);
                     throw new ParseException();
             }
-            DescriptionPattern ret = new DescriptionPattern(r, negateDesc, desc != null ? desc.image : null,
+            var ret = new DescriptionPattern(r, negateDesc, desc != null ? desc.image : null,
                 name != null ? name.image : null, cat, basicCatFunction, varGroups, link,
                 linkedName != null ? linkedName.image : null);
-            {
-                if ("" != null) return ret;
-            }
-            throw new Exception("Missing return statement in function");
+            return ret;
         }
 
         /*readonly*/
@@ -408,23 +387,23 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         public TregexPattern ChildrenDisj() /*throws ParseException*/
         {
             TregexPattern child;
-            List<TregexPattern> children = new List<TregexPattern>();
+            var children = new List<TregexPattern>();
             // When we keep track of the known variables to assert that
             // variables are not redefined, or that links are only set to known
             // variables, we want to separate those done in different parts of the
             // disjunction.  Variables set in one part won't be set in the next
             // part if it gets there, since disjunctions exit once known.
-            Set<string> originalKnownVariables = new Set<string>(knownVariables);
+            var originalKnownVariables = new Set<string>(knownVariables);
             // However, we want to keep track of all the known variables, so that after
             // the disjunction is over, we know them all.
-            Set<string> allKnownVariables = new Set<string>(knownVariables);
+            var allKnownVariables = new Set<string>(knownVariables);
             child = ChildrenConj();
             children.Add(child);
             allKnownVariables.AddAll(knownVariables);
             //label_3:
             while (true)
             {
-                if (jj_2_2(2))
+                if (Jj_2_2(2))
                 {
                     ;
                 }
@@ -434,7 +413,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     break;
                 }
                 knownVariables = new Set<string>(originalKnownVariables);
-                jj_consume_token(12);
+                Jj_consume_token(12);
                 child = ChildrenConj();
                 children.Add(child);
                 allKnownVariables.AddAll(knownVariables);
@@ -442,13 +421,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             knownVariables = allKnownVariables;
             if (children.Count == 1)
             {
-                if ("" != null) return child;
+                return child;
             }
             else
             {
-                if ("" != null) return new CoordinationPattern(children, false);
+                return new CoordinationPattern(children, false);
             }
-            throw new Exception("Missing return statement in function");
         }
 
         /*readonly*/
@@ -456,13 +434,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         public TregexPattern ChildrenConj() /*throws ParseException */
         {
             TregexPattern child;
-            List<TregexPattern> children = new List<TregexPattern>();
+            var children = new List<TregexPattern>();
             child = ModChild();
             children.Add(child);
             //label_4:
             while (true)
             {
-                switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                 {
                     case RELATION:
                     case MULTI_RELATION:
@@ -481,11 +459,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         //break label_4;
                         goto post_label_4;
                 }
-                switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                 {
                     case 22:
                     {
-                        jj_consume_token(22);
+                        Jj_consume_token(22);
                         break;
                     }
                     default:
@@ -499,13 +477,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             {
                 if (children.Count == 1)
                 {
-                    if ("" != null) return child;
+                    return child;
                 }
                 else
                 {
-                    if ("" != null) return new CoordinationPattern(children, true);
+                    return new CoordinationPattern(children, true);
                 }
-                throw new Exception("Missing return statement in function");
             }
         }
 
@@ -515,7 +492,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
             TregexPattern child;
             bool startUnderNeg;
-            switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+            switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
             {
                 case RELATION:
                 case MULTI_RELATION:
@@ -528,30 +505,27 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 case 16:
                 {
-                    jj_consume_token(16);
+                    Jj_consume_token(16);
                     startUnderNeg = underNegation;
                     underNegation = true;
                     child = ModChild();
                     underNegation = startUnderNeg;
-                    child.negate();
+                    child.Negate();
                     break;
                 }
                 case 23:
                 {
-                    jj_consume_token(23);
+                    Jj_consume_token(23);
                     child = Child();
-                    child.makeOptional();
+                    child.MakeOptional();
                     break;
                 }
                 default:
                     jj_la1[13] = jj_gen;
-                    jj_consume_token(-1);
+                    Jj_consume_token(-1);
                     throw new ParseException();
             }
-            {
-                if ("" != null) return child;
-            }
-            throw new Exception("Missing return statement in function");
+            return child;
         }
 
         /*readonly*/
@@ -559,20 +533,20 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         public TregexPattern Child() /*throws ParseException*/
         {
             TregexPattern child;
-            switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+            switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
             {
                 case 24:
                 {
-                    jj_consume_token(24);
+                    Jj_consume_token(24);
                     child = ChildrenDisj();
-                    jj_consume_token(25);
+                    Jj_consume_token(25);
                     break;
                 }
                 case 14:
                 {
-                    jj_consume_token(14);
+                    Jj_consume_token(14);
                     child = ChildrenDisj();
-                    jj_consume_token(15);
+                    Jj_consume_token(15);
                     break;
                 }
                 case RELATION:
@@ -584,13 +558,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 default:
                     jj_la1[14] = jj_gen;
-                    jj_consume_token(-1);
+                    Jj_consume_token(-1);
                     throw new ParseException();
             }
-            {
-                if ("" != null) return child;
-            }
-            throw new Exception("Missing return statement in function");
+            return child;
         }
 
         /*readonly*/
@@ -602,22 +573,22 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             // is to set the token to null and then check it later
             Relation r;
             DescriptionPattern child;
-            List<DescriptionPattern> children = new List<DescriptionPattern>();
-            switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+            var children = new List<DescriptionPattern>();
+            switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
             {
                 case RELATION:
                 case REL_W_STR_ARG:
                 {
-                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                     {
                         case RELATION:
                         {
-                            t = jj_consume_token(RELATION);
-                            switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                            t = Jj_consume_token(RELATION);
+                            switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                             {
                                 case NUMBER:
                                 {
-                                    numArg = jj_consume_token(NUMBER);
+                                    numArg = Jj_consume_token(NUMBER);
                                     break;
                                 }
                                 default:
@@ -628,143 +599,143 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         }
                         case REL_W_STR_ARG:
                         {
-                            t = jj_consume_token(REL_W_STR_ARG);
-                            switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                            t = Jj_consume_token(REL_W_STR_ARG);
+                            switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                             {
                                 case 14:
                                 {
-                                    jj_consume_token(14);
-                                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                                    Jj_consume_token(14);
+                                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                                     {
                                         case 16:
                                         {
-                                            negation = jj_consume_token(16);
+                                            negation = Jj_consume_token(16);
                                             break;
                                         }
                                         default:
                                             jj_la1[16] = jj_gen;
                                             break;
                                     }
-                                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                                     {
                                         case 17:
                                         {
-                                            cat = jj_consume_token(17);
+                                            cat = Jj_consume_token(17);
                                             break;
                                         }
                                         default:
                                             jj_la1[17] = jj_gen;
                                             break;
                                     }
-                                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                                     {
                                         case REGEX:
                                         {
-                                            strArg = jj_consume_token(REGEX);
+                                            strArg = Jj_consume_token(REGEX);
                                             break;
                                         }
                                         case IDENTIFIER:
                                         {
-                                            strArg = jj_consume_token(IDENTIFIER);
+                                            strArg = Jj_consume_token(IDENTIFIER);
                                             break;
                                         }
                                         case BLANK:
                                         {
-                                            strArg = jj_consume_token(BLANK);
+                                            strArg = Jj_consume_token(BLANK);
                                             break;
                                         }
                                         default:
                                             jj_la1[18] = jj_gen;
-                                            jj_consume_token(-1);
+                                            Jj_consume_token(-1);
                                             throw new ParseException();
                                     }
-                                    jj_consume_token(15);
+                                    Jj_consume_token(15);
                                     break;
                                 }
                                 case 24:
                                 {
-                                    jj_consume_token(24);
-                                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                                    Jj_consume_token(24);
+                                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                                     {
                                         case 16:
                                         {
-                                            negation = jj_consume_token(16);
+                                            negation = Jj_consume_token(16);
                                             break;
                                         }
                                         default:
                                             jj_la1[19] = jj_gen;
                                             break;
                                     }
-                                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                                     {
                                         case 17:
                                         {
-                                            cat = jj_consume_token(17);
+                                            cat = Jj_consume_token(17);
                                             break;
                                         }
                                         default:
                                             jj_la1[20] = jj_gen;
                                             break;
                                     }
-                                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                                     {
                                         case REGEX:
                                         {
-                                            strArg = jj_consume_token(REGEX);
+                                            strArg = Jj_consume_token(REGEX);
                                             break;
                                         }
                                         case IDENTIFIER:
                                         {
-                                            strArg = jj_consume_token(IDENTIFIER);
+                                            strArg = Jj_consume_token(IDENTIFIER);
                                             break;
                                         }
                                         case BLANK:
                                         {
-                                            strArg = jj_consume_token(BLANK);
+                                            strArg = Jj_consume_token(BLANK);
                                             break;
                                         }
                                         default:
                                             jj_la1[21] = jj_gen;
-                                            jj_consume_token(-1);
+                                            Jj_consume_token(-1);
                                             throw new ParseException();
                                     }
-                                    jj_consume_token(25);
+                                    Jj_consume_token(25);
                                     break;
                                 }
                                 case REGEX:
                                 case 16:
                                 {
-                                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                                     {
                                         case 16:
                                         {
-                                            negation = jj_consume_token(16);
+                                            negation = Jj_consume_token(16);
                                             break;
                                         }
                                         default:
                                             jj_la1[22] = jj_gen;
                                             break;
                                     }
-                                    strArg = jj_consume_token(REGEX);
+                                    strArg = Jj_consume_token(REGEX);
                                     break;
                                 }
                                 default:
                                     jj_la1[23] = jj_gen;
-                                    jj_consume_token(-1);
+                                    Jj_consume_token(-1);
                                     throw new ParseException();
                             }
                             break;
                         }
                         default:
                             jj_la1[24] = jj_gen;
-                            jj_consume_token(-1);
+                            Jj_consume_token(-1);
                             throw new ParseException();
                     }
                     if (strArg != null)
                     {
                         string negStr = negation == null ? "" : "!";
                         string catStr = cat == null ? "" : "@";
-                        r = TRegex.Relation.getRelation(t.image, negStr + catStr + strArg.image,
+                        r = TRegex.Relation.GetRelation(t.image, negStr + catStr + strArg.image,
                             basicCatFunction, headFinder);
                     }
                     else if (numArg != null)
@@ -774,24 +745,21 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             t.image = t.image.Substring(0, t.image.Length - 1);
                             numArg.image = "-" + numArg.image;
                         }
-                        r = TRegex.Relation.getRelation(t.image, numArg.image,
+                        r = TRegex.Relation.GetRelation(t.image, numArg.image,
                             basicCatFunction, headFinder);
                     }
                     else
                     {
-                        r = TRegex.Relation.getRelation(t.image, basicCatFunction, headFinder);
+                        r = TRegex.Relation.GetRelation(t.image, basicCatFunction, headFinder);
                     }
                     child = Node(r);
-                    {
-                        if ("" != null) return child;
-                    }
-                    break;
+                    return child;
                 }
                 case MULTI_RELATION:
                 {
-                    t = jj_consume_token(MULTI_RELATION);
-                    jj_consume_token(26);
-                    switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                    t = Jj_consume_token(MULTI_RELATION);
+                    Jj_consume_token(26);
+                    switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                     {
                         case IDENTIFIER:
                         case BLANK:
@@ -807,7 +775,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             //label_5:
                             while (true)
                             {
-                                switch ((jj_ntk == -1) ? jj_ntk_f() : jj_ntk)
+                                switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                                 {
                                     case 27:
                                     {
@@ -819,7 +787,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                         //break label_5;
                                         goto post_label_5;
                                 }
-                                jj_consume_token(27);
+                                Jj_consume_token(27);
                                 child = Node(null);
                                 children.Add(child);
                             }
@@ -832,29 +800,25 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             jj_la1[26] = jj_gen;
                             break;
                     }
-                    jj_consume_token(28);
-                    {
-                        if ("" != null)
-                            return TRegex.Relation.constructMultiRelation(t.image, children, basicCatFunction,
+                    Jj_consume_token(28);
+                    return TRegex.Relation.ConstructMultiRelation(t.image, children, basicCatFunction,
                                 headFinder);
-                    }
-                    break;
                 }
                 default:
                     jj_la1[27] = jj_gen;
-                    jj_consume_token(-1);
+                    Jj_consume_token(-1);
                     throw new ParseException();
             }
             //throw new Exception("Missing return statement in function");
         }
 
-        private bool jj_2_1(int xla)
+        private bool Jj_2_1(int xla)
         {
             jj_la = xla;
             jj_lastpos = jj_scanpos = token;
             try
             {
-                return !jj_3_1();
+                return !Jj_3_1();
             }
             catch (LookaheadSuccess ls)
             {
@@ -862,17 +826,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
             finally
             {
-                jj_save(0, xla);
+                Jj_save(0, xla);
             }
         }
 
-        private bool jj_2_2(int xla)
+        private bool Jj_2_2(int xla)
         {
             jj_la = xla;
             jj_lastpos = jj_scanpos = token;
             try
             {
-                return !jj_3_2();
+                return !Jj_3_2();
             }
             catch (LookaheadSuccess ls)
             {
@@ -880,234 +844,234 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
             finally
             {
-                jj_save(1, xla);
+                Jj_save(1, xla);
             }
         }
 
-        private bool jj_3R_25()
+        private bool Jj_3R_25()
         {
             Token xsp;
             xsp = jj_scanpos;
-            if (jj_3R_26())
+            if (Jj_3R_26())
             {
                 jj_scanpos = xsp;
-                if (jj_3R_27()) return true;
+                if (Jj_3R_27()) return true;
             }
             return false;
         }
 
-        private bool jj_3R_9()
+        private bool Jj_3R_9()
         {
-            if (jj_3R_11()) return true;
+            if (Jj_3R_11()) return true;
             return false;
         }
 
-        private bool jj_3R_24()
+        private bool Jj_3R_24()
         {
-            if (jj_3R_25()) return true;
+            if (Jj_3R_25()) return true;
             return false;
         }
 
-        private bool jj_3R_23()
+        private bool Jj_3R_23()
         {
-            if (jj_scan_token(14)) return true;
+            if (Jj_scan_token(14)) return true;
             return false;
         }
 
-        private bool jj_3R_20()
+        private bool Jj_3R_20()
         {
-            if (jj_scan_token(21)) return true;
+            if (Jj_scan_token(21)) return true;
             return false;
         }
 
-        private bool jj_3_2()
+        private bool Jj_3_2()
         {
-            if (jj_scan_token(12)) return true;
-            if (jj_3R_7()) return true;
+            if (Jj_scan_token(12)) return true;
+            if (Jj_3R_7()) return true;
             return false;
         }
 
-        private bool jj_3R_22()
+        private bool Jj_3R_22()
         {
-            if (jj_scan_token(24)) return true;
+            if (Jj_scan_token(24)) return true;
             return false;
         }
 
-        private bool jj_3R_16()
+        private bool Jj_3R_16()
         {
-            if (jj_scan_token(17)) return true;
+            if (Jj_scan_token(17)) return true;
             return false;
         }
 
-        private bool jj_3R_18()
+        private bool Jj_3R_18()
         {
             Token xsp;
             xsp = jj_scanpos;
-            if (jj_3R_22())
+            if (Jj_3R_22())
             {
                 jj_scanpos = xsp;
-                if (jj_3R_23())
+                if (Jj_3R_23())
                 {
                     jj_scanpos = xsp;
-                    if (jj_3R_24()) return true;
+                    if (Jj_3R_24()) return true;
                 }
             }
             return false;
         }
 
-        private bool jj_3R_8()
+        private bool Jj_3R_8()
         {
-            if (jj_scan_token(14)) return true;
+            if (Jj_scan_token(14)) return true;
             return false;
         }
 
-        private bool jj_3R_6()
+        private bool Jj_3R_6()
         {
             Token xsp;
             xsp = jj_scanpos;
-            if (jj_3R_8())
+            if (Jj_3R_8())
             {
                 jj_scanpos = xsp;
-                if (jj_3R_9()) return true;
+                if (Jj_3R_9()) return true;
             }
             return false;
         }
 
-        private bool jj_3R_14()
+        private bool Jj_3R_14()
         {
-            if (jj_scan_token(23)) return true;
+            if (Jj_scan_token(23)) return true;
             return false;
         }
 
-        private bool jj_3R_27()
+        private bool Jj_3R_27()
         {
-            if (jj_scan_token(MULTI_RELATION)) return true;
+            if (Jj_scan_token(MULTI_RELATION)) return true;
             return false;
         }
 
-        private bool jj_3R_19()
+        private bool Jj_3R_19()
         {
             Token xsp;
             xsp = jj_scanpos;
-            if (jj_scan_token(8))
+            if (Jj_scan_token(8))
             {
                 jj_scanpos = xsp;
-                if (jj_scan_token(10))
+                if (Jj_scan_token(10))
                 {
                     jj_scanpos = xsp;
-                    if (jj_scan_token(9)) return true;
+                    if (Jj_scan_token(9)) return true;
                 }
             }
             return false;
         }
 
-        private bool jj_3R_13()
+        private bool Jj_3R_13()
         {
-            if (jj_scan_token(16)) return true;
+            if (Jj_scan_token(16)) return true;
             return false;
         }
 
-        private bool jj_3R_17()
+        private bool Jj_3R_17()
         {
             Token xsp;
             xsp = jj_scanpos;
-            if (jj_3R_19())
+            if (Jj_3R_19())
             {
                 jj_scanpos = xsp;
-                if (jj_3R_20())
+                if (Jj_3R_20())
                 {
                     jj_scanpos = xsp;
-                    if (jj_3R_21()) return true;
+                    if (Jj_3R21()) return true;
                 }
             }
             return false;
         }
 
-        private bool jj_3R_12()
+        private bool Jj_3R_12()
         {
-            if (jj_3R_18()) return true;
+            if (Jj_3R_18()) return true;
             return false;
         }
 
-        private bool jj_3R_10()
+        private bool Jj_3R_10()
         {
             Token xsp;
             xsp = jj_scanpos;
-            if (jj_3R_12())
+            if (Jj_3R_12())
             {
                 jj_scanpos = xsp;
-                if (jj_3R_13())
+                if (Jj_3R_13())
                 {
                     jj_scanpos = xsp;
-                    if (jj_3R_14()) return true;
+                    if (Jj_3R_14()) return true;
                 }
             }
             return false;
         }
 
-        private bool jj_3R_15()
+        private bool Jj_3R_15()
         {
-            if (jj_scan_token(16)) return true;
+            if (Jj_scan_token(16)) return true;
             return false;
         }
 
-        private bool jj_3R_29()
+        private bool Jj_3R_29()
         {
-            if (jj_scan_token(REL_W_STR_ARG)) return true;
+            if (Jj_scan_token(REL_W_STR_ARG)) return true;
             return false;
         }
 
-        private bool jj_3_1()
+        private bool Jj_3_1()
         {
-            if (jj_scan_token(12)) return true;
-            if (jj_3R_6()) return true;
+            if (Jj_scan_token(12)) return true;
+            if (Jj_3R_6()) return true;
             return false;
         }
 
-        private bool jj_3R_28()
+        private bool Jj_3R_28()
         {
-            if (jj_scan_token(RELATION)) return true;
+            if (Jj_scan_token(RELATION)) return true;
             return false;
         }
 
-        private bool jj_3R_11()
+        private bool Jj_3R_11()
         {
             Token xsp;
             xsp = jj_scanpos;
-            if (jj_3R_15()) jj_scanpos = xsp;
+            if (Jj_3R_15()) jj_scanpos = xsp;
             xsp = jj_scanpos;
-            if (jj_3R_16()) jj_scanpos = xsp;
-            if (jj_3R_17()) return true;
+            if (Jj_3R_16()) jj_scanpos = xsp;
+            if (Jj_3R_17()) return true;
             return false;
         }
 
-        private bool jj_3R_21()
+        private bool Jj_3R21()
         {
-            if (jj_scan_token(20)) return true;
+            if (Jj_scan_token(20)) return true;
             return false;
         }
 
-        private bool jj_3R_7()
+        private bool Jj_3R_7()
         {
-            if (jj_3R_10()) return true;
+            if (Jj_3R_10()) return true;
             return false;
         }
 
-        private bool jj_3R_26()
+        private bool Jj_3R_26()
         {
             Token xsp;
             xsp = jj_scanpos;
-            if (jj_3R_28())
+            if (Jj_3R_28())
             {
                 jj_scanpos = xsp;
-                if (jj_3R_29()) return true;
+                if (Jj_3R_29()) return true;
             }
             return false;
         }
 
         /** Generated Token Manager. */
         public TregexParserTokenManager token_source;
-        private SimpleCharStream jj_input_stream;
+        private readonly SimpleCharStream jj_input_stream;
         /** Current token. */
         public Token token;
         /** Next token. */
@@ -1118,14 +1082,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private int jj_gen;
         private readonly int[] jj_la1 = new int[28];
 
-        private static int[] jj_la1_0 = new int[]
+        private static readonly int[] jj_la1_0 = new int[]
         {
             0x334700, 0x1814070, 0x1814070, 0x334700, 0x10000, 0x20000, 0x700, 0x40000, 0x100000, 0x100000, 0x300700,
             0x1c14070, 0x400000, 0x1814070, 0x1004070, 0x80, 0x10000, 0x20000, 0x700, 0x10000, 0x20000, 0x700,
             0x10000, 0x1014400, 0x50, 0x8000000, 0x334700, 0x70,
         };
 
-        private readonly JJCalls[] jj_2_rtns = new JJCalls[2];
+        private readonly JjCalls[] jj_2_rtns = new JjCalls[2];
         private bool jj_rescan = false;
         private int jj_gc = 0;
 
@@ -1153,7 +1117,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             jj_ntk = -1;
             jj_gen = 0;
             for (int i = 0; i < 28; i++) jj_la1[i] = -1;
-            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JjCalls();
         }
 
         /** Reinitialise. */
@@ -1180,7 +1144,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             jj_ntk = -1;
             jj_gen = 0;
             for (int i = 0; i < 28; i++) jj_la1[i] = -1;
-            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JjCalls();
         }
 
         /** Constructor. */
@@ -1193,7 +1157,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             jj_ntk = -1;
             jj_gen = 0;
             for (int i = 0; i < 28; i++) jj_la1[i] = -1;
-            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JjCalls();
         }
 
         /** Reinitialise. */
@@ -1206,7 +1170,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             jj_ntk = -1;
             jj_gen = 0;
             for (int i = 0; i < 28; i++) jj_la1[i] = -1;
-            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JjCalls();
         }
 
         /** Constructor with generated Token Manager. */
@@ -1218,7 +1182,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             jj_ntk = -1;
             jj_gen = 0;
             for (int i = 0; i < 28; i++) jj_la1[i] = -1;
-            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JjCalls();
         }
 
         /** Reinitialise. */
@@ -1230,10 +1194,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             jj_ntk = -1;
             jj_gen = 0;
             for (int i = 0; i < 28; i++) jj_la1[i] = -1;
-            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JJCalls();
+            for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JjCalls();
         }
 
-        private Token jj_consume_token(int kind) /*throws ParseException*/
+        private Token Jj_consume_token(int kind) /*throws ParseException*/
         {
             Token oldToken;
             if ((oldToken = token).next != null)
@@ -1242,7 +1206,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
             else
             {
-                token = token.next = token_source.getNextToken();
+                token = token.next = token_source.GetNextToken();
             }
             jj_ntk = -1;
             if (token.kind == kind)
@@ -1253,7 +1217,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     jj_gc = 0;
                     for (int i = 0; i < jj_2_rtns.Length; i++)
                     {
-                        JJCalls c = jj_2_rtns[i];
+                        JjCalls c = jj_2_rtns[i];
                         while (c != null)
                         {
                             if (c.gen < jj_gen) c.first = null;
@@ -1265,7 +1229,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
             token = oldToken;
             jj_kind = kind;
-            throw generateParseException();
+            throw GenerateParseException();
         }
 
         //@SuppressWarnings("serial")
@@ -1277,14 +1241,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private readonly LookaheadSuccess jj_ls = new LookaheadSuccess();
 
-        private bool jj_scan_token(int kind)
+        private bool Jj_scan_token(int kind)
         {
             if (jj_scanpos == jj_lastpos)
             {
                 jj_la--;
                 if (jj_scanpos.next == null)
                 {
-                    jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.getNextToken();
+                    jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.GetNextToken();
                 }
                 else
                 {
@@ -1304,7 +1268,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     i++;
                     tok = tok.next;
                 }
-                if (tok != null) jj_add_error_token(kind, i);
+                if (tok != null) Jj_add_error_token(kind, i);
             }
             if (jj_scanpos.kind != kind) return true;
             if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;
@@ -1315,10 +1279,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 /** Get the next Token. */
         /*readonly*/
 
-        public Token getNextToken()
+        public Token GetNextToken()
         {
             if (token.next != null) token = token.next;
-            else token = token.next = token_source.getNextToken();
+            else token = token.next = token_source.GetNextToken();
             jj_ntk = -1;
             jj_gen++;
             return token;
@@ -1327,23 +1291,23 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 /** Get the specific Token. */
         /*readonly */
 
-        public Token getToken(int index)
+        public Token GetToken(int index)
         {
             Token t = token;
             for (int i = 0; i < index; i++)
             {
                 if (t.next != null) t = t.next;
-                else t = t.next = token_source.getNextToken();
+                else t = t.next = token_source.GetNextToken();
             }
             return t;
         }
 
-        private int jj_ntk_f()
+        private int Jj_ntk_f()
         {
             if ((jj_nt = token.next) == null)
             {
                 //return (jj_ntk = (token.next = token_source.getNextToken()).kind);
-                token.next = token_source.getNextToken();
+                token.next = token_source.GetNextToken();
                 jj_ntk = token.next.kind;
                 return jj_ntk;
             }
@@ -1353,13 +1317,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private List<int[]> jj_expentries = new List<int[]>();
+        private readonly List<int[]> jj_expentries = new List<int[]>();
         private int[] jj_expentry;
         private int jj_kind = -1;
-        private int[] jj_lasttokens = new int[100];
+        private readonly int[] jj_lasttokens = new int[100];
         private int jj_endpos;
 
-        private void jj_add_error_token(int kind, int pos)
+        private void Jj_add_error_token(int kind, int pos)
         {
             if (pos >= 100) return;
             if (pos == jj_endpos + 1)
@@ -1414,10 +1378,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Generate ParseException. */
 
-        public ParseException generateParseException()
+        public ParseException GenerateParseException()
         {
             jj_expentries.Clear();
-            bool[] la1tokens = new bool[29];
+            var la1tokens = new bool[29];
             if (jj_kind >= 0)
             {
                 la1tokens[jj_kind] = true;
@@ -1446,38 +1410,38 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
             }
             jj_endpos = 0;
-            jj_rescan_token();
-            jj_add_error_token(0, 0);
-            int[][] exptokseq = new int[jj_expentries.Count][];
+            Jj_rescan_token();
+            Jj_add_error_token(0, 0);
+            var exptokseq = new int[jj_expentries.Count][];
             for (int i = 0; i < jj_expentries.Count; i++)
             {
                 exptokseq[i] = jj_expentries[i];
             }
-            return new ParseException(token, exptokseq, tokenImage);
+            return new ParseException(token, exptokseq, TokenImage);
         }
 
         /** Enable tracing. */
         /*final*/
 
-        public void enable_tracing()
+        public void Enable_tracing()
         {
         }
 
         /** Disable tracing. */
         /*final*/
 
-        public void disable_tracing()
+        public void Disable_tracing()
         {
         }
 
-        private void jj_rescan_token()
+        private void Jj_rescan_token()
         {
             jj_rescan = true;
             for (int i = 0; i < 2; i++)
             {
                 try
                 {
-                    JJCalls p = jj_2_rtns[i];
+                    JjCalls p = jj_2_rtns[i];
                     do
                     {
                         if (p.gen > jj_gen)
@@ -1487,10 +1451,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             switch (i)
                             {
                                 case 0:
-                                    jj_3_1();
+                                    Jj_3_1();
                                     break;
                                 case 1:
-                                    jj_3_2();
+                                    Jj_3_2();
                                     break;
                             }
                         }
@@ -1504,14 +1468,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             jj_rescan = false;
         }
 
-        private void jj_save(int index, int xla)
+        private void Jj_save(int index, int xla)
         {
-            JJCalls p = jj_2_rtns[index];
+            JjCalls p = jj_2_rtns[index];
             while (p.gen > jj_gen)
             {
                 if (p.next == null)
                 {
-                    p = p.next = new JJCalls();
+                    p = p.next = new JjCalls();
                     break;
                 }
                 p = p.next;
@@ -1523,12 +1487,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /*static */
 
-        private sealed class JJCalls
+        private sealed class JjCalls
         {
             public int gen;
             public Token first;
             public int arg;
-            public JJCalls next;
+            public JjCalls next;
         }
     }
 }

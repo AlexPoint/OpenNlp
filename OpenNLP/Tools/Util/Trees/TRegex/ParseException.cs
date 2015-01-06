@@ -35,7 +35,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         public ParseException(Token currentTokenVal,
             int[][] expectedTokenSequencesVal,
             string[] tokenImageVal) :
-                base(initialise(currentTokenVal, expectedTokenSequencesVal, tokenImageVal))
+                base(Initialize(currentTokenVal, expectedTokenSequencesVal, tokenImageVal))
         {
             currentToken = currentTokenVal;
             expectedTokenSequences = expectedTokenSequencesVal;
@@ -93,7 +93,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * gets displayed.
    */
 
-        private static string initialise(Token currentToken,
+        private static string Initialize(Token currentToken,
             int[][] expectedTokenSequences,
             string[] tokenImage)
         {
@@ -128,7 +128,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 retval += " " + tokenImage[tok.kind];
                 retval += " \"";
-                retval += add_escapes(tok.image);
+                retval += Add_escapes(tok.image);
                 retval += " \"";
                 tok = tok.next;
             }
@@ -158,7 +158,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * string literal.
    */
 
-        private static string add_escapes(string str)
+        private static string Add_escapes(string str)
         {
             var retval = new StringBuilder();
             char ch;

@@ -94,7 +94,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         private static readonly TregexPattern MatchPattern =
-            TregexPattern.safeCompile("-NONE-=none", true);
+            TregexPattern.SafeCompile("-NONE-=none", true);
 
         private static readonly TsurgeonPattern Operation =
             Tsurgeon.parseOperation("prune none");

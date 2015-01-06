@@ -83,7 +83,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    *                  of a string.replaceAll()
    */
 
-        public void addMacro(string original, string replacement)
+        public void AddMacro(string original, string replacement)
         {
             macros.Add(new Tuple<string, string>(original, replacement));
         }
@@ -104,7 +104,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * @throws TregexParseException If the expression is syntactically invalid
    */
 
-        public TregexPattern compile(string tregex)
+        public TregexPattern Compile(string tregex)
         {
             foreach (Tuple<string, string> macro in macros)
             {
@@ -114,7 +114,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             TregexPattern pattern;
             try
             {
-                TregexParser parser = new TregexParser(new StringReader(tregex + '\n'),
+                var parser = new TregexParser(new StringReader(tregex + '\n'),
                     basicCatFunction.Apply, headFinder);
                 pattern = parser.Root();
             }
@@ -126,7 +126,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             {
                 throw new TregexParseException("Could not parse " + tregex /*, e*/);
             }
-            pattern.setPatternString(tregex);
+            pattern.SetPatternString(tregex);
             return pattern;
         }
     }

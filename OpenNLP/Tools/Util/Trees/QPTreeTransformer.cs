@@ -47,7 +47,7 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         private static readonly TregexPattern flattenNPoverQPTregex =
-            TregexPattern.compile("NP < (QP=left $+ (QP=right < CC))");
+            TregexPattern.Compile("NP < (QP=left $+ (QP=right < CC))");
 
         private static readonly TsurgeonPattern flattenNPoverQPTsurgeon =
             Tsurgeon.parseOperation("[createSubtree QP left right] [excise left left] [excise right right]");
@@ -59,7 +59,7 @@ namespace OpenNLP.Tools.Util.Trees
             // "more than about".  Perhaps there is some way to generalize this
             // TODO: "all but X"
             // TODO: "all but about X"
-            TregexPattern.compile(
+            TregexPattern.Compile(
                 "QP <1 /^RB|JJ|IN/=left [ ( <2 /^JJ|IN/=right <3 /^CD|DT/ ) | ( <2 /^JJ|IN/ <3 ( IN=right < /^(?i:as|than)$/ ) <4 /^CD|DT/ ) ] ");
 
         private static readonly TsurgeonPattern multiwordXSTsurgeon =
@@ -68,7 +68,7 @@ namespace OpenNLP.Tools.Util.Trees
         // the old style split any flat QP with a CC in the middle
         // TOD: there should be some allowances for phrases such as "or more", "or so", etc
         private static readonly TregexPattern splitCCTregex =
-            TregexPattern.compile(
+            TregexPattern.Compile(
                 "QP < (CC $- __=r1 $+ __=l2 ?$-- /^[$]|CC$/=lnum ?$++ /^[$]|CC$/=rnum) <1 __=l1 <- __=r2 !< (__ < (__ < __))");
 
         private static readonly TsurgeonPattern splitCCTsurgeon =
@@ -77,7 +77,7 @@ namespace OpenNLP.Tools.Util.Trees
                 "[if exists rnum createSubtree QP l2 r2] [if not exists rnum createSubtree NP l2 r2]");
 
         private static readonly TregexPattern splitMoneyTregex =
-            TregexPattern.compile("QP < (/^[$]$/ !$++ /^(?!([$]|CD)).*$/ !$++ (__ < (__ < __)) $+ __=left) <- __=right");
+            TregexPattern.Compile("QP < (/^[$]$/ !$++ /^(?!([$]|CD)).*$/ !$++ (__ < (__ < __)) $+ __=left) <- __=right");
 
         private static readonly TsurgeonPattern splitMoneyTsurgeon =
             Tsurgeon.parseOperation("createSubtree QP left right");

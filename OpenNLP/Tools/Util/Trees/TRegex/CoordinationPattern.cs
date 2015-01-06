@@ -25,13 +25,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         }
 
         //@Override
-        public override List<TregexPattern> getChildren()
+        public override List<TregexPattern> GetChildren()
         {
             return children;
         }
 
         //@Override
-        public override string localString()
+        public override string LocalString()
         {
             return (isConj ? "and" : "or");
         }
@@ -39,10 +39,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         //@Override
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             if (isConj)
             {
-                if (isNegated())
+                if (IsNegated())
                 {
                     sb.Append("!(");
                 }
@@ -50,14 +50,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     sb.Append(node.ToString());
                 }
-                if (isNegated())
+                if (IsNegated())
                 {
                     sb.Append(")");
                 }
             }
             else
             {
-                if (isNegated())
+                if (IsNegated())
                 {
                     sb.Append("!");
                 }
@@ -76,7 +76,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         }
 
         //@Override
-        public override TregexMatcher matcher(Tree root, Tree tree,
+        public override TregexMatcher Matcher(Tree root, Tree tree,
             IdentityDictionary<Tree, Tree> nodesToParents,
             Dictionary<string, Tree> namesToNodes,
             VariableStrings variableStrings,
@@ -87,7 +87,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private /*static */ class CoordinationMatcher : TregexMatcher
         {
-            private TregexMatcher[] children;
+            private readonly TregexMatcher[] children;
             private readonly CoordinationPattern myNode;
             private int currChild;
             private readonly bool considerAll;
@@ -111,24 +111,24 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 //                             namesToNodes, variableStrings);
                 //}
                 currChild = 0;
-                considerAll = myNode.isConj ^ myNode.isNegated();
+                considerAll = myNode.isConj ^ myNode.IsNegated();
             }
 
             //@Override
-            public override void resetChildIter()
+            public override void ResetChildIter()
             {
                 currChild = 0;
                 foreach (TregexMatcher child in children)
                 {
                     if (child != null)
                     {
-                        child.resetChildIter();
+                        child.ResetChildIter();
                     }
                 }
             }
 
             //@Override
-            public override void resetChildIter(Tree tree)
+            public override void ResetChildIter(Tree tree)
             {
                 this.tree = tree;
                 currChild = 0;
@@ -136,14 +136,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     if (child != null)
                     {
-                        child.resetChildIter(tree);
+                        child.ResetChildIter(tree);
                     }
                 }
             }
 
             // find the next local match
             //@Override
-            public override bool matches()
+            public override bool Matches()
             {
                 // also known as "FUN WITH LOGIC"
                 //Console.WriteLine("matches()");
@@ -155,7 +155,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         // a past call to this node either got that it failed
                         // matching or that it was a negative match that succeeded,
                         // which we only want to accept once
-                        return myNode.isOptional();
+                        return myNode.IsOptional();
                     }
 
                     // we must have happily reached the end of a match the last
@@ -169,11 +169,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     {
                         if (children[currChild] == null)
                         {
-                            children[currChild] = myNode.children[currChild].matcher(root, tree, nodesToParents,
+                            children[currChild] = myNode.children[currChild].Matcher(root, tree, nodesToParents,
                                 namesToNodes, variableStrings, headFinder);
-                            children[currChild].resetChildIter(tree);
+                            children[currChild].ResetChildIter(tree);
                         }
-                        if (myNode.isNegated() != children[currChild].matches())
+                        if (myNode.IsNegated() != children[currChild].Matches())
                         {
                             // This node is set correctly.  Move on to the next node
                             ++currChild;
@@ -181,7 +181,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             if (currChild == children.Length)
                             {
                                 // yay, all nodes matched.
-                                if (myNode.isNegated())
+                                if (myNode.IsNegated())
                                 {
                                     // a negated node should only match once (before being reset)
                                     currChild = -1;
@@ -192,13 +192,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         else
                         {
                             // oops, this didn't work.
-                            children[currChild].resetChildIter();
+                            children[currChild].ResetChildIter();
                             // go backwards to see if we can continue matching from an
                             // earlier location.
                             --currChild;
                             if (currChild < 0)
                             {
-                                return myNode.isOptional();
+                                return myNode.IsOptional();
                             }
                         }
                     }
@@ -210,23 +210,23 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     {
                         if (children[currChild] == null)
                         {
-                            children[currChild] = myNode.children[currChild].matcher(root, tree, nodesToParents,
+                            children[currChild] = myNode.children[currChild].Matcher(root, tree, nodesToParents,
                                 namesToNodes, variableStrings, headFinder);
-                            children[currChild].resetChildIter(tree);
+                            children[currChild].ResetChildIter(tree);
                         }
-                        if (myNode.isNegated() != children[currChild].matches())
+                        if (myNode.IsNegated() != children[currChild].Matches())
                         {
                             // a negated node should only match once (before being reset)
                             // otherwise you get repeated matches for every node that
                             // causes the negated match to pass, which would be silly
-                            if (myNode.isNegated())
+                            if (myNode.IsNegated())
                             {
                                 currChild = children.Length;
                             }
                             return true;
                         }
                     }
-                    if (myNode.isNegated())
+                    if (myNode.IsNegated())
                     {
                         currChild = children.Length;
                     }
@@ -236,20 +236,20 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         // accepted nodes
                         if (children[resetChild] != null)
                         {
-                            children[resetChild].resetChildIter();
+                            children[resetChild].ResetChildIter();
                         }
                     }
-                    return myNode.isOptional();
+                    return myNode.IsOptional();
                 }
             }
 
             //@Override
-            public override Tree getMatch()
+            public override Tree GetMatch()
             {
                 // in general, only DescriptionNodes can match
                 // exception: if we are a positive disjunction, we care about
                 // exactly one of the children, so we return its match
-                if (!myNode.isConj && !myNode.isNegated())
+                if (!myNode.isConj && !myNode.IsNegated())
                 {
                     if (currChild >= children.Length || currChild < 0 || children[currChild] == null)
                     {
@@ -257,7 +257,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     }
                     else
                     {
-                        return children[currChild].getMatch();
+                        return children[currChild].GetMatch();
                     }
                 }
                 else

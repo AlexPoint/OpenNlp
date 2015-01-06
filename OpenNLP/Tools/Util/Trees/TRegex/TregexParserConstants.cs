@@ -37,7 +37,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         /** Literal token values. */
 
-        protected string[] tokenImage =
+        protected string[] TokenImage =
         {
             "<EOF>",
             "\" \"",

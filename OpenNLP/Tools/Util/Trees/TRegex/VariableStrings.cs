@@ -24,19 +24,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             numVarsSet = new Dictionary<string, int>();
         }
 
-        public void reset()
+        public void Reset()
         {
             numVarsSet.Clear();
             varsToStrings.Clear();
         }
 
-        public bool isSet(string o)
+        public bool IsSet(string o)
         {
             return numVarsSet.ContainsKey(o) && numVarsSet[o] >= 1;
             //return numVarsSet.getCount(o) >= 1;
         }
 
-        public void setVar(string var, string string1)
+        public void SetVar(string var, string string1)
         {
             string oldString = null;
             //var success = varsToStrings.TryGetValue(var,string1);
@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        public void unsetVar(string var)
+        public void UnsetVar(string var)
         {
             /*if(numVarsSet.getCount(var) > 0)
       numVarsSet.decrementCount(var);
@@ -79,7 +79,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        public string getString(string var)
+        public string GetString(string var)
         {
             return varsToStrings[var];
         }
@@ -87,7 +87,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         //@Override
         public override string ToString()
         {
-            StringBuilder s = new StringBuilder();
+            var s = new StringBuilder();
             s.Append("{");
             bool appended = false;
             foreach (string key in varsToStrings.Keys)

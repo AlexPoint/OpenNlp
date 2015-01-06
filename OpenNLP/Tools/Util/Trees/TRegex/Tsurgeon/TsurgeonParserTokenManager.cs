@@ -69,7 +69,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -105,7 +105,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 return 2;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -147,7 +147,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 return 3;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -182,7 +182,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 return 4;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -220,7 +220,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 return 5;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -263,7 +263,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 return 6;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -305,7 +305,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 return 7;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -326,7 +326,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 return 8;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -347,7 +347,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 return 9;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -368,7 +368,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 return 10;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -389,7 +389,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 return 11;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -410,7 +410,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 return 12;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -465,7 +465,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             jjmatchedPos = pos;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -1035,7 +1035,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     return curPos;
                 try
                 {
-                    curChar = input_stream.readChar();
+                    curChar = input_stream.ReadChar();
                 }
                 catch ( /*java.io.*/IOException e)
                 {
@@ -1077,7 +1077,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             jjmatchedPos = pos;
             try
             {
-                curChar = input_stream.readChar();
+                curChar = input_stream.ReadChar();
             }
             catch ( /*java.io.*/IOException e)
             {
@@ -1171,7 +1171,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     return curPos;
                 try
                 {
-                    curChar = input_stream.readChar();
+                    curChar = input_stream.ReadChar();
                 }
                 catch ( /*java.io.*/IOException e)
                 {
@@ -1232,11 +1232,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             int endColumn;
             string im = jjstrLiteralImages[jjmatchedKind];
             curTokenImage = (im == null) ? input_stream.GetImage() : im;
-            beginLine = input_stream.getBeginLine();
-            beginColumn = input_stream.getBeginColumn();
-            endLine = input_stream.getEndLine();
-            endColumn = input_stream.getEndColumn();
-            t = Token.newToken(jjmatchedKind, curTokenImage);
+            beginLine = input_stream.GetBeginLine();
+            beginColumn = input_stream.GetBeginColumn();
+            endLine = input_stream.GetEndLine();
+            endColumn = input_stream.GetEndColumn();
+            t = Token.NewToken(jjmatchedKind, curTokenImage);
 
             t.beginLine = beginLine;
             t.endLine = endLine;
@@ -1279,7 +1279,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         case 0:
                             try
                             {
-                                input_stream.backup(0);
+                                input_stream.Backup(0);
                                 while (curChar <= 32 && (0x100002400L & (1L << curChar)) != 0L)
                                     curChar = input_stream.BeginToken();
                             }
@@ -1295,7 +1295,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         case 1:
                             try
                             {
-                                input_stream.backup(0);
+                                input_stream.Backup(0);
                                 while (curChar <= 32 && (0x100002400L & (1L << curChar)) != 0L)
                                     curChar = input_stream.BeginToken();
                             }
@@ -1311,7 +1311,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         case 2:
                             try
                             {
-                                input_stream.backup(0);
+                                input_stream.Backup(0);
                                 while (curChar <= 32 && (0x100002600L & (1L << curChar)) != 0L)
                                     curChar = input_stream.BeginToken();
                             }
@@ -1328,7 +1328,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     if (jjmatchedKind != 0x7fffffff)
                     {
                         if (jjmatchedPos + 1 < curPos)
-                            input_stream.backup(curPos - jjmatchedPos - 1);
+                            input_stream.Backup(curPos - jjmatchedPos - 1);
                         //if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
                         if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind%64))) != 0L)
                         {
@@ -1345,14 +1345,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             goto beginning_eof_loop;
                         }
                     }
-                    int error_line = input_stream.getEndLine();
-                    int error_column = input_stream.getEndColumn();
+                    int error_line = input_stream.GetEndLine();
+                    int error_column = input_stream.GetEndColumn();
                     string error_after = null;
                     bool EOFSeen = false;
                     try
                     {
-                        input_stream.readChar();
-                        input_stream.backup(1);
+                        input_stream.ReadChar();
+                        input_stream.Backup(1);
                     }
                     catch ( /*java.io.*/IOException e1)
                     {
@@ -1368,7 +1368,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     }
                     if (!EOFSeen)
                     {
-                        input_stream.backup(1);
+                        input_stream.Backup(1);
                         error_after = curPos <= 1 ? "" : input_stream.GetImage();
                     }
                     throw new TokenMgrException(EOFSeen, curLexState, error_line, error_column, error_after, curChar,

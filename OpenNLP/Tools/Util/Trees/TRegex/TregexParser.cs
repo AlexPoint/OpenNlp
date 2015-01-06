@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private bool underNegation = false;
 
         private Func<string, string> basicCatFunction =
-            TregexPatternCompiler.DEFAULT_BASIC_CAT_FUNCTION.apply;
+            TregexPatternCompiler.DEFAULT_BASIC_CAT_FUNCTION.Apply;
 
         private HeadFinder headFinder =
             TregexPatternCompiler.DEFAULT_HEAD_FINDER;

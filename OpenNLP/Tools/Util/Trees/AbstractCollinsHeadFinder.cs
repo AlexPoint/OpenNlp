@@ -72,7 +72,7 @@ namespace OpenNLP.Tools.Util.Trees
    *  If they don't it is an error if no rule is defined for a category
    *  (null is returned).
    */
-        protected string[] defaultRule; // = null;
+        protected string[] DefaultRule; // = null;
 
         /** These are built automatically from categoriesToAvoid and used in a fairly
    *  different fashion from defaultRule (above).  These are used for categories
@@ -80,8 +80,8 @@ namespace OpenNLP.Tools.Util.Trees
    *  than picking the rightmost or leftmost child, we will use these to pick
    *  the the rightmost or leftmost child which isn't in categoriesToAvoid.
    */
-        protected string[] defaultLeftRule;
-        protected string[] defaultRightRule;
+        protected string[] DefaultLeftRule;
+        protected string[] DefaultRightRule;
 
         /**
    * Construct a HeadFinder.
@@ -99,19 +99,19 @@ namespace OpenNLP.Tools.Util.Trees
         {
             this.tlp = tlp;
             // automatically build defaultLeftRule, defaultRightRule
-            defaultLeftRule = new string[categoriesToAvoid.Length + 1];
-            defaultRightRule = new string[categoriesToAvoid.Length + 1];
+            DefaultLeftRule = new string[categoriesToAvoid.Length + 1];
+            DefaultRightRule = new string[categoriesToAvoid.Length + 1];
             if (categoriesToAvoid.Length > 0)
             {
-                defaultLeftRule[0] = "leftexcept";
-                defaultRightRule[0] = "rightexcept";
-                Array.Copy(categoriesToAvoid, 0, defaultLeftRule, 1, categoriesToAvoid.Length);
-                Array.Copy(categoriesToAvoid, 0, defaultRightRule, 1, categoriesToAvoid.Length);
+                DefaultLeftRule[0] = "leftexcept";
+                DefaultRightRule[0] = "rightexcept";
+                Array.Copy(categoriesToAvoid, 0, DefaultLeftRule, 1, categoriesToAvoid.Length);
+                Array.Copy(categoriesToAvoid, 0, DefaultRightRule, 1, categoriesToAvoid.Length);
             }
             else
             {
-                defaultLeftRule[0] = "left";
-                defaultRightRule[0] = "right";
+                DefaultLeftRule[0] = "left";
+                DefaultRightRule[0] = "right";
             }
         }
 
@@ -133,7 +133,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
         // to be overridden in subclasses for corpora
         //
-        protected Tree findMarkedHead(Tree t)
+        protected Tree FindMarkedHead(Tree t)
         {
             return null;
         }
@@ -148,9 +148,9 @@ namespace OpenNLP.Tools.Util.Trees
    *      for a routine to call this and spread heads throughout a tree
    */
         //@Override
-        public Tree determineHead(Tree t)
+        public Tree DetermineHead(Tree t)
         {
-            return determineHead(t, null);
+            return DetermineHead(t, null);
         }
 
         /**
@@ -165,7 +165,7 @@ namespace OpenNLP.Tools.Util.Trees
    *      for a routine to call this and spread heads throughout a tree
    */
         //@Override
-        public Tree determineHead(Tree t, Tree parent)
+        public Tree DetermineHead(Tree t, Tree parent)
         {
             if (nonTerminalInfo == null)
             {
@@ -184,7 +184,7 @@ namespace OpenNLP.Tools.Util.Trees
 
             Tree theHead;
             // first check if subclass found explicitly marked head
-            if ((theHead = findMarkedHead(t)) != null)
+            if ((theHead = FindMarkedHead(t)) != null)
             {
                 /*if (DEBUG) {
         System.err.println("Find marked head method returned " +
@@ -250,12 +250,12 @@ namespace OpenNLP.Tools.Util.Trees
                            " (first char: " + motherCat.charAt(0) + ')');
         System.err.println("Known nonterms are: " + nonTerminalInfo.keySet());
       }*/
-                if (defaultRule != null)
+                if (DefaultRule != null)
                 {
                     /*if (DEBUG) {
           System.err.println("  Using defaultRule");
         }*/
-                    return traverseLocate(kids, defaultRule, true);
+                    return TraverseLocate(kids, DefaultRule, true);
                 }
                 else
                 {
@@ -266,7 +266,7 @@ namespace OpenNLP.Tools.Util.Trees
             for (int i = 0; i < how.Length; i++)
             {
                 bool lastResort = (i == how.Length - 1);
-                theHead = traverseLocate(kids, how[i], lastResort);
+                theHead = TraverseLocate(kids, how[i], lastResort);
                 if (theHead != null)
                 {
                     break;
@@ -286,28 +286,28 @@ namespace OpenNLP.Tools.Util.Trees
    * lastResort is true, otherwise return <code>null</code>.
    */
 
-        protected Tree traverseLocate(Tree[] daughterTrees, string[] how, bool lastResort)
+        protected Tree TraverseLocate(Tree[] daughterTrees, string[] how, bool lastResort)
         {
             int headIdx;
             switch (how[0])
             {
                 case "left":
-                    headIdx = findLeftHead(daughterTrees, how);
+                    headIdx = FindLeftHead(daughterTrees, how);
                     break;
                 case "leftdis":
-                    headIdx = findLeftDisHead(daughterTrees, how);
+                    headIdx = FindLeftDisHead(daughterTrees, how);
                     break;
                 case "leftexcept":
-                    headIdx = findLeftExceptHead(daughterTrees, how);
+                    headIdx = FindLeftExceptHead(daughterTrees, how);
                     break;
                 case "right":
-                    headIdx = findRightHead(daughterTrees, how);
+                    headIdx = FindRightHead(daughterTrees, how);
                     break;
                 case "rightdis":
-                    headIdx = findRightDisHead(daughterTrees, how);
+                    headIdx = FindRightDisHead(daughterTrees, how);
                     break;
                 case "rightexcept":
-                    headIdx = findRightExceptHead(daughterTrees, how);
+                    headIdx = FindRightExceptHead(daughterTrees, how);
                     break;
                 default:
                     throw new InvalidEnumArgumentException("ERROR: invalid direction type " + how[0] +
@@ -327,14 +327,14 @@ namespace OpenNLP.Tools.Util.Trees
                     if (how[0].StartsWith("left"))
                     {
                         headIdx = 0;
-                        rule = defaultLeftRule;
+                        rule = DefaultLeftRule;
                     }
                     else
                     {
                         headIdx = daughterTrees.Length - 1;
-                        rule = defaultRightRule;
+                        rule = DefaultRightRule;
                     }
-                    Tree child = traverseLocate(daughterTrees, rule, false);
+                    Tree child = TraverseLocate(daughterTrees, rule, false);
                     if (child != null)
                     {
                         return child;
@@ -356,7 +356,7 @@ namespace OpenNLP.Tools.Util.Trees
             return daughterTrees[headIdx];
         }
 
-        private int findLeftHead(Tree[] daughterTrees, string[] how)
+        private int FindLeftHead(Tree[] daughterTrees, string[] how)
         {
             for (int i = 1; i < how.Length; i++)
             {
@@ -372,7 +372,7 @@ namespace OpenNLP.Tools.Util.Trees
             return -1;
         }
 
-        private int findLeftDisHead(Tree[] daughterTrees, string[] how)
+        private int FindLeftDisHead(Tree[] daughterTrees, string[] how)
         {
             for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++)
             {
@@ -388,7 +388,7 @@ namespace OpenNLP.Tools.Util.Trees
             return -1;
         }
 
-        private int findLeftExceptHead(Tree[] daughterTrees, string[] how)
+        private int FindLeftExceptHead(Tree[] daughterTrees, string[] how)
         {
             for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++)
             {
@@ -409,7 +409,7 @@ namespace OpenNLP.Tools.Util.Trees
             return -1;
         }
 
-        private int findRightHead(Tree[] daughterTrees, string[] how)
+        private int FindRightHead(Tree[] daughterTrees, string[] how)
         {
             for (int i = 1; i < how.Length; i++)
             {
@@ -426,7 +426,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         // from right, but search for any of the categories, not by category in turn
-        private int findRightDisHead(Tree[] daughterTrees, string[] how)
+        private int FindRightDisHead(Tree[] daughterTrees, string[] how)
         {
             for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--)
             {
@@ -442,7 +442,7 @@ namespace OpenNLP.Tools.Util.Trees
             return -1;
         }
 
-        private int findRightExceptHead(Tree[] daughterTrees, string[] how)
+        private int FindRightExceptHead(Tree[] daughterTrees, string[] how)
         {
             for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--)
             {

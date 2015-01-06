@@ -19,19 +19,19 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
 
-        private static readonly string[] pennPunctTags = {"''", "``", "-LRB-", "-RRB-", ".", ":", ","};
+        private static readonly string[] PennPunctTags = {"''", "``", "-LRB-", "-RRB-", ".", ":", ","};
 
-        private static readonly string[] pennSFPunctTags = {"."};
+        private static readonly string[] PennSfPunctTags = {"."};
 
-        private static readonly string[] collinsPunctTags = {"''", "``", ".", ":", ","};
+        private static readonly string[] CollinsPunctTags = {"''", "``", ".", ":", ","};
 
-        private static readonly string[] pennPunctWords =
+        private static readonly string[] PennPunctWords =
         {
             "''", "'", "``", "`", "-LRB-", "-RRB-", "-LCB-", "-RCB-", ".",
             "?", "!", ",", ":", "-", "--", "...", ";"
         };
 
-        private static readonly string[] pennSFPunctWords = {".", "!", "?"};
+        private static readonly string[] PennSfPunctWords = {".", "!", "?"};
 
 
         /**
@@ -42,12 +42,12 @@ namespace OpenNLP.Tools.Util.Trees
    * printing out lexicalized dependencies.  Note that ] ought to be
    * unnecessary, since it would end the annotation, not start it.
    */
-        private static readonly char[] annotationIntroducingChars = {'-', '=', '|', '#', '^', '~', '_', '['};
+        private static readonly char[] AnnotationIntroducingChars = {'-', '=', '|', '#', '^', '~', '_', '['};
 
         /**
    * This is valid for "BobChrisTreeNormalizer" conventions only.
    */
-        private static readonly string[] pennStartSymbols = {"ROOT", "TOP"};
+        private static readonly string[] PennStartSymbols = {"ROOT", "TOP"};
 
 
         /**
@@ -58,7 +58,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override string[] PunctuationTags()
         {
-            return pennPunctTags;
+            return PennPunctTags;
         }
 
 
@@ -70,7 +70,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override string[] PunctuationWords()
         {
-            return pennPunctWords;
+            return PennPunctWords;
         }
 
 
@@ -83,7 +83,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override string[] SentenceFinalPunctuationTags()
         {
-            return pennSFPunctTags;
+            return PennSfPunctTags;
         }
 
         /**
@@ -95,7 +95,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override string[] SentenceFinalPunctuationWords()
         {
-            return pennSFPunctWords;
+            return PennSfPunctWords;
         }
 
         /**
@@ -110,7 +110,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override string[] EvalBIgnoredPunctuationTags()
         {
-            return collinsPunctTags;
+            return CollinsPunctTags;
         }
 
 
@@ -127,7 +127,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override char[] LabelAnnotationIntroducingCharacters()
         {
-            return annotationIntroducingChars;
+            return AnnotationIntroducingChars;
         }
 
 
@@ -139,7 +139,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override string[] StartSymbols()
         {
-            return pennStartSymbols;
+            return PennStartSymbols;
         }
 
         /**

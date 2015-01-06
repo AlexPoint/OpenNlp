@@ -115,7 +115,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             try
             {
                 TregexParser parser = new TregexParser(new StringReader(tregex + '\n'),
-                    basicCatFunction.apply, headFinder);
+                    basicCatFunction.Apply, headFinder);
                 pattern = parser.Root();
             }
             catch (TokenMgrException tme)

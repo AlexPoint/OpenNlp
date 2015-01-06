@@ -14,6 +14,6 @@ namespace OpenNLP.Tools.Util.Trees
 
     public interface CopulaHeadFinder
     {
-        bool makesCopulaHead();
+        bool MakesCopulaHead();
     }
 }

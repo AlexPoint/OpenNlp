@@ -28,7 +28,7 @@ namespace OpenNLP.Tools.Util.Trees
    *     phrasal categories in it (and the implementation doesn't just use
    *     some heuristic to always determine some head).
    */
-        Tree determineHead(Tree t);
+        Tree DetermineHead(Tree t);
 
 
         /**
@@ -40,6 +40,6 @@ namespace OpenNLP.Tools.Util.Trees
          * @return The daughter tree that is the head.  This will always be
          *     non-null. An Exception will be thrown if no head can be determined.
          */
-        Tree determineHead(Tree t, Tree parent);
+        Tree DetermineHead(Tree t, Tree parent);
     }
 }

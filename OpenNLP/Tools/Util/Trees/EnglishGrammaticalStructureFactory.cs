@@ -25,7 +25,7 @@ namespace OpenNLP.Tools.Util.Trees
     this.hf = hf;
   }*/
 
-        public GrammaticalStructure newGrammaticalStructure(Tree t)
+        public GrammaticalStructure NewGrammaticalStructure(Tree t)
         {
             /*if (puncFilter == null && hf == null) {*/
             return new EnglishGrammaticalStructure(t); /*

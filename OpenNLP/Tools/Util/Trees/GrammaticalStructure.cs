@@ -82,7 +82,7 @@ namespace OpenNLP.Tools.Util.Trees
             Object relationsLock, HeadFinder hf, Predicate<string> puncFilter)
         {
             this.root = new TreeGraphNode(t, this);
-            indexNodes(this.root);
+            IndexNodes(this.root);
             // add head word and tag to phrase nodes
             if (hf == null)
             {
@@ -95,13 +95,11 @@ namespace OpenNLP.Tools.Util.Trees
             }
             // add dependencies, using heads
             this.puncFilter = puncFilter;
-            NoPunctFilter puncDepFilter = new NoPunctFilter(puncFilter);
-            NoPunctTypedDependencyFilter puncTypedDepFilter = new NoPunctTypedDependencyFilter(puncFilter);
+            var puncDepFilter = new NoPunctFilter(puncFilter);
+            var puncTypedDepFilter = new NoPunctTypedDependencyFilter(puncFilter);
 
-            DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph =
-                new DirectedMultiGraph<TreeGraphNode, GrammaticalRelation>();
-            DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> completeGraph =
-                new DirectedMultiGraph<TreeGraphNode, GrammaticalRelation>();
+            var basicGraph = new DirectedMultiGraph<TreeGraphNode, GrammaticalRelation>();
+            var completeGraph = new DirectedMultiGraph<TreeGraphNode, GrammaticalRelation>();
 
             // analyze the root (and its descendants, recursively)
             /*if (relationsLock != null) {
@@ -117,15 +115,15 @@ namespace OpenNLP.Tools.Util.Trees
     }*/
             lock (relationsLock)
             {
-                analyzeNode(root, root, relations, hf, puncFilter, basicGraph, completeGraph);
+                AnalyzeNode(root, root, relations, hf, puncFilter, basicGraph, completeGraph);
             }
 
-            attachStrandedNodes(root, root, false, puncFilter, basicGraph);
+            AttachStrandedNodes(root, root, false, puncFilter, basicGraph);
 
             // add typed dependencies
-            typedDependencies = getDeps(puncTypedDepFilter.test, basicGraph);
+            typedDependencies = GetDeps(puncTypedDepFilter.Test, basicGraph);
             allTypedDependencies = new List<TypedDependency>(typedDependencies);
-            getExtraDeps(allTypedDependencies, puncTypedDepFilter.test, completeGraph);
+            GetExtraDeps(allTypedDependencies, puncTypedDepFilter.Test, completeGraph);
         }
 
 
@@ -137,9 +135,9 @@ namespace OpenNLP.Tools.Util.Trees
    * using a pre-order tree traversal.
    */
 
-        private void indexNodes(TreeGraphNode tree)
+        private void IndexNodes(TreeGraphNode tree)
         {
-            indexNodes(tree, indexLeaves(tree, 1));
+            IndexNodes(tree, IndexLeaves(tree, 1));
         }
 
         /**
@@ -152,7 +150,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the next index still unassigned
    */
 
-        private int indexLeaves(TreeGraphNode tree, int startIndex)
+        private int IndexLeaves(TreeGraphNode tree, int startIndex)
         {
             if (tree.IsLeaf())
             {
@@ -165,14 +163,14 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     tree.SetIndex(startIndex);
                 }
-                addNodeToIndexMap(startIndex, tree);
+                AddNodeToIndexMap(startIndex, tree);
                 startIndex++;
             }
             else
             {
                 foreach (TreeGraphNode child in tree.Children())
                 {
-                    startIndex = indexLeaves(child, startIndex);
+                    startIndex = IndexLeaves(child, startIndex);
                 }
             }
             return startIndex;
@@ -190,19 +188,19 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the next index still unassigned
    */
 
-        private int indexNodes(TreeGraphNode tree, int startIndex)
+        private int IndexNodes(TreeGraphNode tree, int startIndex)
         {
             if (tree.Index() < 0)
             {
                 // if this node has no index
-                addNodeToIndexMap(startIndex, tree);
+                AddNodeToIndexMap(startIndex, tree);
                 tree.SetIndex(startIndex++);
             }
             if (!tree.IsLeaf())
             {
                 foreach (TreeGraphNode child in tree.Children())
                 {
-                    startIndex = indexNodes(child, startIndex);
+                    startIndex = IndexNodes(child, startIndex);
                 }
             }
             return startIndex;
@@ -218,7 +216,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param node  the <code>TreeGraphNode</code> to be indexed
    */
 
-        private void addNodeToIndexMap(int index, TreeGraphNode node)
+        private void AddNodeToIndexMap(int index, TreeGraphNode node)
         {
             indexMap.Add(index, node);
         }
@@ -233,7 +231,7 @@ namespace OpenNLP.Tools.Util.Trees
    *         index (or <code>null</code> if such does not exist)
    */
 
-        private TreeGraphNode getNodeByIndex(int index)
+        private TreeGraphNode GetNodeByIndex(int index)
         {
             return indexMap[index];
         }
@@ -244,12 +242,12 @@ namespace OpenNLP.Tools.Util.Trees
    * @return the root Tree of this GrammaticalStructure
    */
 
-        public TreeGraphNode mroot()
+        public TreeGraphNode Root()
         {
             return root;
         }
 
-        private static void throwDepFormatException(string dep)
+        private static void ThrowDepFormatException(string dep)
         {
             throw new SystemException(
                 string.Format("Dependencies should be for the format 'type(arg-idx, arg-idx)'. Could not parse '{0}'",
@@ -270,7 +268,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param deps
    */
 
-        public static GrammaticalStructure fromStringReps(List<string> tokens, List<string> posTags, List<string> deps)
+        public static GrammaticalStructure FromStringReps(List<string> tokens, List<string> posTags, List<string> deps)
         {
             if (tokens.Count != posTags.Count)
             {
@@ -278,30 +276,30 @@ namespace OpenNLP.Tools.Util.Trees
                     "tokens.Count: {0} != pos.Count: {1}\n", tokens.Count, posTags.Count));
             }
 
-            List<TreeGraphNode> tgWordNodes = new List<TreeGraphNode>(tokens.Count);
-            List<TreeGraphNode> tgPOSNodes = new List<TreeGraphNode>(tokens.Count);
+            var tgWordNodes = new List<TreeGraphNode>(tokens.Count);
+            var tgPOSNodes = new List<TreeGraphNode>(tokens.Count);
 
-            CoreLabel rootLabel = new CoreLabel();
+            var rootLabel = new CoreLabel();
             rootLabel.SetValue("ROOT");
-            List<IndexedWord> nodeWords = new List<IndexedWord>(tgPOSNodes.Count + 1);
+            var nodeWords = new List<IndexedWord>(tgPOSNodes.Count + 1);
             nodeWords.Add(new IndexedWord(rootLabel));
 
-            SemanticHeadFinder headFinder = new SemanticHeadFinder();
+            var headFinder = new SemanticHeadFinder();
 
             IEnumerator<string> posIter = posTags.GetEnumerator();
             foreach (string wordString in tokens)
             {
                 string posString = posIter.Current;
                 posIter.MoveNext();
-                CoreLabel wordLabel = new CoreLabel();
+                var wordLabel = new CoreLabel();
                 wordLabel.SetWord(wordString);
                 wordLabel.SetValue(wordString);
                 wordLabel.SetTag(posString);
-                TreeGraphNode word = new TreeGraphNode(wordLabel);
-                CoreLabel tagLabel = new CoreLabel();
+                var word = new TreeGraphNode(wordLabel);
+                var tagLabel = new CoreLabel();
                 tagLabel.SetValue(posString);
                 tagLabel.SetWord(posString);
-                TreeGraphNode pos = new TreeGraphNode(tagLabel);
+                var pos = new TreeGraphNode(tagLabel);
                 tgWordNodes.Add(word);
                 tgPOSNodes.Add(pos);
                 TreeGraphNode[] childArr = {word};
@@ -311,45 +309,45 @@ namespace OpenNLP.Tools.Util.Trees
                 nodeWords.Add(new IndexedWord(wordLabel));
             }
 
-            TreeGraphNode root = new TreeGraphNode(rootLabel);
+            var root = new TreeGraphNode(rootLabel);
 
             root.SetChildren(tgPOSNodes.ToArray());
 
             root.SetIndex(0);
 
             // Build list of TypedDependencies
-            List<TypedDependency> tdeps = new List<TypedDependency>(deps.Count);
+            var tdeps = new List<TypedDependency>(deps.Count);
 
             foreach (string depString in deps)
             {
                 int firstBracket = depString.IndexOf('(');
-                if (firstBracket == -1) throwDepFormatException(depString);
+                if (firstBracket == -1) ThrowDepFormatException(depString);
 
 
                 string type = depString.Substring(0, firstBracket);
 
-                if (depString[depString.Length - 1] != ')') throwDepFormatException(depString);
+                if (depString[depString.Length - 1] != ')') ThrowDepFormatException(depString);
 
                 string args = depString.Substring(firstBracket + 1, depString.Length - 1);
 
                 int argSep = args.IndexOf(", ");
-                if (argSep == -1) throwDepFormatException(depString);
+                if (argSep == -1) ThrowDepFormatException(depString);
 
                 string parentArg = args.Substring(0, argSep);
                 string childArg = args.Substring(argSep + 2);
                 int parentDash = parentArg.LastIndexOf('-');
-                if (parentDash == -1) throwDepFormatException(depString);
+                if (parentDash == -1) ThrowDepFormatException(depString);
                 int childDash = childArg.LastIndexOf('-');
-                if (childDash == -1) throwDepFormatException(depString);
+                if (childDash == -1) ThrowDepFormatException(depString);
                 //System.err.printf("parentArg: %s\n", parentArg);
                 int parentIdx = int.Parse(parentArg.Substring(parentDash + 1).Replace("'", ""));
 
                 int childIdx = int.Parse(childArg.Substring(childDash + 1).Replace("'", ""));
 
-                GrammaticalRelation grel = new GrammaticalRelation(GrammaticalRelation.Language.Any, type, null,
+                var grel = new GrammaticalRelation(GrammaticalRelation.Language.Any, type, null,
                     GrammaticalRelation.DEPENDENT);
 
-                TypedDependency tdep = new TypedDependency(grel, nodeWords[parentIdx], nodeWords[childIdx]);
+                var tdep = new TypedDependency(grel, nodeWords[parentIdx], nodeWords[childIdx]);
                 tdeps.Add(tdep);
             }
 
@@ -364,7 +362,7 @@ namespace OpenNLP.Tools.Util.Trees
         public GrammaticalStructure(List<TypedDependency> projectiveDependencies, TreeGraphNode root)
         {
             this.root = root;
-            indexNodes(this.root);
+            IndexNodes(this.root);
             this.puncFilter = Filters.AcceptFilter<string>();
             allTypedDependencies = typedDependencies = new List<TypedDependency>(projectiveDependencies);
         }
@@ -378,14 +376,14 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(root.ToPrettyString(0).Substring(1));
             sb.Append("Typed Dependencies:\n");
             sb.Append(typedDependencies);
             return sb.ToString();
         }
 
-        private static void attachStrandedNodes(TreeGraphNode t, TreeGraphNode root, bool attach,
+        private static void AttachStrandedNodes(TreeGraphNode t, TreeGraphNode root, bool attach,
             Predicate<string> puncFilter, DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph)
         {
             if (t.IsLeaf())
@@ -414,12 +412,12 @@ namespace OpenNLP.Tools.Util.Trees
             }
             foreach (TreeGraphNode kid in t.Children())
             {
-                attachStrandedNodes(kid, root, (kid.HeadWordNode() != t.HeadWordNode()), puncFilter, basicGraph);
+                AttachStrandedNodes(kid, root, (kid.HeadWordNode() != t.HeadWordNode()), puncFilter, basicGraph);
             }
         }
 
         // cdm dec 2009: I changed this to automatically fail on preterminal nodes, since they shouldn't match for GR parent patterns.  Should speed it up.
-        private static void analyzeNode(TreeGraphNode t, TreeGraphNode root, ICollection<GrammaticalRelation> relations,
+        private static void AnalyzeNode(TreeGraphNode t, TreeGraphNode root, ICollection<GrammaticalRelation> relations,
             HeadFinder hf, Predicate<string> puncFilter,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> completeGraph)
@@ -432,10 +430,10 @@ namespace OpenNLP.Tools.Util.Trees
                 TreeGraphNode tHigh = t.HighestNodeWithSameHead();
                 foreach (GrammaticalRelation egr in relations)
                 {
-                    if (egr.isApplicable(t))
+                    if (egr.IsApplicable(t))
                     {
                         //Console.WriteLine("isApplicable = true");
-                        foreach (TreeGraphNode u in egr.getRelatedNodes(t, root, hf))
+                        foreach (TreeGraphNode u in egr.GetRelatedNodes(t, root, hf))
                         {
                             TreeGraphNode uHigh = u.HighestNodeWithSameHead();
                             if (uHigh == tHigh)
@@ -462,17 +460,17 @@ namespace OpenNLP.Tools.Util.Trees
                 // now recurse into children
                 foreach (TreeGraphNode kid in t.Children())
                 {
-                    analyzeNode(kid, root, relations, hf, puncFilter, basicGraph, completeGraph);
+                    AnalyzeNode(kid, root, relations, hf, puncFilter, basicGraph, completeGraph);
                 }
             }
         }
 
-        private void getExtraDeps(List<TypedDependency> deps, Predicate<TypedDependency> puncTypedDepFilter,
+        private void GetExtraDeps(List<TypedDependency> deps, Predicate<TypedDependency> puncTypedDepFilter,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> completeGraph)
         {
-            getExtras(deps);
+            GetExtras(deps);
             // adds stuff to basicDep based on the tregex patterns over the tree
-            getTreeDeps(deps, completeGraph, puncTypedDepFilter, extraTreeDepFilter());
+            GetTreeDeps(deps, completeGraph, puncTypedDepFilter, ExtraTreeDepFilter());
             deps.Sort();
         }
 
@@ -482,10 +480,10 @@ namespace OpenNLP.Tools.Util.Trees
    * information from a {@code GrammaticalStructure}.
    */
 
-        private List<TypedDependency> getDeps(Predicate<TypedDependency> puncTypedDepFilter,
+        private List<TypedDependency> GetDeps(Predicate<TypedDependency> puncTypedDepFilter,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph)
         {
-            List<TypedDependency> basicDep = new List<TypedDependency>();
+            var basicDep = new List<TypedDependency>();
 
             foreach (TreeGraphNode gov in basicGraph.GetAllVertices())
             {
@@ -495,7 +493,7 @@ namespace OpenNLP.Tools.Util.Trees
                     var depCLabel = dep.Label() as CoreLabel;
                     if (govCLabel != null && depCLabel != null)
                     {
-                        GrammaticalRelation reln = getGrammaticalRelationCommonAncestor(govCLabel, depCLabel,
+                        GrammaticalRelation reln = GetGrammaticalRelationCommonAncestor(govCLabel, depCLabel,
                             basicGraph.GetEdges(gov, dep).ToList());
                         // System.err.println("  Gov: " + gov + " Dep: " + dep + " Reln: " + reln);
                         basicDep.Add(new TypedDependency(reln, new IndexedWord(gov.HeadWordNode().Label()),
@@ -509,12 +507,12 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             // add the root
-            TreeGraphNode dependencyRoot = new TreeGraphNode(new Word("ROOT"));
+            var dependencyRoot = new TreeGraphNode(new Word("ROOT"));
             dependencyRoot.SetIndex(0);
-            TreeGraphNode rootDep = mroot().HeadWordNode();
+            TreeGraphNode rootDep = Root().HeadWordNode();
             if (rootDep == null)
             {
-                List<Tree> leaves = Trees.Leaves(mroot());
+                List<Tree> leaves = Trees.Leaves(Root());
                 if (leaves.Count > 0)
                 {
                     Tree leaf = leaves[0];
@@ -531,7 +529,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
             if (rootDep != null)
             {
-                TypedDependency rootTypedDep = new TypedDependency(GrammaticalRelation.ROOT,
+                var rootTypedDep = new TypedDependency(GrammaticalRelation.ROOT,
                     new IndexedWord(dependencyRoot.Label()), new IndexedWord(rootDep.Label()));
                 if (puncTypedDepFilter(rootTypedDep))
                 {
@@ -539,7 +537,7 @@ namespace OpenNLP.Tools.Util.Trees
                 }
             }
 
-            postProcessDependencies(basicDep);
+            PostProcessDependencies(basicDep);
 
             basicDep.Sort();
 
@@ -555,7 +553,7 @@ namespace OpenNLP.Tools.Util.Trees
    * second pass over the trees for missing dependencies.
    */
 
-        protected Predicate<TypedDependency> extraTreeDepFilter()
+        protected Predicate<TypedDependency> ExtraTreeDepFilter()
         {
             return Filters.AcceptFilter<TypedDependency>();
         }
@@ -567,7 +565,7 @@ namespace OpenNLP.Tools.Util.Trees
    * dependencies.
    */
 
-        protected void postProcessDependencies(List<TypedDependency> basicDep)
+        protected void PostProcessDependencies(List<TypedDependency> basicDep)
         {
             // no post processing by default
         }
@@ -578,7 +576,7 @@ namespace OpenNLP.Tools.Util.Trees
    * For example, the English xsubj dependency can be extracted that way.
    */
 
-        protected void getExtras(List<TypedDependency> basicDep)
+        protected void GetExtras(List<TypedDependency> basicDep)
         {
             // no extra dependencies by default
         }
@@ -594,7 +592,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param extraTreeDepFilter Additional dependencies are added only if they pass this filter
    */
 
-        private static void getTreeDeps(List<TypedDependency> deps,
+        private static void GetTreeDeps(List<TypedDependency> deps,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> completeGraph,
             Predicate<TypedDependency> puncTypedDepFilter,
             Predicate<TypedDependency> extraTreeDepFilter)
@@ -605,9 +603,9 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     foreach (
                         GrammaticalRelation rel in
-                            removeGrammaticalRelationAncestors(completeGraph.GetEdges(gov, dep).ToList()))
+                            RemoveGrammaticalRelationAncestors(completeGraph.GetEdges(gov, dep).ToList()))
                     {
-                        TypedDependency newDep = new TypedDependency(rel, new IndexedWord(gov.HeadWordNode().Label()),
+                        var newDep = new TypedDependency(rel, new IndexedWord(gov.HeadWordNode().Label()),
                             new IndexedWord(dep.HeadWordNode().Label()));
                         if (!deps.Contains(newDep) && puncTypedDepFilter(newDep) && extraTreeDepFilter(newDep))
                         {
@@ -621,7 +619,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         private /*static*/ class NoPunctFilter : IPredicate<Dependency<Label, Label, Object>> /*, Serializable*/
         {
-            private Predicate<string> npf;
+            private readonly Predicate<string> npf;
 
             public NoPunctFilter(Predicate<string> f)
             {
@@ -629,7 +627,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             //@Override
-            public bool test(Dependency<Label, Label, Object> d)
+            public bool Test(Dependency<Label, Label, Object> d)
             {
                 if (d == null)
                 {
@@ -649,12 +647,12 @@ namespace OpenNLP.Tools.Util.Trees
 
         public interface IPredicate<T>
         {
-            bool test(T elt);
+            bool Test(T elt);
         }
 
         private /*static*/ class NoPunctTypedDependencyFilter : IPredicate<TypedDependency> /*, Serializable*/
         {
-            private Predicate<string> npf;
+            private readonly Predicate<string> npf;
 
             public NoPunctTypedDependencyFilter(Predicate<string> f)
             {
@@ -662,7 +660,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             //@Override
-            public bool test(TypedDependency d)
+            public bool Test(TypedDependency d)
             {
                 if (d == null) return false;
 
@@ -682,12 +680,12 @@ namespace OpenNLP.Tools.Util.Trees
    * governor of dep
    */
 
-        public GrammaticalRelation getGrammaticalRelation(int govIndex, int depIndex)
+        public GrammaticalRelation GetGrammaticalRelation(int govIndex, int depIndex)
         {
-            TreeGraphNode gov = getNodeByIndex(govIndex);
-            TreeGraphNode dep = getNodeByIndex(depIndex);
+            TreeGraphNode gov = GetNodeByIndex(govIndex);
+            TreeGraphNode dep = GetNodeByIndex(depIndex);
             // TODO: this is pretty ugly
-            return getGrammaticalRelation(new IndexedWord(gov.Label()), new IndexedWord(dep.Label()));
+            return GetGrammaticalRelation(new IndexedWord(gov.Label()), new IndexedWord(dep.Label()));
         }
 
         /**
@@ -695,10 +693,10 @@ namespace OpenNLP.Tools.Util.Trees
    * governor of dep
    */
 
-        public GrammaticalRelation getGrammaticalRelation(IndexedWord gov, IndexedWord dep)
+        public GrammaticalRelation GetGrammaticalRelation(IndexedWord gov, IndexedWord dep)
         {
-            List<GrammaticalRelation> labels = new List<GrammaticalRelation>();
-            foreach (TypedDependency dependency in mtypedDependencies(true))
+            var labels = new List<GrammaticalRelation>();
+            foreach (TypedDependency dependency in TypedDependencies(true))
             {
                 if (dependency.Gov().Equals(gov) && dependency.Dep().Equals(dep))
                 {
@@ -706,7 +704,7 @@ namespace OpenNLP.Tools.Util.Trees
                 }
             }
 
-            return getGrammaticalRelationCommonAncestor(gov, dep, labels);
+            return GetGrammaticalRelationCommonAncestor(gov, dep, labels);
         }
 
         /**
@@ -715,7 +713,7 @@ namespace OpenNLP.Tools.Util.Trees
    * are passed in only for debugging reasons.
    */
 
-        private static GrammaticalRelation getGrammaticalRelationCommonAncestor(AbstractCoreLabel govH,
+        private static GrammaticalRelation GetGrammaticalRelationCommonAncestor(AbstractCoreLabel govH,
             AbstractCoreLabel depH, List<GrammaticalRelation> labels)
         {
             GrammaticalRelation reln = GrammaticalRelation.DEPENDENT;
@@ -734,7 +732,7 @@ namespace OpenNLP.Tools.Util.Trees
 
             foreach (GrammaticalRelation reln2 in sortedLabels)
             {
-                if (reln.isAncestor(reln2))
+                if (reln.IsAncestor(reln2))
                 {
                     reln = reln2;
                 } /* else if (PRINT_DEBUGGING && ! reln2.isAncestor(reln)) {
@@ -755,9 +753,9 @@ namespace OpenNLP.Tools.Util.Trees
             return reln;
         }
 
-        private static List<GrammaticalRelation> removeGrammaticalRelationAncestors(List<GrammaticalRelation> original)
+        private static List<GrammaticalRelation> RemoveGrammaticalRelationAncestors(List<GrammaticalRelation> original)
         {
-            List<GrammaticalRelation> filtered = new List<GrammaticalRelation>();
+            var filtered = new List<GrammaticalRelation>();
             foreach (GrammaticalRelation reln in original)
             {
                 bool descendantFound = false;
@@ -766,12 +764,12 @@ namespace OpenNLP.Tools.Util.Trees
                     GrammaticalRelation gr = filtered[index];
                     //if the element in the list is an ancestor of the current
                     //relation, remove it (we will replace it later)
-                    if (gr.isAncestor(reln))
+                    if (gr.IsAncestor(reln))
                     {
                         filtered.RemoveAt(index);
                         --index;
                     }
-                    else if (reln.isAncestor(gr))
+                    else if (reln.IsAncestor(gr))
                     {
                         //if the relation is not an ancestor of an element in the
                         //list, we add the relation
@@ -797,9 +795,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The typed dependencies of this grammatical structure
    */
 
-        public ICollection<TypedDependency> mtypedDependencies()
+        public ICollection<TypedDependency> TypedDependencies()
         {
-            return mtypedDependencies(false);
+            return TypedDependencies(false);
         }
 
 
@@ -810,9 +808,9 @@ namespace OpenNLP.Tools.Util.Trees
    * "nonCollapsed" option.
    */
 
-        public ICollection<TypedDependency> mallTypedDependencies()
+        public ICollection<TypedDependency> AllTypedDependencies()
         {
-            return mtypedDependencies(true);
+            return TypedDependencies(true);
         }
 
 
@@ -825,7 +823,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The typed dependencies of this grammatical structure
    */
 
-        public List<TypedDependency> mtypedDependencies(bool includeExtras)
+        public List<TypedDependency> TypedDependencies(bool includeExtras)
         {
             List<TypedDependency> deps;
             // This copy has to be done because of the broken way
@@ -851,7 +849,7 @@ namespace OpenNLP.Tools.Util.Trees
                     deps.Add(new TypedDependency(dep));
                 }
             }
-            correctDependencies(deps);
+            CorrectDependencies(deps);
             return deps;
         }
 
@@ -867,9 +865,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A set of collapsed dependencies
    */
 
-        public ICollection<TypedDependency> typedDependenciesCollapsed()
+        public ICollection<TypedDependency> TypedDependenciesCollapsed()
         {
-            return typedDependenciesCollapsed(false);
+            return TypedDependenciesCollapsed(false);
         }
 
         // todo [cdm 2012]: The semantics of this method is the opposite of the others.
@@ -888,10 +886,10 @@ namespace OpenNLP.Tools.Util.Trees
    * @return collapsed dependencies keeping a tree structure
    */
 
-        public ICollection<TypedDependency> typedDependenciesCollapsedTree()
+        public ICollection<TypedDependency> TypedDependenciesCollapsedTree()
         {
-            List<TypedDependency> tdl = mtypedDependencies(false);
-            collapseDependenciesTree(tdl);
+            List<TypedDependency> tdl = TypedDependencies(false);
+            CollapseDependenciesTree(tdl);
             return tdl;
         }
 
@@ -905,10 +903,10 @@ namespace OpenNLP.Tools.Util.Trees
    * @return collapsed dependencies
    */
 
-        public List<TypedDependency> typedDependenciesCollapsed(bool includeExtras)
+        public List<TypedDependency> TypedDependenciesCollapsed(bool includeExtras)
         {
-            List<TypedDependency> tdl = mtypedDependencies(includeExtras);
-            collapseDependencies(tdl, false, includeExtras);
+            List<TypedDependency> tdl = TypedDependencies(includeExtras);
+            CollapseDependencies(tdl, false, includeExtras);
             return tdl;
         }
 
@@ -927,10 +925,10 @@ namespace OpenNLP.Tools.Util.Trees
    * @return collapsed dependencies with CC processed
    */
 
-        public List<TypedDependency> typedDependenciesCCprocessed(bool includeExtras)
+        public List<TypedDependency> TypedDependenciesCcProcessed(bool includeExtras)
         {
-            List<TypedDependency> tdl = mtypedDependencies(includeExtras);
-            collapseDependencies(tdl, true, includeExtras);
+            List<TypedDependency> tdl = TypedDependencies(includeExtras);
+            CollapseDependencies(tdl, true, includeExtras);
             return tdl;
         }
 
@@ -947,9 +945,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return collapsed dependencies with CC processed
    */
 
-        public List<TypedDependency> typedDependenciesCCprocessed()
+        public List<TypedDependency> TypedDependenciesCcProcessed()
         {
-            return typedDependenciesCCprocessed(true);
+            return TypedDependenciesCcProcessed(true);
         }
 
 
@@ -963,7 +961,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param CCprocess apply CC process?
    */
 
-        protected virtual void collapseDependencies(List<TypedDependency> list, bool CCprocess, bool includeExtras)
+        protected virtual void CollapseDependencies(List<TypedDependency> list, bool CCprocess, bool includeExtras)
         {
             // do nothing as default operation
         }
@@ -978,7 +976,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    */
 
-        protected virtual void collapseDependenciesTree(List<TypedDependency> list)
+        protected virtual void CollapseDependenciesTree(List<TypedDependency> list)
         {
             // do nothing as default operation
         }
@@ -992,7 +990,7 @@ namespace OpenNLP.Tools.Util.Trees
    *
    */
 
-        protected void correctDependencies(ICollection<TypedDependency> list)
+        protected void CorrectDependencies(ICollection<TypedDependency> list)
         {
             // do nothing as default operation
         }
@@ -1004,9 +1002,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return true if the list represents a connected graph, false otherwise
    */
 
-        public static bool isConnected(ICollection<TypedDependency> list)
+        public static bool IsConnected(ICollection<TypedDependency> list)
         {
-            return getRoots(list).Count <= 1; // there should be no more than one root to have a connected graph
+            return GetRoots(list).Count <= 1; // there should be no more than one root to have a connected graph
             // there might be no root in the way we look when you have a relative clause
             // ex.: Apple is a society that sells computers
             // (the root "society" will also be the nsubj of "sells")
@@ -1019,7 +1017,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A list of TypedDependencies which are not dependent on any node from the list
    */
 
-        public static ICollection<TypedDependency> getRoots(ICollection<TypedDependency> list)
+        public static ICollection<TypedDependency> GetRoots(ICollection<TypedDependency> list)
         {
 
             ICollection<TypedDependency> roots = new List<TypedDependency>();

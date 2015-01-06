@@ -60,7 +60,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return false;
             }
-            NamedDependency d = (NamedDependency) o;
+            var d = (NamedDependency) o;
             return EqualsIgnoreName(o) && vName.Equals(d.vName);
         }
 
@@ -97,7 +97,7 @@ namespace OpenNLP.Tools.Util.Trees
             return DependencyFactoryHolder.df;
         }
 
-        public new static DependencyFactory factory()
+        public new static DependencyFactory Factory()
         {
             return DependencyFactoryHolder.df;
         }

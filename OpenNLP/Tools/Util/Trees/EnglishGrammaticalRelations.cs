@@ -25,7 +25,7 @@ namespace OpenNLP.Tools.Util.Trees
         // By setting the HeadFinder to null, we find out right away at
         // runtime if we have incorrectly set the HeadFinder for the
         // dependency tregexes
-        private static readonly TregexPatternCompiler tregexCompiler = new TregexPatternCompiler((HeadFinder) null);
+        private static readonly TregexPatternCompiler TregexCompiler = new TregexPatternCompiler((HeadFinder) null);
 
         /**
    * The "predicate" grammatical relation.  The predicate of a
@@ -39,7 +39,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation PREDICATE =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "pred", "predicate",
-                GrammaticalRelation.DEPENDENT, "S|SINV", tregexCompiler,
+                GrammaticalRelation.DEPENDENT, "S|SINV", TregexCompiler,
                 new[] {"S|SINV <# VP=target"});
 
 
@@ -53,7 +53,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation AUX_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "aux", "auxiliary",
-                GrammaticalRelation.DEPENDENT, "VP|SQ|SINV|CONJP", tregexCompiler,
+                GrammaticalRelation.DEPENDENT, "VP|SQ|SINV|CONJP", TregexCompiler,
                 new string[]
                 {
                     "VP < VP < (/^(?:TO|MD|VB.*|AUXG?|POS)$/=target)",
@@ -75,7 +75,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation AUX_PASSIVE_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "auxpass", "passive auxiliary",
-                AUX_MODIFIER, "VP|SQ|SINV", tregexCompiler,
+                AUX_MODIFIER, "VP|SQ|SINV", TregexCompiler,
                 new string[]
                 {
                     "VP < (/^(?:VB|AUX|POS)/=target < " + EnglishPatterns.passiveAuxWordRegex +
@@ -99,7 +99,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation COPULA =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "cop", "copula",
-                AUX_MODIFIER, "VP|SQ|SINV|SBARQ", tregexCompiler,
+                AUX_MODIFIER, "VP|SQ|SINV|SBARQ", TregexCompiler,
                 new string[]
                 {
                     "VP < (/^(?:VB|AUX)/=target < " + EnglishPatterns.copularWordRegex +
@@ -113,20 +113,18 @@ namespace OpenNLP.Tools.Util.Trees
                 });
 
 
-        private static readonly string ETC_PAT = "(FW < /^(?i:etc)$/)";
-        private static readonly string ETC_PAT_target = "(FW=target < /^(?i:etc)$/)";
+        private const string EtcPat = "(FW < /^(?i:etc)$/)";
+        private const string EtcPatTarget = "(FW=target < /^(?i:etc)$/)";
 
-        private static readonly string FW_ETC_PAT = "(ADVP|NP <1 (FW < /^(?i:etc)$/))";
-        private static readonly string FW_ETC_PAT_target = "(ADVP|NP=target <1 (FW < /^(?i:etc)$/))";
+        private const string FwEtcPat = "(ADVP|NP <1 (FW < /^(?i:etc)$/))";
+        private const string FwEtcPatTarget = "(ADVP|NP=target <1 (FW < /^(?i:etc)$/))";
 
         // match "not", "n't", "nt" (for informal writing), or "never" as _complete_ string
-        private static readonly string NOT_PAT = "/^(?i:n[o']?t|never)$/";
+        private const string NotPat = "/^(?i:n[o']?t|never)$/";
 
-        private static readonly string WESTERN_SMILEY =
-            "/^(?:[<>]?[:;=8][\\-o\\*']?(?:-RRB-|-LRB-|[DPdpO\\/\\\\\\:}{@\\|\\[\\]])|(?:-RRB-|-LRB-|[DPdpO\\/\\\\\\:}{@\\|\\[\\]])[\\-o\\*']?[:;=8][<>]?)$/";
+        private const string WesternSmiley = "/^(?:[<>]?[:;=8][\\-o\\*']?(?:-RRB-|-LRB-|[DPdpO\\/\\\\\\:}{@\\|\\[\\]])|(?:-RRB-|-LRB-|[DPdpO\\/\\\\\\:}{@\\|\\[\\]])[\\-o\\*']?[:;=8][<>]?)$/";
 
-        private static readonly string ASIAN_SMILEY =
-            "/(?!^--$)^(?:-LRB-)?[\\-\\^x=~<>'][_.]?[\\-\\^x=~<>'](?:-RRB-)?$/";
+        private const string AsianSmiley = "/(?!^--$)^(?:-LRB-)?[\\-\\^x=~<>'][_.]?[\\-\\^x=~<>'](?:-RRB-)?$/";
 
         /**
    * The "conjunct" grammatical relation.  A conjunct is the relation between
@@ -144,7 +142,7 @@ namespace OpenNLP.Tools.Util.Trees
             new GrammaticalRelation(GrammaticalRelation.Language.English, "conj", "conjunct",
                 GrammaticalRelation.DEPENDENT,
                 "VP|(?:WH)?NP(?:-TMP|-ADV)?|ADJP|PP|QP|ADVP|UCP(?:-TMP|-ADV)?|S|NX|SBAR|SBARQ|SINV|SQ|JJP|NML|RRC",
-                tregexCompiler,
+                TregexCompiler,
                 new string[]
                 {
                     "VP|S|SBAR|SBARQ|SINV|SQ|RRC < (CC|CONJP $-- !/^(?:``|-LRB-|PRN|PP|ADVP|RB)/ $+ !/^(?:SBAR|PRN|``|''|-[LR]RB-|,|:|\\.)$/=target)",
@@ -171,21 +169,21 @@ namespace OpenNLP.Tools.Util.Trees
 
                     // non-parenthetical or comma in suitable phrase with conjunction to left
                     "/^(?:ADJP|JJP|PP|QP|(?:WH)?NP(?:-TMP|-ADV)?|ADVP|UCP(?:-TMP|-ADV)?|NX|NML)$/ [ < (CC|CONJP $-- !/^(?:``|-LRB-|PRN)$/ $+ !/^(?:PRN|``|''|-[LR]RB-|,|:|\\.)$/=target) | < " +
-                    ETC_PAT_target + " | < " + FW_ETC_PAT_target + "]",
+                    EtcPatTarget + " | < " + FwEtcPatTarget + "]",
                     // non-parenthetical or comma in suitable phrase with conj then adverb to left
                     "/^(?:ADJP|PP|(?:WH)?NP(?:-TMP|-ADV)?|ADVP|UCP(?:-TMP|-ADV)?|NX|NML)$/ < (CC|CONJP $-- !/^(?:``|-LRB-|PRN)$/ $+ (ADVP $+ !/^(?:PRN|``|''|-[LR]RB-|,|:|\\.)$/=target))",
                     // content phrase to the right of a comma or a parenthetical
                     "/^(?:ADJP|PP|(?:WH)?NP(?:-TMP|-ADV)?|ADVP|UCP(?:-TMP|-ADV)?|NX|NML)$/ [ < (CC|CONJP $-- !/^(?:``|-LRB-|PRN)$/) | < " +
-                    ETC_PAT + " | < " + FW_ETC_PAT +
+                    EtcPat + " | < " + FwEtcPat +
                     "] < (/^(?:PRN|``|''|-[LR]RB-|,|:|\\.)$/ [ $+ /^S|SINV$|^(?:A|N|V|PP|PRP|J|W|R)/=target | $+ " +
-                    ETC_PAT_target + " ] )",
+                    EtcPatTarget + " ] )",
 
                     // content phrase to the left of a comma for at least NX
-                    "NX|NML [ < (CC|CONJP $- __) | < " + ETC_PAT + "] < (/^,$/ $- /^(?:A|N|V|PP|PRP|J|W|R|S)/=target)",
+                    "NX|NML [ < (CC|CONJP $- __) | < " + EtcPat + "] < (/^,$/ $- /^(?:A|N|V|PP|PRP|J|W|R|S)/=target)",
                     // to take the conjunct in a preconjunct structure "either X or Y"
                     // also catches some missing examples of etc as conj
                     "/^(?:VP|S|SBAR|SBARQ|SINV|ADJP|PP|QP|(?:WH)?NP(?:-TMP|-ADV)?|ADVP|UCP(?:-TMP|-ADV)?|NX|NML)$/ [ < (CC $++ (CC|CONJP $+ !/^(?:PRN|``|''|-[LR]RB-|,|:|\\.)$/=target)) | <- " +
-                    ETC_PAT_target + " | <- " + FW_ETC_PAT_target + " ]"
+                    EtcPatTarget + " | <- " + FwEtcPatTarget + " ]"
                 });
 
 
@@ -199,7 +197,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation COORDINATION =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "cc", "coordination",
-                GrammaticalRelation.DEPENDENT, ".*", tregexCompiler,
+                GrammaticalRelation.DEPENDENT, ".*", TregexCompiler,
                 new string[]
                 {
                     "__ [ < (CC=target !< /^(?i:either|neither|both)$/ ) | < (CONJP=target !< (RB < /^(?i:not)$/ $+ (RB|JJ < /^(?i:only|just|merely)$/))) ]"
@@ -219,11 +217,11 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation PUNCTUATION =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "punct", "punctuation",
-                GrammaticalRelation.DEPENDENT, ".*", tregexCompiler,
+                GrammaticalRelation.DEPENDENT, ".*", TregexCompiler,
                 new string[]
                 {
                     "__ < /^(?:\\.|:|,|''|``|\\*|-LRB-|-RRB-|HYPH)$/=target",
-                    "__ < (NFP=target !< " + WESTERN_SMILEY + " !< " + ASIAN_SMILEY + ")"
+                    "__ < (NFP=target !< " + WesternSmiley + " !< " + AsianSmiley + ")"
                 });
 
 
@@ -267,7 +265,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation NOMINAL_SUBJECT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "nsubj", "nominal subject",
-                SUBJECT, "S|SQ|SBARQ|SINV|SBAR|PRN", tregexCompiler,
+                SUBJECT, "S|SQ|SBARQ|SINV|SBAR|PRN", TregexCompiler,
                 new string[]
                 {
                     "S=subj < ((NP|WHNP=target !< EX !<# (/^NN/ < (" + EnglishPatterns.timeWordRegex +
@@ -329,7 +327,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation NOMINAL_PASSIVE_SUBJECT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "nsubjpass", "nominal passive subject",
-                NOMINAL_SUBJECT, "S|SQ", tregexCompiler,
+                NOMINAL_SUBJECT, "S|SQ", TregexCompiler,
                 new string[]
                 {
                     "S|SQ < (WHNP|NP=target !< EX) < (VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.passiveAuxWordRegex +
@@ -348,7 +346,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation CLAUSAL_SUBJECT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "csubj", "clausal subject",
-                SUBJECT, "S", tregexCompiler,
+                SUBJECT, "S", TregexCompiler,
                 new string[] {"S < (SBAR|S=target !$+ /^,$/ $++ (VP !$-- NP))"});
 
 
@@ -363,7 +361,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation CLAUSAL_PASSIVE_SUBJECT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "csubjpass", "clausal passive subject",
-                CLAUSAL_SUBJECT, "S", tregexCompiler,
+                CLAUSAL_SUBJECT, "S", TregexCompiler,
                 new string[]
                 {
                     "S < (SBAR|S=target !$+ /^,$/ $++ (VP < (VP < VBN|VBD) < (/^(?:VB|AUXG?)/ < " +
@@ -423,7 +421,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation DIRECT_OBJECT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "dobj", "direct object",
-                OBJECT, "VP|SQ|SBARQ?", tregexCompiler,
+                OBJECT, "VP|SQ|SBARQ?", TregexCompiler,
                 new string[]
                 {
                     "VP !< (/^(?:VB|AUX)/ [ < " + EnglishPatterns.copularWordRegex + " | < " +
@@ -509,7 +507,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation INDIRECT_OBJECT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "iobj", "indirect object",
-                OBJECT, "VP", tregexCompiler,
+                OBJECT, "VP", TregexCompiler,
                 new string[]
                 {
                     "VP < (NP=target !< /\\$/ !<# (/^NN/ < " + EnglishPatterns.timeWordRegex + ") $+ (NP !<# (/^NN/ < " +
@@ -545,7 +543,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation PREPOSITIONAL_OBJECT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "pobj", "prepositional object",
-                OBJECT, "SBARQ|PP(?:-TMP)?|WHPP|PRT|ADVP|WHADVP|XS", tregexCompiler,
+                OBJECT, "SBARQ|PP(?:-TMP)?|WHPP|PRT|ADVP|WHADVP|XS", TregexCompiler,
                 new string[]
                 {
                     "/^(?:PP(?:-TMP)?|(?:WH)?(?:PP|ADVP))$/ < (SYM|IN|VBG|VBN|TO|FW|RB|RBR $++ (/^(?:WH)?(?:NP|ADJP)(?:-TMP|-ADV)?$/=target !$- @NP) !< /^(?i:not)$/)",
@@ -588,7 +586,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation PREPOSITIONAL_COMPLEMENT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "pcomp", "prepositional complement",
-                COMPLEMENT, "(?:WH)?PP(?:-TMP)?", tregexCompiler,
+                COMPLEMENT, "(?:WH)?PP(?:-TMP)?", TregexCompiler,
                 new string[]
                 {
                     "@PP|WHPP < (IN|VBG|VBN|TO $+ @SBAR|S|PP|ADVP=target)",
@@ -644,7 +642,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation CLAUSAL_COMPLEMENT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "ccomp", "clausal complement",
-                COMPLEMENT, "VP|SINV|S|ADJP|ADVP|NP(?:-.*)?", tregexCompiler,
+                COMPLEMENT, "VP|SINV|S|ADJP|ADVP|NP(?:-.*)?", TregexCompiler,
                 new string[]
                 {
                     "VP < (S=target < (VP !<, TO|VBG|VBN) !$-- NP)",
@@ -697,7 +695,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation XCLAUSAL_COMPLEMENT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "xcomp", "xclausal complement",
-                COMPLEMENT, "VP|ADJP|SINV", tregexCompiler,
+                COMPLEMENT, "VP|ADJP|SINV", TregexCompiler,
                 new string[]
                 {
                     "VP < (S=target [ !$-- NP | $-- (/^V/ < " + EnglishPatterns.xcompVerbRegex +
@@ -740,7 +738,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation RELATIVE =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "rel", "relative",
-                COMPLEMENT, "SBAR", tregexCompiler,
+                COMPLEMENT, "SBAR", TregexCompiler,
                 new string[]
                 {"SBAR < (WHNP=target !< WRB) < (S < NP < (VP [ < SBAR | <+(VP) (PP <- IN|TO) | < (S < (VP < TO)) ] ))"});
 
@@ -773,7 +771,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation EXPLETIVE =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "expl", "expletive",
-                GrammaticalRelation.DEPENDENT, "S|SQ|SINV", tregexCompiler,
+                GrammaticalRelation.DEPENDENT, "S|SQ|SINV", TregexCompiler,
                 new string[] {"S|SQ|SINV < (NP=target <+(NP) EX)"});
 
 
@@ -791,7 +789,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation ADJECTIVAL_COMPLEMENT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "acomp", "adjectival complement",
-                COMPLEMENT, "VP", tregexCompiler,
+                COMPLEMENT, "VP", TregexCompiler,
                 new string[]
                 {
                     "VP [ < ADJP=target | ( < (/^VB/ [ ( < " + EnglishPatterns.clausalComplementRegex +
@@ -832,7 +830,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation ADV_CLAUSE_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "advcl", "adverbial clause modifier",
-                MODIFIER, "VP|S|SQ|SINV|SBARQ|NP|ADVP", tregexCompiler,
+                MODIFIER, "VP|S|SQ|SINV|SBARQ|NP|ADVP", TregexCompiler,
                 new string[]
                 {
                     "VP < (@SBAR=target <= (@SBAR [ < (IN !< /^(?i:that|whether)$/) | <: (SINV <1 /^(?:VB|MD|AUX)/) | < (RB|IN < so|now) < (IN < that) | <1 (ADVP < (RB < now)) <2 (IN < that) ] ))",
@@ -909,13 +907,13 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation RELATIVE_CLAUSE_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "rcmod", "relative clause modifier",
-                MODIFIER, "(?:WH)?(?:NP|NML|ADVP)(?:-.*)?", tregexCompiler,
+                MODIFIER, "(?:WH)?(?:NP|NML|ADVP)(?:-.*)?", TregexCompiler,
                 new string[]
                 {
                     "@NP|WHNP|NML=np $++ (SBAR=target [ <+(SBAR) WHPP|WHNP | <: (S !< (VP < TO)) ]) !$-- @NP|WHNP|NML !$++ " +
-                    ETC_PAT + " !$++ " + FW_ETC_PAT + " > @NP|WHNP : (=np !$++ (CC|CONJP $++ =target))",
-                    "NP|NML $++ (SBAR=target < (WHADVP < (WRB </^(?i:where|why|when)/))) !$-- NP|NML !$++ " + ETC_PAT +
-                    " !$++ " + FW_ETC_PAT + " > @NP",
+                    EtcPat + " !$++ " + FwEtcPat + " > @NP|WHNP : (=np !$++ (CC|CONJP $++ =target))",
+                    "NP|NML $++ (SBAR=target < (WHADVP < (WRB </^(?i:where|why|when)/))) !$-- NP|NML !$++ " + EtcPat +
+                    " !$++ " + FwEtcPat + " > @NP",
                     // for case of relative clauses with no relativizer
                     // (it doesn't distinguish whether actually gapped).
                     "@NP|WHNP < RRC=target <# NP|WHNP|NML|DT|S",
@@ -952,7 +950,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation MARKER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "mark", "marker",
-                MODIFIER, "SBAR(?:-TMP)?", tregexCompiler,
+                MODIFIER, "SBAR(?:-TMP)?", TregexCompiler,
                 new string[]
                 {
                     "SBAR|SBAR-TMP < (IN|DT=target $++ S|FRAG)",
@@ -979,7 +977,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation ADJECTIVAL_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "amod", "adjectival modifier",
-                MODIFIER, "NP(?:-TMP|-ADV)?|NX|NML|NAC|WHNP|ADJP", tregexCompiler,
+                MODIFIER, "NP(?:-TMP|-ADV)?|NX|NML|NAC|WHNP|ADJP", TregexCompiler,
                 new string[]
                 {
                     "/^(?:NP(?:-TMP|-ADV)?|NX|NML|NAC|WHNP)$/ < (ADJP|WHADJP|JJ|JJR|JJS|JJP|VBN|VBG|VBD|IN=target !< (QP !< /^[$]$/) !$- CC)",
@@ -1002,7 +1000,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation NUMERIC_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "num", "numeric modifier",
-                MODIFIER, "(?:WH)?NP(?:-TMP|-ADV)?|NML|NX|ADJP|WHADJP|QP", tregexCompiler,
+                MODIFIER, "(?:WH)?NP(?:-TMP|-ADV)?|NML|NX|ADJP|WHADJP|QP", TregexCompiler,
                 new string[]
                 {
                     "/^(?:WH)?(?:NP|NX|NML)(?:-TMP|-ADV)?$/ < (CD|QP=target !$- CC)",
@@ -1028,7 +1026,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation NUMBER_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "number", "compound number modifier",
-                MODIFIER, "QP|ADJP", tregexCompiler,
+                MODIFIER, "QP|ADJP", TregexCompiler,
                 new string[] {"QP|ADJP < (/^(?:CD|$|#)$/=target !$- CC)"});
 
 
@@ -1043,7 +1041,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation QUANTIFIER_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "quantmod", "quantifier modifier",
-                MODIFIER, "QP", tregexCompiler,
+                MODIFIER, "QP", TregexCompiler,
                 new string[] {"QP < IN|RB|RBR|RBS|PDT|DT|JJ|JJR|JJS|XS=target"});
 
 
@@ -1069,7 +1067,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation NOUN_COMPOUND_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "nn", "nn modifier",
-                MODIFIER, "(?:WH)?(?:NP|NX|NAC|NML|ADVP|ADJP)(?:-TMP|-ADV)?", tregexCompiler,
+                MODIFIER, "(?:WH)?(?:NP|NX|NAC|NML|ADVP|ADJP)(?:-TMP|-ADV)?", TregexCompiler,
                 new string[]
                 {
                     "/^(?:WH)?(?:NP|NX|NAC|NML)(?:-TMP|-ADV)?$/ < (NP|NML|NN|NNS|NNP|NNPS|FW|AFX=target $++ NN|NNS|NNP|NNPS|FW|CD=sister !<<- POS !<<- (VBZ < /^\'s$/) !$- /^,$/ !$++ (POS $++ =sister))",
@@ -1101,24 +1099,24 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation APPOSITIONAL_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "appos", "appositional modifier",
-                MODIFIER, "(?:WH)?NP(?:-TMP|-ADV)?", tregexCompiler,
+                MODIFIER, "(?:WH)?NP(?:-TMP|-ADV)?", TregexCompiler,
                 new string[]
                 {
                     "WHNP|WHNP-TMP|WHNP-ADV|NP|NP-TMP|NP-ADV < (NP=target !<: CD $- /^,$/ $-- /^(?:WH)?NP/) !< CC|CONJP !< " +
-                    FW_ETC_PAT + " !< " + ETC_PAT,
+                    FwEtcPat + " !< " + EtcPat,
                     "WHNP|WHNP-TMP|WHNP-ADV|NP|NP-TMP|NP-ADV < (PRN=target < (NP < /^(?:NN|CD)/ $-- /^-LRB-$/ $+ /^-RRB-$/))",
                     // NP-ADV is a npadvmod, NP-TMP is a tmod
                     "@WHNP|NP < (NP=target !<: CD <, /^-LRB-$/ <` /^-RRB-$/ $-- /^(?:WH)?NP/ !$ CC|CONJP)",
                     // TODO: next pattern with NNP doesn't work because leftmost NNP is deemed head in a
                     // structure like (NP (NNP Norway) (, ,) (NNP Verdens_Gang) (, ,))
-                    "NP|NP-TMP|NP-ADV < (NNP $+ (/^,$/ $+ NNP=target)) !< CC|CONJP !< " + FW_ETC_PAT + " !< " + ETC_PAT,
+                    "NP|NP-TMP|NP-ADV < (NNP $+ (/^,$/ $+ NNP=target)) !< CC|CONJP !< " + FwEtcPat + " !< " + EtcPat,
                     // find abbreviations
                     // for biomedical English, the former NNP heuristic really doesn't work, because they use NN for all chemical entities
                     // while not unfoolable, this version produces less false positives and more true positives.
                     "WHNP|WHNP-TMP|WHNP-ADV|NP|NP-TMP|NP-ADV < (PRN=target <, /^-LRB-$/ <- /^-RRB-$/ !<< /^(?:POS|(?:WP|PRP)\\$|[,$#]|CC|RB|CD)$/ <+(NP) (NNP|NN < /^(?:[A-Z]\\.?){2,}/) )",
                     // Handles cases such as "(NP (Her daughter) Jordan)"
                     "WHNP|WHNP-TMP|WHNP-ADV|NP|NP-TMP|NP-ADV < (NP=target <: NNP $- (/^(?:WH)?NP/ !< POS)) !< CC|CONJP !< " +
-                    FW_ETC_PAT + " !< " + ETC_PAT
+                    FwEtcPat + " !< " + EtcPat
                 });
 
 
@@ -1134,10 +1132,10 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation DISCOURSE_ELEMENT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "discourse", "discourse element",
-                MODIFIER, ".*", tregexCompiler,
+                MODIFIER, ".*", TregexCompiler,
                 new string[]
                 {
-                    "__ < (NFP=target [ < " + WESTERN_SMILEY + " | < " + ASIAN_SMILEY + " ] )",
+                    "__ < (NFP=target [ < " + WesternSmiley + " | < " + AsianSmiley + " ] )",
                     "__ [ < INTJ=target | < (PRN=target <1 /^(?:,|-LRB-)$/ <2 INTJ [ !<3 __ | <3 /^(?:,|-RRB-)$/ ] ) ]"
                 });
 
@@ -1161,7 +1159,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation VERBAL_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "vmod", "verb modifier",
-                MODIFIER, "(?:WH)?NP(?:-TMP|-ADV)?|NML|NX|VP|S|SINV|SBARQ", tregexCompiler,
+                MODIFIER, "(?:WH)?NP(?:-TMP|-ADV)?|NML|NX|VP|S|SINV|SBARQ", TregexCompiler,
                 new string[]
                 {
                     "WHNP|WHNP-TMP|WHNP-ADV|NP|NP-TMP|NP-ADV|NML|NX < (VP=target < VBG|VBN|VBD $-- @NP|NML|NX)",
@@ -1202,27 +1200,27 @@ namespace OpenNLP.Tools.Util.Trees
             new GrammaticalRelation(GrammaticalRelation.Language.English, "advmod", "adverbial modifier",
                 MODIFIER,
                 "VP|ADJP|WHADJP|ADVP|WHADVP|S|SBAR|SINV|SQ|SBARQ|XS|(?:WH)?(?:PP|NP)(?:-TMP|-ADV)?|RRC|CONJP|JJP",
-                tregexCompiler,
+                TregexCompiler,
                 new string[]
                 {
                     "/^(?:VP|ADJP|JJP|WHADJP|SQ?|SBARQ?|SINV|XS|RRC|(?:WH)?NP(?:-TMP|-ADV)?)$/ < (RB|RBR|RBS|WRB|ADVP|WHADVP=target !< " +
-                    NOT_PAT + " !< " + ETC_PAT + ")",
+                    NotPat + " !< " + EtcPat + ")",
                     // avoids adverb conjunctions matching as advmod; added JJ to catch How long
                     // "!< no" so we can get neg instead for "no foo" when no is tagged as RB
                     // we allow CC|CONJP as long as it is not between the target and the head
                     // TODO: perhaps remove that last clause if we transform
                     // more and more, less and less, etc.
-                    "ADVP|WHADVP < (RB|RBR|RBS|WRB|ADVP|WHADVP|JJ=target !< " + NOT_PAT + " !< /^(?i:no)$/ !< " +
-                    ETC_PAT +
+                    "ADVP|WHADVP < (RB|RBR|RBS|WRB|ADVP|WHADVP|JJ=target !< " + NotPat + " !< /^(?i:no)$/ !< " +
+                    EtcPat +
                     ") [ !< /^CC|CONJP$/ | ( <#__=head !< (/^CC|CONJP$/ [ ($++ =head $-- =target) | ($-- =head $++ =target) ])) ]",
                     //this one gets "at least" advmod(at, least) or "fewer than" advmod(than, fewer)
                     "SBAR < (WHNP=target < WRB)", "SBARQ <, WHADVP=target", "XS < JJ=target",
                     // for PP, only ones before head, or after NP, since others afterwards are pcomp
-                    "/(?:WH)?PP(?:-TMP|-ADV)?$/ <# (__ $-- (RB|RBR|RBS|WRB|ADVP|WHADVP=target !< " + NOT_PAT + " !< " +
-                    ETC_PAT + "))",
-                    "/(?:WH)?PP(?:-TMP|-ADV)?$/ < @NP|WHNP < (RB|RBR|RBS|WRB|ADVP|WHADVP=target !< " + NOT_PAT + " !< " +
-                    ETC_PAT + ")",
-                    "CONJP < (RB=target !< " + NOT_PAT + " !< " + ETC_PAT + ")"
+                    "/(?:WH)?PP(?:-TMP|-ADV)?$/ <# (__ $-- (RB|RBR|RBS|WRB|ADVP|WHADVP=target !< " + NotPat + " !< " +
+                    EtcPat + "))",
+                    "/(?:WH)?PP(?:-TMP|-ADV)?$/ < @NP|WHNP < (RB|RBR|RBS|WRB|ADVP|WHADVP=target !< " + NotPat + " !< " +
+                    EtcPat + ")",
+                    "CONJP < (RB=target !< " + NotPat + " !< " + EtcPat + ")"
                 });
 
 
@@ -1240,12 +1238,12 @@ namespace OpenNLP.Tools.Util.Trees
         public static readonly GrammaticalRelation NEGATION_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "neg", "negation modifier",
                 ADVERBIAL_MODIFIER,
-                "VP|ADJP|S|SBAR|SINV|SQ|NP(?:-TMP|-ADV)?|FRAG|CONJP|PP|NAC|NML|NX|ADVP|WHADVP", tregexCompiler,
+                "VP|ADJP|S|SBAR|SINV|SQ|NP(?:-TMP|-ADV)?|FRAG|CONJP|PP|NAC|NML|NX|ADVP|WHADVP", TregexCompiler,
                 new string[]
                 {
-                    "/^(?:VP|NP(?:-TMP|-ADV)?|ADJP|SQ|S|FRAG|CONJP|PP)$/< (RB=target < " + NOT_PAT + ")",
-                    "VP|ADJP|S|SBAR|SINV|FRAG < (ADVP=target <# (RB < " + NOT_PAT + "))",
-                    "VP > SQ $-- (RB=target < " + NOT_PAT + ")",
+                    "/^(?:VP|NP(?:-TMP|-ADV)?|ADJP|SQ|S|FRAG|CONJP|PP)$/< (RB=target < " + NotPat + ")",
+                    "VP|ADJP|S|SBAR|SINV|FRAG < (ADVP=target <# (RB < " + NotPat + "))",
+                    "VP > SQ $-- (RB=target < " + NotPat + ")",
                     // the commented out parts were relevant for the "det",
                     // but don't seem to matter for the "neg" relation
                     "/^(?:NP(?:-TMP|-ADV)?|NAC|NML|NX|ADJP|ADVP)$/ < (DT|RB=target < /^(?i:no)$/ " + /* !$++ CC */
@@ -1300,7 +1298,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation NP_ADVERBIAL_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "npadvmod", "noun phrase adverbial modifier",
-                MODIFIER, "VP|(?:WH)?(?:NP|ADJP|ADVP|PP)(?:-TMP|-ADV)?", tregexCompiler,
+                MODIFIER, "VP|(?:WH)?(?:NP|ADJP|ADVP|PP)(?:-TMP|-ADV)?", TregexCompiler,
                 new string[]
                 {
                     "@ADVP|ADJP|WHADJP|WHADVP|PP|WHPP <# (JJ|JJR|IN|RB|RBR !< notwithstanding $- (@NP=target !< NNP|NNPS))",
@@ -1333,7 +1331,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation TEMPORAL_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "tmod", "temporal modifier",
-                NP_ADVERBIAL_MODIFIER, "VP|S|ADJP|PP|SBAR|SBARQ|NP|RRC", tregexCompiler,
+                NP_ADVERBIAL_MODIFIER, "VP|S|ADJP|PP|SBAR|SBARQ|NP|RRC", TregexCompiler,
                 new string[]
                 {
                     "VP|ADJP|RRC [ < NP-TMP=target | < (VP=target <# NP-TMP !$ /^,|CC|CONJP$/) | < (NP=target <# (/^NN/ < " +
@@ -1369,7 +1367,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation MULTI_WORD_EXPRESSION =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "mwe", "multi-word expression",
-                MODIFIER, "PP|XS|ADVP|CONJP", tregexCompiler,
+                MODIFIER, "PP|XS|ADVP|CONJP", TregexCompiler,
                 new string[]
                 {
                     "PP|XS < (IN|TO < as|of|at|to|in) < (JJ|IN|JJR|JJS|NN=target < such|because|Because|least|instead|due|Due|addition|to)",
@@ -1413,7 +1411,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation DETERMINER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "det", "determiner",
-                MODIFIER, "(?:WH)?NP(?:-TMP|-ADV)?|NAC|NML|NX|X|ADVP|ADJP", tregexCompiler,
+                MODIFIER, "(?:WH)?NP(?:-TMP|-ADV)?|NAC|NML|NX|X|ADVP|ADJP", TregexCompiler,
                 new string[]
                 {
                     "/^(?:NP(?:-TMP|-ADV)?|NAC|NML|NX|X)$/ < (DT=target !< /^(?i:either|neither|both|no)$/ !$+ DT !$++ CC $++ /^(?:N[MNXP]|CD|JJ|FW|ADJP|QP|RB|PRP(?![$])|PRN)/=det !$++ (/^PRP[$]|POS/ $++ =det !$++ (/''/ $++ =det)))",
@@ -1441,7 +1439,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation PREDETERMINER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "predet", "predeterminer",
-                MODIFIER, "(?:WH)?(?:NP|NX|NAC|NML)(?:-TMP|-ADV)?", tregexCompiler,
+                MODIFIER, "(?:WH)?(?:NP|NX|NAC|NML)(?:-TMP|-ADV)?", TregexCompiler,
                 new string[]
                 {
                     "/^(?:(?:WH)?NP(?:-TMP|-ADV)?|NX|NAC|NML)$/ < (PDT|DT=target $+ /^(?:DT|WP\\$|PRP\\$)$/ $++ /^(?:NN|NX|NML)/ !$++ CC)",
@@ -1460,7 +1458,7 @@ namespace OpenNLP.Tools.Util.Trees
         public static readonly GrammaticalRelation PRECONJUNCT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "preconj", "preconjunct",
                 MODIFIER,
-                "S|VP|ADJP|PP|ADVP|UCP(?:-TMP|-ADV)?|NX|NML|SBAR|NP(?:-TMP|-ADV)?", tregexCompiler,
+                "S|VP|ADJP|PP|ADVP|UCP(?:-TMP|-ADV)?|NX|NML|SBAR|NP(?:-TMP|-ADV)?", TregexCompiler,
                 new string[]
                 {
                     "NP|NP-TMP|NP-ADV|NX|NML < (PDT|CC|DT=target < /^(?i:either|neither|both)$/ $++ CC)",
@@ -1484,7 +1482,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation POSSESSION_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "poss", "possession modifier",
-                MODIFIER, "(?:WH)?(NP|ADJP|INTJ|PRN|NAC|NX|NML)(?:-.*)?", tregexCompiler,
+                MODIFIER, "(?:WH)?(NP|ADJP|INTJ|PRN|NAC|NX|NML)(?:-.*)?", TregexCompiler,
                 new string[]
                 {
                     "/^(?:WH)?(?:NP|INTJ|ADJP|PRN|NAC|NX|NML)(?:-.*)?$/ < /^(?:WP\\$|PRP\\$)$/=target",
@@ -1508,7 +1506,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation POSSESSIVE_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "possessive", "possessive modifier",
-                MODIFIER, "(?:WH)?(?:NP|NML)(?:-TMP|-ADV)?", tregexCompiler,
+                MODIFIER, "(?:WH)?(?:NP|NML)(?:-TMP|-ADV)?", TregexCompiler,
                 new string[]
                 {
                     "/^(?:WH)?(?:NP|NML)(?:-TMP|-ADV)?$/ < POS=target",
@@ -1534,11 +1532,11 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation PREPOSITIONAL_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "prep", "prepositional modifier",
-                MODIFIER, ".*", tregexCompiler,
+                MODIFIER, ".*", TregexCompiler,
                 new string[]
                 {
                     "/^(?:(?:WH)?(?:NP|ADJP|ADVP|NX|NML)(?:-TMP|-ADV)?|VP|NAC|SQ|FRAG|PRN|X|RRC)$/ < (WHPP|WHPP-TMP|PP|PP-TMP=target !$- (@CC|CONJP $- __)) !<- " +
-                    ETC_PAT + " !<- " + FW_ETC_PAT,
+                    EtcPat + " !<- " + FwEtcPat,
                     "/^(?:(?:WH)?(?:NP|ADJP|ADVP|NX|NML)(?:-TMP|-ADV)?|VP|NAC|SQ|FRAG|PRN|X|RRC)$/ < (S=target <: WHPP|WHPP-TMP|PP|PP-TMP)",
                     // only allow a PP < PP one if there is not a conj, verb, or other pattern that matches pcomp under it.  Else pcomp
                     "WHPP|WHPP-TMP|WHPP-ADV|PP|PP-TMP|PP-ADV < (WHPP|WHPP-TMP|WHPP-ADV|PP|PP-TMP|PP-ADV=target !$- IN|VBG|VBN|TO) !< @CC|CONJP",
@@ -1559,7 +1557,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation PHRASAL_VERB_PARTICLE =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "prt", "phrasal verb particle",
-                MODIFIER, "VP|ADJP", tregexCompiler,
+                MODIFIER, "VP|ADJP", TregexCompiler,
                 new string[]
                 {
                     "VP < PRT=target",
@@ -1579,7 +1577,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation PARATAXIS =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "parataxis", "parataxis",
-                GrammaticalRelation.DEPENDENT, "S|VP", tregexCompiler,
+                GrammaticalRelation.DEPENDENT, "S|VP", TregexCompiler,
                 new string[]
                 {
                     "VP < (PRN=target < S|SINV|SBAR)", // parenthetical
@@ -1609,7 +1607,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation GOES_WITH =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "goeswith", "goes with",
-                MODIFIER, ".*", tregexCompiler,
+                MODIFIER, ".*", TregexCompiler,
                 new string[] {"__ < GW=target"});
 
 
@@ -1775,7 +1773,7 @@ namespace OpenNLP.Tools.Util.Trees
         private static readonly ConcurrentDictionary<string, GrammaticalRelation> conjs =
             new ConcurrentDictionary<string, GrammaticalRelation>();
 
-        public static ICollection<GrammaticalRelation> getConjs()
+        public static ICollection<GrammaticalRelation> GetConjs()
         {
             return conjs.Values;
         }
@@ -1788,7 +1786,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A grammatical relation for this conjunction
    */
 
-        public static GrammaticalRelation getConj(string conjunctionString)
+        public static GrammaticalRelation GetConj(string conjunctionString)
         {
             GrammaticalRelation result = conjs[conjunctionString];
             if (result == null)
@@ -1816,12 +1814,12 @@ namespace OpenNLP.Tools.Util.Trees
             new ConcurrentDictionary<string, GrammaticalRelation>();
 
 
-        public static ICollection<GrammaticalRelation> getPreps()
+        public static ICollection<GrammaticalRelation> GetPreps()
         {
             return preps.Values;
         }
 
-        public static ICollection<GrammaticalRelation> getPrepsC()
+        public static ICollection<GrammaticalRelation> GetPrepsC()
         {
             return prepsC.Values;
         }
@@ -1835,7 +1833,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A grammatical relation for this preposition
    */
 
-        public static GrammaticalRelation getPrep(string prepositionString)
+        public static GrammaticalRelation GetPrep(string prepositionString)
         {
             GrammaticalRelation result = preps[prepositionString];
             if (result == null)
@@ -1865,7 +1863,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return A grammatical relation for this preposition
    */
 
-        public static GrammaticalRelation getPrepC(string prepositionString)
+        public static GrammaticalRelation GetPrepC(string prepositionString)
         {
             GrammaticalRelation result = prepsC[prepositionString];
             if (result == null)
@@ -1894,9 +1892,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The EnglishGrammaticalRelation with that name
    */
 
-        public static GrammaticalRelation valueOf(string s)
+        public static GrammaticalRelation ValueOf(string s)
         {
-            return GrammaticalRelation.valueOf(s, Values());
+            return GrammaticalRelation.ValueOf(s, Values());
 
 //    // TODO does this need to be changed?
 //    // modification NOTE: do not commit until go-ahead
@@ -1928,7 +1926,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The EnglishGrammaticalRelation with that name
    */
         //@SuppressWarnings("unchecked")
-        public static GrammaticalRelation valueOf(Object o)
+        public static GrammaticalRelation ValueOf(Object o)
         {
             var rel = o as GrammaticalRelation;
             if (rel != null)
@@ -1940,7 +1938,7 @@ namespace OpenNLP.Tools.Util.Trees
                 var s = o as string;
                 if (s != null)
                 {
-                    return valueOf(s);
+                    return ValueOf(s);
                 }
                 else
                 {

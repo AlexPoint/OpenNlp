@@ -467,7 +467,7 @@ namespace OpenNLP.Tools.Util.Trees
                         //tmpFilteredChildren = ArrayUtils.filter(kids, REMOVE_TMP_AND_ADV);
                         tmpFilteredChildren = kids.Where(k => RemoveTmpAndAdv(k)).ToArray();
                     }
-                    Tree pti = traverseLocate(tmpFilteredChildren, how, false);
+                    Tree pti = TraverseLocate(tmpFilteredChildren, how, false);
                     /*if (DEBUG) {
           System.err.println("Determined head (case 1) for " + t.value() + " is: " + pti);
         }*/
@@ -500,7 +500,7 @@ namespace OpenNLP.Tools.Util.Trees
                         //tmpFilteredChildren = ArrayUtils.filter(kids, REMOVE_TMP_AND_ADV);
                         tmpFilteredChildren = kids.Where(k => RemoveTmpAndAdv(k)).ToArray();
                     }
-                    Tree pti = traverseLocate(tmpFilteredChildren, how, false);
+                    Tree pti = TraverseLocate(tmpFilteredChildren, how, false);
                     // In SQ, only allow an NP to become head if there is another one to the left (then it's probably predicative)
                     if (motherCat.Equals("SQ") && pti != null && pti.Label() != null &&
                         pti.Label().Value().StartsWith("NP"))

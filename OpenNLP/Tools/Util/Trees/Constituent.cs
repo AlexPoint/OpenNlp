@@ -103,7 +103,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Sets the score associated with the current node, if there is one
    */
 
-        public void setScore(double score)
+        public void SetScore(double score)
         {
             // a no-op
         }
@@ -136,7 +136,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Return the length of a <code>Constituent</code>
    */
 
-        public int size()
+        public int Size()
         {
             return End() - Start();
         }
@@ -170,7 +170,7 @@ namespace OpenNLP.Tools.Util.Trees
             //      return true;
             if (obj is Constituent)
             {
-                Constituent c = (Constituent) obj;
+                var c = (Constituent) obj;
                 // System.out.println("Comparing " + this + " to " + c + "\n  " +
                 //	"start: " + (start() == c.start()) + " end: " +
                 //	(end() == c.end()) + " score: " + (score() == c.score()));
@@ -224,7 +224,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return True if the two constituents cross
    */
 
-        public bool crosses(Constituent c)
+        public bool Crosses(Constituent c)
         {
             return (Start() < c.Start() && c.Start() < End() && End() < c.End()) ||
                    (c.Start() < Start() && Start() < c.End() && c.End() < End());
@@ -242,11 +242,11 @@ namespace OpenNLP.Tools.Util.Trees
    *                            a Constituent
    */
 
-        public bool crosses(ICollection<Constituent> constColl)
+        public bool Crosses(ICollection<Constituent> constColl)
         {
             foreach (Constituent c in constColl)
             {
-                if (crosses(c))
+                if (Crosses(c))
                 {
                     return true;
                 }
@@ -264,7 +264,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return True if the other Constituent is contained in this one
    */
 
-        public bool contains(Constituent c)
+        public bool Contains(Constituent c)
         {
             return Start() <= c.Start() && End() >= c.End();
         }
@@ -333,9 +333,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The subpart of the sentence
    */
         // TODO: genericize this!
-        public string toSentenceString(List<string> s)
+        public string ToSentenceString(List<string> s)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             for (int wordNum = Start(), vEnd = End(); wordNum <= vEnd; wordNum++)
             {
                 sb.Append(s[wordNum]);

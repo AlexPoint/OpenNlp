@@ -245,7 +245,7 @@ namespace OpenNLP.Tools.Util.Trees
                 return root;
             }
             Tree parent = projection.Parent(root);
-            while (hf.determineHead(parent) == projection)
+            while (hf.DetermineHead(parent) == projection)
             {
                 projection = parent;
                 if (projection == root)

@@ -93,8 +93,8 @@ namespace Test
             var gsf = tlp.GrammaticalStructureFactory();
             var tree = new ParseTree(parse);
             Console.WriteLine(tree);
-            var gs = gsf.newGrammaticalStructure(tree);
-            var dependencies = gs.mtypedDependencies();
+            var gs = gsf.NewGrammaticalStructure(tree);
+            var dependencies = gs.TypedDependencies();
 
             foreach (var dep in dependencies)
             {

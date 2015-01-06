@@ -335,7 +335,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     child.PercolateHeads(hf);
                 }
-                TreeGraphNode head = SafeCast(hf.determineHead(this, pparent));
+                TreeGraphNode head = SafeCast(hf.DetermineHead(this, pparent));
                 if (head != null)
                 {
 

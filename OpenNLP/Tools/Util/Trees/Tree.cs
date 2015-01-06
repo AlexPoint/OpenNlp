@@ -1155,7 +1155,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return this;
             }
-            Tree head = hf.determineHead(this, parent);
+            Tree head = hf.DetermineHead(this, parent);
             if (head != null)
             {
                 return head.HeadTerminal(hf, parent);
@@ -1200,7 +1200,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else
             {
-                Tree head = hf.determineHead(this);
+                Tree head = hf.DetermineHead(this);
                 if (head != null)
                 {
                     return head.HeadPreTerminal(hf);
@@ -1243,7 +1243,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             /*readonly */
-            Tree head = hf.determineHead(this);
+            Tree head = hf.DetermineHead(this);
             if (head == null)
             {
                 throw new NullReferenceException("HeadFinder " + hf + " returned null for " + this);
@@ -1308,7 +1308,7 @@ namespace OpenNLP.Tools.Util.Trees
                 }
 
                 /*readonly*/
-                Tree head = hf.determineHead(this);
+                Tree head = hf.DetermineHead(this);
                 if (head != null)
                 {
                     /*readonly*/

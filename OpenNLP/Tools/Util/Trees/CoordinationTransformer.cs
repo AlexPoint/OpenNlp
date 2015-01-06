@@ -69,11 +69,11 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return t;
             }
-            t = UCPtransform(t);
+            t = UcpTransform(t);
             /*if (VERBOSE) {
       System.err.println("After UCPTransformer:             " + t);
     }*/
-            t = CCtransform(t);
+            t = CcTransform(t);
             /*if (VERBOSE) {
       System.err.println("After CCTransformer:              " + t);
     }*/
@@ -81,7 +81,7 @@ namespace OpenNLP.Tools.Util.Trees
             /*if (VERBOSE) {
       System.err.println("After QPTreeTransformer:          " + t);
     }*/
-            t = SQflatten(t);
+            t = SqFlatten(t);
             /*if (VERBOSE) {
       System.err.println("After SQ flattening:              " + t);
     }*/
@@ -89,49 +89,49 @@ namespace OpenNLP.Tools.Util.Trees
             /*if (VERBOSE) {
       System.err.println("After DateTreeTransformer:        " + t);
     }*/
-            t = removeXOverX(t);
+            t = RemoveXOverX(t);
             /*if (VERBOSE) {
       System.err.println("After removeXoverX:               " + t);
     }*/
-            t = combineConjp(t);
+            t = CombineConjp(t);
             /*if (VERBOSE) {
       System.err.println("After combineConjp:               " + t);
     }*/
-            t = moveRB(t);
+            t = MoveRb(t);
             /*if (VERBOSE) {
       System.err.println("After moveRB:                     " + t);
     }*/
-            t = changeSbarToPP(t);
+            t = ChangeSbarToPp(t);
             /*if (VERBOSE) {
       System.err.println("After changeSbarToPP:             " + t);
     }*/
-            t = rearrangeNowThat(t);
+            t = RearrangeNowThat(t);
             /*if (VERBOSE) {
       System.err.println("After rearrangeNowThat:           " + t);
     }*/
             return t;
         }
 
-        private static TregexPattern rearrangeNowThatTregex =
+        private static readonly TregexPattern RearrangeNowThatTregex =
             TregexPattern.compile("ADVP=advp <1 (RB < /^(?i:now)$/) <2 (SBAR=sbar <1 (IN < /^(?i:that)$/))");
 
-        private static TsurgeonPattern rearrangeNowThatTsurgeon =
+        private static readonly TsurgeonPattern RearrangeNowThatTsurgeon =
             Tsurgeon.parseOperation("[relabel advp SBAR] [excise sbar sbar]");
 
-        private static Tree rearrangeNowThat(Tree t)
+        private static Tree RearrangeNowThat(Tree t)
         {
             if (t == null)
             {
                 return t;
             }
-            return Tsurgeon.processPattern(rearrangeNowThatTregex, rearrangeNowThatTsurgeon, t);
+            return Tsurgeon.processPattern(RearrangeNowThatTregex, RearrangeNowThatTsurgeon, t);
         }
 
 
-        private static TregexPattern changeSbarToPPTregex =
+        private static readonly TregexPattern ChangeSbarToPpTregex =
             TregexPattern.compile("NP < (NP $++ (SBAR=sbar < (IN < /^(?i:after|before|until|since|during)$/ $++ S)))");
 
-        private static TsurgeonPattern changeSbarToPPTsurgeon =
+        private static readonly TsurgeonPattern ChangeSbarToPpTsurgeon =
             Tsurgeon.parseOperation("relabel sbar PP");
 
         /**
@@ -142,16 +142,16 @@ namespace OpenNLP.Tools.Util.Trees
    * SBAR, either by the parser or in the treebank, we fix that here.
    */
 
-        private static Tree changeSbarToPP(Tree t)
+        private static Tree ChangeSbarToPp(Tree t)
         {
             if (t == null)
             {
                 return null;
             }
-            return Tsurgeon.processPattern(changeSbarToPPTregex, changeSbarToPPTsurgeon, t);
+            return Tsurgeon.processPattern(ChangeSbarToPpTregex, ChangeSbarToPpTsurgeon, t);
         }
 
-        private static TregexPattern findFlatConjpTregex =
+        private static readonly TregexPattern FindFlatConjpTregex =
             // TODO: add more patterns, perhaps ignore case
             // for example, what should we do with "and not"?  Is it right to
             // generally add the "not" to the following tree with moveRB, or
@@ -163,19 +163,19 @@ namespace OpenNLP.Tools.Util.Trees
                                   "  (< and $+ (ADVP=end < (RB|IN < so))) ] ))");
             // TODO: this structure needs a dependency
 
-        private static TsurgeonPattern addConjpTsurgeon =
+        private static readonly TsurgeonPattern AddConjpTsurgeon =
             Tsurgeon.parseOperation("createSubtree CONJP start end");
 
-        private static Tree combineConjp(Tree t)
+        private static Tree CombineConjp(Tree t)
         {
             if (t == null)
             {
                 return null;
             }
-            return Tsurgeon.processPattern(findFlatConjpTregex, addConjpTsurgeon, t);
+            return Tsurgeon.processPattern(FindFlatConjpTregex, AddConjpTsurgeon, t);
         }
 
-        private static TregexPattern[] moveRBTregex =
+        private static readonly TregexPattern[] MoveRbTregex =
         {
             TregexPattern.compile(
                 "/^S|PP|VP|NP/ < (/^(S|PP|VP|NP)/ $++ (/^(,|CC|CONJP)$/ [ $+ (RB=adv [ < not | < then ]) | $+ (ADVP=adv <: RB) ])) : (=adv $+ /^(S|PP|VP|NP)/=dest) "),
@@ -184,18 +184,18 @@ namespace OpenNLP.Tools.Util.Trees
             TregexPattern.compile("/^FRAG/ < (ADVP|RB=adv $+ VP=dest)"),
         };
 
-        private static TsurgeonPattern moveRBTsurgeon =
+        private static readonly TsurgeonPattern MoveRbTsurgeon =
             Tsurgeon.parseOperation("move adv >0 dest");
 
-        private static Tree moveRB(Tree t)
+        private static Tree MoveRb(Tree t)
         {
             if (t == null)
             {
                 return null;
             }
-            foreach (TregexPattern pattern in moveRBTregex)
+            foreach (TregexPattern pattern in MoveRbTregex)
             {
-                t = Tsurgeon.processPattern(pattern, moveRBTsurgeon, t);
+                t = Tsurgeon.processPattern(pattern, MoveRbTsurgeon, t);
             }
             return t;
         }
@@ -205,7 +205,7 @@ namespace OpenNLP.Tools.Util.Trees
         //
         // TODO: maybe we want to catch more complicated tree structures
         // with something in between the WH and the actual question.
-        private static TregexPattern flattenSQTregex =
+        private static readonly TregexPattern FlattenSqTregex =
             TregexPattern.compile("SBARQ < ((WHNP=what < WP) $+ (SQ=sq < (/^VB/=verb < " +
                                   EnglishPatterns.copularWordRegex + ") " +
                                   // match against "is running" if the verb is under just a VBG
@@ -217,7 +217,7 @@ namespace OpenNLP.Tools.Util.Trees
                                   // match against "is there"
                                   " !<, (/^VB/ < " + EnglishPatterns.copularWordRegex + " $+ (NP < (EX < there)))))");
 
-        private static TsurgeonPattern flattenSQTsurgeon = Tsurgeon.parseOperation("excise sq sq");
+        private static readonly TsurgeonPattern FlattenSqTsurgeon = Tsurgeon.parseOperation("excise sq sq");
 
         /**
    * Removes the SQ structure under a WHNP question, such as "Who am I
@@ -228,11 +228,11 @@ namespace OpenNLP.Tools.Util.Trees
    * code can easily find the "am" or other copula verb.
    */
 
-        public Tree SQflatten(Tree t)
+        public Tree SqFlatten(Tree t)
         {
             if (headFinder != null && (headFinder is CopulaHeadFinder))
             {
-                if (((CopulaHeadFinder) headFinder).makesCopulaHead())
+                if (((CopulaHeadFinder) headFinder).MakesCopulaHead())
                 {
                     return t;
                 }
@@ -241,17 +241,17 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return null;
             }
-            return Tsurgeon.processPattern(flattenSQTregex, flattenSQTsurgeon, t);
+            return Tsurgeon.processPattern(FlattenSqTregex, FlattenSqTsurgeon, t);
         }
 
-        private static TregexPattern removeXOverXTregex =
+        private static readonly TregexPattern RemoveXOverXTregex =
             TregexPattern.compile("__=repeat <: (~repeat < __)");
 
-        private static TsurgeonPattern removeXOverXTsurgeon = Tsurgeon.parseOperation("excise repeat repeat");
+        private static readonly TsurgeonPattern RemoveXOverXTsurgeon = Tsurgeon.parseOperation("excise repeat repeat");
 
-        public static Tree removeXOverX(Tree t)
+        public static Tree RemoveXOverX(Tree t)
         {
-            return Tsurgeon.processPattern(removeXOverXTregex, removeXOverXTsurgeon, t);
+            return Tsurgeon.processPattern(RemoveXOverXTregex, RemoveXOverXTsurgeon, t);
         }
 
         // UCP (JJ ...) -> ADJP
@@ -265,14 +265,14 @@ namespace OpenNLP.Tools.Util.Trees
         // pattern takes precedence
         // By searching for everything at once, then using one tsurgeon
         // which fixes everything at once, we can save quite a bit of time
-        private static readonly TregexPattern ucpRenameTregex =
+        private static readonly TregexPattern UcpRenameTregex =
             TregexPattern.compile("/^UCP/=ucp [ <, /^JJ|ADJP/=adjp | ( <1 DT <2 /^JJ|ADJP/=adjp ) |" +
                                   " <- (ADJP=adjp < (JJR < /^(?i:younger|older)$/)) |" +
                                   " <, /^N/=np | ( <1 DT <2 /^N/=np ) | " +
                                   " <, /^ADVP/=advp ]");
 
         // TODO: this turns UCP-TMP into ADVP instead of ADVP-TMP.  What do we actually want?
-        private static readonly TsurgeonPattern ucpRenameTsurgeon =
+        private static readonly TsurgeonPattern UcpRenameTsurgeon =
             Tsurgeon.parseOperation(
                 "[if exists adjp relabel ucp /^UCP(.*)$/ADJP$1/] [if exists np relabel ucp /^UCP(.*)$/NP$1/] [if exists advp relabel ucp /^UCP(.*)$/ADVP/]");
 
@@ -287,13 +287,13 @@ namespace OpenNLP.Tools.Util.Trees
    * @return t transformed
    */
 
-        public static Tree UCPtransform(Tree t)
+        public static Tree UcpTransform(Tree t)
         {
             if (t == null)
             {
                 return null;
             }
-            return Tsurgeon.processPattern(ucpRenameTregex, ucpRenameTsurgeon, t);
+            return Tsurgeon.processPattern(UcpRenameTregex, UcpRenameTsurgeon, t);
         }
 
 
@@ -304,12 +304,12 @@ namespace OpenNLP.Tools.Util.Trees
    * @return t transformed (give t not null, return will not be null)
    */
 
-        public static Tree CCtransform(Tree t)
+        public static Tree CcTransform(Tree t)
         {
             bool notDone = true;
             while (notDone)
             {
-                Tree cc = findCCparent(t, t);
+                Tree cc = FindCcParent(t, t);
                 if (cc != null)
                 {
                     t = cc;
@@ -322,7 +322,7 @@ namespace OpenNLP.Tools.Util.Trees
             return t;
         }
 
-        private static string getHeadTag(Tree t)
+        private static string GetHeadTag(Tree t)
         {
             if (t.Value().StartsWith("NN"))
             {
@@ -348,7 +348,7 @@ namespace OpenNLP.Tools.Util.Trees
    *  @return t
    */
 
-        private static Tree transformCC(Tree t, int ccIndex)
+        private static Tree TransformCc(Tree t, int ccIndex)
         {
             /*if (VERBOSE) {
       System.err.println("transformCC in:  " + t);
@@ -361,7 +361,7 @@ namespace OpenNLP.Tools.Util.Trees
             Tree[] ccSiblings = t.Children();
 
             //check if other CC
-            List<int> ccPositions = new List<int>();
+            var ccPositions = new List<int>();
             for (int i = ccIndex + 1; i < ccSiblings.Length; i++)
             {
                 if (ccSiblings[i].Value().StartsWith("CC") && i < ccSiblings.Length - 1)
@@ -380,7 +380,7 @@ namespace OpenNLP.Tools.Util.Trees
                                                                          || beforeSibling.Equals("NNS")))
             {
                 // && (ccSiblings.Length == ccIndex + 3 || !ccPositions.isEmpty())) {  // something like "soya or maize oil"
-                string leftHead = getHeadTag(ccSiblings[ccIndex - 1]);
+                string leftHead = GetHeadTag(ccSiblings[ccIndex - 1]);
                 //create a new tree to be inserted as first child of t
                 Tree left = tf.NewTreeNode(lf.NewLabel(leftHead), null);
                 for (int i = 0; i < ccIndex + 2; i++)
@@ -417,7 +417,7 @@ namespace OpenNLP.Tools.Util.Trees
                         comma = true;
                     }
                     /*if (VERBOSE) {System.err.println("more CC index " +  index);}*/
-                    string head = getHeadTag(ccSiblings[index - 1]);
+                    string head = GetHeadTag(ccSiblings[index - 1]);
 
                     if (ccIndex + 2 < index)
                     {
@@ -472,7 +472,7 @@ namespace OpenNLP.Tools.Util.Trees
                      !ccSiblings[ccIndex - 1].Value().Equals("NNS") &&
                      (ccSiblings.Length == 5 || (ccPositions.Any() && ccPositions[0] == 5)))
             {
-                string head = getHeadTag(ccSiblings[ccIndex - 1]);
+                string head = GetHeadTag(ccSiblings[ccIndex - 1]);
                 //create a new tree to be inserted as second child of t (after the determiner
                 Tree child = tf.NewTreeNode(lf.NewLabel(head), null);
 
@@ -498,7 +498,7 @@ namespace OpenNLP.Tools.Util.Trees
             else if (ccIndex > 2 && ccSiblings[ccIndex - 2].Value().Equals(",") &&
                      !ccSiblings[ccIndex - 1].Value().Equals("NNS"))
             {
-                string head = getHeadTag(ccSiblings[ccIndex - 1]);
+                string head = GetHeadTag(ccSiblings[ccIndex - 1]);
                 Tree child = tf.NewTreeNode(lf.NewLabel(head), null);
 
                 for (int j = ccIndex - 3; j < ccIndex + 2; j++)
@@ -540,7 +540,7 @@ namespace OpenNLP.Tools.Util.Trees
                 Tree conjT = tf.NewTreeNode(lf.NewLabel("CC"), null);
 
                 // create the left tree
-                string leftHead = getHeadTag(ccSiblings[ccIndex - 1]);
+                string leftHead = GetHeadTag(ccSiblings[ccIndex - 1]);
                 Tree left = tf.NewTreeNode(lf.NewLabel(leftHead), null);
 
 
@@ -572,29 +572,29 @@ namespace OpenNLP.Tools.Util.Trees
                 Tree cc = ccSiblings[ccIndex];
 
                 // create the right tree
-                int nextCC;
+                int nextCc;
                 if (!ccPositions.Any())
                 {
-                    nextCC = ccSiblings.Length;
+                    nextCc = ccSiblings.Length;
                 }
                 else
                 {
-                    nextCC = ccPositions[0];
+                    nextCc = ccPositions[0];
                 }
-                string rightHead = getHeadTag(ccSiblings[nextCC - 1]);
+                string rightHead = GetHeadTag(ccSiblings[nextCc - 1]);
                 Tree right = tf.NewTreeNode(lf.NewLabel(rightHead), null);
-                for (int i = ccIndex + 1; i < nextCC - 1; i++)
+                for (int i = ccIndex + 1; i < nextCc - 1; i++)
                 {
                     right.AddChild(ccSiblings[i]);
                 }
                 // handle the case of a comma ("GM soya and maize, and food ingredients")
-                if (ccSiblings[nextCC - 1].Value().Equals(","))
+                if (ccSiblings[nextCc - 1].Value().Equals(","))
                 {
                     commaRight = true;
                 }
                 else
                 {
-                    right.AddChild(ccSiblings[nextCC - 1]);
+                    right.AddChild(ccSiblings[nextCc - 1]);
                 }
 
                 /*if (VERBOSE) {
@@ -603,7 +603,7 @@ namespace OpenNLP.Tools.Util.Trees
       }*/
 
                 // put trees together in old t, first we remove the old nodes
-                for (int i = 0; i < nextCC; i++)
+                for (int i = 0; i < nextCc; i++)
                 {
                     t.RemoveChild(0);
                 }
@@ -631,7 +631,7 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                     if (commaRight)
                     {
-                        t.AddChild(0, ccSiblings[nextCC - 1]);
+                        t.AddChild(0, ccSiblings[nextCc - 1]);
                     }
                     t.AddChild(0, tree);
                 }
@@ -656,7 +656,7 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                     if (commaRight)
                     {
-                        t.AddChild(ccSiblings[nextCC - 1]);
+                        t.AddChild(ccSiblings[nextCc - 1]);
                     }
                 }
             }
@@ -667,7 +667,7 @@ namespace OpenNLP.Tools.Util.Trees
             return t;
         }
 
-        private static bool notNP(List<Tree> children, int ccIndex)
+        private static bool NotNp(List<Tree> children, int ccIndex)
         {
             for (int i = ccIndex, sz = children.Count; i < sz; i++)
             {
@@ -687,7 +687,7 @@ namespace OpenNLP.Tools.Util.Trees
    * If it finds no such tree, this method returns null.
    */
 
-        private static Tree findCCparent(Tree t, Tree root)
+        private static Tree FindCcParent(Tree t, Tree root)
         {
             if (t.IsPreTerminal())
             {
@@ -699,10 +699,10 @@ namespace OpenNLP.Tools.Util.Trees
                         List<Tree> children = parent.GetChildrenAsList();
                         //System.out.println(children);
                         int ccIndex = children.IndexOf(t);
-                        if (children.Count > ccIndex + 2 && notNP(children, ccIndex) && ccIndex != 0 &&
+                        if (children.Count > ccIndex + 2 && NotNp(children, ccIndex) && ccIndex != 0 &&
                             (ccIndex == children.Count - 1 || !children[ccIndex + 1].Value().StartsWith("CC")))
                         {
-                            transformCC(parent, ccIndex);
+                            TransformCc(parent, ccIndex);
                             /*if (VERBOSE) {
               System.err.println("After transformCC:             " + root);
             }*/
@@ -715,7 +715,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 foreach (Tree child in t.GetChildrenAsList())
                 {
-                    Tree cur = findCCparent(child, root);
+                    Tree cur = FindCcParent(child, root);
                     if (cur != null)
                     {
                         return cur;

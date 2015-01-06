@@ -37,15 +37,15 @@ namespace OpenNLP.Tools.Util.Trees
         public Tree TransformTree(Tree t)
         {
             //deal with empty root
-            t.SetValue(cleanUpRoot(t.Value()));
+            t.SetValue(CleanUpRoot(t.Value()));
             //strips tags
-            stripTag(t);
+            StripTag(t);
 
             // strip empty nodes
-            return stripEmptyNode(t);
+            return StripEmptyNode(t);
         }
 
-        protected static string cleanUpRoot(string label)
+        protected static string CleanUpRoot(string label)
         {
             if (label == null || label.Equals("TOP"))
             {
@@ -59,7 +59,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         // only leaves NP-TMP and NP-ADV
-        protected string cleanUpLabel(string label)
+        protected string CleanUpLabel(string label)
         {
             if (label == null)
             {
@@ -80,28 +80,28 @@ namespace OpenNLP.Tools.Util.Trees
             return label;
         }
 
-        protected void stripTag(Tree t)
+        protected void StripTag(Tree t)
         {
             if (! t.IsLeaf())
             {
-                string label = cleanUpLabel(t.Value());
+                string label = CleanUpLabel(t.Value());
                 t.SetValue(label);
                 foreach (Tree child in t.GetChildrenAsList())
                 {
-                    stripTag(child);
+                    StripTag(child);
                 }
             }
         }
 
-        private static readonly TregexPattern matchPattern =
+        private static readonly TregexPattern MatchPattern =
             TregexPattern.safeCompile("-NONE-=none", true);
 
-        private static readonly TsurgeonPattern operation =
+        private static readonly TsurgeonPattern Operation =
             Tsurgeon.parseOperation("prune none");
 
-        protected static Tree stripEmptyNode(Tree t)
+        protected static Tree StripEmptyNode(Tree t)
         {
-            return Tsurgeon.processPattern(matchPattern, operation, t);
+            return Tsurgeon.processPattern(MatchPattern, Operation, t);
         }
     }
 }

@@ -178,7 +178,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a factory to produce labeled, scored trees
    */
 
-        public static TreeFactory factory()
+        public static TreeFactory Factory()
         {
             return TreeFactoryHolder.tf;
         }
@@ -194,7 +194,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return a factory to produce labeled, scored trees
    */
 
-        public static TreeFactory factory(LabelFactory lf)
+        public static TreeFactory Factory(LabelFactory lf)
         {
             return new LabeledScoredTreeFactory(lf);
         }
@@ -204,7 +204,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override string NodeString()
         {
-            StringBuilder buff = new StringBuilder();
+            var buff = new StringBuilder();
             buff.Append(base.NodeString());
             if (! double.IsNaN(p_score))
             {

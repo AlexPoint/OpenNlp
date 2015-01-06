@@ -25,7 +25,7 @@ namespace OpenNLP.Tools.Util.Trees
 
     public class CollinsHeadFinder : AbstractCollinsHeadFinder
     {
-        private static readonly string[] EMPTY_STRING_ARRAY = {};
+        private static readonly string[] EmptyStringArray = {};
 
         public CollinsHeadFinder() : this(new PennTreebankLanguagePack())
         {
@@ -37,7 +37,7 @@ namespace OpenNLP.Tools.Util.Trees
    *  @param tlp TreebankLanguagePack used for basic category function
    */
 
-        public CollinsHeadFinder(AbstractTreebankLanguagePack tlp) : this(tlp, EMPTY_STRING_ARRAY)
+        public CollinsHeadFinder(AbstractTreebankLanguagePack tlp) : this(tlp, EmptyStringArray)
         {
         }
 

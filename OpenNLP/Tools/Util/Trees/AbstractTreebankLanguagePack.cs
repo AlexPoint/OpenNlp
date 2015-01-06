@@ -22,22 +22,20 @@ namespace OpenNLP.Tools.Util.Trees
    * Default character for indicating that something is a grammatical fn; probably should be overridden by
    * lang specific ones
    */
-        protected char gfCharacter;
-        protected static readonly char DEFAULT_GF_CHAR = '-';
+        protected char GfCharacter;
+        protected static readonly char DefaultGfChar = '-';
 
-
-        /**
-   * Use this as the default encoding for Readers and Writers of
-   * Treebank data.
-   */
-        public static readonly string DEFAULT_ENCODING = "UTF-8";
+        /// <summary>
+        /// Use this as the default encoding for Readers and Writers of Treebank data.
+        /// </summary>
+        public static readonly string DefaultEncoding = "UTF-8";
 
 
         /**
    * Gives a handle to the TreebankLanguagePack.
    */
 
-        public AbstractTreebankLanguagePack() : this(DEFAULT_GF_CHAR)
+        public AbstractTreebankLanguagePack() : this(DefaultGfChar)
         {
         }
 
@@ -50,7 +48,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public AbstractTreebankLanguagePack(char gfChar)
         {
-            this.gfCharacter = gfChar;
+            this.GfCharacter = gfChar;
         }
 
         /**
@@ -105,7 +103,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public bool IsPunctuationTag(string str)
         {
-            return punctTagStringAcceptFilter()(str);
+            return PunctTagStringAcceptFilter()(str);
         }
 
 
@@ -120,7 +118,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public bool IsPunctuationWord(string str)
         {
-            return punctWordStringAcceptFilter()(str);
+            return PunctWordStringAcceptFilter()(str);
         }
 
 
@@ -133,7 +131,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public bool IsSentenceFinalPunctuationTag(string str)
         {
-            return sFPunctTagStringAcceptFilter()(str);
+            return SFPunctTagStringAcceptFilter()(str);
         }
 
 
@@ -150,7 +148,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public bool IsEvalBIgnoredPunctuationTag(string str)
         {
-            return eIPunctTagStringAcceptFilter()(str);
+            return EIPunctTagStringAcceptFilter()(str);
         }
 
 
@@ -163,7 +161,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public Predicate<string> PunctuationTagAcceptFilter()
         {
-            return punctTagStringAcceptFilter();
+            return PunctTagStringAcceptFilter();
         }
 
 
@@ -176,7 +174,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public Predicate<string> PunctuationTagRejectFilter()
         {
-            return Filters.NotFilter(punctTagStringAcceptFilter());
+            return Filters.NotFilter(PunctTagStringAcceptFilter());
         }
 
 
@@ -191,7 +189,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public Predicate<string> PunctuationWordAcceptFilter()
         {
-            return punctWordStringAcceptFilter();
+            return PunctWordStringAcceptFilter();
         }
 
 
@@ -206,7 +204,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public Predicate<string> PunctuationWordRejectFilter()
         {
-            return Filters.NotFilter(punctWordStringAcceptFilter());
+            return Filters.NotFilter(PunctWordStringAcceptFilter());
         }
 
 
@@ -219,7 +217,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public Predicate<string> SentenceFinalPunctuationTagAcceptFilter()
         {
-            return sFPunctTagStringAcceptFilter();
+            return SFPunctTagStringAcceptFilter();
         }
 
 
@@ -236,7 +234,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public Predicate<string> EvalBIgnoredPunctuationTagAcceptFilter()
         {
-            return eIPunctTagStringAcceptFilter();
+            return EIPunctTagStringAcceptFilter();
         }
 
 
@@ -252,7 +250,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public Predicate<string> EvalBIgnoredPunctuationTagRejectFilter()
         {
-            return Filters.NotFilter(eIPunctTagStringAcceptFilter());
+            return Filters.NotFilter(EIPunctTagStringAcceptFilter());
         }
 
 
@@ -265,13 +263,13 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public string GetEncoding()
         {
-            return DEFAULT_ENCODING;
+            return DefaultEncoding;
         }
 
         public abstract TokenizerFactory<HasWord> GetTokenizerFactory();
 
 
-        private static readonly char[] EMPTY_CHAR_ARRAY = new char[0];
+        private static readonly char[] EmptyCharArray = new char[0];
 
         /**
    * Return an array of characters at which a string should be
@@ -286,7 +284,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public virtual char[] LabelAnnotationIntroducingCharacters()
         {
-            return EMPTY_CHAR_ARRAY;
+            return EmptyCharArray;
         }
 
 
@@ -310,7 +308,7 @@ namespace OpenNLP.Tools.Util.Trees
    *     label
    */
 
-        private int postBasicCategoryIndex(string category)
+        private int PostBasicCategoryIndex(string category)
         {
             bool sawAtZero = false;
             char seenAtZero = '\u0000';
@@ -365,18 +363,18 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return null;
             }
-            return category.Substring(0, postBasicCategoryIndex(category));
+            return category.Substring(0, PostBasicCategoryIndex(category));
         }
 
 
         //@Override
-        public string StripGF(string category)
+        public string StripGf(string category)
         {
             if (category == null)
             {
                 return null;
             }
-            int index = category.LastIndexOf(gfCharacter);
+            int index = category.LastIndexOf(GfCharacter);
             if (index > 0)
             {
                 category = category.Substring(0, index);
@@ -410,7 +408,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             //@Override
-            public string apply(string input)
+            public string Apply(string input)
             {
                 return tlp.BasicCategory(input);
             }
@@ -431,7 +429,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             //@Override
-            public string apply(string input)
+            public string Apply(string input)
             {
                 return tlp.CategoryAndFunction(input);
             }
@@ -460,11 +458,11 @@ namespace OpenNLP.Tools.Util.Trees
                 return null;
             }
             string catFunc = category;
-            int i = lastIndexOfNumericTag(catFunc);
+            int i = LastIndexOfNumericTag(catFunc);
             while (i >= 0)
             {
                 catFunc = catFunc.Substring(0, i);
-                i = lastIndexOfNumericTag(catFunc);
+                i = LastIndexOfNumericTag(catFunc);
             }
             return catFunc;
         }
@@ -482,7 +480,7 @@ namespace OpenNLP.Tools.Util.Trees
    *     digits
    */
 
-        private int lastIndexOfNumericTag(string category)
+        private int LastIndexOfNumericTag(string category)
         {
             if (category == null)
             {
@@ -599,22 +597,22 @@ namespace OpenNLP.Tools.Util.Trees
 
         public abstract string TreebankFileExtension();
 
-        private Predicate<string> punctTagStringAcceptFilter()
+        private Predicate<string> PunctTagStringAcceptFilter()
         {
             return Filters.CollectionAcceptFilter(PunctuationTags());
         }
 
-        private Predicate<string> punctWordStringAcceptFilter()
+        private Predicate<string> PunctWordStringAcceptFilter()
         {
             return Filters.CollectionAcceptFilter(PunctuationWords());
         }
 
-        private Predicate<string> sFPunctTagStringAcceptFilter()
+        private Predicate<string> SFPunctTagStringAcceptFilter()
         {
             return Filters.CollectionAcceptFilter(SentenceFinalPunctuationTags());
         }
 
-        private Predicate<string> eIPunctTagStringAcceptFilter()
+        private Predicate<string> EIPunctTagStringAcceptFilter()
         {
             return Filters.CollectionAcceptFilter(EvalBIgnoredPunctuationTags());
         }
@@ -679,21 +677,21 @@ namespace OpenNLP.Tools.Util.Trees
             return false;
         }
 
-        public char getGfCharacter()
+        public char GetGfCharacter()
         {
-            return gfCharacter;
+            return GfCharacter;
         }
 
 
         //@Override
         public void SetGfCharacter(char gfCharacter)
         {
-            this.gfCharacter = gfCharacter;
+            this.GfCharacter = gfCharacter;
         }
 
         /** {@inheritDoc} */
         //@Override
-        public TreeReaderFactory treeReaderFactory()
+        public TreeReaderFactory TreeReaderFactory()
         {
             return new PennTreeReaderFactory();
         }
@@ -702,7 +700,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public TokenizerFactory<Tree> TreeTokenizerFactory()
         {
-            return new TreeTokenizerFactory(treeReaderFactory());
+            return new TreeTokenizerFactory(TreeReaderFactory());
         }
 
         public abstract HeadFinder HeadFinder();
@@ -712,7 +710,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Returns a morphological feature specification for words in this language.
    */
         //@Override
-        public MorphoFeatureSpecification morphFeatureSpec()
+        public MorphoFeatureSpecification MorphFeatureSpec()
         {
             return null;
         }

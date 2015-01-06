@@ -78,7 +78,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override string NormalizeNonterminal(string category)
         {
-            return cleanUpLabel(category) /*.intern()*/;
+            return CleanUpLabel(category) /*.intern()*/;
         }
 
 
@@ -91,9 +91,9 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The cleaned up label (phrase structure category)
    */
 
-        protected string cleanUpLabel( /*readonly */ string label)
+        protected string CleanUpLabel( /*readonly */ string label)
         {
-            if (label == null || label.Length == 0)
+            if (string.IsNullOrEmpty(label))
             {
                 return "ROOT";
                 // string constants are always interned
@@ -114,7 +114,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public override Tree NormalizeWholeTree(Tree tree, TreeFactory tf)
         {
-            return tree.Prune(emptyFilter.test, tf).SpliceOut(aOverAFilter.test, tf);
+            return tree.Prune(emptyFilter.Test, tf).SpliceOut(aOverAFilter.Test, tf);
         }
 
         //@Override
@@ -138,7 +138,7 @@ namespace OpenNLP.Tools.Util.Trees
 
             /** Doesn't accept nodes that only cover an empty. */
 
-            public bool test(Tree t)
+            public bool Test(Tree t)
             {
                 Tree[] kids = t.Children();
                 Label l = t.Label();
@@ -159,7 +159,7 @@ namespace OpenNLP.Tools.Util.Trees
      *  empty removal or are EDITED nodes).
      */
 
-            public bool test(Tree t)
+            public bool Test(Tree t)
             {
                 if (t.IsLeaf() || t.IsPreTerminal())
                 {

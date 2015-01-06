@@ -30,30 +30,30 @@ namespace OpenNLP.Tools.Util.Trees
 
     public class DateTreeTransformer : TreeTransformer
     {
-        private static readonly string MONTH_REGEX =
+        private const string MonthRegex = 
             "January|February|March|April|May|June|July|August|September|October|November|December|Jan\\.|Feb\\.|Mar\\.|Apr\\.|Aug\\.|Sep\\.|Sept\\.|Oct\\.|Nov\\.|Dec\\.";
 
-        private static readonly TregexPattern tregexMonthYear =
-            TregexPatternCompiler.defaultCompiler.compile("NP=root <1 (NP <: (NNP=month <: /" + MONTH_REGEX +
+        private static readonly TregexPattern TregexMonthYear =
+            TregexPatternCompiler.defaultCompiler.compile("NP=root <1 (NP <: (NNP=month <: /" + MonthRegex +
                                                           "/)) <2 (NP=yearnp <: (CD=year <: __)) : =root <- =yearnp");
 
-        private static readonly TregexPattern tregexMonthDayYear =
-            TregexPatternCompiler.defaultCompiler.compile("NP=root <1 (NP=monthdayroot <1 (NNP=month <: /" + MONTH_REGEX +
+        private static readonly TregexPattern TregexMonthDayYear =
+            TregexPatternCompiler.defaultCompiler.compile("NP=root <1 (NP=monthdayroot <1 (NNP=month <: /" + MonthRegex +
                                                           "/) <2 (CD=day <: __)) <2 (/^,$/=comma <: /^,$/) <3 (NP=yearroot <: (CD=year <: __)) : (=root <- =yearroot) : (=monthdayroot <- =day)");
 
         public Tree TransformTree(Tree t)
         {
-            TregexMatcher matcher = tregexMonthYear.matcher(t);
+            TregexMatcher matcher = TregexMonthYear.matcher(t);
             while (matcher.find())
             {
                 Tree root = matcher.getNode("root");
                 Tree month = matcher.getNode("month");
                 Tree year = matcher.getNode("year");
-                Tree[] children = new Tree[] {month, year};
+                var children = new Tree[] {month, year};
                 root.SetChildren(children);
-                matcher = tregexMonthYear.matcher(t);
+                matcher = TregexMonthYear.matcher(t);
             }
-            matcher = tregexMonthDayYear.matcher(t);
+            matcher = TregexMonthDayYear.matcher(t);
             while (matcher.find())
             {
                 Tree root = matcher.getNode("root");
@@ -61,9 +61,9 @@ namespace OpenNLP.Tools.Util.Trees
                 Tree day = matcher.getNode("day");
                 Tree comma = matcher.getNode("comma");
                 Tree year = matcher.getNode("year");
-                Tree[] children = new Tree[] {month, day, comma, year};
+                var children = new Tree[] {month, day, comma, year};
                 root.SetChildren(children);
-                matcher = tregexMonthDayYear.matcher(t);
+                matcher = TregexMonthDayYear.matcher(t);
             }
             return t;
         }

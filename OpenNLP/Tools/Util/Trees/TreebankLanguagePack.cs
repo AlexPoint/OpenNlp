@@ -312,7 +312,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param category The string name of the label (may previously have had basic category called on it)
    * @return The string stripped of grammatical functions
    */
-        string StripGF(string category);
+        string StripGf(string category);
 
 
         /**

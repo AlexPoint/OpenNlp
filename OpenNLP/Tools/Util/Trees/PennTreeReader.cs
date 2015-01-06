@@ -157,7 +157,7 @@ namespace OpenNLP.Tools.Util.Trees
 
                 try
                 {
-                    t = getTreeFromInputStream();
+                    t = GetTreeFromInputStream();
                 }
                 catch (Exception e)
                 {
@@ -182,11 +182,11 @@ namespace OpenNLP.Tools.Util.Trees
             return t;
         }
 
-        private static readonly Regex STAR_PATTERN = new Regex("\\\\\\*");
-        private static readonly Regex SLASH_PATTERN = new Regex("\\\\/");
+        private static readonly Regex StarPattern = new Regex("\\\\\\*");
+        private static readonly Regex SlashPattern = new Regex("\\\\/");
 
 
-        private Tree getTreeFromInputStream() /*throws NoSuchElementException*/
+        private Tree GetTreeFromInputStream() /*throws NoSuchElementException*/
         {
             int wordIndex = 1;
 
@@ -214,8 +214,8 @@ namespace OpenNLP.Tools.Util.Trees
 
                         if (label != null)
                         {
-                            label = STAR_PATTERN.Replace(label, "*");
-                            label = SLASH_PATTERN.Replace(label, "/");
+                            label = StarPattern.Replace(label, "*");
+                            label = SlashPattern.Replace(label, "/");
                         }
 
                         Tree newTree = treeFactory.NewTreeNode(label, null); // dtrs are added below
@@ -260,17 +260,17 @@ namespace OpenNLP.Tools.Util.Trees
                         }
 
                         string terminal = (treeNormalizer == null) ? token : treeNormalizer.NormalizeTerminal(token);
-                        terminal = STAR_PATTERN.Replace(terminal, "*");
-                        terminal = SLASH_PATTERN.Replace(terminal, "/");
+                        terminal = StarPattern.Replace(terminal, "*");
+                        terminal = SlashPattern.Replace(terminal, "/");
                         Tree leaf = treeFactory.NewLeaf(terminal);
                         if (leaf.Label() is HasIndex)
                         {
-                            HasIndex hi = (HasIndex) leaf.Label();
+                            var hi = (HasIndex) leaf.Label();
                             hi.SetIndex(wordIndex);
                         }
                         if (leaf.Label() is HasWord)
                         {
-                            HasWord hw = (HasWord) leaf.Label();
+                            var hw = (HasWord) leaf.Label();
                             hw.SetWord(leaf.Label().Value());
                         }
                         wordIndex++;

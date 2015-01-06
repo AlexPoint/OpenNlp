@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.Trees
         //private static readonly bool DEBUG = System.getProperty("GrammaticalRelation", null) != null;
 
         private static readonly Dictionary<Language, Dictionary<string, GrammaticalRelation>>
-            stringsToRelations = new Dictionary<Language, Dictionary<string, GrammaticalRelation>>( /*Language.class*/);
+            StringsToRelations = new Dictionary<Language, Dictionary<string, GrammaticalRelation>>( /*Language.class*/);
 
         /**
    * The "governor" grammatical relation, which is the inverse of "dependent".<p>
@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return The GrammaticalRelation with that name
    */
 
-        public static GrammaticalRelation valueOf(string s, ICollection<GrammaticalRelation> values)
+        public static GrammaticalRelation ValueOf(string s, ICollection<GrammaticalRelation> values)
         {
             foreach (GrammaticalRelation reln in values)
             {
@@ -87,16 +87,16 @@ namespace OpenNLP.Tools.Util.Trees
    *  @return The grammatical relation represented by this String
    */
 
-        public static GrammaticalRelation valueOf(Language language, string s)
+        public static GrammaticalRelation ValueOf(Language language, string s)
         {
-            GrammaticalRelation reln = (stringsToRelations[language] != null
-                ? valueOf(s, stringsToRelations[language].Values)
+            GrammaticalRelation reln = (StringsToRelations[language] != null
+                ? ValueOf(s, StringsToRelations[language].Values)
                 : null);
             if (reln == null)
             {
                 // TODO this breaks the hierarchical structure of the classes,
                 //      but it makes English relations that much likelier to work.
-                reln = EnglishGrammaticalRelations.valueOf(s);
+                reln = EnglishGrammaticalRelations.ValueOf(s);
             }
             if (reln == null)
             {
@@ -126,17 +126,17 @@ namespace OpenNLP.Tools.Util.Trees
             return reln;
         }
 
-        private static Dictionary<string, GrammaticalRelation> valueOfCache =
+        private static readonly Dictionary<string, GrammaticalRelation> ValueOfCache =
             new Dictionary<string, GrammaticalRelation>();
 
-        public static GrammaticalRelation valueOf(string s)
+        public static GrammaticalRelation ValueOf(string s)
         {
-            if (!valueOfCache.ContainsKey(s))
+            if (!ValueOfCache.ContainsKey(s))
             {
-                var value = valueOf(Language.English, s);
-                valueOfCache.Add(s, value);
+                var value = ValueOf(Language.English, s);
+                ValueOfCache.Add(s, value);
             }
-            return valueOfCache[s];
+            return ValueOfCache[s];
             /*GrammaticalRelation value = null;
     SoftReference<GrammaticalRelation> possiblyCachedValue = valueOfCache[s);
     if (possiblyCachedValue != null) { value = possiblyCachedValue[); }
@@ -156,7 +156,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @return Whether this relation is just a wrapper created by valueOf(string)
    */
 
-        public bool isFromString()
+        public bool IsFromString()
         {
             return longName == null;
         }
@@ -202,7 +202,7 @@ namespace OpenNLP.Tools.Util.Trees
 
             if (parent != null)
             {
-                parent.addChild(this);
+                parent.AddChild(this);
             }
 
             if (sourcePattern != null)
@@ -232,16 +232,16 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             Dictionary<string, GrammaticalRelation> sToR;
-            stringsToRelations.TryGetValue(language, out sToR);
+            StringsToRelations.TryGetValue(language, out sToR);
             if (sToR == null)
             {
                 sToR = new Dictionary<string, GrammaticalRelation>();
-                stringsToRelations.Add(language, sToR);
+                StringsToRelations.Add(language, sToR);
             }
             if (sToR.ContainsKey(ToString()))
             {
                 var previous = sToR[ToString()];
-                if (!previous.isFromString() && !isFromString())
+                if (!previous.IsFromString() && !IsFromString())
                 {
                     throw new ArgumentException("There is already a relation named " + ToString() + '!');
                 }
@@ -303,7 +303,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
         }
 
-        private void addChild(GrammaticalRelation child)
+        private void AddChild(GrammaticalRelation child)
         {
             children.Add(child);
         }
@@ -317,7 +317,7 @@ namespace OpenNLP.Tools.Util.Trees
    *  @return A Collection of dependent nodes to which t bears this GR
    */
 
-        public ICollection<TreeGraphNode> getRelatedNodes(TreeGraphNode t, TreeGraphNode root, HeadFinder headFinder)
+        public ICollection<TreeGraphNode> GetRelatedNodes(TreeGraphNode t, TreeGraphNode root, HeadFinder headFinder)
         {
             Set<TreeGraphNode> nodeList = new HashSet<TreeGraphNode>();
             foreach (TregexPattern p in targetPatterns)
@@ -329,7 +329,7 @@ namespace OpenNLP.Tools.Util.Trees
                 TregexMatcher m = p.matcher(root, headFinder);
                 while (m.findAt(t))
                 {
-                    TreeGraphNode target = (TreeGraphNode) m.getNode("target");
+                    var target = (TreeGraphNode) m.getNode("target");
                     if (target == null)
                     {
                         throw new InvalidDataException("Expression has no target: " + p);
@@ -355,7 +355,7 @@ namespace OpenNLP.Tools.Util.Trees
    *  <code>Tree</code> node <code>t</code> and some other node.
    */
 
-        public bool isApplicable(Tree t)
+        public bool IsApplicable(Tree t)
         {
             // System.err.println("Testing whether " + sourcePattern + " matches " + ((TreeGraphNode) t).toOneLineString());
             return (sourcePattern != null) && (t.Value() != null) &&
@@ -364,7 +364,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         /** Returns whether this is equal to or an ancestor of gr in the grammatical relations hierarchy. */
 
-        public bool isAncestor(GrammaticalRelation gr)
+        public bool IsAncestor(GrammaticalRelation gr)
         {
             while (gr != null)
             {
@@ -408,10 +408,10 @@ namespace OpenNLP.Tools.Util.Trees
    *         <code>GrammaticalRelation</code>
    */
 
-        public string toPrettyString()
+        public string ToPrettyString()
         {
-            StringBuilder buf = new StringBuilder("\n");
-            toPrettyString(0, buf);
+            var buf = new StringBuilder("\n");
+            ToPrettyString(0, buf);
             return buf.ToString();
         }
 
@@ -424,7 +424,7 @@ namespace OpenNLP.Tools.Util.Trees
    * @param indentLevel how many levels to indent (0 for root node)
    */
 
-        private void toPrettyString(int indentLevel, StringBuilder buf)
+        private void ToPrettyString(int indentLevel, StringBuilder buf)
         {
             for (int i = 0; i < indentLevel; i++)
             {
@@ -434,7 +434,7 @@ namespace OpenNLP.Tools.Util.Trees
             foreach (GrammaticalRelation child in children)
             {
                 buf.Append('\n');
-                child.toPrettyString(indentLevel + 1, buf);
+                child.ToPrettyString(indentLevel + 1, buf);
             }
         }
 
@@ -460,7 +460,7 @@ namespace OpenNLP.Tools.Util.Trees
             if (!(o is GrammaticalRelation)) return false;
 
             /*final*/
-            GrammaticalRelation gr = (GrammaticalRelation) o;
+            var gr = (GrammaticalRelation) o;
             // == okay for language as enum!
             return this.language == gr.language &&
                    this.shortName.Equals(gr.shortName) &&
@@ -486,17 +486,17 @@ namespace OpenNLP.Tools.Util.Trees
             return thisN.CompareTo(oN);
         }
 
-        public string getLongName()
+        public string GetLongName()
         {
             return longName;
         }
 
-        public string getShortName()
+        public string GetShortName()
         {
             return shortName;
         }
 
-        public string getSpecific()
+        public string GetSpecific()
         {
             return specific;
         }
@@ -567,7 +567,7 @@ namespace OpenNLP.Tools.Util.Trees
    * Returns the parent of this <code>GrammaticalRelation</code>.
    */
 
-        public GrammaticalRelation getParent()
+        public GrammaticalRelation GetParent()
         {
             return parent;
         }

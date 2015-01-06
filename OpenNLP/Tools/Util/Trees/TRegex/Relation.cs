@@ -2585,7 +2585,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     HeadFinder headFinder = matcher.getHeadFinder();
                     if (headFinder == null) headFinder = this.hf;
-                    Tree head = headFinder.determineHead(t2);
+                    Tree head = headFinder.DetermineHead(t2);
                     if (head == t1)
                     {
                         return true;
@@ -2612,7 +2612,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
                 Tree last = next;
                 next = matcher.getParent(next);
-                if (next != null && headFinder.determineHead(next) != last)
+                if (next != null && headFinder.DetermineHead(next) != last)
                 {
                     next = null;
                     return new List<Tree>().GetEnumerator();
@@ -2709,7 +2709,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     }
                     else
                     {
-                        this.Current = this.hf.determineHead(this.initialNode);
+                        this.Current = this.hf.DetermineHead(this.initialNode);
                         return true;
                     }
                 }
@@ -2722,7 +2722,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     }
                     else
                     {
-                        this.Current = this.hf.determineHead(this.Current);
+                        this.Current = this.hf.DetermineHead(this.Current);
                         return true;
                     }
                 }
@@ -2849,11 +2849,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             {
                 if (matcher.getHeadFinder() != null)
                 {
-                    return matcher.getHeadFinder().determineHead(t2) == t1;
+                    return matcher.getHeadFinder().DetermineHead(t2) == t1;
                 }
                 else
                 {
-                    return hf.determineHead(t2) == t1;
+                    return hf.DetermineHead(t2) == t1;
                 }
             }
 
@@ -2866,7 +2866,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     var next = matcher.getParent(t);
                     HeadFinder headFinder = matcher.getHeadFinder() == null ? hf : matcher.getHeadFinder();
-                    if (headFinder.determineHead(next) == t)
+                    if (headFinder.DetermineHead(next) == t)
                     {
                         return new List<Tree>() {next}.GetEnumerator();
                     }
@@ -2953,7 +2953,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 if (!t.IsLeaf())
                 {
                     var headFinder = matcher.getHeadFinder() != null ? matcher.getHeadFinder() : immediatelyHeads.hf;
-                    var next = headFinder.determineHead(t);
+                    var next = headFinder.DetermineHead(t);
                     return new List<Tree>() {next}.GetEnumerator();
                 }
                 return new List<Tree>().GetEnumerator();

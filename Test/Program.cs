@@ -84,7 +84,7 @@ namespace Test
             }*/
 
             // parsing
-            var sentence = "You should get up and give the elderly man your seat.";
+            var sentence = "You should Get up and give the elderly man your seat.";
             var modelPath = currentDirectory + "../Resources/Models/";
             var parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(modelPath, true, false);
             var parse = parser.DoParse(sentence);

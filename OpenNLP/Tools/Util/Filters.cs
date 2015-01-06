@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util
    * The acceptFilter accepts everything.
    */
 
-        public static Predicate<T> acceptFilter<T>()
+        public static Predicate<T> AcceptFilter<T>()
         {
             return s => true;
             //return new CategoricalFilter<T>(true);
@@ -30,7 +30,7 @@ namespace OpenNLP.Tools.Util
    * The rejectFilter accepts nothing.
    */
 
-        public static Predicate<T> rejectFilter<T>()
+        public static Predicate<T> RejectFilter<T>()
         {
             return s => false;
             //return new CategoricalFilter<T>(false);
@@ -90,7 +90,7 @@ namespace OpenNLP.Tools.Util
    * The collectionAcceptFilter accepts a certain collection.
    */
 
-        public static Predicate<E> collectionAcceptFilter<E>(IEnumerable<E> objs)
+        public static Predicate<E> CollectionAcceptFilter<E>(IEnumerable<E> objs)
         {
             return s => objs.Any(o => o.Equals(s));
             //return new CollectionAcceptFilter<E>(objs, true);
@@ -107,7 +107,7 @@ namespace OpenNLP.Tools.Util
    * The collectionRejectFilter rejects a certain collection.
    */
 
-        public static Predicate<E> collectionRejectFilter<E>(IEnumerable<E> objs)
+        public static Predicate<E> CollectionRejectFilter<E>(IEnumerable<E> objs)
         {
             return s => objs.All(o => !o.Equals(s));
             //return new CollectionAcceptFilter<E>(objs, false);
@@ -147,7 +147,7 @@ namespace OpenNLP.Tools.Util
    * Filter that accepts only when both filters accept (AND).
    */
 
-        public static Predicate<E> andFilter<E>(Predicate<E> f1, Predicate<E> f2)
+        public static Predicate<E> AndFilter<E>(Predicate<E> f1, Predicate<E> f2)
         {
             return s => f1(s) && f2(s);
             //return (new CombinedFilter<E>(f1, f2, true));
@@ -157,7 +157,7 @@ namespace OpenNLP.Tools.Util
    * Filter that accepts when either filter accepts (OR).
    */
 
-        public static Predicate<E> orFilter<E>(Predicate<E> f1, Predicate<E> f2)
+        public static Predicate<E> OrFilter<E>(Predicate<E> f1, Predicate<E> f2)
         {
             return s => f1(s) || f2(s);
             //return (new CombinedFilter<E>(f1, f2, false));
@@ -249,7 +249,7 @@ namespace OpenNLP.Tools.Util
    * Filter that does the opposite of given filter (NOT).
    */
 
-        public static Predicate<E> notFilter<E>(Predicate<E> filter)
+        public static Predicate<E> NotFilter<E>(Predicate<E> filter)
         {
             return s => !filter(s);
             //return (new NegatedFilter<E>(filter));
@@ -259,7 +259,7 @@ namespace OpenNLP.Tools.Util
    * Filter that's either negated or normal as specified.
    */
 
-        public static Predicate<E> switchedFilter<E>(Predicate<E> filter, bool negated)
+        public static Predicate<E> SwitchedFilter<E>(Predicate<E> filter, bool negated)
         {
             return s => negated ? !filter(s) : filter(s);
             //return (new NegatedFilter<E>(filter, negated));

@@ -31,8 +31,8 @@ namespace OpenNLP.Tools.Util
             int commonLen = Math.Min(o.Length(), Length());
             for (int i = 0; i < commonLen; i++)
             {
-                int a = get(i);
-                int b = o.get(i);
+                int a = Get(i);
+                int b = o.Get(i);
                 if (a < b) return -1;
                 if (b < a) return 1;
             }
@@ -46,18 +46,18 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        public int get(int num)
+        public int Get(int num)
         {
             return elements[num];
         }
 
 
-        public void set(int num, int val)
+        public void Set(int num, int val)
         {
             elements[num] = val;
         }
 
-        public void shiftLeft()
+        public void ShiftLeft()
         {
             var shiftedArray = elements.Skip(1).ToArray();
             for (var i = 0; i < elements.Length; i++)
@@ -77,10 +77,10 @@ namespace OpenNLP.Tools.Util
         }
 
 
-        public virtual IntTuple getCopy()
+        public virtual IntTuple GetCopy()
         {
 
-            IntTuple copy = IntTuple.getIntTuple(elements.Length); //new IntTuple(numElements);
+            IntTuple copy = IntTuple.GetIntTuple(elements.Length); //new IntTuple(numElements);
             for (var i = 0; i < elements.Length; i++)
             {
                 copy.elements[i] = elements[i];
@@ -91,7 +91,7 @@ namespace OpenNLP.Tools.Util
         }
 
 
-        public int[] elems()
+        public int[] Elems()
         {
             return elements;
         }
@@ -103,14 +103,14 @@ namespace OpenNLP.Tools.Util
             {
                 return false;
             }
-            IntTuple i = (IntTuple) iO;
+            var i = (IntTuple) iO;
             if (i.elements.Length != elements.Length)
             {
                 return false;
             }
             for (int j = 0; j < elements.Length; j++)
             {
-                if (elements[j] != i.get(j))
+                if (elements[j] != i.Get(j))
                 {
                     return false;
                 }
@@ -137,7 +137,7 @@ namespace OpenNLP.Tools.Util
         }
 
 
-        public static IntTuple getIntTuple(int num)
+        public static IntTuple GetIntTuple(int num)
         {
             if (num == 1)
             {
@@ -162,12 +162,12 @@ namespace OpenNLP.Tools.Util
         }
 
 
-        public static IntTuple getIntTuple(List<int> integers)
+        public static IntTuple GetIntTuple(List<int> integers)
         {
-            IntTuple t = IntTuple.getIntTuple(integers.Count);
+            IntTuple t = IntTuple.GetIntTuple(integers.Count);
             for (int i = 0; i < t.Length(); i++)
             {
-                t.set(i, integers[i]);
+                t.Set(i, integers[i]);
             }
             return t;
         }
@@ -178,7 +178,7 @@ namespace OpenNLP.Tools.Util
             var name = new StringBuilder();
             for (int i = 0; i < elements.Length; i++)
             {
-                name.Append(get(i));
+                name.Append(Get(i));
                 if (i < elements.Length - 1)
                 {
                     name.Append(' ');
@@ -188,28 +188,21 @@ namespace OpenNLP.Tools.Util
         }
 
 
-        public static IntTuple concat(IntTuple t1, IntTuple t2)
+        public static IntTuple Concat(IntTuple t1, IntTuple t2)
         {
             int n1 = t1.Length();
             int n2 = t2.Length();
-            IntTuple res = IntTuple.getIntTuple(n1 + n2);
+            IntTuple res = IntTuple.GetIntTuple(n1 + n2);
 
             for (int j = 0; j < n1; j++)
             {
-                res.set(j, t1.get(j));
+                res.Set(j, t1.Get(j));
             }
             for (int i = 0; i < n2; i++)
             {
-                res.set(n1 + i, t2.get(i));
+                res.Set(n1 + i, t2.Get(i));
             }
             return res;
-        }
-
-
-        public void print()
-        {
-            string s = ToString();
-            //System.out.print(s);
         }
     }
 }

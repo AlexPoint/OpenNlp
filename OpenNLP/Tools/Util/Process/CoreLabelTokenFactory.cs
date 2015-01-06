@@ -71,8 +71,8 @@ namespace OpenNLP.Tools.Util.Process
             cl.setOriginalText(originalText);
             if (addIndices)
             {
-                cl.set(typeof (CoreAnnotations.CharacterOffsetBeginAnnotation), begin);
-                cl.set(typeof (CoreAnnotations.CharacterOffsetEndAnnotation), begin + length);
+                cl.Set(typeof (CoreAnnotations.CharacterOffsetBeginAnnotation), begin);
+                cl.Set(typeof (CoreAnnotations.CharacterOffsetEndAnnotation), begin + length);
             }
             return cl;
         }

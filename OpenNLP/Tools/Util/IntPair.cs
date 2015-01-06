@@ -26,23 +26,23 @@ namespace OpenNLP.Tools.Util
    * Return the first element of the pair
    */
 
-        public int getSource()
+        public int GetSource()
         {
-            return get(0);
+            return Get(0);
         }
 
         /**
    * Return the second element of the pair
    */
 
-        public int getTarget()
+        public int GetTarget()
         {
-            return get(1);
+            return Get(1);
         }
 
 
         //@Override
-        public override IntTuple getCopy()
+        public override IntTuple GetCopy()
         {
             return new IntPair(elements[0], elements[1]);
         }
@@ -54,8 +54,8 @@ namespace OpenNLP.Tools.Util
             {
                 return false;
             }
-            IntPair i = (IntPair) iO;
-            return elements[0] == i.get(0) && elements[1] == i.get(1);
+            var i = (IntPair) iO;
+            return elements[0] == i.Get(0) && elements[1] == i.Get(1);
         }
 
         //@Override

@@ -39,7 +39,7 @@ namespace OpenNLP.Tools.Util
    * @return Whether the regex can be found in str
    */
 
-        public static bool find(string str, string regex)
+        public static bool Find(string str, string regex)
         {
             return Regex.IsMatch(str, regex);
         }
@@ -51,7 +51,7 @@ namespace OpenNLP.Tools.Util
    * @return true if s case-insensitively matches a string in c
    */
 
-        public static bool containsIgnoreCase(List<string> c, string s)
+        public static bool ContainsIgnoreCase(List<string> c, string s)
         {
             foreach (string squote in c)
             {
@@ -72,7 +72,7 @@ namespace OpenNLP.Tools.Util
    * @return Whether the regex can be found at the start of str
    */
 
-        public static bool lookingAt(string str, string regex)
+        public static bool LookingAt(string str, string regex)
         {
             return Regex.IsMatch(str, "^" + regex);
             //return Pattern.compile(regex).matcher(str).lookingAt();
@@ -87,12 +87,12 @@ namespace OpenNLP.Tools.Util
    * @return  A string[] s is returned such that s[yn]=xn
    */
 
-        public static string[] mapStringToArray(string map)
+        public static string[] MapStringToArray(string map)
         {
             string[] m = map.Split(new[] {'[', ',', ';', ']'});
             int maxIndex = 0;
-            string[] keys = new string[m.Length];
-            int[] indices = new int[m.Length];
+            var keys = new string[m.Length];
+            var indices = new int[m.Length];
             for (int i = 0; i < m.Length; i++)
             {
                 int index = m[i].LastIndexOf('=');
@@ -103,7 +103,7 @@ namespace OpenNLP.Tools.Util
                     maxIndex = indices[i];
                 }
             }
-            string[] mapArr = new string[maxIndex + 1];
+            var mapArr = new string[maxIndex + 1];
             //Arrays.fill(mapArr, null);
             for (int i = 0; i < m.Length; i++)
             {
@@ -119,10 +119,10 @@ namespace OpenNLP.Tools.Util
    * @return  A Map m is returned such that m.get(xn) = yn
    */
 
-        public static Dictionary<string, string> mapStringToMap(string map)
+        public static Dictionary<string, string> MapStringToMap(string map)
         {
             string[] m = map.Split(new[] {'[', ',', ';', ']'});
-            Dictionary<string, string> res = new Dictionary<string, string>();
+            var res = new Dictionary<string, string>();
             foreach (string str in m)
             {
                 int index = str.LastIndexOf('=');
@@ -133,9 +133,9 @@ namespace OpenNLP.Tools.Util
             return res;
         }
 
-        public static List<Regex> regexesToPatterns(IEnumerable<string> regexes)
+        public static List<Regex> RegexesToPatterns(IEnumerable<string> regexes)
         {
-            List<Regex> patterns = new List<Regex>();
+            var patterns = new List<Regex>();
             foreach (string regex in regexes)
             {
                 patterns.Add(new Regex(regex));
@@ -388,9 +388,9 @@ namespace OpenNLP.Tools.Util
    * @return List<string> of split strings
    */
 
-        public static List<string> split(string s)
+        public static List<string> Split(string s)
         {
-            return split(s, "\\s+");
+            return Split(s, "\\s+");
         }
 
         /**
@@ -405,7 +405,7 @@ namespace OpenNLP.Tools.Util
    * @return List of Strings resulting from splitting on the regex
    */
 
-        public static List<string> split(string str, string regex)
+        public static List<string> Split(string str, string regex)
         {
             return Regex.Split(str, regex).ToList();
         }
@@ -514,14 +514,14 @@ namespace OpenNLP.Tools.Util
    * than totalChars, it is returned unchanged.
    */
 
-        public static string pad(string str, int totalChars)
+        public static string Pad(string str, int totalChars)
         {
             if (str == null)
             {
                 str = "null";
             }
             int slen = str.Length;
-            StringBuilder sb = new StringBuilder(str);
+            var sb = new StringBuilder(str);
             for (int i = 0; i < totalChars - slen; i++)
             {
                 sb.Append(' ');
@@ -533,9 +533,9 @@ namespace OpenNLP.Tools.Util
    * Pads the ToString value of the given Object.
    */
 
-        public static string pad(Object obj, int totalChars)
+        public static string Pad(Object obj, int totalChars)
         {
-            return pad(obj.ToString(), totalChars);
+            return Pad(obj.ToString(), totalChars);
         }
 
 
@@ -546,7 +546,7 @@ namespace OpenNLP.Tools.Util
    * @param num The desired length
    */
 
-        public static string padOrTrim(string str, int num)
+        public static string PadOrTrim(string str, int num)
         {
             if (str == null)
             {
@@ -555,7 +555,7 @@ namespace OpenNLP.Tools.Util
             int leng = str.Length;
             if (leng < num)
             {
-                StringBuilder sb = new StringBuilder(str);
+                var sb = new StringBuilder(str);
                 for (int i = 0; i < num - leng; i++)
                 {
                     sb.Append(' ');
@@ -579,7 +579,7 @@ namespace OpenNLP.Tools.Util
    * @param num The desired length
    */
 
-        public static string padLeftOrTrim(string str, int num)
+        public static string PadLeftOrTrim(string str, int num)
         {
             if (str == null)
             {
@@ -588,7 +588,7 @@ namespace OpenNLP.Tools.Util
             int leng = str.Length;
             if (leng < num)
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 for (int i = 0; i < num - leng; i++)
                 {
                     sb.Append(' ');
@@ -610,9 +610,9 @@ namespace OpenNLP.Tools.Util
    * Pad or trim the ToString value of the given Object.
    */
 
-        public static string padOrTrim(Object obj, int totalChars)
+        public static string PadOrTrim(Object obj, int totalChars)
         {
-            return padOrTrim(obj.ToString(), totalChars);
+            return PadOrTrim(obj.ToString(), totalChars);
         }
 
 
@@ -621,13 +621,13 @@ namespace OpenNLP.Tools.Util
    * it's at least totalChars long.
    */
 
-        public static string padLeft(string str, int totalChars, char ch)
+        public static string PadLeft(string str, int totalChars, char ch)
         {
             if (str == null)
             {
                 str = "null";
             }
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             for (int i = 0, num = totalChars - str.Length; i < num; i++)
             {
                 sb.Append(ch);
@@ -642,25 +642,25 @@ namespace OpenNLP.Tools.Util
    * at least totalChars long.
    */
 
-        public static string padLeft(string str, int totalChars)
+        public static string PadLeft(string str, int totalChars)
         {
-            return padLeft(str, totalChars, ' ');
+            return PadLeft(str, totalChars, ' ');
         }
 
 
-        public static string padLeft(Object obj, int totalChars)
+        public static string PadLeft(Object obj, int totalChars)
         {
-            return padLeft(obj.ToString(), totalChars);
+            return PadLeft(obj.ToString(), totalChars);
         }
 
-        public static string padLeft(int i, int totalChars)
+        public static string PadLeft(int i, int totalChars)
         {
-            return padLeft(i, totalChars);
+            return PadLeft(i, totalChars);
         }
 
-        public static string padLeft(double d, int totalChars)
+        public static string PadLeft(double d, int totalChars)
         {
-            return padLeft(d, totalChars);
+            return PadLeft(d, totalChars);
         }
 
         /**
@@ -681,13 +681,13 @@ namespace OpenNLP.Tools.Util
             return Trim(obj.ToString(), maxWidth);
         }
 
-        public static string repeat(string s, int times)
+        public static string Repeat(string s, int times)
         {
             if (times == 0)
             {
                 return "";
             }
-            StringBuilder sb = new StringBuilder(times*s.Length);
+            var sb = new StringBuilder(times*s.Length);
             for (int i = 0; i < times; i++)
             {
                 sb.Append(s);
@@ -695,13 +695,13 @@ namespace OpenNLP.Tools.Util
             return sb.ToString();
         }
 
-        public static string repeat(char ch, int times)
+        public static string Repeat(char ch, int times)
         {
             if (times == 0)
             {
                 return "";
             }
-            StringBuilder sb = new StringBuilder(times);
+            var sb = new StringBuilder(times);
             for (int i = 0; i < times; i++)
             {
                 sb.Append(ch);
@@ -714,10 +714,10 @@ namespace OpenNLP.Tools.Util
    * been converted to dashes and all non-alphanumeric chars are underscores.
    */
 
-        public static string fileNameClean(string s)
+        public static string FileNameClean(string s)
         {
             char[] chars = s.ToCharArray();
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (char c in chars)
             {
                 if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || (c == '_'))
@@ -744,7 +744,7 @@ namespace OpenNLP.Tools.Util
    * if there are less than n occurrences of ch.
    */
 
-        public static int nthIndex(string s, char ch, int n)
+        public static int NthIndex(string s, char ch, int n)
         {
             int index = 0;
             for (int i = 0; i < n; i++)
@@ -771,10 +771,10 @@ namespace OpenNLP.Tools.Util
    * inclusive.
    */
 
-        public static string truncate(int n, int smallestDigit, int biggestDigit)
+        public static string Truncate(int n, int smallestDigit, int biggestDigit)
         {
             int numDigits = biggestDigit - smallestDigit + 1;
-            char[] result = new char[numDigits];
+            var result = new char[numDigits];
             for (int j = 1; j < smallestDigit; j++)
             {
                 n = n/10;
@@ -1005,10 +1005,10 @@ namespace OpenNLP.Tools.Util
    * of properties, for example, when you have a commandline argument like "-outputOptions style=xml,tags".
    */
 
-        public static Dictionary<string, string> stringToProperties(string str)
+        public static Dictionary<string, string> StringToProperties(string str)
         {
             var result = new Dictionary<string, string>();
-            return stringToProperties(str, result);
+            return StringToProperties(str, result);
         }
 
         /**
@@ -1019,7 +1019,7 @@ namespace OpenNLP.Tools.Util
    * for properties without an explicitly given value is set to "true".
    */
 
-        public static Dictionary<string, string> stringToProperties(string str, Dictionary<string, string> props)
+        public static Dictionary<string, string> StringToProperties(string str, Dictionary<string, string> props)
         {
             string[] propsStr = Regex.Split(str.Trim(), ",\\s*");
             foreach (string term in propsStr)
@@ -1228,9 +1228,9 @@ namespace OpenNLP.Tools.Util
     return result;
   }*/
 
-        public static string stripNonAlphaNumerics(string orig)
+        public static string StripNonAlphaNumerics(string orig)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             for (int i = 0; i < orig.Length; i++)
             {
                 char c = orig[i];
@@ -1255,9 +1255,9 @@ namespace OpenNLP.Tools.Util
     }
   }*/
 
-        public static string escapeString(string s, char[] charsToEscape, char escapeChar)
+        public static string EscapeString(string s, char[] charsToEscape, char escapeChar)
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             for (int i = 0; i < s.Length; i++)
             {
                 char c = s[i];
@@ -1296,12 +1296,12 @@ namespace OpenNLP.Tools.Util
    * @return An array of Strings that s is split into
    */
 
-        public static string[] splitOnCharWithQuoting(string s, char splitChar, char quoteChar, char escapeChar)
+        public static string[] SplitOnCharWithQuoting(string s, char splitChar, char quoteChar, char escapeChar)
         {
-            List<string> result = new List<string>();
+            var result = new List<string>();
             int i = 0;
             int length = s.Length;
-            StringBuilder b = new StringBuilder();
+            var b = new StringBuilder();
             while (i < length)
             {
                 char curr = s[i];
@@ -1432,7 +1432,7 @@ namespace OpenNLP.Tools.Util
    * of "colo".
    */
 
-        public static int longestCommonContiguousSubstring(string s, string t)
+        public static int LongestCommonContiguousSubstring(string s, string t)
         {
             if (string.IsNullOrEmpty(s) || string.IsNullOrEmpty(t))
             {
@@ -1440,7 +1440,7 @@ namespace OpenNLP.Tools.Util
             }
             int M = s.Length;
             int N = t.Length;
-            int[,] d = new int[M + 1, N + 1];
+            var d = new int[M + 1, N + 1];
             for (int j = 0; j <= N; j++)
             {
                 d[0, j] = 0;
@@ -1526,7 +1526,7 @@ namespace OpenNLP.Tools.Util
    * @param s a Penn TreeBank POS tag.
    */
 
-        public static string pennPOSToWordnetPOS(string s)
+        public static string PennPOSToWordnetPOS(string s)
         {
             if (Regex.IsMatch(s, "NN|NNP|NNS|NNPS"))
             {
@@ -1648,7 +1648,7 @@ namespace OpenNLP.Tools.Util
    * @return a capitalized version of the string
    */
 
-        public static string capitalize(string s)
+        public static string Capitalize(string s)
         {
             if (char.IsLower(s[0]))
             {
@@ -1668,14 +1668,14 @@ namespace OpenNLP.Tools.Util
    *         false otherwise
    */
 
-        public static bool isCapitalized(string s)
+        public static bool IsCapitalized(string s)
         {
             return (char.IsUpper(s[0]));
         }
 
-        public static string searchAndReplace(string text, string from, string to)
+        public static string SearchAndReplace(string text, string from, string to)
         {
-            from = escapeString(from, new char[] {'.', '[', ']', '\\'}, '\\'); // special chars in regex
+            from = EscapeString(from, new char[] {'.', '[', ']', '\\'}, '\\'); // special chars in regex
             var res = Regex.Replace(text, from, to);
             return res;
         }
@@ -1686,9 +1686,9 @@ namespace OpenNLP.Tools.Util
    * second dimension the columns.
    */
 
-        public static string makeHTMLTable(string[][] table, string[] rowLabels, string[] colLabels)
+        public static string MakeHTMLTable(string[][] table, string[] rowLabels, string[] colLabels)
         {
-            StringBuilder buff = new StringBuilder();
+            var buff = new StringBuilder();
             buff.Append("<table class=\"auto\" border=\"1\" cellspacing=\"0\">\n");
             // top row
             buff.Append("<tr>\n");
@@ -1728,26 +1728,26 @@ namespace OpenNLP.Tools.Util
    * @return A string form of the table
    */
 
-        public static string makeTextTable(Object[][] table, Object[] rowLabels, Object[] colLabels, int padLeft,
+        public static string MakeTextTable(Object[][] table, Object[] rowLabels, Object[] colLabels, int padLeft,
             int padRight, bool tsv)
         {
-            StringBuilder buff = new StringBuilder();
+            var buff = new StringBuilder();
             // top row
-            buff.Append(makeAsciiTableCell("", padLeft, padRight, tsv)); // the top left cell
+            buff.Append(MakeAsciiTableCell("", padLeft, padRight, tsv)); // the top left cell
             for (int j = 0; j < table[0].Length; j++)
             {
                 // assume table is a rectangular matrix
-                buff.Append(makeAsciiTableCell(colLabels[j], padLeft, padRight, (j != table[0].Length - 1) && tsv));
+                buff.Append(MakeAsciiTableCell(colLabels[j], padLeft, padRight, (j != table[0].Length - 1) && tsv));
             }
             buff.Append('\n');
             // all other rows
             for (int i = 0; i < table.Length; i++)
             {
                 // one row
-                buff.Append(makeAsciiTableCell(rowLabels[i], padLeft, padRight, tsv));
+                buff.Append(MakeAsciiTableCell(rowLabels[i], padLeft, padRight, tsv));
                 for (int j = 0; j < table[i].Length; j++)
                 {
-                    buff.Append(makeAsciiTableCell(table[i][j], padLeft, padRight, (j != table[0].Length - 1) && tsv));
+                    buff.Append(MakeAsciiTableCell(table[i][j], padLeft, padRight, (j != table[0].Length - 1) && tsv));
                 }
                 buff.Append('\n');
             }
@@ -1760,16 +1760,16 @@ namespace OpenNLP.Tools.Util
    *
    */
 
-        private static string makeAsciiTableCell(Object obj, int padLeft, int padRight, bool tsv)
+        private static string MakeAsciiTableCell(Object obj, int padLeft, int padRight, bool tsv)
         {
             string result = obj.ToString();
             if (padLeft > 0)
             {
-                result = StringUtils.padLeft(result, padLeft);
+                result = StringUtils.PadLeft(result, padLeft);
             }
             if (padRight > 0)
             {
-                result = pad(result, padRight);
+                result = Pad(result, padRight);
             }
             if (tsv)
             {
@@ -1778,9 +1778,9 @@ namespace OpenNLP.Tools.Util
             return result;
         }
         
-        public static string toAscii(string s)
+        public static string ToAscii(string s)
         {
-            StringBuilder b = new StringBuilder();
+            var b = new StringBuilder();
             for (int i = 0; i < s.Length; i++)
             {
                 char c = s[i];
@@ -1902,16 +1902,16 @@ namespace OpenNLP.Tools.Util
         }
 
 
-        public static string toCSVString(string[] fields)
+        public static string ToCSVString(string[] fields)
         {
-            StringBuilder b = new StringBuilder();
+            var b = new StringBuilder();
             foreach (string fld in fields)
             {
                 if (b.Length > 0)
                 {
                     b.Append(',');
                 }
-                string field = escapeString(fld, new char[] {'\"'}, '\"'); // escape quotes with double quotes
+                string field = EscapeString(fld, new char[] {'\"'}, '\"'); // escape quotes with double quotes
                 b.Append('\"').Append(field).Append('\"');
             }
             return b.ToString();
@@ -1950,7 +1950,7 @@ namespace OpenNLP.Tools.Util
    * Returns the supplied string with any trailing '\n' removed.
    */
 
-        public static string chomp(string s)
+        public static string Chomp(string s)
         {
             if (s.Length == 0)
                 return s;
@@ -1967,9 +1967,9 @@ namespace OpenNLP.Tools.Util
    * any trailing '\n' removed.
    */
 
-        public static string chomp(Object o)
+        public static string Chomp(Object o)
         {
-            return chomp(o.ToString());
+            return Chomp(o.ToString());
         }
 
 
@@ -1994,9 +1994,9 @@ namespace OpenNLP.Tools.Util
    * Example: <code>getBaseName("/u/wcmac/foo.txt") ==> "foo.txt"</code>
    */
 
-        public static string getBaseName(string fileName)
+        public static string GetBaseName(string fileName)
         {
-            return getBaseName(fileName, "");
+            return GetBaseName(fileName, "");
         }
 
         /**
@@ -2007,7 +2007,7 @@ namespace OpenNLP.Tools.Util
    * Example: <code>getBaseName("/u/wcmac/foo.txt", ".pdf") ==> "foo.txt"</code><br/>
    */
 
-        public static string getBaseName(string fileName, string suffix)
+        public static string GetBaseName(string fileName, string suffix)
         {
             string[] elts = fileName.Split(new[] {"/"}, StringSplitOptions.None);
             string lastElt = elts[elts.Length - 1];
@@ -2025,7 +2025,7 @@ namespace OpenNLP.Tools.Util
    * @return true if the string is valid
    */
 
-        public static bool isAlpha(string s)
+        public static bool IsAlpha(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Alpha}\\s]+$");
     Matcher m = p.matcher(s);
@@ -2040,7 +2040,7 @@ namespace OpenNLP.Tools.Util
    * @return true if the string is valid
    */
 
-        public static bool isNumeric(string s)
+        public static bool IsNumeric(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Digit}\\s\\.]+$");
     Matcher m = p.matcher(s);
@@ -2055,7 +2055,7 @@ namespace OpenNLP.Tools.Util
    * @return true if the string is valid
    */
 
-        public static bool isAlphanumeric(string s)
+        public static bool IsAlphanumeric(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Alnum}\\s\\.]+$");
     Matcher m = p.matcher(s);
@@ -2070,7 +2070,7 @@ namespace OpenNLP.Tools.Util
    * @return true if the string is valid
    */
 
-        public static bool isPunct(string s)
+        public static bool IsPunct(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Punct}]+$");
     Matcher m = p.matcher(s);
@@ -2085,7 +2085,7 @@ namespace OpenNLP.Tools.Util
    * @return true if the string is valid
    */
 
-        public static bool isAcronym(string s)
+        public static bool IsAcronym(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Upper}]+$");
     Matcher m = p.matcher(s);
@@ -2093,7 +2093,7 @@ namespace OpenNLP.Tools.Util
             return Regex.IsMatch(s, "^[\\p{Upper}]+$");
         }
 
-        public static string getNotNullString(string s)
+        public static string GetNotNullString(string s)
         {
             if (s == null)
                 return "";
@@ -2246,9 +2246,9 @@ namespace OpenNLP.Tools.Util
    * Build a list of character-based ngrams from the given string.
    */
 
-        public static List<string> getCharacterNgrams(string s, int minSize, int maxSize)
+        public static List<string> GetCharacterNgrams(string s, int minSize, int maxSize)
         {
-            List<string> ngrams = new List<string>();
+            var ngrams = new List<string>();
             int len = s.Length;
 
             for (int i = 0; i < len; i++)

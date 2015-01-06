@@ -59,7 +59,6 @@ namespace OpenNLP.Tools.Util
 			{
 				return (mList.Count == 0);
 			}
-			
 		}
 	
 		/// <summary>
@@ -121,7 +120,7 @@ namespace OpenNLP.Tools.Util
 				}
 				else
 				{
-                    List<T> newList = new List<T>(value);
+                    var newList = new List<T>(value);
 					for (int currentItem = 0; currentItem < value; currentItem++)
 					{
 						newList.Add(this.Extract());

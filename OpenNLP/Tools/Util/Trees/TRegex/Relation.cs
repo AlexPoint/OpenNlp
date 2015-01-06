@@ -125,7 +125,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     throw new ParseException("Unrecognized simple relation " + s);
             }
 
-            return Interner<Relation>.globalIntern(r);
+            return Interner<Relation>.GlobalIntern(r);
         }
 
         /**
@@ -175,7 +175,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     throw new ParseException("Unrecognized compound relation " + s + ' '
                                              + arg);
             }
-            return Interner<Relation>.globalIntern(r);
+            return Interner<Relation>.GlobalIntern(r);
         }
 
         /**
@@ -2750,7 +2750,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public HeadedBy(HeadFinder hf) : base("<<#")
             {
-                this.heads = Interner<Heads>.globalIntern(new Heads(hf));
+                this.heads = Interner<Heads>.GlobalIntern(new Heads(hf));
             }
 
             /*@Override*/
@@ -2935,7 +2935,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             public ImmediatelyHeadedBy(HeadFinder hf) : base("<#")
             {
                 this.immediatelyHeads = Interner<ImmediatelyHeads>
-                    .globalIntern(new ImmediatelyHeads(hf));
+                    .GlobalIntern(new ImmediatelyHeads(hf));
             }
 
             /*@Override*/
@@ -3140,7 +3140,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public HasIthChild(int i) : base("<" + i)
             {
-                ithChildOf = Interner<IthChildOf>.globalIntern(new IthChildOf(i));
+                ithChildOf = Interner<IthChildOf>.GlobalIntern(new IthChildOf(i));
             }
 
             /*@Override*/
@@ -3469,7 +3469,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 Func<string, string> basicCatFunction) : base(">+(" + arg + ')')
             {
                 unbrokenCategoryDominates = Interner<UnbrokenCategoryDominates>
-                    .globalIntern((new UnbrokenCategoryDominates(arg, basicCatFunction)));
+                    .GlobalIntern((new UnbrokenCategoryDominates(arg, basicCatFunction)));
             }
 
             /** {@inheritDoc} */
@@ -3658,7 +3658,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 while (followingNode != null)
                 {
                     //System.err.println("adding to stack node " + followingNode.ToString());
-                    if (! nodesToSearch.contains(followingNode))
+                    if (! nodesToSearch.Contains(followingNode))
                     {
                         stack.Push(followingNode);
                         nodesToSearch.Add(followingNode);
@@ -3857,7 +3857,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 while (precedingNode != null)
                 {
                     //System.err.println("adding to stack node " + precedingNode.ToString());
-                    if (! nodesToSearch.contains(precedingNode))
+                    if (! nodesToSearch.Contains(precedingNode))
                     {
                         stack.Push(precedingNode);
                         nodesToSearch.Add(precedingNode);

@@ -40,36 +40,41 @@ namespace OpenNLP.Tools.Util
       * @see Collection
       * @since 1.2
       */
-     
-     public abstract class AbstractCollection<E> : IEnumerable<E> {
-         /**
+
+    public abstract class AbstractCollection<E> : IEnumerable<E>
+    {
+        /**
           * Sole constructor.  (For invocation by subclass constructors, typically
           * implicit.)
           */
-         protected AbstractCollection() {
-         }
-     
-         // Query Operations
-     
-         /**
+
+        protected AbstractCollection()
+        {
+        }
+
+        // Query Operations
+
+        /**
           * Returns an iterator over the elements contained in this collection.
           *
           * @return an iterator over the elements contained in this collection
           */
-         //public abstract IEnumerator<E> GetEnumerator();
-     
-         //public abstract int Count();
-     
-         /**
+        //public abstract IEnumerator<E> GetEnumerator();
+
+        //public abstract int Count();
+
+        /**
           * {@inheritDoc}
           *
           * <p>This implementation returns <tt>size() == 0</tt>.
           */
-         public bool Any() {
-             return this.Count() != 0;
-         }
-     
-         /**
+
+        public bool Any()
+        {
+            return this.Count() != 0;
+        }
+
+        /**
           * {@inheritDoc}
           *
           * <p>This implementation iterates over the elements in the collection,
@@ -78,30 +83,34 @@ namespace OpenNLP.Tools.Util
           * @throws ClassCastException   {@inheritDoc}
           * @throws NullPointerException {@inheritDoc}
           */
-         public bool Contains(E o) {
-             IEnumerator<E> it = GetEnumerator();
-           if (o==null)
-           {
-               while (it.MoveNext())
-               {
-                   if (it.Current == null)
-                   {
-                       return true;
-                   }
-               }
-           } else {
-               while (it.MoveNext())
-               {
-                   if (o.Equals(it.Current))
-                   {
-                       return true;
-                   }
-               }
-           }
-           return false;
-       }
-   
-       /**
+
+        public bool Contains(E o)
+        {
+            IEnumerator<E> it = GetEnumerator();
+            if (o == null)
+            {
+                while (it.MoveNext())
+                {
+                    if (it.Current == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                while (it.MoveNext())
+                {
+                    if (o.Equals(it.Current))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /**
         * {@inheritDoc}
         *
         * <p>This implementation returns an array containing all the elements
@@ -123,17 +132,18 @@ namespace OpenNLP.Tools.Util
         * return list.toArray();
         * }</pre>
         */
-       public E[] ToArray()
-       {
-           var list = new List<E>();
-           var it = GetEnumerator();
-           while (it.MoveNext())
-           {
-               list.Add(it.Current);
-           }
-           return list.ToArray();
-           // Estimate size of array; be prepared to see more or fewer elements
-           /*E[] r = new E[Count()];
+
+        public E[] ToArray()
+        {
+            var list = new List<E>();
+            var it = GetEnumerator();
+            while (it.MoveNext())
+            {
+                list.Add(it.Current);
+            }
+            return list.ToArray();
+            // Estimate size of array; be prepared to see more or fewer elements
+            /*E[] r = new E[Count()];
            var it = iterator();
            for (int i = 0; i < r.Length; i++) {
                if (! it.hasNext()) // fewer elements than expected
@@ -141,9 +151,9 @@ namespace OpenNLP.Tools.Util
                r[i] = it.next();
            }
            return it.hasNext() ? finishToArray(r, it) : r;*/
-       }
-   
-       /**
+        }
+
+        /**
         * {@inheritDoc}
         *
         * <p>This implementation returns an array containing all the elements
@@ -170,7 +180,7 @@ namespace OpenNLP.Tools.Util
         * @throws ArrayStoreException  {@inheritDoc}
         * @throws NullPointerException {@inheritDoc}
         */
-       /*public <T> T[] toArray(T[] a) {
+        /*public <T> T[] toArray(T[] a) {
            // Estimate size of array; be prepared to see more or fewer elements
            int size = size();
            T[] r = a.Length >= size ? a :
@@ -189,16 +199,16 @@ namespace OpenNLP.Tools.Util
            }
            return it.hasNext() ? finishToArray(r, it) : r;
        }*/
-   
-       /**
+
+        /**
         * The maximum size of array to allocate.
         * Some VMs reserve some header words in an array.
         * Attempts to allocate larger arrays may result in
         * OutOfMemoryError: Requested array size exceeds VM limit
         */
-       private static readonly int MAX_ARRAY_SIZE = int.MaxValue - 8;
-   
-       /**
+        private static readonly int MAX_ARRAY_SIZE = int.MaxValue - 8;
+
+        /**
         * Reallocates the array being used within toArray when the iterator
         * returned more elements than expected, and finishes filling it from
         * the iterator.
@@ -208,7 +218,7 @@ namespace OpenNLP.Tools.Util
         * @return array containing the elements in the given array, plus any
         *         further elements returned by the iterator, trimmed to size
         */
-       /*private static <T> T[] finishToArray(T[] r, Iterator<?> it) {
+        /*private static <T> T[] finishToArray(T[] r, Iterator<?> it) {
            int i = r.Length;
            while (it.hasNext()) {
                int cap = r.Length;
@@ -224,16 +234,16 @@ namespace OpenNLP.Tools.Util
            // trim if overallocated
            return (i == r.Length) ? r : Arrays.copyOf(r, i);
        }*/
-   
-       /*private static int hugeCapacity(int minCapacity) {
+
+        /*private static int hugeCapacity(int minCapacity) {
            if (minCapacity < 0) // overflow
                throw new OutOfMemoryException("Required array size too large");
            return (minCapacity > MAX_ARRAY_SIZE) ? int.MaxValue: MAX_ARRAY_SIZE;
        }*/
-   
-       // Modification Operations
-   
-       /**
+
+        // Modification Operations
+
+        /**
         * {@inheritDoc}
         *
         * <p>This implementation always throws an
@@ -245,11 +255,13 @@ namespace OpenNLP.Tools.Util
         * @throws IllegalArgumentException      {@inheritDoc}
         * @throws IllegalStateException         {@inheritDoc}
         */
-       public void Add(E e) {
-           throw new InvalidOperationException();
-       }
-   
-       /**
+
+        public void Add(E e)
+        {
+            throw new InvalidOperationException();
+        }
+
+        /**
         * {@inheritDoc}
         *
         * <p>This implementation iterates over the collection looking for the
@@ -265,7 +277,7 @@ namespace OpenNLP.Tools.Util
         * @throws ClassCastException            {@inheritDoc}
         * @throws NullPointerException          {@inheritDoc}
         */
-       /*public bool Remove(E o) {
+        /*public bool Remove(E o) {
            IEnumerator<E> it = iterator();
            if (o==null) {
                while (it.MoveNext()) {
@@ -284,11 +296,11 @@ namespace OpenNLP.Tools.Util
            }
            return false;
        }*/
-   
-   
-       // Bulk Operations
-   
-       /**
+
+
+        // Bulk Operations
+
+        /**
         * {@inheritDoc}
         *
         * <p>This implementation iterates over the specified collection,
@@ -300,18 +312,20 @@ namespace OpenNLP.Tools.Util
         * @throws NullPointerException          {@inheritDoc}
         * @see #contains(Object)
         */
-       public bool ContainsAll(ICollection<E> c) {
-           foreach (E e in c)
-           {
-               if (!Contains(e))
-               {
-                   return false;
-               }
-           }
-           return true;
-       }
-   
-       /**
+
+        public bool ContainsAll(ICollection<E> c)
+        {
+            foreach (E e in c)
+            {
+                if (!Contains(e))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /**
         * {@inheritDoc}
         *
         * <p>This implementation iterates over the specified collection, and adds
@@ -329,14 +343,16 @@ namespace OpenNLP.Tools.Util
         *
         * @see #add(Object)
         */
-       public void AddAll(ICollection<E> c) {
-           foreach (E e in c)
-           {
-               Add(e);
-           }
-       }
-   
-       /**
+
+        public void AddAll(ICollection<E> c)
+        {
+            foreach (E e in c)
+            {
+                Add(e);
+            }
+        }
+
+        /**
         * {@inheritDoc}
         *
         * <p>This implementation iterates over this collection, checking each
@@ -357,7 +373,7 @@ namespace OpenNLP.Tools.Util
         * @see #remove(Object)
         * @see #contains(Object)
         */
-       /*public bool RemoveAll(ICollection<E> c) {
+        /*public bool RemoveAll(ICollection<E> c) {
            bool modified = false;
            Iterator<?> it = iterator();
            while (it.hasNext()) {
@@ -368,8 +384,8 @@ namespace OpenNLP.Tools.Util
            }
            return modified;
        }*/
-   
-       /**
+
+        /**
         * {@inheritDoc}
         *
         * <p>This implementation iterates over this collection, checking each
@@ -390,7 +406,7 @@ namespace OpenNLP.Tools.Util
         * @see #remove(Object)
         * @see #contains(Object)
         */
-       /*public bool retainAll(ICollection<E> c) {
+        /*public bool retainAll(ICollection<E> c) {
            bool modified = false;
            Iterator<E> it = iterator();
            while (it.hasNext()) {
@@ -401,8 +417,8 @@ namespace OpenNLP.Tools.Util
            }
            return modified;
        }*/
-   
-       /**
+
+        /**
         * {@inheritDoc}
         *
         * <p>This implementation iterates over this collection, removing each
@@ -417,18 +433,18 @@ namespace OpenNLP.Tools.Util
         *
         * @throws UnsupportedOperationException {@inheritDoc}
         */
-       /*public void Clear() {
+        /*public void Clear() {
            Iterator<E> it = iterator();
            while (it.hasNext()) {
                it.next();
                it.remove();
            }
        }*/
-   
-   
-       //  string conversion
-   
-       /**
+
+
+        //  string conversion
+
+        /**
         * Returns a string representation of this collection.  The string
         * representation consists of a list of the collection's elements in the
         * order they are returned by its iterator, enclosed in square brackets
@@ -438,21 +454,22 @@ namespace OpenNLP.Tools.Util
         *
         * @return a string representation of this collection
         */
-         public abstract IEnumerator<E> GetEnumerator();
+        public abstract IEnumerator<E> GetEnumerator();
 
-         public override string ToString() {
-           IEnumerator<E> it = GetEnumerator();
-           StringBuilder sb = new StringBuilder();
-           sb.Append('[');
-           while (it.MoveNext())
-           {
-               E e = it.Current;
-               sb.Append(e);
-               sb.Append(',').Append(' ');
-           }
-           sb = sb.Remove(sb.Length - 2, 2);
-           return sb.Append(']').ToString();
-           /*if (! it.hasNext())
+        public override string ToString()
+        {
+            IEnumerator<E> it = GetEnumerator();
+            var sb = new StringBuilder();
+            sb.Append('[');
+            while (it.MoveNext())
+            {
+                E e = it.Current;
+                sb.Append(e);
+                sb.Append(',').Append(' ');
+            }
+            sb = sb.Remove(sb.Length - 2, 2);
+            return sb.Append(']').ToString();
+            /*if (! it.hasNext())
                return "[]";
    
            StringBuilder sb = new StringBuilder();
@@ -464,11 +481,11 @@ namespace OpenNLP.Tools.Util
                    return sb.Append(']').ToString();
                sb.Append(',').Append(' ');
            }*/
-       }
+        }
 
-         IEnumerator IEnumerable.GetEnumerator()
-         {
-             return GetEnumerator();
-         }
-     }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
 }

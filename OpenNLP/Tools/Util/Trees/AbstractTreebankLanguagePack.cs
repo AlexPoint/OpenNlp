@@ -176,7 +176,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public Predicate<string> punctuationTagRejectFilter()
         {
-            return Filters.notFilter(punctTagStringAcceptFilter());
+            return Filters.NotFilter(punctTagStringAcceptFilter());
         }
 
 
@@ -206,7 +206,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public Predicate<string> punctuationWordRejectFilter()
         {
-            return Filters.notFilter(punctWordStringAcceptFilter());
+            return Filters.NotFilter(punctWordStringAcceptFilter());
         }
 
 
@@ -252,7 +252,7 @@ namespace OpenNLP.Tools.Util.Trees
         //@Override
         public Predicate<string> evalBIgnoredPunctuationTagRejectFilter()
         {
-            return Filters.notFilter(eIPunctTagStringAcceptFilter());
+            return Filters.NotFilter(eIPunctTagStringAcceptFilter());
         }
 
 
@@ -601,27 +601,27 @@ namespace OpenNLP.Tools.Util.Trees
 
         private Predicate<string> punctTagStringAcceptFilter()
         {
-            return Filters.collectionAcceptFilter(punctuationTags());
+            return Filters.CollectionAcceptFilter(punctuationTags());
         }
 
         private Predicate<string> punctWordStringAcceptFilter()
         {
-            return Filters.collectionAcceptFilter(punctuationWords());
+            return Filters.CollectionAcceptFilter(punctuationWords());
         }
 
         private Predicate<string> sFPunctTagStringAcceptFilter()
         {
-            return Filters.collectionAcceptFilter(sentenceFinalPunctuationTags());
+            return Filters.CollectionAcceptFilter(sentenceFinalPunctuationTags());
         }
 
         private Predicate<string> eIPunctTagStringAcceptFilter()
         {
-            return Filters.collectionAcceptFilter(evalBIgnoredPunctuationTags());
+            return Filters.CollectionAcceptFilter(evalBIgnoredPunctuationTags());
         }
 
         public Predicate<string> startSymbolAcceptFilter()
         {
-            return Filters.collectionAcceptFilter(startSymbols());
+            return Filters.CollectionAcceptFilter(startSymbols());
         }
 
         /**

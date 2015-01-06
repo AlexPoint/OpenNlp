@@ -23,7 +23,7 @@ namespace OpenNLP.Tools.Util
    * key (name), and its value is not "false" or "no" or "off".
    */
 
-        public static bool hasProperty(Dictionary<string, string> props, string key)
+        public static bool HasProperty(Dictionary<string, string> props, string key)
         {
             string value = props[key];
             if (value == null)
@@ -35,11 +35,11 @@ namespace OpenNLP.Tools.Util
         }
 
         // Convert from properties to string and from string to properties
-        public static string asString(Dictionary<string, string> props)
+        public static string AsString(Dictionary<string, string> props)
         {
             try
             {
-                StringWriter sw = new StringWriter();
+                var sw = new StringWriter();
                 props[sw.ToString()] = null;
                 return sw.ToString();
             }
@@ -88,7 +88,7 @@ namespace OpenNLP.Tools.Util
    * Tired of Properties not behaving like {@code Map<string,String>}s?  This method will solve that problem for you.
    */
 
-        public static Dictionary<string, string> asMap(Dictionary<string, string> properties)
+        public static Dictionary<string, string> AsMap(Dictionary<string, string> properties)
         {
             /*Map<string, string> map = Generics.newHashMap();
     foreach (Entry<Object, Object> entry in properties.entrySet()) {
@@ -98,10 +98,10 @@ namespace OpenNLP.Tools.Util
             return properties.ToDictionary(ent => ent.Key, ent => ent.Value);
         }
 
-        public static List<KeyValuePair<string, string>> getSortedEntries(Dictionary<string, string> properties)
+        public static List<KeyValuePair<string, string>> GetSortedEntries(Dictionary<string, string> properties)
         {
             //return Maps.sortedEntries(asMap(properties));
-            return asMap(properties).Select(e => e).ToList();
+            return AsMap(properties).Select(e => e).ToList();
         }
 
         /**
@@ -147,10 +147,10 @@ namespace OpenNLP.Tools.Util
    *         the returned structure.
    */
 
-        public static Dictionary<string, string> extractPrefixedProperties(Dictionary<string, string> properties,
+        public static Dictionary<string, string> ExtractPrefixedProperties(Dictionary<string, string> properties,
             string prefix)
         {
-            Dictionary<string, string> ret = new Dictionary<string, string>();
+            var ret = new Dictionary<string, string>();
 
             foreach (var entry in properties)
             {
@@ -174,7 +174,7 @@ namespace OpenNLP.Tools.Util
    * is an object of that type, i.e. a double 0.0 instead of the string "0.0".
    */
         //@SuppressWarnings("unchecked")
-        public static /*<E>*/ E get<E>(Dictionary<string, string> props, string key, E defaultValue, Type type)
+        public static /*<E>*/ E Get<E>(Dictionary<string, string> props, string key, E defaultValue, Type type)
         {
             string value = props[key];
             if (value == null)
@@ -192,7 +192,7 @@ namespace OpenNLP.Tools.Util
    * Load an integer property.  If the key is not present, returns defaultValue.
    */
 
-        public static string getString(Dictionary<string, string> props, string key, string defaultValue)
+        public static string GetString(Dictionary<string, string> props, string key, string defaultValue)
         {
             string value = props[key];
             if (value != null)
@@ -209,16 +209,16 @@ namespace OpenNLP.Tools.Util
    * Load an integer property.  If the key is not present, returns 0.
    */
 
-        public static int getInt(Dictionary<string, string> props, string key)
+        public static int GetInt(Dictionary<string, string> props, string key)
         {
-            return getInt(props, key, 0);
+            return GetInt(props, key, 0);
         }
 
         /**
    * Load an integer property.  If the key is not present, returns defaultValue.
    */
 
-        public static int getInt(Dictionary<string, string> props, string key, int defaultValue)
+        public static int GetInt(Dictionary<string, string> props, string key, int defaultValue)
         {
             string value = props[key];
             if (value != null)
@@ -236,7 +236,7 @@ namespace OpenNLP.Tools.Util
    * If the key is not present, returns defaultValue.
    */
 
-        public static long getLong(Dictionary<string, string> props, string key, long defaultValue)
+        public static long GetLong(Dictionary<string, string> props, string key, long defaultValue)
         {
             string value = props[key];
             if (value != null)
@@ -253,16 +253,16 @@ namespace OpenNLP.Tools.Util
    * Load a double property.  If the key is not present, returns 0.0.
    */
 
-        public static double getDouble(Dictionary<string, string> props, string key)
+        public static double GetDouble(Dictionary<string, string> props, string key)
         {
-            return getDouble(props, key, 0.0);
+            return GetDouble(props, key, 0.0);
         }
 
         /**
    * Load a double property.  If the key is not present, returns defaultValue.
    */
 
-        public static double getDouble(Dictionary<string, string> props, string key, double defaultValue)
+        public static double GetDouble(Dictionary<string, string> props, string key, double defaultValue)
         {
             string value = props[key];
             if (value != null)
@@ -279,16 +279,16 @@ namespace OpenNLP.Tools.Util
    * Load a bool property.  If the key is not present, returns false.
    */
 
-        public static bool getBool(Dictionary<string, string> props, string key)
+        public static bool GetBool(Dictionary<string, string> props, string key)
         {
-            return getBool(props, key, false);
+            return GetBool(props, key, false);
         }
 
         /**
    * Load a bool property.  If the key is not present, returns defaultValue.
    */
 
-        public static bool getBool(Dictionary<string, string> props, string key,
+        public static bool GetBool(Dictionary<string, string> props, string key,
             bool defaultValue)
         {
             string value = props[key];

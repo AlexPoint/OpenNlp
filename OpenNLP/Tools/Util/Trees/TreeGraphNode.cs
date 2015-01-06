@@ -383,7 +383,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public TreeGraphNode headWordNode()
         {
-            TreeGraphNode hwn = safeCast(plabel.get(typeof (TreeCoreAnnotations.HeadWordAnnotation)));
+            TreeGraphNode hwn = safeCast(plabel.Get(typeof (TreeCoreAnnotations.HeadWordAnnotation)));
             if (hwn == null || (hwn.treeGraph() != null && !(hwn.treeGraph().Equals(this.treeGraph()))))
             {
                 return null;
@@ -405,7 +405,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         private void setHeadWordNode( /*readonly*/ TreeGraphNode hwn)
         {
-            plabel.set(typeof (TreeCoreAnnotations.HeadWordAnnotation), hwn);
+            plabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), hwn);
         }
 
         /**
@@ -422,7 +422,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public TreeGraphNode headTagNode()
         {
-            TreeGraphNode htn = safeCast(plabel.get(typeof (TreeCoreAnnotations.HeadTagAnnotation)));
+            TreeGraphNode htn = safeCast(plabel.Get(typeof (TreeCoreAnnotations.HeadTagAnnotation)));
             if (htn == null || (htn.treeGraph() != null && !(htn.treeGraph().Equals(this.treeGraph()))))
             {
                 return null;
@@ -444,7 +444,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         private void setHeadTagNode( /*readonly*/ TreeGraphNode htn)
         {
-            plabel.set(typeof (TreeCoreAnnotations.HeadTagAnnotation), htn);
+            plabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation), htn);
         }
 
         /**
@@ -617,7 +617,7 @@ namespace OpenNLP.Tools.Util.Trees
             if (coreLabel != null)
             {
                 int copy = coreLabel.copyCount();
-                return StringUtils.repeat('\'', copy);
+                return StringUtils.Repeat('\'', copy);
             }
             else
             {

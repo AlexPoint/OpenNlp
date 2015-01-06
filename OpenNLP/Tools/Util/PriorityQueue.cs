@@ -65,7 +65,7 @@ namespace OpenNLP.Tools.Util
    *
    * @return the object with highest priority
    */
-        E removeFirst();
+        E RemoveFirst();
 
         /**
          * Finds the object with the highest priority and returns it, without
@@ -73,7 +73,7 @@ namespace OpenNLP.Tools.Util
          *
          * @return the object with minimum key
          */
-        E getFirst();
+        E GetFirst();
 
         /**
          * Gets the priority of the highest-priority element of the queue
@@ -81,7 +81,7 @@ namespace OpenNLP.Tools.Util
          *
          * @return The priority of the highest-priority element of the queue.
          */
-        double getPriority();
+        double GetPriority();
 
         /**
          * Get the priority of a key.
@@ -90,7 +90,7 @@ namespace OpenNLP.Tools.Util
          * @return A key's priority. If the key is not in the queue,
          *         Double.NEGATIVE_INFINITY is returned.
          */
-        double getPriority(E key);
+        double GetPriority(E key);
 
         /**
          * Convenience method for if you want to pretend relaxPriority doesn't exist,
@@ -107,7 +107,7 @@ namespace OpenNLP.Tools.Util
          * @return <tt>true</tt> if this set did not already contain the specified
          *         element.
          */
-        bool add(E key, double priority);
+        bool Add(E key, double priority);
 
 
         /**
@@ -116,16 +116,16 @@ namespace OpenNLP.Tools.Util
          * @param key an <code>E</code> value
          * @return whether the priority actually changed.
          */
-        bool changePriority(E key, double priority);
+        bool ChangePriority(E key, double priority);
 
         /**
          * Increases the priority of the E key to the new priority if the old priority
          * was lower than the new priority. Otherwise, does nothing.
          *
          */
-        bool relaxPriority(E key, double priority);
+        bool RelaxPriority(E key, double priority);
 
-        List<E> toSortedList();
+        List<E> ToSortedList();
 
         /**
          * Returns a representation of the queue in decreasing priority order,

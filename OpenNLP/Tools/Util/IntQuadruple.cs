@@ -25,32 +25,32 @@ namespace OpenNLP.Tools.Util
 
 
         //@Override
-        public override IntTuple getCopy()
+        public override IntTuple GetCopy()
         {
-            IntQuadruple nT = new IntQuadruple(elements[0], elements[1], elements[2], elements[3]);
+            var nT = new IntQuadruple(elements[0], elements[1], elements[2], elements[3]);
             return nT;
         }
 
 
-        public int getSource()
+        public int GetSource()
         {
-            return get(0);
+            return Get(0);
         }
 
 
-        public int getMiddle()
+        public int GetMiddle()
         {
-            return get(1);
+            return Get(1);
         }
 
-        public int getTarget()
+        public int GetTarget()
         {
-            return get(2);
+            return Get(2);
         }
 
-        public int getTarget2()
+        public int GetTarget2()
         {
-            return get(3);
+            return Get(3);
         }
     }
 }

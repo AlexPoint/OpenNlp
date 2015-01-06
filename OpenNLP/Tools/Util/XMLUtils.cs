@@ -19,7 +19,7 @@ namespace OpenNLP.Tools.Util
 
         public static string XmlEscape(string unescaped)
         {
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             XmlNode node = doc.CreateElement("root");
             node.InnerText = unescaped;
             return node.InnerXml;

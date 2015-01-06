@@ -38,7 +38,7 @@ namespace OpenNLP.Tools.Util
     public class ArrayCoreMap : CoreMap
     {
         /** Initial capacity of the array */
-        private static readonly int INITIAL_CAPACITY = 4;
+        private const int INITIAL_CAPACITY = 4;
 
         /** Array of keys */
         private /*Class<? extends Key<?>>*/ Type[] keys;
@@ -49,7 +49,7 @@ namespace OpenNLP.Tools.Util
         /** Total number of elements actually in keys,values */
         public int psize { get; private set; }
 
-        public int size()
+        public int Size()
         {
             return psize;
         }
@@ -97,7 +97,7 @@ namespace OpenNLP.Tools.Util
         public ArrayCoreMap(CoreMap other)
         {
             /*Set<Class<?>>*/
-            var otherKeys = other.keySet();
+            var otherKeys = other.KeySet();
 
             psize = otherKeys.Count;
             keys = new Type[psize];
@@ -107,7 +107,7 @@ namespace OpenNLP.Tools.Util
             foreach (var key in otherKeys)
             {
                 this.keys[i] = key;
-                this.values[i] = other.get(key);
+                this.values[i] = other.Get(key);
                 i++;
             }
         }
@@ -117,7 +117,7 @@ namespace OpenNLP.Tools.Util
    */
         //@Override
         //@SuppressWarnings("unchecked")
-        public /*<VALUE> VALUE*/ object get( /*Class<? extends Key<VALUE>>*/ Type key)
+        public /*<VALUE> VALUE*/ object Get( /*Class<? extends Key<VALUE>>*/ Type key)
         {
             for (int i = 0; i < psize; i++)
             {
@@ -135,7 +135,7 @@ namespace OpenNLP.Tools.Util
    * {@inheritDoc}
    */
         //@Override
-        public /*<VALUE>*/ bool has( /*Class<? extends Key<VALUE>>*/ Type key)
+        public /*<VALUE>*/ bool Has( /*Class<? extends Key<VALUE>>*/ Type key)
         {
             for (int i = 0; i < psize; i++)
             {
@@ -153,7 +153,7 @@ namespace OpenNLP.Tools.Util
    */
         //@Override
         //@SuppressWarnings("unchecked")
-        public virtual /*<VALUE> VALUE*/ object set( /*Class<? extends Key<VALUE>>*/ Type key, object value)
+        public virtual /*<VALUE> VALUE*/ object Set( /*Class<? extends Key<VALUE>>*/ Type key, object value)
         {
 
             // search array for existing value to replace
@@ -172,8 +172,8 @@ namespace OpenNLP.Tools.Util
             if (psize >= keys.Length)
             {
                 int capacity = keys.Length + (keys.Length < 16 ? 4 : 8);
-                Type[] newKeys = new Type[capacity];
-                Object[] newValues = new Object[capacity];
+                var newKeys = new Type[capacity];
+                var newValues = new Object[capacity];
                 Array.Copy(keys, 0, newKeys, 0, psize);
                 Array.Copy(values, 0, newValues, 0, psize);
                 keys = newKeys;
@@ -192,7 +192,7 @@ namespace OpenNLP.Tools.Util
    * {@inheritDoc}
    */
         //@Override
-        public Set<Type> keySet()
+        public Set<Type> KeySet()
         {
             return new Set<Type>(keys);
 
@@ -236,7 +236,7 @@ namespace OpenNLP.Tools.Util
    */
         //@Override
         //@SuppressWarnings("unchecked")
-        public /*<VALUE> VALUE*/ object remove( /*Class<? extends Key<VALUE>>*/ Type key)
+        public /*<VALUE> VALUE*/ object Remove( /*Class<? extends Key<VALUE>>*/ Type key)
         {
 
             Object rv = null;
@@ -261,7 +261,7 @@ namespace OpenNLP.Tools.Util
    * {@inheritDoc}
    */
         //@Override
-        public /*<VALUE>*/ bool containsKey( /*Class<? extends Key<VALUE>>*/ Type key)
+        public /*<VALUE>*/ bool ContainsKey( /*Class<? extends Key<VALUE>>*/ Type key)
         {
             for (int i = 0; i < psize; i++)
             {
@@ -279,12 +279,12 @@ namespace OpenNLP.Tools.Util
    * currently stored stored in this object.
    */
 
-        public void compact()
+        public void Compact()
         {
             if (keys.Length > psize)
             {
-                Type[] newKeys = new Type[psize];
-                Object[] newValues = new Object[psize];
+                var newKeys = new Type[psize];
+                var newValues = new Object[psize];
                 Array.Copy(keys, 0, newKeys, 0, psize);
                 Array.Copy(values, 0, newValues, 0, psize);
                 keys = /*ErasureUtils.uncheckedCast(*/ newKeys /*)*/;
@@ -292,14 +292,14 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        public void setCapacity(int newSize)
+        public void SetCapacity(int newSize)
         {
             if (psize > newSize)
             {
                 throw new SystemException("You cannot set capacity to smaller than the current size.");
             }
-            Type[] newKeys = new Type[newSize];
-            Object[] newValues = new Object[newSize];
+            var newKeys = new Type[newSize];
+            var newValues = new Object[newSize];
             Array.Copy(keys, 0, newKeys, 0, psize);
             Array.Copy(values, 0, newValues, 0, psize);
             keys = /*ErasureUtils.uncheckedCast(*/ newKeys /*)*/;
@@ -347,14 +347,14 @@ namespace OpenNLP.Tools.Util
                 calledSet = new IdentityHashSet<CoreMap>();
             }
 
-            if (calledSet.contains(this))
+            if (calledSet.Contains(this))
             {
                 return "[...]";
             }
 
-            calledSet.add(this);
+            calledSet.Add(this);
 
-            StringBuilder s = new StringBuilder("[");
+            var s = new StringBuilder("[");
             for (int i = 0; i < psize; i++)
             {
                 s.Append(keys[i].Name);
@@ -367,7 +367,7 @@ namespace OpenNLP.Tools.Util
             }
             s.Append(']');
 
-            bool createdCalledSet = calledSet == null || calledSet.isEmpty();
+            bool createdCalledSet = calledSet == null || calledSet.IsEmpty();
             if (createdCalledSet)
             {
                 toStringCalled.Dispose(); /*remove();*/
@@ -377,7 +377,7 @@ namespace OpenNLP.Tools.Util
                 // Remove the object from the already called set so that
                 // potential later calls in this object graph have something
                 // more description than [...]
-                calledSet.remove(this);
+                calledSet.Remove(this);
             }
             return s.ToString();
         }
@@ -386,9 +386,9 @@ namespace OpenNLP.Tools.Util
    * {@inheritDoc}
    */
         //@Override
-        public string toShorterString(string[] what)
+        public string ToShorterString(string[] what)
         {
-            StringBuilder s = new StringBuilder("[");
+            var s = new StringBuilder("[");
             for (int i = 0; i < psize; i++)
             {
                 string name = keys[i].GetType().Name /*.getSimpleName()*/;
@@ -443,9 +443,9 @@ namespace OpenNLP.Tools.Util
    *     character. If the string contains spaces, it is wrapped in "{...}".
    */
 
-        public string toShortString(string[] what)
+        public string ToShortString(string[] what)
         {
-            return toShortString('/', what);
+            return ToShortString('/', what);
         }
 
         /** This gives a very short string representation of a CoreMap
@@ -463,9 +463,9 @@ namespace OpenNLP.Tools.Util
    *     character. If the string contains spaces, it is wrapped in "{...}".
    */
 
-        public string toShortString(char separator, string[] what)
+        public string ToShortString(char separator, string[] what)
         {
-            StringBuilder s = new StringBuilder();
+            var s = new StringBuilder();
             for (int i = 0; i < psize; i++)
             {
                 bool include;
@@ -545,25 +545,25 @@ namespace OpenNLP.Tools.Util
             if (obj is ArrayCoreMap)
             {
                 // specialized equals for ArrayCoreMap
-                return equals((ArrayCoreMap) obj);
+                return Equals((ArrayCoreMap) obj);
             }
 
             // TODO: make the general equality work in the situation of loops
             // in the object graph
 
             // general equality
-            CoreMap other = (CoreMap) obj;
-            if (! this.keySet().Equals(other.keySet()))
+            var other = (CoreMap) obj;
+            if (! this.KeySet().Equals(other.KeySet()))
             {
                 return false;
             }
-            foreach (var key in this.keySet())
+            foreach (var key in this.KeySet())
             {
-                if (!other.has(key))
+                if (!other.Has(key))
                 {
                     return false;
                 }
-                Object thisV = this.get(key), otherV = other.get(key);
+                Object thisV = this.Get(key), otherV = other.Get(key);
 
                 if (thisV == otherV)
                 {
@@ -585,7 +585,7 @@ namespace OpenNLP.Tools.Util
         }
 
 
-        private bool equals(ArrayCoreMap other)
+        private bool Equals(ArrayCoreMap other)
         {
             Dictionary<Tuple<CoreMap, CoreMap>, Boolean> calledMap = equalsCalled.Value;
             bool createdCalledMap = (calledMap == null);
@@ -685,12 +685,12 @@ namespace OpenNLP.Tools.Util
                 hashCodeCalled.Value = calledSet;
             }
 
-            if (calledSet.contains(this))
+            if (calledSet.Contains(this))
             {
                 return 0;
             }
 
-            calledSet.add(this);
+            calledSet.Add(this);
 
             int keysCode = 0;
             int valuesCode = 0;
@@ -710,7 +710,7 @@ namespace OpenNLP.Tools.Util
                 // there are multiple instances of this CoreMap in the overall
                 // object graph, they each have their hash code calculated.
                 // TODO: can we cache this for later?
-                calledSet.remove(this);
+                calledSet.Remove(this);
             }
             return keysCode*37 + valuesCode;
         }

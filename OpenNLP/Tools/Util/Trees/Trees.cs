@@ -219,7 +219,7 @@ namespace OpenNLP.Tools.Util.Trees
             if (t.isPreTerminal())
             {
                 CoreLabel fl = (CoreLabel) t.getChild(0).label();
-                fl.set(typeof (CoreAnnotations.TagLabelAnnotation), t.label());
+                fl.Set(typeof (CoreAnnotations.TagLabelAnnotation), t.label());
                 l.Add(fl);
             }
             else

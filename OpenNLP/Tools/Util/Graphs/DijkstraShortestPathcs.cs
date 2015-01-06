@@ -26,18 +26,18 @@ namespace OpenNLP.Tools.Util.Graphs
             BinaryHeapPriorityQueue<V> unsettledNodes =
                 new BinaryHeapPriorityQueue<V>();
 
-            unsettledNodes.add(node1, 0);
+            unsettledNodes.Add(node1, 0);
 
-            while (unsettledNodes.size() > 0)
+            while (unsettledNodes.Size() > 0)
             {
-                double distance = unsettledNodes.getPriority();
-                V u = unsettledNodes.removeFirst();
+                double distance = unsettledNodes.GetPriority();
+                V u = unsettledNodes.RemoveFirst();
                 visited.Add(u);
 
                 if (u.Equals(node2))
                     break;
 
-                unsettledNodes.remove(u);
+                unsettledNodes.Remove(u);
 
                 ReadOnlyCollection<V> candidates = ((directionSensitive)
                     ? graph.getChildren(u)
@@ -46,10 +46,10 @@ namespace OpenNLP.Tools.Util.Graphs
                 {
                     double alt = distance - 1;
                     // nodes not already present will have a priority of -inf
-                    if (alt > unsettledNodes.getPriority(candidate) &&
+                    if (alt > unsettledNodes.GetPriority(candidate) &&
                         !visited.Contains(candidate))
                     {
-                        unsettledNodes.relaxPriority(candidate, alt);
+                        unsettledNodes.RelaxPriority(candidate, alt);
                         previous.Add(candidate, u);
                     }
                 }

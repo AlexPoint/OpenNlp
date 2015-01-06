@@ -564,7 +564,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 if (label() is CoreLabel)
                 {
-                    ((CoreLabel) label()).set(typeof (CoreAnnotations.SpanAnnotation), new IntPair(left, left));
+                    ((CoreLabel) label()).Set(typeof (CoreAnnotations.SpanAnnotation), new IntPair(left, left));
                 }
                 else
                 {
@@ -582,7 +582,7 @@ namespace OpenNLP.Tools.Util.Trees
             //Parent span
             if (label() is CoreLabel)
             {
-                ((CoreLabel) label()).set(typeof (CoreAnnotations.SpanAnnotation), new IntPair(left, position - 1));
+                ((CoreLabel) label()).Set(typeof (CoreAnnotations.SpanAnnotation), new IntPair(left, position - 1));
             }
             else
             {
@@ -1232,8 +1232,8 @@ namespace OpenNLP.Tools.Util.Trees
 
             if (isPreTerminal())
             {
-                nodeLabel.set(typeof (TreeCoreAnnotations.HeadWordAnnotation), children()[0]);
-                nodeLabel.set(typeof (TreeCoreAnnotations.HeadTagAnnotation), this);
+                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), children()[0]);
+                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation), this);
                 return;
             }
 
@@ -1250,13 +1250,13 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else if (head.isLeaf())
             {
-                nodeLabel.set(typeof (TreeCoreAnnotations.HeadWordAnnotation), head);
-                nodeLabel.set(typeof (TreeCoreAnnotations.HeadTagAnnotation), head.parent(this));
+                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), head);
+                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation), head.parent(this));
             }
             else if (head.isPreTerminal())
             {
-                nodeLabel.set(typeof (TreeCoreAnnotations.HeadWordAnnotation), head.children()[0]);
-                nodeLabel.set(typeof (TreeCoreAnnotations.HeadTagAnnotation), head);
+                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), head.children()[0]);
+                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation), head);
             }
             else
             {
@@ -1265,10 +1265,10 @@ namespace OpenNLP.Tools.Util.Trees
                     throw new SystemException("Horrible bug");
                 }
                 CoreLabel headLabel = (CoreLabel) head.label();
-                nodeLabel.set(typeof (TreeCoreAnnotations.HeadWordAnnotation),
-                    headLabel.get(typeof (TreeCoreAnnotations.HeadWordAnnotation)));
-                nodeLabel.set(typeof (TreeCoreAnnotations.HeadTagAnnotation),
-                    headLabel.get(typeof (TreeCoreAnnotations.HeadTagAnnotation)));
+                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation),
+                    headLabel.Get(typeof (TreeCoreAnnotations.HeadWordAnnotation)));
+                nodeLabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation),
+                    headLabel.Get(typeof (TreeCoreAnnotations.HeadTagAnnotation)));
             }
         }
 
@@ -1368,7 +1368,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public Set<Dependency<Label, Label, Object>> dependencies()
         {
-            return dependencies(Filters.acceptFilter<Dependency<Label, Label, Object>>());
+            return dependencies(Filters.AcceptFilter<Dependency<Label, Label, Object>>());
         }
 
         public Set<Dependency<Label, Label, Object>> dependencies(Predicate<Dependency<Label, Label, Object>> f)
@@ -1561,8 +1561,8 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 Label hl = headTerminal(hf).label();
                 CoreLabel rl = new CoreLabel();
-                rl.set(typeof (CoreAnnotations.TextAnnotation), rootName);
-                rl.set(typeof (CoreAnnotations.IndexAnnotation), 0);
+                rl.Set(typeof (CoreAnnotations.TextAnnotation), rootName);
+                rl.Set(typeof (CoreAnnotations.IndexAnnotation), 0);
                 deps.Add(new NamedDependency(rl, hl, rootName));
             }
             return deps;
@@ -3426,8 +3426,8 @@ namespace OpenNLP.Tools.Util.Trees
             if (lab is CoreMap)
             {
                 CoreMap afl = (CoreMap) label();
-                afl.set(typeof (CoreAnnotations.BeginIndexAnnotation), start);
-                afl.set(typeof (CoreAnnotations.EndIndexAnnotation), end);
+                afl.Set(typeof (CoreAnnotations.BeginIndexAnnotation), start);
+                afl.Set(typeof (CoreAnnotations.EndIndexAnnotation), end);
             }
             return new Tuple<int, int>(start, end);
         }

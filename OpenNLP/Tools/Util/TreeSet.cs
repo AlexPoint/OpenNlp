@@ -47,7 +47,7 @@ namespace OpenNLP.Tools.Util
         /// <returns>A copy of the TreeSet.</returns>
         public virtual object TreeSetClone()
         {
-            TreeSet<T> internalClone = new TreeSet<T>();
+            var internalClone = new TreeSet<T>();
             internalClone.AddAll(this);
             return internalClone;
         }

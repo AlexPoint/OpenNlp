@@ -76,11 +76,11 @@ namespace OpenNLP.Tools.Util.Ling
    * @param label The CoreMap to copy
    */
         //@SuppressWarnings({"unchecked"})
-        public CoreLabel(CoreMap label) : base(label.size())
+        public CoreLabel(CoreMap label) : base(label.Size())
         {
-            foreach (var key in label.keySet())
+            foreach (var key in label.KeySet())
             {
-                set(key, label.get(key));
+                Set(key, label.Get(key));
             }
         }
 
@@ -99,10 +99,10 @@ namespace OpenNLP.Tools.Util.Ling
             if (label is CoreMap)
             {
                 CoreMap cl = (CoreMap) label;
-                setCapacity(cl.size());
-                foreach (var key in cl.keySet())
+                SetCapacity(cl.Size());
+                foreach (var key in cl.KeySet())
                 {
-                    set(key, cl.get(key));
+                    Set(key, cl.Get(key));
                 }
             }
             else
@@ -302,7 +302,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public /*<KEY extends Key<string>>*/ string getString(Type key)
         {
-            string value = (string) get(key);
+            string value = (string) Get(key);
             if (value == null)
             {
                 return "";
@@ -333,7 +333,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public void setValue(string value)
         {
-            set(typeof (CoreAnnotations.ValueAnnotation), value);
+            Set(typeof (CoreAnnotations.ValueAnnotation), value);
         }
 
         /**
@@ -342,7 +342,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public string value()
         {
-            return (String) get(typeof (CoreAnnotations.ValueAnnotation));
+            return (String) Get(typeof (CoreAnnotations.ValueAnnotation));
         }
 
         /**
@@ -352,13 +352,13 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public void setWord(string word)
         {
-            string originalWord = (String) get(typeof (CoreAnnotations.TextAnnotation));
-            set(typeof (CoreAnnotations.TextAnnotation), word);
+            string originalWord = (String) Get(typeof (CoreAnnotations.TextAnnotation));
+            Set(typeof (CoreAnnotations.TextAnnotation), word);
             // pado feb 09: if you change the word, delete the lemma.
             // gabor dec 2012: check if there was a real change -- this remove is actually rather expensive if it gets called a lot
-            if (word != null && !word.Equals(originalWord) && containsKey(typeof (CoreAnnotations.LemmaAnnotation)))
+            if (word != null && !word.Equals(originalWord) && ContainsKey(typeof (CoreAnnotations.LemmaAnnotation)))
             {
-                remove(typeof (CoreAnnotations.LemmaAnnotation));
+                Remove(typeof (CoreAnnotations.LemmaAnnotation));
             }
         }
 
@@ -368,7 +368,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public string word()
         {
-            return (String) get(typeof (CoreAnnotations.TextAnnotation));
+            return (String) Get(typeof (CoreAnnotations.TextAnnotation));
         }
 
         /**
@@ -377,7 +377,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public void setTag(string tag)
         {
-            set(typeof (CoreAnnotations.PartOfSpeechAnnotation), tag);
+            Set(typeof (CoreAnnotations.PartOfSpeechAnnotation), tag);
         }
 
         /**
@@ -386,7 +386,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public string tag()
         {
-            return (String) get(typeof (CoreAnnotations.PartOfSpeechAnnotation));
+            return (String) Get(typeof (CoreAnnotations.PartOfSpeechAnnotation));
         }
 
         /**
@@ -395,7 +395,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public void setCategory(string category)
         {
-            set(typeof (CoreAnnotations.CategoryAnnotation), category);
+            Set(typeof (CoreAnnotations.CategoryAnnotation), category);
         }
 
         /**
@@ -404,7 +404,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public string category()
         {
-            return (String) get(typeof (CoreAnnotations.CategoryAnnotation));
+            return (String) Get(typeof (CoreAnnotations.CategoryAnnotation));
         }
 
         /**
@@ -413,7 +413,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public void setAfter(string after)
         {
-            set(typeof (CoreAnnotations.AfterAnnotation), after);
+            Set(typeof (CoreAnnotations.AfterAnnotation), after);
         }
 
         /**
@@ -431,7 +431,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public void setBefore(string before)
         {
-            set(typeof (CoreAnnotations.BeforeAnnotation), before);
+            Set(typeof (CoreAnnotations.BeforeAnnotation), before);
         }
 
 
@@ -450,7 +450,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public void setOriginalText(string originalText)
         {
-            set(typeof (CoreAnnotations.OriginalTextAnnotation), originalText);
+            Set(typeof (CoreAnnotations.OriginalTextAnnotation), originalText);
         }
 
         /**
@@ -468,7 +468,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public string docID()
         {
-            return (String) get(typeof (CoreAnnotations.DocIDAnnotation));
+            return (String) Get(typeof (CoreAnnotations.DocIDAnnotation));
         }
 
         /**
@@ -488,12 +488,12 @@ namespace OpenNLP.Tools.Util.Ling
 
         public string ner()
         {
-            return (String) get(typeof (CoreAnnotations.NamedEntityTagAnnotation));
+            return (String) Get(typeof (CoreAnnotations.NamedEntityTagAnnotation));
         }
 
         public void setNER(string ner)
         {
-            set(typeof (CoreAnnotations.NamedEntityTagAnnotation), ner);
+            Set(typeof (CoreAnnotations.NamedEntityTagAnnotation), ner);
         }
 
         /**
@@ -502,7 +502,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public string lemma()
         {
-            return (String) get(typeof (CoreAnnotations.LemmaAnnotation));
+            return (String) Get(typeof (CoreAnnotations.LemmaAnnotation));
         }
 
         /**
@@ -511,7 +511,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public void setLemma(string lemma)
         {
-            set(typeof (CoreAnnotations.LemmaAnnotation), lemma);
+            Set(typeof (CoreAnnotations.LemmaAnnotation), lemma);
         }
 
 
@@ -521,7 +521,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public int index()
         {
-            var n = get(typeof (CoreAnnotations.IndexAnnotation));
+            var n = Get(typeof (CoreAnnotations.IndexAnnotation));
             if (n == null)
             {
                 return -1;
@@ -538,7 +538,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public void setIndex(int index)
         {
-            set(typeof (CoreAnnotations.IndexAnnotation), index);
+            Set(typeof (CoreAnnotations.IndexAnnotation), index);
         }
 
         /**
@@ -547,7 +547,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public int sentIndex()
         {
-            var n = get(typeof (CoreAnnotations.SentenceIndexAnnotation));
+            var n = Get(typeof (CoreAnnotations.SentenceIndexAnnotation));
             if (n == null)
                 return -1;
             else
@@ -560,7 +560,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public void setSentIndex(int sentIndex)
         {
-            set(typeof (CoreAnnotations.SentenceIndexAnnotation), sentIndex);
+            Set(typeof (CoreAnnotations.SentenceIndexAnnotation), sentIndex);
         }
 
         /**
@@ -569,7 +569,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public int beginPosition()
         {
-            var i = get(typeof (CoreAnnotations.CharacterOffsetBeginAnnotation));
+            var i = Get(typeof (CoreAnnotations.CharacterOffsetBeginAnnotation));
             if (i != null)
                 return (int) i;
             else
@@ -582,7 +582,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public int endPosition()
         {
-            var i = get(typeof (CoreAnnotations.CharacterOffsetEndAnnotation));
+            var i = Get(typeof (CoreAnnotations.CharacterOffsetEndAnnotation));
             if (i != null)
                 return (int) i;
             else return -1;
@@ -594,7 +594,7 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public void setBeginPosition(int beginPos)
         {
-            set(typeof (CoreAnnotations.CharacterOffsetBeginAnnotation), beginPos);
+            Set(typeof (CoreAnnotations.CharacterOffsetBeginAnnotation), beginPos);
         }
 
         /**
@@ -603,12 +603,12 @@ namespace OpenNLP.Tools.Util.Ling
         //@Override
         public void setEndPosition(int endPos)
         {
-            set(typeof (CoreAnnotations.CharacterOffsetEndAnnotation), endPos);
+            Set(typeof (CoreAnnotations.CharacterOffsetEndAnnotation), endPos);
         }
 
         public int copyCount()
         {
-            var copy = get(typeof (CoreAnnotations.CopyAnnotation));
+            var copy = Get(typeof (CoreAnnotations.CopyAnnotation));
             if (copy == null)
                 return 0;
             else return (int) copy;
@@ -616,7 +616,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public void setCopyCount(int count)
         {
-            set(typeof (CoreAnnotations.CopyAnnotation), count);
+            Set(typeof (CoreAnnotations.CopyAnnotation), count);
         }
 
         /**
@@ -678,9 +678,9 @@ namespace OpenNLP.Tools.Util.Ling
                 case OutputFormat.MAP:
                 {
                     Dictionary<string, object> map2 = new Dictionary<string, object>();
-                    foreach (var key in this.keySet())
+                    foreach (var key in this.KeySet())
                     {
-                        map2.Add(key.Name, get(key));
+                        map2.Add(key.Name, Get(key));
                     }
                     buf.Append(map2);
                     break;
@@ -689,9 +689,9 @@ namespace OpenNLP.Tools.Util.Ling
                 {
                     buf.Append(value());
                     Dictionary<Type, object> map2 = new Dictionary<Type, object>(asClassComparator);
-                    foreach (var key in this.keySet())
+                    foreach (var key in this.KeySet())
                     {
-                        map2.Add(key, get(key));
+                        map2.Add(key, Get(key));
                     }
                     map2.Remove(typeof (CoreAnnotations.ValueAnnotation));
                     buf.Append(map2);
@@ -700,7 +700,7 @@ namespace OpenNLP.Tools.Util.Ling
                 case OutputFormat.VALUE_INDEX:
                 {
                     buf.Append(value());
-                    var index = this.get(typeof (CoreAnnotations.IndexAnnotation));
+                    var index = this.Get(typeof (CoreAnnotations.IndexAnnotation));
                     if (index != null)
                     {
                         buf.Append('-').Append((int) index);
@@ -727,7 +727,7 @@ namespace OpenNLP.Tools.Util.Ling
                     {
                         buf.Append(TAG_SEPARATOR).Append(ltag);
                     }
-                    var index = this.get(typeof (CoreAnnotations.IndexAnnotation));
+                    var index = this.Get(typeof (CoreAnnotations.IndexAnnotation));
                     if (index != null)
                     {
                         buf.Append('-').Append((int) index);
@@ -738,13 +738,13 @@ namespace OpenNLP.Tools.Util.Ling
                 case OutputFormat.VALUE_INDEX_MAP:
                 {
                     buf.Append(value());
-                    var index = this.get(typeof (CoreAnnotations.IndexAnnotation));
+                    var index = this.Get(typeof (CoreAnnotations.IndexAnnotation));
                     if (index != null)
                     {
                         buf.Append('-').Append((int) index);
                     }
                     Dictionary<string, Object> map2 = new Dictionary<string, Object>();
-                    foreach (var key in this.keySet())
+                    foreach (var key in this.KeySet())
                     {
                         string cls = key.Name;
                         // special shortening of all the Annotation classes
@@ -753,7 +753,7 @@ namespace OpenNLP.Tools.Util.Ling
                         {
                             cls = cls.Substring(idx + 1);
                         }
-                        map2.Add(cls, this.get(key));
+                        map2.Add(cls, this.Get(key));
                     }
                     map2.Remove("IndexAnnotation");
                     map2.Remove("ValueAnnotation");
@@ -769,8 +769,8 @@ namespace OpenNLP.Tools.Util.Ling
                     break;
                 case OutputFormat.WORD_INDEX:
                 {
-                    buf.Append(this.get(typeof (CoreAnnotations.TextAnnotation)));
-                    var index = this.get(typeof (CoreAnnotations.IndexAnnotation));
+                    buf.Append(this.Get(typeof (CoreAnnotations.TextAnnotation)));
+                    var index = this.Get(typeof (CoreAnnotations.IndexAnnotation));
                     if (index != null)
                     {
                         buf.Append('-').Append((int) index);
@@ -786,7 +786,7 @@ namespace OpenNLP.Tools.Util.Ling
 
         public string toPrimes()
         {
-            return StringUtils.repeat('\'', copyCount());
+            return StringUtils.Repeat('\'', copyCount());
         }
 
         private class NameComparer : IEqualityComparer<Type>

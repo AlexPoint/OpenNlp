@@ -38,7 +38,7 @@ namespace OpenNLP.Tools.Util
    * For getting the instance that global methods use.
    */
 
-        public static Interner<Object> getGlobal()
+        public static Interner<Object> GetGlobal()
         {
             return interner;
         }
@@ -60,15 +60,15 @@ namespace OpenNLP.Tools.Util
    * .equals to o.
    */
         //@SuppressWarnings("unchecked")
-        public static T globalIntern<T>(T o)
+        public static T GlobalIntern<T>(T o)
         {
-            return (T) getGlobal().intern(o);
+            return (T) GetGlobal().Intern(o);
         }
 
 
         protected Dictionary<T, WeakReference<T>> map = new Dictionary<T, WeakReference<T>>();
 
-        public void clear()
+        public void Clear()
         {
             map = new Dictionary<T, WeakReference<T>>();
         }
@@ -79,7 +79,7 @@ namespace OpenNLP.Tools.Util
    * .equals to o.
    */
 
-        public T intern(T o)
+        public T Intern(T o)
         {
             if (!map.ContainsKey(o))
             {
@@ -104,17 +104,17 @@ namespace OpenNLP.Tools.Util
    * original set.
    */
 
-        public Set<T> internAll(Set<T> s)
+        public Set<T> InternAll(Set<T> s)
         {
-            Set<T> result = new Set<T>();
+            var result = new Set<T>();
             foreach (T o in s)
             {
-                result.Add(intern(o));
+                result.Add(Intern(o));
             }
             return result;
         }
 
-        public int size()
+        public int Size()
         {
             return map.Count;
         }

@@ -19,25 +19,25 @@ namespace OpenNLP.Tools.Util
         }
 
 
-        public int getSource()
+        public int GetSource()
         {
             return elements[0];
         }
 
-        public void setSource(int src)
+        public void SetSource(int src)
         {
             elements[0] = src;
         }
 
 
         //@Override
-        public override IntTuple getCopy()
+        public override IntTuple GetCopy()
         {
-            IntUni nT = new IntUni(elements[0]);
+            var nT = new IntUni(elements[0]);
             return nT;
         }
 
-        public void add(int val)
+        public void Add(int val)
         {
             elements[0] += val;
         }

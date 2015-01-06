@@ -154,7 +154,7 @@ namespace OpenNLP.Tools.Util
                     Array.Copy(scores, tempScores, scores.Length);
 
                     Array.Sort(tempScores);
-                    double minimum = tempScores[System.Math.Max(0, scores.Length - Size)];
+                    double minimum = tempScores[Math.Max(0, scores.Length - Size)];
 
                     for (int currentScore = 0; currentScore < scores.Length; currentScore++)
                     {

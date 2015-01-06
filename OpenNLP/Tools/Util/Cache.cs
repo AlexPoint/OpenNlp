@@ -149,12 +149,12 @@ namespace OpenNLP.Tools.Util
         {
             get
             {
-                ObjectWrapper wrapper = (ObjectWrapper) mMap[key];
+                var wrapper = (ObjectWrapper) mMap[key];
 
                 if (wrapper != null)
                 {
                     // Move it to the front
-                    DoubleLinkedListElement element = (DoubleLinkedListElement) wrapper.ListItem;
+                    var element = wrapper.ListItem;
 
                     //move to front
                     if (element != mFirstElement)
@@ -188,8 +188,7 @@ namespace OpenNLP.Tools.Util
 
             set
             {
-
-                ObjectWrapper wrapper = (ObjectWrapper) mMap[key];
+                var wrapper = (ObjectWrapper) mMap[key];
                 if (wrapper != null)
                 {
                     /* this should never be the case, we only do a put on a cache miss which 
@@ -268,10 +267,10 @@ namespace OpenNLP.Tools.Util
         public Set<IDictionaryEnumerator> EntrySet()
         {
             IDictionaryEnumerator hashEnumerator = mMap.GetEnumerator();
-            Set<IDictionaryEnumerator> hashSet = new Set<IDictionaryEnumerator>();
+            var hashSet = new Set<IDictionaryEnumerator>();
             while (hashEnumerator.MoveNext())
             {
-                Hashtable tempHash = new Hashtable();
+                var tempHash = new Hashtable();
                 tempHash.Add(hashEnumerator.Key, hashEnumerator.Value);
                 hashSet.Add(tempHash.GetEnumerator());
             }
@@ -285,8 +284,8 @@ namespace OpenNLP.Tools.Util
 
         public void PutAll(IDictionary source)
         {
-            object[] keys = new object[source.Keys.Count];
-            object[] values = new object[source.Values.Count];
+            var keys = new object[source.Keys.Count];
+            var values = new object[source.Values.Count];
 
             source.Keys.CopyTo(keys, 0);
             source.Values.CopyTo(values, 0);
@@ -523,14 +522,14 @@ namespace OpenNLP.Tools.Util
         public override string ToString()
         {
             DoubleLinkedListElement element = First;
-            StringBuilder buffer = new StringBuilder();
-            buffer.Append("[").Append(element.Item.ToString());
+            var buffer = new StringBuilder();
+            buffer.Append("[").Append(element.Item);
 
             element = element.Next;
 
             while (element != null)
             {
-                buffer.Append(", ").Append(element.Item.ToString());
+                buffer.Append(", ").Append(element.Item);
                 element = element.Next;
             }
 
@@ -674,7 +673,7 @@ namespace OpenNLP.Tools.Util
                         mMap.Remove(mList.Last.Value);
                         mList.RemoveLast();
                     }
-                    LinkedListNodeWrapper<K, V> wrapper = new LinkedListNodeWrapper<K, V>(key, value);
+                    var wrapper = new LinkedListNodeWrapper<K, V>(key, value);
                     mMap.Add(key, wrapper);
                     mList.AddFirst(wrapper.Node);
                 }

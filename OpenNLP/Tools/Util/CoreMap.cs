@@ -47,6 +47,6 @@ namespace OpenNLP.Tools.Util
    *     CoreMap.
    */
 
-        string toShorterString(string[] what);
+        string ToShorterString(string[] what);
     }
 }

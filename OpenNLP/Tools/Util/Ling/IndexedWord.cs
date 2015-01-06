@@ -96,9 +96,9 @@ namespace OpenNLP.Tools.Util.Ling
         public IndexedWord(string docID, int sentenceIndex, int index)
         {
             label = new CoreLabel();
-            label.set(typeof (CoreAnnotations.DocIDAnnotation), docID);
-            label.set(typeof (CoreAnnotations.SentenceIndexAnnotation), sentenceIndex);
-            label.set(typeof (CoreAnnotations.IndexAnnotation), index);
+            label.Set(typeof (CoreAnnotations.DocIDAnnotation), docID);
+            label.Set(typeof (CoreAnnotations.SentenceIndexAnnotation), sentenceIndex);
+            label.Set(typeof (CoreAnnotations.IndexAnnotation), index);
         }
 
         public IndexedWord makeCopy(int count)
@@ -114,24 +114,24 @@ namespace OpenNLP.Tools.Util.Ling
    */
         //public CoreLabel backingLabel() { return label; }
 
-        public /*<VALUE> VALUE*/ object get( /*Class<? extends TypesafeMap.Key<VALUE>>*/ Type key)
+        public /*<VALUE> VALUE*/ object Get( /*Class<? extends TypesafeMap.Key<VALUE>>*/ Type key)
         {
-            return label.get(key);
+            return label.Get(key);
         }
 
-        public /*<VALUE>*/ bool has( /*Class<? extends TypesafeMap.Key<VALUE>>*/ Type key)
+        public /*<VALUE>*/ bool Has( /*Class<? extends TypesafeMap.Key<VALUE>>*/ Type key)
         {
-            return label.has(key);
+            return label.Has(key);
         }
 
-        public /*<VALUE>*/ bool containsKey( /*Class<? extends TypesafeMap.Key<VALUE>>*/ Type key)
+        public /*<VALUE>*/ bool ContainsKey( /*Class<? extends TypesafeMap.Key<VALUE>>*/ Type key)
         {
-            return label.containsKey(key);
+            return label.ContainsKey(key);
         }
 
-        public /*<VALUE> VALUE*/ object set( /*Class<? extends TypesafeMap.Key<VALUE>>*/ Type key, /*VALUE*/object value)
+        public /*<VALUE> VALUE*/ object Set( /*Class<? extends TypesafeMap.Key<VALUE>>*/ Type key, /*VALUE*/object value)
         {
-            return label.set(key, value);
+            return label.Set(key, value);
         }
 
         public /*<KEY extends TypesafeMap.Key<string>>*/ string getString( /*Class<KEY>*/ Type key)
@@ -139,19 +139,19 @@ namespace OpenNLP.Tools.Util.Ling
             return label.getString(key);
         }
 
-        public /*<VALUE> VALUE*/ object remove( /*Class<? extends Key<VALUE>>*/ Type key)
+        public /*<VALUE> VALUE*/ object Remove( /*Class<? extends Key<VALUE>>*/ Type key)
         {
-            return label.remove(key);
+            return label.Remove(key);
         }
 
-        public Set< /*Class<?>*/ Type> keySet()
+        public Set< /*Class<?>*/ Type> KeySet()
         {
-            return label.keySet();
+            return label.KeySet();
         }
 
-        public int size()
+        public int Size()
         {
-            return label.size();
+            return label.Size();
         }
 
         //@Override
@@ -299,7 +299,7 @@ namespace OpenNLP.Tools.Util.Ling
         public string toPrimes()
         {
             int copy = label.copyCount();
-            return StringUtils.repeat('\'', copy);
+            return StringUtils.Repeat('\'', copy);
         }
 
         /**
@@ -316,8 +316,8 @@ namespace OpenNLP.Tools.Util.Ling
 
             //now compare on appropriate keys
             IndexedWord otherWord = (IndexedWord) o;
-            var myInd = get(typeof (CoreAnnotations.IndexAnnotation));
-            var otherInd = otherWord.get(typeof (CoreAnnotations.IndexAnnotation));
+            var myInd = Get(typeof (CoreAnnotations.IndexAnnotation));
+            var otherInd = otherWord.Get(typeof (CoreAnnotations.IndexAnnotation));
             if (myInd == null)
             {
                 if (otherInd != null)
@@ -327,8 +327,8 @@ namespace OpenNLP.Tools.Util.Ling
             {
                 return false;
             }
-            var mySentInd = get(typeof (CoreAnnotations.SentenceIndexAnnotation));
-            var otherSentInd = otherWord.get(typeof (CoreAnnotations.SentenceIndexAnnotation));
+            var mySentInd = Get(typeof (CoreAnnotations.SentenceIndexAnnotation));
+            var otherSentInd = otherWord.Get(typeof (CoreAnnotations.SentenceIndexAnnotation));
             if (mySentInd == null)
             {
                 if (otherSentInd != null)
@@ -366,19 +366,19 @@ namespace OpenNLP.Tools.Util.Ling
         {
             bool sensible = false;
             int result = 0;
-            if (get(typeof (CoreAnnotations.DocIDAnnotation)) != null)
+            if (Get(typeof (CoreAnnotations.DocIDAnnotation)) != null)
             {
-                result = get(typeof (CoreAnnotations.DocIDAnnotation)).GetHashCode();
+                result = Get(typeof (CoreAnnotations.DocIDAnnotation)).GetHashCode();
                 sensible = true;
             }
-            if (has(typeof (CoreAnnotations.SentenceIndexAnnotation)))
+            if (Has(typeof (CoreAnnotations.SentenceIndexAnnotation)))
             {
-                result = 29*result + get(typeof (CoreAnnotations.SentenceIndexAnnotation)).GetHashCode();
+                result = 29*result + Get(typeof (CoreAnnotations.SentenceIndexAnnotation)).GetHashCode();
                 sensible = true;
             }
-            if (has(typeof (CoreAnnotations.IndexAnnotation)))
+            if (Has(typeof (CoreAnnotations.IndexAnnotation)))
             {
-                result = 29*result + get(typeof (CoreAnnotations.IndexAnnotation)).GetHashCode();
+                result = 29*result + Get(typeof (CoreAnnotations.IndexAnnotation)).GetHashCode();
                 sensible = true;
             }
             if (! sensible)

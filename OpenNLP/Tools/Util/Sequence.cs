@@ -39,7 +39,7 @@ using System.Collections.Generic;
 namespace OpenNLP.Tools.Util
 {
 	/// <summary>Represents a weighted sequence of outcomes. </summary>
-	public class Sequence : System.IComparable
+	public class Sequence : IComparable
 	{
 		private double mScore;
 		private List<string> mOutcomes;
@@ -147,7 +147,7 @@ namespace OpenNLP.Tools.Util
         /// </returns>
         public virtual int CompareTo(object o)
 		{
-			Sequence sequence = (Sequence) o;
+			var sequence = (Sequence) o;
 
 			if (mScore < sequence.Score)
 			{
@@ -175,7 +175,7 @@ namespace OpenNLP.Tools.Util
 			{
 				return false;
 			}
-			Sequence sequence = (Sequence) o;
+			var sequence = (Sequence) o;
 			return mScore == sequence.Score;
 		}  
 
@@ -260,7 +260,7 @@ namespace OpenNLP.Tools.Util
 
 		public override string ToString()
 		{
-			return mScore + " " + mOutcomes.ToString();
+			return mScore + " " + mOutcomes;
 		}
 	}
 }

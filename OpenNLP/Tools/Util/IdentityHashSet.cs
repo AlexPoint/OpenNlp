@@ -30,7 +30,7 @@ namespace OpenNLP.Tools.Util
         // INSTANCE VARIABLES -------------------------------------------------
 
         // the IdentityHashMap which backs this set
-        private new IdentityDictionary<T, Boolean> map;
+        private IdentityDictionary<T, Boolean> map;
         private static readonly long serialVersionUID = -5024744406713321676L;
 
 
@@ -84,7 +84,7 @@ namespace OpenNLP.Tools.Util
    *              false         otherwise
    */
         //@Override
-        public bool add(T o)
+        public override bool Add(T o)
         {
             if (map.ContainsKey(o))
             {
@@ -92,7 +92,7 @@ namespace OpenNLP.Tools.Util
             }
             else
             {
-                internalAdd(o);
+                InternalAdd(o);
                 return true;
             }
         }
@@ -100,7 +100,7 @@ namespace OpenNLP.Tools.Util
         /** Removes all of the elements from this set.
    */
         //@Override
-        public void clear()
+        public void Clear()
         {
             map.Clear();
         }
@@ -132,7 +132,7 @@ namespace OpenNLP.Tools.Util
    *  @return <code>true</code> if this set contains the specified element.
    */
         //@Override
-        public bool contains(T o)
+        public bool Contains(T o)
         {
             return map.ContainsKey(o);
         }
@@ -142,7 +142,7 @@ namespace OpenNLP.Tools.Util
    *  @return <code>true</code> if this set contains no elements.
    */
         //@Override
-        public bool isEmpty()
+        public override bool IsEmpty()
         {
             return !map.Any();
         }
@@ -168,7 +168,7 @@ namespace OpenNLP.Tools.Util
    *  @return <code>true</code> if the set contained the specified element.
    */
         //@Override
-        public bool remove(T o)
+        public override bool Remove(T o)
         {
             return map.Remove(o);
         }
@@ -178,7 +178,7 @@ namespace OpenNLP.Tools.Util
    *  @return the number of elements in this set (its cardinality).
    */
         //@Override
-        public int size()
+        public int Size()
         {
             return map.Count;
         }
@@ -193,7 +193,7 @@ namespace OpenNLP.Tools.Util
    *  @param    o        the element to add to this set
    */
 
-        private void internalAdd(T o)
+        private void InternalAdd(T o)
         {
             map.Add(o, true);
         }

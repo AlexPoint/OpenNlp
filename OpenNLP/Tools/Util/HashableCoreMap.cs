@@ -38,7 +38,7 @@ namespace OpenNLP.Tools.Util
                 keyHashcode += /*entry.getKey().hashCode()*/ entry.Key.GetHashCode();
                 valueHashcode += /*entry.getValue().hashCode()*/ entry.Value.GetHashCode();
 
-                base.set( /*(Class)*/ entry.Key, entry.Value);
+                base.Set( /*(Class)*/ entry.Key, entry.Value);
             }
 
             this.immutableKeys = new Set<Type>(hashkey.Keys);
@@ -75,7 +75,7 @@ namespace OpenNLP.Tools.Util
    *   immutable, hashable key.
    */
         //@Override
-        public override /*<VALUE> VALUE*/ Object set(Type key, Object value)
+        public override /*<VALUE> VALUE*/ Object Set(Type key, Object value)
         {
 
             if (immutableKeys.Contains(key))
@@ -84,7 +84,7 @@ namespace OpenNLP.Tools.Util
                                                    "of immutable field " + key.GetType().Name);
             }
 
-            return base.set(key, value);
+            return base.Set(key, value);
         }
 
         /**
@@ -108,14 +108,14 @@ namespace OpenNLP.Tools.Util
         {
             if (o is HashableCoreMap)
             {
-                HashableCoreMap other = (HashableCoreMap) o;
+                var other = (HashableCoreMap) o;
                 if (!other.immutableKeys.Equals(this.immutableKeys))
                 {
                     return false;
                 }
                 foreach (Type key in immutableKeys)
                 {
-                    if (!this.get( /*(Class)*/key).Equals(other.get( /*(Class)*/key)))
+                    if (!this.Get( /*(Class)*/key).Equals(other.Get( /*(Class)*/key)))
                     {
                         return false;
                     }

@@ -39,23 +39,23 @@ namespace OpenNLP.Tools.Util
         }
 
         //@Override
-        public bool hasNext()
+        public bool HasNext()
         {
-            return size() > 0;
+            return Size() > 0;
         }
 
         //@Override
-        public E next()
+        public E Next()
         {
-            if (size() == 0)
+            if (Size() == 0)
             {
                 throw new KeyNotFoundException("Empty PQ");
             }
-            return removeFirst();
+            return RemoveFirst();
         }
 
         //@Override
-        public void remove()
+        public void Remove()
         {
             throw new KeyNotFoundException();
         }
@@ -72,41 +72,41 @@ namespace OpenNLP.Tools.Util
    */
         private readonly Dictionary<E, Entry<E>> keyToEntry;
 
-        private Entry<E> parent(Entry<E> entry)
+        private Entry<E> Parent(Entry<E> entry)
         {
             int index = entry.index;
-            return (index > 0 ? getEntry((index - 1)/2) : null);
+            return (index > 0 ? GetEntry((index - 1)/2) : null);
         }
 
-        private Entry<E> leftChild(Entry<E> entry)
+        private Entry<E> LeftChild(Entry<E> entry)
         {
             int leftIndex = entry.index*2 + 1;
-            return (leftIndex < size() ? getEntry(leftIndex) : null);
+            return (leftIndex < Size() ? GetEntry(leftIndex) : null);
         }
 
-        private Entry<E> rightChild(Entry<E> entry)
+        private Entry<E> RightChild(Entry<E> entry)
         {
             int index = entry.index;
             int rightIndex = index*2 + 2;
-            return (rightIndex < size() ? getEntry(rightIndex) : null);
+            return (rightIndex < Size() ? GetEntry(rightIndex) : null);
         }
 
-        private int compare(Entry<E> entryA, Entry<E> entryB)
+        private int Compare(Entry<E> entryA, Entry<E> entryB)
         {
-            int result = compare(entryA.priority, entryB.priority);
+            int result = Compare(entryA.priority, entryB.priority);
             if (result != 0)
             {
                 return result;
             }
             if ((entryA.key is IComparable<E>) && (entryB.key is IComparable<E>))
             {
-                IComparable<E> key = (IComparable<E>) (entryA.key);
+                var key = (IComparable<E>) (entryA.key);
                 return key.CompareTo(entryB.key);
             }
             return result;
         }
 
-        private static int compare(double a, double b)
+        private static int Compare(double a, double b)
         {
             double diff = a - b;
             if (diff > 0.0)
@@ -125,7 +125,7 @@ namespace OpenNLP.Tools.Util
    *
    */
 
-        private void swap(Entry<E> entryA, Entry<E> entryB)
+        private void Swap(Entry<E> entryA, Entry<E> entryB)
         {
             int indexA = entryA.index;
             int indexB = entryB.index;
@@ -139,7 +139,7 @@ namespace OpenNLP.Tools.Util
    * Remove the last element of the heap (last in the index array).
    */
 
-        private void removeLastEntry()
+        private void RemoveLastEntry()
         {
             var last = indexToEntry.Last();
             indexToEntry.Remove(last);
@@ -150,7 +150,7 @@ namespace OpenNLP.Tools.Util
    * Get the entry by key (null if none).
    */
 
-        private Entry<E> getEntry(E key)
+        private Entry<E> GetEntry(E key)
         {
             return keyToEntry[key];
         }
@@ -159,16 +159,16 @@ namespace OpenNLP.Tools.Util
    * Get entry by index, exception if none.
    */
 
-        private Entry<E> getEntry(int index)
+        private Entry<E> GetEntry(int index)
         {
             Entry<E> entry = indexToEntry[index];
             return entry;
         }
 
-        private Entry<E> makeEntry(E key)
+        private Entry<E> MakeEntry(E key)
         {
-            Entry<E> entry = new Entry<E>();
-            entry.index = size();
+            var entry = new Entry<E>();
+            entry.index = Size();
             entry.key = key;
             entry.priority = Double.NegativeInfinity;
             indexToEntry.Add(entry);
@@ -180,7 +180,7 @@ namespace OpenNLP.Tools.Util
    * iterative heapify up: move item o at index up until correctly placed
    */
 
-        private void heapifyUp(Entry<E> entry)
+        private void HeapifyUp(Entry<E> entry)
         {
             while (true)
             {
@@ -188,12 +188,12 @@ namespace OpenNLP.Tools.Util
                 {
                     break;
                 }
-                Entry<E> parentEntry = parent(entry);
-                if (compare(entry, parentEntry) <= 0)
+                Entry<E> parentEntry = Parent(entry);
+                if (Compare(entry, parentEntry) <= 0)
                 {
                     break;
                 }
-                swap(entry, parentEntry);
+                Swap(entry, parentEntry);
             }
         }
 
@@ -205,7 +205,7 @@ namespace OpenNLP.Tools.Util
    * recursive formulation with an iterative one to gain (marginal) speed
    */
 
-        private void heapifyDown( /*final*/ Entry<E> entry)
+        private void HeapifyDown( /*final*/ Entry<E> entry)
         {
             Entry<E> bestEntry; // initialized below
 
@@ -213,19 +213,19 @@ namespace OpenNLP.Tools.Util
             {
                 bestEntry = entry;
 
-                Entry<E> leftEntry = leftChild(entry);
+                Entry<E> leftEntry = LeftChild(entry);
                 if (leftEntry != null)
                 {
-                    if (compare(bestEntry, leftEntry) < 0)
+                    if (Compare(bestEntry, leftEntry) < 0)
                     {
                         bestEntry = leftEntry;
                     }
                 }
 
-                Entry<E> rightEntry = rightChild(entry);
+                Entry<E> rightEntry = RightChild(entry);
                 if (rightEntry != null)
                 {
-                    if (compare(bestEntry, rightEntry) < 0)
+                    if (Compare(bestEntry, rightEntry) < 0)
                     {
                         bestEntry = rightEntry;
                     }
@@ -234,7 +234,7 @@ namespace OpenNLP.Tools.Util
                 if (bestEntry != entry)
                 {
                     // Swap min and current
-                    swap(bestEntry, entry);
+                    Swap(bestEntry, entry);
                     // at start of next loop, we set currentIndex to largestIndex
                     // this indexation now holds current, so it is unchanged
                 }
@@ -243,10 +243,10 @@ namespace OpenNLP.Tools.Util
             // verify();
         }
 
-        private void heapify(Entry<E> entry)
+        private void Heapify(Entry<E> entry)
         {
-            heapifyUp(entry);
-            heapifyDown(entry);
+            HeapifyUp(entry);
+            HeapifyDown(entry);
         }
 
 
@@ -257,10 +257,10 @@ namespace OpenNLP.Tools.Util
    * @return the E with highest priority
    */
         //@Override
-        public E removeFirst()
+        public E RemoveFirst()
         {
-            E first = getFirst();
-            remove(first);
+            E first = GetFirst();
+            Remove(first);
             return first;
         }
 
@@ -271,24 +271,24 @@ namespace OpenNLP.Tools.Util
    * @return the E with minimum key
    */
         //@Override
-        public E getFirst()
+        public E GetFirst()
         {
-            if (isEmpty())
+            if (IsEmpty())
             {
                 throw new KeyNotFoundException();
             }
-            return getEntry(0).key;
+            return GetEntry(0).key;
         }
 
         /** {@inheritDoc} */
         //@Override
-        public double getPriority()
+        public double GetPriority()
         {
-            if (isEmpty())
+            if (IsEmpty())
             {
                 throw new KeyNotFoundException();
             }
-            return getEntry(0).priority;
+            return GetEntry(0).priority;
         }
 
         /**
@@ -301,18 +301,18 @@ namespace OpenNLP.Tools.Util
    * object.
    */
 
-        public E getObject(E key)
+        public E GetObject(E key)
         {
-            if (! contains(key)) return default(E);
-            Entry<E> e = getEntry(key);
+            if (! Contains(key)) return default(E);
+            Entry<E> e = GetEntry(key);
             return e.key;
         }
 
         /** {@inheritDoc} */
         //@Override
-        public double getPriority(E key)
+        public double GetPriority(E key)
         {
-            Entry<E> entry = getEntry(key);
+            Entry<E> entry = GetEntry(key);
             if (entry == null)
             {
                 return Double.NegativeInfinity;
@@ -331,24 +331,24 @@ namespace OpenNLP.Tools.Util
    * @return whether the key was present before
    */
         //@Override
-        public bool add(E key)
+        public bool Add(E key)
         {
-            if (contains(key))
+            if (Contains(key))
             {
                 return false;
             }
-            makeEntry(key);
+            MakeEntry(key);
             return true;
         }
 
         /** {@inheritDoc} */
         //@Override
-        public bool add(E key, double priority)
+        public bool Add(E key, double priority)
         {
 //    System.err.println("Adding " + key + " with priority " + priority);
-            if (add(key))
+            if (Add(key))
             {
-                relaxPriority(key, priority);
+                RelaxPriority(key, priority);
                 return true;
             }
             return false;
@@ -357,36 +357,36 @@ namespace OpenNLP.Tools.Util
 
         //@SuppressWarnings("unchecked")
         //@Override
-        public bool remove(Object key)
+        public bool Remove(Object key)
         {
             E eKey = (E) key;
-            Entry<E> entry = getEntry(eKey);
+            Entry<E> entry = GetEntry(eKey);
             if (entry == null)
             {
                 return false;
             }
-            removeEntry(entry);
+            RemoveEntry(entry);
             return true;
         }
 
-        private void removeEntry(Entry<E> entry)
+        private void RemoveEntry(Entry<E> entry)
         {
-            Entry<E> lastEntry = getLastEntry();
+            Entry<E> lastEntry = GetLastEntry();
             if (entry != lastEntry)
             {
-                swap(entry, lastEntry);
-                removeLastEntry();
-                heapify(lastEntry);
+                Swap(entry, lastEntry);
+                RemoveLastEntry();
+                Heapify(lastEntry);
             }
             else
             {
-                removeLastEntry();
+                RemoveLastEntry();
             }
         }
 
-        private Entry<E> getLastEntry()
+        private Entry<E> GetLastEntry()
         {
-            return getEntry(size() - 1);
+            return GetEntry(Size() - 1);
         }
 
         /**
@@ -396,19 +396,19 @@ namespace OpenNLP.Tools.Util
    * @return whether the priority actually improved.
    */
         //@Override
-        public bool relaxPriority(E key, double priority)
+        public bool RelaxPriority(E key, double priority)
         {
-            Entry<E> entry = getEntry(key);
+            Entry<E> entry = GetEntry(key);
             if (entry == null)
             {
-                entry = makeEntry(key);
+                entry = MakeEntry(key);
             }
-            if (compare(priority, entry.priority) <= 0)
+            if (Compare(priority, entry.priority) <= 0)
             {
                 return false;
             }
             entry.priority = priority;
-            heapifyUp(entry);
+            HeapifyUp(entry);
             return true;
         }
 
@@ -419,19 +419,19 @@ namespace OpenNLP.Tools.Util
    * @return whether the priority actually improved.
    */
 
-        public bool decreasePriority(E key, double priority)
+        public bool DecreasePriority(E key, double priority)
         {
-            Entry<E> entry = getEntry(key);
+            Entry<E> entry = GetEntry(key);
             if (entry == null)
             {
-                entry = makeEntry(key);
+                entry = MakeEntry(key);
             }
-            if (compare(priority, entry.priority) >= 0)
+            if (Compare(priority, entry.priority) >= 0)
             {
                 return false;
             }
             entry.priority = priority;
-            heapifyDown(entry);
+            HeapifyDown(entry);
             return true;
         }
 
@@ -442,19 +442,19 @@ namespace OpenNLP.Tools.Util
    * @return whether the priority actually changed.
    */
         //@Override
-        public bool changePriority(E key, double priority)
+        public bool ChangePriority(E key, double priority)
         {
-            Entry<E> entry = getEntry(key);
+            Entry<E> entry = GetEntry(key);
             if (entry == null)
             {
-                entry = makeEntry(key);
+                entry = MakeEntry(key);
             }
-            if (compare(priority, entry.priority) == 0)
+            if (Compare(priority, entry.priority) == 0)
             {
                 return false;
             }
             entry.priority = priority;
-            heapify(entry);
+            Heapify(entry);
             return true;
         }
 
@@ -464,7 +464,7 @@ namespace OpenNLP.Tools.Util
    * @return a <code>bool</code> value
    */
         //@Override
-        public bool isEmpty()
+        public bool IsEmpty()
         {
             return !indexToEntry.Any();
         }
@@ -475,7 +475,7 @@ namespace OpenNLP.Tools.Util
    * @return queue size
    */
         //@Override
-        public int size()
+        public int Size()
         {
             return indexToEntry.Count;
         }
@@ -485,50 +485,49 @@ namespace OpenNLP.Tools.Util
    */
         //@SuppressWarnings("SuspiciousMethodCalls")
         //@Override
-        public bool contains(E key)
+        public bool Contains(E key)
         {
             return keyToEntry.ContainsKey(key);
         }
 
         //@Override
-        public List<E> toSortedList()
+        public List<E> ToSortedList()
         {
-            List<E> sortedList = new List<E>(size());
-            BinaryHeapPriorityQueue<E> queue = this.deepCopy();
-            while (!queue.isEmpty())
+            var sortedList = new List<E>(Size());
+            BinaryHeapPriorityQueue<E> queue = this.DeepCopy();
+            while (!queue.IsEmpty())
             {
-                sortedList.Add(queue.removeFirst());
+                sortedList.Add(queue.RemoveFirst());
             }
             return sortedList;
         }
 
-        public BinaryHeapPriorityQueue<E> deepCopy(MapFactory<E, Entry<E>> mapFactory)
+        public BinaryHeapPriorityQueue<E> DeepCopy(MapFactory<E, Entry<E>> mapFactory)
         {
-            BinaryHeapPriorityQueue<E> queue =
-                new BinaryHeapPriorityQueue<E>(mapFactory);
+            var queue = new BinaryHeapPriorityQueue<E>(mapFactory);
             foreach (Entry<E> entry in keyToEntry.Values)
             {
-                queue.relaxPriority(entry.key, entry.priority);
+                queue.RelaxPriority(entry.key, entry.priority);
             }
             return queue;
         }
 
-        public BinaryHeapPriorityQueue<E> deepCopy()
+        public BinaryHeapPriorityQueue<E> DeepCopy()
         {
-            return deepCopy(MapFactory<E, Entry<E>>.hashMapFactory<E, Entry<E>>());
+            return DeepCopy(MapFactory<E, Entry<E>>.hashMapFactory<E, Entry<E>>());
         }
 
         //@Override
-        public IEnumerator<E> iterator()
+        public IEnumerator<E> Iterator()
         {
-            return new ReadOnlyCollection<E>(toSortedList()).GetEnumerator();
+            return new ReadOnlyCollection<E>(ToSortedList()).GetEnumerator();
         }
 
         /**
    * Clears the queue.
    */
         //@Override
-        public void clear()
+        public void Clear()
         {
             indexToEntry.Clear();
             keyToEntry.Clear();
@@ -560,12 +559,12 @@ namespace OpenNLP.Tools.Util
         public string ToString(int maxKeysToPrint)
         {
             if (maxKeysToPrint <= 0) maxKeysToPrint = int.MaxValue;
-            List<E> sortedKeys = toSortedList();
-            StringBuilder sb = new StringBuilder("[");
+            List<E> sortedKeys = ToSortedList();
+            var sb = new StringBuilder("[");
             for (int i = 0; i < maxKeysToPrint && i < sortedKeys.Count; i++)
             {
                 E key = sortedKeys[i];
-                sb.Append(key).Append('=').Append(getPriority(key));
+                sb.Append(key).Append('=').Append(GetPriority(key));
                 if (i < maxKeysToPrint - 1 && i < sortedKeys.Count - 1)
                 {
                     sb.Append(", ");
@@ -575,15 +574,15 @@ namespace OpenNLP.Tools.Util
             return sb.ToString();
         }
 
-        public string toVerticalString()
+        public string ToVerticalString()
         {
-            List<E> sortedKeys = toSortedList();
-            StringBuilder sb = new StringBuilder();
+            List<E> sortedKeys = ToSortedList();
+            var sb = new StringBuilder();
             foreach (var sortedKey in sortedKeys)
             {
                 sb.Append(sortedKey);
                 sb.Append('\t');
-                sb.Append(getPriority(sortedKey));
+                sb.Append(GetPriority(sortedKey));
                 if (sortedKeys.Count > sortedKeys.IndexOf(sortedKey) + 1)
                 {
                     sb.Append('\n');

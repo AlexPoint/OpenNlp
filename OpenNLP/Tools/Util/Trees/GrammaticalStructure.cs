@@ -365,7 +365,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             this.root = root;
             indexNodes(this.root);
-            this.puncFilter = Filters.acceptFilter<string>();
+            this.puncFilter = Filters.AcceptFilter<string>();
             allTypedDependencies = typedDependencies = new List<TypedDependency>(projectiveDependencies);
         }
 
@@ -557,7 +557,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         protected Predicate<TypedDependency> extraTreeDepFilter()
         {
-            return Filters.acceptFilter<TypedDependency>();
+            return Filters.AcceptFilter<TypedDependency>();
         }
 
         /**

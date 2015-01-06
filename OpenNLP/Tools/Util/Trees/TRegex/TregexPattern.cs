@@ -89,7 +89,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
  * description.  <emph>NB: A single '@' thus scopes over a disjunction
  * specified by '|': @NP|VP means things with basic category NP or VP.
  * </emph> The basicCategory is defined according to a Function
- * mapping Strings to Strings, as provided by
+ * mapping strings to Strings, as provided by
  * {@link edu.stanford.nlp.trees.AbstractTreebankLanguagePack#getBasicCategoryFunction()}.
  * Label description regular expressions are matched as <code>find()</code>,
  * as in Perl/tgrep;

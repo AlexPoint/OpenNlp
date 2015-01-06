@@ -37,7 +37,7 @@ namespace OpenNLP.Tools.Util
    *  a CoreMap.
    *  The method may not be capable of printing circular dependencies in CoreMaps.
    *
-   *  @param what An array (varargs) of Strings that say what annotation keys
+   *  @param what An array (varargs) of strings that say what annotation keys
    *     to print.  These need to be provided in a shortened form where you
    *     are just giving the part of the class name without package and up to
    *     "Annotation". That is,

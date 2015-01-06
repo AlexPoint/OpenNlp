@@ -7,17 +7,16 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
 {
-    /**
- * StringUtils is a class for random string things, including output
- * formatting and command line argument parsing.
- *
- * @author Dan Klein
- * @author Christopher Manning
- * @author Tim Grow (grow@stanford.edu)
- * @author Chris Cox
- * @version 2006/02/03
- */
-
+    
+    /// <summary>
+    /// Class for random string things, including output formatting and command line argument parsing.
+    /// 
+    /// @author Dan Klein
+    /// @author Christopher Manning
+    /// @author Tim Grow (grow@stanford.edu)
+    /// @author Chris Cox
+    /// @version 2006/02/03
+    /// </summary>
     public static class StringUtils
     {
         public static readonly string[] EMPTY_STRING_ARRAY = new string[0];
@@ -26,31 +25,26 @@ namespace OpenNLP.Tools.Util
         private static readonly string PROPERTIES = "properties";
         private static readonly string ARGS = "args";
         private static readonly string ARGUMENTS = "arguments";
-
-        /**
-   * Say whether this regular expression can be found inside
-   * this string.  This method provides one of the two "missing"
-   * convenience methods for regular expressions in the string class
-   * in JDK1.4.  This is the one you'll want to use all the time if
-   * you're used to Perl.  What were they smoking?
-   *
-   * @param str   string to search for match in
-   * @param regex string to compile as the regular expression
-   * @return Whether the regex can be found in str
-   */
-
+        
+        /// <summary>
+        /// Say whether this regular expression can be found inside this string.
+        /// This method provides one of the two "missing" convenience methods 
+        /// for regular expressions in the string class in JDK1.4.
+        /// This is the one you'll want to use all the time if you're used to Perl.
+        /// What were they smoking?
+        /// </summary>
+        /// <param name="str">string to search for match in</param>
+        /// <param name="regex">string to compile as the regular expression</param>
+        /// <returns>Whether the regex can be found in str</returns>
         public static bool Find(string str, string regex)
         {
             return Regex.IsMatch(str, regex);
         }
-
-        /**
-   * Convenience method: a case-insensitive variant of Collection.contains
-   * @param c Collection&lt;String&gt;
-   * @param s String
-   * @return true if s case-insensitively matches a string in c
-   */
-
+        
+        /// <summary>
+        /// Convenience method: a case-insensitive variant of Collection.contains
+        /// </summary>
+        /// <returns>true if s case-insensitively matches a string in c</returns>
         public static bool ContainsIgnoreCase(List<string> c, string s)
         {
             foreach (string squote in c)
@@ -61,32 +55,29 @@ namespace OpenNLP.Tools.Util
             return false;
         }
 
-        /**
-   * Say whether this regular expression can be found at the beginning of
-   * this string.  This method provides one of the two "missing"
-   * convenience methods for regular expressions in the string class
-   * in JDK1.4.
-   *
-   * @param str   string to search for match at start of
-   * @param regex string to compile as the regular expression
-   * @return Whether the regex can be found at the start of str
-   */
-
+        /// <summary>
+        /// Say whether this regular expression can be found at the beginning of this string. 
+        /// This method provides one of the two "missing" convenience methods 
+        /// for regular expressions in the string class in JDK1.4.
+        /// </summary>
+        /// <param name="str">string to search for match at start of</param>
+        /// <param name="regex">string to compile as the regular expression</param>
+        /// <returns>Whether the regex can be found at the start of str</returns>
         public static bool LookingAt(string str, string regex)
         {
             return Regex.IsMatch(str, "^" + regex);
             //return Pattern.compile(regex).matcher(str).lookingAt();
         }
-
-        /**
-   * Takes a string of the form "x1=y1,x2=y2,..." such
-   * that each y is an integer and each x is a key.  A
-   * string[] s is returned such that s[yn]=xn
-   * @param map A string of the form "x1=y1,x2=y2,..." such
-   *     that each y is an integer and each x is a key.
-   * @return  A string[] s is returned such that s[yn]=xn
-   */
-
+        
+        /// <summary>
+        /// Takes a string of the form "x1=y1,x2=y2,..." 
+        /// such that each y is an integer and each x is a key.
+        /// A string[] s is returned such that s[yn]=xn
+        /// </summary>
+        /// <param name="map">
+        /// A string of the form "x1=y1,x2=y2,..." such that each y is an integer and each x is a key.
+        /// </param>
+        /// <returns>A string[] s is returned such that s[yn]=xn</returns>
         public static string[] MapStringToArray(string map)
         {
             string[] m = map.Split(new[] {'[', ',', ';', ']'});
@@ -112,13 +103,11 @@ namespace OpenNLP.Tools.Util
             return mapArr;
         }
 
-
-        /**
-   * Takes a string of the form "x1=y1,x2=y2,..." and returns Map
-   * @param map A string of the form "x1=y1,x2=y2,..."
-   * @return  A Map m is returned such that m.get(xn) = yn
-   */
-
+        /// <summary>
+        /// Takes a string of the form "x1=y1,x2=y2,..." and returns Map
+        /// </summary>
+        /// <param name="map">A string of the form "x1=y1,x2=y2,..."</param>
+        /// <returns>A Map m is returned such that m.get(xn) = yn</returns>
         public static Dictionary<string, string> MapStringToMap(string map)
         {
             string[] m = map.Split(new[] {'[', ',', ';', ']'});
@@ -380,31 +369,25 @@ namespace OpenNLP.Tools.Util
   public static string join(Object[] elements) {
     return (join(elements, " "));
   }*/
-
-
-        /**
-   * Splits on whitespace (\\s+).
-   * @param s string to split
-   * @return List<string> of split strings
-   */
-
-        public static List<string> Split(string s)
+        
+        /// <summary>
+        /// Splits on whitespace (\\s+).
+        /// </summary>
+        /// <param name="s">string to split</param>
+        public static List<string> SplitOnWhitespaces(string s)
         {
             return Split(s, "\\s+");
         }
-
-        /**
-   * Splits the given string using the given regex as delimiters.
-   * This method is the same as the string.Split() method (except it throws
-   * the results in a List),
-   * and is included just to give a call that is parallel to the other
-   * static regex methods in this class.
-   *
-   * @param str   string to split up
-   * @param regex string to compile as the regular expression
-   * @return List of Strings resulting from splitting on the regex
-   */
-
+        
+        /// <summary>
+        /// Splits the given string using the given regex as delimiters.
+        /// This method is the same as the string.Split() method 
+        /// (except it throws the results in a List), and is included 
+        /// just to give a call that is parallel to the other static regex methods in this class.
+        /// </summary>
+        /// <param name="str">string to split up</param>
+        /// <param name="regex">string to compile as the regular expression</param>
+        /// <returns>List of strings resulting from splitting on the regex</returns>
         public static List<string> Split(string str, string regex)
         {
             return Regex.Split(str, regex).ToList();
@@ -463,7 +446,7 @@ namespace OpenNLP.Tools.Util
   /** Split a string into tokens.  Because there is a tokenRegex as well as a
    *  separatorRegex (unlike for the conventional split), you can do things
    *  like correctly split quoted strings or parenthesized arguments.
-   *  However, it doesn't do the unquoting of quoted Strings for you.
+   *  However, it doesn't do the unquoting of quoted strings for you.
    *  An empty string argument is returned at the beginning, if valueRegex
    *  accepts the empty string and str begins with separatorRegex.
    *  But str can end with either valueRegex or separatorRegex and this does
@@ -506,14 +489,11 @@ namespace OpenNLP.Tools.Util
     return ret;
   }*/
 
-
-        /**
-   * Return a string of length a minimum of totalChars characters by
-   * padding the input string str at the right end with spaces.
-   * If str is already longer
-   * than totalChars, it is returned unchanged.
-   */
-
+        /// <summary>
+        /// Return a string of length a minimum of totalChars characters 
+        /// by padding the input string str at the right end with spaces.
+        /// If str is already longer than totalChars, it is returned unchanged.
+        /// </summary>
         public static string Pad(string str, int totalChars)
         {
             if (str == null)
@@ -529,23 +509,19 @@ namespace OpenNLP.Tools.Util
             return sb.ToString();
         }
 
-        /**
-   * Pads the ToString value of the given Object.
-   */
-
+        /// <summary>
+        /// Pads the ToString value of the given Object.
+        /// </summary>
         public static string Pad(Object obj, int totalChars)
         {
             return Pad(obj.ToString(), totalChars);
         }
-
-
-        /**
-   * Pad or trim so as to produce a string of exactly a certain length.
-   *
-   * @param str The string to be padded or truncated
-   * @param num The desired length
-   */
-
+        
+        /// <summary>
+        /// Pad or trim so as to produce a string of exactly a certain length.
+        /// </summary>
+        /// <param name="str">The string to be padded or truncated</param>
+        /// <param name="num">The desired length</param>
         public static string PadOrTrim(string str, int num)
         {
             if (str == null)
@@ -572,13 +548,11 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        /**
-   * Pad or trim so as to produce a string of exactly a certain length.
-   *
-   * @param str The string to be padded or truncated
-   * @param num The desired length
-   */
-
+        /// <summary>
+        /// Pad or trim so as to produce a string of exactly a certain length.
+        /// </summary>
+        /// <param name="str">The string to be padded or truncated</param>
+        /// <param name="num">The desired length</param>
         public static string PadLeftOrTrim(string str, int num)
         {
             if (str == null)
@@ -606,21 +580,18 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        /**
-   * Pad or trim the ToString value of the given Object.
-   */
-
+        /// <summary>
+        /// Pad or trim the ToString value of the given Object.
+        /// </summary>
         public static string PadOrTrim(Object obj, int totalChars)
         {
             return PadOrTrim(obj.ToString(), totalChars);
         }
 
-
-        /**
-   * Pads the given string to the left with the given character to ensure that
-   * it's at least totalChars long.
-   */
-
+        /// <summary>
+        /// Pads the given string to the left with the given character 
+        /// to ensure that it's at least totalChars long.
+        /// </summary>
         public static string PadLeft(string str, int totalChars, char ch)
         {
             if (str == null)
@@ -636,12 +607,10 @@ namespace OpenNLP.Tools.Util
             return sb.ToString();
         }
 
-
-        /**
-   * Pads the given string to the left with spaces to ensure that it's
-   * at least totalChars long.
-   */
-
+        /// <summary>
+        /// Pads the given string to the left with spaces to ensure 
+        /// that it's at least totalChars long.
+        /// </summary>
         public static string PadLeft(string str, int totalChars)
         {
             return PadLeft(str, totalChars, ' ');
@@ -662,11 +631,10 @@ namespace OpenNLP.Tools.Util
         {
             return PadLeft(d, totalChars);
         }
-
-        /**
-   * Returns s if it's at most maxWidth chars, otherwise chops right side to fit.
-   */
-
+        
+        /// <summary>
+        /// Returns s if it's at most maxWidth chars, otherwise chops right side to fit.
+        /// </summary>
         public static string Trim(string s, int maxWidth)
         {
             if (s.Length <= maxWidth)
@@ -709,11 +677,10 @@ namespace OpenNLP.Tools.Util
             return sb.ToString();
         }
 
-        /**
-   * Returns a "clean" version of the given filename in which spaces have
-   * been converted to dashes and all non-alphanumeric chars are underscores.
-   */
-
+        /// <summary>
+        /// Returns a "clean" version of the given filename in which spaces 
+        /// have been converted to dashes and all non-alphanumeric chars are underscores.
+        /// </summary>
         public static string FileNameClean(string s)
         {
             char[] chars = s.ToCharArray();
@@ -739,11 +706,10 @@ namespace OpenNLP.Tools.Util
             return sb.ToString();
         }
 
-        /**
-   * Returns the index of the <i>n</i>th occurrence of ch in s, or -1
-   * if there are less than n occurrences of ch.
-   */
-
+        /// <summary>
+        /// Returns the index of the <i>n</i>th occurrence of ch in s, 
+        /// or -1 if there are less than n occurrences of ch.
+        /// </summary>
         public static int NthIndex(string s, char ch, int n)
         {
             int index = 0;
@@ -764,13 +730,10 @@ namespace OpenNLP.Tools.Util
             return index;
         }
 
-
-        /**
-   * This returns a string from decimal digit smallestDigit to decimal digit
-   * biggest digit. Smallest digit is labeled 1, and the limits are
-   * inclusive.
-   */
-
+        /// <summary>
+        /// This returns a string from decimal digit smallestDigit to decimal digit biggest digit. 
+        /// Smallest digit is labeled 1, and the limits are inclusive.
+        /// </summary>
         public static string Truncate(int n, int smallestDigit, int biggestDigit)
         {
             int numDigits = biggestDigit - smallestDigit + 1;
@@ -996,29 +959,27 @@ namespace OpenNLP.Tools.Util
       throw new RuntimeIOException("propFileToProperties could not read properties file: " + filename, e);
     }
   }*/
-
-        /**
-   * This method converts a comma-separated string (with whitespace
-   * optionally allowed after the comma) representing properties
-   * to a Properties object.  Each property is "property=value".  The value
-   * for properties without an explicitly given value is set to "true". This can be used for a 2nd level
-   * of properties, for example, when you have a commandline argument like "-outputOptions style=xml,tags".
-   */
-
+        
+        /// <summary>
+        /// Converts a comma-separated string (with whitespace optionally allowed after the comma) 
+        /// representing properties to a Properties object.
+        /// Each property is "property=value".
+        /// The value for properties without an explicitly given value is set to "true".
+        /// This can be used for a 2nd level of properties, for example, 
+        /// when you have a commandline argument like "-outputOptions style=xml,tags".
+        /// </summary>
         public static Dictionary<string, string> StringToProperties(string str)
         {
             var result = new Dictionary<string, string>();
             return StringToProperties(str, result);
         }
-
-        /**
-   * This method updates a Properties object based on
-   * a comma-separated string (with whitespace
-   * optionally allowed after the comma) representing properties
-   * to a Properties object.  Each property is "property=value".  The value
-   * for properties without an explicitly given value is set to "true".
-   */
-
+        
+        /// <summary>
+        /// This method updates a Properties object based on a comma-separated string 
+        /// (with whitespace optionally allowed after the comma) representing properties to a Properties object.
+        /// Each property is "property=value".
+        /// The value for properties without an explicitly given value is set to "true".
+        /// </summary>
         public static Dictionary<string, string> StringToProperties(string str, Dictionary<string, string> props)
         {
             string[] propsStr = Regex.Split(str.Trim(), ",\\s*");
@@ -1281,21 +1242,17 @@ namespace OpenNLP.Tools.Util
             return result.ToString();
         }
 
-        /**
-   * This function splits the string s into multiple Strings using the
-   * splitChar.  However, it provides a quoting facility: it is possible to
-   * quote strings with the quoteChar.
-   * If the quoteChar occurs within the quotedExpression, it must be prefaced
-   * by the escapeChar.
-   * This routine can be useful for processing a line of a CSV file.
-   *
-   * @param s         The string to split into fields. Cannot be null.
-   * @param splitChar The character to split on
-   * @param quoteChar The character to quote items with
-   * @param escapeChar The character to escape the quoteChar with
-   * @return An array of Strings that s is split into
-   */
-
+        /// <summary>
+        /// This function splits the string s into multiple strings using the splitChar.
+        /// However, it provides a quoting facility: it is possible to quote strings with the quoteChar.
+        /// If the quoteChar occurs within the quotedExpression, it must be prefaced by the escapeChar.
+        /// This routine can be useful for processing a line of a CSV file.
+        /// </summary>
+        /// <param name="s">The string to split into fields. Cannot be null.</param>
+        /// <param name="splitChar">The character to split on</param>
+        /// <param name="quoteChar">The character to quote items with</param>
+        /// <param name="escapeChar">The character to escape the quoteChar with</param>
+        /// <returns>An array of strings that s is split into</returns>
         public static string[] SplitOnCharWithQuoting(string s, char splitChar, char quoteChar, char escapeChar)
         {
             var result = new List<string>();
@@ -1424,14 +1381,12 @@ namespace OpenNLP.Tools.Util
     // Step 7
     return d[n][m];
   }*/
-
-        /**
-   * Computes the longest common contiguous substring of s and t.
-   * The LCCS is the longest run of characters that appear consecutively in
-   * both s and t. For instance, the LCCS of "color" and "colour" is 4, because
-   * of "colo".
-   */
-
+        
+        /// <summary>
+        /// Computes the longest common contiguous substring of s and t.
+        /// The LCCS is the longest run of characters that appear consecutively in
+        /// both s and t. For instance, the LCCS of "color" and "colour" is 4, because of "colo".
+        /// </summary>
         public static int LongestCommonContiguousSubstring(string s, string t)
         {
             if (string.IsNullOrEmpty(s) || string.IsNullOrEmpty(t))
@@ -1519,14 +1474,12 @@ namespace OpenNLP.Tools.Util
     return d[n,m];
   }*/
 
-
-        /**
-   * Computes the WordNet 2.0 POS tag corresponding to the PTB POS tag s.
-   *
-   * @param s a Penn TreeBank POS tag.
-   */
-
-        public static string PennPOSToWordnetPOS(string s)
+        /// <summary>
+        /// Computes the WordNet 2.0 POS tag corresponding to the PTB POS tag s
+        /// </summary>
+        /// <param name="s">a Penn TreeBank POS tag.</param>
+        /// <returns></returns>
+        public static string PennPosToWordnetPos(string s)
         {
             if (Regex.IsMatch(s, "NN|NNP|NNS|NNPS"))
             {
@@ -1641,13 +1594,11 @@ namespace OpenNLP.Tools.Util
     return sb.ToString();
   }*/
 
-        /**
-   * Uppercases the first character of a string.
-   *
-   * @param s a string to capitalize
-   * @return a capitalized version of the string
-   */
-
+        /// <summary>
+        /// Uppercases the first character of a string.
+        /// </summary>
+        /// <param name="s">a string to capitalize</param>
+        /// <returns>a capitalized version of the string</returns>
         public static string Capitalize(string s)
         {
             if (char.IsLower(s[0]))
@@ -1660,14 +1611,10 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        /**
-   * Check if a string begins with an uppercase.
-   *
-   * @param s a string
-   * @return true if the string is capitalized
-   *         false otherwise
-   */
-
+        /// <summary>
+        /// Check if a string begins with an uppercase.
+        /// </summary>
+        /// <returns>true if the string is capitalized, false otherwise</returns>
         public static bool IsCapitalized(string s)
         {
             return (char.IsUpper(s[0]));
@@ -1679,14 +1626,12 @@ namespace OpenNLP.Tools.Util
             var res = Regex.Replace(text, from, to);
             return res;
         }
-
-        /**
-   * Returns an HTML table containing the matrix of Strings passed in.
-   * The first dimension of the matrix should represent the rows, and the
-   * second dimension the columns.
-   */
-
-        public static string MakeHTMLTable(string[][] table, string[] rowLabels, string[] colLabels)
+        
+        /// <summary>
+        /// Returns an HTML table containing the matrix of strings passed in.
+        /// The first dimension of the matrix should represent the rows, and the second dimension the columns.
+        /// </summary>
+        public static string MakeHtmlTable(string[][] table, string[] rowLabels, string[] colLabels)
         {
             var buff = new StringBuilder();
             buff.Append("<table class=\"auto\" border=\"1\" cellspacing=\"0\">\n");
@@ -1717,17 +1662,15 @@ namespace OpenNLP.Tools.Util
             return buff.ToString();
         }
 
-        /**
-   * Returns a text table containing the matrix of objects passed in.
-   * The first dimension of the matrix should represent the rows, and the
-   * second dimension the columns. Each object is printed in a cell with ToString().
-   * The printing may be padded with spaces on the left and then on the right to
-   * ensure that the string form is of length at least padLeft or padRight.
-   * If tsv is true, a tab is put between columns.
-   *
-   * @return A string form of the table
-   */
-
+        /// <summary>
+        /// Returns a text table containing the matrix of objects passed in.
+        /// The first dimension of the matrix should represent the rows, 
+        /// and the second dimension the columns. Each object is printed in a cell with ToString().
+        /// The printing may be padded with spaces on the left and then on the right 
+        /// to ensure that the string form is of length at least padLeft or padRight.
+        /// If tsv is true, a tab is put between columns.
+        /// </summary>
+        /// <returns>A string form of the table</returns>
         public static string MakeTextTable(Object[][] table, Object[] rowLabels, Object[] colLabels, int padLeft,
             int padRight, bool tsv)
         {
@@ -1754,12 +1697,10 @@ namespace OpenNLP.Tools.Util
             return buff.ToString();
         }
 
-
-        /** The cell string is the string representation of the object.
-   *  If padLeft is greater than 0, it is padded. Ditto right
-   *
-   */
-
+        /// <summary>
+        /// The cell string is the string representation of the object.
+        ///  If padLeft is greater than 0, it is padded. Ditto right
+        /// </summary>
         private static string MakeAsciiTableCell(Object obj, int padLeft, int padRight, bool tsv)
         {
             string result = obj.ToString();
@@ -1946,10 +1887,9 @@ namespace OpenNLP.Tools.Util
     }
   }*/
 
-        /**
-   * Returns the supplied string with any trailing '\n' removed.
-   */
-
+        /// <summary>
+        /// Returns the supplied string with any trailing '\n' removed.
+        /// </summary>
         public static string Chomp(string s)
         {
             if (s.Length == 0)
@@ -1961,12 +1901,10 @@ namespace OpenNLP.Tools.Util
             }
             return s;
         }
-
-        /**
-   * Returns the result of calling ToString() on the supplied Object, but with
-   * any trailing '\n' removed.
-   */
-
+        
+        /// <summary>
+        /// Returns the result of calling ToString() on the supplied Object, but with any trailing '\n' removed.
+        /// </summary>
         public static string Chomp(Object o)
         {
             return Chomp(o.ToString());
@@ -1988,25 +1926,21 @@ namespace OpenNLP.Tools.Util
     return sb.ToString();
   }*/
 
-        /**
-   * Strip directory from filename.  Like Unix 'basename'. <p/>
-   *
-   * Example: <code>getBaseName("/u/wcmac/foo.txt") ==> "foo.txt"</code>
-   */
-
+        /// <summary>
+        /// Strip directory from filename.  Like Unix 'basename'. <p/>
+        /// Example: <code>getBaseName("/u/wcmac/foo.txt") ==> "foo.txt"</code>
+        /// </summary>
         public static string GetBaseName(string fileName)
         {
             return GetBaseName(fileName, "");
         }
-
-        /**
-   * Strip directory and suffix from filename.  Like Unix 'basename'. <p/>
-   *
-   * Example: <code>getBaseName("/u/wcmac/foo.txt", "") ==> "foo.txt"</code><br/>
-   * Example: <code>getBaseName("/u/wcmac/foo.txt", ".txt") ==> "foo"</code><br/>
-   * Example: <code>getBaseName("/u/wcmac/foo.txt", ".pdf") ==> "foo.txt"</code><br/>
-   */
-
+        
+        /// <summary>
+        /// Strip directory and suffix from filename.  Like Unix 'basename'.
+        /// Example: <code>getBaseName("/u/wcmac/foo.txt", "") ==> "foo.txt"</code>
+        /// Example: <code>getBaseName("/u/wcmac/foo.txt", ".txt") ==> "foo"</code>
+        /// Example: <code>getBaseName("/u/wcmac/foo.txt", ".pdf") ==> "foo.txt"</code>
+        /// </summary>
         public static string GetBaseName(string fileName, string suffix)
         {
             string[] elts = fileName.Split(new[] {"/"}, StringSplitOptions.None);
@@ -2017,79 +1951,71 @@ namespace OpenNLP.Tools.Util
             }
             return lastElt;
         }
-
-        /**
-   * Given a string the method uses Regex to check if the string only contains alphabet characters
-   *
-   * @param s a string to check using regex
-   * @return true if the string is valid
-   */
-
+        
+        /// <summary>
+        /// Given a string the method uses Regex to check if the string only contains alphabet characters
+        /// </summary>
+        /// <param name="s">a string to check using regex</param>
+        /// <returns>true if the string is valid</returns>
         public static bool IsAlpha(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Alpha}\\s]+$");
-    Matcher m = p.matcher(s);
-    return m.matches();*/
+            Matcher m = p.matcher(s);
+            return m.matches();*/
             return Regex.IsMatch(s, "^[\\p{Alpha}\\s]+$");
         }
 
-        /**
-   * Given a string the method uses Regex to check if the string only contains numeric characters
-   *
-   * @param s a string to check using regex
-   * @return true if the string is valid
-   */
-
+        /// <summary>
+        /// Given a string the method uses Regex to check if the string only contains numeric characters
+        /// </summary>
+        /// <param name="s">a string to check using regex</param>
+        /// <returns>true if the string is valid</returns>
         public static bool IsNumeric(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Digit}\\s\\.]+$");
-    Matcher m = p.matcher(s);
-    return m.matches();*/
+            Matcher m = p.matcher(s);
+            return m.matches();*/
             return Regex.IsMatch(s, "^[\\p{Digit}\\s\\.]+$");
         }
-
-        /**
-   * Given a string the method uses Regex to check if the string only contains alphanumeric characters
-   *
-   * @param s a string to check using regex
-   * @return true if the string is valid
-   */
-
+        
+        /// <summary>
+        /// Given a string the method uses Regex to check 
+        /// if the string only contains alphanumeric characters
+        /// </summary>
+        /// <param name="s">a string to check using regex</param>
+        /// <returns>true if the string is valid</returns>
         public static bool IsAlphanumeric(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Alnum}\\s\\.]+$");
-    Matcher m = p.matcher(s);
-    return m.matches();*/
+            Matcher m = p.matcher(s);
+            return m.matches();*/
             return Regex.IsMatch(s, "^[\\p{Alnum}\\s\\.]+$");
         }
 
-        /**
-   * Given a string the method uses Regex to check if the string only contains punctuation characters
-   *
-   * @param s a string to check using regex
-   * @return true if the string is valid
-   */
-
+        /// <summary>
+        /// Given a string the method uses Regex to check 
+        /// if the string only contains punctuation characters
+        /// </summary>
+        /// <param name="s">a string to check using regex</param>
+        /// <returns>true if the string is valid</returns>
         public static bool IsPunct(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Punct}]+$");
-    Matcher m = p.matcher(s);
-    return m.matches();*/
+            Matcher m = p.matcher(s);
+            return m.matches();*/
             return Regex.IsMatch(s, "^[\\p{Punct}]+$");
         }
 
-        /**
-   * Given a string the method uses Regex to check if the string looks like an acronym
-   *
-   * @param s a string to check using regex
-   * @return true if the string is valid
-   */
-
+        /// <summary>
+        /// Given a string the method uses Regex to check if the string looks like an acronym
+        /// </summary>
+        /// <param name="s">a string to check using regex</param>
+        /// <returns>true if the string is valid</returns>
         public static bool IsAcronym(string s)
         {
             /*Pattern p = Pattern.compile("^[\\p{Upper}]+$");
-    Matcher m = p.matcher(s);
-    return m.matches();*/
+            Matcher m = p.matcher(s);
+            return m.matches();*/
             return Regex.IsMatch(s, "^[\\p{Upper}]+$");
         }
 
@@ -2242,10 +2168,9 @@ namespace OpenNLP.Tools.Util
     return getNgrams(Arrays.asList(s.Split("\\s+")), minSize, maxSize);
   }*/
 
-        /**
-   * Build a list of character-based ngrams from the given string.
-   */
-
+        /// <summary>
+        /// Build a list of character-based ngrams from the given string.
+        /// </summary>
         public static List<string> GetCharacterNgrams(string s, int minSize, int maxSize)
         {
             var ngrams = new List<string>();

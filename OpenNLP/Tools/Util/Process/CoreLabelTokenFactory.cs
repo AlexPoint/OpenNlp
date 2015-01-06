@@ -8,7 +8,7 @@ using OpenNLP.Tools.Util.Ling;
 namespace OpenNLP.Tools.Util.Process
 {
     /**
- * Constructs {@link CoreLabel}s from Strings optionally with
+ * Constructs {@link CoreLabel}s from strings optionally with
  * beginning and ending (character after the end) offset positions in
  * an original text.  The makeToken method will put the token in the
  * OriginalTextAnnotation AND TextAnnotation keys (2 places!),

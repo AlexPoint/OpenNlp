@@ -19,34 +19,46 @@ namespace OpenNLP.Tools.Util.Trees
  * 
  */
 
+    /// <summary>
+    /// An individual dependency between a head and a dependent.
+    /// The head and dependent are represented as a Label.
+    /// For example, these can be a Word or a WordTag.
+    /// If one wishes the dependencies to preserve positions in a sentence, 
+    /// then each can be a NamedConstituent. 
+    /// 
+    /// @author Christopher Manning
+    /// @author Spence Green
+    /// 
+    /// Code ...
+    /// </summary>
     public class NamedDependency : UnnamedDependency
     {
         private static readonly long serialVersionUID = -1635646451505721133L;
 
-        private readonly Object vName;
+        private readonly Object _name;
 
         public NamedDependency(string regent, string dependent, Object name) :
             base(regent, dependent)
         {
-            this.vName = name;
+            this._name = name;
         }
 
         public NamedDependency(Label regent, Label dependent, Object name) :
             base(regent, dependent)
         {
-            this.vName = name;
+            this._name = name;
         }
 
         //@Override
         public override Object Name()
         {
-            return vName;
+            return _name;
         }
 
         //@Override
         public override int GetHashCode()
         {
-            return regentText.GetHashCode() ^ dependentText.GetHashCode() ^ vName.GetHashCode();
+            return RegentText.GetHashCode() ^ DependentText.GetHashCode() ^ _name.GetHashCode();
         }
 
         //@Override
@@ -61,28 +73,29 @@ namespace OpenNLP.Tools.Util.Trees
                 return false;
             }
             var d = (NamedDependency) o;
-            return EqualsIgnoreName(o) && vName.Equals(d.vName);
+            return EqualsIgnoreName(o) && _name.Equals(d._name);
         }
 
         //@Override
         public override string ToString()
         {
-            return string.Format("{0} --{1}--> {2}", regentText, vName.ToString(), dependentText);
+            return string.Format("{0} --{1}--> {2}", RegentText, _name, DependentText);
         }
 
         /**
-   * Provide different printing options via a string keyword.
-   * The recognized options are currently "xml", and "predicate".
-   * Otherwise the default ToString() is used.
-   */
+           * Provide different printing options via a string keyword.
+           * The recognized options are currently "xml", and "predicate".
+           * Otherwise the default ToString() is used.
+           */
+
         //@Override
         public string ToString(string format)
         {
             switch (format)
             {
                 case "xml":
-                    return "  <dep>\n    <governor>" + XMLUtils.XmlEscape(Governor().Value()) +
-                           "</governor>\n    <dependent>" + XMLUtils.XmlEscape(Dependent().Value()) +
+                    return "  <dep>\n    <governor>" + XmlUtils.XmlEscape(Governor().Value()) +
+                           "</governor>\n    <dependent>" + XmlUtils.XmlEscape(Dependent().Value()) +
                            "</dependent>\n  </dep>";
                 case "predicate":
                     return "dep(" + Governor() + "," + Dependent() + "," + Name() + ")";
@@ -108,26 +121,23 @@ namespace OpenNLP.Tools.Util.Trees
             public static readonly DependencyFactory df = new NamedDependencyFactory();
         }
 
-        /**
-   * A <code>DependencyFactory</code> acts as a factory for creating objects
-   * of class <code>Dependency</code>
-   */
-
+        /// <summary>
+        /// A <code>DependencyFactory</code> acts as a factory for creating objects
+        /// of class <code>Dependency</code>
+        /// </summary>
         private /*static */ class NamedDependencyFactory : DependencyFactory
         {
-            /**
-     * Create a new <code>Dependency</code>.
-     */
-
+            /// <summary>
+            /// Create a new <code>Dependency</code>.
+            /// </summary>
             public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent)
             {
                 return NewDependency(regent, dependent, null);
             }
 
-            /**
-     * Create a new <code>Dependency</code>.
-     */
-
+            /// <summary>
+            /// Create a new <code>Dependency</code>.
+            /// </summary>
             public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent, Object name)
             {
                 return new NamedDependency(regent, dependent, name);

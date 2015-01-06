@@ -316,7 +316,7 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         /**
-   * Returns a {@link Function Function} object that maps Strings to Strings according
+   * Returns a {@link Function Function} object that maps strings to strings according
    * to this TreebankLanguagePack's basicCategory method.
    *
    * @return the String->String Function object
@@ -337,7 +337,7 @@ namespace OpenNLP.Tools.Util.Trees
         string CategoryAndFunction(string category);
 
         /**
-   * Returns a {@link Function Function} object that maps Strings to Strings according
+   * Returns a {@link Function Function} object that maps strings to strings according
    * to this TreebankLanguagePack's categoryAndFunction method.
    *
    * @return the String->String Function object

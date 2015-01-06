@@ -41,9 +41,9 @@ namespace OpenNLP.Tools.Util
 	/// <summary>Represents a weighted sequence of outcomes. </summary>
 	public class Sequence : IComparable
 	{
-		private double mScore;
-		private List<string> mOutcomes;
-		private List<double> mProbabilities;
+		private double _score;
+		private readonly List<string> _outcomes;
+		private readonly List<double> _probabilities;
 
 		/// <summary>
 		/// Returns a list of outcomes for this sequence.
@@ -54,7 +54,7 @@ namespace OpenNLP.Tools.Util
 		{
 			get
 			{
-				return mOutcomes;
+				return _outcomes;
 			}
 			
 		}
@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util
 		{
 			get
 			{
-				return mProbabilities;
+				return _probabilities;
 			}
 		}
 
@@ -72,9 +72,9 @@ namespace OpenNLP.Tools.Util
 		/// </summary>
 		public Sequence()
 		{
-            mOutcomes = new List<string>(1);
-            mProbabilities = new List<double>(1);
-			mScore = 0;
+            _outcomes = new List<string>(1);
+            _probabilities = new List<double>(1);
+			_score = 0;
 		}
 		
 		/// <summary>
@@ -85,13 +85,13 @@ namespace OpenNLP.Tools.Util
 		/// </param>
 		public Sequence(Sequence sequenceToCopy)
 		{
-			mOutcomes = new List<string>(sequenceToCopy.Outcomes.Count + 1);
-			mOutcomes.AddRange(sequenceToCopy.Outcomes);
+			_outcomes = new List<string>(sequenceToCopy.Outcomes.Count + 1);
+			_outcomes.AddRange(sequenceToCopy.Outcomes);
 			
-			mProbabilities = new List<double>(sequenceToCopy.Probabilities.Count + 1);
-			mProbabilities.AddRange(sequenceToCopy.Probabilities);
+			_probabilities = new List<double>(sequenceToCopy.Probabilities.Count + 1);
+			_probabilities.AddRange(sequenceToCopy.Probabilities);
 
-			mScore = sequenceToCopy.Score;
+			_score = sequenceToCopy.Score;
 		}
 		
 		/// <summary>
@@ -108,15 +108,15 @@ namespace OpenNLP.Tools.Util
 		/// </param>
 		public Sequence(Sequence sequenceToCopy, string outcome, double probability)
 		{
-			mOutcomes = new List<string>(sequenceToCopy.Outcomes.Count + 1);
-			mOutcomes.AddRange(sequenceToCopy.Outcomes);
-			mOutcomes.Add(outcome);
+			_outcomes = new List<string>(sequenceToCopy.Outcomes.Count + 1);
+			_outcomes.AddRange(sequenceToCopy.Outcomes);
+			_outcomes.Add(outcome);
 
-			mProbabilities = new List<double>(sequenceToCopy.Probabilities.Count + 1);
-			mProbabilities.AddRange(sequenceToCopy.Probabilities);
-			mProbabilities.Add(probability);
+			_probabilities = new List<double>(sequenceToCopy.Probabilities.Count + 1);
+			_probabilities.AddRange(sequenceToCopy.Probabilities);
+			_probabilities.Add(probability);
 
-			mScore = sequenceToCopy.Score + System.Math.Log(probability);
+			_score = sequenceToCopy.Score + System.Math.Log(probability);
 		}
 		
 		/// <summary>
@@ -128,11 +128,11 @@ namespace OpenNLP.Tools.Util
 		/// </param>
 		public Sequence(List<string> outcomes)
 		{
-			mOutcomes = outcomes;
-            mProbabilities = new List<double>(mOutcomes.Count);
-            for (int currentOutcome = 0; currentOutcome < mOutcomes.Count; currentOutcome++)
+			_outcomes = outcomes;
+            _probabilities = new List<double>(_outcomes.Count);
+            for (int currentOutcome = 0; currentOutcome < _outcomes.Count; currentOutcome++)
             {
-                mProbabilities.Add(1);
+                _probabilities.Add(1);
             }
 		}
 
@@ -149,11 +149,11 @@ namespace OpenNLP.Tools.Util
 		{
 			var sequence = (Sequence) o;
 
-			if (mScore < sequence.Score)
+			if (_score < sequence.Score)
 			{
 				return 1;
 			}
-			if (mScore > sequence.Score)
+			if (_score > sequence.Score)
 			{
 				return -1;
 			}
@@ -176,12 +176,12 @@ namespace OpenNLP.Tools.Util
 				return false;
 			}
 			var sequence = (Sequence) o;
-			return mScore == sequence.Score;
+			return _score == sequence.Score;
 		}  
 
 		public override int GetHashCode ()
 		{
-			return mScore.GetHashCode();
+			return _score.GetHashCode();
 		}  
 
 		public static bool operator == (Sequence firstSequence, Sequence secondSequence)
@@ -215,9 +215,9 @@ namespace OpenNLP.Tools.Util
 		/// </param>
 		public virtual void Add(string outcome, double probability)
 		{
-			mOutcomes.Add(outcome);
-			mProbabilities.Add(probability);
-			mScore += System.Math.Log(probability);
+			_outcomes.Add(outcome);
+			_probabilities.Add(probability);
+			_score += System.Math.Log(probability);
 		}
 		
 		/// <summary>
@@ -228,7 +228,7 @@ namespace OpenNLP.Tools.Util
 		/// </returns>
 		public virtual double[] GetProbabilities()
 		{
-            return mProbabilities.ToArray();
+            return _probabilities.ToArray();
 		}
 		
 		/// <summary>
@@ -238,9 +238,9 @@ namespace OpenNLP.Tools.Util
 		/// </param>
 		public virtual void GetProbabilities(double[] probabilities)
 		{
-			for (int currentProbability = 0, probabilityCount = mProbabilities.Count; currentProbability < probabilityCount; currentProbability++)
+			for (int currentProbability = 0, probabilityCount = _probabilities.Count; currentProbability < probabilityCount; currentProbability++)
 			{
-				probabilities[currentProbability] = mProbabilities[currentProbability];
+				probabilities[currentProbability] = _probabilities[currentProbability];
 			}
 		}
 		
@@ -254,13 +254,13 @@ namespace OpenNLP.Tools.Util
 		{
 			get
 			{
-				return mScore;
+				return _score;
 			}
 		}
 
 		public override string ToString()
 		{
-			return mScore + " " + mOutcomes;
+			return _score + " " + _outcomes;
 		}
 	}
 }

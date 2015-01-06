@@ -432,7 +432,7 @@ namespace OpenNLP.Tools.Util
         /** This gives a very short string representation of a CoreMap
    *  by leaving it to the content to reveal what field is being printed.
    *
-   *  @param what An array (varargs) of Strings that say what annotation keys
+   *  @param what An array (varargs) of strings that say what annotation keys
    *     to print.  These need to be provided in a shortened form where you
    *     are just giving the part of the class name without package and up to
    *     "Annotation". That is,
@@ -452,7 +452,7 @@ namespace OpenNLP.Tools.Util
    *  by leaving it to the content to reveal what field is being printed.
    *
    *  @param separator Character placed between fields in output
-   *  @param what An array (varargs) of Strings that say what annotation keys
+   *  @param what An array (varargs) of strings that say what annotation keys
    *     to print.  These need to be provided in a shortened form where you
    *     are just giving the part of the class name without package and up to
    *     "Annotation". That is,

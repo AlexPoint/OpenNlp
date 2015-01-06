@@ -33,7 +33,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /**
    * A compiler that uses this basicCatFunction and the default HeadFinder.
    *
-   * @param basicCatFunction the function mapping Strings to Strings
+   * @param basicCatFunction the function mapping strings to Strings
    */
 
         public TregexPatternCompiler(AbstractTreebankLanguagePack.BasicCategoryStringFunction basicCatFunction) :
@@ -56,7 +56,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
    * A compiler that uses this HeadFinder and this basicCategoryFunction
    *
    * @param headFinder       the HeadFinder
-   * @param basicCatFunction The function mapping Strings to Strings
+   * @param basicCatFunction The function mapping strings to Strings
    */
 
         public TregexPatternCompiler(HeadFinder headFinder,

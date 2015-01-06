@@ -7,20 +7,17 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * An individual dependency between a head and a dependent. The dependency
- * is associated with the token indices of the lexical items.
- * <p>
- * A key difference between this class and UnnamedDependency is the equals()
- * method. Equality of two UnnamedConcreteDependency objects is defined solely
- * with respect to the indices. The surface forms are not considered. This permits 
- * a use case in which dependencies in two different parse trees have slightly different 
- * pre-processing, possibly due to pre-processing.
- * 
- * @author Spence Green
- * 
- */
-
+    /// <summary>
+    /// An individual dependency between a head and a dependent. The dependency 
+    /// is associated with the token indices of the lexical items. 
+    /// A key difference between this class and UnnamedDependency is the equals() method. 
+    /// Equality of two UnnamedConcreteDependency objects is defined solely 
+    /// with respect to the indices. The surface forms are not considered. 
+    /// This permits a use case in which dependencies in two different parse trees have slightly different 
+    /// pre-processing, possibly due to pre-processing.
+    /// @author Spence Green
+    /// Code retrieved on the Stanford Parser: 
+    /// </summary>
     public class UnnamedConcreteDependency : UnnamedDependency
     {
         private static readonly long serialVersionUID = -8836949694741145222L;
@@ -106,10 +103,11 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
-   * Provide different printing options via a string keyword.
-   * The recognized options are currently "xml", and "predicate".
-   * Otherwise the default ToString() is used.
-   */
+           * Provide different printing options via a string keyword.
+           * The recognized options are currently "xml", and "predicate".
+           * Otherwise the default ToString() is used.
+           */
+
         //@Override
         public override string ToString(string format)
         {
@@ -118,8 +116,8 @@ namespace OpenNLP.Tools.Util.Trees
                 case "xml":
                     string govIdxStr = " idx=\"" + headIndex + "\"";
                     string depIdxStr = " idx=\"" + depIndex + "\"";
-                    return "  <dep>\n    <governor" + govIdxStr + ">" + XMLUtils.XmlEscape(Governor().Value()) +
-                           "</governor>\n    <dependent" + depIdxStr + ">" + XMLUtils.XmlEscape(Dependent().Value()) +
+                    return "  <dep>\n    <governor" + govIdxStr + ">" + XmlUtils.XmlEscape(Governor().Value()) +
+                           "</governor>\n    <dependent" + depIdxStr + ">" + XmlUtils.XmlEscape(Dependent().Value()) +
                            "</dependent>\n  </dep>";
                 case "predicate":
                     return "dep(" + Governor() + "," + Dependent() + ")";
@@ -145,26 +143,23 @@ namespace OpenNLP.Tools.Util.Trees
             public static readonly DependencyFactory df = new UnnamedConcreteDependencyFactory();
         }
 
-        /**
-   * A <code>DependencyFactory</code> acts as a factory for creating objects
-   * of class <code>Dependency</code>
-   */
-
+        /// <summary>
+        /// A <code>DependencyFactory</code> acts as a factory for creating objects
+        /// of class <code>Dependency</code>
+        /// </summary>
         private /*static */ class UnnamedConcreteDependencyFactory : DependencyFactory
         {
-            /**
-     * Create a new <code>Dependency</code>.
-     */
-
+            /// <summary>
+            /// Create a new <code>Dependency</code>.
+            /// </summary>
             public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent)
             {
                 return NewDependency(regent, dependent, null);
             }
 
-            /**
-     * Create a new <code>Dependency</code>.
-     */
-
+            /// <summary>
+            /// Create a new <code>Dependency</code>.
+            /// </summary>
             public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent, Object name)
             {
                 return new UnnamedConcreteDependency(regent, dependent);

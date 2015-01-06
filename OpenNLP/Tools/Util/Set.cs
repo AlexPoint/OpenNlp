@@ -139,11 +139,7 @@ namespace OpenNLP.Tools.Util
         /// </returns>
         public new virtual bool Remove(T elementToRemove)
         {
-            bool result = false;
-            if (this.Contains(elementToRemove))
-            {
-                result = true;
-            }
+            bool result = this.Contains(elementToRemove);
             base.Remove(elementToRemove);
             return result;
         }
@@ -185,7 +181,7 @@ namespace OpenNLP.Tools.Util
             bool result = false;
 
             IEnumerator<T> enumerator = collection.GetEnumerator();
-            Set<T> currentSet = (Set<T>) collection;
+            var currentSet = (Set<T>) collection;
             while (enumerator.MoveNext())
                 if (!currentSet.Contains(enumerator.Current))
                 {

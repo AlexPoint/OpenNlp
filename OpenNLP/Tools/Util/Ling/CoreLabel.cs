@@ -122,7 +122,7 @@ namespace OpenNLP.Tools.Util.Ling
    * parse the keys according to the string lookup function
    * in {@link CoreAnnotations}.
    *
-   * @param keys Array of Strings that are class names
+   * @param keys Array of strings that are class names
    * @param values Array of values (as String)
    */
         /*public CoreLabel(string[] keys, string[] values):base(keys.Length){

@@ -22,12 +22,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         private TsurgeonPattern root; // TODO: can remove?
 
-        public virtual void setRoot(TsurgeonPatternRoot root)
+        public virtual void SetRoot(TsurgeonPatternRoot root)
         {
             this.root = root;
             foreach (TsurgeonPattern child in children)
             {
-                child.setRoot(root);
+                child.SetRoot(root);
             }
         }
 
@@ -47,29 +47,29 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         //@Override
         public override string ToString()
         {
-            StringBuilder resultSB = new StringBuilder();
-            resultSB.Append(label);
+            var resultSb = new StringBuilder();
+            resultSb.Append(label);
             if (children.Length > 0)
             {
-                resultSB.Append('(');
+                resultSb.Append('(');
                 for (int i = 0; i < children.Length; i++)
                 {
-                    resultSB.Append(children[i]);
+                    resultSb.Append(children[i]);
                     if (i < children.Length - 1)
                     {
-                        resultSB.Append(", ");
+                        resultSb.Append(", ");
                     }
                 }
-                resultSB.Append(')');
+                resultSb.Append(')');
             }
-            return resultSB.ToString();
+            return resultSb.ToString();
         }
 
-        public virtual TsurgeonMatcher matcher()
+        public virtual TsurgeonMatcher GetMatcher()
         {
             throw new InvalidOperationException("Only the root node can produce the top level matcher");
         }
 
-        public abstract TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer);
+        public abstract TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer);
     }
 }

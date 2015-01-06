@@ -116,7 +116,7 @@ namespace OpenNLP.Tools.Util.Trees
             TregexPattern.Compile("ADVP=advp <1 (RB < /^(?i:now)$/) <2 (SBAR=sbar <1 (IN < /^(?i:that)$/))");
 
         private static readonly TsurgeonPattern RearrangeNowThatTsurgeon =
-            Tsurgeon.parseOperation("[relabel advp SBAR] [excise sbar sbar]");
+            Tsurgeon.ParseOperation("[relabel advp SBAR] [excise sbar sbar]");
 
         private static Tree RearrangeNowThat(Tree t)
         {
@@ -124,7 +124,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return t;
             }
-            return Tsurgeon.processPattern(RearrangeNowThatTregex, RearrangeNowThatTsurgeon, t);
+            return Tsurgeon.ProcessPattern(RearrangeNowThatTregex, RearrangeNowThatTsurgeon, t);
         }
 
 
@@ -132,7 +132,7 @@ namespace OpenNLP.Tools.Util.Trees
             TregexPattern.Compile("NP < (NP $++ (SBAR=sbar < (IN < /^(?i:after|before|until|since|during)$/ $++ S)))");
 
         private static readonly TsurgeonPattern ChangeSbarToPpTsurgeon =
-            Tsurgeon.parseOperation("relabel sbar PP");
+            Tsurgeon.ParseOperation("relabel sbar PP");
 
         /**
    * For certain phrases, we change the SBAR to a PP to get prep/pcomp
@@ -148,7 +148,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return null;
             }
-            return Tsurgeon.processPattern(ChangeSbarToPpTregex, ChangeSbarToPpTsurgeon, t);
+            return Tsurgeon.ProcessPattern(ChangeSbarToPpTregex, ChangeSbarToPpTsurgeon, t);
         }
 
         private static readonly TregexPattern FindFlatConjpTregex =
@@ -164,7 +164,7 @@ namespace OpenNLP.Tools.Util.Trees
             // TODO: this structure needs a dependency
 
         private static readonly TsurgeonPattern AddConjpTsurgeon =
-            Tsurgeon.parseOperation("createSubtree CONJP start end");
+            Tsurgeon.ParseOperation("createSubtree CONJP start end");
 
         private static Tree CombineConjp(Tree t)
         {
@@ -172,7 +172,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return null;
             }
-            return Tsurgeon.processPattern(FindFlatConjpTregex, AddConjpTsurgeon, t);
+            return Tsurgeon.ProcessPattern(FindFlatConjpTregex, AddConjpTsurgeon, t);
         }
 
         private static readonly TregexPattern[] MoveRbTregex =
@@ -185,7 +185,7 @@ namespace OpenNLP.Tools.Util.Trees
         };
 
         private static readonly TsurgeonPattern MoveRbTsurgeon =
-            Tsurgeon.parseOperation("move adv >0 dest");
+            Tsurgeon.ParseOperation("move adv >0 dest");
 
         private static Tree MoveRb(Tree t)
         {
@@ -195,7 +195,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
             foreach (TregexPattern pattern in MoveRbTregex)
             {
-                t = Tsurgeon.processPattern(pattern, MoveRbTsurgeon, t);
+                t = Tsurgeon.ProcessPattern(pattern, MoveRbTsurgeon, t);
             }
             return t;
         }
@@ -217,7 +217,7 @@ namespace OpenNLP.Tools.Util.Trees
                                   // match against "is there"
                                   " !<, (/^VB/ < " + EnglishPatterns.copularWordRegex + " $+ (NP < (EX < there)))))");
 
-        private static readonly TsurgeonPattern FlattenSqTsurgeon = Tsurgeon.parseOperation("excise sq sq");
+        private static readonly TsurgeonPattern FlattenSqTsurgeon = Tsurgeon.ParseOperation("excise sq sq");
 
         /**
    * Removes the SQ structure under a WHNP question, such as "Who am I
@@ -241,17 +241,17 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return null;
             }
-            return Tsurgeon.processPattern(FlattenSqTregex, FlattenSqTsurgeon, t);
+            return Tsurgeon.ProcessPattern(FlattenSqTregex, FlattenSqTsurgeon, t);
         }
 
         private static readonly TregexPattern RemoveXOverXTregex =
             TregexPattern.Compile("__=repeat <: (~repeat < __)");
 
-        private static readonly TsurgeonPattern RemoveXOverXTsurgeon = Tsurgeon.parseOperation("excise repeat repeat");
+        private static readonly TsurgeonPattern RemoveXOverXTsurgeon = Tsurgeon.ParseOperation("excise repeat repeat");
 
         public static Tree RemoveXOverX(Tree t)
         {
-            return Tsurgeon.processPattern(RemoveXOverXTregex, RemoveXOverXTsurgeon, t);
+            return Tsurgeon.ProcessPattern(RemoveXOverXTregex, RemoveXOverXTsurgeon, t);
         }
 
         // UCP (JJ ...) -> ADJP
@@ -273,7 +273,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         // TODO: this turns UCP-TMP into ADVP instead of ADVP-TMP.  What do we actually want?
         private static readonly TsurgeonPattern UcpRenameTsurgeon =
-            Tsurgeon.parseOperation(
+            Tsurgeon.ParseOperation(
                 "[if exists adjp relabel ucp /^UCP(.*)$/ADJP$1/] [if exists np relabel ucp /^UCP(.*)$/NP$1/] [if exists advp relabel ucp /^UCP(.*)$/ADVP/]");
 
         /**
@@ -293,7 +293,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return null;
             }
-            return Tsurgeon.processPattern(UcpRenameTregex, UcpRenameTsurgeon, t);
+            return Tsurgeon.ProcessPattern(UcpRenameTregex, UcpRenameTsurgeon, t);
         }
 
 

@@ -8,7 +8,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
     public class CoindexNodes : TsurgeonPattern
     {
-        private static readonly string coindexationIntroductionString = "-";
+        private const string CoindexationIntroductionString = "-";
 
         public CoindexNodes(TsurgeonPattern[] children) :
             base("coindex", children)
@@ -16,14 +16,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override void setRoot(TsurgeonPatternRoot root)
+        public override void SetRoot(TsurgeonPatternRoot root)
         {
-            base.setRoot(root);
-            root.setCoindexes();
+            base.SetRoot(root);
+            root.SetCoindexes();
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
@@ -39,13 +39,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
 
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                int newIndex = coindexer.generateIndex();
+                int newIndex = coindexer.GenerateIndex();
                 foreach (TsurgeonMatcher child in childMatcher)
                 {
-                    Tree node = child.evaluate(tree, tregex);
-                    node.Label().SetValue(node.Label().Value() + coindexationIntroductionString + newIndex);
+                    Tree node = child.Evaluate(tree, tregex);
+                    node.Label().SetValue(node.Label().Value() + CoindexationIntroductionString + newIndex);
                 }
                 return tree;
             }

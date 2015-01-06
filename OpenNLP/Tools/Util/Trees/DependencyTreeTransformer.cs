@@ -97,11 +97,11 @@ namespace OpenNLP.Tools.Util.Trees
             TregexPattern.SafeCompile("-NONE-=none", true);
 
         private static readonly TsurgeonPattern Operation =
-            Tsurgeon.parseOperation("prune none");
+            Tsurgeon.ParseOperation("prune none");
 
         protected static Tree StripEmptyNode(Tree t)
         {
-            return Tsurgeon.processPattern(MatchPattern, Operation, t);
+            return Tsurgeon.ProcessPattern(MatchPattern, Operation, t);
         }
     }
 }

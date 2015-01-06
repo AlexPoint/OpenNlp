@@ -23,25 +23,25 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             parser = p;
         }
 
-        public void jjtOpen()
+        public void JjtOpen()
         {
         }
 
-        public void jjtClose()
+        public void JjtClose()
         {
         }
 
-        public void jjtSetParent(Node n)
+        public void JjtSetParent(Node n)
         {
             parent = n;
         }
 
-        public Node jjtGetParent()
+        public Node JjtGetParent()
         {
             return parent;
         }
 
-        public void jjtAddChild(Node n, int i)
+        public void JjtAddChild(Node n, int i)
         {
             if (children == null)
             {
@@ -49,19 +49,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
             else if (i >= children.Length)
             {
-                Node[] c = new Node[i + 1];
+                var c = new Node[i + 1];
                 Array.Copy(children, 0, c, 0, children.Length);
                 children = c;
             }
             children[i] = n;
         }
 
-        public Node jjtGetChild(int i)
+        public Node JjtGetChild(int i)
         {
             return children[i];
         }
 
-        public int jjtGetNumChildren()
+        public int JjtGetNumChildren()
         {
             return (children == null) ? 0 : children.Length;
         }
@@ -86,17 +86,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         /* Override this method if you want to customize how the node dumps
      out its children. */
 
-        public void dump(string prefix)
+        public void Dump(string prefix)
         {
             //System.out.println(ToString(prefix));
             if (children != null)
             {
                 for (int i = 0; i < children.Length; ++i)
                 {
-                    SimpleNode n = (SimpleNode) children[i];
+                    var n = (SimpleNode) children[i];
                     if (n != null)
                     {
-                        n.dump(prefix + " ");
+                        n.Dump(prefix + " ");
                     }
                 }
             }

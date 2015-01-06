@@ -19,14 +19,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             this.child = p;
         }
 
-        public void setRoot(TsurgeonPatternRoot root)
+        public void SetRoot(TsurgeonPatternRoot root)
         {
-            child.setRoot(root);
+            child.SetRoot(root);
         }
 
-        private static readonly Regex daughterPattern = new Regex(">-?([0-9]+)", RegexOptions.Compiled);
+        private static readonly Regex DaughterPattern = new Regex(">-?([0-9]+)", RegexOptions.Compiled);
 
-        public LocationMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public LocationMatcher Matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new LocationMatcher(newNodeNames, coindexer, this);
         }
@@ -37,9 +37,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
             private Dictionary<string, Tree> newNodeNames;
             private CoindexationGenerator coindexer;
-            private TreeLocation location;
+            private readonly TreeLocation location;
 
-            private TsurgeonMatcher childMatcher;
+            private readonly TsurgeonMatcher childMatcher;
 
             public LocationMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer,
                 TreeLocation location)
@@ -48,19 +48,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 this.coindexer = coindexer;
                 this.location = location;
 
-                this.childMatcher = location.child.matcher(newNodeNames, coindexer);
+                this.childMatcher = location.child.GetMatcher(newNodeNames, coindexer);
             }
 
-            public Tuple<Tree, int> evaluate(Tree tree, TregexMatcher tregex)
+            public Tuple<Tree, int> Evaluate(Tree tree, TregexMatcher tregex)
             {
                 int newIndex = -1;
                 Tree parent = null;
-                Tree relativeNode = childMatcher.evaluate(tree, tregex);
+                Tree relativeNode = childMatcher.Evaluate(tree, tregex);
                 //Matcher m = daughterPattern.matcher(relation);
-                var isMatch = daughterPattern.IsMatch(location.relation);
+                var isMatch = DaughterPattern.IsMatch(location.relation);
                 if ( /*m.matches()*/isMatch)
                 {
-                    newIndex = int.Parse(daughterPattern.Match(location.relation).Groups[1].Value) - 1;
+                    newIndex = int.Parse(DaughterPattern.Match(location.relation).Groups[1].Value) - 1;
                     parent = relativeNode;
                     if (location.relation[1] == '-') // backwards.
                         newIndex = parent.Children().Length - newIndex;

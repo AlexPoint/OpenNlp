@@ -18,40 +18,37 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         // The purpose of the \\\\\\\\ is to allow escaped \ at the end of
         // the pattern, so you can match, for example, /\\/.  There need to
         // be 8x\ because both java and regexes need escaping, resulting in 4x.
-        private static readonly string regexPatternString =
-            "((?:(?:[^/]*[^/\\\\])|\\\\/)*(?:\\\\\\\\)*)";
+        private const string RegexPatternString = "((?:(?:[^/]*[^/\\\\])|\\\\/)*(?:\\\\\\\\)*)";
 
-        private static readonly Regex regexPattern = new Regex("/" + regexPatternString + "/");
+        private static readonly Regex RegexPattern = new Regex("/" + RegexPatternString + "/");
 
         /**
    * This pattern finds relabel snippets that use a named node.
    */
-        private static readonly string nodePatternString = "(=\\{[a-zA-Z0-9_]+\\})";
-        private static readonly Regex nodePattern = new Regex(nodePatternString);
+        private const string NodePatternString = "(=\\{[a-zA-Z0-9_]+\\})";
+        private static readonly Regex NodePattern = new Regex(NodePatternString);
         /**
    * This pattern finds relabel snippets that use a captured variable.
    */
-        private static readonly string variablePatternString = "(%\\{[a-zA-Z0-9_]+\\})";
-        private static readonly Regex variablePattern = new Regex(variablePatternString);
+        private const string VariablePatternString = "(%\\{[a-zA-Z0-9_]+\\})";
+        private static readonly Regex VariablePattern = new Regex(VariablePatternString);
         /**
    * Finds one chunk of a general relabel operation, either named node
    * or captured variable
    */
 
-        private static readonly string oneGeneralReplacement =
-            ("(" + nodePatternString + "|" + variablePatternString + ")");
-
-        private static readonly Regex oneGeneralReplacementPattern = new Regex(oneGeneralReplacement);
+        private const string OneGeneralReplacement = ("(" + NodePatternString + "|" + VariablePatternString + ")");
+        private static readonly Regex OneGeneralReplacementPattern = new Regex(OneGeneralReplacement);
 
         /**
    * Identifies a node using the regex replacement strategy.
    */
-        private static readonly Regex substPattern = new Regex("/" + regexPatternString + "/(.*)/");
+        private static readonly Regex SubstPattern = new Regex("/" + RegexPatternString + "/(.*)/");
 
         private enum RelabelMode
         {
-            FIXED,
-            REGEX
+            Fixed,
+            Regex
         };
 
         private readonly RelabelMode mode;
@@ -65,15 +62,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         public RelabelNode(TsurgeonPattern child, string newLabel) :
             base("relabel", new TsurgeonPattern[] {child})
         {
-            var m1 = substPattern.Match(newLabel);
+            var m1 = SubstPattern.Match(newLabel);
             if (m1.Success)
             {
-                mode = RelabelMode.REGEX;
+                mode = RelabelMode.Regex;
                 this.labelRegex = new Regex(m1.Groups[1].Value);
                 this.replacementString = m1.Groups[2].Value;
                 replacementPieces = new List<string>();
                 var generalMatcher =
-                    oneGeneralReplacementPattern.Match(m1.Groups[2].Value);
+                    OneGeneralReplacementPattern.Match(m1.Groups[2].Value);
                 int lastPosition = 0;
                 var nextMatch = generalMatcher.NextMatch();
                 while (nextMatch.Success)
@@ -100,13 +97,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
             else
             {
-                mode = RelabelMode.FIXED;
-                var m2 = regexPattern.Match(newLabel);
+                mode = RelabelMode.Fixed;
+                var m2 = RegexPattern.Match(newLabel);
                 if (m2.Success)
                 {
                     // fixed relabel but surrounded by regex slashes
                     string unescapedLabel = m2.Groups[1].Value;
-                    this.newLabel = removeEscapeSlashes(unescapedLabel);
+                    this.newLabel = RemoveEscapeSlashes(unescapedLabel);
                 }
                 else
                 {
@@ -120,9 +117,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
         }
 
-        private static string removeEscapeSlashes(string input)
+        private static string RemoveEscapeSlashes(string input)
         {
-            StringBuilder output = new StringBuilder();
+            var output = new StringBuilder();
             int len = input.Length;
             bool lastIsBackslash = false;
             for (int i = 0; i < len; i++)
@@ -151,14 +148,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new RelabelMatcher(newNodeNames, coindexer, this);
         }
 
         private class RelabelMatcher : TsurgeonMatcher
         {
-            private RelabelNode node;
+            private readonly RelabelNode node;
 
             public RelabelMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer,
                 RelabelNode node) :
@@ -168,30 +165,30 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
 
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree nodeToRelabel = childMatcher[0].evaluate(tree, tregex);
+                Tree nodeToRelabel = childMatcher[0].Evaluate(tree, tregex);
                 switch (node.mode)
                 {
-                    case RelabelMode.FIXED:
+                    case RelabelMode.Fixed:
                     {
                         nodeToRelabel.Label().SetValue(node.newLabel);
                         break;
                     }
-                    case RelabelMode.REGEX:
+                    case RelabelMode.Regex:
                     {
 
-                        StringBuilder label = new StringBuilder();
+                        var label = new StringBuilder();
                         foreach (string chunk in node.replacementPieces)
                         {
-                            if (variablePattern.IsMatch(chunk))
+                            if (VariablePattern.IsMatch(chunk))
                             {
                                 //String name = chunk.Substring(2, chunk.Length - 1);
                                 string name = chunk.Substring(2, chunk.Length - 3);
                                 //label.Append(Matcher.quoteReplacement(tregex.getVariableString(name)));
                                 label.Append(tregex.GetVariableString(name).Replace("'", "").Replace("\"", ""));
                             }
-                            else if (nodePattern.IsMatch(chunk))
+                            else if (NodePattern.IsMatch(chunk))
                             {
                                 //String name = chunk.Substring(2, chunk.Length - 1);
                                 string name = chunk.Substring(2, chunk.Length - 3);
@@ -222,9 +219,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             string result;
             switch (mode)
             {
-                case RelabelMode.FIXED:
+                case RelabelMode.Fixed:
                     return label + '(' + children[0].ToString() + ',' + newLabel + ')';
-                case RelabelMode.REGEX:
+                case RelabelMode.Regex:
                     return label + '(' + children[0].ToString() + ',' + labelRegex.ToString() + ',' + replacementString +
                            ')';
                 default:

@@ -31,7 +31,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
@@ -47,10 +47,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
 
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree topNode = childMatcher[0].evaluate(tree, tregex);
-                Tree bottomNode = childMatcher[1].evaluate(tree, tregex);
+                Tree topNode = childMatcher[0].Evaluate(tree, tregex);
+                Tree bottomNode = childMatcher[1].Evaluate(tree, tregex);
                 /*if(Tsurgeon.verbose) {
         System.err.println("Excising...original tree:");
         tree.pennPrint(System.err);

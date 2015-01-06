@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
     public class CreateSubtreeNode : TsurgeonPattern
     {
-        private AuxiliaryTree auxTree;
+        private readonly AuxiliaryTree auxTree;
 
         public CreateSubtreeNode(TsurgeonPattern start, AuxiliaryTree tree) :
             this(start, null, tree)
@@ -29,7 +29,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
 
             this.auxTree = tree;
-            findFoot();
+            FindFoot();
         }
 
         /**
@@ -39,7 +39,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * Check if this syntax is being used, and simulate a foot if so.
    */
 
-        private void findFoot()
+        private void FindFoot()
         {
             if (auxTree.foot == null)
             {
@@ -52,14 +52,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
 
         private class Matcher : TsurgeonMatcher
         {
-            private CreateSubtreeNode node;
+            private readonly CreateSubtreeNode node;
 
             public Matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer,
                 CreateSubtreeNode node) :
@@ -74,10 +74,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
      * location under parent
      */
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree startChild = childMatcher[0].evaluate(tree, tregex);
-                Tree endChild = (childMatcher.Length == 2) ? childMatcher[1].evaluate(tree, tregex) : startChild;
+                Tree startChild = childMatcher[0].Evaluate(tree, tregex);
+                Tree endChild = (childMatcher.Length == 2) ? childMatcher[1].Evaluate(tree, tregex) : startChild;
 
                 Tree parent = startChild.Parent(tree);
 
@@ -87,7 +87,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     throw new TsurgeonRuntimeException("Parents did not match for trees when applied to " + this);
                 }
 
-                AuxiliaryTree treeCopy = node.auxTree.copy(this);
+                AuxiliaryTree treeCopy = node.auxTree.Copy(this);
 
                 // Collect all the children of the parent of the node we care
                 // about.  If the child is one of the nodes we care about, or
@@ -96,8 +96,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 // children into a new node using the newly created label.  All
                 // other children are kept in an outer list, with the new node
                 // added at the appropriate location.
-                List<Tree> children = new List<Tree>();
-                List<Tree> innerChildren = new List<Tree>();
+                var children = new List<Tree>();
+                var innerChildren = new List<Tree>();
                 bool insideSpan = false;
                 foreach (Tree child in parent.Children())
                 {

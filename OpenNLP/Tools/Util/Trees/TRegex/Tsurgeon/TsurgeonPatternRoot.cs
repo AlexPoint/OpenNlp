@@ -14,7 +14,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         public TsurgeonPatternRoot(TsurgeonPattern[] children) : base("operations: ", children)
         {
-            setRoot(this);
+            SetRoot(this);
         }
 
         private bool coindexes = false;
@@ -24,24 +24,24 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * wants coindexing), it can call this at the time of setRoot()
    */
 
-        public void setCoindexes()
+        public void SetCoindexes()
         {
             coindexes = true;
         }
 
         //@Override
-        public override TsurgeonMatcher matcher()
+        public override TsurgeonMatcher GetMatcher()
         {
             CoindexationGenerator coindexer = null;
             if (coindexes)
             {
                 coindexer = new CoindexationGenerator();
             }
-            return matcher(new Dictionary<string, Tree>(), coindexer);
+            return GetMatcher(new Dictionary<string, Tree>(), coindexer);
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
@@ -60,15 +60,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
      * operated-on tree is not to be trusted in this instance.
      */
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
                 if (coindexer != null)
                 {
-                    coindexer.setLastIndex(tree);
+                    coindexer.SetLastIndex(tree);
                 }
                 foreach (TsurgeonMatcher child in childMatcher)
                 {
-                    tree = child.evaluate(tree, tregex);
+                    tree = child.Evaluate(tree, tregex);
                     if (tree == null)
                     {
                         return null;

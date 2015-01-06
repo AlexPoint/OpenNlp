@@ -30,20 +30,20 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             padjunctionTree = t;
         }
 
-        protected AuxiliaryTree adjunctionTree()
+        protected AuxiliaryTree AdjunctionTree()
         {
             return padjunctionTree;
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
 
         private class Matcher : TsurgeonMatcher
         {
-            private AdjoinNode node;
+            private readonly AdjoinNode node;
 
             public Matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer, AdjoinNode node) :
                 base(node, newNodeNames, coindexer)
@@ -52,13 +52,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
 
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
                 // find match and get its parent
-                Tree targetNode = childMatcher[0].evaluate(tree, tregex);
+                Tree targetNode = childMatcher[0].Evaluate(tree, tregex);
                 Tree parent = targetNode.Parent(tree);
                 // put children underneath target in foot of auxilary tree
-                AuxiliaryTree ft = node.padjunctionTree.copy(this);
+                AuxiliaryTree ft = node.padjunctionTree.Copy(this);
                 ft.foot.SetChildren(targetNode.GetChildrenAsList());
                 // replace match with root of auxiliary tree
                 if (parent == null)
@@ -77,7 +77,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         //@Override
         public override string ToString()
         {
-            return base.ToString() + "<-" + padjunctionTree.ToString();
+            return base.ToString() + "<-" + padjunctionTree;
         }
     }
 }

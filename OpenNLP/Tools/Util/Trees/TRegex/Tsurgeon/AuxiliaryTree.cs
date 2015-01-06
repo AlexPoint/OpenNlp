@@ -20,14 +20,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
             originalTreeString = tree.ToString();
             this.tree = tree;
-            this.foot = findFootNode(tree);
+            this.foot = FindFootNode(tree);
             if (foot == null && mustHaveFoot)
             {
                 throw new TsurgeonParseException("Error -- no foot node found for " + originalTreeString);
             }
             pnamesToNodes = new Dictionary<string, Tree>();
             nodesToNames = new IdentityDictionary<Tree, string>();
-            initializeNamesNodesMaps(tree);
+            InitializeNamesNodesMaps(tree);
         }
 
         private AuxiliaryTree(Tree tree, Tree foot, Dictionary<string, Tree> namesToNodes, string originalTreeString)
@@ -39,7 +39,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             nodesToNames = null;
         }
 
-        public Dictionary<string, Tree> namesToNodes()
+        public Dictionary<string, Tree> NamesToNodes()
         {
             return pnamesToNodes;
         }
@@ -54,10 +54,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * Copies the Auxiliary tree.  Also, puts the new names->nodes map in the TsurgeonMatcher that called copy.
    */
 
-        public AuxiliaryTree copy(TsurgeonMatcher matcher)
+        public AuxiliaryTree Copy(TsurgeonMatcher matcher)
         {
-            Dictionary<string, Tree> newNamesToNodes = new Dictionary<string, Tree>();
-            Tuple<Tree, Tree> result = copyHelper(tree, newNamesToNodes);
+            var newNamesToNodes = new Dictionary<string, Tree>();
+            Tuple<Tree, Tree> result = CopyHelper(tree, newNamesToNodes);
             //if(! result.Item1.dominates(result.Item2))
             //System.err.println("Error -- aux tree copy doesn't dominate foot copy.");
             foreach (var entry in newNamesToNodes)
@@ -68,7 +68,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         // returns Pair<node,foot>
-        private Tuple<Tree, Tree> copyHelper(Tree node, Dictionary<string, Tree> newNamesToNodes)
+        private Tuple<Tree, Tree> CopyHelper(Tree node, Dictionary<string, Tree> newNamesToNodes)
         {
             Tree clone;
             Tree newFoot = null;
@@ -87,10 +87,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
             else
             {
-                List<Tree> newChildren = new List<Tree>(node.Children().Length);
+                var newChildren = new List<Tree>(node.Children().Length);
                 foreach (Tree child in node.Children())
                 {
-                    Tuple<Tree, Tree> newChild = copyHelper(child, newNamesToNodes);
+                    Tuple<Tree, Tree> newChild = CopyHelper(child, newNamesToNodes);
                     newChildren.Add(newChild.Item1);
                     if (newChild.Item2 != null)
                     {
@@ -105,7 +105,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
 
             if (nodesToNames.ContainsKey(node))
+            {
                 newNamesToNodes.Add(nodesToNames[node], clone);
+            }
 
             return new Tuple<Tree, Tree>(clone, newFoot);
         }
@@ -117,12 +119,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         /***********************************************************/
 
 
-        private static readonly string footNodeCharacter = "@";
+        private const string FootNodeCharacter = "@";
 
-        private static readonly Regex footNodeLabelPattern = new Regex("^(.*)" + footNodeCharacter + '$',
+        private static readonly Regex FootNodeLabelPattern = new Regex("^(.*)" + FootNodeCharacter + '$',
             RegexOptions.Compiled);
 
-        private static readonly Regex escapedFootNodeCharacter = new Regex('\\' + footNodeCharacter,
+        private static readonly Regex EscapedFootNodeCharacter = new Regex('\\' + FootNodeCharacter,
             RegexOptions.Compiled);
 
         /**
@@ -133,9 +135,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * ignored, and left in.
    */
 
-        private static Tree findFootNode(Tree t)
+        private static Tree FindFootNode(Tree t)
         {
-            Tree footNode = findFootNodeHelper(t);
+            Tree footNode = FindFootNodeHelper(t);
             Tree result = footNode;
             if (footNode != null)
             {
@@ -153,12 +155,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             return result;
         }
 
-        private static Tree findFootNodeHelper(Tree t)
+        private static Tree FindFootNodeHelper(Tree t)
         {
             Tree foundDtr = null;
             if (t.IsLeaf())
             {
-                var match = footNodeLabelPattern.Match(t.Label().Value());
+                var match = FootNodeLabelPattern.Match(t.Label().Value());
                 if (match.Success)
                 {
                     t.Label().SetValue(match.Groups[1].Value);
@@ -171,7 +173,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
             foreach (Tree child in t.Children())
             {
-                Tree thisFoundDtr = findFootNodeHelper(child);
+                Tree thisFoundDtr = FindFootNodeHelper(child);
                 if (thisFoundDtr != null)
                 {
                     if (foundDtr != null)
@@ -186,7 +188,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
             /*Matcher m = escapedFootNodeCharacter.matcher(t.label().value());
     t.label().setValue(m.replaceAll(footNodeCharacter));*/
-            var newS = escapedFootNodeCharacter.Replace(t.Label().Value(), footNodeCharacter);
+            var newS = EscapedFootNodeCharacter.Replace(t.Label().Value(), FootNodeCharacter);
             t.Label().SetValue(newS);
             return foundDtr;
         }
@@ -204,7 +206,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         // by a non-"\" character, as "\" is used to escape the "=".  After
         // that, any number of pairs of "\" are allowed, as we let "\" also
         // escape itself.  After that comes "=" and a name.
-        private static readonly Regex namePattern = new Regex(
+        private static readonly Regex NamePattern = new Regex(
             "^((?:[^\\\\]*)|(?:(?:.*[^\\\\])?)(?:\\\\\\\\)*)=([^=]+)$", RegexOptions.Compiled);
 
         /**
@@ -212,22 +214,22 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * Destructively unescapes escaped chars, including "=", as well.
    */
 
-        private void initializeNamesNodesMaps(Tree t)
+        private void InitializeNamesNodesMaps(Tree t)
         {
             foreach (Tree node in t.SubTreeList())
             {
-                var m = namePattern.Match(node.Label().Value());
+                var m = NamePattern.Match(node.Label().Value());
                 if (m.Success)
                 {
                     pnamesToNodes.Add(m.Groups[2].Value, node);
                     nodesToNames.Add(node, m.Groups[2].Value);
                     node.Label().SetValue(m.Groups[1].Value);
                 }
-                node.Label().SetValue(unescape(node.Label().Value()));
+                node.Label().SetValue(Unescape(node.Label().Value()));
             }
         }
 
-        private static string unescape(string input)
+        private static string Unescape(string input)
         {
             return Regex.Replace(input, "\\\\(.)", "$1");
             //return input.Replace("\\\\(.)", "$1");

@@ -8,13 +8,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
     public class InsertNode : TsurgeonPattern
     {
-        private TreeLocation location;
+        private readonly TreeLocation location;
 
         /**
    * Does the item being inserted need to be deep-copied before
    * insertion?
    */
-        private bool needsCopy = true;
+        private readonly bool needsCopy = true;
 
         public InsertNode(TsurgeonPattern child, TreeLocation l) :
             base("insert", new TsurgeonPattern[] {child})
@@ -23,10 +23,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override void setRoot(TsurgeonPatternRoot root)
+        public override void SetRoot(TsurgeonPatternRoot root)
         {
-            base.setRoot(root);
-            location.setRoot(root);
+            base.SetRoot(root);
+            location.SetRoot(root);
         }
 
         public InsertNode(AuxiliaryTree t, TreeLocation l) :
@@ -38,28 +38,28 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
 
         private class Matcher : TsurgeonMatcher
         {
-            private TreeLocation.LocationMatcher locationMatcher;
-            private InsertNode node;
+            private readonly TreeLocation.LocationMatcher locationMatcher;
+            private readonly InsertNode node;
 
             public Matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer, InsertNode node) :
                 base(node, newNodeNames, coindexer)
             {
                 this.node = node;
-                locationMatcher = node.location.matcher(newNodeNames, coindexer);
+                locationMatcher = node.location.Matcher(newNodeNames, coindexer);
             }
 
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree nodeToInsert = childMatcher[0].evaluate(tree, tregex);
-                Tuple<Tree, int> position = locationMatcher.evaluate(tree, tregex);
+                Tree nodeToInsert = childMatcher[0].Evaluate(tree, tregex);
+                Tuple<Tree, int> position = locationMatcher.Evaluate(tree, tregex);
                 position.Item1.InsertDtr(this.node.needsCopy ? nodeToInsert.DeepCopy() : nodeToInsert,
                     position.Item2);
                 return tree;

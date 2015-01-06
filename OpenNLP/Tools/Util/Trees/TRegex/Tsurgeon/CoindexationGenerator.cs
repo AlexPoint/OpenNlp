@@ -18,7 +18,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         private int lastIndex;
 
-        public void setLastIndex(Tree t)
+        public void SetLastIndex(Tree t)
         {
             lastIndex = 0;
             var iterator = t.Iterator();
@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
         }
 
-        public int generateIndex()
+        public int GenerateIndex()
         {
             lastIndex = lastIndex + 1;
             return lastIndex;

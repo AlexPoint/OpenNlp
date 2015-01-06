@@ -10,7 +10,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
     public class HoldTreeNode : TsurgeonPattern
     {
-        private AuxiliaryTree subTree;
+        private readonly AuxiliaryTree subTree;
 
         public HoldTreeNode(AuxiliaryTree t) :
             base("hold", TsurgeonPattern.EMPTY_TSURGEON_PATTERN_ARRAY)
@@ -19,14 +19,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
 
         private class Matcher : TsurgeonMatcher
         {
-            private HoldTreeNode node;
+            private readonly HoldTreeNode node;
 
             public Matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer, HoldTreeNode node) :
                 base(node, newNodeNames, coindexer)
@@ -35,9 +35,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
 
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                return node.subTree.copy(this).tree;
+                return node.subTree.Copy(this).tree;
             }
         }
 

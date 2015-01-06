@@ -19,7 +19,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
@@ -35,12 +35,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
 
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
                 Tree result = tree;
                 foreach (TsurgeonMatcher child in childMatcher)
                 {
-                    Tree nodeToDelete = child.evaluate(tree, tregex);
+                    Tree nodeToDelete = child.Evaluate(tree, tregex);
                     if (nodeToDelete == tree)
                     {
                         result = null;

@@ -12,7 +12,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
     public class MoveNode : TsurgeonPattern
     {
-        private TreeLocation location;
+        private readonly TreeLocation location;
 
         public MoveNode(TsurgeonPattern child, TreeLocation l) :
             base("move", new TsurgeonPattern[] {child})
@@ -21,37 +21,37 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override void setRoot(TsurgeonPatternRoot root)
+        public override void SetRoot(TsurgeonPatternRoot root)
         {
-            base.setRoot(root);
-            location.setRoot(root);
+            base.SetRoot(root);
+            location.SetRoot(root);
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
 
         private class Matcher : TsurgeonMatcher
         {
-            private TreeLocation.LocationMatcher locationMatcher;
+            private readonly TreeLocation.LocationMatcher locationMatcher;
             private MoveNode node;
 
             public Matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer, MoveNode node) :
                 base(node, newNodeNames, coindexer)
             {
                 this.node = node;
-                locationMatcher = node.location.matcher(newNodeNames, coindexer);
+                locationMatcher = node.location.Matcher(newNodeNames, coindexer);
             }
 
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree nodeToMove = childMatcher[0].evaluate(tree, tregex);
+                Tree nodeToMove = childMatcher[0].Evaluate(tree, tregex);
                 Tree oldParent = nodeToMove.Parent(tree);
                 oldParent.RemoveChild(Trees.ObjectEqualityIndexOf(oldParent, nodeToMove));
-                Tuple<Tree, int> position = locationMatcher.evaluate(tree, tregex);
+                Tuple<Tree, int> position = locationMatcher.Evaluate(tree, tregex);
                 position.Item1.InsertDtr(nodeToMove, position.Item2);
                 return tree;
             }

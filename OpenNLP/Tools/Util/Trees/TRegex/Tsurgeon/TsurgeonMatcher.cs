@@ -45,7 +45,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             this.childMatcher = new TsurgeonMatcher[pattern.children.Length];
             for (int i = 0; i < pattern.children.Length; ++i)
             {
-                this.childMatcher[i] = pattern.children[i].matcher(newNodeNames, coindexer);
+                this.childMatcher[i] = pattern.children[i].GetMatcher(newNodeNames, coindexer);
             }
         }
 
@@ -58,6 +58,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
          * @param tregex The successfully matched {@link TregexMatcher}.
          * @return Some node in the tree; depends on implementation and use of the specific subclass.
          */
-        public abstract Tree evaluate(Tree tree, TregexMatcher tregex);
+        public abstract Tree Evaluate(Tree tree, TregexMatcher tregex);
     }
 }

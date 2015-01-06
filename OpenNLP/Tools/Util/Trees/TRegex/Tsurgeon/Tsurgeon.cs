@@ -75,14 +75,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
     public class Tsurgeon
     {
-        private static readonly bool DEBUG = false;
+        //private static readonly bool DEBUG = false;
         private static bool verbose; // = false;
 
-        private static readonly Regex emptyLinePattern = new Regex("^\\s*$", RegexOptions.Compiled);
-        private static readonly string commentIntroducingCharacter = "%";
-        private static readonly Regex commentPattern = new Regex("(?<!\\\\)%.*$", RegexOptions.Compiled);
+        private static readonly Regex EmptyLinePattern = new Regex("^\\s*$", RegexOptions.Compiled);
+        private const string CommentIntroducingCharacter = "%";
+        private static readonly Regex CommentPattern = new Regex("(?<!\\\\)%.*$", RegexOptions.Compiled);
 
-        private static readonly Regex escapedCommentCharacterPattern = new Regex("\\\\" + commentIntroducingCharacter,
+        private static readonly Regex EscapedCommentCharacterPattern = new Regex("\\\\" + CommentIntroducingCharacter,
             RegexOptions.Compiled);
 
         private Tsurgeon()
@@ -220,12 +220,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * @return A List of the transformed trees
    */
 
-        public static List<Tree> processPatternOnTrees(TregexPattern matchPattern, TsurgeonPattern p,
+        public static List<Tree> ProcessPatternOnTrees(TregexPattern matchPattern, TsurgeonPattern p,
             List<Tree> inputTrees)
         {
-            List<Tree> result = new List<Tree>();
+            var result = new List<Tree>();
             foreach (Tree tree in inputTrees)
-                result.Add(processPattern(matchPattern, p, tree));
+            {
+                result.Add(ProcessPattern(matchPattern, p, tree));
+            }
             return result;
         }
 
@@ -237,13 +239,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * @return t, which has been surgically modified.
    */
 
-        public static Tree processPattern(TregexPattern matchPattern, TsurgeonPattern p, Tree t)
+        public static Tree ProcessPattern(TregexPattern matchPattern, TsurgeonPattern p, Tree t)
         {
             TregexMatcher m = matchPattern.Matcher(t);
-            TsurgeonMatcher tsm = p.matcher();
+            TsurgeonMatcher tsm = p.GetMatcher();
             while (m.Find())
             {
-                t = tsm.evaluate(t, m);
+                t = tsm.Evaluate(t, m);
                 if (t == null)
                 {
                     break;
@@ -255,7 +257,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         private static bool matchedOnTree; // hack-in field for seeing whether there was a match.
 
-        public static Tree processPatternsOnTree(List<Tuple<TregexPattern, TsurgeonPattern>> ops, Tree t)
+        public static Tree ProcessPatternsOnTree(List<Tuple<TregexPattern, TsurgeonPattern>> ops, Tree t)
         {
             matchedOnTree = false;
             foreach (Tuple<TregexPattern, TsurgeonPattern> op in ops)
@@ -266,11 +268,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
           System.err.println("Running pattern " + op.first());
         }*/
                     TregexMatcher m = op.Item1.Matcher(t);
-                    TsurgeonMatcher tsm = op.Item2.matcher();
+                    TsurgeonMatcher tsm = op.Item2.GetMatcher();
                     while (m.Find())
                     {
                         matchedOnTree = true;
-                        t = tsm.evaluate(t, m);
+                        t = tsm.Evaluate(t, m);
                         if (t == null)
                         {
                             return null;
@@ -303,12 +305,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * @return the operation pattern.
    */
 
-        public static TsurgeonPattern parseOperation(string operationString)
+        public static TsurgeonPattern ParseOperation(string operationString)
         {
             try
             {
-                TsurgeonParser parser =
-                    new TsurgeonParser(new StringReader(operationString + "\n"));
+                var parser = new TsurgeonParser(new StringReader(operationString + "\n"));
                 return parser.Root();
             }
             catch (ParseException e)
@@ -332,7 +333,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
    * @return a new {@link TsurgeonPattern} that performs all the operations in the sequence of the <code>patterns</code> argument
    */
 
-        public static TsurgeonPattern collectOperations(List<TsurgeonPattern> patterns)
+        public static TsurgeonPattern CollectOperations(List<TsurgeonPattern> patterns)
         {
             return new TsurgeonPatternRoot(patterns.ToArray());
             //return new TsurgeonPatternRoot(patterns.toArray(new TsurgeonPattern[patterns.size()]));

@@ -21,7 +21,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         private static readonly Func<AuxiliaryTree, HoldTreeNode> convertAuxiliaryToHold = t => new HoldTreeNode(t);
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
@@ -36,9 +36,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
 
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree oldNode = childMatcher[0].evaluate(tree, tregex);
+                Tree oldNode = childMatcher[0].Evaluate(tree, tregex);
                 if (oldNode == tree)
                 {
                     if (node.children.Length > 2)
@@ -46,14 +46,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         throw new TsurgeonRuntimeException(
                             "Attempted to replace a root node with more than one node, unable to proceed");
                     }
-                    return childMatcher[1].evaluate(tree, tregex);
+                    return childMatcher[1].Evaluate(tree, tregex);
                 }
                 Tree parent = oldNode.Parent(tree);
                 int i = parent.ObjectIndexOf(oldNode);
                 parent.RemoveChild(i);
                 for (int j = 1; j < node.children.Length; ++j)
                 {
-                    Tree newNode = childMatcher[j].evaluate(tree, tregex);
+                    Tree newNode = childMatcher[j].Evaluate(tree, tregex);
                     parent.InsertDtr(newNode.DeepCopy(), i + j - 1);
                 }
                 return tree;

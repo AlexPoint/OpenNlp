@@ -23,7 +23,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
@@ -39,27 +39,27 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
 
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
                 bool prunedWholeTree = false;
                 foreach (TsurgeonMatcher child in childMatcher)
                 {
-                    Tree nodeToPrune = child.evaluate(tree, tregex);
-                    if (pruneHelper(tree, nodeToPrune) == null)
+                    Tree nodeToPrune = child.Evaluate(tree, tregex);
+                    if (PruneHelper(tree, nodeToPrune) == null)
                         prunedWholeTree = true;
                 }
                 return prunedWholeTree ? null : tree;
             }
         }
 
-        private static Tree pruneHelper(Tree root, Tree nodeToPrune)
+        private static Tree PruneHelper(Tree root, Tree nodeToPrune)
         {
             if (nodeToPrune == root)
                 return null;
             Tree parent = nodeToPrune.Parent(root);
             parent.RemoveChild(Trees.ObjectEqualityIndexOf(parent, nodeToPrune));
             if (parent.Children().Length == 0)
-                return pruneHelper(root, parent);
+                return PruneHelper(root, parent);
             return root;
         }
     }

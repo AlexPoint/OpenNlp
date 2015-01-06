@@ -18,30 +18,29 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
 
         private class Matcher : TsurgeonMatcher
         {
-            private AdjoinToFootNode node;
+            private readonly AdjoinToFootNode node;
 
             public Matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer, AdjoinToFootNode node)
-                :
-                    base(node, newNodeNames, coindexer)
+                : base(node, newNodeNames, coindexer)
             {
                 this.node = node;
             }
 
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
                 // find match and get its parent
-                Tree targetNode = childMatcher[0].evaluate(tree, tregex);
+                Tree targetNode = childMatcher[0].Evaluate(tree, tregex);
                 Tree parent = targetNode.Parent(tree);
                 // substitute original node for foot of auxiliary tree.  Foot node is ignored
-                AuxiliaryTree ft = node.adjunctionTree().copy(this);
+                AuxiliaryTree ft = node.AdjunctionTree().Copy(this);
                 // System.err.println("ft=" + ft + "; ft.foot=" + ft.foot + "; ft.tree=" + ft.tree);
                 Tree parentOfFoot = ft.foot.Parent(ft.tree);
                 if (parentOfFoot == null)

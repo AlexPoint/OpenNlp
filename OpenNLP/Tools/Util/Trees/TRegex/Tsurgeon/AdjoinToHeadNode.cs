@@ -18,14 +18,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         //@Override
-        public override TsurgeonMatcher matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
+        public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
         }
 
         private class Matcher : TsurgeonMatcher
         {
-            private AdjoinToHeadNode node;
+            private readonly AdjoinToHeadNode node;
 
             public Matcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer, AdjoinToHeadNode node)
                 :
@@ -35,12 +35,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
 
             //@Override
-            public override Tree evaluate(Tree tree, TregexMatcher tregex)
+            public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
                 // find match
-                Tree targetNode = childMatcher[0].evaluate(tree, tregex);
+                Tree targetNode = childMatcher[0].Evaluate(tree, tregex);
                 // put children underneath target in foot of auxilary tree
-                AuxiliaryTree ft = node.adjunctionTree().copy(this);
+                AuxiliaryTree ft = node.AdjunctionTree().Copy(this);
                 ft.foot.SetChildren(targetNode.GetChildrenAsList());
                 // put children of auxiliary tree under target.  root of auxiliary tree is ignored.  root of original is maintained.
                 targetNode.SetChildren(ft.tree.GetChildrenAsList());

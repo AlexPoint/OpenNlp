@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Util.Trees
             TregexPattern.Compile("NP < (QP=left $+ (QP=right < CC))");
 
         private static readonly TsurgeonPattern flattenNPoverQPTsurgeon =
-            Tsurgeon.parseOperation("[createSubtree QP left right] [excise left left] [excise right right]");
+            Tsurgeon.ParseOperation("[createSubtree QP left right] [excise left left] [excise right right]");
 
         private static readonly TregexPattern multiwordXSTregex =
             // TODO: should add NN and $ to the numeric expressions captured
@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util.Trees
                 "QP <1 /^RB|JJ|IN/=left [ ( <2 /^JJ|IN/=right <3 /^CD|DT/ ) | ( <2 /^JJ|IN/ <3 ( IN=right < /^(?i:as|than)$/ ) <4 /^CD|DT/ ) ] ");
 
         private static readonly TsurgeonPattern multiwordXSTsurgeon =
-            Tsurgeon.parseOperation("createSubtree XS left right");
+            Tsurgeon.ParseOperation("createSubtree XS left right");
 
         // the old style split any flat QP with a CC in the middle
         // TOD: there should be some allowances for phrases such as "or more", "or so", etc
@@ -72,7 +72,7 @@ namespace OpenNLP.Tools.Util.Trees
                 "QP < (CC $- __=r1 $+ __=l2 ?$-- /^[$]|CC$/=lnum ?$++ /^[$]|CC$/=rnum) <1 __=l1 <- __=r2 !< (__ < (__ < __))");
 
         private static readonly TsurgeonPattern splitCCTsurgeon =
-            Tsurgeon.parseOperation(
+            Tsurgeon.ParseOperation(
                 "[if exists lnum createSubtree QP l1 r1] [if not exists lnum createSubtree NP l1 r1] " +
                 "[if exists rnum createSubtree QP l2 r2] [if not exists rnum createSubtree NP l2 r2]");
 
@@ -80,7 +80,7 @@ namespace OpenNLP.Tools.Util.Trees
             TregexPattern.Compile("QP < (/^[$]$/ !$++ /^(?!([$]|CD)).*$/ !$++ (__ < (__ < __)) $+ __=left) <- __=right");
 
         private static readonly TsurgeonPattern splitMoneyTsurgeon =
-            Tsurgeon.parseOperation("createSubtree QP left right");
+            Tsurgeon.ParseOperation("createSubtree QP left right");
 
         /**
    * Transforms t if it contains one of the following QP structure:
@@ -98,10 +98,10 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static Tree QpTransform(Tree t)
         {
-            t = Tsurgeon.processPattern(flattenNPoverQPTregex, flattenNPoverQPTsurgeon, t);
-            t = Tsurgeon.processPattern(multiwordXSTregex, multiwordXSTsurgeon, t);
-            t = Tsurgeon.processPattern(splitCCTregex, splitCCTsurgeon, t);
-            t = Tsurgeon.processPattern(splitMoneyTregex, splitMoneyTsurgeon, t);
+            t = Tsurgeon.ProcessPattern(flattenNPoverQPTregex, flattenNPoverQPTsurgeon, t);
+            t = Tsurgeon.ProcessPattern(multiwordXSTregex, multiwordXSTsurgeon, t);
+            t = Tsurgeon.ProcessPattern(splitCCTregex, splitCCTsurgeon, t);
+            t = Tsurgeon.ProcessPattern(splitMoneyTregex, splitMoneyTsurgeon, t);
             return t;
         }
 

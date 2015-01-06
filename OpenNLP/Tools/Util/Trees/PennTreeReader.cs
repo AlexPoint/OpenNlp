@@ -303,27 +303,5 @@ namespace OpenNLP.Tools.Util.Trees
             reader.Close();
         }
 
-
-        /**
-   * Loads treebank data from first argument and prints it.
-   *
-   * @param args Array of command-line arguments: specifies a filename
-   */
-        /*public static void main(String[] args) {
-    try {
-      TreeFactory tf = new LabeledScoredTreeFactory();
-      Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(args[0]), "UTF-8"));
-      TreeReader tr = new PennTreeReader(r, tf);
-      Tree t = tr.readTree();
-      while (t != null) {
-        System.out.println(t);
-        System.out.println();
-        t = tr.readTree();
-      }
-      r.close();
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
-    }
-  }*/
     }
 }

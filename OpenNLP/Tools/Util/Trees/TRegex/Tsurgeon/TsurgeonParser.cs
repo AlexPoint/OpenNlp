@@ -13,20 +13,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         protected JJTTsurgeonParserState jjtree = new JJTTsurgeonParserState();
         private TreeFactory treeFactory = new LabeledScoredTreeFactory();
 
-        /*public static void main(String[] args) {
-    System.out.println("Reading from standard input...");
-    TsurgeonParser t = new TsurgeonParser(System.in);
-    try {
-      TsurgeonPattern n = t.Root();
-      System.out.println(n.toString());
-      System.out.println("Thank you.");
-    } catch (Exception e) {
-      System.out.println("Oops.");
-      System.out.println(e.getMessage());
-      e.printStackTrace();
-    }
-  }*/
-
+        
 // TODO: this is wasteful in terms of creating TsurgeonPatternRoot.
 // Should separate that out into another production
         public TsurgeonPatternRoot Root() /*throws ParseException*/

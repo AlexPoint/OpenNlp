@@ -1777,25 +1777,7 @@ namespace OpenNLP.Tools.Util
             }
             return result;
         }
-
-        /**
-   * Tests the string edit distance function.
-   */
-        /* public static void main(String[] args) {
-
-    String[] s = {"there once was a man", "this one is a manic", "hey there", "there once was a mane", "once in a manger.", "where is one match?", "Jo3seph Smarr!", "Joseph R Smarr"};
-    for (int i = 0; i < 8; i++) {
-      for (int j = 0; j < 8; j++) {
-        System.out.println("s1: " + s[i]);
-        System.out.println("s2: " + s[j]);
-        System.out.println("edit distance: " + editDistance(s[i], s[j]));
-        System.out.println("LCS:           " + longestCommonSubstring(s[i], s[j]));
-        System.out.println("LCCS:          " + longestCommonContiguousSubstring(s[i], s[j]));
-        System.out.println();
-      }
-    }
-  }*/
-
+        
         public static String toAscii(String s)
         {
             StringBuilder b = new StringBuilder();

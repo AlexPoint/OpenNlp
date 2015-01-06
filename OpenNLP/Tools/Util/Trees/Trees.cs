@@ -599,28 +599,6 @@ namespace OpenNLP.Tools.Util.Trees
             return sb.ToString();
         }
 
-
-        /*public static void main(String[] args) throws IOException {
-    int i = 0;
-    while (i < args.Length) {
-      Tree tree = Tree.valueOf(args[i]);
-      if (tree == null) {
-        // maybe it was a filename
-        tree = Tree.valueOf(IOUtils.slurpFile(args[i]));
-      }
-      if (tree != null) {
-        System.out.println(escape(texTree(tree)));
-      }
-      i++;
-    }
-    if (i == 0) {
-      Tree tree = (new PennTreeReader(new BufferedReader(new
-              InputStreamReader(System.in)), new LabeledScoredTreeFactory(new
-              StringLabelFactory()))).readTree();
-      System.out.println(escape(texTree(tree)));
-    }
-  }*/
-
         /*public static Tree normalizeTree(Tree tree, TreeNormalizer tn, TreeFactory tf) {
     foreach (Tree node in tree) {
       if (node.isLeaf()) {

@@ -1949,15 +1949,5 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        /**
-   * Prints out the English grammatical relations hierarchy.
-   * See <code>EnglishGrammaticalStructure</code> for a main method that
-   * will print the grammatical relations of a sentence or tree.
-   *
-   * @param args Args are ignored.
-   */
-        /*public static void main(String[] args) {
-    System.out.println(GrammaticalRelation.DEPENDENT.toPrettyString());
-  }*/
     }
 }

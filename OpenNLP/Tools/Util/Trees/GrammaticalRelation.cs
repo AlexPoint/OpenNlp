@@ -572,15 +572,5 @@ namespace OpenNLP.Tools.Util.Trees
             return parent;
         }
 
-        /*public static void main(String[] args) {
-    final String[] names = {"dep", "pred", "prep_to","rcmod"};
-    foreach(String name : names) {
-      GrammaticalRelation reln = valueOf(Language.English, name);
-      System.out.println("Data for GrammaticalRelation loaded as valueOf(\"" + name + "\"):");
-      System.out.println("\tShort name:    " + reln.getShortName());
-      System.out.println("\tLong name:     " + reln.getLongName());
-      System.out.println("\tSpecific name: " + reln.getSpecific());
-    }
-  }*/
     }
 }

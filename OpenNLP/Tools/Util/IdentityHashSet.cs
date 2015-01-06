@@ -183,36 +183,6 @@ namespace OpenNLP.Tools.Util
             return map.Count;
         }
 
-        /** Just for testing. */
-        /*public static void main(String[] args) {
-    Integer x = Integer.valueOf(3);
-    Integer y = Integer.valueOf(4);
-    Integer z = Integer.valueOf(5);
-    List<Integer> a = Arrays.asList(new Integer[] {x, y, z});
-    List<String> b = Arrays.asList(new String[] {"Larry", "Moe", "Curly"});
-    List<Integer> c = Arrays.asList(new Integer[] {x, y, z});
-    List<String> d = Arrays.asList(new String[] {"Larry", "Moe", "Curly"});
-    Set<List<?>> hs = Generics.newHashSet();
-    IdentityHashSet<List<?>> ihs = new IdentityHashSet<List<?>>();
-    hs.add(a);
-    hs.add(b);
-    ihs.add(a);
-    ihs.add(b);
-    System.out.println("List a is " + a);
-    System.out.println("List b is " + b);
-    System.out.println("List c is " + c);
-    System.out.println("List d is " + d);
-    System.out.println("HashSet hs contains a and b: " + hs);
-    System.out.println("IdentityHashSet ihs contains a and b: " + ihs);
-    System.out.println("hs contains a? " + hs.contains(a));
-    System.out.println("hs contains b? " + hs.contains(b));
-    System.out.println("hs contains c? " + hs.contains(c));
-    System.out.println("hs contains d? " + hs.contains(d));
-    System.out.println("ihs contains a? " + ihs.contains(a));
-    System.out.println("ihs contains b? " + ihs.contains(b));
-    System.out.println("ihs contains c? " + ihs.contains(c));
-    System.out.println("ihs contains d? " + ihs.contains(d));
-  }*/
 
         // PRIVATE METHODS -----------------------------------------------------------
 

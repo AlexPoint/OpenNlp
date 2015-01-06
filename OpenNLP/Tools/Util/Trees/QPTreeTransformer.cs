@@ -105,37 +105,5 @@ namespace OpenNLP.Tools.Util.Trees
             return t;
         }
 
-
-        /*public static void main(String[] args) {
-
-    QPTreeTransformer transformer = new QPTreeTransformer();
-    Treebank tb = new MemoryTreebank();
-    Properties props = StringUtils.argsToProperties(args);
-    String treeFileName = props.getProperty("treeFile");
-
-    if (treeFileName != null) {
-      try {
-        TreeReader tr = new PennTreeReader(new BufferedReader(new InputStreamReader(new FileInputStream(treeFileName))), new LabeledScoredTreeFactory());
-        Tree t;
-        while ((t = tr.readTree()) != null) {
-          tb.add(t);
-        }
-      } catch (IOException e) {
-        throw new RuntimeException("File problem: " + e);
-      }
-
-    }
-
-    for (Tree t : tb) {
-      System.out.println("Original tree");
-      t.pennPrint();
-      System.out.println();
-      System.out.println("Tree transformed");
-      Tree tree = transformer.transformTree(t);
-      tree.pennPrint();
-      System.out.println();
-      System.out.println("----------------------------");
-    }
-  }*/
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,9 +43,9 @@ namespace OpenNLP.Tools.Util.Process
     {
 
         /* Only one of these will be non-null */
-        private TextReader reader = null;
+        private readonly TextReader reader = null;
 
-        private List<char> buf = new List<char>();
+        private readonly List<char> buf = new List<char>();
 
         /**
          * The next character to be considered by the nextToken method.  May also
@@ -53,10 +54,10 @@ namespace OpenNLP.Tools.Util.Process
          * character, it should be discarded and a second new character should be
          * Read.
          */
-        private int peekc = NEED_CHAR;
+        private int peekc = NeedChar;
 
-        private const int NEED_CHAR = Int32.MaxValue;
-        private const int SKIP_LF = Int32.MaxValue - 1;
+        private const int NeedChar = Int32.MaxValue;
+        private const int SkipLf = Int32.MaxValue - 1;
 
         private bool pushedBack;
         private bool forceLower;
@@ -66,12 +67,12 @@ namespace OpenNLP.Tools.Util.Process
         private bool slashSlashCommentsP = false;
         private bool slashStarCommentsP = false;
 
-        private byte[] characterType = new byte[256];
-        private const byte CT_WHITESPACE = 1;
-        private const byte CT_DIGIT = 2;
-        private const byte CT_ALPHA = 4;
-        private const byte CT_QUOTE = 8;
-        private const byte CT_COMMENT = 16;
+        private readonly byte[] characterType = new byte[256];
+        private const byte CtWhitespace = 1;
+        private const byte CtDigit = 2;
+        private const byte CtAlpha = 4;
+        private const byte CtQuote = 8;
+        private const byte CtComment = 16;
 
         public int LineNumber { get; private set; }
 
@@ -215,7 +216,7 @@ namespace OpenNLP.Tools.Util.Process
             }
             while (low <= hi)
             {
-                characterType[low++] |= CT_ALPHA;
+                characterType[low++] |= CtAlpha;
             }
         }
 
@@ -244,7 +245,7 @@ namespace OpenNLP.Tools.Util.Process
             }
             while (low <= hi)
             {
-                characterType[low++] = CT_WHITESPACE;
+                characterType[low++] = CtWhitespace;
             }
         }
 
@@ -313,7 +314,7 @@ namespace OpenNLP.Tools.Util.Process
         {
             if (ch >= 0 && ch < characterType.Length)
             {
-                characterType[ch] = CT_COMMENT;
+                characterType[ch] = CtComment;
             }
         }
 
@@ -342,7 +343,7 @@ namespace OpenNLP.Tools.Util.Process
         public void QuoteChar(int ch)
         {
             if (ch >= 0 && ch < characterType.Length)
-                characterType[ch] = CT_QUOTE;
+                characterType[ch] = CtQuote;
         }
 
         /**
@@ -366,10 +367,10 @@ namespace OpenNLP.Tools.Util.Process
         {
             for (int i = '0'; i <= '9'; i++)
             {
-                characterType[i] |= CT_DIGIT;
+                characterType[i] |= CtDigit;
             }
-            characterType['.'] |= CT_DIGIT;
-            characterType['-'] |= CT_DIGIT;
+            characterType['.'] |= CtDigit;
+            characterType['-'] |= CtDigit;
         }
 
         /**
@@ -498,16 +499,16 @@ namespace OpenNLP.Tools.Util.Process
 
             int c = peekc;
             if (c < 0)
-                c = NEED_CHAR;
-            if (c == SKIP_LF)
+                c = NeedChar;
+            if (c == SkipLf)
             {
                 c = Read();
                 if (c < 0)
                     return ttype = TT_EOF;
                 if (c == '\n')
-                    c = NEED_CHAR;
+                    c = NeedChar;
             }
-            if (c == NEED_CHAR)
+            if (c == NeedChar)
             {
                 c = Read();
                 if (c < 0)
@@ -518,17 +519,17 @@ namespace OpenNLP.Tools.Util.Process
             /* Set peekc so that the next invocation of nextToken will Read
              * another character unless peekc is reset in this invocation
              */
-            peekc = NEED_CHAR;
+            peekc = NeedChar;
 
-            int ctype = c < 256 ? ct[c] : CT_ALPHA;
-            while ((ctype & CT_WHITESPACE) != 0)
+            int ctype = c < 256 ? ct[c] : CtAlpha;
+            while ((ctype & CtWhitespace) != 0)
             {
                 if (c == '\r')
                 {
                     LineNumber++;
                     if (eolIsSignificantP)
                     {
-                        peekc = SKIP_LF;
+                        peekc = SkipLf;
                         return ttype = TT_EOL;
                     }
                     c = Read();
@@ -549,10 +550,10 @@ namespace OpenNLP.Tools.Util.Process
                 }
                 if (c < 0)
                     return ttype = TT_EOF;
-                ctype = c < 256 ? ct[c] : CT_ALPHA;
+                ctype = c < 256 ? ct[c] : CtAlpha;
             }
 
-            if ((ctype & CT_DIGIT) != 0)
+            if ((ctype & CtDigit) != 0)
             {
                 bool neg = false;
                 if (c == '-')
@@ -598,15 +599,15 @@ namespace OpenNLP.Tools.Util.Process
                 return ttype = TT_NUMBER;
             }
 
-            if ((ctype & CT_ALPHA) != 0)
+            if ((ctype & CtAlpha) != 0)
             {
                 int i = 0;
                 do
                 {
                     buf[i++] = (char) c;
                     c = Read();
-                    ctype = c < 0 ? CT_WHITESPACE : c < 256 ? ct[c] : CT_ALPHA;
-                } while ((ctype & (CT_ALPHA | CT_DIGIT)) != 0);
+                    ctype = c < 0 ? CtWhitespace : c < 256 ? ct[c] : CtAlpha;
+                } while ((ctype & (CtAlpha | CtDigit)) != 0);
                 peekc = c;
                 StringValue = new string(buf.ToArray(), 0, i);
                 if (forceLower)
@@ -614,7 +615,7 @@ namespace OpenNLP.Tools.Util.Process
                 return ttype = TT_WORD;
             }
 
-            if ((ctype & CT_QUOTE) != 0)
+            if ((ctype & CtQuote) != 0)
             {
                 ttype = c;
                 int i = 0;
@@ -689,7 +690,7 @@ namespace OpenNLP.Tools.Util.Process
                  * character then arrange to Read a new character next time
                  * around; otherwise, save the character.
                  */
-                peekc = (d == ttype) ? NEED_CHAR : d;
+                peekc = (d == ttype) ? NeedChar : d;
 
                 StringValue = new string(buf.ToArray(), 0, i);
                 return ttype;
@@ -735,7 +736,7 @@ namespace OpenNLP.Tools.Util.Process
                 else
                 {
                     /* Now see if it is still a single line comment */
-                    if ((ct['/'] & CT_COMMENT) != 0)
+                    if ((ct['/'] & CtComment) != 0)
                     {
                         while ((c = Read()) != '\n' && c != '\r' && c >= 0) ;
                         peekc = c;
@@ -749,7 +750,7 @@ namespace OpenNLP.Tools.Util.Process
                 }
             }
 
-            if ((ctype & CT_COMMENT) != 0)
+            if ((ctype & CtComment) != 0)
             {
                 while ((c = Read()) != '\n' && c != '\r' && c >= 0) ;
                 peekc = c;
@@ -815,13 +816,13 @@ namespace OpenNLP.Tools.Util.Process
                          * case statements
                          */
                     if (ttype < 256 &&
-                        ((characterType[ttype] & CT_QUOTE) != 0))
+                        ((characterType[ttype] & CtQuote) != 0))
                     {
                         ret = StringValue;
                         break;
                     }
 
-                    char[] s = new char[3];
+                    var s = new char[3];
                     s[0] = s[2] = '\'';
                     s[1] = (char) ttype;
                     ret = new string(s);
@@ -846,7 +847,7 @@ namespace OpenNLP.Tools.Util.Process
             }
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }

@@ -18,11 +18,11 @@ namespace OpenNLP.Tools.Util.Process
 
     public interface CoreTokenFactory<IN> where IN : CoreMap
     {
-        IN makeToken();
+        IN MakeToken();
 
         //IN makeToken(string[] keys, string[] values);
 
-        IN makeToken(IN tokenToBeCopied);
+        IN MakeToken(IN tokenToBeCopied);
 
     }
 }

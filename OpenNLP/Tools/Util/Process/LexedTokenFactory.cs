@@ -27,6 +27,6 @@ namespace OpenNLP.Tools.Util.Process
    *  the document.
    * @return The token of type T.
    */
-        T makeToken(string str, int begin, int length);
+        T MakeToken(string str, int begin, int length);
     }
 }

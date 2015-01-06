@@ -16,13 +16,13 @@ namespace OpenNLP.Tools.Util.Process
    *          if the token stream has no more tokens.
    */
         //@Override
-        T next();
+        T Next();
 
         /**
    * Returns <code>true</code> if and only if this Tokenizer has more elements.
    */
         //@Override
-        bool hasNext();
+        bool HasNext();
 
         /**
    * Removes from the underlying collection the last element returned by
@@ -31,7 +31,7 @@ namespace OpenNLP.Tools.Util.Process
    * only once per call to next.
    */
         //@Override
-        void remove();
+        void Remove();
 
         /**
    * Returns the next token, without removing it, from the Tokenizer, so
@@ -42,13 +42,13 @@ namespace OpenNLP.Tools.Util.Process
    * @throws java.util.NoSuchElementException
    *          if the token stream has no more tokens.
    */
-        T peek();
+        T Peek();
 
         /**
    * Returns all tokens of this Tokenizer as a List for convenience.
    *
    * @return A list of all the tokens
    */
-        List<T> tokenize();
+        List<T> Tokenize();
     }
 }

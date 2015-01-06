@@ -10,10 +10,10 @@ namespace OpenNLP.Tools.Util.Process
 {
     public interface TokenizerFactory<T> : IteratorFromReaderFactory<T>
     {
-        Tokenizer<T> getTokenizer(TextReader r);
+        Tokenizer<T> GetTokenizer(TextReader r);
 
-        Tokenizer<T> getTokenizer(TextReader r, string extraOptions);
+        Tokenizer<T> GetTokenizer(TextReader r, string extraOptions);
 
-        void setOptions(string options);
+        void SetOptions(string options);
     }
 }

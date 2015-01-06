@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.Process
    *
    * @return the next token in the token stream, or null if none exists.
    */
-        protected abstract T getNext();
+        protected abstract T GetNext();
 
         /**
    * Returns the next token from this Tokenizer.
@@ -26,11 +26,11 @@ namespace OpenNLP.Tools.Util.Process
    *          if the token stream has no more tokens.
    */
         //@Override
-        public T next()
+        public T Next()
         {
             if (nextToken == null)
             {
-                nextToken = getNext();
+                nextToken = GetNext();
             }
             T result = nextToken;
             nextToken = default(T);
@@ -46,11 +46,11 @@ namespace OpenNLP.Tools.Util.Process
    * Returns <code>true</code> if this Tokenizer has more elements.
    */
         //@Override
-        public bool hasNext()
+        public bool HasNext()
         {
             if (nextToken == null)
             {
-                nextToken = getNext();
+                nextToken = GetNext();
             }
             return nextToken != null;
         }
@@ -59,7 +59,7 @@ namespace OpenNLP.Tools.Util.Process
    * This is an optional operation, by default not supported.
    */
         //@Override
-        public void remove()
+        public void Remove()
         {
             throw new InvalidOperationException();
         }
@@ -72,11 +72,11 @@ namespace OpenNLP.Tools.Util.Process
    *          if the token stream has no more tokens.
    */
         //@Override
-        public T peek()
+        public T Peek()
         {
             if (nextToken == null)
             {
-                nextToken = getNext();
+                nextToken = GetNext();
             }
             if (nextToken == null)
             {
@@ -92,13 +92,13 @@ namespace OpenNLP.Tools.Util.Process
    * @return A list of all tokens remaining in the underlying Reader
    */
         //@Override
-        public List<T> tokenize()
+        public List<T> Tokenize()
         {
             // System.out.println("tokenize called");
-            List<T> result = new List<T>();
-            while (hasNext())
+            var result = new List<T>();
+            while (HasNext())
             {
-                result.Add(next());
+                result.Add(Next());
             }
             return result;
         }

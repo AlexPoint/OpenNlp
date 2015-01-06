@@ -52,9 +52,9 @@ namespace OpenNLP.Tools.Util.Process
    * (Does not take substring).
    */
 
-        public CoreLabel makeToken(string tokenText, int begin, int length)
+        public CoreLabel MakeToken(string tokenText, int begin, int length)
         {
-            return makeToken(tokenText, tokenText, begin, length);
+            return MakeToken(tokenText, tokenText, begin, length);
         }
 
         /**
@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util.Process
    * (Does not take substring).
    */
 
-        public CoreLabel makeToken(string tokenText, string originalText, int begin, int length)
+        public CoreLabel MakeToken(string tokenText, string originalText, int begin, int length)
         {
             CoreLabel cl = addIndices ? new CoreLabel(5) : new CoreLabel();
             cl.SetValue(tokenText);
@@ -77,9 +77,9 @@ namespace OpenNLP.Tools.Util.Process
             return cl;
         }
 
-        public CoreLabel makeToken()
+        public CoreLabel MakeToken()
         {
-            CoreLabel l = new CoreLabel();
+            var l = new CoreLabel();
             return l;
         }
 
@@ -88,9 +88,9 @@ namespace OpenNLP.Tools.Util.Process
     return l;
   }*/
 
-        public CoreLabel makeToken(CoreLabel labelToBeCopied)
+        public CoreLabel MakeToken(CoreLabel labelToBeCopied)
         {
-            CoreLabel l = new CoreLabel(labelToBeCopied);
+            var l = new CoreLabel(labelToBeCopied);
             return l;
         }
 

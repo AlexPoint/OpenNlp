@@ -104,16 +104,16 @@ namespace OpenNLP.Tools.Util.Trees
             tokenizer = st;
 
             // check for whacked out headers still present in Brown corpus in Treebank 3
-            string first = (st.hasNext() ? st.peek() : null);
+            string first = (st.HasNext() ? st.Peek() : null);
             if (first != null && first.StartsWith("*x*x*x"))
             {
                 /*if (DEBUG) {
         System.err.printf("%s: Skipping past whacked out header (%s)%n",this.getClass().getName(),first);
       }*/
                 int foundCount = 0;
-                while (foundCount < 4 && st.hasNext())
+                while (foundCount < 4 && st.HasNext())
                 {
-                    first = st.next();
+                    first = st.Next();
                     if (first != null && first.StartsWith("*x*x*x"))
                     {
                         foundCount++;
@@ -148,7 +148,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             Tree t = null;
 
-            while (tokenizer.hasNext() && t == null)
+            while (tokenizer.HasNext() && t == null)
             {
 
                 //Setup PDA
@@ -192,16 +192,16 @@ namespace OpenNLP.Tools.Util.Trees
 
             // FSA
             //label:
-            while (tokenizer.hasNext())
+            while (tokenizer.HasNext())
             {
-                string token = tokenizer.next();
+                string token = tokenizer.Next();
 
                 switch (token)
                 {
                     case leftParen:
 
                         // cdm 20100225: This next line used to have "" instead of null, but the traditional and current tree normalizers depend on the label being null not "" when there is no label on a tree (like the outermost English PTB level)
-                        string label = (tokenizer.peek().Equals(leftParen)) ? null : tokenizer.next();
+                        string label = (tokenizer.Peek().Equals(leftParen)) ? null : tokenizer.Next();
                         if (rightParen.Equals(label))
                         {
 //Skip past empty trees

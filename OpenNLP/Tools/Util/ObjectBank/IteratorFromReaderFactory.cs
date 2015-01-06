@@ -14,6 +14,6 @@ namespace OpenNLP.Tools.Util.ObjectBank
    * @param r Where to read objects from
    * @return An Iterator over the objects
    */
-        IEnumerator<T> getIterator(TextReader r);
+        IEnumerator<T> GetIterator(TextReader r);
     }
 }

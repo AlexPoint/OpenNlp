@@ -21,7 +21,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         /** Gets a tokenizer from a reader.*/
 
-        public Tokenizer<Tree> getTokenizer( /*final*/ TextReader r)
+        public Tokenizer<Tree> GetTokenizer( /*final*/ TextReader r)
         {
             /*return new AbstractTokenizer<Tree>() {
       TreeReader tr = trf.newTreeReader(r);
@@ -39,20 +39,20 @@ namespace OpenNLP.Tools.Util.Trees
             throw new NotImplementedException();
         }
 
-        public Tokenizer<Tree> getTokenizer( /*final*/ TextReader r, string extraOptions)
+        public Tokenizer<Tree> GetTokenizer( /*final*/ TextReader r, string extraOptions)
         {
             // Silently ignore extra options
-            return getTokenizer(r);
+            return GetTokenizer(r);
         }
 
         /** Same as getTokenizer().  */
 
-        public IEnumerator<Tree> getIterator(TextReader r)
+        public IEnumerator<Tree> GetIterator(TextReader r)
         {
             return null;
         }
 
-        public void setOptions(string options)
+        public void SetOptions(string options)
         {
             //Silently ignore
         }

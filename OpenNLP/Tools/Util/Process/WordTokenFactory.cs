@@ -17,7 +17,7 @@ namespace OpenNLP.Tools.Util.Process
     public class WordTokenFactory : LexedTokenFactory<Word>
     {
         //@Override
-        public Word makeToken(string str, int begin, int length)
+        public Word MakeToken(string str, int begin, int length)
         {
             return new Word(str, begin, begin + length);
         }

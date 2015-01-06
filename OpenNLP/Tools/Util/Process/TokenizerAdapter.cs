@@ -44,7 +44,7 @@ namespace OpenNLP.Tools.Util.Process
    * @return the next token in the token stream, or null if none exists.
    */
         //@Override
-        protected override string getNext()
+        protected override string GetNext()
         {
             try
             {
@@ -81,7 +81,7 @@ namespace OpenNLP.Tools.Util.Process
    *                  to be <code>null</code> (which would confuse line ends and file end)
    */
 
-        public void setEolString(string eolString)
+        public void SetEolString(string eolString)
         {
             if (eolString == null)
             {
@@ -99,7 +99,7 @@ namespace OpenNLP.Tools.Util.Process
    * @return Whether it is the end-of-line token
    */
 
-        public bool isEol(string str)
+        public bool IsEol(string str)
         {
             return eolString.Equals(str);
         }

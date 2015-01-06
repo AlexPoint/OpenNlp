@@ -9,7 +9,7 @@ namespace OpenNLP.Tools.Util.Graphs
 {
     public static class DijkstraShortestPath
     {
-        public static /*<V, E>*/ List<V> getShortestPath<V, E>(Graph<V, E> graph,
+        public static /*<V, E>*/ List<V> GetShortestPath<V, E>(Graph<V, E> graph,
             V node1, V node2,
             bool directionSensitive)
         {
@@ -21,10 +21,9 @@ namespace OpenNLP.Tools.Util.Graphs
 
             Set<V> visited = new HashSet<V>();
 
-            Dictionary<V, V> previous = new Dictionary<V, V>();
+            var previous = new Dictionary<V, V>();
 
-            BinaryHeapPriorityQueue<V> unsettledNodes =
-                new BinaryHeapPriorityQueue<V>();
+            var unsettledNodes = new BinaryHeapPriorityQueue<V>();
 
             unsettledNodes.Add(node1, 0);
 
@@ -40,8 +39,8 @@ namespace OpenNLP.Tools.Util.Graphs
                 unsettledNodes.Remove(u);
 
                 ReadOnlyCollection<V> candidates = ((directionSensitive)
-                    ? graph.getChildren(u)
-                    : new ReadOnlyCollection<V>(graph.getNeighbors(u)));
+                    ? graph.GetChildren(u)
+                    : new ReadOnlyCollection<V>(graph.GetNeighbors(u)));
                 foreach (V candidate in candidates)
                 {
                     double alt = distance - 1;
@@ -56,7 +55,7 @@ namespace OpenNLP.Tools.Util.Graphs
             }
             if (!previous.ContainsKey(node2))
                 return null;
-            List<V> path = new List<V>();
+            var path = new List<V>();
             path.Add(node2);
             V n = node2;
             while (previous.ContainsKey(n))

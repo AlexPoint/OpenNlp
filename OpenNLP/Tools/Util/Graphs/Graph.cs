@@ -25,20 +25,20 @@ namespace OpenNLP.Tools.Util.Graphs
    * @param dest
    * @param data
    */
-        void add(V source, V dest, E data);
+        void Add(V source, V dest, E data);
         /**
          * For adding a zero degree vertex
          *
          * @param v
          */
 
-        bool addVertex(V v);
+        bool AddVertex(V v);
 
 
 
-        bool removeEdges(V source, V dest);
+        bool RemoveEdges(V source, V dest);
 
-        bool removeEdge(V source, V dest, E data);
+        bool RemoveEdge(V source, V dest, E data);
 
         /**
          * remove a vertex (and its edges) from the graph.
@@ -46,47 +46,47 @@ namespace OpenNLP.Tools.Util.Graphs
          * @param vertex
          * @return true if successfully removes the node
          */
-        bool removeVertex(V vertex);
+        bool RemoveVertex(V vertex);
 
-        bool removeVertices(ICollection<V> vertices);
+        bool RemoveVertices(ICollection<V> vertices);
 
-        int getNumVertices();
-
-        /**
-         * for undirected graph, it is just the edges from the node
-         * @param v
-         */
-        List<E> getOutgoingEdges(V v);
+        int GetNumVertices();
 
         /**
          * for undirected graph, it is just the edges from the node
          * @param v
          */
-        List<E> getIncomingEdges(V v);
+        List<E> GetOutgoingEdges(V v);
 
-        int getNumEdges();
+        /**
+         * for undirected graph, it is just the edges from the node
+         * @param v
+         */
+        List<E> GetIncomingEdges(V v);
+
+        int GetNumEdges();
 
         /**
          * for undirected graph, it is just the neighbors
          * @param vertex
          */
-        ReadOnlyCollection<V> getParents(V vertex);
+        ReadOnlyCollection<V> GetParents(V vertex);
 
         /**
          * for undirected graph, it is just the neighbors
          * @param vertex
          */
 
-        ReadOnlyCollection<V> getChildren(V vertex);
+        ReadOnlyCollection<V> GetChildren(V vertex);
 
-        Set<V> getNeighbors(V v);
+        Set<V> GetNeighbors(V v);
 
         /**
          * clears the graph, removes all edges and nodes
          */
-        void clear();
+        void Clear();
 
-        bool containsVertex(V v);
+        bool ContainsVertex(V v);
 
         /**
          * only checks if there is an edge from source to dest. To check if it is
@@ -95,36 +95,36 @@ namespace OpenNLP.Tools.Util.Graphs
          * @param source
          * @param dest
          */
-        bool isEdge(V source, V dest);
+        bool IsEdge(V source, V dest);
 
-        bool isNeighbor(V source, V dest);
+        bool IsNeighbor(V source, V dest);
 
-        ReadOnlyCollection<V> getAllVertices();
+        ReadOnlyCollection<V> GetAllVertices();
 
-        List<E> getAllEdges();
+        List<E> GetAllEdges();
 
         /**
          * False if there are any vertices in the graph, true otherwise. Does not care
          * about the number of edges.
          */
-        bool isEmpty();
+        bool IsEmpty();
 
         /**
          * Deletes nodes with zero incoming and zero outgoing edges
          */
-        void removeZeroDegreeNodes();
+        void RemoveZeroDegreeNodes();
 
-        ReadOnlyCollection<E> getEdges(V source, V dest);
+        ReadOnlyCollection<E> GetEdges(V source, V dest);
 
 
         /**
          * for undirected graph, it should just be the degree
          * @param vertex
          */
-        int getInDegree(V vertex);
+        int GetInDegree(V vertex);
 
-        int getOutDegree(V vertex);
+        int GetOutDegree(V vertex);
 
-        List<Set<V>> getConnectedComponents();
+        List<Set<V>> GetConnectedComponents();
     }
 }

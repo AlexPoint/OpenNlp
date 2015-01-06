@@ -59,25 +59,25 @@ namespace OpenNLP.Tools.Util.International.Morph
             //activeFeatures = Generics.newHashSet();
         }
 
-        public void activate(MorphoFeatureType feat)
+        public void Activate(MorphoFeatureType feat)
         {
             activeFeatures.Add(feat);
         }
 
-        public bool isActive(MorphoFeatureType feat)
+        public bool IsActive(MorphoFeatureType feat)
         {
             return activeFeatures.Contains(feat);
         }
 
-        public abstract List<string> getValues(MorphoFeatureType feat);
+        public abstract List<string> GetValues(MorphoFeatureType feat);
 
-        public abstract MorphoFeatures strToFeatures(string spec);
+        public abstract MorphoFeatures StrToFeatures(string spec);
 
         /**
    * Returns the lemma as pair.first() and the morph analysis as pair.second().
    */
 
-        public static Tuple<string, string> splitMorphString(string word, string morphStr)
+        public static Tuple<string, string> SplitMorphString(string word, string morphStr)
         {
             if (morphStr == null || morphStr.Trim().Equals(""))
             {

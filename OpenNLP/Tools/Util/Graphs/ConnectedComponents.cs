@@ -15,22 +15,22 @@ namespace OpenNLP.Tools.Util.Graphs
 
     public class ConnectedComponents
     {
-        public static /*<V, E>*/ List<Set<V>> getConnectedComponents<V, E>(Graph<V, E> graph)
+        public static /*<V, E>*/ List<Set<V>> GetConnectedComponents<V, E>(Graph<V, E> graph)
         {
-            List<Set<V>> ccs = new List<Set<V>>();
-            List<V> todo = new List<V>();
+            var ccs = new List<Set<V>>();
+            var todo = new List<V>();
             // TODO: why not a set?
-            List<V> verticesLeft = graph.getAllVertices().ToList();
+            List<V> verticesLeft = graph.GetAllVertices().ToList();
             while (verticesLeft.Count > 0)
             {
                 todo.Add(verticesLeft[0]);
                 verticesLeft.RemoveAt(0);
-                ccs.Add(bfs(todo, graph, verticesLeft));
+                ccs.Add(Bfs(todo, graph, verticesLeft));
             }
             return ccs;
         }
 
-        private static /*<V, E>*/ Set<V> bfs<V, E>(List<V> todo, Graph<V, E> graph, List<V> verticesLeft)
+        private static /*<V, E>*/ Set<V> Bfs<V, E>(List<V> todo, Graph<V, E> graph, List<V> verticesLeft)
         {
             Set<V> cc = new HashSet<V>();
             while (todo.Count > 0)
@@ -38,7 +38,7 @@ namespace OpenNLP.Tools.Util.Graphs
                 V node = todo.First();
                 todo.RemoveAt(0);
                 cc.Add(node);
-                foreach (V neighbor in graph.getNeighbors(node))
+                foreach (V neighbor in graph.GetNeighbors(node))
                 {
                     if (verticesLeft.Contains(neighbor))
                     {

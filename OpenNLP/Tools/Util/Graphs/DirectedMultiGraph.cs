@@ -81,12 +81,12 @@ namespace OpenNLP.Tools.Util.Graphs
    * will throw off the hash code, messing up your hash table
    */
 
-        public int hashCode()
+        public override int GetHashCode()
         {
             return outgoingEdges.GetHashCode();
         }
 
-        public bool equals(Object that)
+        public override bool Equals(Object that)
         {
             if (that == this)
                 return true;
@@ -101,7 +101,7 @@ namespace OpenNLP.Tools.Util.Graphs
    * @param v
    */
         //@Override
-        public bool addVertex(V v)
+        public bool AddVertex(V v)
         {
             if (outgoingEdges.ContainsKey(v))
                 return false;
@@ -110,7 +110,7 @@ namespace OpenNLP.Tools.Util.Graphs
             return true;
         }
 
-        private Dictionary<V, List<E>> getOutgoingEdgesMap(V v)
+        private Dictionary<V, List<E>> GetOutgoingEdgesMap(V v)
         {
             Dictionary<V, List<E>> map;
             outgoingEdges.TryGetValue(v, out map);
@@ -123,7 +123,7 @@ namespace OpenNLP.Tools.Util.Graphs
             return map;
         }
 
-        private Dictionary<V, List<E>> getIncomingEdgesMap(V v)
+        private Dictionary<V, List<E>> GetIncomingEdgesMap(V v)
         {
             Dictionary<V, List<E>> map;
             incomingEdges.TryGetValue(v, out map);
@@ -144,10 +144,10 @@ namespace OpenNLP.Tools.Util.Graphs
    * @param data
    */
         //@Override
-        public void add(V source, V dest, E data)
+        public void Add(V source, V dest, E data)
         {
-            Dictionary<V, List<E>> outgoingMap = getOutgoingEdgesMap(source);
-            Dictionary<V, List<E>> incomingMap = getIncomingEdgesMap(dest);
+            Dictionary<V, List<E>> outgoingMap = GetOutgoingEdgesMap(source);
+            Dictionary<V, List<E>> incomingMap = GetIncomingEdgesMap(dest);
 
             List<E> outgoingList;
             outgoingMap.TryGetValue(dest, out outgoingList);
@@ -170,7 +170,7 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public bool removeEdges(V source, V dest)
+        public bool RemoveEdges(V source, V dest)
         {
             if (!outgoingEdges.ContainsKey(source))
             {
@@ -190,7 +190,7 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public bool removeEdge(V source, V dest, E data)
+        public bool RemoveEdge(V source, V dest, E data)
         {
             if (!outgoingEdges.ContainsKey(source))
             {
@@ -237,7 +237,7 @@ namespace OpenNLP.Tools.Util.Graphs
    * @return true if successfully removes the node
    */
         //@Override
-        public bool removeVertex(V vertex)
+        public bool RemoveVertex(V vertex)
         {
             if (!outgoingEdges.ContainsKey(vertex))
             {
@@ -257,12 +257,12 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public bool removeVertices(ICollection<V> vertices)
+        public bool RemoveVertices(ICollection<V> vertices)
         {
             bool changed = false;
             foreach (V v in vertices)
             {
-                if (removeVertex(v))
+                if (RemoveVertex(v))
                 {
                     changed = true;
                 }
@@ -271,13 +271,13 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public int getNumVertices()
+        public int GetNumVertices()
         {
             return outgoingEdges.Count;
         }
 
         //@Override
-        public List<E> getOutgoingEdges(V v)
+        public List<E> GetOutgoingEdges(V v)
         {
             if (!outgoingEdges.ContainsKey(v))
             {
@@ -288,7 +288,7 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public List<E> getIncomingEdges(V v)
+        public List<E> GetIncomingEdges(V v)
         {
             if (!incomingEdges.ContainsKey(v))
             {
@@ -299,7 +299,7 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public int getNumEdges()
+        public int GetNumEdges()
         {
             int count = 0;
             foreach ( /*Map.Entry<V, Dictionary<V, List<E>>>*/var sourceEntry in outgoingEdges)
@@ -313,7 +313,7 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public ReadOnlyCollection<V> getParents(V vertex)
+        public ReadOnlyCollection<V> GetParents(V vertex)
         {
             Dictionary<V, List<E>> parentMap;
             incomingEdges.TryGetValue(vertex, out parentMap);
@@ -323,7 +323,7 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public ReadOnlyCollection<V> getChildren(V vertex)
+        public ReadOnlyCollection<V> GetChildren(V vertex)
         {
             Dictionary<V, List<E>> childMap;
             outgoingEdges.TryGetValue(vertex, out childMap);
@@ -338,11 +338,11 @@ namespace OpenNLP.Tools.Util.Graphs
    * @param v
    */
         //@Override
-        public Set<V> getNeighbors(V v)
+        public Set<V> GetNeighbors(V v)
         {
             // TODO: pity we have to copy the sets... is there a combination set?
-            ReadOnlyCollection<V> children = getChildren(v);
-            ReadOnlyCollection<V> parents = getParents(v);
+            ReadOnlyCollection<V> children = GetChildren(v);
+            ReadOnlyCollection<V> parents = GetParents(v);
 
             if (children == null && parents == null)
                 return null;
@@ -356,14 +356,14 @@ namespace OpenNLP.Tools.Util.Graphs
    * clears the graph, removes all edges and nodes
    */
         //@Override
-        public void clear()
+        public void Clear()
         {
             incomingEdges.Clear();
             outgoingEdges.Clear();
         }
 
         //@Override
-        public bool containsVertex(V v)
+        public bool ContainsVertex(V v)
         {
             return outgoingEdges.ContainsKey(v);
         }
@@ -376,7 +376,7 @@ namespace OpenNLP.Tools.Util.Graphs
    * @param dest
    */
         //@Override
-        public bool isEdge(V source, V dest)
+        public bool IsEdge(V source, V dest)
         {
             Dictionary<V, List<E>> childrenMap;
             outgoingEdges.TryGetValue(source, out childrenMap);
@@ -390,21 +390,21 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public bool isNeighbor(V source, V dest)
+        public bool IsNeighbor(V source, V dest)
         {
-            return isEdge(source, dest) || isEdge(dest, source);
+            return IsEdge(source, dest) || IsEdge(dest, source);
         }
 
         //@Override
-        public ReadOnlyCollection<V> getAllVertices()
+        public ReadOnlyCollection<V> GetAllVertices()
         {
             return new ReadOnlyCollection<V>(outgoingEdges.Keys.ToList());
         }
 
         //@Override
-        public List<E> getAllEdges()
+        public List<E> GetAllEdges()
         {
-            List<E> edges = new List<E>();
+            var edges = new List<E>();
             foreach (Dictionary<V, List<E>> e in outgoingEdges.Values)
             {
                 foreach (List<E> ee in e.Values)
@@ -420,7 +420,7 @@ namespace OpenNLP.Tools.Util.Graphs
    * about the number of edges.
    */
         //@Override
-        public bool isEmpty()
+        public bool IsEmpty()
         {
             return !outgoingEdges.Any();
         }
@@ -429,9 +429,9 @@ namespace OpenNLP.Tools.Util.Graphs
    * Deletes nodes with zero incoming and zero outgoing edges
    */
         //@Override
-        public void removeZeroDegreeNodes()
+        public void RemoveZeroDegreeNodes()
         {
-            List<V> toDelete = new List<V>();
+            var toDelete = new List<V>();
             foreach (var vertex in outgoingEdges)
             {
                 if (!outgoingEdges[vertex.Key].Any() && !incomingEdges[vertex.Key].Any())
@@ -447,7 +447,7 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public ReadOnlyCollection<E> getEdges(V source, V dest)
+        public ReadOnlyCollection<E> GetEdges(V source, V dest)
         {
             Dictionary<V, List<E>> childrenMap = outgoingEdges[source];
             if (childrenMap == null)
@@ -466,18 +466,18 @@ namespace OpenNLP.Tools.Util.Graphs
    * direction insensitive (the paths can go "up" or through the parents)
    */
 
-        public List<V> getShortestPath(V node1, V node2)
+        public List<V> GetShortestPath(V node1, V node2)
         {
             if (!outgoingEdges.ContainsKey(node1) || !outgoingEdges.ContainsKey(node2))
             {
                 return null;
             }
-            return getShortestPath(node1, node2, false);
+            return GetShortestPath(node1, node2, false);
         }
 
-        public List<E> getShortestPathEdges(V node1, V node2)
+        public List<E> GetShortestPathEdges(V node1, V node2)
         {
-            return convertPath(getShortestPath(node1, node2), false);
+            return ConvertPath(GetShortestPath(node1, node2), false);
         }
 
         /**
@@ -490,21 +490,21 @@ namespace OpenNLP.Tools.Util.Graphs
    * @return the list of nodes you get through to get there
    */
 
-        public List<V> getShortestPath(V node1, V node2, bool directionSensitive)
+        public List<V> GetShortestPath(V node1, V node2, bool directionSensitive)
         {
             if (!outgoingEdges.ContainsKey(node1) || !outgoingEdges.ContainsKey(node2))
             {
                 return null;
             }
-            return DijkstraShortestPath.getShortestPath(this, node1, node2, directionSensitive);
+            return DijkstraShortestPath.GetShortestPath(this, node1, node2, directionSensitive);
         }
 
-        public List<E> getShortestPathEdges(V node1, V node2, bool directionSensitive)
+        public List<E> GetShortestPathEdges(V node1, V node2, bool directionSensitive)
         {
-            return convertPath(getShortestPath(node1, node2, directionSensitive), directionSensitive);
+            return ConvertPath(GetShortestPath(node1, node2, directionSensitive), directionSensitive);
         }
 
-        public List<E> convertPath(List<V> nodes, bool directionSensitive)
+        public List<E> ConvertPath(List<V> nodes, bool directionSensitive)
         {
             if (nodes == null)
                 return null;
@@ -512,17 +512,17 @@ namespace OpenNLP.Tools.Util.Graphs
             if (nodes.Count <= 1)
                 return new List<E>();
 
-            List<E> path = new List<E>();
+            var path = new List<E>();
             var nodeIterator = nodes.GetEnumerator();
             V previous = nodeIterator.Current;
             while (nodeIterator.MoveNext())
             {
                 V next = nodeIterator.Current;
                 E connection = default(E);
-                var edges = getEdges(previous, next);
+                var edges = GetEdges(previous, next);
                 if (edges.Count == 0 && !directionSensitive)
                 {
-                    edges = getEdges(next, previous);
+                    edges = GetEdges(next, previous);
                 }
                 if (edges.Count > 0)
                 {
@@ -539,9 +539,9 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public int getInDegree(V vertex)
+        public int GetInDegree(V vertex)
         {
-            if (!containsVertex(vertex))
+            if (!ContainsVertex(vertex))
             {
                 return 0;
             }
@@ -555,7 +555,7 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public int getOutDegree(V vertex)
+        public int GetOutDegree(V vertex)
         {
             int result = 0;
             Dictionary<V, List<E>> outgoing = outgoingEdges[vertex];
@@ -571,9 +571,9 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         //@Override
-        public List<Set<V>> getConnectedComponents()
+        public List<Set<V>> GetConnectedComponents()
         {
-            return ConnectedComponents.getConnectedComponents(this);
+            return ConnectedComponents.GetConnectedComponents(this);
         }
 
         /*public Iterator<E> incomingEdgeIterator(readonly V vertex) {
@@ -660,12 +660,12 @@ namespace OpenNLP.Tools.Util.Graphs
    * @return A map representation of the graph.
    */
 
-        public Dictionary<V, List<E>> toMap()
+        public Dictionary<V, List<E>> ToMap()
         {
             Dictionary<V, List<E>> map = innerMapFactory.newMap();
-            foreach (V vertex in getAllVertices())
+            foreach (V vertex in GetAllVertices())
             {
-                map.Add(vertex, getOutgoingEdges(vertex));
+                map.Add(vertex, GetOutgoingEdges(vertex));
             }
             return map;
         }
@@ -673,7 +673,7 @@ namespace OpenNLP.Tools.Util.Graphs
         //@Override
         public override string ToString()
         {
-            StringBuilder s = new StringBuilder();
+            var s = new StringBuilder();
             s.Append("{\n");
             s.Append("Vertices:\n");
             foreach (var vertex in outgoingEdges)

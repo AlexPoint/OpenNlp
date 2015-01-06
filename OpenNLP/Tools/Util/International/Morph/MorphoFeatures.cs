@@ -28,34 +28,34 @@ namespace OpenNLP.Tools.Util.International.Morph
             this.altTag = other.altTag;
         }
 
-        public void addFeature(MorphoFeatureSpecification.MorphoFeatureType feat, string val)
+        public void AddFeature(MorphoFeatureSpecification.MorphoFeatureType feat, string val)
         {
             fSpec.Add(feat, val);
         }
 
-        public bool hasFeature(MorphoFeatureSpecification.MorphoFeatureType feat)
+        public bool HasFeature(MorphoFeatureSpecification.MorphoFeatureType feat)
         {
             return fSpec.ContainsKey(feat);
         }
 
-        public string getValue(MorphoFeatureSpecification.MorphoFeatureType feat)
+        public string GetValue(MorphoFeatureSpecification.MorphoFeatureType feat)
         {
-            return hasFeature(feat) ? fSpec[feat] : "";
+            return HasFeature(feat) ? fSpec[feat] : "";
         }
 
-        public int numFeatureMatches(MorphoFeatures other)
+        public int NumFeatureMatches(MorphoFeatures other)
         {
             int nMatches = 0;
             foreach (var fPair in fSpec)
             {
-                if (other.hasFeature(fPair.Key) && other.getValue(fPair.Key).Equals(fPair.Value))
+                if (other.HasFeature(fPair.Key) && other.GetValue(fPair.Key).Equals(fPair.Value))
                     nMatches++;
             }
 
             return nMatches;
         }
 
-        public int numActiveFeatures()
+        public int NumActiveFeatures()
         {
             return fSpec.Count;
         }
@@ -67,12 +67,12 @@ namespace OpenNLP.Tools.Util.International.Morph
    * @return the tag
    */
 
-        public string getTag(string baseTag)
+        public string GetTag(string baseTag)
         {
             return baseTag + ToString();
         }
 
-        public void setAltTag(string tag)
+        public void SetAltTag(string tag)
         {
             altTag = tag;
         }
@@ -85,7 +85,7 @@ namespace OpenNLP.Tools.Util.International.Morph
    * @return the tag
    */
 
-        public string getAltTag()
+        public string GetAltTag()
         {
             return altTag;
         }
@@ -101,11 +101,11 @@ namespace OpenNLP.Tools.Util.International.Morph
    * @param str
    */
 
-        public MorphoFeatures fromTagString(string str)
+        public MorphoFeatures FromTagString(string str)
         {
             //List<string> feats = str.Split(new string[]{"\\-"}, StringSplitOptions.None).ToList();
             List<string> feats = str.Split('-').ToList();
-            MorphoFeatures mFeats = new MorphoFeatures();
+            var mFeats = new MorphoFeatures();
             foreach (string fPair in feats)
             {
                 string[] keyValue = Regex.Split(fPair, KEY_VAL_DELIM);
@@ -115,7 +115,7 @@ namespace OpenNLP.Tools.Util.International.Morph
                 var success = MorphoFeatureSpecification.MorphoFeatureType.TryParse(keyValue[0].Trim(), out fName);
                 if (success)
                 {
-                    mFeats.addFeature(fName, keyValue[1].Trim());
+                    mFeats.AddFeature(fName, keyValue[1].Trim());
                 }
                 else
                 {
@@ -135,7 +135,7 @@ namespace OpenNLP.Tools.Util.International.Morph
         //@Override
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var entry in fSpec)
             {
                 sb.Append(String.Format("-{0}{1}{2}", entry.Key.ToString(), KEY_VAL_DELIM, entry.Value));

@@ -402,9 +402,9 @@ namespace OpenNLP.Tools.Util.Trees
                 if (parentAsTreeGraphNode != null)
                 {
                     TreeGraphNode parent = parentAsTreeGraphNode.highestNodeWithSameHead();
-                    if (!basicGraph.isEdge(parent, t) && basicGraph.getShortestPath(root, t, false) == null)
+                    if (!basicGraph.IsEdge(parent, t) && basicGraph.GetShortestPath(root, t, false) == null)
                     {
-                        basicGraph.add(parent, t, GrammaticalRelation.DEPENDENT);
+                        basicGraph.Add(parent, t, GrammaticalRelation.DEPENDENT);
                     }
                 }
                 else
@@ -446,15 +446,15 @@ namespace OpenNLP.Tools.Util.Trees
                             {
                                 continue;
                             }
-                            completeGraph.add(tHigh, uHigh, egr);
+                            completeGraph.Add(tHigh, uHigh, egr);
                             // If there are two patterns that add dependencies, X --> Z and Y --> Z, and X dominates Y, then the dependency Y --> Z is not added to the basic graph to prevent unwanted duplication.
                             // Similarly, if there is already a path from X --> Y, and an expression would trigger Y --> X somehow, we ignore that
-                            ReadOnlyCollection<TreeGraphNode> parents = basicGraph.getParents(uHigh);
+                            ReadOnlyCollection<TreeGraphNode> parents = basicGraph.GetParents(uHigh);
                             if ((parents == null || parents.Count == 0 || parents.Contains(tHigh)) &&
-                                basicGraph.getShortestPath(uHigh, tHigh, true) == null)
+                                basicGraph.GetShortestPath(uHigh, tHigh, true) == null)
                             {
                                 // System.err.println("Adding " + egr.getShortName() + " from " + t + " to " + u + " tHigh=" + tHigh + "(" + tHigh.headWordNode() + ") uHigh=" + uHigh + "(" + uHigh.headWordNode() + ")");
-                                basicGraph.add(tHigh, uHigh, egr);
+                                basicGraph.Add(tHigh, uHigh, egr);
                             }
                         }
                     }
@@ -487,16 +487,16 @@ namespace OpenNLP.Tools.Util.Trees
         {
             List<TypedDependency> basicDep = new List<TypedDependency>();
 
-            foreach (TreeGraphNode gov in basicGraph.getAllVertices())
+            foreach (TreeGraphNode gov in basicGraph.GetAllVertices())
             {
-                foreach (TreeGraphNode dep in basicGraph.getChildren(gov))
+                foreach (TreeGraphNode dep in basicGraph.GetChildren(gov))
                 {
                     var govCLabel = gov.label() as CoreLabel;
                     var depCLabel = dep.label() as CoreLabel;
                     if (govCLabel != null && depCLabel != null)
                     {
                         GrammaticalRelation reln = getGrammaticalRelationCommonAncestor(govCLabel, depCLabel,
-                            basicGraph.getEdges(gov, dep).ToList());
+                            basicGraph.GetEdges(gov, dep).ToList());
                         // System.err.println("  Gov: " + gov + " Dep: " + dep + " Reln: " + reln);
                         basicDep.Add(new TypedDependency(reln, new IndexedWord(gov.headWordNode().label()),
                             new IndexedWord(dep.headWordNode().label())));
@@ -599,13 +599,13 @@ namespace OpenNLP.Tools.Util.Trees
             Predicate<TypedDependency> puncTypedDepFilter,
             Predicate<TypedDependency> extraTreeDepFilter)
         {
-            foreach (TreeGraphNode gov in completeGraph.getAllVertices())
+            foreach (TreeGraphNode gov in completeGraph.GetAllVertices())
             {
-                foreach (TreeGraphNode dep in completeGraph.getChildren(gov))
+                foreach (TreeGraphNode dep in completeGraph.GetChildren(gov))
                 {
                     foreach (
                         GrammaticalRelation rel in
-                            removeGrammaticalRelationAncestors(completeGraph.getEdges(gov, dep).ToList()))
+                            removeGrammaticalRelationAncestors(completeGraph.GetEdges(gov, dep).ToList()))
                     {
                         TypedDependency newDep = new TypedDependency(rel, new IndexedWord(gov.headWordNode().label()),
                             new IndexedWord(dep.headWordNode().label()));

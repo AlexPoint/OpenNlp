@@ -448,7 +448,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             // when finished = false; break; is called, it means I successfully matched.
             private void GoToNextTreeNodeMatch()
             {
-                Console.WriteLine("goToNextTreeNodeMatch()");
+                //Console.WriteLine("goToNextTreeNodeMatch()");
                 DecommitVariableGroups(); // make sure variable groups are free.
                 RemoveNamedNodes(); // if we named a node, it should now be unnamed
                 finished = true;
@@ -462,19 +462,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 //while (success) {
                 while (treeNodeMatchCandidateIterator.MoveNext())
                 {
-                    Console.WriteLine("success = true");
+                    //Console.WriteLine("success = true");
                     nextTreeNodeMatchCandidate = treeNodeMatchCandidateIterator.Current;
                     if (myNode.descriptionMode == null)
                     {
-                        Console.WriteLine("myNode.descriptionMode == null");
+                        //Console.WriteLine("myNode.descriptionMode == null");
                         // this is a backreference or link
                         if (myNode.isLink)
                         {
-                            Console.WriteLine("myNode.isLink");
+                            //Console.WriteLine("myNode.isLink");
                             Tree otherTree = namesToNodes[myNode.linkedName];
                             if (otherTree != null)
                             {
-                                Console.WriteLine("otherTree != null");
+                                //Console.WriteLine("otherTree != null");
                                 string otherValue = myNode.basicCatFunction == null
                                     ? otherTree.Value()
                                     : myNode.basicCatFunction(otherTree.Value());
@@ -483,7 +483,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                     : myNode.basicCatFunction(nextTreeNodeMatchCandidate.Value());
                                 if (otherValue.Equals(myValue))
                                 {
-                                    Console.WriteLine("otherValue.Equals(myValue)");
+                                    //Console.WriteLine("otherValue.Equals(myValue)");
                                     finished = false;
                                     break;
                                 }
@@ -491,7 +491,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         }
                         else if (namesToNodes[myNode.name] == nextTreeNodeMatchCandidate)
                         {
-                            Console.WriteLine("namesToNodes[myNode.name] == nextTreeNodeMatchCandidate");
+                            //Console.WriteLine("namesToNodes[myNode.name] == nextTreeNodeMatchCandidate");
                             finished = false;
                             break;
                         }
@@ -503,7 +503,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         // string value = (myNode.basicCatFunction == null ? nextTreeNodeMatchCandidate.value() : myNode.basicCatFunction.apply(nextTreeNodeMatchCandidate.value()));
                         // m = myNode.descPattern.matcher(value);
                         // bool found = m.find();
-                        Console.WriteLine("else");
+                        //Console.WriteLine("else");
                         bool found;
                         value = nextTreeNodeMatchCandidate.Value();
                         if (value == null)
@@ -537,7 +537,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         }
                         if (found)
                         {
-                            Console.WriteLine("found = true");
+                            //Console.WriteLine("found = true");
                             foreach (Tuple<int, string> varGroup in myNode.variableGroups)
                             {
                                 // if variables have been captured from a regex, they must match any previous matchings
@@ -567,7 +567,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         }
                         if (found != myNode.negDesc)
                         {
-                            Console.WriteLine("found != myNode.negDesc");
+                            //Console.WriteLine("found != myNode.negDesc");
                             finished = false;
                             break;
                         }
@@ -577,7 +577,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 if (!finished)
                 {
                     // I successfully matched.
-                    Console.WriteLine("!finished");
+                    //Console.WriteLine("!finished");
                     ResetChild();
                         // reset my unique TregexMatcher child based on the Tree node I successfully matched at.
                     // cdm bugfix jul 2009: on next line need to check for descPattern not null, or else this is a backreference or a link to an already named node, and the map should _not_ be updated
@@ -648,7 +648,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             private bool MatchChild()
             {
-                Console.WriteLine("matchChild()");
+                //Console.WriteLine("matchChild()");
                 // entering here (given that it's called only once in matches())
                 // we know finished is false, and either nextChild == null
                 // (meaning goToNextChild has not been called) or nextChild exists
@@ -681,7 +681,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             //@Override
             public override bool Matches()
             {
-                Console.WriteLine("matches()");
+                //Console.WriteLine("matches()");
                 // this is necessary so that a negated/optional node matches only once
                 if (finished)
                 {

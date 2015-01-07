@@ -7,16 +7,17 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Process
 {
-    /**
- * Constructs a Word from a string. This is the default
- * TokenFactory for PTBLexer. It discards the positional information.
- *
- * @author Jenny Finkel
- */
-
+    /// <summary>
+    /// Constructs a Word from a string. This is the default
+    /// TokenFactory for PTBLexer. It discards the positional information.
+    /// 
+    /// @author Jenny Finkel
+    /// 
+    /// Code...
+    /// </summary>
     public class WordTokenFactory : LexedTokenFactory<Word>
     {
-        //@Override
+        
         public Word MakeToken(string str, int begin, int length)
         {
             return new Word(str, begin, begin + length);

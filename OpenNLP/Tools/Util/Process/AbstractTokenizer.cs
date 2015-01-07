@@ -7,33 +7,39 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Process
 {
+    /// <summary>
+    /// An abstract tokenizer.
+    /// Tokenizers extending AbstractTokenizer need only
+    /// implement the <code>getNext()</code> method. This implementation does not
+    /// allow null tokens, since null is used in the protected nextToken 
+    /// field to signify that no more tokens are available.
+    /// 
+    /// @author Teg Grenager (grenager@stanford.edu)
+    /// 
+    /// Code...
+    /// </summary>
     public abstract class AbstractTokenizer<T> : Tokenizer<T>
     {
-        protected T nextToken; // = null;
+        protected T NextToken; // = null;
 
-        /**
-   * Internally fetches the next token.
-   *
-   * @return the next token in the token stream, or null if none exists.
-   */
+        /// <summary>
+        /// Internally fetches the next token.
+        /// </summary>
+        /// <returns>the next token in the token stream, or null if none exists</returns>
         protected abstract T GetNext();
 
-        /**
-   * Returns the next token from this Tokenizer.
-   *
-   * @return the next token in the token stream.
-   * @throws java.util.NoSuchElementException
-   *          if the token stream has no more tokens.
-   */
-        //@Override
+        /// <summary>
+        /// Returns the next token from this Tokenizer.
+        /// </summary>
+        /// <exception cref="Exception">if the token stream has no more tokens</exception>
         public T Next()
         {
-            if (nextToken == null)
+            if (NextToken == null)
             {
-                nextToken = GetNext();
+                NextToken = GetNext();
             }
-            T result = nextToken;
-            nextToken = default(T);
+            T result = NextToken;
+            NextToken = default(T);
             if (result == null)
             {
                 throw new Exception();
@@ -42,59 +48,49 @@ namespace OpenNLP.Tools.Util.Process
             return result;
         }
 
-        /**
-   * Returns <code>true</code> if this Tokenizer has more elements.
-   */
-        //@Override
+        /// <summary>
+        /// Returns <code>true</code> if this Tokenizer has more elements
+        /// </summary>
         public bool HasNext()
         {
-            if (nextToken == null)
+            if (NextToken == null)
             {
-                nextToken = GetNext();
+                NextToken = GetNext();
             }
-            return nextToken != null;
+            return NextToken != null;
         }
 
-        /**
-   * This is an optional operation, by default not supported.
-   */
-        //@Override
+        /// <summary>
+        /// This is an optional operation, by default not supported
+        /// </summary>
         public void Remove()
         {
             throw new InvalidOperationException();
         }
 
-        /**
-   * This is an optional operation, by default supported.
-   *
-   * @return The next token in the token stream.
-   * @throws java.util.NoSuchElementException
-   *          if the token stream has no more tokens.
-   */
-        //@Override
+        /// <summary>
+        /// This is an optional operation, by default supported
+        /// </summary>
+        /// <exception cref="Exception">if the token stream has no more tokens</exception>
         public T Peek()
         {
-            if (nextToken == null)
+            if (NextToken == null)
             {
-                nextToken = GetNext();
+                NextToken = GetNext();
             }
-            if (nextToken == null)
+            if (NextToken == null)
             {
                 throw new Exception();
                 //throw new NoSuchElementException();
             }
-            return nextToken;
+            return NextToken;
         }
 
-        /**
-   * Returns text as a List of tokens.
-   *
-   * @return A list of all tokens remaining in the underlying Reader
-   */
-        //@Override
+        /// <summary>
+        /// Returns A list of all tokens remaining in the underlying Reader
+        /// </summary>
         public List<T> Tokenize()
         {
-            // System.out.println("tokenize called");
             var result = new List<T>();
             while (HasNext())
             {

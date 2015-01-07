@@ -37,7 +37,7 @@ namespace OpenNLP.Tools.Util.Trees
     {
         //private static readonly bool VERBOSE = System.getProperty("CoordinationTransformer", null) != null;
         private readonly TreeTransformer tn = new DependencyTreeTransformer(); //to get rid of unwanted nodes and tag
-        private readonly TreeTransformer qp = new QPTreeTransformer(); //to restructure the QP constituents
+        private readonly TreeTransformer qp = new QpTreeTransformer(); //to restructure the QP constituents
         private readonly TreeTransformer dates = new DateTreeTransformer(); //to flatten date patterns
 
         private readonly HeadFinder headFinder;
@@ -207,15 +207,15 @@ namespace OpenNLP.Tools.Util.Trees
         // with something in between the WH and the actual question.
         private static readonly TregexPattern FlattenSqTregex =
             TregexPattern.Compile("SBARQ < ((WHNP=what < WP) $+ (SQ=sq < (/^VB/=verb < " +
-                                  EnglishPatterns.copularWordRegex + ") " +
+                                  EnglishPatterns.CopularWordRegex + ") " +
                                   // match against "is running" if the verb is under just a VBG
-                                  " !< (/^VB/ < !" + EnglishPatterns.copularWordRegex + ") " +
+                                  " !< (/^VB/ < !" + EnglishPatterns.CopularWordRegex + ") " +
                                   // match against "is running" if the verb is under a VP - VBG
-                                  " !< (/^V/ < /^VB/ < !" + EnglishPatterns.copularWordRegex + ") " +
+                                  " !< (/^V/ < /^VB/ < !" + EnglishPatterns.CopularWordRegex + ") " +
                                   // match against "What is on the test?"
                                   " !< (PP $- =verb) " +
                                   // match against "is there"
-                                  " !<, (/^VB/ < " + EnglishPatterns.copularWordRegex + " $+ (NP < (EX < there)))))");
+                                  " !<, (/^VB/ < " + EnglishPatterns.CopularWordRegex + " $+ (NP < (EX < there)))))");
 
         private static readonly TsurgeonPattern FlattenSqTsurgeon = Tsurgeon.ParseOperation("excise sq sq");
 

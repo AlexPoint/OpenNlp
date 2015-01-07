@@ -7,150 +7,129 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * <p>
- * A <code>TreeGraphNode</code> is simply a
- * {@link Tree <code>Tree</code>}
- * with some additional functionality.  For example, the
- * <code>parent()</code> method works without searching from the root.
- * Labels are always assumed to be
- * {@link CoreLabel <code>CoreLabel</code>}
- *
- * <p>This class makes the horrible mistake of changing the semantics of
- * equals and hashCode to go back to "==" and System.identityHashCode,
- * despite the semantics of the superclass's equality.</p>
- *
- * @author Bill MacCartney
- */
-
+    /// <summary>
+    /// A <code>TreeGraphNode</code> is simply a
+    /// {@link Tree <code>Tree</code>}
+    /// with some additional functionality.  For example, the
+    /// <code>parent()</code> method works without searching from the root.
+    /// Labels are always assumed to be
+    /// {@link CoreLabel <code>CoreLabel</code>}
+    /// 
+    /// This class makes the horrible mistake of changing the semantics of
+    /// equals and hashCode to go back to "==" and System.identityHashCode,
+    /// despite the semantics of the superclass's equality.
+    /// 
+    /// @author Bill MacCartney
+    /// </summary>
     public class TreeGraphNode : Tree, HasParent
     {
-        /**
-   * Label for this node.
-   */
-        protected CoreLabel plabel;
+        /// <summary>
+        /// Label for this node
+        /// </summary>
+        protected CoreLabel _label;
 
-        /**
-   * Parent of this node.
-   */
-        protected TreeGraphNode pparent; // = null;
+        /// <summary>
+        /// Parent of this node
+        /// </summary>
+        protected TreeGraphNode _parent; // = null;
 
+        /// <summary>
+        /// Children of this node
+        /// </summary>
+        protected TreeGraphNode[] _children = ZeroTgnChildren;
 
-        /**
-   * Children of this node.
-   */
-        protected TreeGraphNode[] pchildren = ZeroTgnChildren;
-
-        /**
-   * The {@link GrammaticalStructure <code>GrammaticalStructure</code>} of which this
-   * node is part.
-   */
+        /// <summary>
+        /// The {@link GrammaticalStructure <code>GrammaticalStructure</code>} of which this node is part
+        /// </summary>
         protected GrammaticalStructure tg;
 
-        /**
-   * A leaf node should have a zero-length array for its
-   * children. For efficiency, subclasses can use this array as a
-   * return value for children() for leaf nodes if desired. Should
-   * this be public instead?
-   */
+        /// <summary>
+        /// A leaf node should have a zero-length array for its children. 
+        /// For efficiency, subclasses can use this array as a return value 
+        /// for children() for leaf nodes if desired. Should this be public instead?
+        /// </summary>
         protected static readonly TreeGraphNode[] ZeroTgnChildren = new TreeGraphNode[0];
 
-        private static LabelFactory mlf = CoreLabel.Factory();
+        private static readonly LabelFactory Mlf = CoreLabel.Factory();
 
-        /**
-   * Create a new empty <code>TreeGraphNode</code>.
-   */
-
+        /// <summary>
+        /// Create a new empty <code>TreeGraphNode</code>
+        /// </summary>
         public TreeGraphNode()
         {
         }
 
-        /**
-   * Create a new <code>TreeGraphNode</code> with the supplied
-   * label.
-   *
-   * @param label the label for this node.
-   */
-
+        /// <summary>
+        /// Create a new <code>TreeGraphNode</code> with the supplied label
+        /// </summary>
+        /// <param name="label">the label for this node</param>
         public TreeGraphNode(Label label)
         {
-            this.plabel = (CoreLabel) mlf.NewLabel(label);
+            this._label = (CoreLabel) Mlf.NewLabel(label);
         }
 
-        /**
-   * Create a new <code>TreeGraphNode</code> with the supplied
-   * label and list of child nodes.
-   *
-   * @param label    the label for this node.
-   * @param children the list of child <code>TreeGraphNode</code>s
-   *                 for this node.
-   */
-
+        /// <summary>
+        /// Create a new <code>TreeGraphNode</code> with the supplied
+        /// label and list of child nodes
+        /// </summary>
+        /// <param name="label">the label for this node</param>
+        /// <param name="children">the list of child <code>TreeGraphNode</code>s for this node</param>
         public TreeGraphNode(Label label, List<Tree> children) :
             this(label)
         {
             SetChildren(children);
         }
 
-        /**
-   * Create a new <code>TreeGraphNode</code> having the same tree
-   * structure and label values as an existing tree (but no shared
-   * storage).
-   * @param t     the tree to copy
-   * @param graph the graph of which this node is a part
-   */
-
+        /// <summary>
+        /// Create a new <code>TreeGraphNode</code> having the same tree
+        /// structure and label values as an existing tree (but no shared storage)
+        /// </summary>
+        /// <param name="t">the tree to copy</param>
+        /// <param name="graph">the graph of which this node is a part</param>
         public TreeGraphNode(Tree t, GrammaticalStructure graph) :
             this(t, (TreeGraphNode) null)
         {
             this.SetTreeGraph(graph);
         }
 
-        // XXX TODO it's not really clear what graph the copy should be a part of
+        // TODO it's not really clear what graph the copy should be a part of
         public TreeGraphNode(TreeGraphNode t) :
-            this(t, t.pparent)
+            this(t, t._parent)
         {
             this.SetTreeGraph(t.TreeGraph());
         }
 
-        /**
-   * Create a new <code>TreeGraphNode</code> having the same tree
-   * structure and label values as an existing tree (but no shared
-   * storage).  Operates recursively to construct an entire
-   * subtree.
-   *
-   * @param t      the tree to copy
-   * @param parent the parent node
-   */
-
+        /// <summary>
+        /// Create a new <code>TreeGraphNode</code> having the same tree structure 
+        /// and label values as an existing tree (but no shared storage).
+        /// Operates recursively to construct an entire subtree
+        /// </summary>
+        /// <param name="t">the tree to copy</param>
+        /// <param name="parent">the parent node</param>
         protected TreeGraphNode(Tree t, TreeGraphNode parent)
         {
-            this.pparent = parent;
+            this._parent = parent;
             Tree[] tKids = t.Children();
             int numKids = tKids.Length;
-            pchildren = new TreeGraphNode[numKids];
+            _children = new TreeGraphNode[numKids];
             for (int i = 0; i < numKids; i++)
             {
-                pchildren[i] = new TreeGraphNode(tKids[i], this);
+                _children[i] = new TreeGraphNode(tKids[i], this);
                 if (t.IsPreTerminal())
                 {
                     // add the tags to the leaves
-                    pchildren[i].plabel.SetTag(t.Label().Value());
+                    _children[i]._label.SetTag(t.Label().Value());
                 }
             }
-            this.plabel = (CoreLabel) mlf.NewLabel(t.Label());
+            this._label = (CoreLabel) Mlf.NewLabel(t.Label());
         }
 
-        /**
-   * Implements equality for <code>TreeGraphNode</code>s.  Unlike
-   * <code>Tree</code>s, <code>TreeGraphNode</code>s should be
-   * considered equal only if they are ==.  <i>Implementation note:</i>
-   * TODO: This should be changed via introducing a Tree interface with the current Tree and this class implementing it, since what is done here breaks the equals() contract.
-   *
-   * @param o The object to compare with
-   * @return Whether two things are equal
-   */
-        //@Override
+        /// <summary>
+        /// Implements equality for <code>TreeGraphNode</code>s.
+        /// Unlike <code>Tree</code>s, <code>TreeGraphNode</code>s should be
+        /// considered equal only if they are ==.  <i>Implementation note:</i>
+        /// TODO: This should be changed via introducing a Tree interface with the current Tree and this class implementing it, since what is done here breaks the equals() contract.
+        /// </summary>
         public override bool Equals(Object o)
         {
             return o == this;
@@ -158,110 +137,94 @@ namespace OpenNLP.Tools.Util.Trees
 
         //@Override
         /*public override int GetHashCode() {
-    return System.identityHashCode(this);
-  }*/
+            return System.identityHashCode(this);
+          }*/
 
-        /**
-   * Returns the label associated with the current node, or null
-   * if there is no label.
-   *
-   * @return the label of the node
-   */
-        //@Override
+        /// <summary>
+        /// Returns the label associated with the current node, or null if there is no label.
+        /// </summary>
         public override /*CoreLabel */ Label Label()
         {
-            return plabel;
+            return _label;
         }
 
-        /**
-   * Sets the label associated with the current node.
-   *
-   * @param label the new label to use.
-   */
-
+        /// <summary>
+        /// Sets the label associated with the current node
+        /// </summary>
         public void SetLabel( /*readonly*/ CoreLabel label)
         {
-            this.plabel = label;
+            this._label = label;
         }
 
-        /**
-   * Get the index for the current node.
-   */
-
+        /// <summary>
+        /// Get the index for the current node.
+        /// </summary>
         public int Index()
         {
-            return plabel.Index();
+            return _label.Index();
         }
 
-        /**
-   * Set the index for the current node.
-   */
-
+        /// <summary>
+        /// Set the index for the current node
+        /// </summary>
         public void SetIndex(int index)
         {
-            plabel.SetIndex(index);
+            _label.SetIndex(index);
         }
 
-        /**
-   * Get the parent for the current node.
-   */
-        //@Override
+        /// <summary>
+        /// Get the parent for the current node
+        /// </summary>
         public override /*TreeGraphNode*/ Tree Parent()
         {
-            return pparent;
+            return _parent;
         }
 
-        /**
-   * Set the parent for the current node.
-   */
-
+        /// <summary>
+        /// Set the parent for the current node
+        /// </summary>
         public void SetParent(TreeGraphNode parent)
         {
-            this.pparent = parent;
+            this._parent = parent;
         }
 
-        /**
-   * Returns an array of the children of this node.
-   */
-        //@Override
+        /// <summary>
+        /// Returns an array of the children of this node
+        /// </summary>
         public override Tree[] Children()
         {
-            return pchildren;
+            return _children;
         }
 
-        /**
-   * Sets the children of this <code>TreeGraphNode</code>.  If
-   * given <code>null</code>, this method sets
-   * the node's children to the canonical zero-length Tree[] array.
-   *
-   * @param children an array of child trees
-   */
-        //@Override
+        /// <summary>
+        /// Sets the children of this <code>TreeGraphNode</code>.
+        /// If given <code>null</code>, this method sets
+        /// the node's children to the canonical zero-length Tree[] array.
+        /// </summary>
+        /// <param name="children">an array of child trees</param>
         public override void SetChildren(Tree[] children)
         {
             if (children == null || children.Length == 0)
             {
-                this.pchildren = ZeroTgnChildren;
+                this._children = ZeroTgnChildren;
             }
             else
             {
                 if (children is TreeGraphNode[])
                 {
-                    this.pchildren = (TreeGraphNode[]) children;
+                    this._children = (TreeGraphNode[]) children;
                 }
                 else
                 {
-                    this.pchildren = new TreeGraphNode[children.Length];
+                    this._children = new TreeGraphNode[children.Length];
                     for (int i = 0; i < children.Length; i++)
                     {
-                        this.pchildren[i] = (TreeGraphNode) children[i];
+                        this._children[i] = (TreeGraphNode) children[i];
                     }
                 }
             }
         }
 
-        /** {@inheritDoc} */
-        //@Override
         public void SetChildren(List<TreeGraphNode> childTreesList)
         {
             if (childTreesList == null || !childTreesList.Any())
@@ -275,50 +238,43 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        /**
-   * Get the <code>GrammaticalStructure</code> of which this node is a
-   * part.
-   */
-
+        /// <summary>
+        /// Get the <code>GrammaticalStructure</code> of which this node is a part
+        /// </summary>
         protected GrammaticalStructure TreeGraph()
         {
             return tg;
         }
 
-        /**
-   * Set pointer to the <code>GrammaticalStructure</code> of which this node
-   * is a part.  Operates recursively to set pointer for all
-   * descendants too.
-   */
-
+        /// <summary>
+        /// Set pointer to the <code>GrammaticalStructure</code> of which this node
+        /// is a part.  Operates recursively to set pointer for all descendants too
+        /// </summary>
         protected void SetTreeGraph(GrammaticalStructure tg)
         {
             this.tg = tg;
-            foreach (TreeGraphNode child in pchildren)
+            foreach (TreeGraphNode child in _children)
             {
                 child.SetTreeGraph(tg);
             }
         }
 
-        /**
-   * Uses the specified {@link HeadFinder <code>HeadFinder</code>}
-   * to determine the heads for this node and all its descendants,
-   * and to store references to the head word node and head tag node
-   * in this node's {@link CoreLabel <code>CoreLabel</code>} and the
-   * <code>CoreLabel</code>s of all its descendants.<p>
-   * <p/>
-   * Note that, in contrast to {@link Tree#percolateHeads
-   * <code>Tree.percolateHeads()</code>}, which assumes {@link
-   * edu.stanford.nlp.ling.CategoryWordTag
-   * <code>CategoryWordTag</code>} labels and therefore stores head
-   * words and head tags merely as <code>string</code>s, this
-   * method stores references to the actual nodes.  This mitigates
-   * potential problems in sentences which contain the same word
-   * more than once.
-   *
-   * @param hf The headfinding algorithm to use
-   */
-        //@Override
+        /// <summary>
+        /// Uses the specified {@link HeadFinder <code>HeadFinder</code>}
+        /// to determine the heads for this node and all its descendants,
+        /// and to store references to the head word node and head tag node
+        /// in this node's {@link CoreLabel <code>CoreLabel</code>} and the
+        /// <code>CoreLabel</code>s of all its descendants.<p>
+        /// 
+        /// Note that, in contrast to {@link Tree#percolateHeads
+        /// <code>Tree.percolateHeads()</code>}, which assumes {@link
+        /// edu.stanford.nlp.ling.CategoryWordTag
+        /// <code>CategoryWordTag</code>} labels and therefore stores head
+        /// words and head tags merely as <code>string</code>s, this
+        /// method stores references to the actual nodes.  This mitigates
+        /// potential problems in sentences which contain the same word more than once.
+        /// </summary>
+        /// <param name="hf">The headfinding algorithm to use</param>
         public override void PercolateHeads(HeadFinder hf)
         {
             if (IsLeaf())
@@ -335,7 +291,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     child.PercolateHeads(hf);
                 }
-                TreeGraphNode head = SafeCast(hf.DetermineHead(this, pparent));
+                TreeGraphNode head = SafeCast(hf.DetermineHead(this, _parent));
                 if (head != null)
                 {
 
@@ -362,28 +318,21 @@ namespace OpenNLP.Tools.Util.Trees
                     }
 
                 }
-                else
-                {
-                    //System.err.println("Head is null: " + this);
-                }
             }
         }
 
-        /**
-   * Return the node containing the head word for this node (or
-   * <code>null</code> if none), as recorded in this node's {@link
-   * CoreLabel <code>CoreLabel</code>}.  (In contrast to {@link
-   * edu.stanford.nlp.ling.CategoryWordTag
-   * <code>CategoryWordTag</code>}, we store head words and head
-   * tags as references to nodes, not merely as
-   * <code>string</code>s.)
-   *
-   * @return the node containing the head word for this node
-   */
-
+        /// <summary>
+        /// Return the node containing the head word for this node (or
+        /// <code>null</code> if none), as recorded in this node's {@link
+        /// CoreLabel <code>CoreLabel</code>}.  (In contrast to {@link
+        /// edu.stanford.nlp.ling.CategoryWordTag
+        /// <code>CategoryWordTag</code>}, we store head words and head
+        /// tags as references to nodes, not merely as <code>string</code>s.)
+        /// </summary>
+        /// <returns>the node containing the head word for this node</returns>
         public TreeGraphNode HeadWordNode()
         {
-            TreeGraphNode hwn = SafeCast(plabel.Get(typeof (TreeCoreAnnotations.HeadWordAnnotation)));
+            TreeGraphNode hwn = SafeCast(_label.Get(typeof (TreeCoreAnnotations.HeadWordAnnotation)));
             if (hwn == null || (hwn.TreeGraph() != null && !(hwn.TreeGraph().Equals(this.TreeGraph()))))
             {
                 return null;
@@ -391,38 +340,32 @@ namespace OpenNLP.Tools.Util.Trees
             return hwn;
         }
 
-        /**
-   * Store the node containing the head word for this node by
-   * storing it in this node's {@link CoreLabel
-   * <code>CoreLabel</code>}.  (In contrast to {@link
-   * edu.stanford.nlp.ling.CategoryWordTag
-   * <code>CategoryWordTag</code>}, we store head words and head
-   * tags as references to nodes, not merely as
-   * <code>string</code>s.)
-   *
-   * @param hwn the node containing the head word for this node
-   */
-
+        /// <summary>
+        /// Store the node containing the head word for this node by 
+        /// storing it in this node's {@link CoreLabel
+        /// <code>CoreLabel</code>}.  (In contrast to {@link
+        /// edu.stanford.nlp.ling.CategoryWordTag
+        /// <code>CategoryWordTag</code>}, we store head words and head
+        /// tags as references to nodes, not merely as <code>string</code>s.)
+        /// </summary>
+        /// <param name="hwn">the node containing the head word for this node</param>
         private void SetHeadWordNode( /*readonly*/ TreeGraphNode hwn)
         {
-            plabel.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), hwn);
+            _label.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), hwn);
         }
 
-        /**
-   * Return the node containing the head tag for this node (or
-   * <code>null</code> if none), as recorded in this node's {@link
-   * CoreLabel <code>CoreLabel</code>}.  (In contrast to {@link
-   * edu.stanford.nlp.ling.CategoryWordTag
-   * <code>CategoryWordTag</code>}, we store head words and head
-   * tags as references to nodes, not merely as
-   * <code>string</code>s.)
-   *
-   * @return the node containing the head tag for this node
-   */
-
+        /// <summary>
+        /// Return the node containing the head tag for this node (or
+        /// <code>null</code> if none), as recorded in this node's {@link
+        /// CoreLabel <code>CoreLabel</code>}.  (In contrast to {@link
+        /// edu.stanford.nlp.ling.CategoryWordTag
+        /// <code>CategoryWordTag</code>}, we store head words and head
+        /// tags as references to nodes, not merely as <code>string</code>s.)
+        /// </summary>
+        /// <returns>the node containing the head tag for this node</returns>
         public TreeGraphNode HeadTagNode()
         {
-            TreeGraphNode htn = SafeCast(plabel.Get(typeof (TreeCoreAnnotations.HeadTagAnnotation)));
+            TreeGraphNode htn = SafeCast(_label.Get(typeof (TreeCoreAnnotations.HeadTagAnnotation)));
             if (htn == null || (htn.TreeGraph() != null && !(htn.TreeGraph().Equals(this.TreeGraph()))))
             {
                 return null;
@@ -430,33 +373,28 @@ namespace OpenNLP.Tools.Util.Trees
             return htn;
         }
 
-        /**
-   * Store the node containing the head tag for this node by
-   * storing it in this node's {@link CoreLabel
-   * <code>CoreLabel</code>}.  (In contrast to {@link
-   * edu.stanford.nlp.ling.CategoryWordTag
-   * <code>CategoryWordTag</code>}, we store head words and head
-   * tags as references to nodes, not merely as
-   * <code>string</code>s.)
-   *
-   * @param htn the node containing the head tag for this node
-   */
-
+        /// <summary>
+        /// Store the node containing the head tag for this node by
+        /// storing it in this node's {@link CoreLabel <code>CoreLabel</code>}.
+        /// (In contrast to {@link edu.stanford.nlp.ling.CategoryWordTag
+        /// <code>CategoryWordTag</code>}, we store head words and head
+        /// tags as references to nodes, not merely as
+        /// <code>string</code>s.)
+        /// </summary>
+        /// <param name="htn">the node containing the head tag for this node</param>
         private void SetHeadTagNode( /*readonly*/ TreeGraphNode htn)
         {
-            plabel.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation), htn);
+            _label.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation), htn);
         }
 
-        /**
-   * Safely casts an <code>Object</code> to a
-   * <code>TreeGraphNode</code> if possible, else returns
-   * <code>null</code>.
-   *
-   * @param t any <code>Object</code>
-   * @return <code>t</code> if it is a <code>TreeGraphNode</code>;
-   *         <code>null</code> otherwise
-   */
-
+        /// <summary>
+        /// Safely casts an <code>Object</code> to a <code>TreeGraphNode</code>
+        /// if possible, else returns <code>null</code>
+        /// </summary>
+        /// <param name="t">any <code>Object</code></param>
+        /// <returns>
+        /// <code>t</code> if it is a <code>TreeGraphNode</code>;<code>null</code> otherwise
+        /// </returns>
         private static TreeGraphNode SafeCast(Object t)
         {
             if (t == null || !(t is TreeGraphNode))
@@ -466,11 +404,10 @@ namespace OpenNLP.Tools.Util.Trees
             return (TreeGraphNode) t;
         }
 
-        /**
-   * Checks the node's ancestors to find the highest ancestor with the
-   * same <code>headWordNode</code> as this node.
-   */
-
+        /// <summary>
+        /// Checks the node's ancestors to find the highest ancestor with the
+        /// same <code>headWordNode</code> as this node
+        /// </summary>
         public TreeGraphNode HighestNodeWithSameHead()
         {
             TreeGraphNode node = this;
@@ -488,29 +425,21 @@ namespace OpenNLP.Tools.Util.Trees
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class TreeFactoryHolder
         {
-
             public static readonly TreeGraphNodeFactory tgnf = new TreeGraphNodeFactory();
-
-            /*private TreeFactoryHolder() {
-    }*/
-
         }
-
-        /**
-   * Returns a <code>TreeFactory</code> that produces
-   * <code>TreeGraphNode</code>s.  The <code>Label</code> of
-   * <code>this</code> is examined, and providing it is not
-   * <code>null</code>, a <code>LabelFactory</code> which will
-   * produce that kind of <code>Label</code> is supplied to the
-   * <code>TreeFactory</code>.  If the <code>Label</code> is
-   * <code>null</code>, a
-   * <code>CoreLabel.factory()</code> will be used.  The factories
-   * returned on different calls are different: a new one is
-   * allocated each time.
-   *
-   * @return a factory to produce treegraphs
-   */
-        //@Override
+        
+        /// <summary>
+        /// Returns a <code>TreeFactory</code> that produces 
+        /// <code>TreeGraphNode</code>s.  The <code>Label</code> of
+        /// <code>this</code> is examined, and providing it is not
+        /// <code>null</code>, a <code>LabelFactory</code> which will
+        /// produce that kind of <code>Label</code> is supplied to the
+        /// <code>TreeFactory</code>.  If the <code>Label</code> is
+        /// <code>null</code>, a <code>CoreLabel.factory()</code> will be used.  
+        /// The factories returned on different calls are different: a new one is
+        /// allocated each time.
+        /// </summary>
+        /// <returns>a factory to produce treegraphs</returns>
         public override TreeFactory TreeFactory()
         {
             LabelFactory lf;
@@ -525,43 +454,35 @@ namespace OpenNLP.Tools.Util.Trees
             return new TreeGraphNodeFactory(lf);
         }
 
-        /**
-   * Return a <code>TreeFactory</code> that produces trees of type
-   * <code>TreeGraphNode</code>.  The factory returned is always
-   * the same one (a singleton).
-   *
-   * @return a factory to produce treegraphs
-   */
-
+        /// <summary>
+        /// Return a <code>TreeFactory</code> that produces trees of type <code>TreeGraphNode</code>.
+        /// The factory returned is always the same one (a singleton).
+        /// </summary>
+        /// <returns>a factory to produce treegraphs</returns>
         public static TreeFactory Factory()
         {
             return TreeFactoryHolder.tgnf;
         }
 
-        /**
-   * Return a <code>TreeFactory</code> that produces trees of type
-   * <code>TreeGraphNode</code>, with the <code>Label</code> made
-   * by the supplied <code>LabelFactory</code>.  The factory
-   * returned is a different one each time.
-   *
-   * @param lf The <code>LabelFactory</code> to use
-   * @return a factory to produce treegraphs
-   */
-
+        /// <summary>
+        /// Return a <code>TreeFactory</code> that produces trees of type
+        /// <code>TreeGraphNode</code>, with the <code>Label</code> made
+        /// by the supplied <code>LabelFactory</code>.  The factory
+        /// returned is a different one each time.
+        /// </summary>
+        /// <param name="lf">The <code>LabelFactory</code> to use</param>
+        /// <returns>a factory to produce treegraphs</returns>
         public static TreeFactory Factory(LabelFactory lf)
         {
             return new TreeGraphNodeFactory(lf);
         }
 
-        /**
-   * Returns a <code>string</code> representation of this node and
-   * its subtree with one node per line, indented according to
-   * <code>indentLevel</code>.
-   *
-   * @param indentLevel how many levels to indent (0 for root node)
-   * @return <code>string</code> representation of this subtree
-   */
-
+        /// <summary>
+        /// Returns a <code>string</code> representation of this node and
+        /// its subtree with one node per line, indented according to <code>indentLevel</code>.
+        /// </summary>
+        /// <param name="indentLevel">how many levels to indent (0 for root node)</param>
+        /// <returns><code>string</code> representation of this subtree</returns>
         public string ToPrettyString(int indentLevel)
         {
             var buf = new StringBuilder("\n");
@@ -569,14 +490,14 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 buf.Append("  ");
             }
-            if (pchildren == null || pchildren.Length == 0)
+            if (_children == null || _children.Length == 0)
             {
-                buf.Append(plabel.ToString(CoreLabel.OutputFormat.VALUE_INDEX_MAP));
+                buf.Append(_label.ToString(CoreLabel.OutputFormat.VALUE_INDEX_MAP));
             }
             else
             {
-                buf.Append('(').Append(plabel.ToString(CoreLabel.OutputFormat.VALUE_INDEX_MAP));
-                foreach (TreeGraphNode child in pchildren)
+                buf.Append('(').Append(_label.ToString(CoreLabel.OutputFormat.VALUE_INDEX_MAP));
+                foreach (TreeGraphNode child in _children)
                 {
                     buf.Append(' ').Append(child.ToPrettyString(indentLevel + 1));
                 }
@@ -585,24 +506,22 @@ namespace OpenNLP.Tools.Util.Trees
             return buf.ToString();
         }
 
-        /**
-   * Returns a <code>string</code> representation of this node and
-   * its subtree as a one-line parenthesized list.
-   *
-   * @return <code>string</code> representation of this subtree
-   */
-
+        /// <summary>
+        /// Returns a <code>string</code> representation of this node and
+        /// its subtree as a one-line parenthesized list 
+        /// </summary>
+        /// <returns><code>string</code> representation of this subtree</returns>
         public string ToOneLineString()
         {
             var buf = new StringBuilder();
-            if (pchildren == null || pchildren.Length == 0)
+            if (_children == null || _children.Length == 0)
             {
-                buf.Append(plabel);
+                buf.Append(_label);
             }
             else
             {
-                buf.Append('(').Append(plabel);
-                foreach (TreeGraphNode child in pchildren)
+                buf.Append('(').Append(_label);
+                foreach (TreeGraphNode child in _children)
                 {
                     buf.Append(' ').Append(child.ToOneLineString());
                 }
@@ -621,20 +540,18 @@ namespace OpenNLP.Tools.Util.Trees
             }
             else
             {
-                //throw new SystemException("Shouldn't be here!");
                 return "";
             }
         }
 
-        //@Override
         public override string ToString()
         {
-            return plabel.ToString();
+            return _label.ToString();
         }
 
         public string ToString(CoreLabel.OutputFormat format)
         {
-            return plabel.ToString(format);
+            return _label.ToString(format);
         }
         
         // Automatically generated by Eclipse

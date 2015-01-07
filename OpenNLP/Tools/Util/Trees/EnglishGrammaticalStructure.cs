@@ -8,66 +8,69 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
+    /// <summary>
+    /// A GrammaticalStructure for English.
+    /// 
+    /// The Stanford parser should be run with the "-retainNPTmpSubcategories"
+    /// option! <b>Caveat emptor!</b> This is a work in progress. Suggestions welcome.
+    /// 
+    /// @author Bill MacCartney
+    /// @author Marie-Catherine de Marneffe
+    /// @author Christopher Manning
+    /// @author Daniel Cer (CoNLLX format and alternative user selected dependency printer/reader interface)
+    /// 
+    /// Code...
+    /// </summary>
     public class EnglishGrammaticalStructure : GrammaticalStructure
     {
-        /**
-   * Construct a new <code>GrammaticalStructure</code> from an existing parse
-   * tree. The new <code>GrammaticalStructure</code> has the same tree structure
-   * and label values as the given tree (but no shared storage). As part of
-   * construction, the parse tree is analyzed using definitions from
-   * {@link GrammaticalRelation <code>GrammaticalRelation</code>} to populate
-   * the new <code>GrammaticalStructure</code> with as many labeled grammatical
-   * relations as it can.
-   *
-   * @param t Parse tree to make grammatical structure from
-   */
-
+        /// <summary>
+        /// Construct a new <code>GrammaticalStructure</code> from an existing parse tree.
+        /// The new <code>GrammaticalStructure</code> has the same tree structure
+        /// and label values as the given tree (but no shared storage). As part of
+        /// construction, the parse tree is analyzed using definitions from
+        /// {@link GrammaticalRelation <code>GrammaticalRelation</code>} to populate
+        /// the new <code>GrammaticalStructure</code> with as many labeled grammatical relations as it can.
+        /// </summary>
+        /// <param name="t">Parse tree to make grammatical structure from</param>
         public EnglishGrammaticalStructure(Tree t) :
             this(t, new PennTreebankLanguagePack().PunctuationWordRejectFilter())
         {
         }
 
-        /**
-         * This gets used by GrammaticalStructureFactory (by reflection). DON'T DELETE.
-         *
-         * @param t Parse tree to make grammatical structure from
-         * @param puncFilter Filter to remove punctuation dependencies
-         */
-
+        /// <summary>
+        /// This gets used by GrammaticalStructureFactory (by reflection). DON'T DELETE.
+        /// </summary>
+        /// <param name="t">Parse tree to make grammatical structure from</param>
+        /// <param name="puncFilter">Filter to remove punctuation dependencies</param>
         public EnglishGrammaticalStructure(Tree t, Predicate<string> puncFilter) :
             this(t, puncFilter, new SemanticHeadFinder(true), true)
         {
         }
 
-        /**
-         * This gets used by GrammaticalStructureFactory (by reflection). DON'T DELETE.
-         *
-         * @param t Parse tree to make grammatical structure from
-         * @param puncFilter Filter to remove punctuation dependencies
-         * @param hf HeadFinder to use when building it
-         */
-
+        /// <summary>
+        /// This gets used by GrammaticalStructureFactory (by reflection). DON'T DELETE.
+        /// </summary>
+        /// <param name="t">Parse tree to make grammatical structure from</param>
+        /// <param name="puncFilter">Filter to remove punctuation dependencies</param>
+        /// <param name="hf">HeadFinder to use when building it</param>
         public EnglishGrammaticalStructure(Tree t, Predicate<string> puncFilter, HeadFinder hf) :
             this(t, puncFilter, hf, true)
         {
         }
 
-        /**
-         * Construct a new <code>GrammaticalStructure</code> from an existing parse
-         * tree. The new <code>GrammaticalStructure</code> has the same tree structure
-         * and label values as the given tree (but no shared storage). As part of
-         * construction, the parse tree is analyzed using definitions from
-         * {@link GrammaticalRelation <code>GrammaticalRelation</code>} to populate
-         * the new <code>GrammaticalStructure</code> with as many labeled grammatical
-         * relations as it can.
-         *
-         * @param t Parse tree to make grammatical structure from
-         * @param puncFilter Filter for punctuation words
-         * @param hf HeadFinder to use when building it
-         * @param threadSafe Whether or not to support simultaneous instances among multiple
-         *          threads
-         */
-
+        /// <summary>
+        /// Construct a new <code>GrammaticalStructure</code> from an existing parse tree.
+        /// The new <code>GrammaticalStructure</code> has the same tree structure
+        /// and label values as the given tree (but no shared storage). As part of
+        /// construction, the parse tree is analyzed using definitions from
+        /// {@link GrammaticalRelation <code>GrammaticalRelation</code>} to populate
+        /// the new <code>GrammaticalStructure</code> with as many labeled grammatical
+        /// relations as it can.
+        /// </summary>
+        /// <param name="t">Parse tree to make grammatical structure from</param>
+        /// <param name="puncFilter">Filter for punctuation words</param>
+        /// <param name="hf">HeadFinder to use when building it</param>
+        /// <param name="threadSafe">Whether or not to support simultaneous instances among multiple threads</param>
         public EnglishGrammaticalStructure(Tree t, Predicate<string> puncFilter, HeadFinder hf, bool threadSafe) :
             base((new CoordinationTransformer(hf)).TransformTree(t.DeepCopy()),
                 EnglishGrammaticalRelations.Values(threadSafe),
@@ -83,37 +86,35 @@ namespace OpenNLP.Tools.Util.Trees
             super(projectiveDependencies, root);
         }*/
 
-        /**
-   * Destructively modifies this {@code Collection<TypedDependency>}
-   * by collapsing several types of transitive pairs of dependencies.
-   * If called with a tree of dependencies and both CCprocess and
-   * includeExtras set to false, then the tree structure is preserved.
-   * <dl>
-   * <dt>prepositional object dependencies: pobj</dt>
-   * <dd>
-   * <code>prep(cat, in)</code> and <code>pobj(in, hat)</code> are collapsed to
-   * <code>prep_in(cat, hat)</code></dd>
-   * <dt>prepositional complement dependencies: pcomp</dt>
-   * <dd>
-   * <code>prep(heard, of)</code> and <code>pcomp(of, attacking)</code> are
-   * collapsed to <code>prepc_of(heard, attacking)</code></dd>
-   * <dt>conjunct dependencies</dt>
-   * <dd>
-   * <code>cc(investors, and)</code> and
-   * <code>conj(investors, regulators)</code> are collapsed to
-   * <code>conj_and(investors,regulators)</code></dd>
-   * <dt>possessive dependencies: possessive</dt>
-   * <dd>
-   * <code>possessive(Montezuma, 's)</code> will be erased. This is like a collapsing, but
-   * due to the flatness of NPs, two dependencies are not actually composed.</dd>
-   * <dt>For relative clauses, it will collapse referent</dt>
-   * <dd>
-   * <code>ref(man, that)</code> and <code>dobj(love, that)</code> are collapsed
-   * to <code>dobj(love, man)</code></dd>
-   * </dl>
-   */
-        //@Override
-        protected override void CollapseDependencies(List<TypedDependency> list, bool CCprocess, bool includeExtras)
+        /// <summary>
+        /// Destructively modifies this {@code Collection<TypedDependency>}
+        /// by collapsing several types of transitive pairs of dependencies.
+        /// If called with a tree of dependencies and both CCprocess and
+        /// includeExtras set to false, then the tree structure is preserved.
+        /// <dl>
+        /// <dt>prepositional object dependencies: pobj</dt>
+        /// <dd><code>prep(cat, in)</code> and <code>pobj(in, hat)</code> are collapsed to
+        /// <code>prep_in(cat, hat)</code></dd>
+        /// <dt>prepositional complement dependencies: pcomp</dt>
+        /// <dd>
+        /// <code>prep(heard, of)</code> and <code>pcomp(of, attacking)</code> are
+        /// collapsed to <code>prepc_of(heard, attacking)</code></dd>
+        /// <dt>conjunct dependencies</dt>
+        /// <dd>
+        /// <code>cc(investors, and)</code> and
+        /// <code>conj(investors, regulators)</code> are collapsed to
+        /// <code>conj_and(investors,regulators)</code></dd>
+        /// <dt>possessive dependencies: possessive</dt>
+        /// <dd>
+        /// <code>possessive(Montezuma, 's)</code> will be erased. This is like a collapsing, but
+        /// due to the flatness of NPs, two dependencies are not actually composed.</dd>
+        /// <dt>For relative clauses, it will collapse referent</dt>
+        /// <dd>
+        /// <code>ref(man, that)</code> and <code>dobj(love, that)</code> are collapsed
+        /// to <code>dobj(love, man)</code></dd>
+        /// </dl>
+        /// </summary>
+        protected override void CollapseDependencies(List<TypedDependency> list, bool cCprocess, bool includeExtras)
         {
             /*if (DEBUG) {
       printListSorted("collapseDependencies: CCproc: " + CCprocess + " includeExtras: " + includeExtras, list);
@@ -171,7 +172,7 @@ namespace OpenNLP.Tools.Util.Trees
       }*/
             }
 
-            if (CCprocess)
+            if (cCprocess)
             {
                 TreatCc(list);
                 /*if (DEBUG) {
@@ -231,24 +232,19 @@ namespace OpenNLP.Tools.Util.Trees
 * Along with Apart from As for As to Aside from Because of But for Contrary
 * to Except for Instead of Next to Out of Prior to Thanks to
 */
-
-        /**
-   * Collapse multi-words preposition of the following format, which comes from
-   * flat annotation. This handles e.g., "because of" (PP (IN because) (IN of)
-   * ...), "such as" (PP (JJ such) (IN as) ...)
-   * <p/>
-   * prep(gov, mwp[1]) dep(mpw[1], mwp[0]) pobj(mwp[1], compl) ->
-   * prep_mwp[0]_mwp[1](gov, compl)
-   *
-   * @param list
-   *          List of typedDependencies to work on
-   */
-
+        /// <summary>
+        /// Collapse multi-words preposition of the following format, which comes from
+        /// flat annotation. This handles e.g., "because of" (PP (IN because) (IN of)
+        /// ...), "such as" (PP (JJ such) (IN as) ...)
+        /// prep(gov, mwp[1]) dep(mpw[1], mwp[0]) pobj(mwp[1], compl) ->
+        /// prep_mwp[0]_mwp[1](gov, compl)
+        /// </summary>
+        /// <param name="list">List of typedDependencies to work on</param>
         private static void CollapseFlatMwp(List<TypedDependency> list)
         {
             var newTypedDeps = new List<TypedDependency>();
 
-            foreach (string[] mwp in MULTIWORD_PREPS)
+            foreach (string[] mwp in MultiwordPreps)
             {
                 newTypedDeps.Clear();
 
@@ -317,15 +313,15 @@ namespace OpenNLP.Tools.Util.Trees
                 }
                 // only if we found the three parts, set to KILL and remove
                 // we know prep != null && dep != null && dep != null
-                prep.SetReln(GrammaticalRelation.KILL);
-                dep.SetReln(GrammaticalRelation.KILL);
-                pobj.SetReln(GrammaticalRelation.KILL);
+                prep.SetReln(GrammaticalRelation.Kill);
+                dep.SetReln(GrammaticalRelation.Kill);
+                pobj.SetReln(GrammaticalRelation.Kill);
 
                 // now remove typed dependencies with reln "kill"
                 // and promote possible orphans
                 foreach (TypedDependency td1 in list)
                 {
-                    if (td1.Reln() != GrammaticalRelation.KILL)
+                    if (td1.Reln() != GrammaticalRelation.Kill)
                     {
                         if (td1.Gov().Equals(mwp1))
                         {
@@ -342,21 +338,17 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        /**
-* Collapse multi-words preposition of the following format: advmod|prt(gov,
-* mwp[0]) prep(gov,mwp[1]) pobj|pcomp(mwp[1], compl) ->
-* prep_mwp[0]_mwp[1](gov, compl)
-* <p/>
-*
-* @param list
-*          List of typedDependencies to work on
-*/
-
+        /// <summary>
+        /// Collapse multi-words preposition of the following format: advmod|prt(gov,
+        /// mwp[0]) prep(gov,mwp[1]) pobj|pcomp(mwp[1], compl) ->
+        /// prep_mwp[0]_mwp[1](gov, compl)
+        /// </summary>
+        /// <param name="list">List of typedDependencies to work on</param>
         private static void Collapse2WpBis(List<TypedDependency> list)
         {
             var newTypedDeps = new List<TypedDependency>();
 
-            foreach (string[] mwp in MULTIWORD_PREPS)
+            foreach (string[] mwp in MultiwordPreps)
             {
                 newTypedDeps.Clear();
 
@@ -377,7 +369,7 @@ namespace OpenNLP.Tools.Util.Trees
                         &&
                         (td.Reln() == EnglishGrammaticalRelations.PHRASAL_VERB_PARTICLE ||
                          td.Reln() == EnglishGrammaticalRelations.ADVERBIAL_MODIFIER
-                         || td.Reln() == GrammaticalRelation.DEPENDENT ||
+                         || td.Reln() == GrammaticalRelation.Dependent ||
                          td.Reln() == EnglishGrammaticalRelations.MULTI_WORD_EXPRESSION))
                     {
                         // we found advmod(gov, mwp0) or prt(gov, mwp0)
@@ -444,16 +436,16 @@ namespace OpenNLP.Tools.Util.Trees
                 // and add the new one
                 // now prep != null, pobj != null and newtd != null
 
-                prep.SetReln(GrammaticalRelation.KILL);
-                dep.SetReln(GrammaticalRelation.KILL);
-                pobj.SetReln(GrammaticalRelation.KILL);
+                prep.SetReln(GrammaticalRelation.Kill);
+                dep.SetReln(GrammaticalRelation.Kill);
+                pobj.SetReln(GrammaticalRelation.Kill);
                 newTypedDeps.Add(newtd);
 
                 // now remove typed dependencies with reln "kill"
                 // and promote possible orphans
                 foreach (TypedDependency td1 in list)
                 {
-                    if (td1.Reln() != GrammaticalRelation.KILL)
+                    if (td1.Reln() != GrammaticalRelation.Kill)
                     {
                         if (td1.Gov().Equals(mwp0) || td1.Gov().Equals(mwp1))
                         {
@@ -470,35 +462,29 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        /**
-* Collapse 3-word preposition of the following format: <br/>
-* This will be the case when the preposition is analyzed as a NP <br/>
-* prep(gov, mwp0) <br/>
-* X(mwp0,mwp1) <br/>
-* X(mwp1,mwp2) <br/>
-* pobj|pcomp(mwp2, compl) <br/>
-* -> prep_mwp[0]_mwp[1]_mwp[2](gov, compl)
-* <p/>
-*
-* It also takes flat annotation into account: <br/>
-* prep(gov,mwp0) <br/>
-* X(mwp0,mwp1) <br/>
-* X(mwp0,mwp2) <br/>
-* pobj|pcomp(mwp0, compl) <br/>
-* -> prep_mwp[0]_mwp[1]_mwp[2](gov, compl)
-* <p/>
-*
-*
-* @param list
-*          List of typedDependencies to work on
-*/
-
+        /// <summary>
+        /// Collapse 3-word preposition of the following format:
+        /// This will be the case when the preposition is analyzed as a NP
+        /// prep(gov, mwp0) 
+        /// X(mwp0,mwp1)
+        /// X(mwp1,mwp2)
+        /// pobj|pcomp(mwp2, compl)
+        /// -> prep_mwp[0]_mwp[1]_mwp[2](gov, compl)
+        /// 
+        /// It also takes flat annotation into account:
+        /// prep(gov,mwp0)
+        /// X(mwp0,mwp1)
+        /// X(mwp0,mwp2)
+        /// pobj|pcomp(mwp0, compl)
+        /// -> prep_mwp[0]_mwp[1]_mwp[2](gov, compl)
+        /// </summary>
+        /// <param name="list">List of typedDependencies to work on</param>
         private static void Collapse3Wp(List<TypedDependency> list)
         {
             var newTypedDeps = new List<TypedDependency>();
 
             // first, loop over the prepositions for NP annotation
-            foreach (string[] mwp in THREEWORD_PREPS)
+            foreach (string[] mwp in ThreewordPreps)
             {
                 newTypedDeps.Clear();
 
@@ -594,17 +580,17 @@ namespace OpenNLP.Tools.Util.Trees
                     // and add the new one
                     if (prep != null && pobj != null && newtd != null)
                     {
-                        prep.SetReln(GrammaticalRelation.KILL);
-                        dep1.SetReln(GrammaticalRelation.KILL);
-                        dep2.SetReln(GrammaticalRelation.KILL);
-                        pobj.SetReln(GrammaticalRelation.KILL);
+                        prep.SetReln(GrammaticalRelation.Kill);
+                        dep1.SetReln(GrammaticalRelation.Kill);
+                        dep2.SetReln(GrammaticalRelation.Kill);
+                        pobj.SetReln(GrammaticalRelation.Kill);
                         newTypedDeps.Add(newtd);
 
                         // now remove typed dependencies with reln "kill"
                         // and promote possible orphans
                         foreach (TypedDependency td1 in list)
                         {
-                            if (td1.Reln() != GrammaticalRelation.KILL)
+                            if (td1.Reln() != GrammaticalRelation.Kill)
                             {
                                 if (td1.Gov().Equals(mwp0) || td1.Gov().Equals(mwp1) || td1.Gov().Equals(mwp2))
                                 {
@@ -623,7 +609,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             // second, loop again looking at flat annotation
-            foreach (string[] mwp in THREEWORD_PREPS)
+            foreach (string[] mwp in ThreewordPreps)
             {
                 newTypedDeps.Clear();
 
@@ -717,17 +703,17 @@ namespace OpenNLP.Tools.Util.Trees
                     // and add the new one
                     if (prep != null && pobj != null && newtd != null)
                     {
-                        prep.SetReln(GrammaticalRelation.KILL);
-                        dep1.SetReln(GrammaticalRelation.KILL);
-                        dep2.SetReln(GrammaticalRelation.KILL);
-                        pobj.SetReln(GrammaticalRelation.KILL);
+                        prep.SetReln(GrammaticalRelation.Kill);
+                        dep1.SetReln(GrammaticalRelation.Kill);
+                        dep2.SetReln(GrammaticalRelation.Kill);
+                        pobj.SetReln(GrammaticalRelation.Kill);
                         newTypedDeps.Add(newtd);
 
                         // now remove typed dependencies with reln "kill"
                         // and promote possible orphans
                         foreach (TypedDependency td1 in list)
                         {
-                            if (td1.Reln() != GrammaticalRelation.KILL)
+                            if (td1.Reln() != GrammaticalRelation.Kill)
                             {
                                 if (td1.Gov().Equals(mwp0) || td1.Gov().Equals(mwp1) || td1.Gov().Equals(mwp2))
                                 {
@@ -801,7 +787,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     continue;
                 }
-                if (td1.Reln() == GrammaticalRelation.KILL)
+                if (td1.Reln() == GrammaticalRelation.Kill)
                 {
                     continue;
                 }
@@ -899,7 +885,7 @@ namespace OpenNLP.Tools.Util.Trees
                         // "; td2.reln: " + td2.reln() + "; td1DepPos: " + td1DepPOS +
                         // "; td2DepPos: " + td2DepPOS + "; index " + index +
                         // "; td2.dep().index(): " + td2.dep().index());
-                        if ((td2.Reln() == GrammaticalRelation.DEPENDENT ||
+                        if ((td2.Reln() == GrammaticalRelation.Dependent ||
                              td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_OBJECT ||
                              td2.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_COMPLEMENT) &&
                             (td1DepPOS.Equals("IN") || td1DepPOS.Equals("TO") || td1DepPOS.Equals("VBG")) &&
@@ -955,9 +941,9 @@ namespace OpenNLP.Tools.Util.Trees
           System.err.println("PrepPoss Conj branch (two parallel PPs) adding: " + tdNew);
           System.err.println("  removing: " + td1 + "  " + prepDep + "  " + ccDep);
         }*/
-                    td1.SetReln(GrammaticalRelation.KILL); // remember these are "used up"
-                    prepDep.Item1.SetReln(GrammaticalRelation.KILL);
-                    ccDep.SetReln(GrammaticalRelation.KILL);
+                    td1.SetReln(GrammaticalRelation.Kill); // remember these are "used up"
+                    prepDep.Item1.SetReln(GrammaticalRelation.Kill);
+                    ccDep.SetReln(GrammaticalRelation.Kill);
 
                     foreach (Tuple<TypedDependency, TypedDependency, Boolean> trip in conjs)
                     {
@@ -973,7 +959,7 @@ namespace OpenNLP.Tools.Util.Trees
               System.err.println("  apparent misparse: same P twice with only one NP object (prepOtherDep is null)");
               System.err.println("  removing: " + conjDep);
             }*/
-                            ccDep.SetReln(GrammaticalRelation.KILL);
+                            ccDep.SetReln(GrammaticalRelation.Kill);
                         }
                         else
                         {
@@ -984,9 +970,9 @@ namespace OpenNLP.Tools.Util.Trees
               System.err.println("  adding: " + tdNew2);
               System.err.println("  removing: " + conjDep + "  " + prepOtherDep);
             }*/
-                            prepOtherDep.SetReln(GrammaticalRelation.KILL);
+                            prepOtherDep.SetReln(GrammaticalRelation.Kill);
                         }
-                        conjDep.SetReln(GrammaticalRelation.KILL);
+                        conjDep.SetReln(GrammaticalRelation.Kill);
                     }
 
                     // promote dtrs that would be orphaned
@@ -1021,7 +1007,7 @@ namespace OpenNLP.Tools.Util.Trees
                         // System.err.println("[a] td2.reln " + td2.reln() + " td2.gov " +
                         // td2.gov() + " td1.dep " + td1.dep());
                         // }
-                        if (td2.Reln() != GrammaticalRelation.KILL && td2.Gov().Equals(td1.Dep()))
+                        if (td2.Reln() != GrammaticalRelation.Kill && td2.Gov().Equals(td1.Dep()))
                         {
                             // && td2.reln()
                             // != COORDINATION
@@ -1071,9 +1057,9 @@ namespace OpenNLP.Tools.Util.Trees
         System.err.println("ConjPP (different preps) adding: " + tdNew);
         System.err.println("  deleting: " + td1 + "  " + prepDep.first() + "  " + ccDep);
       }*/
-                td1.SetReln(GrammaticalRelation.KILL); // remember these are "used up"
-                prepDep.Item1.SetReln(GrammaticalRelation.KILL);
-                ccDep.SetReln(GrammaticalRelation.KILL);
+                td1.SetReln(GrammaticalRelation.Kill); // remember these are "used up"
+                prepDep.Item1.SetReln(GrammaticalRelation.Kill);
+                ccDep.SetReln(GrammaticalRelation.Kill);
                 // so far we added the first prep grammatical relation
 
                 int copyNumber = 1;
@@ -1108,8 +1094,8 @@ namespace OpenNLP.Tools.Util.Trees
           System.err.println("  adding: " + tdNew2 + "  " + tdNew3);
           System.err.println("  deleting: " + conjDep + "  " + prepOtherDep);
         }*/
-                    conjDep.SetReln(GrammaticalRelation.KILL);
-                    prepOtherDep.SetReln(GrammaticalRelation.KILL);
+                    conjDep.SetReln(GrammaticalRelation.Kill);
+                    prepOtherDep.SetReln(GrammaticalRelation.Kill);
 
                     // promote dtrs that would be orphaned
                     foreach (TypedDependency otd in otherDtrs)
@@ -1137,7 +1123,7 @@ namespace OpenNLP.Tools.Util.Trees
                 // it does, since they're not automatically deleted
                 foreach (TypedDependency td2 in possibles)
                 {
-                    if (td2.Reln() != GrammaticalRelation.KILL)
+                    if (td2.Reln() != GrammaticalRelation.Kill)
                     {
                         // && td2.reln() != COORDINATION &&
                         // td2.reln() != CONJUNCT) {
@@ -1153,7 +1139,7 @@ namespace OpenNLP.Tools.Util.Trees
             // below here is the single preposition/possessor basic case!!
             foreach (TypedDependency td1 in list)
             {
-                if (td1.Reln() == GrammaticalRelation.KILL)
+                if (td1.Reln() == GrammaticalRelation.Kill)
                 {
                     continue;
                 }
@@ -1187,7 +1173,7 @@ namespace OpenNLP.Tools.Util.Trees
                                     if (! map.ContainsKey(td2Dep))
                                     {
                                         // if 's has no kids of its own (it shouldn't!)
-                                        td2.SetReln(GrammaticalRelation.KILL);
+                                        td2.SetReln(GrammaticalRelation.Kill);
                                     }
                                 }
                             }
@@ -1219,8 +1205,8 @@ namespace OpenNLP.Tools.Util.Trees
                                 map[td3.Gov()].Add(td3);
 
                                 newTypedDeps.Add(td3);
-                                td1.SetReln(GrammaticalRelation.KILL); // remember these are "used up"
-                                td2.SetReln(GrammaticalRelation.KILL); // remember these are "used up"
+                                td1.SetReln(GrammaticalRelation.Kill); // remember these are "used up"
+                                td2.SetReln(GrammaticalRelation.Kill); // remember these are "used up"
                             }
                         }
                     } // for TypedDependency td2
@@ -1236,11 +1222,11 @@ namespace OpenNLP.Tools.Util.Trees
                 // longer appears. So, change its governor to 'drew'.
                 // CDM Feb 2010: This used to not move COORDINATION OR CONJUNCT, but now
                 // it does, since they're not automatically deleted
-                if (possibles != null && td1.Reln() == GrammaticalRelation.KILL)
+                if (possibles != null && td1.Reln() == GrammaticalRelation.Kill)
                 {
                     foreach (TypedDependency td2 in possibles)
                     {
-                        if (td2.Reln() != GrammaticalRelation.KILL)
+                        if (td2.Reln() != GrammaticalRelation.Kill)
                         {
                             // && td2.reln() != COORDINATION &&
                             // td2.reln() != CONJUNCT) {
@@ -1264,7 +1250,7 @@ namespace OpenNLP.Tools.Util.Trees
         iter.remove();
       }
     }*/
-            list.RemoveAll(td => td.Reln() == GrammaticalRelation.KILL);
+            list.RemoveAll(td => td.Reln() == GrammaticalRelation.Kill);
             list.AddRange(newTypedDeps);
         } // end collapsePrepAndPoss()
 
@@ -1280,18 +1266,15 @@ namespace OpenNLP.Tools.Util.Trees
             return false;
         }
 
-        /**
-   * Given a list of typedDependencies, returns true if the node "node" is the
-   * governor of a conj relation with a dependent which is not a preposition
-   *
-   * @param node
-   *          A node in this GrammaticalStructure
-   * @param list
-   *          A list of typedDependencies
-   * @return true If node is the governor of a conj relation in the list with
-   *         the dep not being a preposition
-   */
-
+        /// <summary>
+        /// Given a list of typedDependencies, returns true if the node "node" is the
+        /// governor of a conj relation with a dependent which is not a preposition
+        /// </summary>
+        /// <param name="node">A node in this GrammaticalStructure</param>
+        /// <param name="list">A list of typedDependencies</param>
+        /// <returns>
+        /// true If node is the governor of a conj relation in the list with the dep not being a preposition
+        /// </returns>
         private static bool IsConjWithNoPrep(IndexedWord node, List<TypedDependency> list)
         {
             foreach (TypedDependency td in list)
@@ -1310,11 +1293,11 @@ namespace OpenNLP.Tools.Util.Trees
             return false;
         }
 
-        /** Work out prep relation name. pc is the dependency whose dep() is the
-   *  preposition to do a name for. topPrep may be the same or different.
-   *  Among the daughters of its gov is where to look for an auxpass.
-   */
-
+        /// <summary>
+        /// Work out prep relation name. pc is the dependency whose dep() is the
+        /// preposition to do a name for. topPrep may be the same or different.
+        /// Among the daughters of its gov is where to look for an auxpass.
+        /// </summary>
         private static GrammaticalRelation DeterminePrepRelation(
             Dictionary<IndexedWord, SortedSet<TypedDependency>> map, List<IndexedWord> vmod, TypedDependency pc,
             TypedDependency topPrep, bool pobj)
@@ -1367,15 +1350,13 @@ namespace OpenNLP.Tools.Util.Trees
             return reln;
         }
 
-        /**
-* This rewrites the "conj" relation to "conj_word" and deletes cases of the
-* "cc" relation providing this rewrite has occurred (but not if there is only
-* something like a clause-initial and). For instance, cc(elected-5, and-9)
-* conj(elected-5, re-elected-11) becomes conj_and(elected-5, re-elected-11)
-*
-* @param list List of dependencies.
-*/
-
+        /// <summary>
+        /// This rewrites the "conj" relation to "conj_word" and deletes cases of the
+        /// "cc" relation providing this rewrite has occurred (but not if there is only
+        /// something like a clause-initial and). For instance, cc(elected-5, and-9)
+        /// conj(elected-5, re-elected-11) becomes conj_and(elected-5, re-elected-11)
+        /// </summary>
+        /// <param name="list">List of dependencies.</param>
         private static void CollapseConj(List<TypedDependency> list)
         {
             var govs = new List<IndexedWord>();
@@ -1436,16 +1417,13 @@ namespace OpenNLP.Tools.Util.Trees
             list.RemoveAll(td => td.Reln() == EnglishGrammaticalRelations.COORDINATION && govs.Contains(td.Gov()));
         }
 
-        /**
-* Does some hard coding to deal with relation in CONJP. For now we deal with:
-* but not, if not, instead of, rather than, but rather GO TO negcc <br>
-* as well as, not to mention, but also, & GO TO and.
-*
-* @param conj The head dependency of the conjunction marker
-* @return A GrammaticalRelation made from a normalized form of that
-*         conjunction.
-*/
-
+        /// <summary>
+        /// Does some hard coding to deal with relation in CONJP. For now we deal with:
+        /// but not, if not, instead of, rather than, but rather GO TO negcc
+        /// as well as, not to mention, but also, & GO TO and.
+        /// </summary>
+        /// <param name="conj">The head dependency of the conjunction marker</param>
+        /// <returns>A GrammaticalRelation made from a normalized form of that conjunction.</returns>
         private static GrammaticalRelation ConjValue(string conj)
         {
             string newConj = conj.ToLower();
@@ -1461,14 +1439,13 @@ namespace OpenNLP.Tools.Util.Trees
             return EnglishGrammaticalRelations.GetConj(newConj);
         }
 
-        /**
-* Look for ref rules for a given word.  We look through the
-* children and grandchildren of the rcmod dependency, and if any
-* children or grandchildren depend on a that/what/which/etc word,
-* we take the leftmost that/what/which/etc word as the dependent
-* for the ref TypedDependency.
-*/
-
+        /// <summary>
+        /// Look for ref rules for a given word.  We look through the
+        /// children and grandchildren of the rcmod dependency, and if any
+        /// children or grandchildren depend on a that/what/which/etc word,
+        /// we take the leftmost that/what/which/etc word as the dependent
+        /// for the ref TypedDependency.
+        /// </summary>
         private static void AddRef(List<TypedDependency> list)
         {
             var newDeps = new List<TypedDependency>();
@@ -1488,7 +1465,7 @@ namespace OpenNLP.Tools.Util.Trees
                 foreach (TypedDependency child in list)
                 {
                     if (child.Gov().Equals(modifier) &&
-                        EnglishPatterns.RELATIVIZING_WORD_PATTERN.IsMatch(child.Dep().Value()) &&
+                        EnglishPatterns.RelativizingWordPattern.IsMatch(child.Dep().Value()) &&
                         (leftChild == null || child.Dep().Index() < leftChild.Dep().Index()))
                     {
                         leftChild = child;
@@ -1506,7 +1483,7 @@ namespace OpenNLP.Tools.Util.Trees
                     foreach (TypedDependency grandchild in list)
                     {
                         if (grandchild.Gov().Equals(child.Dep()) &&
-                            EnglishPatterns.RELATIVIZING_WORD_PATTERN.IsMatch(grandchild.Dep().Value()) &&
+                            EnglishPatterns.RelativizingWordPattern.IsMatch(grandchild.Dep().Value()) &&
                             (leftGrandchild == null || grandchild.Dep().Index() < leftGrandchild.Dep().Index()))
                         {
                             leftGrandchild = grandchild;
@@ -1540,12 +1517,10 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        /**
-* This method will collapse a referent relation such as follows. e.g.:
-* "The man that I love ... " ref(man, that) dobj(love, that) -> dobj(love,
-* man)
-*/
-
+        /// <summary>
+        /// This method will collapse a referent relation such as follows. e.g.:
+        /// "The man that I love ... " ref(man, that) dobj(love, that) -> dobj(love, man)
+        /// </summary>
         private static void CollapseReferent(List<TypedDependency> list)
         {
             // find typed deps of form ref(gov, dep)
@@ -1554,12 +1529,12 @@ namespace OpenNLP.Tools.Util.Trees
             refs.AddRange(list.Where(td => td.Reln() == EnglishGrammaticalRelations.REFERENT));
             list.RemoveAll(td => td.Reln() == EnglishGrammaticalRelations.REFERENT);
             /*for (Iterator<TypedDependency> iter = list.iterator(); iter.hasNext();) {
-      TypedDependency td = iter.next();
-      if (td.reln() == REFERENT) {
-        refs.add(td);
-        iter.remove();
-      }
-    }*/
+              TypedDependency td = iter.next();
+              if (td.reln() == REFERENT) {
+                refs.add(td);
+                iter.remove();
+              }
+            }*/
 
             // now substitute target of referent where possible
             foreach (TypedDependency re in refs)
@@ -1684,7 +1659,7 @@ namespace OpenNLP.Tools.Util.Trees
                                 continue;
                             }
                             GrammaticalRelation newRel = td1.Reln();
-                            if (newRel != GrammaticalRelation.ROOT)
+                            if (newRel != GrammaticalRelation.Root)
                             {
                                 if (rcmodHeads.Contains(gov) && rcmodHeads.Contains(dep))
                                 {
@@ -1793,20 +1768,19 @@ namespace OpenNLP.Tools.Util.Trees
             return tag.Equals("VB") || tag.Equals("VBZ") || tag.Equals("VBP") || tag.StartsWith("JJ");
         }
 
-        /**
-* Add extra nsubj dependencies when collapsing basic dependencies.
-* <br>
-* In the general case, we look for an aux modifier under an xcomp
-* modifier, and assuming there aren't already associated nsubj
-* dependencies as daughters of the original xcomp dependency, we
-* add nsubj dependencies for each nsubj daughter of the aux.
-* <br>
-* There is also a special case for "to" words, in which case we add
-* a dependency if and only if there is no nsubj associated with the
-* xcomp and there is no other aux dependency.  This accounts for
-* sentences such as "he decided not to" with no following verb.
-*/
-
+        /// <summary>
+        /// Add extra nsubj dependencies when collapsing basic dependencies.
+        /// 
+        /// In the general case, we look for an aux modifier under an xcomp
+        /// modifier, and assuming there aren't already associated nsubj
+        /// dependencies as daughters of the original xcomp dependency, we
+        /// add nsubj dependencies for each nsubj daughter of the aux.
+        /// 
+        /// There is also a special case for "to" words, in which case we add
+        /// a dependency if and only if there is no nsubj associated with the
+        /// xcomp and there is no other aux dependency.  This accounts for
+        /// sentences such as "he decided not to" with no following verb.
+        /// </summary>
         private static void AddExtraNSubj(List<TypedDependency> list)
         {
             var newDeps = new List<TypedDependency>();
@@ -1902,13 +1876,11 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        /**
-* This method corrects subjects of verbs for which we identified an auxpass,
-* but didn't identify the subject as passive.
-*
-* @param list List of typedDependencies to work on
-*/
-
+        /// <summary>
+        /// This method corrects subjects of verbs for which we identified an auxpass,
+        /// but didn't identify the subject as passive.
+        /// </summary>
+        /// <param name="list">List of typedDependencies to work on</param>
         private static void CorrectSubjPass(List<TypedDependency> list)
         {
             // put in a list verbs having an auxpass
@@ -1948,14 +1920,12 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        /**
-* Remove duplicate relations: it can happen when collapsing stranded
-* prepositions. E.g., "What does CPR stand for?" we get dep(stand, what), and
-* after collapsing we also get prep_for(stand, what).
-*
-* @param list A list of typed dependencies to check through
-*/
-
+        /// <summary>
+        /// Remove duplicate relations: it can happen when collapsing stranded
+        /// prepositions. E.g., "What does CPR stand for?" we get dep(stand, what), and
+        /// after collapsing we also get prep_for(stand, what).
+        /// </summary>
+        /// <param name="list">A list of typed dependencies to check through</param>
         private static void RemoveDep(List<TypedDependency> list)
         {
             Set<GrammaticalRelation> prepRels = new HashSet<GrammaticalRelation>(EnglishGrammaticalRelations.GetPreps());
@@ -1970,10 +1940,10 @@ namespace OpenNLP.Tools.Util.Trees
 
                     foreach (TypedDependency td2 in list)
                     {
-                        if (td2.Reln() == GrammaticalRelation.DEPENDENT && td2.Gov().Equals(gov) &&
+                        if (td2.Reln() == GrammaticalRelation.Dependent && td2.Gov().Equals(gov) &&
                             td2.Dep().Equals(dep))
                         {
-                            td2.SetReln(GrammaticalRelation.KILL);
+                            td2.SetReln(GrammaticalRelation.Kill);
                         }
                     }
                 }
@@ -1989,25 +1959,22 @@ namespace OpenNLP.Tools.Util.Trees
         iter.remove();
       }
     }*/
-            list.RemoveAll(td => td.Reln() == GrammaticalRelation.KILL);
+            list.RemoveAll(td => td.Reln() == GrammaticalRelation.Kill);
         }
 
-        //@Override
         protected override void CollapseDependenciesTree(List<TypedDependency> list)
         {
             CollapseDependencies(list, false, false);
         }
 
-        /**
-* This method gets rid of multiwords in conjunctions to avoid having them
-* creating disconnected constituents e.g.,
-* "bread-1 as-2 well-3 as-4 cheese-5" will be turned into conj_and(bread,
-* cheese) and then dep(well-3, as-2) and dep(well-3, as-4) cannot be attached
-* to the graph, these dependencies are erased
-*
-* @param list List of words to get rid of multiword conjunctions from
-*/
-
+        /// <summary>
+        /// This method gets rid of multiwords in conjunctions to avoid having them
+        /// creating disconnected constituents e.g.,
+        /// "bread-1 as-2 well-3 as-4 cheese-5" will be turned into conj_and(bread,
+        /// cheese) and then dep(well-3, as-2) and dep(well-3, as-4) cannot be attached
+        /// to the graph, these dependencies are erased
+        /// </summary>
+        /// <param name="list">List of words to get rid of multiword conjunctions from</param>
         private static void EraseMultiConj(List<TypedDependency> list)
         {
             // find typed deps of form cc(gov, x)
@@ -2020,14 +1987,14 @@ namespace OpenNLP.Tools.Util.Trees
                     foreach (TypedDependency td2 in list)
                     {
                         if (td2.Gov().Equals(x) &&
-                            (td2.Reln() == GrammaticalRelation.DEPENDENT ||
+                            (td2.Reln() == GrammaticalRelation.Dependent ||
                              td2.Reln() == EnglishGrammaticalRelations.MULTI_WORD_EXPRESSION ||
                              td2.Reln() == EnglishGrammaticalRelations.COORDINATION ||
                              td2.Reln() == EnglishGrammaticalRelations.ADVERBIAL_MODIFIER ||
                              td2.Reln() == EnglishGrammaticalRelations.NEGATION_MODIFIER ||
                              td2.Reln() == EnglishGrammaticalRelations.AUX_MODIFIER))
                         {
-                            td2.SetReln(GrammaticalRelation.KILL);
+                            td2.SetReln(GrammaticalRelation.Kill);
                         }
                     }
                 }
@@ -2036,16 +2003,15 @@ namespace OpenNLP.Tools.Util.Trees
             FilterKill(list);
         }
 
-        /**
-* Alters a list in place by removing all the KILL relations
-*/
-
+        /// <summary>
+        /// Alters a list in place by removing all the KILL relations
+        /// </summary>
         private static void FilterKill(List<TypedDependency> deps)
         {
             var filtered = new List<TypedDependency>();
             foreach (TypedDependency dep in deps)
             {
-                if (dep.Reln() != GrammaticalRelation.KILL)
+                if (dep.Reln() != GrammaticalRelation.Kill)
                 {
                     filtered.Add(dep);
                 }
@@ -2054,9 +2020,11 @@ namespace OpenNLP.Tools.Util.Trees
             deps.AddRange(filtered);
         }
 
-        // used by collapse2WP(), collapseFlatMWP(), collapse2WPbis() KEPT IN
-        // ALPHABETICAL ORDER
-        private static readonly string[][] MULTIWORD_PREPS =
+        /// <summary>
+        /// used by collapse2WP(), collapseFlatMWP(), collapse2WPbis()
+        /// KEPT IN ALPHABETICAL ORDER
+        /// </summary>
+        private static readonly string[][] MultiwordPreps =
         {
             new string[] {"according", "to"}, new string[] {"across", "from"}, new string[] {"ahead", "of"},
             new string[] {"along", "with"}, new string[] {"alongside", "of"}, new string[] {"apart", "from"},
@@ -2075,8 +2043,10 @@ namespace OpenNLP.Tools.Util.Trees
             new string[] {"such", "as"}, new string[] {"thanks", "to"}, new string[] {"together", "with"}
         };
 
-        // used by collapse3WP() KEPT IN ALPHABETICAL ORDER
-        private static readonly string[][] THREEWORD_PREPS =
+        /// <summary>
+        /// Used by collapse3WP() KEPT IN ALPHABETICAL ORDER
+        /// </summary>
+        private static readonly string[][] ThreewordPreps =
         {
             new string[] {"by", "means", "of"},
             new string[] {"in", "accordance", "with"}, new string[] {"in", "addition", "to"},
@@ -2113,7 +2083,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
             var newTypedDeps = new List<TypedDependency>();
 
-            foreach (string[] mwp in MULTIWORD_PREPS)
+            foreach (string[] mwp in MultiwordPreps)
             {
                 // first look for patterns such as:
                 // X(gov, mwp[0])
@@ -2188,7 +2158,7 @@ namespace OpenNLP.Tools.Util.Trees
                 if ((td1.Reln() == EnglishGrammaticalRelations.PREPOSITIONAL_MODIFIER ||
                      td1.Reln() == EnglishGrammaticalRelations.ADVERBIAL_MODIFIER ||
                      td1.Reln() == EnglishGrammaticalRelations.ADJECTIVAL_MODIFIER ||
-                     td1.Reln() == GrammaticalRelation.DEPENDENT ||
+                     td1.Reln() == GrammaticalRelation.Dependent ||
                      td1.Reln() == EnglishGrammaticalRelations.MULTI_WORD_EXPRESSION) && td1.Dep().Equals(mwp0))
                 {
                     // we found prep|advmod|dep|amod(gov, mwp0)
@@ -2248,16 +2218,16 @@ namespace OpenNLP.Tools.Util.Trees
       System.err.println("Removing " + prep + ", " + dep + ", and " + pobj);
       System.err.println("  and adding " + newtd);
     }*/
-            prep.SetReln(GrammaticalRelation.KILL);
-            dep.SetReln(GrammaticalRelation.KILL);
-            pobj.SetReln(GrammaticalRelation.KILL);
+            prep.SetReln(GrammaticalRelation.Kill);
+            dep.SetReln(GrammaticalRelation.Kill);
+            pobj.SetReln(GrammaticalRelation.Kill);
             newTypedDeps.Add(newtd);
 
             // now remove typed dependencies with reln "kill"
             // and promote possible orphans
             foreach (TypedDependency td1 in list)
             {
-                if (td1.Reln() != GrammaticalRelation.KILL)
+                if (td1.Reln() != GrammaticalRelation.Kill)
                 {
                     if (td1.Gov().Equals(mwp0) || td1.Gov().Equals(mwp1))
                     {

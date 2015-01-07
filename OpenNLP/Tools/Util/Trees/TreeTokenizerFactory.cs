@@ -8,10 +8,20 @@ using OpenNLP.Tools.Util.Process;
 
 namespace OpenNLP.Tools.Util.Trees
 {
+    /// <summary>
+    /// Wrapper for TreeReaderFactory.  Any IOException in the readTree() method
+    /// of the TreeReader will result in a null tree returned.
+    /// 
+    /// @author Roger Levy (rog@stanford.edu)
+    /// @author javanlp
+    /// 
+    /// Code...
+    /// </summary>
     public class TreeTokenizerFactory : TokenizerFactory<Tree>
     {
-        /** Create a TreeTokenizerFactory from a TreeReaderFactory. */
-
+        /// <summary>
+        /// Create a TreeTokenizerFactory from a TreeReaderFactory.
+        /// </summary>
         public TreeTokenizerFactory(TreeReaderFactory trf)
         {
             this.trf = trf;
@@ -19,8 +29,9 @@ namespace OpenNLP.Tools.Util.Trees
 
         private TreeReaderFactory trf;
 
-        /** Gets a tokenizer from a reader.*/
-
+        /// <summary>
+        /// Gets a tokenizer from a reader
+        /// </summary>
         public Tokenizer<Tree> GetTokenizer( /*final*/ TextReader r)
         {
             /*return new AbstractTokenizer<Tree>() {
@@ -45,8 +56,9 @@ namespace OpenNLP.Tools.Util.Trees
             return GetTokenizer(r);
         }
 
-        /** Same as getTokenizer().  */
-
+        /// <summary>
+        /// Same as getTokenizer()
+        /// </summary>
         public IEnumerator<Tree> GetIterator(TextReader r)
         {
             return null;

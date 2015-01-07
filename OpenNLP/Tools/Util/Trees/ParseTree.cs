@@ -10,7 +10,7 @@ namespace OpenNLP.Tools.Util.Trees
 {
     public class ParseTree : Tree
     {
-        private Parse parse;
+        private readonly Parse parse;
 
         public ParseTree(Parse p)
         {
@@ -24,9 +24,6 @@ namespace OpenNLP.Tools.Util.Trees
 
         public override Label Label()
         {
-            /*var label = this.parse.IsLeaf ? this.parse.Value : this.parse.Type;
-            var coreLabel = (CoreLabel)new CoreLabel.CoreLabelFactory().newLabel(label);*/
-
             // TODO: move this CoreLabel construction logic somewhere appropriate
             var cLabel = new CoreLabel();
             if (this.parse.IsLeaf)
@@ -51,7 +48,6 @@ namespace OpenNLP.Tools.Util.Trees
         public override TreeFactory TreeFactory()
         {
             LabelFactory lf = (Label() == null) ? CoreLabel.Factory() : Label().LabelFactory();
-            //return new LabeledScoredTreeFactory(lf);
             return new ParseTreeFactory(lf);
         }
     }

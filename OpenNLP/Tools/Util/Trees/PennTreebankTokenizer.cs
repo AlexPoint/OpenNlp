@@ -8,31 +8,26 @@ using OpenNLP.Tools.Util.Process;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * Builds a tokenizer for English PennTreebank (release 2) trees.
- * This is currently internally implemented via a java.io.StreamTokenizer.
- *
- * @author Christopher Manning
- * @author Roger Levy
- * @version 2003/01/15
- */
-
+    /// <summary>
+    /// Builds a tokenizer for English PennTreebank (release 2) trees.
+    /// This is currently internally implemented via a java.io.StreamTokenizer.
+    /// 
+    /// @author Christopher Manning
+    /// @author Roger Levy
+    /// 
+    /// Code...
+    /// </summary>
     public class PennTreebankTokenizer : TokenizerAdapter
     {
-        /**
-   * A StreamTokenizer for PennTreebank trees.
-   */
-
+        /// <summary>
+        /// A StreamTokenizer for PennTreebank trees.
+        /// </summary>
         private /*static*/ class EnglishTreebankStreamTokenizer : StreamTokenizer
         {
-
-            /**
-     * Create a StreamTokenizer for PennTreebank trees.
-     * This sets up all the character meanings for treebank trees
-     *
-     * @param r The reader steam
-     */
-
+            /// <summary>
+            /// Create a StreamTokenizer for PennTreebank trees.
+            /// This sets up all the character meanings for treebank trees
+            /// </summary>
             public EnglishTreebankStreamTokenizer(TextReader r) : base(r)
             {
                 // start with new tokenizer syntax -- everything ordinary

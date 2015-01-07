@@ -7,157 +7,146 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
+    /// <summary>
+    /// A {@code LabeledScoredTreeNode} represents a tree composed of a root
+    /// label, a score, and an array of daughter parse trees.  A parse tree derived from a rule
+    /// provides information about the category of the root as well as a composite of the daughter categories.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public class LabeledScoredTreeNode : Tree
     {
         private static readonly long serialVersionUID = -8992385140984593817L;
 
-        /**
-   * Label of the parse tree.
-   */
-        private Label p_label; // = null;
+        /// <summary>
+        /// Label of the parse tree.
+        /// </summary>
+        private Label _label; // = null;
 
-        /**
-   * Score of <code>TreeNode</code>
-   */
-        private double p_score = double.NaN;
+        /// <summary>
+        /// Score of <code>TreeNode</code>
+        /// </summary>
+        private double _score = double.NaN;
 
-        /**
-   * Daughters of the parse tree.
-   */
-        private Tree[] daughterTrees; // = null;
+        /// <summary>
+        /// Daughters of the parse tree.
+        /// </summary>
+        private Tree[] _daughterTrees; // = null;
 
-        /**
-   * Create an empty parse tree.
-   */
-
+        /// <summary>
+        /// Create an empty parse tree.
+        /// </summary>
         public LabeledScoredTreeNode()
         {
-            SetChildren(EMPTY_TREE_ARRAY);
+            SetChildren(EmptyTreeArray);
         }
 
-        /**
-   * Create a leaf parse tree with given word.
-   *
-   * @param label the <code>Label</code> representing the <i>word</i> for
-   *              this new tree leaf.
-   */
-
+        /// <summary>
+        /// Create a leaf parse tree with given word.
+        /// </summary>
+        /// <param name="label">
+        /// the <code>Label</code> representing the <i>word</i> for this new tree leaf.
+        /// </param>
         public LabeledScoredTreeNode(Label label) : this(label, Double.NaN)
         {
         }
 
-        /**
-   * Create a leaf parse tree with given word and score.
-   *
-   * @param label The <code>Label</code> representing the <i>word</i> for
-   * @param score The score for the node
-   *              this new tree leaf.
-   */
-
+        /// <summary>
+        /// Create a leaf parse tree with given word and score.
+        /// </summary>
+        /// <param name="label">The <code>Label</code> representing the <i>word</i> for</param>
+        /// <param name="score">The score for the node this new tree leaf.</param>
         public LabeledScoredTreeNode(Label label, double score) : this()
         {
-            this.p_label = label;
-            this.p_score = score;
+            this._label = label;
+            this._score = score;
         }
 
-        /**
-   * Create parse tree with given root and array of daughter trees.
-   *
-   * @param label             root label of tree to construct.
-   * @param daughterTreesList List of daughter trees to construct.
-   */
-
+        /// <summary>
+        /// Create parse tree with given root and array of daughter trees.
+        /// </summary>
+        /// <param name="label">root label of tree to construct.</param>
+        /// <param name="daughterTreesList">List of daughter trees to construct.</param>
         public LabeledScoredTreeNode(Label label, List<Tree> daughterTreesList)
         {
-            this.p_label = label;
+            this._label = label;
             SetChildren(daughterTreesList);
         }
 
-        /**
-   * Returns an array of children for the current node, or null
-   * if it is a leaf.
-   */
-        //@Override
+        /// <summary>
+        /// Returns an array of children for the current node, or null if it is a leaf.
+        /// </summary>
         public override Tree[] Children()
         {
-            return daughterTrees;
+            return _daughterTrees;
         }
 
-        /**
-   * Sets the children of this <code>Tree</code>.  If given
-   * <code>null</code>, this method sets the Tree's children to
-   * the canonical zero-length Tree[] array.
-   *
-   * @param children An array of child trees
-   */
-        //@Override
+        /// <summary>
+        /// Sets the children of this <code>Tree</code>.
+        /// If given <code>null</code>, this method sets the Tree's children to
+        /// the canonical zero-length Tree[] array.
+        /// </summary>
+        /// <param name="children">An array of child trees</param>
         public override void SetChildren(Tree[] children)
         {
             if (children == null)
             {
-                daughterTrees = EMPTY_TREE_ARRAY;
+                _daughterTrees = EmptyTreeArray;
             }
             else
             {
-                daughterTrees = children;
+                _daughterTrees = children;
             }
         }
 
-        /**
-   * Returns the label associated with the current node, or null
-   * if there is no label
-   */
-        //@Override
+        /// <summary>
+        /// Returns the label associated with the current node, or null if there is no label
+        /// </summary>
         public override Label Label()
         {
-            return p_label;
+            return _label;
         }
 
-        /**
-   * Sets the label associated with the current node, if there is one.
-   */
-        //@Override
+        /// <summary>
+        /// Sets the label associated with the current node, if there is one.
+        /// </summary>
         public override void SetLabel( /*final */ Label label)
         {
-            this.p_label = label;
+            this._label = label;
         }
 
-        /**
-   * Returns the score associated with the current node, or Nan
-   * if there is no score
-   */
-        //@Override
+        /// <summary>
+        /// Returns the score associated with the current node, or Nan if there is no score
+        /// </summary>
         public override double Score()
         {
-            return p_score;
+            return _score;
         }
 
-        /**
-   * Sets the score associated with the current node, if there is one
-   */
-        //@Override
+        /// <summary>
+        /// Sets the score associated with the current node, if there is one
+        /// </summary>
         public override void SetScore(double score)
         {
-            this.p_score = score;
+            this._score = score;
         }
 
-        /**
-   * Return a <code>TreeFactory</code> that produces trees of the
-   * same type as the current <code>Tree</code>.  That is, this
-   * implementation, will produce trees of type
-   * <code>LabeledScoredTree(Node|Leaf)</code>.
-   * The <code>Label</code> of <code>this</code>
-   * is examined, and providing it is not <code>null</code>, a
-   * <code>LabelFactory</code> which will produce that kind of
-   * <code>Label</code> is supplied to the <code>TreeFactory</code>.
-   * If the <code>Label</code> is <code>null</code>, a
-   * <code>StringLabelFactory</code> will be used.
-   * The factories returned on different calls a different: a new one is
-   * allocated each time.
-   *
-   * @return a factory to produce labeled, scored trees
-   */
-        //@Override
+        /// <summary>
+        /// Return a <code>TreeFactory</code> that produces trees of the
+        /// same type as the current <code>Tree</code>.  That is, this
+        /// implementation, will produce trees of type
+        /// <code>LabeledScoredTree(Node|Leaf)</code>.
+        /// The <code>Label</code> of <code>this</code>
+        /// is examined, and providing it is not <code>null</code>, a
+        /// <code>LabelFactory</code> which will produce that kind of
+        /// <code>Label</code> is supplied to the <code>TreeFactory</code>.
+        /// If the <code>Label</code> is <code>null</code>, a
+        /// <code>StringLabelFactory</code> will be used.
+        /// The factories returned on different calls a different: a new one is
+        /// allocated each time.
+        /// </summary>
         public override TreeFactory TreeFactory()
         {
             LabelFactory lf = (Label() == null) ? CoreLabel.Factory() : Label().LabelFactory();
@@ -170,45 +159,39 @@ namespace OpenNLP.Tools.Util.Trees
             public static readonly TreeFactory tf = new LabeledScoredTreeFactory();
         }
 
-        /**
-   * Return a <code>TreeFactory</code> that produces trees of the
-   * <code>LabeledScoredTree{Node|Leaf}</code> type.
-   * The factory returned is always the same one (a singleton).
-   *
-   * @return a factory to produce labeled, scored trees
-   */
-
+        /// <summary>
+        /// Return a <code>TreeFactory</code> that produces trees of the
+        /// <code>LabeledScoredTree{Node|Leaf}</code> type.
+        /// The factory returned is always the same one (a singleton).
+        /// </summary>
+        /// <returns>a factory to produce labeled, scored trees</returns>
         public static TreeFactory Factory()
         {
             return TreeFactoryHolder.tf;
         }
 
-        /**
-   * Return a <code>TreeFactory</code> that produces trees of the
-   * <code>LabeledScoredTree{Node|Leaf}</code> type, with
-   * the <code>Label</code> made with the supplied
-   * <code>LabelFactory</code>.
-   * The factory returned is a different one each time
-   *
-   * @param lf The LabelFactory to use
-   * @return a factory to produce labeled, scored trees
-   */
-
+        /// <summary>
+        /// Return a <code>TreeFactory</code> that produces trees of the
+        /// <code>LabeledScoredTree{Node|Leaf}</code> type, with
+        /// the <code>Label</code> made with the supplied <code>LabelFactory</code>.
+        /// The factory returned is a different one each time
+        /// </summary>
+        /// <param name="lf">The LabelFactory to use</param>
+        /// <returns>a factory to produce labeled, scored trees</returns>
         public static TreeFactory Factory(LabelFactory lf)
         {
             return new LabeledScoredTreeFactory(lf);
         }
 
-        private static readonly string nf = "#.###";
+        private const string Nf = "#.###";
 
-        //@Override
         public override string NodeString()
         {
             var buff = new StringBuilder();
             buff.Append(base.NodeString());
-            if (! double.IsNaN(p_score))
+            if (! double.IsNaN(_score))
             {
-                buff.Append(" [").Append((-p_score).ToString(nf)).Append("]");
+                buff.Append(" [").Append((-_score).ToString(Nf)).Append("]");
             }
             return buff.ToString();
         }

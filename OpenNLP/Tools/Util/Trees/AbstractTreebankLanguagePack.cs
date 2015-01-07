@@ -666,7 +666,7 @@ namespace OpenNLP.Tools.Util.Trees
    */
         //@Override
         public GrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilt,
-            HeadFinder typedDependencyHeadFinder)
+            HeadFinder typedDependencyHf)
         {
             return GrammaticalStructureFactory();
         }

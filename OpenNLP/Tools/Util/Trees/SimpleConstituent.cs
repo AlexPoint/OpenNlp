@@ -8,149 +8,101 @@ using OpenNLP.Tools.Util.Trees;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * A <code>SimpleConstituent</code> object defines a generic edge in a graph.
- * The <code>SimpleConstituent</code> records only the endpoints of the
- * <code>Constituent</code>, as two integers.
- * It doesn't label the edges.
- * (It doesn't implement equals() since this actually decreases
- * performance on a non-final class (requires dynamic resolution of which
- * to call).)
- *
- * @author Christopher Manning
- */
-
+    /// <summary>
+    /// A <code>SimpleConstituent</code> object defines a generic edge in a graph.
+    /// The <code>SimpleConstituent</code> records only the endpoints of the
+    /// <code>Constituent</code>, as two integers.
+    /// It doesn't label the edges.
+    /// (It doesn't implement equals() since this actually decreases
+    /// performance on a non-final class (requires dynamic resolution of which to call).)
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public class SimpleConstituent : Constituent
     {
-        /**
-   * Left node of edge.
-   */
-        private int vStart;
+        /// <summary>
+        /// Left node of edge
+        /// </summary>
+        private int _start;
 
-        /**
-   * End node of edge.
-   */
-        private int vEnd;
+        /// <summary>
+        /// End node of edge
+        /// </summary>
+        private int _end;
 
-
-        /**
-   * Create an empty <code>SimpleConstituent</code> object.
-   */
-
+        /// <summary>
+        /// Create an empty <code>SimpleConstituent</code> object
+        /// </summary>
         public SimpleConstituent()
         {
             // implicitly super();
         }
 
-
-        /**
-   * Create a <code>SimpleConstituent</code> object with given values.
-   *
-   * @param start start node of edge
-   * @param end   end node of edge
-   */
-
+        /// <summary>
+        /// Create a <code>SimpleConstituent</code> object with given values
+        /// </summary>
+        /// <param name="start">start node of edge</param>
+        /// <param name="end">end node of edge</param>
         public SimpleConstituent(int start, int end)
         {
-            this.vStart = start;
-            this.vEnd = end;
+            this._start = start;
+            this._end = end;
         }
 
-
-        /**
-   * access start node.
-   */
-        //@Override
+        /// <summary>
+        /// access start node
+        /// </summary>
         public override int Start()
         {
-            return vStart;
+            return _start;
         }
 
-
-        /**
-   * set start node.
-   */
-        //@Override
+        /// <summary>
+        /// set start node
+        /// </summary>
         public override void SetStart(int start)
         {
-            this.vStart = start;
+            this._start = start;
         }
 
-
-        /**
-   * access end node.
-   */
-        //@Override
+        /// <summary>
+        /// access end node
+        /// </summary>
         public override int End()
         {
-            return vEnd;
+            return _end;
         }
 
-
-        /**
-   * set end node.
-   */
-        //@Override
+        /// <summary>
+        /// set end node
+        /// </summary>
         public override void SetEnd(int end)
         {
-            this.vEnd = end;
+            this._end = end;
         }
 
-
-        /**
-   * A <code>SimpleConstituentLabelFactory</code> object makes a
-   * <code>StringLabel</code> <code>LabeledScoredConstituent</code>.
-   */
-
+        /// <summary>
+        /// A <code>SimpleConstituentLabelFactory</code> object makes a
+        /// <code>StringLabel</code> <code>LabeledScoredConstituent</code>.
+        /// </summary>
         private /*static*/ class SimpleConstituentLabelFactory : LabelFactory
         {
-
-            /**
-     * Make a new <code>SimpleConstituent</code>.
-     *
-     * @param labelStr A string.
-     * @return The created label
-     */
-
             public Label NewLabel( /*final*/ string labelStr)
             {
                 return new SimpleConstituent(0, 0);
             }
-
-
-            /**
-     * Make a new <code>SimpleConstituent</code>.
-     *
-     * @param labelStr A string.
-     * @param options  The options are ignored.
-     * @return The created label
-     */
 
             public Label NewLabel( /*final*/ string labelStr, /*final */int options)
             {
                 return NewLabel(labelStr);
             }
 
-
-            /**
-     * Make a new <code>SimpleConstituent</code>.
-     *
-     * @param labelStr A string.
-     * @return The created label
-     */
-
             public Label NewLabelFromString( /*final*/ string labelStr)
             {
                 return NewLabel(labelStr);
             }
-
-
-            /**
-     * Create a new <code>SimpleConstituent</code>.
-     *
-     * @param oldLabel A <code>Label</code>.
-     * @return A new <code>SimpleConstituent</code>
-     */
 
             public Label NewLabel(Label oldLabel)
             {
@@ -166,14 +118,11 @@ namespace OpenNLP.Tools.Util.Trees
             public static readonly LabelFactory lf = new SimpleConstituentLabelFactory();
         }
 
-
-        /**
-   * Return a factory for this kind of label.
-   * The factory returned is always the same one (a singleton)
-   *
-   * @return the label factory
-   */
-
+        /// <summary>
+        /// Return a factory for this kind of label.
+        /// The factory returned is always the same one (a singleton)
+        /// </summary>
+        /// <returns>the label factory</returns>
         public override LabelFactory LabelFactory()
         {
             return LabelFactoryHolder.lf;
@@ -184,11 +133,10 @@ namespace OpenNLP.Tools.Util.Trees
         private static class ConstituentFactoryHolder
         {
 
-            /**
-     * A <code>SimpleConstituentFactory</code> acts as a factory for
-     * creating objects of class <code>SimpleConstituent</code>.
-     */
-
+            /// <summary>
+            /// A <code>SimpleConstituentFactory</code> acts as a factory for
+            /// creating objects of class <code>SimpleConstituent</code>.
+            /// </summary>
             private /*static*/ class SimpleConstituentFactory : ConstituentFactory
             {
 
@@ -207,27 +155,21 @@ namespace OpenNLP.Tools.Util.Trees
             public static readonly ConstituentFactory cf = new SimpleConstituentFactory();
         }
 
-
-        /**
-   * Return a factory for this kind of constituent.
-   * The factory returned is always the same one (a singleton).
-   *
-   * @return The constituent factory
-   */
-
+        /// <summary>
+        /// Return a factory for this kind of constituent.
+        /// The factory returned is always the same one (a singleton).
+        /// </summary>
+        /// <returns>The constituent factory</returns>
         public ConstituentFactory ConstituentFactory()
         {
             return ConstituentFactoryHolder.cf;
         }
 
-
-        /**
-   * Return a factory for this kind of constituent.
-   * The factory returned is always the same one (a singleton).
-   *
-   * @return The constituent factory
-   */
-
+        /// <summary>
+        /// Return a factory for this kind of constituent.
+        /// The factory returned is always the same one (a singleton).
+        /// </summary>
+        /// <returns>The constituent factory</returns>
         public static ConstituentFactory Factory()
         {
             return ConstituentFactoryHolder.cf;

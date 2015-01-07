@@ -8,73 +8,72 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
+    /// <summary>
+    /// A <code>SimpleTree</code> is a minimal concrete implementation of an
+    /// unlabeled, unscored <code>Tree</code>.  It has a tree structure, but
+    /// nothing is stored at a node (no label or score).
+    /// So, most of the time, this is the wrong class to use!
+    /// Look at {@code LabeledScoredTreeNode}.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public class SimpleTree : Tree
     {
         private static readonly long serialVersionUID = -8075763706877132926L;
 
-        /**
-   * Daughters of the parse tree.
-   */
+        /// <summary>Daughters of the parse tree</summary>
         private Tree[] daughterTrees;
 
-        /**
-   * Create an empty parse tree.
-   */
-
+        /// <summary>
+        /// Create an empty parse tree
+        /// </summary>
         public SimpleTree()
         {
-            daughterTrees = EMPTY_TREE_ARRAY;
+            daughterTrees = EmptyTreeArray;
         }
 
-        /**
-   * Create parse tree with given root and null daughters.
-   *
-   * @param label root label of new tree to construct.  For a SimpleTree
-   *              this parameter is ignored.
-   */
-
+        /// <summary>
+        /// Create parse tree with given root and null daughters
+        /// </summary>
+        /// <param name="label">root label of new tree to construct.
+        /// For a SimpleTree this parameter is ignored</param>
         public SimpleTree(Label label) : this()
         {
         }
 
-        /**
-   * Create parse tree with given root and array of daughter trees.
-   *
-   * @param label             root label of tree to construct.  For a SimpleTree
-   *                          this parameter is ignored
-   * @param daughterTreesList list of daughter trees to construct.
-   */
-
+        /// <summary>
+        /// Create parse tree with given root and array of daughter trees
+        /// </summary>
+        /// <param name="label">
+        /// root label of tree to construct.  For a SimpleTree this parameter is ignored
+        /// </param>
+        /// <param name="daughterTreesList">list of daughter trees to construct</param>
         public SimpleTree(Label label, List<Tree> daughterTreesList)
         {
             SetChildren(daughterTreesList.ToArray());
         }
 
-
-        /**
-   * Returns an array of children for the current node, or null
-   * if it is a leaf.
-   */
-        //@Override
+        /// <summary>
+        /// Returns an array of children for the current node, or null if it is a leaf.
+        /// </summary>
         public override Tree[] Children()
         {
             return daughterTrees;
         }
 
-        /**
-   * Sets the children of this <code>Tree</code>.  If given
-   * <code>null</code>, this method sets the Tree's children to a
-   * unique zero-length Tree[] array.
-   *
-   * @param children An array of child trees
-   */
-        //@Override
+        /// <summary>
+        /// Sets the children of this <code>Tree</code>.
+        /// If given <code>null</code>, this method sets the Tree's children to a
+        /// unique zero-length Tree[] array.
+        /// </summary>
+        /// <param name="children">An array of child trees</param>
         public override void SetChildren(Tree[] children)
         {
             if (children == null)
             {
-                //System.err.println("Warning -- you tried to set the children of a SimpleTree to null.\nYou should be really using a zero-length array instead.");
-                daughterTrees = EMPTY_TREE_ARRAY;
+                daughterTrees = EmptyTreeArray;
             }
             else
             {
@@ -89,29 +88,21 @@ namespace OpenNLP.Tools.Util.Trees
             public static readonly TreeFactory tf = new SimpleTreeFactory();
         }
 
-
-        /**
-   * Return a <code>TreeFactory</code> that produces trees of the
-   * <code>SimpleTree</code> type.
-   * The factory returned is always the same one (a singleton).
-   *
-   * @return a factory to produce simple (unlabelled) trees
-   */
-        //@Override
+        /// <summary>
+        /// Return a <code>TreeFactory</code> that produces trees of the
+        /// <code>SimpleTree</code> type.
+        /// The factory returned is always the same one (a singleton).
+        /// </summary>
         public override TreeFactory TreeFactory()
         {
             return TreeFactoryHolder.tf;
         }
 
-
-        /**
-   * Return a <code>TreeFactory</code> that produces trees of the
-   * <code>SimpleTree</code> type.
-   * The factory returned is always the same one (a singleton).
-   *
-   * @return a factory to produce simple (unlabelled) trees
-   */
-
+        /// <summary>
+        /// Return a <code>TreeFactory</code> that produces trees of the
+        /// <code>SimpleTree</code> type.
+        /// The factory returned is always the same one (a singleton).
+        /// </summary>
         public static TreeFactory Factory()
         {
             return TreeFactoryHolder.tf;

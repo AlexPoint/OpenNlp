@@ -7,14 +7,14 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * A <code>ConstituentFactory</code> acts as a factory for creating objects
- * of class <code>Constituent</code>, or some descendent class.
- * An interface.
- *
- * @author Christopher Manning
- */
-
+    /// <summary>
+    /// A <code>ConstituentFactory</code> acts as a factory for creating objects
+    /// of class <code>Constituent</code>, or some descendent class.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public class SimpleConstituentFactory : ConstituentFactory
     {
         public Constituent NewConstituent(int start, int end)

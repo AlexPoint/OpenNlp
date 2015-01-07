@@ -11,36 +11,36 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * A {@code GrammaticalStructure} stores dependency relations between
- * nodes in a tree.  A new <code>GrammaticalStructure</code> is constructed
- * from an existing parse tree with the help of {@link
- * GrammaticalRelation <code>GrammaticalRelation</code>}, which
- * defines a hierarchy of grammatical relations, along with
- * patterns for identifying them in parse trees.  The constructor for
- * <code>GrammaticalStructure</code> uses these definitions to
- * populate the new <code>GrammaticalStructure</code> with as many
- * labeled grammatical relations as it can.  Once constructed, the new
- * <code>GrammaticalStructure</code> can be printed in various
- * formats, or interrogated using the interface methods in this
- * class. Internally, this uses a representation via a {@code TreeGraphNode},
- * that is, a tree with additional labeled
- * arcs between nodes, for representing the grammatical relations in a
- * parse tree.
- * <p/>
- * <b>Caveat emptor!</b> This is a work in progress.
- * Nothing in here should be relied upon to function perfectly.
- * Feedback welcome.
- *
- * @author Bill MacCartney
- * @author Galen Andrew (refactoring English-specific stuff)
- * @author Ilya Sherman (dependencies)
- * @author Daniel Cer
- * @see EnglishGrammaticalRelations
- * @see GrammaticalRelation
- * @see EnglishGrammaticalStructure
- */
-
+    /// <summary>
+    /// A {@code GrammaticalStructure} stores dependency relations between
+    /// nodes in a tree.  A new <code>GrammaticalStructure</code> is constructed
+    /// from an existing parse tree with the help of {@link
+    /// GrammaticalRelation <code>GrammaticalRelation</code>}, which
+    /// defines a hierarchy of grammatical relations, along with
+    /// patterns for identifying them in parse trees.  The constructor for
+    /// <code>GrammaticalStructure</code> uses these definitions to
+    /// populate the new <code>GrammaticalStructure</code> with as many
+    /// labeled grammatical relations as it can.  Once constructed, the new
+    /// <code>GrammaticalStructure</code> can be printed in various
+    /// formats, or interrogated using the interface methods in this
+    /// class. Internally, this uses a representation via a {@code TreeGraphNode},
+    /// that is, a tree with additional labeled
+    /// arcs between nodes, for representing the grammatical relations in a parse tree.
+    /// 
+    /// <b>Caveat emptor!</b> This is a work in progress.
+    /// Nothing in here should be relied upon to function perfectly.
+    /// Feedback welcome.
+    /// 
+    /// @author Bill MacCartney
+    /// @author Galen Andrew (refactoring English-specific stuff)
+    /// @author Ilya Sherman (dependencies)
+    /// @author Daniel Cer
+    /// @see EnglishGrammaticalRelations
+    /// @see GrammaticalRelation
+    /// @see EnglishGrammaticalStructure
+    /// 
+    /// Code...
+    /// </summary>
     [Serializable]
     public /*abstract*/ class GrammaticalStructure
     {
@@ -52,32 +52,31 @@ namespace OpenNLP.Tools.Util.Trees
 
         protected readonly Predicate<string> puncFilter;
 
-        /**
-   * The root Tree node for this GrammaticalStructure.
-   */
+        /// <summary>
+        /// The root Tree node for this GrammaticalStructure.
+        /// </summary>
         protected readonly TreeGraphNode root;
 
-        /**
-   * A map from arbitrary integer indices to nodes.
-   */
+        /// <summary>
+        /// A map from arbitrary integer indices to nodes.
+        /// </summary>
         private readonly Dictionary<int, TreeGraphNode> indexMap = new Dictionary<int, TreeGraphNode>();
 
-        /**
-   * Create a new GrammaticalStructure, analyzing the parse tree and
-   * populate the GrammaticalStructure with as many labeled
-   * grammatical relation arcs as possible.
-   *
-   * @param t             A Tree to analyze
-   * @param relations     A set of GrammaticalRelations to consider
-   * @param relationsLock Something needed to make this thread-safe
-   * @param hf            A HeadFinder for analysis
-   * @param puncFilter    A Filter to reject punctuation. To delete punctuation
-   *                      dependencies, this filter should return false on
-   *                      punctuation word strings, and true otherwise.
-   *                      If punctuation dependencies should be kept, you
-   *                      should pass in a Filters.&lt;String&gt;acceptFilter().
-   */
-
+        /// <summary>
+        /// Create a new GrammaticalStructure, analyzing the parse tree and
+        /// populate the GrammaticalStructure with as many labeled
+        /// grammatical relation arcs as possible.
+        /// </summary>
+        /// <param name="t">A Tree to analyze</param>
+        /// <param name="relations">A set of GrammaticalRelations to consider</param>
+        /// <param name="relationsLock">Something needed to make this thread-safe</param>
+        /// <param name="hf">A HeadFinder for analysis</param>
+        /// <param name="puncFilter">
+        /// A Filter to reject punctuation. To delete punctuation
+        /// dependencies, this filter should return false on punctuation word strings, 
+        /// and true otherwise. If punctuation dependencies should be kept, you
+        /// should pass in a Filters.&lt;String&gt;acceptFilter().
+        /// </param>
         public GrammaticalStructure(Tree t, ICollection<GrammaticalRelation> relations,
             Object relationsLock, HeadFinder hf, Predicate<string> puncFilter)
         {
@@ -103,16 +102,16 @@ namespace OpenNLP.Tools.Util.Trees
 
             // analyze the root (and its descendants, recursively)
             /*if (relationsLock != null) {
-      relationsLock.lock();
-    }
-    try {
-      analyzeNode(root, root, relations, hf, puncFilter, basicGraph, completeGraph);
-    }
-    finally {
-      if (relationsLock != null) {
-        relationsLock.unlock();
-      }
-    }*/
+              relationsLock.lock();
+            }
+            try {
+              analyzeNode(root, root, relations, hf, puncFilter, basicGraph, completeGraph);
+            }
+            finally {
+              if (relationsLock != null) {
+                relationsLock.unlock();
+              }
+            }*/
             lock (relationsLock)
             {
                 AnalyzeNode(root, root, relations, hf, puncFilter, basicGraph, completeGraph);
@@ -126,30 +125,26 @@ namespace OpenNLP.Tools.Util.Trees
             GetExtraDeps(allTypedDependencies, puncTypedDepFilter.Test, completeGraph);
         }
 
-
-        /**
-   * Assign sequential integer indices (starting with 1) to all
-   * nodes of the subtree rooted at this
-   * <code>Tree</code>.  The leaves are indexed first,
-   * from left to right.  Then the internal nodes are indexed,
-   * using a pre-order tree traversal.
-   */
-
+        /// <summary>
+        /// Assign sequential integer indices (starting with 1) to all
+        /// nodes of the subtree rooted at this
+        /// <code>Tree</code>.  The leaves are indexed first,
+        /// from left to right.  Then the internal nodes are indexed,
+        /// using a pre-order tree traversal.
+        /// </summary>
         private void IndexNodes(TreeGraphNode tree)
         {
             IndexNodes(tree, IndexLeaves(tree, 1));
         }
 
-        /**
-   * Assign sequential integer indices to the leaves of the subtree
-   * rooted at this <code>TreeGraphNode</code>, beginning with
-   * <code>startIndex</code>, and traversing the leaves from left
-   * to right. If node is already indexed, then it uses the existing index.
-   *
-   * @param startIndex index for this node
-   * @return the next index still unassigned
-   */
-
+        /// <summary>
+        /// Assign sequential integer indices to the leaves of the subtree
+        /// rooted at this <code>TreeGraphNode</code>, beginning with
+        /// <code>startIndex</code>, and traversing the leaves from left
+        /// to right. If node is already indexed, then it uses the existing index.
+        /// </summary>
+        /// <param name="startIndex">index for this node</param>
+        /// <returns>The next index still unassigned</returns>
         private int IndexLeaves(TreeGraphNode tree, int startIndex)
         {
             if (tree.IsLeaf())
@@ -175,19 +170,17 @@ namespace OpenNLP.Tools.Util.Trees
             }
             return startIndex;
         }
-
-        /**
-   * Assign sequential integer indices to all nodes of the subtree
-   * rooted at this <code>TreeGraphNode</code>, beginning with
-   * <code>startIndex</code>, and doing a pre-order tree traversal.
-   * Any node which already has an index will not be re-indexed
-   * &mdash; this is so that we can index the leaves first, and
-   * then index the rest.
-   *
-   * @param startIndex index for this node
-   * @return the next index still unassigned
-   */
-
+        
+        /// <summary>
+        /// Assign sequential integer indices to all nodes of the subtree
+        /// rooted at this <code>TreeGraphNode</code>, beginning with
+        /// <code>startIndex</code>, and doing a pre-order tree traversal.
+        /// Any node which already has an index will not be re-indexed
+        /// &mdash; this is so that we can index the leaves first, and
+        /// then index the rest.
+        /// </summary> 
+        /// <param name="startIndex">index for this node</param>
+        /// <returns>The next index still unassigned</returns>
         private int IndexNodes(TreeGraphNode tree, int startIndex)
         {
             if (tree.Index() < 0)
@@ -206,42 +199,35 @@ namespace OpenNLP.Tools.Util.Trees
             return startIndex;
         }
 
-        /**
-   * Store a mapping from an arbitrary integer index to a node in
-   * this treegraph.  Normally a client shouldn't need to use this,
-   * as the nodes are automatically indexed by the
-   * <code>TreeGraph</code> constructor.
-   *
-   * @param index the arbitrary integer index
-   * @param node  the <code>TreeGraphNode</code> to be indexed
-   */
-
+        /// <summary>
+        /// Store a mapping from an arbitrary integer index to a node in
+        /// this treegraph.  Normally a client shouldn't need to use this,
+        /// as the nodes are automatically indexed by the <code>TreeGraph</code> constructor.
+        /// </summary>
+        /// <param name="index">the arbitrary integer index</param>
+        /// <param name="node">the <code>TreeGraphNode</code> to be indexed</param>
         private void AddNodeToIndexMap(int index, TreeGraphNode node)
         {
             indexMap.Add(index, node);
         }
 
-
-        /**
-   * Return the node in the this treegraph corresponding to the
-   * specified integer index.
-   *
-   * @param index the integer index of the node you want
-   * @return the <code>TreeGraphNode</code> having the specified
-   *         index (or <code>null</code> if such does not exist)
-   */
-
+        /// <summary>
+        /// Return the node in the this treegraph corresponding to the
+        /// specified integer index.
+        /// </summary>
+        /// <param name="index">the integer index of the node you want</param>
+        /// <returns>
+        /// the <code>TreeGraphNode</code> having the specified
+        /// index (or <code>null</code> if such does not exist)
+        /// </returns>
         private TreeGraphNode GetNodeByIndex(int index)
         {
             return indexMap[index];
         }
 
-        /**
-   * Return the root Tree of this GrammaticalStructure.
-   *
-   * @return the root Tree of this GrammaticalStructure
-   */
-
+        /// <summary>
+        /// Return the root Tree of this GrammaticalStructure.
+        /// </summary>
         public TreeGraphNode Root()
         {
             return root;
@@ -253,21 +239,12 @@ namespace OpenNLP.Tools.Util.Trees
                 string.Format("Dependencies should be for the format 'type(arg-idx, arg-idx)'. Could not parse '{0}'",
                     dep));
         }
-
-        /**
-   * Create a grammatical structure from its string representation.
-   *
-   * Like buildCoNLLXGrammaticalStructure,
-   * this method fakes up the parts of the tree structure that are not
-   * used by the grammatical relation transformation operations.
-   *
-   * <i>Note:</i> Added by daniel cer
-   *
-   * @param tokens
-   * @param posTags
-   * @param deps
-   */
-
+        
+        /// <summary>
+        /// Create a grammatical structure from its string representation.
+        /// Like buildCoNLLXGrammaticalStructure, this method fakes up the parts 
+        /// of the tree structure that are not used by the grammatical relation transformation operations.
+        /// </summary>
         public static GrammaticalStructure FromStringReps(List<string> tokens, List<string> posTags, List<string> deps)
         {
             if (tokens.Count != posTags.Count)
@@ -281,8 +258,7 @@ namespace OpenNLP.Tools.Util.Trees
 
             var rootLabel = new CoreLabel();
             rootLabel.SetValue("ROOT");
-            var nodeWords = new List<IndexedWord>(tgPOSNodes.Count + 1);
-            nodeWords.Add(new IndexedWord(rootLabel));
+            var nodeWords = new List<IndexedWord>(tgPOSNodes.Count + 1) {new IndexedWord(rootLabel)};
 
             var headFinder = new SemanticHeadFinder();
 
@@ -345,7 +321,7 @@ namespace OpenNLP.Tools.Util.Trees
                 int childIdx = int.Parse(childArg.Substring(childDash + 1).Replace("'", ""));
 
                 var grel = new GrammaticalRelation(GrammaticalRelation.Language.Any, type, null,
-                    GrammaticalRelation.DEPENDENT);
+                    GrammaticalRelation.Dependent);
 
                 var tdep = new TypedDependency(grel, nodeWords[parentIdx], nodeWords[childIdx]);
                 tdeps.Add(tdep);
@@ -373,7 +349,6 @@ namespace OpenNLP.Tools.Util.Trees
         {
         }
 
-        //@Override
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -402,7 +377,7 @@ namespace OpenNLP.Tools.Util.Trees
                     TreeGraphNode parent = parentAsTreeGraphNode.HighestNodeWithSameHead();
                     if (!basicGraph.IsEdge(parent, t) && basicGraph.GetShortestPath(root, t, false) == null)
                     {
-                        basicGraph.Add(parent, t, GrammaticalRelation.DEPENDENT);
+                        basicGraph.Add(parent, t, GrammaticalRelation.Dependent);
                     }
                 }
                 else
@@ -416,7 +391,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        // cdm dec 2009: I changed this to automatically fail on preterminal nodes, since they shouldn't match for GR parent patterns.  Should speed it up.
+        // cdm dec 2009: I changed this to automatically fail on preterminal nodes, since they shouldn't match for GR parent patterns. Should speed it up.
         private static void AnalyzeNode(TreeGraphNode t, TreeGraphNode root, ICollection<GrammaticalRelation> relations,
             HeadFinder hf, Predicate<string> puncFilter,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph,
@@ -474,12 +449,10 @@ namespace OpenNLP.Tools.Util.Trees
             deps.Sort();
         }
 
-
-        /**
-   * Helps the constructor build a list of typed dependencies using
-   * information from a {@code GrammaticalStructure}.
-   */
-
+        /// <summary>
+        /// Helps the constructor build a list of typed dependencies using
+        /// information from a {@code GrammaticalStructure}.
+        /// </summary>
         private List<TypedDependency> GetDeps(Predicate<TypedDependency> puncTypedDepFilter,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph)
         {
@@ -529,7 +502,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
             if (rootDep != null)
             {
-                var rootTypedDep = new TypedDependency(GrammaticalRelation.ROOT,
+                var rootTypedDep = new TypedDependency(GrammaticalRelation.Root,
                     new IndexedWord(dependencyRoot.Label()), new IndexedWord(rootDep.Label()));
                 if (puncTypedDepFilter(rootTypedDep))
                 {
@@ -544,54 +517,47 @@ namespace OpenNLP.Tools.Util.Trees
             return basicDep;
         }
 
-        /**
-   * Returns a Filter which checks dependencies for usefulness as
-   * extra tree-based dependencies.  By default, everything is
-   * accepted.  One example of how this can be useful is in the
-   * English dependencies, where the REL dependency is used as an
-   * intermediate and we do not want this to be added when we make a
-   * second pass over the trees for missing dependencies.
-   */
-
+        /// <summary>
+        /// Returns a Filter which checks dependencies for usefulness as
+        /// extra tree-based dependencies.  By default, everything is
+        /// accepted.  One example of how this can be useful is in the
+        /// English dependencies, where the REL dependency is used as an
+        /// intermediate and we do not want this to be added when we make a
+        /// second pass over the trees for missing dependencies.
+        /// </summary>
         protected Predicate<TypedDependency> ExtraTreeDepFilter()
         {
             return Filters.AcceptFilter<TypedDependency>();
         }
 
-        /**
-   * Post process the dependencies in whatever way this language
-   * requires.  For example, English might replace "rel" dependencies
-   * with either dobj or pobj depending on the surrounding
-   * dependencies.
-   */
-
+        /// <summary>
+        /// Post process the dependencies in whatever way this language
+        /// requires.  For example, English might replace "rel" dependencies
+        /// with either dobj or pobj depending on the surrounding dependencies.
+        /// </summary>
         protected void PostProcessDependencies(List<TypedDependency> basicDep)
         {
             // no post processing by default
         }
 
-        /**
-   * Get extra dependencies that do not depend on the tree structure,
-   * but rather only depend on the existing dependency structure.
-   * For example, the English xsubj dependency can be extracted that way.
-   */
-
+        /// <summary>
+        /// Get extra dependencies that do not depend on the tree structure,
+        /// but rather only depend on the existing dependency structure.
+        /// For example, the English xsubj dependency can be extracted that way.
+        /// </summary>
         protected void GetExtras(List<TypedDependency> basicDep)
         {
             // no extra dependencies by default
         }
 
-
-        /** Look through the tree t and adds to the List basicDep
-   *  additional dependencies which aren't
-   *  in the List but which satisfy the filter puncTypedDepFilter.
-   *
-   * @param deps The list of dependencies which may be augmented
-   * @param completeGraph a graph of all the tree dependencies found earlier
-   * @param puncTypedDepFilter The filter that may skip punctuation dependencies
-   * @param extraTreeDepFilter Additional dependencies are added only if they pass this filter
-   */
-
+        /// <summary>
+        /// Look through the tree t and adds to the List basicDep additional dependencies 
+        /// which aren't in the List but which satisfy the filter puncTypedDepFilter.
+        /// </summary>
+        /// <param name="deps">The list of dependencies which may be augmented</param>
+        /// <param name="completeGraph">a graph of all the tree dependencies found earlier</param>
+        /// <param name="puncTypedDepFilter">The filter that may skip punctuation dependencies</param>
+        /// <param name="extraTreeDepFilter">Additional dependencies are added only if they pass this filter</param>
         private static void GetTreeDeps(List<TypedDependency> deps,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> completeGraph,
             Predicate<TypedDependency> puncTypedDepFilter,
@@ -617,7 +583,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        private /*static*/ class NoPunctFilter : IPredicate<Dependency<Label, Label, Object>> /*, Serializable*/
+        private /*static*/ class NoPunctFilter : IPredicate<Dependency<Label, Label, Object>>
         {
             private readonly Predicate<string> npf;
 
@@ -626,7 +592,6 @@ namespace OpenNLP.Tools.Util.Trees
                 this.npf = f;
             }
 
-            //@Override
             public bool Test(Dependency<Label, Label, Object> d)
             {
                 if (d == null)
@@ -650,7 +615,7 @@ namespace OpenNLP.Tools.Util.Trees
             bool Test(T elt);
         }
 
-        private /*static*/ class NoPunctTypedDependencyFilter : IPredicate<TypedDependency> /*, Serializable*/
+        private /*static*/ class NoPunctTypedDependencyFilter : IPredicate<TypedDependency>
         {
             private readonly Predicate<string> npf;
 
@@ -659,7 +624,6 @@ namespace OpenNLP.Tools.Util.Trees
                 this.npf = f;
             }
 
-            //@Override
             public bool Test(TypedDependency d)
             {
                 if (d == null) return false;
@@ -674,12 +638,9 @@ namespace OpenNLP.Tools.Util.Trees
             private static readonly long serialVersionUID = -2872766864289207468L;
         } // end static class NoPunctTypedDependencyFilter
 
-
-        /**
-   * Get GrammaticalRelation between gov and dep, and null if gov  is not the
-   * governor of dep
-   */
-
+        /// <summary>
+        /// Get GrammaticalRelation between gov and dep, and null if gov  is not the governor of dep
+        /// </summary>
         public GrammaticalRelation GetGrammaticalRelation(int govIndex, int depIndex)
         {
             TreeGraphNode gov = GetNodeByIndex(govIndex);
@@ -688,11 +649,9 @@ namespace OpenNLP.Tools.Util.Trees
             return GetGrammaticalRelation(new IndexedWord(gov.Label()), new IndexedWord(dep.Label()));
         }
 
-        /**
-   * Get GrammaticalRelation between gov and dep, and null if gov is not the
-   * governor of dep
-   */
-
+        /// <summary>
+        /// Get GrammaticalRelation between gov and dep, and null if gov is not the governor of dep
+        /// </summary>
         public GrammaticalRelation GetGrammaticalRelation(IndexedWord gov, IndexedWord dep)
         {
             var labels = new List<GrammaticalRelation>();
@@ -707,16 +666,15 @@ namespace OpenNLP.Tools.Util.Trees
             return GetGrammaticalRelationCommonAncestor(gov, dep, labels);
         }
 
-        /**
-   * Returns the GrammaticalRelation which is the highest common
-   * ancestor of the list of relations passed in.  The IndexedWords
-   * are passed in only for debugging reasons.
-   */
-
+        /// <summary>
+        /// Returns the GrammaticalRelation which is the highest common
+        /// ancestor of the list of relations passed in.  The IndexedWords
+        /// are passed in only for debugging reasons.
+        /// </summary>
         private static GrammaticalRelation GetGrammaticalRelationCommonAncestor(AbstractCoreLabel govH,
             AbstractCoreLabel depH, List<GrammaticalRelation> labels)
         {
-            GrammaticalRelation reln = GrammaticalRelation.DEPENDENT;
+            GrammaticalRelation reln = GrammaticalRelation.Dependent;
 
             List<GrammaticalRelation> sortedLabels;
             if (labels.Count <= 1)
@@ -784,45 +742,37 @@ namespace OpenNLP.Tools.Util.Trees
             return filtered;
         }
 
-
-        /**
-   * Returns the typed dependencies of this grammatical structure.  These
-   * are the basic word-level typed dependencies, where each word is dependent
-   * on one other thing, either a word or the starting ROOT, and the
-   * dependencies have a tree structure.  This corresponds to the
-   * command-line option "basicDependencies".
-   *
-   * @return The typed dependencies of this grammatical structure
-   */
-
+        /// <summary>
+        /// Returns the typed dependencies of this grammatical structure.
+        /// These are the basic word-level typed dependencies, where each word is dependent
+        /// on one other thing, either a word or the starting ROOT, and the
+        /// dependencies have a tree structure.  This corresponds to the command-line option "basicDependencies".
+        /// </summary>
+        /// <returns>The typed dependencies of this grammatical structure</returns>
         public ICollection<TypedDependency> TypedDependencies()
         {
             return TypedDependencies(false);
         }
 
-
-        /**
-   * Returns all the typed dependencies of this grammatical structure.
-   * These are like the basic (uncollapsed) dependencies, but may include
-   * extra arcs for control relationships, etc. This corresponds to the
-   * "nonCollapsed" option.
-   */
-
+        /// <summary>
+        /// Returns all the typed dependencies of this grammatical structure.
+        /// These are like the basic (uncollapsed) dependencies, but may include
+        /// extra arcs for control relationships, etc. This corresponds to the "nonCollapsed" option.
+        /// </summary>
         public ICollection<TypedDependency> AllTypedDependencies()
         {
             return TypedDependencies(true);
         }
 
-
-        /**
-   * Returns the typed dependencies of this grammatical structure. These
-   * are non-collapsed dependencies (basic or nonCollapsed).
-   *
-   * @param includeExtras If true, the list of typed dependencies
-   * returned may include "extras", and does not follow a tree structure.
-   * @return The typed dependencies of this grammatical structure
-   */
-
+        /// <summary>
+        /// Returns the typed dependencies of this grammatical structure.
+        /// These are non-collapsed dependencies (basic or nonCollapsed).
+        /// </summary>
+        /// <param name="includeExtras">
+        /// If true, the list of typed dependencies returned may include "extras", 
+        /// and does not follow a tree structure.
+        /// </param>
+        /// <returns>The typed dependencies of this grammatical structure</returns>
         public List<TypedDependency> TypedDependencies(bool includeExtras)
         {
             List<TypedDependency> deps;
@@ -853,18 +803,15 @@ namespace OpenNLP.Tools.Util.Trees
             return deps;
         }
 
-        /**
-   * Get the typed dependencies after collapsing them.
-   * Collapsing dependencies refers to turning certain function words
-   * such as prepositions and conjunctions into arcs, so they disappear from
-   * the set of nodes.
-   * There is no guarantee that the dependencies are a tree. While the
-   * dependencies are normally tree-like, the collapsing may introduce
-   * not only re-entrancies but even small cycles.
-   *
-   * @return A set of collapsed dependencies
-   */
-
+        /// <summary>
+        /// Get the typed dependencies after collapsing them.
+        /// Collapsing dependencies refers to turning certain function words
+        /// such as prepositions and conjunctions into arcs, so they disappear from the set of nodes.
+        /// There is no guarantee that the dependencies are a tree. While the
+        /// dependencies are normally tree-like, the collapsing may introduce
+        /// not only re-entrancies but even small cycles.
+        /// </summary>
+        /// <returns>A set of collapsed dependencies</returns>
         public ICollection<TypedDependency> TypedDependenciesCollapsed()
         {
             return TypedDependenciesCollapsed(false);
@@ -873,19 +820,18 @@ namespace OpenNLP.Tools.Util.Trees
         // todo [cdm 2012]: The semantics of this method is the opposite of the others.
         // The other no argument methods correspond to includeExtras being
         // true, but for this one it is false.  This should probably be made uniform.
-        /**
-   * Get the typed dependencies after mostly collapsing them, but keep a tree
-   * structure.  In order to do this, the code does:
-   * <ol>
-   * <li> no relative clause processing
-   * <li> no xsubj relations
-   * <li> no propagation of conjuncts
-   * </ol>
-   * This corresponds to the "tree" option.
-   *
-   * @return collapsed dependencies keeping a tree structure
-   */
-
+        
+        /// <summary>
+        /// Get the typed dependencies after mostly collapsing them, but keep a tree
+        /// structure.  In order to do this, the code does:
+        /// <ol>
+        /// <li> no relative clause processing</li>
+        /// <li> no xsubj relations</li>
+        /// <li> no propagation of conjuncts</li>
+        /// </ol>
+        /// This corresponds to the "tree" option.
+        /// </summary>
+        /// <returns>collapsed dependencies keeping a tree structure</returns>
         public ICollection<TypedDependency> TypedDependenciesCollapsedTree()
         {
             List<TypedDependency> tdl = TypedDependencies(false);
@@ -893,16 +839,15 @@ namespace OpenNLP.Tools.Util.Trees
             return tdl;
         }
 
-        /**
-   * Get the typed dependencies after collapsing them.
-   * The "collapsed" option corresponds to calling this method with argument
-   * {@code true}.
-   *
-   * @param includeExtras If true, the list of typed dependencies
-   * returned may include "extras", like controlling subjects
-   * @return collapsed dependencies
-   */
-
+        /// <summary>
+        /// Get the typed dependencies after collapsing them.
+        /// The "collapsed" option corresponds to calling this method with argument {@code true}.
+        /// </summary>
+        /// <param name="includeExtras">
+        /// If true, the list of typed dependencies returned may include "extras", 
+        /// like controlling subjects
+        /// </param>
+        /// <returns>Collapsed dependencies</returns>
         public List<TypedDependency> TypedDependenciesCollapsed(bool includeExtras)
         {
             List<TypedDependency> tdl = TypedDependencies(includeExtras);
@@ -910,21 +855,20 @@ namespace OpenNLP.Tools.Util.Trees
             return tdl;
         }
 
-
-        /**
-   * Get the typed dependencies after collapsing them and processing eventual
-   * CC complements.  The effect of this part is to distributed conjoined
-   * arguments across relations or conjoined predicates across their arguments.
-   * This is generally useful, and we generally recommend using the output of
-   * this method with the second argument being {@code true}.
-   * The "CCPropagated" option corresponds to calling this method with an
-   * argument of {@code true}.
-   *
-   * @param includeExtras If true, the list of typed dependencies
-   * returned may include "extras", such as controlled subject links.
-   * @return collapsed dependencies with CC processed
-   */
-
+        /// <summary>
+        /// Get the typed dependencies after collapsing them and processing eventual CC complements.
+        /// The effect of this part is to distributed conjoined arguments across relations 
+        /// or conjoined predicates across their arguments.
+        /// This is generally useful, and we generally recommend using the output of
+        /// this method with the second argument being {@code true}.
+        /// The "CCPropagated" option corresponds to calling this method with an
+        /// argument of {@code true}.
+        /// </summary>
+        /// <param name="includeExtras">
+        /// If true, the list of typed dependencies
+        /// returned may include "extras", such as controlled subject links.
+        /// </param>
+        /// <returns>collapsed dependencies with CC processed</returns>
         public List<TypedDependency> TypedDependenciesCcProcessed(bool includeExtras)
         {
             List<TypedDependency> tdl = TypedDependencies(includeExtras);
@@ -932,76 +876,63 @@ namespace OpenNLP.Tools.Util.Trees
             return tdl;
         }
 
-
-        /**
-   * Get a list of the typed dependencies, including extras like control
-   * dependencies, collapsing them and distributing relations across
-   * coordination.  This method is generally recommended for best
-   * representing the semantic and syntactic relations of a sentence. In
-   * general it returns a directed graph (i.e., the output may not be a tree
-   * and it may contain (small) cycles).
-   * The "CCPropagated" option corresponds to calling this method.
-   *
-   * @return collapsed dependencies with CC processed
-   */
-
+        /// <summary>
+        /// Get a list of the typed dependencies, including extras like control
+        /// dependencies, collapsing them and distributing relations across coordination.
+        /// This method is generally recommended for best representing the semantic 
+        /// and syntactic relations of a sentence. 
+        /// In general it returns a directed graph (i.e., the output may not be a tree
+        /// and it may contain (small) cycles).
+        /// The "CCPropagated" option corresponds to calling this method.
+        /// </summary>
+        /// <returns>collapsed dependencies with CC processed</returns>
         public List<TypedDependency> TypedDependenciesCcProcessed()
         {
             return TypedDependenciesCcProcessed(true);
         }
 
-
-        /**
-   * Destructively modify the <code>Collection&lt;TypedDependency&gt;</code> to collapse
-   * language-dependent transitive dependencies.
-   * <p/>
-   * Default is no-op; to be over-ridden in subclasses.
-   *
-   * @param list A list of dependencies to process for possible collapsing
-   * @param CCprocess apply CC process?
-   */
-
-        protected virtual void CollapseDependencies(List<TypedDependency> list, bool CCprocess, bool includeExtras)
+        /// <summary>
+        /// Destructively modify the Collection &lt; TypedDependency &lt; to collapse
+        /// language-dependent transitive dependencies.
+        /// 
+        /// Default is no-op; to be over-ridden in subclasses.
+        /// </summary>
+        /// <param name="list">A list of dependencies to process for possible collapsing</param>
+        /// <param name="cCprocess">apply CC process?</param>
+        protected virtual void CollapseDependencies(List<TypedDependency> list, bool cCprocess, bool includeExtras)
         {
             // do nothing as default operation
         }
 
-        /**
-   * Destructively modify the <code>Collection&lt;TypedDependency&gt;</code> to collapse
-   * language-dependent transitive dependencies but keeping a tree structure.
-   * <p/>
-   * Default is no-op; to be over-ridden in subclasses.
-   *
-   * @param list A list of dependencies to process for possible collapsing
-   *
-   */
-
+        /// <summary>
+        /// Destructively modify the <code>Collection&lt;TypedDependency&gt;</code> to collapse
+        /// language-dependent transitive dependencies but keeping a tree structure.
+        /// 
+        /// Default is no-op; to be over-ridden in subclasses.
+        /// </summary>
+        /// <param name="list">A list of dependencies to process for possible collapsing</param>
         protected virtual void CollapseDependenciesTree(List<TypedDependency> list)
         {
             // do nothing as default operation
         }
 
-
-        /**
-   * Destructively modify the <code>TypedDependencyGraph</code> to correct
-   * language-dependent dependencies. (e.g., nsubjpass in a relative clause)
-   * <p/>
-   * Default is no-op; to be over-ridden in subclasses.
-   *
-   */
-
+        /// <summary>
+        /// Destructively modify the <code>TypedDependencyGraph</code> to correct
+        /// language-dependent dependencies. (e.g., nsubjpass in a relative clause)
+        /// 
+        /// Default is no-op; to be over-ridden in subclasses.
+        /// </summary>
+        /// <param name="list"></param>
         protected void CorrectDependencies(ICollection<TypedDependency> list)
         {
             // do nothing as default operation
         }
 
-
-        /**
-   * Checks if all the typeDependencies are connected
-   * @param list a list of typedDependencies
-   * @return true if the list represents a connected graph, false otherwise
-   */
-
+        /// <summary>
+        /// Checks if all the typeDependencies are connected
+        /// </summary>
+        /// <param name="list">a list of typedDependencies</param>
+        /// <returns>if the list represents a connected graph, false otherwise</returns>
         public static bool IsConnected(ICollection<TypedDependency> list)
         {
             return GetRoots(list).Count <= 1; // there should be no more than one root to have a connected graph
@@ -1010,16 +941,13 @@ namespace OpenNLP.Tools.Util.Trees
             // (the root "society" will also be the nsubj of "sells")
         }
 
-        /**
-   * Return a list of TypedDependencies which are not dependent on any node from the list.
-   *
-   * @param list The list of TypedDependencies to check
-   * @return A list of TypedDependencies which are not dependent on any node from the list
-   */
-
+        /// <summary>
+        /// Return a list of TypedDependencies which are not dependent on any node from the list.
+        /// </summary>
+        /// <param name="list">The list of TypedDependencies to check</param>
+        /// <returns>A list of TypedDependencies which are not dependent on any node from the list</returns>
         public static ICollection<TypedDependency> GetRoots(ICollection<TypedDependency> list)
         {
-
             ICollection<TypedDependency> roots = new List<TypedDependency>();
 
             // need to see if more than one governor is not listed somewhere as a dependent
@@ -1048,7 +976,6 @@ namespace OpenNLP.Tools.Util.Trees
 
         private /*static*/ class NameComparator<X> : IComparer<X>
         {
-            //@Override
             public int Compare(X o1, X o2)
             {
                 string n1 = o1.ToString();
@@ -1057,8 +984,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-
-        public static readonly string DEFAULT_PARSER_FILE = "/u/nlp/data/lexparser/englishPCFG.ser.gz";
+        public static readonly string DefaultParserFile = "/u/nlp/data/lexparser/englishPCFG.ser.gz";
 
         /**
    * Print typed dependencies in either the Stanford dependency representation

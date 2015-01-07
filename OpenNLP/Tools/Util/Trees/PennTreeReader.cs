@@ -11,26 +11,26 @@ using OpenNLP.Tools.Util.Trees;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * This class implements the <code>TreeReader</code> interface to read Penn Treebank-style
- * files. The reader is implemented as a push-down automaton (PDA) that parses the Lisp-style
- * format in which the trees are stored. This reader is compatible with both PTB
- * and PATB trees.
- * <br>
- * One small detail to note is that the <code>PennTreeReader</code>
- * silently replaces \* with * and \/ with /.  Two possible designs
- * for this were to make the <code>PennTreeReader</code> always do
- * this or to make the <code>TreeNormalizers</code> do this.  We
- * decided to put it in the <code>PennTreeReader</code> class itself
- * to avoid the problem of people making new
- * <code>TreeNormalizers</code> and forgetting to include the
- * unescaping.
- *
- * @author Christopher Manning
- * @author Roger Levy
- * @author Spence Green
- */
-
+    /// <summary>
+    /// This class implements the <code>TreeReader</code> interface to read Penn Treebank-style
+    /// files. The reader is implemented as a push-down automaton (PDA) that parses the Lisp-style
+    /// format in which the trees are stored. This reader is compatible with both PTB
+    /// and PATB trees.
+    /// 
+    /// One small detail to note is that the <code>PennTreeReader</code>
+    /// silently replaces \* with * and \/ with /.  Two possible designs
+    /// for this were to make the <code>PennTreeReader</code> always do
+    /// this or to make the <code>TreeNormalizers</code> do this.  We
+    /// decided to put it in the <code>PennTreeReader</code> class itself
+    /// to avoid the problem of people making new
+    /// <code>TreeNormalizers</code> and forgetting to include the unescaping.
+    /// 
+    /// @author Christopher Manning
+    /// @author Roger Levy
+    /// @author Spence Green
+    /// 
+    /// Code...
+    /// </summary>
     public class PennTreeReader : TreeReader
     {
         private readonly TextReader reader;
@@ -43,59 +43,48 @@ namespace OpenNLP.Tools.Util.Trees
         private Tree currentTree;
         // misuse a list as a stack, since we want to avoid the synchronized and old Stack, but don't need the power and JDK 1.6 dependency of a Deque
         private List<Tree> stack;
-        private const string leftParen = "(";
-        private const string rightParen = ")";
+        private const string LeftParen = "(";
+        private const string RightParen = ")";
 
-        /**
-   * Read parse trees from a <code>Reader</code>.
-   * For the defaulted arguments, you get a
-   * <code>SimpleTreeFactory</code>, no <code>TreeNormalizer</code>, and
-   * a <code>PennTreebankTokenizer</code>.
-   *
-   * @param in The <code>Reader</code>
-   */
-
+        /// <summary>
+        /// Read parse trees from a <code>Reader</code>.
+        /// For the defaulted arguments, you get a
+        /// <code>SimpleTreeFactory</code>, no <code>TreeNormalizer</code>, and
+        /// a <code>PennTreebankTokenizer</code>.
+        /// </summary>
+        /// <param name="input">The <code>Reader</code></param>
         public PennTreeReader(TextReader input) : this(input, new LabeledScoredTreeFactory())
         {
         }
 
-
-        /**
-   * Read parse trees from a <code>Reader</code>.
-   *
-   * @param in the Reader
-   * @param tf TreeFactory -- factory to create some kind of Tree
-   */
-
+                /// <summary>
+        /// Read parse trees from a <code>Reader</code>.
+        /// </summary>
+        /// <param name="input">the Reader</param>
+        /// <param name="tf">TreeFactory -- factory to create some kind of Tree</param>
         public PennTreeReader(TextReader input, TreeFactory tf) :
             this(input, tf, null, new PennTreebankTokenizer(input))
         {
         }
 
-
-        /**
-   * Read parse trees from a Reader.
-   *
-   * @param in Reader
-   * @param tf TreeFactory -- factory to create some kind of Tree
-   * @param tn the method of normalizing trees
-   */
-
+        /// <summary>
+        /// Read parse trees from a Reader.
+        /// </summary>
+        /// <param name="input">The Reader</param>
+        /// <param name="tf">TreeFactory -- factory to create some kind of Tree</param>
+        /// <param name="tn">the method of normalizing trees</param>
         public PennTreeReader(TextReader input, TreeFactory tf, TreeNormalizer tn) :
             this(input, tf, tn, new PennTreebankTokenizer(input))
         {
         }
 
-
-        /**
-   * Read parse trees from a Reader.
-   *
-   * @param in Reader
-   * @param tf TreeFactory -- factory to create some kind of Tree
-   * @param tn the method of normalizing trees
-   * @param st Tokenizer that divides up Reader
-   */
-
+        /// <summary>
+        /// Read parse trees from a Reader.
+        /// </summary>
+        /// <param name="input">The Reader</param>
+        /// <param name="tf">TreeFactory -- factory to create some kind of Tree</param>
+        /// <param name="tn">the method of normalizing trees</param>
+        /// <param name="st">Tokenizer that divides up Reader</param>
         public PennTreeReader(TextReader input, TreeFactory tf, TreeNormalizer tn, Tokenizer<string> st)
         {
             reader = input;
@@ -129,22 +118,20 @@ namespace OpenNLP.Tools.Util.Trees
     }*/
         }
 
-        /**
-   * Reads a single tree in standard Penn Treebank format from the
-   * input stream. The method supports additional parentheses around the
-   * tree (an unnamed ROOT node) so long as they are balanced. If the token stream
-   * ends before the current tree is complete, then the method will throw an
-   * <code>IOException</code>.
-   * <p>
-   * Note that the method will skip malformed trees and attempt to
-   * read additional trees from the input stream. It is possible, however,
-   * that a malformed tree will corrupt the token stream. In this case,
-   * an <code>IOException</code> will eventually be thrown.
-   *
-   * @return A single tree, or <code>null</code> at end of token stream.
-   */
-        //@Override
-        public Tree ReadTree() /*throws IOException*/
+        /// <summary>
+        /// Reads a single tree in standard Penn Treebank format from the
+        /// input stream. The method supports additional parentheses around the
+        /// tree (an unnamed ROOT node) so long as they are balanced. If the token stream
+        /// ends before the current tree is complete, then the method will throw an
+        /// <code>IOException</code>.
+        /// 
+        /// Note that the method will skip malformed trees and attempt to
+        /// read additional trees from the input stream. It is possible, however,
+        /// that a malformed tree will corrupt the token stream. In this case,
+        /// an <code>IOException</code> will eventually be thrown.
+        /// </summary>
+        /// <returns>A single tree, or <code>null</code> at end of token stream.</returns>
+        public Tree ReadTree()
         {
             Tree t = null;
 
@@ -186,7 +173,7 @@ namespace OpenNLP.Tools.Util.Trees
         private static readonly Regex SlashPattern = new Regex("\\\\/");
 
 
-        private Tree GetTreeFromInputStream() /*throws NoSuchElementException*/
+        private Tree GetTreeFromInputStream()
         {
             int wordIndex = 1;
 
@@ -198,11 +185,11 @@ namespace OpenNLP.Tools.Util.Trees
 
                 switch (token)
                 {
-                    case leftParen:
+                    case LeftParen:
 
                         // cdm 20100225: This next line used to have "" instead of null, but the traditional and current tree normalizers depend on the label being null not "" when there is no label on a tree (like the outermost English PTB level)
-                        string label = (tokenizer.Peek().Equals(leftParen)) ? null : tokenizer.Next();
-                        if (rightParen.Equals(label))
+                        string label = (tokenizer.Peek().Equals(LeftParen)) ? null : tokenizer.Next();
+                        if (RightParen.Equals(label))
                         {
 //Skip past empty trees
                             continue;
@@ -231,7 +218,7 @@ namespace OpenNLP.Tools.Util.Trees
                         currentTree = newTree;
 
                         break;
-                    case rightParen:
+                    case RightParen:
                         if (!stack.Any())
                         {
                             // Warn that file has too many right parens
@@ -292,13 +279,10 @@ namespace OpenNLP.Tools.Util.Trees
             return null;
         }
 
-
-        /**
-   * Closes the underlying <code>Reader</code> used to create this
-   * class.
-   */
-        //@Override
-        public void Close() /*throws IOException*/
+        /// <summary>
+        /// Closes the underlying <code>Reader</code> used to create this class.
+        /// </summary>
+        public void Close()
         {
             reader.Close();
         }

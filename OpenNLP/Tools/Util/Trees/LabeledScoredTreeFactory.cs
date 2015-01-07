@@ -7,67 +7,69 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
+    /// <summary>
+    /// A <code>LabeledScoredTreeFactory</code> acts as a factory for creating
+    /// trees with labels and scores.  Unless another <code>LabelFactory</code>
+    /// is supplied, it will use a <code>CoreLabel</code> by default.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public class LabeledScoredTreeFactory : SimpleTreeFactory
     {
-        private LabelFactory lf;
+        private readonly LabelFactory _lf;
 
-        /**
-   * Make a TreeFactory that produces LabeledScoredTree trees.
-   * The labels are of class <code>CoreLabel</code>.
-   */
-
+        /// <summary>
+        /// Make a TreeFactory that produces LabeledScoredTree trees.
+        /// The labels are of class <code>CoreLabel</code>.
+        /// </summary>
         public LabeledScoredTreeFactory() : this(CoreLabel.Factory())
         {
         }
 
-        /**
-   * Make a TreeFactory that uses LabeledScoredTree trees, where the
-   * labels are as specified by the user.
-   *
-   * @param lf the <code>LabelFactory</code> to be used to create labels
-   */
-
+        /// <summary>
+        /// Make a TreeFactory that uses LabeledScoredTree trees, where the
+        /// labels are as specified by the user.
+        /// </summary>
+        /// <param name="lf">the <code>LabelFactory</code> to be used to create labels</param>
         public LabeledScoredTreeFactory(LabelFactory lf)
         {
-            this.lf = lf;
+            this._lf = lf;
         }
 
-        //@Override
         public override Tree NewLeaf( /*final*/ string word)
         {
-            return new LabeledScoredTreeNode(lf.NewLabel(word));
+            return new LabeledScoredTreeNode(_lf.NewLabel(word));
         }
 
-        /**
-   * Create a new leaf node with the given label
-   *
-   * @param label the label for the leaf node
-   * @return A new tree leaf
-   */
-        //@Override
+        /// <summary>
+        /// Create a new leaf node with the given label
+        /// </summary>
+        /// <param name="label">the label for the leaf node</param>
+        /// <returns>A new tree leaf</returns>
         public override Tree NewLeaf(Label label)
         {
-            return new LabeledScoredTreeNode(lf.NewLabel(label));
+            return new LabeledScoredTreeNode(_lf.NewLabel(label));
         }
 
-        //@Override
         public override Tree NewTreeNode( /*final*/ string parent, /*final */List<Tree> children)
         {
-            return new LabeledScoredTreeNode(lf.NewLabel(parent), children);
+            return new LabeledScoredTreeNode(_lf.NewLabel(parent), children);
         }
 
-        /**
-   * Create a new non-leaf tree node with the given label
-   *
-   * @param parentLabel The label for the node
-   * @param children    A <code>List</code> of the children of this node,
-   *                    each of which should itself be a <code>LabeledScoredTree</code>
-   * @return A new internal tree node
-   */
-        //@Override
+        /// <summary>
+        /// Create a new non-leaf tree node with the given label
+        /// </summary>
+        /// <param name="parentLabel">The label for the node</param>
+        /// <param name="children">
+        /// A <code>List</code> of the children of this node,
+        /// each of which should itself be a <code>LabeledScoredTree</code>
+        /// </param>
+        /// <returns>A new internal tree node</returns>
         public override Tree NewTreeNode(Label parentLabel, List<Tree> children)
         {
-            return new LabeledScoredTreeNode(lf.NewLabel(parentLabel), children);
+            return new LabeledScoredTreeNode(_lf.NewLabel(parentLabel), children);
         }
     }
 }

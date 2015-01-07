@@ -8,45 +8,46 @@ using OpenNLP.Tools.Util.Trees.TRegex;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * Implements a 'semantic head' variant of the the HeadFinder found
- * in Michael Collins' 1999 thesis.
- * This version chooses the semantic head verb rather than the verb form
- * for cases with verbs.  And it makes similar themed changes to other
- * categories: e.g., in question phrases, like "Which Brazilian game", the
- * head is made "game" not "Which" as in common PTB head rules.<p/>
- * <p/>
- * By default the SemanticHeadFinder uses a treatment of copula where the
- * complement of the copula is taken as the head.  That is, a sentence like
- * "Bill is big" will be analyzed as <p/>
- * <p/>
- * <code>nsubj</code>(big, Bill) <br/>
- * <code>cop</code>(big, is) <p/>
- * <p/>
- * This analysis is used for questions and declaratives for adjective
- * complements and declarative nominal complements.  However Wh-sentences
- * with nominal complements do not receive this treatment.
- * "Who is the president?" is analyzed with "the president" as nsubj and "who"
- * as "attr" of the copula:<p/><p>
- * <code>nsubj</code>(is, president)<br/>
- * <code>attr</code>(is, Who) <p/>
- * <p/>
- * (Such nominal copula sentences are complex: arguably, depending on the
- * circumstances, several analyses are possible, with either the overt NP able
- * to be any of the subject, the predicate, or one of two referential entities
- * connected by an equational copula.  These uses aren't differentiated.)
- * <p/>
- * Existential sentences are treated as follows:  <br/>
- * "There is a man" <br/>
- * <code>expl</code>(is, There) <br/>
- * <code>det</code>(man-4, a-3) <br/>
- * <code>nsubj</code>(is-2, man-4)<br/>
- *
- * @author John Rappaport
- * @author Marie-Catherine de Marneffe
- * @author Anna Rafferty
- */
-
+    /// <summary>
+    /// Implements a 'semantic head' variant of the the HeadFinder found
+    /// in Michael Collins' 1999 thesis.
+    /// This version chooses the semantic head verb rather than the verb form
+    /// for cases with verbs.  And it makes similar themed changes to other
+    /// categories: e.g., in question phrases, like "Which Brazilian game", the
+    /// head is made "game" not "Which" as in common PTB head rules.<p/>
+    /// 
+    /// By default the SemanticHeadFinder uses a treatment of copula where the
+    /// complement of the copula is taken as the head.  That is, a sentence like
+    /// "Bill is big" will be analyzed as
+    /// 
+    /// <code>nsubj</code>(big, Bill)
+    /// <code>cop</code>(big, is)
+    /// 
+    /// This analysis is used for questions and declaratives for adjective
+    /// complements and declarative nominal complements.  However Wh-sentences
+    /// with nominal complements do not receive this treatment.
+    /// "Who is the president?" is analyzed with "the president" as nsubj and "who"
+    /// as "attr" of the copula:
+    /// <code>nsubj</code>(is, president)
+    /// <code>attr</code>(is, Who)
+    /// 
+    /// (Such nominal copula sentences are complex: arguably, depending on the
+    /// circumstances, several analyses are possible, with either the overt NP able
+    /// to be any of the subject, the predicate, or one of two referential entities
+    /// connected by an equational copula.  These uses aren't differentiated.)
+    /// 
+    /// Existential sentences are treated as follows:
+    /// "There is a man"
+    /// <code>expl</code>(is, There) <br/>
+    /// <code>det</code>(man-4, a-3) <br/>
+    /// <code>nsubj</code>(is-2, man-4)<br/>
+    /// 
+    /// @author John Rappaport
+    /// @author Marie-Catherine de Marneffe
+    /// @author Anna Rafferty
+    /// 
+    /// Code...
+    /// </summary>
     public class SemanticHeadFinder : ModCollinsHeadFinder
     {
         //private static readonly bool DEBUG = System.getProperty("SemanticHeadFinder", null) != null;
@@ -96,18 +97,18 @@ namespace OpenNLP.Tools.Util.Trees
         {
         }
 
-
-        /** Create a SemanticHeadFinder.
-   *
-   * @param tlp The TreebankLanguagePack, used by the superclass to get basic
-   *     category of constituents.
-   * @param noCopulaHead If true, a copular verb
-   *     (be, seem, appear, stay, remain, resemble, become)
-   *     is not treated as head when it has an AdjP or NP complement.  If false,
-   *     a copula verb is still always treated as a head.  But it will still
-   *     be treated as an auxiliary in periphrastic tenses with a VP complement.
-   */
-
+        /// <summary>
+        /// Create a SemanticHeadFinder
+        /// </summary>
+        /// <param name="tlp">
+        /// The TreebankLanguagePack, used by the superclass to get basic category of constituents
+        /// </param>
+        /// <param name="noCopulaHead">
+        /// If true, a copular verb (be, seem, appear, stay, remain, resemble, become)
+        /// is not treated as head when it has an AdjP or NP complement.  If false,
+        /// a copula verb is still always treated as a head.  But it will still
+        /// be treated as an auxiliary in periphrastic tenses with a VP complement.
+        /// </param>
         public SemanticHeadFinder(AbstractTreebankLanguagePack tlp, bool noCopulaHead) : base(tlp)
         {
             RuleChanges();
@@ -132,13 +133,14 @@ namespace OpenNLP.Tools.Util.Trees
             unambiguousAuxiliaryTags = new HashSet<string>(UnambiguousAuxTags);
         }
 
-        //@Override
         public override bool MakesCopulaHead()
         {
             return makeCopulaHead;
         }
 
-        //makes modifications of Collins' rules to better fit with semantic notions of heads
+        /// <summary>
+        /// Makes modifications of Collins' rules to better fit with semantic notions of heads
+        /// </summary>
         private void RuleChanges()
         {
             //  NP: don't want a POS to be the head
@@ -226,8 +228,7 @@ namespace OpenNLP.Tools.Util.Trees
             nonTerminalInfo["EMBED"] = new string[][] {new string[] {"right", "INTJ"}};
 
         }
-
-
+        
         private bool ShouldSkip(Tree t, bool origWasInterjection)
         {
             return t.IsPreTerminal() &&
@@ -269,10 +270,9 @@ namespace OpenNLP.Tools.Util.Trees
             return newHeadIdx;
         }
 
-        /**
-   * Overwrite the postOperationFix method.  For "a, b and c" or similar: we want "a" to be the head.
-   */
-        //@Override
+        /// <summary>
+        /// Overwrite the postOperationFix method.  For "a, b and c" or similar: we want "a" to be the head.
+        /// </summary>
         protected override int PostOperationFix(int headIdx, Tree[] daughterTrees)
         {
             if (headIdx >= 2)
@@ -333,12 +333,11 @@ namespace OpenNLP.Tools.Util.Trees
         /*private static readonly TregexPattern noVerbOverTempTregex =
             TregexPattern.compile("/^VP/ < NP-TMP !< /^V/ !< NNP|NN|NNPS|NNS|NP|JJ|ADJP|S");*/
 
-        /**
-   * We use this to avoid making a -TMP or -ADV the head of a copular phrase.
-   * For example, in the sentence "It is hands down the best dessert ...",
-   * we want to avoid using "hands down" as the head.
-   */
-
+        /// <summary>
+        /// We use this to avoid making a -TMP or -ADV the head of a copular phrase.
+        /// For example, in the sentence "It is hands down the best dessert ...",
+        /// we want to avoid using "hands down" as the head.
+        /// </summary>
         private static readonly Predicate<Tree> RemoveTmpAndAdv = tree =>
         {
             if (tree == null)
@@ -363,16 +362,16 @@ namespace OpenNLP.Tools.Util.Trees
             return true;
         };
 
-        /**
-   * Determine which daughter of the current parse tree is the
-   * head.  It assumes that the daughters already have had their
-   * heads determined.  Uses special rule for VP heads
-   *
-   * @param t The parse tree to examine the daughters of.
-   *          This is assumed to never be a leaf
-   * @return The parse tree that is the head
-   */
-        //@Override
+        /// <summary>
+        /// Determine which daughter of the current parse tree is the head.
+        /// It assumes that the daughters already have had their heads determined.
+        /// Uses special rule for VP heads
+        /// </summary>
+        /// <param name="t">
+        /// The parse tree to examine the daughters of.
+        /// This is assumed to never be a leaf
+        /// </param>
+        /// <returns>The parse tree that is the head</returns>
         protected override Tree DetermineNonTrivialHead(Tree t, Tree parent)
         {
             string motherCat = tlp.BasicCategory(t.Label().Value());
@@ -413,19 +412,19 @@ namespace OpenNLP.Tools.Util.Trees
                     var headOfCopulaTregex = new TregexPattern[]
                     {
                         // Matches phrases such as "what is wrong"
-                        TregexPattern.Compile("SBARQ < (WHNP $++ (/^VB/ < " + EnglishPatterns.copularWordRegex +
+                        TregexPattern.Compile("SBARQ < (WHNP $++ (/^VB/ < " + EnglishPatterns.CopularWordRegex +
                                               " $++ ADJP=head))"),
 
                         // matches WHNP $+ VB<copula $+ NP
                         // for example, "Who am I to judge?"
                         // !$++ ADJP matches against "Why is the dog pink?"
-                        TregexPattern.Compile("SBARQ < (WHNP=head $++ (/^VB/ < " + EnglishPatterns.copularWordRegex +
+                        TregexPattern.Compile("SBARQ < (WHNP=head $++ (/^VB/ < " + EnglishPatterns.CopularWordRegex +
                                               " $+ NP !$++ ADJP))"),
 
                         // Actually somewhat limited in scope, this detects "Tuesday it is",
                         // "Such a great idea this was", etc
                         TregexPattern.Compile("SINV < (NP=head $++ (NP $++ (VP < (/^(?:VB|AUX)/ < " +
-                                              EnglishPatterns.copularWordRegex + "))))"),
+                                              EnglishPatterns.CopularWordRegex + "))))"),
                     };
                     foreach (TregexPattern pattern in headOfCopulaTregex)
                     {
@@ -483,7 +482,7 @@ namespace OpenNLP.Tools.Util.Trees
                 }
 
                 // looks for copular verbs
-                if (HasVerbalAuxiliary(kids, copulars, false) && ! IsExistential(t, parent) && ! IsWHQ(t, parent))
+                if (HasVerbalAuxiliary(kids, copulars, false) && ! IsExistential(t, parent) && ! IsWhQ(t, parent))
                 {
                     string[] how;
                     if (motherCat.Equals("SQ"))
@@ -575,13 +574,12 @@ namespace OpenNLP.Tools.Util.Trees
             return hd;
         }
 
-        /* Checks whether the tree t is an existential constituent
-   * There are two cases:
-   * -- affirmative sentences in which "there" is a left sister of the VP
-   * -- questions in which "there" is a daughter of the SQ.
-   *
-   */
-
+        /// <summary>
+        /// Checks whether the tree t is an existential constituent
+        /// There are two cases:
+        /// -- affirmative sentences in which "there" is a left sister of the VP
+        /// -- questions in which "there" is a daughter of the SQ.
+        /// </summary>
         private bool IsExistential(Tree t, Tree parent)
         {
             /*if (DEBUG) {
@@ -645,14 +643,12 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
 
-        /* Is the tree t a WH-question?
-   *  At present this is only true if the tree t is a SQ having a WH.* sister
-   *  and headed by a SBARQ.
-   * (It was changed to looser definition in Feb 2006.)
-   *
-   */
-
-        private static bool IsWHQ(Tree t, Tree parent)
+        /// <summary>
+        /// Is the tree t a WH-question?
+        /// At present this is only true if the tree t is a SQ having a WH.* sister and headed by a SBARQ.
+        /// (It was changed to looser definition in Feb 2006.)
+        /// </summary>
+        private static bool IsWhQ(Tree t, Tree parent)
         {
             if (t == null)
             {
@@ -723,13 +719,11 @@ namespace OpenNLP.Tools.Util.Trees
             return false;
         }
 
-        /**
-   * Returns true if this tree is a preterminal that is a verbal auxiliary.
-   *
-   * @param t A tree to examine for being an auxiliary.
-   * @return Whether it is a verbal auxiliary (be, do, have, get)
-   */
-
+        /// <summary>
+        /// Returns true if this tree is a preterminal that is a verbal auxiliary.
+        /// </summary>
+        /// <param name="t">A tree to examine for being an auxiliary.</param>
+        /// <returns>Whether it is a verbal auxiliary (be, do, have, get)</returns>
         public bool IsVerbalAuxiliary(Tree t)
         {
             return IsVerbalAuxiliary(t, verbalAuxiliaries, true);
@@ -881,20 +875,21 @@ namespace OpenNLP.Tools.Util.Trees
             return false;
         }
 
-
-        /** This looks to see whether any of the children is a preterminal headed by a word
-   *  which is within the set verbalSet (which in practice is either
-   *  auxiliary or copula verbs).  It only returns true if it's a preterminal head, since
-   *  you don't want to pick things up in phrasal daughters.  That is an error.
-   *
-   * @param kids The child trees
-   * @param verbalSet The set of words
-   * @param allowTagOnlyMatch If true, it's sufficient to match on an unambiguous auxiliary tag.
-   *                          Make true iff verbalSet is "all auxiliaries"
-   * @return Returns true if one of the child trees is a preterminal verb headed
-   *      by a word in verbalSet
-   */
-
+        /// <summary>
+        /// This looks to see whether any of the children is a preterminal headed by a word
+        /// which is within the set verbalSet (which in practice is either
+        /// auxiliary or copula verbs).  It only returns true if it's a preterminal head, since
+        /// you don't want to pick things up in phrasal daughters.  That is an error.
+        /// </summary>
+        /// <param name="kids">The child trees</param>
+        /// <param name="verbalSet">The set of words</param>
+        /// <param name="allowTagOnlyMatch">
+        /// If true, it's sufficient to match on an unambiguous auxiliary tag.
+        /// Make true iff verbalSet is "all auxiliaries"
+        /// </param>
+        /// <returns>
+        /// true if one of the child trees is a preterminal verb headed by a word in verbalSet
+        /// </returns>
         private bool HasVerbalAuxiliary(Tree[] kids, Set<string> verbalSet, bool allowTagOnlyMatch)
         {
             /*if (DEBUG) {

@@ -15,8 +15,10 @@ namespace OpenNLP.Tools.Util.Trees
     /// with respect to the indices. The surface forms are not considered. 
     /// This permits a use case in which dependencies in two different parse trees have slightly different 
     /// pre-processing, possibly due to pre-processing.
+    /// 
     /// @author Spence Green
-    /// Code retrieved on the Stanford Parser: 
+    /// 
+    /// Code..
     /// </summary>
     public class UnnamedConcreteDependency : UnnamedDependency
     {
@@ -102,13 +104,11 @@ namespace OpenNLP.Tools.Util.Trees
             return string.Format("{0} [{1}] --> {2} [{3}]", headWord, headIndex, depWord, depIndex);
         }
 
-        /**
-           * Provide different printing options via a string keyword.
-           * The recognized options are currently "xml", and "predicate".
-           * Otherwise the default ToString() is used.
-           */
-
-        //@Override
+        /// <summary>
+        /// Provide different printing options via a string keyword.
+        /// The recognized options are currently "xml", and "predicate".
+        /// Otherwise the default ToString() is used.
+        /// </summary>
         public override string ToString(string format)
         {
             switch (format)

@@ -9,6 +9,79 @@ using OpenNLP.Tools.Util.Trees.TRegex;
 
 namespace OpenNLP.Tools.Util.Trees
 {
+    /// <summary>
+    /// {@code GrammaticalRelation} is used to define a
+    /// standardized, hierarchical set of grammatical relations,
+    /// together with patterns for identifying them in
+    /// parse trees.
+    ///
+    /// Each <code>GrammaticalRelation</code> has:
+    /// <ul>
+    /// <li>A <code>String</code> short name, which should be a lowercase
+    /// abbreviation of some kind (in the fure mainly Universal Dependency names).</li>
+    /// <li>A <code>String</code> long name, which should be descriptive.</li>
+    /// <li>A parent in the <code>GrammaticalRelation</code> hierarchy.</li>
+    /// <li>A {@link Pattern <code>Pattern</code>} called
+    /// <code>sourcePattern</code> which matches (parent) nodes from which
+    /// this <code>GrammaticalRelation</code> could hold.  (Note: this is done
+    /// with the Java regex Pattern <code>matches()</code> predicate. The pattern
+    /// must match the
+    /// whole node name, and <code>^</code> or <code>$</code> aren't needed.
+    /// Tregex constructions like __ do not work. Use ".*" to be applicable
+    /// at all nodes. This prefiltering is used for efficiency.)</li>
+    /// <li>A list of zero or more {@link TregexPattern
+    /// <code>TregexPattern</code>s} called <code>targetPatterns</code>,
+    /// which describe the local tree structure which must hold between
+    /// the source node and a target node for the
+    /// <code>GrammaticalRelation</code> to apply. (Note: {@code tregex}
+    /// regular expressions match with the {@code find()} method, while
+    /// literal string label descriptions that are not regular expressions must
+    /// be {@code equals()}.)</li>
+    /// </ul>
+    ///
+    /// The <code>targetPatterns</code> associated
+    /// with a <code>GrammaticalRelation</code> are designed as follows.
+    /// In order to recognize a grammatical relation X holding between
+    /// nodes A and B in a parse tree, we want to associate with
+    /// <code>GrammaticalRelation</code> X a {@link TregexPattern
+    /// <code>TregexPattern</code>} such that:
+    /// <ul>
+    /// <li>the root of the pattern matches A, and</li>
+    /// <li>the pattern includes a node labeled "target", which matches B.</li>
+    /// </ul>
+    /// For example, for the grammatical relation <code>PREDICATE</code>
+    /// which holds between a clause and its primary verb phrase, we might
+    /// want to use the pattern {@code "S &lt; VP=target"}, in which the
+    /// root will match a clause and the node labeled <code>"target"</code>
+    /// will match the verb phrase.
+    ///
+    /// For a given grammatical relation, the method {@link
+    /// GrammaticalRelation#getRelatedNodes <code>getRelatedNodes()</code>}
+    /// takes a <code>Tree</code> node as an argument and attempts to
+    /// return other nodes which have this grammatical relation to the
+    /// argument node.  By default, this method operates as follows: it
+    /// steps through the patterns in the pattern list, trying to match
+    /// each pattern against the argument node, until it finds some
+    /// matches.  If a pattern matches, all matching nodes (that is, each
+    /// node which corresponds to node label "target" in some match) are
+    /// returned as a list; otherwise the next pattern is tried.
+    ///
+    /// For some grammatical relations, we need more sophisticated logic to
+    /// identify related nodes.  In such cases, {@link
+    /// GrammaticalRelation#getRelatedNodes <code>getRelatedNodes()</code>}
+    /// can be overridden on a per-relation basis using anonymous subclassing.
+    ///
+    /// @see GrammaticalStructure
+    /// @see EnglishGrammaticalStructure
+    /// @see EnglishGrammaticalRelations
+    /// @see edu.stanford.nlp.trees.international.pennchinese.ChineseGrammaticalRelations
+    ///
+    /// @author Bill MacCartney
+    /// @author Galen Andrew (refactoring English-specific stuff)
+    /// @author Ilya Sherman (refactoring annotation-relation pairing, which is now gone)
+    /// 
+    /// Code...
+    /// </summary>
     public class GrammaticalRelation : IComparable<GrammaticalRelation>
     {
         private static readonly long serialVersionUID = 892618003417550128L;
@@ -18,51 +91,39 @@ namespace OpenNLP.Tools.Util.Trees
         private static readonly Dictionary<Language, Dictionary<string, GrammaticalRelation>>
             StringsToRelations = new Dictionary<Language, Dictionary<string, GrammaticalRelation>>( /*Language.class*/);
 
-        /**
-   * The "governor" grammatical relation, which is the inverse of "dependent".<p>
-   * <p/>
-   * Example: "the red car" &rarr; <code>gov</code>(red, car)
-   */
-
-        public static readonly GrammaticalRelation GOVERNOR =
+        /// <summary>
+        /// The "governor" grammatical relation, which is the inverse of "dependent".
+        /// Example: "the red car" &rarr; <code>gov</code>(red, car)
+        /// </summary>
+        public static readonly GrammaticalRelation Governor =
             new GrammaticalRelation(Language.Any, "gov", "governor", null);
 
-
-        /**
-   * The "dependent" grammatical relation, which is the inverse of "governor".<p>
-   * <p/>
-   * Example: "the red car" &rarr; <code>dep</code>(car, red)
-   */
-
-        public static readonly GrammaticalRelation DEPENDENT = new GrammaticalRelation(Language.Any, "dep", "dependent",
+        /// <summary>
+        /// The "dependent" grammatical relation, which is the inverse of "governor".
+        /// Example: "the red car" &rarr; <code>dep</code>(car, red)
+        /// </summary>
+        public static readonly GrammaticalRelation Dependent = new GrammaticalRelation(Language.Any, "dep", "dependent",
             null);
 
-
-        /**
-   *  The "root" grammatical relation between a faked "ROOT" node, and the root of the sentence.
-   */
-
-        public static readonly GrammaticalRelation ROOT =
+        /// <summary>
+        /// The "root" grammatical relation between a faked "ROOT" node, and the root of the sentence.
+        /// </summary>
+        public static readonly GrammaticalRelation Root =
             new GrammaticalRelation(Language.Any, "root", "root", null);
 
-
-        /**
-   * Dummy relation, used while collapsing relations, e.g., in English &amp; Chinese GrammaticalStructure
-   */
-
-        public static readonly GrammaticalRelation KILL =
+        /// <summary>
+        /// Dummy relation, used while collapsing relations, e.g., in English &amp; Chinese GrammaticalStructure
+        /// </summary>
+        public static readonly GrammaticalRelation Kill =
             new GrammaticalRelation(Language.Any, "KILL", "dummy relation kill", null);
 
-
-        /**
-   * Returns the GrammaticalRelation having the given string
-   * representation (e.g. "nsubj"), or null if no such is found.
-   *
-   * @param s The short name of the GrammaticalRelation
-   * @param values The set of GrammaticalRelations to look for it among.
-   * @return The GrammaticalRelation with that name
-   */
-
+        /// <summary>
+        /// Returns the GrammaticalRelation having the given string
+        /// representation (e.g. "nsubj"), or null if no such is found.
+        /// </summary>
+        /// <param name="s">The short name of the GrammaticalRelation</param>
+        /// <param name="values">The set of GrammaticalRelations to look for it among.</param>
+        /// <returns>The GrammaticalRelation with that name</returns>
         public static GrammaticalRelation ValueOf(string s, ICollection<GrammaticalRelation> values)
         {
             foreach (GrammaticalRelation reln in values)
@@ -73,20 +134,18 @@ namespace OpenNLP.Tools.Util.Trees
             return null;
         }
 
-        /** Convert from a string representation of a GrammaticalRelation to a
-   *  GrammaticalRelation.  Where possible, you should avoid using this
-   *  method and simply work with true GrammaticalRelations rather than
-   *  string representations.  Correct behavior of this method depends
-   *  on the underlying data structure resources used being kept in sync
-   *  with the ToString() and Equals() methods.  However, there is really
-   *  no choice but to use this method when storing GrammaticalRelations
-   *  to text files and then reading them back in, so this method is not
-   *  deprecated.
-   *
-   *  @param s The string representation of a GrammaticalRelation
-   *  @return The grammatical relation represented by this String
-   */
-
+        /// <summary>
+        /// Convert from a string representation of a GrammaticalRelation to a
+        /// GrammaticalRelation.  Where possible, you should avoid using this
+        /// method and simply work with true GrammaticalRelations rather than
+        /// string representations.  Correct behavior of this method depends
+        /// on the underlying data structure resources used being kept in sync
+        /// with the ToString() and Equals() methods.  However, there is really
+        /// no choice but to use this method when storing GrammaticalRelations
+        /// to text files and then reading them back in, so this method is not deprecated.
+        /// </summary>
+        /// <param name="s">The string representation of a GrammaticalRelation</param>
+        /// <returns>The grammatical relation represented by this String</returns>
         public static GrammaticalRelation ValueOf(Language language, string s)
         {
             GrammaticalRelation reln = (StringsToRelations[language] != null
@@ -138,24 +197,22 @@ namespace OpenNLP.Tools.Util.Trees
             }
             return ValueOfCache[s];
             /*GrammaticalRelation value = null;
-    SoftReference<GrammaticalRelation> possiblyCachedValue = valueOfCache[s);
-    if (possiblyCachedValue != null) { value = possiblyCachedValue[); }
-    if (value == null) {
-      value = valueOf(Language.English, s);
-      valueOfCache.Add(s, new SoftReference<GrammaticalRelation>(value));
-    }
-    return value;*/
+            SoftReference<GrammaticalRelation> possiblyCachedValue = valueOfCache[s);
+            if (possiblyCachedValue != null) { value = possiblyCachedValue[); }
+            if (value == null) {
+                value = valueOf(Language.English, s);
+                valueOfCache.Add(s, new SoftReference<GrammaticalRelation>(value));
+            }
+            return value;*/
         }
 
-        /**
-   * This function is used to determine whether the GrammaticalRelation in
-   * question is one that was created to be a thin wrapper around a String
-   * representation by valueOf(string), or whether it is a full-fledged
-   * GrammaticalRelation created by direct invocation of the constructor.
-   *
-   * @return Whether this relation is just a wrapper created by valueOf(string)
-   */
-
+        /// <summary>
+        /// This function is used to determine whether the GrammaticalRelation in
+        /// question is one that was created to be a thin wrapper around a String
+        /// representation by valueOf(string), or whether it is a full-fledged
+        /// GrammaticalRelation created by direct invocation of the constructor.
+        /// </summary>
+        /// <returns>Whether this relation is just a wrapper created by valueOf(string)</returns>
         public bool IsFromString()
         {
             return longName == null;
@@ -273,7 +330,9 @@ namespace OpenNLP.Tools.Util.Trees
     }*/
         }
 
-        // This is the main constructor used
+        /// <summary>
+        /// This is the main constructor used
+        /// </summary>
         public GrammaticalRelation(Language language,
             string shortName,
             string longName,
@@ -285,7 +344,9 @@ namespace OpenNLP.Tools.Util.Trees
         {
         }
 
-        // Used for non-leaf relations with no patterns
+        /// <summary>
+        /// Used for non-leaf relations with no patterns
+        /// </summary>
         public GrammaticalRelation(Language language,
             string shortName,
             string longName,
@@ -293,7 +354,9 @@ namespace OpenNLP.Tools.Util.Trees
         {
         }
 
-        // used to create collapsed relations with specificString
+        /// <summary>
+        /// used to create collapsed relations with specificString
+        /// </summary>
         public GrammaticalRelation(Language language,
             string shortName,
             string longName,
@@ -308,15 +371,14 @@ namespace OpenNLP.Tools.Util.Trees
             children.Add(child);
         }
 
-        /** Given a {@code Tree} node {@code t}, attempts to
-   *  return a list of nodes to which node {@code t} has this
-   *  grammatical relation, with {@code t} as the governor.
-   *
-   *  @param t Target for finding dependents of t related by this GR
-   *  @param root The root of the Tree
-   *  @return A Collection of dependent nodes to which t bears this GR
-   */
-
+        /// <summary>
+        /// Given a {@code Tree} node {@code t}, attempts to
+        /// return a list of nodes to which node {@code t} has this
+        /// grammatical relation, with {@code t} as the governor.
+        /// </summary>
+        /// <param name="t">Target for finding dependents of t related by this GR</param>
+        /// <param name="root">The root of the Tree</param>
+        /// <returns>A Collection of dependent nodes to which t bears this GR</returns>
         public ICollection<TreeGraphNode> GetRelatedNodes(TreeGraphNode t, TreeGraphNode root, HeadFinder headFinder)
         {
             Set<TreeGraphNode> nodeList = new HashSet<TreeGraphNode>();
@@ -348,13 +410,13 @@ namespace OpenNLP.Tools.Util.Trees
             return nodeList;
         }
 
-        /** Returns <code>true</code> iff the value of <code>Tree</code>
-   *  node <code>t</code> matches the <code>sourcePattern</code> for
-   *  this <code>GrammaticalRelation</code>, indicating that this
-   *  <code>GrammaticalRelation</code> is one that could hold between
-   *  <code>Tree</code> node <code>t</code> and some other node.
-   */
-
+        /// <summary>
+        /// Returns <code>true</code> iff the value of <code>Tree</code>
+        /// node <code>t</code> matches the <code>sourcePattern</code> for
+        /// this <code>GrammaticalRelation</code>, indicating that this
+        /// <code>GrammaticalRelation</code> is one that could hold between
+        /// <code>Tree</code> node <code>t</code> and some other node.
+        /// </summary>
         public bool IsApplicable(Tree t)
         {
             // System.err.println("Testing whether " + sourcePattern + " matches " + ((TreeGraphNode) t).toOneLineString());
@@ -362,8 +424,9 @@ namespace OpenNLP.Tools.Util.Trees
                    sourcePattern.IsMatch(t.Value()) /*matcher(t.value()).matches()*/;
         }
 
-        /** Returns whether this is equal to or an ancestor of gr in the grammatical relations hierarchy. */
-
+        /// <summary>
+        /// Returns whether this is equal to or an ancestor of gr in the grammatical relations hierarchy.
+        /// </summary>
         public bool IsAncestor(GrammaticalRelation gr)
         {
             while (gr != null)
@@ -378,15 +441,12 @@ namespace OpenNLP.Tools.Util.Trees
             return false;
         }
 
-        /**
-   * Returns short name (abbreviation) for this
-   * <code>GrammaticalRelation</code>.  ToString() for collapsed
-   * relations will include the word that was collapsed.
-   * <br/>
-   * <i>Implementation note:</i> Note that this method must be synced with
-   * the Equals() and valueOf(string) methods
-   */
-        //@Override
+        /// <summary>
+        /// Returns short name (abbreviation) for this <code>GrammaticalRelation</code>.
+        /// ToString() for collapsed relations will include the word that was collapsed.
+        /// <i>Implementation note:</i> Note that this method must be synced with
+        /// the Equals() and valueOf(string) methods
+        /// </summary>
         public override string ToString()
         {
             if (specific == null)
@@ -399,15 +459,11 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        /**
-   * Returns a <code>string</code> representation of this
-   * <code>GrammaticalRelation</code> and the hierarchy below
-   * it, with one node per line, indented according to level.
-   *
-   * @return <code>string</code> representation of this
-   *         <code>GrammaticalRelation</code>
-   */
-
+        /// <summary>
+        /// Returns a <code>string</code> representation of this
+        /// <code>GrammaticalRelation</code> and the hierarchy below
+        /// it, with one node per line, indented according to level.
+        /// </summary>
         public string ToPrettyString()
         {
             var buf = new StringBuilder("\n");
@@ -415,15 +471,12 @@ namespace OpenNLP.Tools.Util.Trees
             return buf.ToString();
         }
 
-        /**
-   * Returns a <code>string</code> representation of this
-   * <code>GrammaticalRelation</code> and the hierarchy below
-   * it, with one node per line, indented according to
-   * <code>indentLevel</code>.
-   *
-   * @param indentLevel how many levels to indent (0 for root node)
-   */
-
+        /// <summary>
+        /// Returns a <code>string</code> representation of this
+        /// <code>GrammaticalRelation</code> and the hierarchy below
+        /// it, with one node per line, indented according to <code>indentLevel</code>.
+        /// </summary>
+        /// <param name="indentLevel">how many levels to indent (0 for root node)</param>
         private void ToPrettyString(int indentLevel, StringBuilder buf)
         {
             for (int i = 0; i < indentLevel; i++)
@@ -438,16 +491,12 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        /** Grammatical relations are equal with other grammatical relations if they
-   *  have the same shortName and specific (if present).
-   *  <i>Implementation note:</i> Note that this method must be synced with
-   *  the ToString() and valueOf(string) methods
-   *
-   *  @param o Object to be compared
-   *  @return Whether equal
-   */
-        //@SuppressWarnings({"StringEquality", "ThrowableInstanceNeverThrown"})
-        //@Override
+        /// <summary>
+        /// Grammatical relations are equal with other grammatical relations if they
+        /// have the same shortName and specific (if present).
+        /// <i>Implementation note:</i> Note that this method must be synced with
+        /// the ToString() and valueOf(string) methods
+        /// </summary>
         public override bool Equals(Object o)
         {
             if (this == o) return true;
@@ -468,7 +517,6 @@ namespace OpenNLP.Tools.Util.Trees
                     (this.specific != null && this.specific.Equals(gr.specific)));
         }
 
-        //@Override
         public override int GetHashCode()
         {
             int result = 17;
@@ -478,7 +526,6 @@ namespace OpenNLP.Tools.Util.Trees
             return result;
         }
 
-        //@Override
         public int CompareTo(GrammaticalRelation o)
         {
             string thisN = this.ToString();
@@ -563,10 +610,9 @@ namespace OpenNLP.Tools.Util.Trees
     }
   }*/
 
-        /**
-   * Returns the parent of this <code>GrammaticalRelation</code>.
-   */
-
+        /// <summary>
+        /// Returns the parent of this <code>GrammaticalRelation</code>.
+        /// </summary>
         public GrammaticalRelation GetParent()
         {
             return parent;

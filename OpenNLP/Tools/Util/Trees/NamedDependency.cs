@@ -7,18 +7,6 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * An individual dependency between a head and a dependent.
- * The head and dependent are represented as a Label.
- * For example, these can be a
- * Word or a WordTag.  If one wishes the dependencies to preserve positions
- * in a sentence, then each can be a NamedConstituent.
- *
- * @author Christopher Manning
- * @author Spence Green
- * 
- */
-
     /// <summary>
     /// An individual dependency between a head and a dependent.
     /// The head and dependent are represented as a Label.
@@ -49,19 +37,16 @@ namespace OpenNLP.Tools.Util.Trees
             this._name = name;
         }
 
-        //@Override
         public override Object Name()
         {
             return _name;
         }
 
-        //@Override
         public override int GetHashCode()
         {
             return RegentText.GetHashCode() ^ DependentText.GetHashCode() ^ _name.GetHashCode();
         }
 
-        //@Override
         public override bool Equals(Object o)
         {
             if (this == o)
@@ -76,20 +61,17 @@ namespace OpenNLP.Tools.Util.Trees
             return EqualsIgnoreName(o) && _name.Equals(d._name);
         }
 
-        //@Override
         public override string ToString()
         {
             return string.Format("{0} --{1}--> {2}", RegentText, _name, DependentText);
         }
 
-        /**
-           * Provide different printing options via a string keyword.
-           * The recognized options are currently "xml", and "predicate".
-           * Otherwise the default ToString() is used.
-           */
-
-        //@Override
-        public string ToString(string format)
+        /// <summary>
+        /// Provide different printing options via a string keyword.
+        /// The recognized options are currently "xml", and "predicate".
+        /// Otherwise the default ToString() is used.
+        /// </summary>
+        public override string ToString(string format)
         {
             switch (format)
             {
@@ -104,7 +86,6 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        //@Override
         public override DependencyFactory DependencyFactory()
         {
             return DependencyFactoryHolder.df;

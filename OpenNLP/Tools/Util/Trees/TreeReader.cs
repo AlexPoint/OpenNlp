@@ -6,30 +6,26 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * A <code>TreeReader</code> adds functionality to another <code>Reader</code>
- * by reading in Trees, or some descendant class.
- *
- * @author Christopher Manning
- * @author Roger Levy (mod. 2003/01)
- * @version 2003/01
- */
-
+    /// <summary>
+    /// A <code>TreeReader</code> adds functionality to another <code>Reader</code>
+    /// by reading in Trees, or some descendant class.
+    /// 
+    /// @author Christopher Manning
+    /// @author Roger Levy (mod. 2003/01)
+    /// 
+    /// Code...
+    /// </summary>
     public interface TreeReader
     {
-        /**
-   * Reads a single tree.
-   *
-   * @return A single tree, or <code>null</code> at end of file.
-   * @throws java.io.IOException If I/O problem
-   */
-        Tree ReadTree() /* throws IOException*/;
+        /// <summary>
+        /// Reads a single tree
+        /// </summary>
+        /// <returns>A single tree, or <code>null</code> at end of file.</returns>
+        Tree ReadTree();
 
-
-        /**
-   * Close the Reader behind this <code>TreeReader</code>.
-   */
-        //@Override
-        void Close() /* throws IOException*/;
+        /// <summary>
+        /// Close the Reader behind this <code>TreeReader</code>
+        /// </summary>
+        void Close();
     }
 }

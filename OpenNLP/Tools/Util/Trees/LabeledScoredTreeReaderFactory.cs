@@ -8,25 +8,25 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * This class implements a <code>TreeReaderFactory</code> that produces
- * labeled, scored array-based Trees, which have been cleaned up to
- * delete empties, etc.   This seems to be a common case (for English).
- * By default, the labels are of type CategoryWordTag,
- * but a different Label type can be specified by the user.
- *
- * @author Christopher Manning
- */
-
+    /// <summary>
+    /// This class implements a <code>TreeReaderFactory</code> that produces
+    /// labeled, scored array-based Trees, which have been cleaned up to
+    /// delete empties, etc.   This seems to be a common case (for English).
+    /// By default, the labels are of type CategoryWordTag,
+    /// but a different Label type can be specified by the user.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public class LabeledScoredTreeReaderFactory : TreeReaderFactory
     {
         private readonly LabelFactory lf;
         private readonly TreeNormalizer tm;
 
-        /**
-   * Create a new TreeReaderFactory with CoreLabel labels.
-   */
-
+        /// <summary>
+        /// Create a new TreeReaderFactory with CoreLabel labels.
+        /// </summary>
         public LabeledScoredTreeReaderFactory()
         {
             lf = CoreLabel.Factory();
@@ -51,15 +51,14 @@ namespace OpenNLP.Tools.Util.Trees
             this.tm = tm;
         }
 
-        /**
-   * An implementation of the <code>TreeReaderFactory</code> interface.
-   * It creates a <code>TreeReader</code> which normalizes trees using
-   * the <code>BobChrisTreeNormalizer</code>, and makes
-   * <code>LabeledScoredTree</code> objects with
-   * <code>CategoryWordTag</code> labels (unless otherwise specified on
-   * construction).
-   */
-
+        /// <summary>
+        /// An implementation of the <code>TreeReaderFactory</code> interface.
+        /// It creates a <code>TreeReader</code> which normalizes trees using
+        /// the <code>BobChrisTreeNormalizer</code>, and makes
+        /// <code>LabeledScoredTree</code> objects with
+        /// <code>CategoryWordTag</code> labels (unless otherwise specified on
+        /// construction).
+        /// </summary>
         public TreeReader NewTreeReader(TextReader input)
         {
             return new PennTreeReader(input, new LabeledScoredTreeFactory(lf), tm);

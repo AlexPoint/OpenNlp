@@ -39,7 +39,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation PREDICATE =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "pred", "predicate",
-                GrammaticalRelation.DEPENDENT, "S|SINV", TregexCompiler,
+                GrammaticalRelation.Dependent, "S|SINV", TregexCompiler,
                 new[] {"S|SINV <# VP=target"});
 
 
@@ -53,14 +53,14 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation AUX_MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "aux", "auxiliary",
-                GrammaticalRelation.DEPENDENT, "VP|SQ|SINV|CONJP", TregexCompiler,
+                GrammaticalRelation.Dependent, "VP|SQ|SINV|CONJP", TregexCompiler,
                 new string[]
                 {
                     "VP < VP < (/^(?:TO|MD|VB.*|AUXG?|POS)$/=target)",
                     "SQ|SINV < (/^(?:VB|MD|AUX)/=target $++ /^(?:VP|ADJP)/)",
                     "CONJP < TO=target < VB", // (CONJP not to mention)
                     // add handling of tricky VP fronting cases...
-                    "SINV < (VP=target < (/^(?:VB|AUX|POS)/ < " + EnglishPatterns.beAuxiliaryRegex + ") $-- (VP < VBG))"
+                    "SINV < (VP=target < (/^(?:VB|AUX|POS)/ < " + EnglishPatterns.BeAuxiliaryRegex + ") $-- (VP < VBG))"
                 });
 
 
@@ -78,13 +78,13 @@ namespace OpenNLP.Tools.Util.Trees
                 AUX_MODIFIER, "VP|SQ|SINV", TregexCompiler,
                 new string[]
                 {
-                    "VP < (/^(?:VB|AUX|POS)/=target < " + EnglishPatterns.passiveAuxWordRegex +
+                    "VP < (/^(?:VB|AUX|POS)/=target < " + EnglishPatterns.PassiveAuxWordRegex +
                     " ) < (VP|ADJP [ < VBN|VBD | < (VP|ADJP < VBN|VBD) < CC ] )",
-                    "SQ|SINV < (/^(?:VB|AUX|POS)/=target < " + EnglishPatterns.beAuxiliaryRegex + " $++ (VP < VBD|VBN))",
+                    "SQ|SINV < (/^(?:VB|AUX|POS)/=target < " + EnglishPatterns.BeAuxiliaryRegex + " $++ (VP < VBD|VBN))",
                     // add handling of tricky VP fronting cases...
-                    "SINV < (VP=target < (/^(?:VB|AUX|POS)/ < " + EnglishPatterns.beAuxiliaryRegex +
+                    "SINV < (VP=target < (/^(?:VB|AUX|POS)/ < " + EnglishPatterns.BeAuxiliaryRegex +
                     ") $-- (VP < VBD|VBN))",
-                    "SINV < (VP=target < (VP < (/^(?:VB|AUX|POS)/ < " + EnglishPatterns.beAuxiliaryRegex +
+                    "SINV < (VP=target < (VP < (/^(?:VB|AUX|POS)/ < " + EnglishPatterns.BeAuxiliaryRegex +
                     ")) $-- (VP < VBD|VBN))"
                 });
 
@@ -102,14 +102,14 @@ namespace OpenNLP.Tools.Util.Trees
                 AUX_MODIFIER, "VP|SQ|SINV|SBARQ", TregexCompiler,
                 new string[]
                 {
-                    "VP < (/^(?:VB|AUX)/=target < " + EnglishPatterns.copularWordRegex +
+                    "VP < (/^(?:VB|AUX)/=target < " + EnglishPatterns.CopularWordRegex +
                     " [ $++ (/^(?:ADJP|NP$|WHNP$)/ !< (VBN|VBD !$++ /^N/)) | $++ (S <: (ADJP < JJ)) ] )",
-                    "SQ|SINV < (/^(?:VB|AUX)/=target < " + EnglishPatterns.copularWordRegex +
+                    "SQ|SINV < (/^(?:VB|AUX)/=target < " + EnglishPatterns.CopularWordRegex +
                     " [ $++ (ADJP !< VBN|VBD) | $++ (NP $++ NP) | $++ (S <: (ADJP < JJ)) ] )",
                     // matches (what, is) in "what is that" after the SQ has been flattened out of the tree
-                    "SBARQ < (/^(?:VB|AUX)/=target < " + EnglishPatterns.copularWordRegex + ") < (WHNP < WP)",
+                    "SBARQ < (/^(?:VB|AUX)/=target < " + EnglishPatterns.CopularWordRegex + ") < (WHNP < WP)",
                     // "Such a great idea this was"
-                    "SINV <# (NP $++ (NP $++ (VP=target < (/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + "))))"
+                    "SINV <# (NP $++ (NP $++ (VP=target < (/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex + "))))"
                 });
 
 
@@ -140,7 +140,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation CONJUNCT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "conj", "conjunct",
-                GrammaticalRelation.DEPENDENT,
+                GrammaticalRelation.Dependent,
                 "VP|(?:WH)?NP(?:-TMP|-ADV)?|ADJP|PP|QP|ADVP|UCP(?:-TMP|-ADV)?|S|NX|SBAR|SBARQ|SINV|SQ|JJP|NML|RRC",
                 TregexCompiler,
                 new string[]
@@ -197,7 +197,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation COORDINATION =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "cc", "coordination",
-                GrammaticalRelation.DEPENDENT, ".*", TregexCompiler,
+                GrammaticalRelation.Dependent, ".*", TregexCompiler,
                 new string[]
                 {
                     "__ [ < (CC=target !< /^(?i:either|neither|both)$/ ) | < (CONJP=target !< (RB < /^(?i:not)$/ $+ (RB|JJ < /^(?i:only|just|merely)$/))) ]"
@@ -217,7 +217,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation PUNCTUATION =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "punct", "punctuation",
-                GrammaticalRelation.DEPENDENT, ".*", TregexCompiler,
+                GrammaticalRelation.Dependent, ".*", TregexCompiler,
                 new string[]
                 {
                     "__ < /^(?:\\.|:|,|''|``|\\*|-LRB-|-RRB-|HYPH)$/=target",
@@ -237,7 +237,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation ARGUMENT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "arg", "argument",
-                GrammaticalRelation.DEPENDENT);
+                GrammaticalRelation.Dependent);
 
 
         /**
@@ -268,11 +268,11 @@ namespace OpenNLP.Tools.Util.Trees
                 SUBJECT, "S|SQ|SBARQ|SINV|SBAR|PRN", TregexCompiler,
                 new string[]
                 {
-                    "S=subj < ((NP|WHNP=target !< EX !<# (/^NN/ < (" + EnglishPatterns.timeWordRegex +
+                    "S=subj < ((NP|WHNP=target !< EX !<# (/^NN/ < (" + EnglishPatterns.TimeWordRegex +
                     "))) $++ VP=verb) : (=subj !> VP | !<< (=verb < TO))",
-                    "S < ( NP=target <# (/^NN/ < " + EnglishPatterns.timeWordRegex + ") !$++ NP $++VP)",
+                    "S < ( NP=target <# (/^NN/ < " + EnglishPatterns.TimeWordRegex + ") !$++ NP $++VP)",
                     "SQ|PRN < (NP=target !< EX $++ VP)",
-                    "SQ < (NP=target !< EX $- (/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + ") !$++ VP)",
+                    "SQ < (NP=target !< EX $- (/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex + ") !$++ VP)",
                     // Allows us to match "Does it?" without matching "Who does it?"
                     "SQ < (NP=target !< EX $- /^(?:VB|AUX)/ !$++ VP) !$-- NP|WHNP",
                     "SQ < ((NP=target !< EX) $- (RB $- /^(?:VB|AUX)/) ![$++ VP])",
@@ -280,13 +280,13 @@ namespace OpenNLP.Tools.Util.Trees
                     // This will capture incorrectly parsed trees in sentences
                     // such as "What disease causes cancer" without capturing
                     // correctly parsed trees such as "What do elephants eat?"
-                    "SBARQ < WHNP=target < (SQ < ((/^(?:VB)/ !< " + EnglishPatterns.copularWordRegex +
+                    "SBARQ < WHNP=target < (SQ < ((/^(?:VB)/ !< " + EnglishPatterns.CopularWordRegex +
                     ") !$-- NP !$++ VP))",
-                    "SBARQ < (SQ=target < (/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + ") !< VP)",
+                    "SBARQ < (SQ=target < (/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex + ") !< VP)",
                     // matches subj in SINV
                     "SINV < (NP|WHNP=target [ $- VP|VBZ|VBD|VBP|VB|MD|AUX | $- (@RB|ADVP $- VP|VBZ|VBD|VBP|VB|MD|AUX) | !$- __ !$ @NP] )",
                     // Another SINV subj, such as "Such a great idea this was"
-                    "SINV < (NP $++ (NP=target $++ (VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + "))))",
+                    "SINV < (NP $++ (NP=target $++ (VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex + "))))",
                     //matches subj in xcomp like "He considered him a friend"
                     "S < (NP=target $+ NP|ADJP) > VP",
                     // matches subj in relative clauses
@@ -299,15 +299,15 @@ namespace OpenNLP.Tools.Util.Trees
                     // matches subj in existential "there" S
                     "S < (NP < EX) <+(VP) (VP < NP=target)",
                     // matches (what, that) in "what is that" after the SQ has been flattened out of the tree
-                    "SBARQ < (/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + ") < (WHNP < WP) < NP=target",
+                    "SBARQ < (/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex + ") < (WHNP < WP) < NP=target",
                     // matches (what, wrong) in "what is wrong with ..." after the SQ has been flattened out of the tree
                     // note that in that case "wrong" is taken as the head thanks to SemanticHeadFinder hackery
                     // The !$++ matches against (what, worth) in What is UAL stock worth?
-                    "SBARQ < (WHNP=target $++ ((/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex +
+                    "SBARQ < (WHNP=target $++ ((/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex +
                     ") $++ ADJP=adj !$++ (NP $++ =adj)))",
                     // the (NP < EX) matches (is, WHNP) in "what dignity is there in ..."
                     // the PP matches (is, WHNP) in "what is on the test"
-                    "SBARQ <1 WHNP=target < (SQ < (/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex +
+                    "SBARQ <1 WHNP=target < (SQ < (/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex +
                     ") [< (NP < EX) | < PP])"
                 });
 
@@ -330,7 +330,7 @@ namespace OpenNLP.Tools.Util.Trees
                 NOMINAL_SUBJECT, "S|SQ", TregexCompiler,
                 new string[]
                 {
-                    "S|SQ < (WHNP|NP=target !< EX) < (VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.passiveAuxWordRegex +
+                    "S|SQ < (WHNP|NP=target !< EX) < (VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.PassiveAuxWordRegex +
                     ")  < (VP < VBN|VBD))"
                 });
 
@@ -365,9 +365,9 @@ namespace OpenNLP.Tools.Util.Trees
                 new string[]
                 {
                     "S < (SBAR|S=target !$+ /^,$/ $++ (VP < (VP < VBN|VBD) < (/^(?:VB|AUXG?)/ < " +
-                    EnglishPatterns.passiveAuxWordRegex + ") !$-- NP))",
+                    EnglishPatterns.PassiveAuxWordRegex + ") !$-- NP))",
                     "S < (SBAR|S=target !$+ /^,$/ $++ (VP <+(VP) (VP < VBN|VBD > (VP < (/^(?:VB|AUX)/ < " +
-                    EnglishPatterns.passiveAuxWordRegex + "))) !$-- NP))"
+                    EnglishPatterns.PassiveAuxWordRegex + "))) !$-- NP))"
                 });
 
 
@@ -424,10 +424,10 @@ namespace OpenNLP.Tools.Util.Trees
                 OBJECT, "VP|SQ|SBARQ?", TregexCompiler,
                 new string[]
                 {
-                    "VP !< (/^(?:VB|AUX)/ [ < " + EnglishPatterns.copularWordRegex + " | < " +
-                    EnglishPatterns.clausalComplementRegex + " ]) < (NP|WHNP=target [ [ !<# (/^NN/ < " +
-                    EnglishPatterns.timeWordRegex + ") !$+ NP ] | $+ NP-TMP | $+ (NP <# (/^NN/ < " +
-                    EnglishPatterns.timeWordRegex + ")) ] ) " +
+                    "VP !< (/^(?:VB|AUX)/ [ < " + EnglishPatterns.CopularWordRegex + " | < " +
+                    EnglishPatterns.ClausalComplementRegex + " ]) < (NP|WHNP=target [ [ !<# (/^NN/ < " +
+                    EnglishPatterns.TimeWordRegex + ") !$+ NP ] | $+ NP-TMP | $+ (NP <# (/^NN/ < " +
+                    EnglishPatterns.TimeWordRegex + ")) ] ) " +
                     // The next qualification eliminates parentheticals that
                     // come after the actual dobj
                     " <# (__ !$++ (NP $++ (/^[:]$/ $++ =target))) ",
@@ -439,18 +439,18 @@ namespace OpenNLP.Tools.Util.Trees
                     // disease causes cancer?" where the "causes" does not get a
                     // surrounding VP.  Hopefully it does so without overlapping
                     // any other dependencies.
-                    "SQ < (/^(?:VB)/=verb !< " + EnglishPatterns.copularWordRegex +
+                    "SQ < (/^(?:VB)/=verb !< " + EnglishPatterns.CopularWordRegex +
                     ") $-- WHNP !< VP !< (/^(?:VB)/ ! == =verb) < (NP|WHNP=target [ [ !<# (/^NN/ < " +
-                    EnglishPatterns.timeWordRegex + ") !$+ NP ] | $+ NP-TMP | $+ (NP <# (/^NN/ < " +
-                    EnglishPatterns.timeWordRegex + ")) ] )",
+                    EnglishPatterns.TimeWordRegex + ") !$+ NP ] | $+ NP-TMP | $+ (NP <# (/^NN/ < " +
+                    EnglishPatterns.TimeWordRegex + ")) ] )",
 
                     // The rule for Wh-questions
                     // cdm Jul 2010: No longer require WHNP as first child of SBARQ below: often not because of adverbials, quotes, etc., and removing restriction does no harm
                     // this next pattern used to assume no empty NPs. Corrected.
                     // One could require the VP at the end of the <+ to also be !< (/^(?:VB|AUX)/ $. SBAR) . This would be right for complement SBAR, but often avoids good matches for adverbial SBAR.  Adding it kills 4 good matches for avoiding 2 wrong matches on sum of TB3-train and EWT
-                    "SBARQ < (WHNP=target !< WRB !<# (/^NN/ < " + EnglishPatterns.timeWordRegex +
+                    "SBARQ < (WHNP=target !< WRB !<# (/^NN/ < " + EnglishPatterns.TimeWordRegex +
                     ")) <+(SQ|SINV|S|VP) (VP !< NP|TO !< (S < (VP < TO)) !< (/^(?:VB|AUX)/ < " +
-                    EnglishPatterns.copularWordRegex + " $++ (VP < VBN|VBD)) !< (PP <: IN|TO) $-- (NP !< /^-NONE-$/))",
+                    EnglishPatterns.CopularWordRegex + " $++ (VP < VBN|VBD)) !< (PP <: IN|TO) $-- (NP !< /^-NONE-$/))",
 
                     // matches direct object in relative clauses with relative pronoun "I saw the book that you bought". Seems okay. If this is changed, also change the pattern for "rel"
                     // TODO: this can occasionally produce incorrect dependencies, such as the sentence
@@ -472,7 +472,7 @@ namespace OpenNLP.Tools.Util.Trees
                     // that NP to have the nsubj relation, and the WHNP is either
                     // a dobj or a pobj instead.  For example, dobj(What, worth)
                     // in "What is UAL stock worth?"
-                    "SBARQ < (WHNP=target $++ ((/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex +
+                    "SBARQ < (WHNP=target $++ ((/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex +
                     ") $++ (ADJP=adj !< (PP !< NP)) $++ (NP $++ =adj)))"
 
                     // Now allow $++ in main pattern above so don't need this.
@@ -510,13 +510,13 @@ namespace OpenNLP.Tools.Util.Trees
                 OBJECT, "VP", TregexCompiler,
                 new string[]
                 {
-                    "VP < (NP=target !< /\\$/ !<# (/^NN/ < " + EnglishPatterns.timeWordRegex + ") $+ (NP !<# (/^NN/ < " +
-                    EnglishPatterns.timeWordRegex + ")))",
+                    "VP < (NP=target !< /\\$/ !<# (/^NN/ < " + EnglishPatterns.TimeWordRegex + ") $+ (NP !<# (/^NN/ < " +
+                    EnglishPatterns.TimeWordRegex + ")))",
                     // this next one was meant to fix common mistakes of our parser, but is perhaps too dangerous to keep
                     // excluding EnglishPatterns.selfRegex leaves out phrases such as "I cooked dinner myself"
                     // excluding DT leaves out phrases such as "My dog ate it all""
-                    "VP < (NP=target < (NP !< /\\$/ $++ (NP !<: (PRP < " + EnglishPatterns.selfRegex +
-                    ") !<: DT !< (/^NN/ < " + EnglishPatterns.timeWordLotRegex + ")) !$ CC|CONJP !$ /^,$/ !$++ /^:$/))"
+                    "VP < (NP=target < (NP !< /\\$/ $++ (NP !<: (PRP < " + EnglishPatterns.SelfRegex +
+                    ") !<: DT !< (/^NN/ < " + EnglishPatterns.TimeWordLotRegex + ")) !$ CC|CONJP !$ /^,$/ !$++ /^:$/))"
                 });
 
 
@@ -562,7 +562,7 @@ namespace OpenNLP.Tools.Util.Trees
                     // to handle "in and out of government"
                     "@WHPP|PP < (@WHPP|PP $++ (CC|CONJP $++ (@WHPP|PP $+ (NP=target !$+ __))))",
                     // to handle "What weapon is Apollo most proficient with?"
-                    "SBARQ < (WHNP=target $++ ((/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex +
+                    "SBARQ < (WHNP=target $++ ((/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex +
                     ") $++ (ADJP=adj < (PP !< NP)) $++ (NP $++ =adj)))"
                 });
 
@@ -651,14 +651,14 @@ namespace OpenNLP.Tools.Util.Trees
                     "VP < (SBAR=target < (S < VP) !$-- NP !<, (IN|WHADVP) !<2 (IN|WHADVP $- ADVP|RB))",
                     "VP < (SBAR=target < (S < VP) !$-- NP <, (WHADVP < (WRB < /^(?i:how)$/)))",
                     "VP < @SBARQ=target", // Direct question: She asked "Who is in trouble"
-                    "VP < (/^VB/ < " + EnglishPatterns.haveRegex + ") < (S=target < @NP < VP)",
+                    "VP < (/^VB/ < " + EnglishPatterns.HaveRegex + ") < (S=target < @NP < VP)",
                     // !$-- @SBAR|S handles cases where the answer to the question
                     //   "What do they ccompVerb?"
                     //   is already answered by a different node
                     // the EnglishPatterns.ccompObjVerbRegex/NP test distinguishes "He told me why ..."
                     //   vs "They know my order when ..."
                     "VP < (@SBAR=target !$-- @SBAR|S !$-- /^:$/ [ == @SBAR=sbar | <# @SBAR=sbar ] ) < (/^V/ < " +
-                    EnglishPatterns.ccompVerbRegex + ") [ < (/^V/ < " + EnglishPatterns.ccompObjVerbRegex +
+                    EnglishPatterns.CCompVerbRegex + ") [ < (/^V/ < " + EnglishPatterns.CCompObjVerbRegex +
                     ") | < (=target !$-- NP) ] : (=sbar < (WHADVP|WHNP < (WRB !< /^(?i:how)$/) !$-- /^(?!RB|ADVP).*$/) !< (S < (VP < TO)))",
                     // to find "...", he said or "...?" he asked.
                     // We eliminate conflicts with conj by looking for CC
@@ -698,7 +698,7 @@ namespace OpenNLP.Tools.Util.Trees
                 COMPLEMENT, "VP|ADJP|SINV", TregexCompiler,
                 new string[]
                 {
-                    "VP < (S=target [ !$-- NP | $-- (/^V/ < " + EnglishPatterns.xcompVerbRegex +
+                    "VP < (S=target [ !$-- NP | $-- (/^V/ < " + EnglishPatterns.XCompVerbRegex +
                     ") ] !$- (NN < order) < (VP < TO))", // used to have !> (VP < (VB|AUX < be))
                     "ADJP < (S=target <, (VP <, TO))",
                     "VP < (S=target !$- (NN < order) < (NP $+ NP|ADJP))",
@@ -707,25 +707,25 @@ namespace OpenNLP.Tools.Util.Trees
                     "VP < (SBAR=target < (S !$- (NN < order) < (VP < TO))) !> (VP < (VB|AUX < be)) ",
                     "VP < (S=target !$- (NN < order) <: NP) > VP",
                     "VP < (/^VB/ $+ (@S=target < (@ADJP < /^JJ/ ! $-- @NP|S))) $-- (/^VB/ < " +
-                    EnglishPatterns.copularWordRegex + " )",
+                    EnglishPatterns.CopularWordRegex + " )",
                     // stop eating
                     // note that we eliminate parentheticals and clauses that could match a vmod
                     // the clause !$-- VBG eliminates matches such as "What are you wearing dancing tonight"
                     "(VP < (S=target < (VP < VBG ) !< NP !$- (/^,$/ [$- @NP|VP | $- (@PP $-- @NP ) |$- (@ADVP $-- @NP)]) !$-- /^:$/ !$-- VBG))",
                     // Detects xcomp(becoming, requirement) in "Hand-holding is becoming an investment banking job requirement"
                     // Also, xcomp(becoming, problem) in "Why is Dave becoming a problem?"
-                    "(VP $-- (/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + ") < (/^VB/ < " +
-                    EnglishPatterns.clausalComplementRegex + ") < NP=target)",
-                    "VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.clausalComplementRegex +
-                    ") < (NP|WHNP=target [ [ !<# (/^NN/ < " + EnglishPatterns.timeWordRegex +
-                    ") !$+ NP ] | $+ NP-TMP | $+ (NP <# (/^NN/ < " + EnglishPatterns.timeWordRegex + ")) ] ) " +
+                    "(VP $-- (/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex + ") < (/^VB/ < " +
+                    EnglishPatterns.ClausalComplementRegex + ") < NP=target)",
+                    "VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.ClausalComplementRegex +
+                    ") < (NP|WHNP=target [ [ !<# (/^NN/ < " + EnglishPatterns.TimeWordRegex +
+                    ") !$+ NP ] | $+ NP-TMP | $+ (NP <# (/^NN/ < " + EnglishPatterns.TimeWordRegex + ")) ] ) " +
                     // The next qualification eliminates parentheticals that
                     // come after the actual dobj
                     " <# (__ !$++ (NP $++ (/^[:]$/ $++ =target))) ",
                     // The old attr relation, used here to recover xcomp relations instead.
-                    "VP=vp < NP=target <(/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + " >># =vp) !$ (NP < EX)",
+                    "VP=vp < NP=target <(/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex + " >># =vp) !$ (NP < EX)",
                     // "Such a great idea this was" if "was" is the root, eg -makeCopulaHead
-                    "SINV <# (VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + ") $-- (NP $-- NP=target))"
+                    "SINV <# (VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex + ") $-- (NP $-- NP=target))"
                 });
 
 
@@ -755,7 +755,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation REFERENT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "ref", "referent",
-                GrammaticalRelation.DEPENDENT);
+                GrammaticalRelation.Dependent);
 
 
 
@@ -771,7 +771,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation EXPLETIVE =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "expl", "expletive",
-                GrammaticalRelation.DEPENDENT, "S|SQ|SINV", TregexCompiler,
+                GrammaticalRelation.Dependent, "S|SQ|SINV", TregexCompiler,
                 new string[] {"S|SQ|SINV < (NP=target <+(NP) EX)"});
 
 
@@ -792,9 +792,9 @@ namespace OpenNLP.Tools.Util.Trees
                 COMPLEMENT, "VP", TregexCompiler,
                 new string[]
                 {
-                    "VP [ < ADJP=target | ( < (/^VB/ [ ( < " + EnglishPatterns.clausalComplementRegex +
+                    "VP [ < ADJP=target | ( < (/^VB/ [ ( < " + EnglishPatterns.ClausalComplementRegex +
                     " $++ VP=target ) | $+ (@S=target < (@ADJP < /^JJ/ ! $-- @NP|S)) ] ) !$-- (/^VB/ < " +
-                    EnglishPatterns.copularWordRegex + " )) ]"
+                    EnglishPatterns.CopularWordRegex + " )) ]"
                 });
 
 
@@ -813,7 +813,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation MODIFIER =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "mod", "modifier",
-                GrammaticalRelation.DEPENDENT);
+                GrammaticalRelation.Dependent);
 
 
         /**
@@ -848,8 +848,8 @@ namespace OpenNLP.Tools.Util.Trees
                     // to use the head SBAR as a candidate for this relation
                     "S|SQ < (@SBAR=target [ == @SBAR=sbar | <# @SBAR=sbar ] ): (=sbar < (WHADVP|WHNP < (WRB !< /^(?i:how)$/) !$-- /^(?!RB|ADVP).*$/) !< (S < (VP < TO)) !$-- /^:$/)",
                     "VP < (@SBAR=target !$-- /^:$/ [ == @SBAR=sbar | <# @SBAR=sbar ] ) [ !< (/^V/ < " +
-                    EnglishPatterns.ccompVerbRegex + ") | < (=target $-- @SBAR|S) | ( !< (/^V/ < " +
-                    EnglishPatterns.ccompObjVerbRegex +
+                    EnglishPatterns.CCompVerbRegex + ") | < (=target $-- @SBAR|S) | ( !< (/^V/ < " +
+                    EnglishPatterns.CCompObjVerbRegex +
                     ") < (=target $-- NP)) ] : (=sbar < (WHADVP|WHNP < (WRB !< /^(?i:how)$/) !$-- /^(?!RB|ADVP).*$/) !< (S < (VP < TO)))",
                     // "S|SQ < (PP=target <, RB < @S)", // caught as prep and pcomp.
                     "@S < (@SBAR=target $++ @NP $++ @VP)", // fronted adverbial clause
@@ -867,8 +867,8 @@ namespace OpenNLP.Tools.Util.Trees
                     //   // Example: "with the way his split-fingered fastball is behaving"
                     //   "!($-- @NP|WHNP|NML > @NP|WHNP <: (S !< (VP < TO)))",
                     "NP < (NP $++ (SBAR=target < (IN < /^(?i:than)$/) !< (WHPP|WHNP|WHADVP) < (S < (@NP $++ (VP !< (/^(?:VB|AUX)/ < " +
-                    EnglishPatterns.copularWordRegex + " !$+ VP)  !<+(VP) (/^(?:VB|AUX)/ < " +
-                    EnglishPatterns.copularWordRegex +
+                    EnglishPatterns.CopularWordRegex + " !$+ VP)  !<+(VP) (/^(?:VB|AUX)/ < " +
+                    EnglishPatterns.CopularWordRegex +
                     " $+ (VP < VBN|VBD)) !<+(VP) NP !< SBAR !<+(VP) (PP <- IN|TO)))) !<: (S !< (VP < TO))) !$++ (CC $++ =target))",
                     // this is for comparative or as ... as complements: sold more quickly [than they had expected]
                     // available as long [as they install a crash barrier]
@@ -919,8 +919,8 @@ namespace OpenNLP.Tools.Util.Trees
                     "@NP|WHNP < RRC=target <# NP|WHNP|NML|DT|S",
                     "@ADVP < (@ADVP < (RB < /where$/)) < @SBAR=target",
                     "NP < (NP $++ (SBAR=target !< (IN < /^(?i:than|that|whether)$/) !< (WHPP|WHNP|WHADVP) < (S < (@NP $++ (VP !< (/^(?:VB|AUX)/ < " +
-                    EnglishPatterns.copularWordRegex + " !$+ VP)  !<+(VP) (/^(?:VB|AUX)/ < " +
-                    EnglishPatterns.copularWordRegex +
+                    EnglishPatterns.CopularWordRegex + " !$+ VP)  !<+(VP) (/^(?:VB|AUX)/ < " +
+                    EnglishPatterns.CopularWordRegex +
                     " $+ (VP < VBN|VBD)) !<+(VP) NP !< SBAR !<+(VP) (PP <- IN|TO)))) !<: (S !< (VP < TO))) !$++ (CC $++ =target))"
                 });
 
@@ -1177,7 +1177,7 @@ namespace OpenNLP.Tools.Util.Trees
                     // We could use something like this keying off -ADV annotation, but not yet operational, as we don't keep S-ADV, only NP-ADV
                     // "VP < (/^S-ADV$/=target < (VP <, VBG|VBN) )",
                     // they wrote asking the SEC to ...
-                    "VP < (S=target $-- NP < (VP < TO) !$-- (/^V/ < " + EnglishPatterns.xcompVerbRegex + ") )",
+                    "VP < (S=target $-- NP < (VP < TO) !$-- (/^V/ < " + EnglishPatterns.XCompVerbRegex + ") )",
                     "/^NP(?:-[A-Z]+)?$/ < (S=target < (VP < TO) $-- NP|NN|NNP|NNS)",
                     "/^NP(?:-[A-Z]+)?$/ < (SBAR=target < (S < (VP < TO)) $-- NP|NN|NNP|NNS)",
                     "SBARQ < WHNP < (S=target < (VP <1 TO))"
@@ -1308,8 +1308,8 @@ namespace OpenNLP.Tools.Util.Trees
                     // Mr. Bush himself ..., in a couple different parse
                     // patterns.  Looking for CC|CONJP leaves out phrases such
                     // as "he and myself"
-                    "@NP|WHNP [ < (NP=target <: (PRP < " + EnglishPatterns.selfRegex + ")) | < (PRP=target < " +
-                    EnglishPatterns.selfRegex +
+                    "@NP|WHNP [ < (NP=target <: (PRP < " + EnglishPatterns.SelfRegex + ")) | < (PRP=target < " +
+                    EnglishPatterns.SelfRegex +
                     ") ] : (=target $-- NP|NN|NNS|NNP|NNPS|PRP=noun !$-- (/^,|CC|CONJP$/ $-- =noun))",
                     // this next one is for weird financial listings: 4.7% three months
                     "@NP <1 (@NP <<# /^%$/) <2 (@NP=target <<# days|month|months) !<3 __",
@@ -1335,17 +1335,17 @@ namespace OpenNLP.Tools.Util.Trees
                 new string[]
                 {
                     "VP|ADJP|RRC [ < NP-TMP=target | < (VP=target <# NP-TMP !$ /^,|CC|CONJP$/) | < (NP=target <# (/^NN/ < " +
-                    EnglishPatterns.timeWordRegex + ") !$+ (/^JJ/ < old)) ]",
+                    EnglishPatterns.TimeWordRegex + ") !$+ (/^JJ/ < old)) ]",
                     // CDM Jan 2010: For constructions like "during the same period last year"
                     // combining expressions into a single disjunction should improve speed a little
                     "@PP < (IN|TO|VBG|FW $++ (@NP [ $+ NP-TMP=target | $+ (NP=target <# (/^NN/ < " +
-                    EnglishPatterns.timeWordRegex + ")) ]))",
+                    EnglishPatterns.TimeWordRegex + ")) ]))",
                     "S < (NP-TMP=target $++ VP $ NP )",
-                    "S < (NP=target <# (/^NN/ < " + EnglishPatterns.timeWordRegex + ") $++ (NP $++ VP))",
+                    "S < (NP=target <# (/^NN/ < " + EnglishPatterns.TimeWordRegex + ") $++ (NP $++ VP))",
                     // matches when relative clauses as temporal modifiers of verbs!
                     "SBAR < (@WHADVP < (WRB < when)) < (S < (NP $+ (VP !< (/^(?:VB|AUX)/ < " +
-                    EnglishPatterns.copularWordRegex + " !$+ VP) ))) !$-- CC $-- NP > NP=target",
-                    "SBARQ < (@WHNP=target <# (/^NN/ < " + EnglishPatterns.timeWordRegex + ")) < (SQ < @NP)",
+                    EnglishPatterns.CopularWordRegex + " !$+ VP) ))) !$-- CC $-- NP > NP=target",
+                    "SBARQ < (@WHNP=target <# (/^NN/ < " + EnglishPatterns.TimeWordRegex + ")) < (SQ < @NP)",
                     "NP < NP-TMP=target"
                 });
 
@@ -1577,7 +1577,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation PARATAXIS =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "parataxis", "parataxis",
-                GrammaticalRelation.DEPENDENT, "S|VP", TregexCompiler,
+                GrammaticalRelation.Dependent, "S|VP", TregexCompiler,
                 new string[]
                 {
                     "VP < (PRN=target < S|SINV|SBAR)", // parenthetical
@@ -1619,7 +1619,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation SEMANTIC_DEPENDENT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "sdep", "semantic dependent",
-                GrammaticalRelation.DEPENDENT);
+                GrammaticalRelation.Dependent);
 
 
         /**
@@ -1633,7 +1633,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly GrammaticalRelation AGENT =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "agent", "agent",
-                GrammaticalRelation.DEPENDENT);
+                GrammaticalRelation.Dependent);
 
 
         // TODO would be nice to have this set up automatically...
@@ -1652,8 +1652,8 @@ namespace OpenNLP.Tools.Util.Trees
         private static readonly List<GrammaticalRelation> values =
             new List<GrammaticalRelation>()
             {
-                GrammaticalRelation.GOVERNOR,
-                GrammaticalRelation.DEPENDENT,
+                GrammaticalRelation.Governor,
+                GrammaticalRelation.Dependent,
                 PREDICATE,
                 AUX_MODIFIER,
                 AUX_PASSIVE_MODIFIER,
@@ -1874,7 +1874,7 @@ namespace OpenNLP.Tools.Util.Trees
                     if (result == null)
                     {
                         result = new GrammaticalRelation(GrammaticalRelation.Language.English, "prepc",
-                            "prepc_collapsed", GrammaticalRelation.DEPENDENT, prepositionString);
+                            "prepc_collapsed", GrammaticalRelation.Dependent, prepositionString);
                         prepsC.TryAdd(prepositionString, result);
                         //threadSafeAddRelation(result);
                     }

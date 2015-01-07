@@ -6,47 +6,46 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * Implements a variant on the HeadFinder found in Michael Collins' 1999
- * thesis. This starts with
- * Collins' head finder. As in {@code CollinsHeadFinder}, we've
- * added a head rule for NX.
- *
- * Changes:
- * <ol>
- * <li>The PRN rule used to just take the leftmost thing, we now have it
- * choose the leftmost lexical category (not the common punctuation etc.)
- * <li>Delete IN as a possible head of S, and add FRAG (low priority)
- * <li>Place NN before QP in ADJP head rules (more to do for ADJP!)
- * <li>Place PDT before RB and after CD in QP rules.  Also prefer CD to
- * DT or RB.  And DT to RB.
- * <li>Add DT, WDT as low priority choice for head of NP. Add PRP before PRN
- * Add RBR as low priority choice of head for NP.
- * <li>Prefer NP or NX as head of NX, and otherwise default to rightmost not
- * leftmost (NP-like headedness)
- * <li>VP: add JJ and NNP as low priority heads (many tagging errors)
- *   Place JJ above NP in priority, as it is to be preferred to NP object.
- * <li>PP: add PP as a possible head (rare conjunctions)
- * <li>Added rule for POSSP (can be introduced by parser)
- * <li>Added a sensible-ish rule for X.
- * <li>Added NML head rules, which are the same as for NP.
- * <li>NP head rule: NP and NML are treated almost identically (NP has precedence)
- * <li>NAC head rule: NML comes after NN/NNS but after NNP/NNPS
- * <li>PP head rule: JJ added
- * <li>Added JJP (appearing in David Vadas's annotation), which seems to play
- * the same role as ADJP.
- * </ol>
- * These rules are suitable for the Penn Treebank.
- * <p/>
- * A case that you apparently just can't handle well in this framework is
- * (NP (NP ... NP)).  If this is a conjunction, apposition or similar, then
- * the leftmost NP is the head, but if the first is a measure phrase like
- * (NP $ 38) (NP a share) then the second should probably be the head.
- *
- * @author Christopher Manning
- * @author Michel Galley
- */
-
+    /// <summary>
+    /// Implements a variant on the HeadFinder found in Michael Collins' 1999
+    /// thesis. This starts with Collins' head finder. As in {@code CollinsHeadFinder}, 
+    /// we've added a head rule for NX.
+    /// 
+    /// Changes:
+    /// <ol>
+    /// <li>The PRN rule used to just take the leftmost thing, we now have it
+    /// choose the leftmost lexical category (not the common punctuation etc.)</li>
+    /// <li>Delete IN as a possible head of S, and add FRAG (low priority)</li>
+    /// <li>Place NN before QP in ADJP head rules (more to do for ADJP!)</li>
+    /// <li>Place PDT before RB and after CD in QP rules.  Also prefer CD to
+    /// DT or RB.  And DT to RB.</li>
+    /// <li>Add DT, WDT as low priority choice for head of NP. Add PRP before PRN
+    /// Add RBR as low priority choice of head for NP.</li>
+    /// <li>Prefer NP or NX as head of NX, and otherwise default to rightmost not
+    /// leftmost (NP-like headedness)</li>
+    /// <li>VP: add JJ and NNP as low priority heads (many tagging errors)
+    /// Place JJ above NP in priority, as it is to be preferred to NP object.</li>
+    /// <li>PP: add PP as a possible head (rare conjunctions)</li>
+    /// <li>Added rule for POSSP (can be introduced by parser)</li>
+    /// <li>Added a sensible-ish rule for X.</li>
+    /// <li>Added NML head rules, which are the same as for NP.</li>
+    /// <li>NP head rule: NP and NML are treated almost identically (NP has precedence)</li>
+    /// <li>NAC head rule: NML comes after NN/NNS but after NNP/NNPS</li>
+    /// <li>PP head rule: JJ added</li>
+    /// <li>Added JJP (appearing in David Vadas's annotation), which seems to play the same role as ADJP.</li>
+    /// </ol>
+    /// These rules are suitable for the Penn Treebank.
+    /// 
+    /// A case that you apparently just can't handle well in this framework is
+    /// (NP (NP ... NP)).  If this is a conjunction, apposition or similar, then
+    /// the leftmost NP is the head, but if the first is a measure phrase like
+    /// (NP $ 38) (NP a share) then the second should probably be the head.
+    /// 
+    /// @author Christopher Manning
+    /// @author Michel Galley
+    /// 
+    /// Code...
+    /// </summary>
     public class ModCollinsHeadFinder : CollinsHeadFinder
     {
         public ModCollinsHeadFinder() : this(new PennTreebankLanguagePack())

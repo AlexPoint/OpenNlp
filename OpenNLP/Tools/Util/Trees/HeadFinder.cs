@@ -6,40 +6,37 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * An interface for finding the "head" daughter of a phrase structure tree.
- * This could potentially be any sense of "head", but has mainly been used
- * to find the lexical head for lexicalized PCFG parsing.
- *
- * @author Christopher Manning
- */
-
+    /// <summary>
+    /// An interface for finding the "head" daughter of a phrase structure tree.
+    /// This could potentially be any sense of "head", but has mainly been used
+    /// to find the lexical head for lexicalized PCFG parsing.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public interface HeadFinder
     {
-        /**
-   * Determine which daughter of the current parse tree is the head.
-   *
-   * @param t The parse tree to examine the daughters of
-   * @return The daughter tree that is the head.  This will always be
-   *     non-null. An Exception will be thrown if no head can be determined.
-   * @throws IllegalStateException If a subclass has missing or badly
-   *     formatted head rule data
-   * @throws IllegalArgumentException If the argument Tree has unexpected
-   *     phrasal categories in it (and the implementation doesn't just use
-   *     some heuristic to always determine some head).
-   */
+        /// <summary>
+        /// Determine which daughter of the current parse tree is the head.
+        /// </summary>
+        /// <param name="t">The parse tree to examine the daughters of</param>
+        /// <returns>
+        /// The daughter tree that is the head. This will always be non-null.
+        /// An Exception will be thrown if no head can be determined.
+        /// </returns>
         Tree DetermineHead(Tree t);
 
-
-        /**
-         * Determine which daughter of the current parse tree is the head
-         * given the parent of the tree.
-         *
-         * @param t The parse tree to examine the daughters of
-         * @param parent The parent of tree t
-         * @return The daughter tree that is the head.  This will always be
-         *     non-null. An Exception will be thrown if no head can be determined.
-         */
+        /// <summary>
+        /// Determine which daughter of the current parse tree is the head
+        /// given the parent of the tree.
+        /// </summary>
+        /// <param name="t">The parse tree to examine the daughters of</param>
+        /// <param name="parent">The parent of tree t</param>
+        /// <returns>
+        /// The daughter tree that is the head. This will always be non-null. 
+        /// An Exception will be thrown if no head can be determined.
+        /// </returns>
         Tree DetermineHead(Tree t, Tree parent);
     }
 }

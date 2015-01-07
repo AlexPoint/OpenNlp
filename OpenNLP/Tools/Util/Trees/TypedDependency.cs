@@ -8,7 +8,17 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    [Serializable]
+    /// <summary>
+    /// A <code>TypedDependency</code> is a relation between two words in a
+    /// <code>GrammaticalStructure</code>.  Each <code>TypedDependency</code>
+    /// consists of a governor word, a dependent word, and a relation, which is
+    /// normally an instance of {@link GrammaticalRelation
+    /// <code>GrammaticalRelation</code>}.
+    /// 
+    /// @author Bill MacCartney
+    /// 
+    /// Code...
+    /// </summary>
     public class TypedDependency : IComparable<TypedDependency>
     {
         private static readonly long serialVersionUID = -7690294213151279779L;

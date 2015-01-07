@@ -7,27 +7,22 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * Various static utilities for the <code>Tree</code> class.
- *
- * @author Roger Levy
- * @author Dan Klein
- * @author Aria Haghighi (tree path methods)
- */
-
+    /// <summary>
+    /// Various static utilities for the <code>Tree</code> class.
+    /// 
+    /// @author Roger Levy
+    /// @author Dan Klein
+    /// @author Aria Haghighi (tree path methods)
+    /// </summary>
     public static class Trees
     {
         private static readonly LabeledScoredTreeFactory defaultTreeFactory = new LabeledScoredTreeFactory();
-
-        //private Trees() {}
-
-
-        /**
-   * Returns the positional index of the left edge of a tree <i>t</i>
-   * within a given root, as defined by the size of the yield of all
-   * material preceding <i>t</i>.
-   */
-
+        
+        /// <summary>
+        /// Returns the positional index of the left edge of a tree <i>t</i>
+        /// within a given root, as defined by the size of the yield of all
+        /// material preceding <i>t</i>.
+        /// </summary>
         public static int LeftEdge(Tree t, Tree root)
         {
             var i = 0;
@@ -38,7 +33,6 @@ namespace OpenNLP.Tools.Util.Trees
             else
             {
                 throw new SystemException("Tree is not a descendant of root.");
-//      return -1;
             }
         }
 
@@ -67,13 +61,11 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        /**
-   * Returns the positional index of the right edge of a tree
-   * <i>t</i> within a given root, as defined by the size of the yield
-   * of all material preceding <i>t</i> plus all the material
-   * contained in <i>t</i>.
-   */
-
+        /// <summary>
+        /// Returns the positional index of the right edge of a tree
+        /// <i>t</i> within a given root, as defined by the size of the yield
+        /// of all material preceding <i>t</i> plus all the material contained in <i>t</i>.
+        /// </summary>
         public static int RightEdge(Tree t, Tree root)
         {
             var i = root.Yield().Count;
@@ -84,7 +76,6 @@ namespace OpenNLP.Tools.Util.Trees
             else
             {
                 throw new SystemException("Tree is not a descendant of root.");
-//      return root.yield().size() + 1;
             }
         }
 
@@ -127,10 +118,9 @@ namespace OpenNLP.Tools.Util.Trees
     return t1;
   }*/
 
-        /**
-   * returns the leaves in a Tree in the order that they're found.
-   */
-
+        /// <summary>
+        /// Returns the leaves in a Tree in the order that they're found
+        /// </summary>
         public static List<Tree> Leaves(Tree t)
         {
             var l = new List<Tree>();
@@ -176,10 +166,9 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
 
-        /**
-   * returns the labels of the leaves in a Tree in the order that they're found.
-   */
-
+        /// <summary>
+        /// Returns the labels of the leaves in a Tree in the order that they're found
+        /// </summary>
         public static List<Label> LeafLabels(Tree t)
         {
             var l = new List<Label>();
@@ -202,11 +191,10 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        /**
-   * returns the labels of the leaves in a Tree, augmented with POS tags.  assumes that
-   * the labels are CoreLabels.
-   */
-
+        /// <summary>
+        /// Returns the labels of the leaves in a Tree, augmented with POS tags.  a
+        /// Assumes that the labels are CoreLabels.
+        /// </summary>
         public static List<CoreLabel> TaggedLeafLabels(Tree t)
         {
             var l = new List<CoreLabel>();
@@ -231,12 +219,10 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-
-        /**
-   * returns the maximal projection of <code>head</code> in
-   * <code>root</code> given a {@link HeadFinder}
-   */
-
+        /// <summary>
+        /// Returns the maximal projection of <code>head</code> in
+        /// <code>root</code> given a {@link HeadFinder}
+        /// </summary>
         public static Tree MaximalProjection(Tree head, Tree root, HeadFinder hf)
         {
             Tree projection = head;
@@ -342,10 +328,9 @@ namespace OpenNLP.Tools.Util.Trees
     }
   }*/
 
-        /**
-   * returns the syntactic category of the tree as a list of the syntactic categories of the mother and the daughters
-   */
-
+        /// <summary>
+        /// Returns the syntactic category of the tree as a list of the syntactic categories of the mother and the daughters
+        /// </summary>
         public static List<string> LocalTreeAsCatList(Tree t)
         {
             var l = new List<string>(t.Children().Length + 1);
@@ -357,11 +342,10 @@ namespace OpenNLP.Tools.Util.Trees
             return l;
         }
 
-        /**
-   * Returns the index of <code>daughter</code> in <code>parent</code> by ==.
-   * Returns -1 if <code>daughter</code> not found.
-   */
-
+        /// <summary>
+        /// Returns the index of <code>daughter</code> in <code>parent</code> by ==.
+        /// Returns -1 if <code>daughter</code> not found.
+        /// </summary>
         public static int ObjectEqualityIndexOf(Tree parent, Tree daughter)
         {
             for (int i = 0; i < parent.Children().Length; i++)
@@ -632,10 +616,9 @@ namespace OpenNLP.Tools.Util.Trees
   }*/
 
 
-        /**
-   * Get lowest common ancestor of all the nodes in the list with the tree rooted at root
-   */
-
+        /// <summary>
+        /// Get lowest common ancestor of all the nodes in the list with the tree rooted at root
+        /// </summary>
         public static Tree GetLowestCommonAncestor(List<Tree> nodes, Tree root)
         {
             var paths = new List<List<Tree>>();
@@ -666,27 +649,20 @@ namespace OpenNLP.Tools.Util.Trees
             return commonAncestor;
         }
 
-
-        /**
-   * returns a list of categories that is the path from Tree from to Tree
-   * to within Tree root.  If either from or to is not in root,
-   * returns null.  Otherwise includes both from and to in the list.
-   */
-
+        /// <summary>
+        /// Returns a list of categories that is the path from Tree from to Tree
+        /// to within Tree root.  If either from or to is not in root,
+        /// Returns null.  Otherwise includes both from and to in the list.
+        /// </summary>
         public static List<string> PathNodeToNode(Tree from, Tree to, Tree root)
         {
             List<Tree> fromPath = PathFromRoot(from, root);
-            //System.out.println(treeListToCatList(fromPath));
             if (fromPath == null)
                 return null;
 
             List<Tree> toPath = PathFromRoot(to, root);
-            //System.out.println(treeListToCatList(toPath));
             if (toPath == null)
                 return null;
-
-            //System.out.println(treeListToCatList(fromPath));
-            //System.out.println(treeListToCatList(toPath));
 
             int last = 0;
             int min = fromPath.Count <= toPath.Count ? fromPath.Count : toPath.Count;
@@ -702,8 +678,6 @@ namespace OpenNLP.Tools.Util.Trees
                 last++;
             }
 
-            //System.out.println(treeListToCatList(fromPath));
-            //System.out.println(treeListToCatList(toPath));
             var totalPath = new List<string>();
 
             for (int i = fromPath.Count - 1; i >= last; i--)
@@ -737,19 +711,16 @@ namespace OpenNLP.Tools.Util.Trees
             return totalPath;
         }
 
-
-        /**
-   * returns list of tree nodes to root from t.  Includes root and
-   * t. Returns null if tree not found dominated by root
-   */
-
+        /// <summary>
+        /// Returns list of tree nodes to root from t.
+        /// Includes root and t. Returns null if tree not found dominated by root
+        /// </summary>
         public static List<Tree> PathFromRoot(Tree t, Tree root)
         {
             if (t == root)
             {
                 //if (t.equals(root)) {
-                var l = new List<Tree>(1);
-                l.Add(t);
+                var l = new List<Tree>(1) {t};
                 return l;
             }
             else if (root == null)
@@ -759,12 +730,10 @@ namespace OpenNLP.Tools.Util.Trees
             return root.DominationPath(t);
         }
 
-
-        /**
-   * replaces all instances (by ==) of node with node1.  Doesn't affect
-   * the node t itself
-   */
-
+        /// <summary>
+        /// Replaces all instances (by ==) of node with node1.
+        /// Doesn't affect the node t itself
+        /// </summary>
         public static void ReplaceNode(Tree node, Tree node1, Tree t)
         {
             if (t.IsLeaf())
@@ -787,12 +756,11 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
 
-        /**
-   * returns the node of a tree which represents the lowest common
-   * ancestor of nodes t1 and t2 dominated by root. If either t1 or
-   * or t2 is not dominated by root, returns null.
-   */
-
+        /// <summary>
+        /// Returns the node of a tree which represents the lowest common
+        /// ancestor of nodes t1 and t2 dominated by root. If either t1 or
+        /// or t2 is not dominated by root, returns null.
+        /// </summary>
         public static Tree GetLowestCommonAncestor(Tree t1, Tree t2, Tree root)
         {
             List<Tree> t1Path = PathFromRoot(t1, root);
@@ -845,12 +813,10 @@ namespace OpenNLP.Tools.Util.Trees
     }
   }*/
 
-        /**
-   * Converts the tree labels to CoreLabels.
-   * We need this because we store additional info in the CoreLabel, like token span.
-   * @param tree
-   */
-
+        /// <summary>
+        /// Converts the tree labels to CoreLabels.
+        /// We need this because we store additional info in the CoreLabel, like token span.
+        /// </summary>
         public static void ConvertToCoreLabels(Tree tree)
         {
             Label l = tree.Label();
@@ -867,12 +833,9 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-
-        /**
-   * Set the sentence index of all the leaves in the tree
-   * (only works on CoreLabel)
-   */
-
+        /// <summary>
+        /// Set the sentence index of all the leaves in the tree (only works on CoreLabel)
+        /// </summary>
         public static void SetSentIndex(Tree tree, int sentIndex)
         {
             List<Label> leaves = tree.Yield();

@@ -10,7 +10,7 @@ namespace OpenNLP.Tools.Util.Ling
     {
         string Ner();
 
-        void SetNER(string ner);
+        void SetNer(string ner);
 
         string OriginalText();
 

@@ -6,65 +6,57 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
-    /**
- * A <code>LabeledWord</code> object contains a word and its tag.
- * The <code>value()</code> of a TaggedWord is the Word.  The tag
- * is, and is a Label instead of a String
- */
-
+    /// <summary>
+    /// A <code>LabeledWord</code> object contains a word and its tag.
+    /// The <code>value()</code> of a TaggedWord is the Word.
+    /// The tag is, and is a Label instead of a String
+    /// </summary>
     public class LabeledWord : Word
     {
-        private Label vTag;
+        private Label _tag;
 
         private const string Divider = "/";
 
-        /**
-   * Create a new <code>TaggedWord</code>.
-   * It will have <code>null</code> for its content fields.
-   */
-
+        /// <summary>
+        /// Create a new <code>TaggedWord</code>.
+        /// It will have <code>null</code> for its content fields
+        /// </summary>
         public LabeledWord() : base()
         {
         }
 
-        /**
-   * Create a new <code>TaggedWord</code>.
-   *
-   * @param word The word, which will have a <code>null</code> tag
-   */
-
+        /// <summary>
+        /// Create a new <code>TaggedWord</code>.
+        /// </summary>
+        /// <param name="word">The word, which will have a <code>null</code> tag</param>
         public LabeledWord(string word) :
             base(word)
         {
         }
 
-        /**
-   * Create a new <code>TaggedWord</code>.
-   *
-   * @param word The word
-   * @param tag  The tag
-   */
-
+        /// <summary>
+        /// Create a new <code>TaggedWord</code>.
+        /// </summary>
         public LabeledWord(string word, Label tag) :
             base(word)
         {
-            this.vTag = tag;
+            this._tag = tag;
         }
 
         public LabeledWord(Label word, Label tag) :
             base(word)
         {
-            this.vTag = tag;
+            this._tag = tag;
         }
 
         public Label Tag()
         {
-            return vTag;
+            return _tag;
         }
 
         public void SetTag(Label tag)
         {
-            this.vTag = tag;
+            this._tag = tag;
         }
 
         //@Override
@@ -75,39 +67,25 @@ namespace OpenNLP.Tools.Util.Ling
 
         public string ToString(string divider)
         {
-            return GetWord() + divider + vTag;
+            return GetWord() + divider + _tag;
         }
 
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class LabelFactoryHolder
         {
-
-            //private LabelFactoryHolder() {}
-
             public static readonly LabelFactory lf = new TaggedWordFactory();
 
         }
 
-        /**
-   * Return a factory for this kind of label
-   * (i.e., <code>TaggedWord</code>).
-   * The factory returned is always the same one (a singleton).
-   *
-   * @return The label factory
-   */
-        //@Override
         public override LabelFactory LabelFactory()
         {
             return LabelFactoryHolder.lf;
         }
 
-
-        /**
-   * Return a factory for this kind of label.
-   *
-   * @return The label factory
-   */
-
+        /// <summary>
+        /// Return a factory for this kind of label.
+        /// </summary>
+        /// <returns>The label factory</returns>
         public new static LabelFactory Factory()
         {
             return LabelFactoryHolder.lf;

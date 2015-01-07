@@ -28,7 +28,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public class TreeAnnotation : CoreAnnotation<Tree>
         {
-            public Type GetType()
+            public Type GetAnnotationType()
             {
                 return typeof (Tree);
             }
@@ -46,7 +46,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public class BinarizedTreeAnnotation : CoreAnnotation<Tree>
         {
-            public Type GetType()
+            public Type GetAnnotationType()
             {
                 return typeof (Tree);
             }
@@ -59,7 +59,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public class HeadWordAnnotation : CoreAnnotation<Tree>
         {
-            public Type GetType()
+            public Type GetAnnotationType()
             {
                 return typeof (Tree);
             }
@@ -72,7 +72,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public class HeadTagAnnotation : CoreAnnotation<Tree>
         {
-            public Type GetType()
+            public Type GetAnnotationType()
             {
                 return typeof (Tree);
             }

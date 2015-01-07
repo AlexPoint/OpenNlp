@@ -7,64 +7,52 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Ling
 {
-    /**
- * A <code>Word</code> object acts as a Label by containing a string.
- * This class is in essence identical to a <code>StringLabel</code>, but
- * it also uses the value to implement the <code>HasWord</code> interface.
- *
- * @author Christopher Manning
- * @version 2000/12/20
- */
-
+    /// <summary>
+    /// A <code>Word</code> object acts as a Label by containing a string.
+    /// This class is in essence identical to a <code>StringLabel</code>, but
+    /// it also uses the value to implement the <code>HasWord</code> interface.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public class Word : StringLabel, HasWord
     {
-        /**
-   * string representation of an empty.
-   */
-        public static readonly string EMPTY_STRING = "*t*";
+        /// <summary>string representation of an empty</summary>
+        public static readonly string EmptyString = "*t*";
 
-        /**
-   * Word representation of an empty.
-   */
-        public static readonly Word EMPTY = new Word(EMPTY_STRING);
-
-        /**
-   * Construct a new word with a <code>null</code> value.
-   */
-
+        /// <summary>Word representation of an empty</summary>
+        public static readonly Word Empty = new Word(EmptyString);
+        
+        /// <summary>
+        /// Construct a new word with a <code>null</code> value.
+        /// </summary>
         public Word() : base()
         {
         }
-
-        /**
-   * Construct a new word, with the given value.
-   *
-   * @param word string value of the Word
-   */
-
+        
+        /// <summary>
+        /// Construct a new word, with the given value.
+        /// </summary>
+        /// <param name="word">string value of the Word</param>
         public Word(string word) : base(word)
         {
         }
 
-        /**
-   * Construct a new word, with the given value.
-   *
-   * @param word string value of the Word
-   */
-
+        /// <summary>
+        /// Construct a new word, with the given value.
+        /// </summary>
+        /// <param name="word">string value of the Word</param>
         public Word(string word, int beginPosition, int endPosition) :
             base(word, beginPosition, endPosition)
         {
         }
 
-
-        /**
-   * Creates a new word whose word value is the value of any
-   * class that supports the <code>Label</code> interface.
-   *
-   * @param lab The label to be used as the basis of the new Word
-   */
-
+        /// <summary>
+        /// Creates a new word whose word value is the value of any 
+        /// class that supports the <code>Label</code> interface.
+        /// </summary>
+        /// <param name="lab">The label to be used as the basis of the new Word</param>
         public Word(Label lab) : base(lab)
         {
         }
@@ -93,25 +81,20 @@ namespace OpenNLP.Tools.Util.Ling
 
         }
 
-        /**
-   * Return a factory for this kind of label (i.e., {@code Word}).
-   * The factory returned is always the same one (a singleton).
-   *
-   * @return The label factory
-   */
-        //@Override
+        /// <summary>
+        /// Return a factory for this kind of label (i.e., {@code Word}).
+        /// The factory returned is always the same one (a singleton).
+        /// </summary>
+        /// <returns>The label factory</returns>
         public override LabelFactory LabelFactory()
         {
             return WordFactoryHolder.lf;
         }
 
-
-        /**
-   * Return a factory for this kind of label.
-   *
-   * @return The label factory
-   */
-
+        /// <summary>
+        /// Return a factory for this kind of label.
+        /// </summary>
+        /// <returns>The label factory</returns>
         public new static LabelFactory Factory()
         {
             return WordFactoryHolder.lf;

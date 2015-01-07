@@ -6,44 +6,44 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
+    /// <summary>
+    /// A <code>LabeledScoredTreeFactory</code> acts as a factory for creating
+    /// trees with labels and scores.  Unless another <code>LabelFactory</code>
+    /// is supplied, it will use a <code>CoreLabel</code> by default.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public interface Labeled
     {
-        /**
-   * Returns the Object's label.
-   *
-   * @return One of the labels of the object (if there are multiple labels,
-   *         preferably the primary label, if it exists).
-   *         Returns null if there is no label.
-   */
-
+        
+        /// <summary>
+        /// Returns one of the labels of the object (if there are multiple labels,
+        /// preferably the primary label, if it exists).
+        /// Returns null if there is no label.
+        /// </summary>
         Label Label();
 
-
-        /**
-   * Sets the label associated with this object.
-   *
-   * @param label The Label value
-   */
-
+        /// <summary>
+        /// Sets the label associated with this object.
+        /// </summary>
+        /// <param name="label">The Label value</param>
         void SetLabel( /*final*/ Label label);
 
-
-        /**
-   * Gives back all labels for this thing.
-   *
-   * @return A Collection of the Object's labels.  Returns an empty
-   *         Collection if there are no labels.
-   */
-
+        /// <summary>
+        /// Gives back all labels for this thing.
+        /// </summary>
+        /// <returns>
+        /// A Collection of the Object's labels.
+        /// Returns an empty Collection if there are no labels.
+        /// </returns>
         ICollection<Label> Labels();
 
-
-        /**
-   * Sets the labels associated with this object.
-   *
-   * @param labels The set of Label values
-   */
-
+        /// <summary>
+        /// Sets the labels associated with this object.
+        /// </summary>
+        /// <param name="labels">The set of Label values</param>
         void SetLabels( /*final*/ ICollection<Label> labels);
     }
 }

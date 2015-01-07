@@ -6,28 +6,23 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
-    /**
- * Something that implements the <code>HasWord</code> interface
- * knows about words.
- *
- * @author Christopher Manning
- */
-
+    /// <summary>
+    /// Something that implements the <code>HasWord</code> interface knows about words.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public interface HasWord
     {
-        /**
-   * Return the word value of the label (or null if none).
-   *
-   * @return string the word value for the label
-   */
+        /// <summary>
+        /// Return the word value of the label (or null if none).
+        /// </summary>
         string GetWord();
 
-
-        /**
-         * Set the word value for the label (if one is stored).
-         *
-         * @param word The word value for the label
-         */
+        /// <summary>
+        /// Set the word value for the label (if one is stored).
+        /// </summary>
         void SetWord(string word);
     }
 }

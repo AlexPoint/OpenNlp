@@ -7,25 +7,25 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
-    /**
- * A CoreLabel represents a single word with ancillary information
- * attached using CoreAnnotations.  If the proper annotations are set,
- * the CoreLabel also provides convenient methods to access tags,
- * lemmas, etc.
- * <p>
- * A CoreLabel is a Map from keys (which are Class objects) to values,
- * whose type is determined by the key.  That is, it is a heterogeneous
- * typesafe Map (see Josh Bloch, Effective Java, 2nd edition).
- * <p>
- * The CoreLabel class in particular bridges the gap between old-style JavaNLP
- * Labels and the new CoreMap infrastructure.  Instances of this class can be
- * used (almost) anywhere that the now-defunct FeatureLabel family could be
- * used.  This data structure is backed by an {@link ArrayCoreMap}.
- *
- * @author dramage
- * @author rafferty
- */
-
+    /// <summary>
+    /// A CoreLabel represents a single word with ancillary information
+    /// attached using CoreAnnotations.  If the proper annotations are set,
+    /// the CoreLabel also provides convenient methods to access tags, lemmas, etc.
+    /// 
+    /// A CoreLabel is a Map from keys (which are Class objects) to values,
+    /// whose type is determined by the key.  That is, it is a heterogeneous
+    /// typesafe Map (see Josh Bloch, Effective Java, 2nd edition).
+    /// 
+    /// The CoreLabel class in particular bridges the gap between old-style JavaNLP
+    /// Labels and the new CoreMap infrastructure.  Instances of this class can be
+    /// used (almost) anywhere that the now-defunct FeatureLabel family could be
+    /// used.  This data structure is backed by an {@link ArrayCoreMap}.
+    /// 
+    /// @author dramage
+    /// @author rafferty
+    /// 
+    /// Code...
+    /// </summary>
     public class CoreLabel : ArrayCoreMap, AbstractCoreLabel, HasWord, HasTag, HasCategory, HasLemma, HasContext,
         HasIndex, HasOffset
     {
@@ -38,44 +38,39 @@ namespace OpenNLP.Tools.Util.Ling
         // private static readonly boolean VERBOSE = false;
 
 
-        /** Default constructor, calls super() */
-
+        /// <summary>
+        /// Default constructor, calls base()
+        /// </summary>
         public CoreLabel() : base()
         {
         }
 
-        /**
-   * Initializes this CoreLabel, pre-allocating arrays to hold
-   * up to capacity key,value pairs.  This array will grow if necessary.
-   *
-   * @param capacity Initial capacity of object in key,value pairs
-   */
-
+        /// <summary>
+        /// Initializes this CoreLabel, pre-allocating arrays to hold
+        /// up to capacity key,value pairs.  This array will grow if necessary.
+        /// </summary>
+        /// <param name="capacity">Initial capacity of object in key,value pairs</param>
         public CoreLabel(int capacity) : base(capacity)
         {
         }
 
-        /**
-   * Returns a new CoreLabel instance based on the contents of the given
-   * CoreLabel.  It copies the contents of the other CoreLabel.
-   * <i>Implementation note:</i> this is a the same as the constructor
-   * that takes a CoreMap, but is needed to ensure unique most specific
-   * type inference for selecting a constructor at compile-time.
-   *
-   * @param label The CoreLabel to copy
-   */
-
+        /// <summary>
+        /// Returns a new CoreLabel instance based on the contents of the given
+        /// CoreLabel.  It copies the contents of the other CoreLabel.
+        /// <i>Implementation note:</i> this is a the same as the constructor
+        /// that takes a CoreMap, but is needed to ensure unique most specific
+        /// type inference for selecting a constructor at compile-time.
+        /// </summary>
+        /// <param name="label">The CoreLabel to copy</param>
         public CoreLabel(CoreLabel label) : this((CoreMap) label)
         {
         }
 
-        /**
-   * Returns a new CoreLabel instance based on the contents of the given
-   * CoreMap.  It copies the contents of the other CoreMap.
-   *
-   * @param label The CoreMap to copy
-   */
-        //@SuppressWarnings({"unchecked"})
+        /// <summary>
+        /// Returns a new CoreLabel instance based on the contents of the given
+        /// CoreMap.  It copies the contents of the other CoreMap.
+        /// </summary>
+        /// <param name="label">The CoreMap to copy</param>
         public CoreLabel(CoreMap label) : base(label.Size())
         {
             foreach (var key in label.KeySet())
@@ -84,16 +79,14 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        /**
-   * Returns a new CoreLabel instance based on the contents of the given
-   * label.   Warning: The behavior of this method is a bit disjunctive!
-   * If label is a CoreMap (including CoreLabel), then its entire
-   * contents is copied into this label.  But, otherwise, just the
-   * value() and word iff it implements HasWord is copied.
-   *
-   * @param label Basis for this label
-   */
-        //@SuppressWarnings("unchecked")
+        /// <summary>
+        /// Returns a new CoreLabel instance based on the contents of the given label.
+        /// Warning: The behavior of this method is a bit disjunctive!
+        /// If label is a CoreMap (including CoreLabel), then its entire
+        /// contents is copied into this label.  But, otherwise, just the
+        /// value() and word iff it implements HasWord is copied.
+        /// </summary>
+        /// <param name="label">Basis for this label</param>
         public CoreLabel(Label label) : base(0)
         {
             if (label is CoreMap)
@@ -130,12 +123,11 @@ namespace OpenNLP.Tools.Util.Ling
     initFromStrings(keys, values);
   }*/
 
-
-        /**
-   * Class that all "generic" annotations extend.
-   * This allows you to read in arbitrary values from a file as features, for example.
-   */
-
+        /// <summary>
+        /// Class that all "generic" annotations extend.
+        /// This allows you to read in arbitrary values from a file as features, for example.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         public /*static */ interface GenericAnnotation<T> : CoreAnnotation<T>
         {
         }
@@ -266,40 +258,31 @@ namespace OpenNLP.Tools.Util.Ling
 
         }
 
-
-        /**
-   * Return a factory for this kind of label
-   *
-   * @return The label factory
-   */
-
+        /// <summary>
+        /// Return a factory for this kind of label
+        /// </summary>
         public static LabelFactory Factory()
         {
             return new CoreLabelFactory();
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public LabelFactory LabelFactory()
         {
             return CoreLabel.Factory();
         }
 
-        /**
-   * Return a non-null string value for a key.
-   * This method is included for backwards compatibility with AbstractMapLabel.
-   * It is guaranteed to not return null; if the key is not present or
-   * has a null value, it returns the empty string ("").  It is only valid to
-   * call this method when key is paired with a value of type string.
-   *
-   * @param <KEY> A key type with a string value
-   * @param key The key to return the value of.
-   * @return "" if the key is not in the map or has the value <code>null</code>
-   *     and the string value of the key otherwise
-   */
-        //@Override
+        /// <summary>
+        /// Return a non-null string value for a key.
+        /// This method is included for backwards compatibility with AbstractMapLabel.
+        /// It is guaranteed to not return null; if the key is not present or
+        /// has a null value, it returns the empty string ("").  It is only valid to
+        /// call this method when key is paired with a value of type string.
+        /// </summary>
+        /// <param name="key">A key type with a string value to return the value of.</param>
+        /// <returns>
+        /// "" if the key is not in the map or has the value <code>null</code>
+        /// and the string value of the key otherwise
+        /// </returns>
         public /*<KEY extends Key<string>>*/ string GetString(Type key)
         {
             string value = (string) Get(key);
@@ -318,38 +301,26 @@ namespace OpenNLP.Tools.Util.Ling
 //    return map.size();
 //  }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetFromString(string labelStr)
         {
             throw new InvalidOperationException("Cannot set from string");
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetValue(string value)
         {
             Set(typeof (CoreAnnotations.ValueAnnotation), value);
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public string Value()
         {
             return (string) Get(typeof (CoreAnnotations.ValueAnnotation));
         }
 
-        /**
-   * Set the word value for the label.  Also, clears the lemma, since
-   * that may have changed if the word changed.
-   */
-        //@Override
+        /// <summary>
+        /// Sets the word value for the label.  
+        /// Also, clears the lemma, since that may have changed if the word changed.
+        /// </summary>
+        /// <param name="word"></param>
         public void SetWord(string word)
         {
             var originalWord = (string) Get(typeof (CoreAnnotations.TextAnnotation));
@@ -362,163 +333,94 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public string GetWord()
         {
             return (string) Get(typeof (CoreAnnotations.TextAnnotation));
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetTag(string tag)
         {
             Set(typeof (CoreAnnotations.PartOfSpeechAnnotation), tag);
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public string Tag()
         {
             return (string) Get(typeof (CoreAnnotations.PartOfSpeechAnnotation));
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetCategory(string category)
         {
             Set(typeof (CoreAnnotations.CategoryAnnotation), category);
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public string Category()
         {
             return (string) Get(typeof (CoreAnnotations.CategoryAnnotation));
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetAfter(string after)
         {
             Set(typeof (CoreAnnotations.AfterAnnotation), after);
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public string After()
         {
             return GetString(typeof (CoreAnnotations.AfterAnnotation));
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetBefore(string before)
         {
             Set(typeof (CoreAnnotations.BeforeAnnotation), before);
         }
 
-
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public string Before()
         {
             return GetString(typeof (CoreAnnotations.BeforeAnnotation));
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetOriginalText(string originalText)
         {
             Set(typeof (CoreAnnotations.OriginalTextAnnotation), originalText);
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public string OriginalText()
         {
             return GetString(typeof (CoreAnnotations.OriginalTextAnnotation));
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
-        public string DocID()
+        public string DocId()
         {
-            return (string) Get(typeof (CoreAnnotations.DocIDAnnotation));
+            return (string) Get(typeof (CoreAnnotations.DocIdAnnotation));
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
-        public void SetDocID(string docID)
+        public void SetDocId(string docId)
         {
             //set(CoreAnnotations.DocIDAnnotation.class, docID);
         }
-
-        /**
-   * Return the named entity class of the label (or null if none).
-   *
-   * @return string the word value for the label
-   */
-
+        
+        /// <summary>
+        /// Returns the named entity class of the label (or null if none).
+        /// </summary>
         public string Ner()
         {
             return (string) Get(typeof (CoreAnnotations.NamedEntityTagAnnotation));
         }
 
-        public void SetNER(string ner)
+        public void SetNer(string ner)
         {
             Set(typeof (CoreAnnotations.NamedEntityTagAnnotation), ner);
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public string Lemma()
         {
             return (string) Get(typeof (CoreAnnotations.LemmaAnnotation));
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetLemma(string lemma)
         {
             Set(typeof (CoreAnnotations.LemmaAnnotation), lemma);
         }
 
-
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public int Index()
         {
             var n = Get(typeof (CoreAnnotations.IndexAnnotation));
@@ -532,19 +434,11 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetIndex(int index)
         {
             Set(typeof (CoreAnnotations.IndexAnnotation), index);
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public int SentIndex()
         {
             var n = Get(typeof (CoreAnnotations.SentenceIndexAnnotation));
@@ -554,19 +448,11 @@ namespace OpenNLP.Tools.Util.Ling
                 return (int) n;
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetSentIndex(int sentIndex)
         {
             Set(typeof (CoreAnnotations.SentenceIndexAnnotation), sentIndex);
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public int BeginPosition()
         {
             var i = Get(typeof (CoreAnnotations.CharacterOffsetBeginAnnotation));
@@ -576,10 +462,6 @@ namespace OpenNLP.Tools.Util.Ling
                 return -1;
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public int EndPosition()
         {
             var i = Get(typeof (CoreAnnotations.CharacterOffsetEndAnnotation));
@@ -588,19 +470,11 @@ namespace OpenNLP.Tools.Util.Ling
             else return -1;
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetBeginPosition(int beginPos)
         {
             Set(typeof (CoreAnnotations.CharacterOffsetBeginAnnotation), beginPos);
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetEndPosition(int endPos)
         {
             Set(typeof (CoreAnnotations.CharacterOffsetEndAnnotation), endPos);
@@ -619,10 +493,8 @@ namespace OpenNLP.Tools.Util.Ling
             Set(typeof (CoreAnnotations.CopyAnnotation), count);
         }
 
-        /**
-   * Tag separator to use by default
-   */
-        public static readonly string TAG_SEPARATOR = "/";
+        /// <summary>Tag separator to use by default</summary>
+        public static readonly string TagSeparator = "/";
 
         public enum OutputFormat
         {
@@ -639,34 +511,33 @@ namespace OpenNLP.Tools.Util.Ling
 
         public static readonly OutputFormat DEFAULT_FORMAT = OutputFormat.VALUE_INDEX;
 
-        //@Override
+        
         public string ToString()
         {
             return ToString(DEFAULT_FORMAT);
         }
 
-        /**
-   * Returns a formatted string representing this label.  The
-   * desired format is passed in as a <code>string</code>.
-   * Currently supported formats include:
-   * <ul>
-   * <li>"value": just prints the value</li>
-   * <li>"{map}": prints the complete map</li>
-   * <li>"value{map}": prints the value followed by the contained
-   * map (less the map entry containing key <code>CATEGORY_KEY</code>)</li>
-   * <li>"value-index": extracts a value and an integer index from
-   * the contained map using keys  <code>INDEX_KEY</code>,
-   * respectively, and prints them with a hyphen in between</li>
-   * <li>"value-tag"
-   * <li>"value-tag-index"
-   * <li>"value-index{map}": a combination of the above; the index is
-   * displayed first and then not shown in the map that is displayed</li>
-   * <li>"word": Just the value of HEAD_WORD_KEY in the map</li>
-   * </ul>
-   * <p/>
-   * Map is printed in alphabetical order of keys.
-   */
-        //@SuppressWarnings("unchecked")
+        /// <summary>
+        /// Returns a formatted string representing this label.
+        /// The desired format is passed in as a <code>string</code>.
+        /// Currently supported formats include:
+        /// <ul>
+        /// <li>"value": just prints the value</li>
+        /// <li>"{map}": prints the complete map</li>
+        /// <li>"value{map}": prints the value followed by the contained
+        /// map (less the map entry containing key <code>CATEGORY_KEY</code>)</li>
+        /// <li>"value-index": extracts a value and an integer index from
+        /// the contained map using keys  <code>INDEX_KEY</code>,
+        /// respectively, and prints them with a hyphen in between</li>
+        /// <li>"value-tag"</li>
+        /// <li>"value-tag-index"</li>
+        /// <li>"value-index{map}": a combination of the above; the index is
+        /// displayed first and then not shown in the map that is displayed</li>
+        /// <li>"word": Just the value of HEAD_WORD_KEY in the map</li>
+        /// </ul>
+        /// 
+        /// Map is printed in alphabetical order of keys.
+        /// </summary>
         public string ToString(OutputFormat format)
         {
             var buf = new StringBuilder();
@@ -688,7 +559,7 @@ namespace OpenNLP.Tools.Util.Ling
                 case OutputFormat.VALUE_MAP:
                 {
                     buf.Append(Value());
-                    var map2 = new Dictionary<Type, object>(asClassComparator);
+                    var map2 = new Dictionary<Type, object>(AsClassComparator);
                     foreach (var key in this.KeySet())
                     {
                         map2.Add(key, Get(key));
@@ -715,7 +586,7 @@ namespace OpenNLP.Tools.Util.Ling
                     string ltag = Tag();
                     if (ltag != null)
                     {
-                        buf.Append(TAG_SEPARATOR).Append(ltag);
+                        buf.Append(TagSeparator).Append(ltag);
                     }
                     break;
                 }
@@ -725,7 +596,7 @@ namespace OpenNLP.Tools.Util.Ling
                     string ltag = Tag();
                     if (ltag != null)
                     {
-                        buf.Append(TAG_SEPARATOR).Append(ltag);
+                        buf.Append(TagSeparator).Append(ltag);
                     }
                     var index = this.Get(typeof (CoreAnnotations.IndexAnnotation));
                     if (index != null)
@@ -802,6 +673,6 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        private static readonly IEqualityComparer<Type> asClassComparator = new NameComparer();
+        private static readonly IEqualityComparer<Type> AsClassComparator = new NameComparer();
     }
 }

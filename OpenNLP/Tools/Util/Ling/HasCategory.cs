@@ -6,29 +6,23 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
-    /**
- * Something that implements the <code>HasCategory</code> interface
- * knows about categories.
- *
- * @author Christopher Manning
- */
-
+    /// <summary>
+    /// Something that implements the <code>HasCategory</code> interface knows about categories.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public interface HasCategory
     {
-
-        /**
-         * Return the category value of the label (or null if none).
-         *
-         * @return string the category value for the label
-         */
+        /// <summary>
+        /// Returns the category value of the label (or null if none).
+        /// </summary>
         string Category();
 
-
-        /**
-         * Set the category value for the label (if one is stored).
-         *
-         * @param category The category value for the label
-         */
+        /// <summary>
+        /// Sets the category value for the label (if one is stored).
+        /// </summary>
         void SetCategory(string category);
 
     }

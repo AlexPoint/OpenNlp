@@ -6,54 +6,49 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
-    /**
- * This class is mainly for use with RTE in terms of the methods it provides,
- * but on a more general level, it provides a {@link CoreLabel} that uses its
- * DocIDAnnotation, SentenceIndexAnnotation, and IndexAnnotation to implement
- * Comparable/compareTo, hashCode, and equals.  This means no other annotations,
- * including the identity of the word, are taken into account when using these
- * methods.
- * <br>
- * The actual implementation is to wrap a <code>CoreLabel<code/>.
- * This avoids breaking the <code>equals()</code> and
- * <code>hashCode()</code> contract and also avoids expensive copying
- * when used to represent the same data as the original
- * <code>CoreLabel</code>.
- *
- * @author rafferty
- *
- */
-
+    /// <summary>
+    /// This class is mainly for use with RTE in terms of the methods it provides,
+    /// but on a more general level, it provides a {@link CoreLabel} that uses its
+    /// DocIDAnnotation, SentenceIndexAnnotation, and IndexAnnotation to implement
+    /// Comparable/compareTo, hashCode, and equals.  This means no other annotations,
+    /// including the identity of the word, are taken into account when using these
+    /// methods.
+    /// 
+    /// The actual implementation is to wrap a <code>CoreLabel</code>.
+    /// This avoids breaking the <code>equals()</code> and
+    /// <code>hashCode()</code> contract and also avoids expensive copying
+    /// when used to represent the same data as the original <code>CoreLabel</code>.
+    /// 
+    /// @author rafferty
+    /// 
+    /// Code...
+    /// </summary>
     public class IndexedWord : AbstractCoreLabel, IComparable<IndexedWord>
     {
         private static readonly long serialVersionUID = 3739633991145239829L;
 
-        /**
-   * The identifier that points to no word.
-   */
-        public static readonly IndexedWord NO_WORD = new IndexedWord(null, -1, -1);
+        /// <summary>
+        /// The identifier that points to no word.
+        /// </summary>
+        public static readonly IndexedWord NoWord = new IndexedWord(null, -1, -1);
 
-        //private readonly CoreLabel label;
         private readonly CoreLabel label;
 
-        /**
-   * Default constructor; uses {@link CoreLabel} default constructor
-   */
-
+        
+        /// <summary>
+        /// Default constructor; uses {@link CoreLabel} default constructor
+        /// </summary>
         public IndexedWord()
         {
             label = new CoreLabel();
         }
 
-
-        /**
-   * Copy Constructor - relies on {@link CoreLabel} copy constructor
-   * It will set the value, and if the word is not set otherwise, set
-   * the word to the value.
-   *
-   * @param w A Label to initialize this IndexedWord from
-   */
-
+        /// <summary>
+        /// Copy Constructor - relies on {@link CoreLabel} copy constructor.
+        /// It will set the value, and if the word is not set otherwise, set
+        /// the word to the value.
+        /// </summary>
+        /// <param name="w">A Label to initialize this IndexedWord from</param>
         public IndexedWord(Label w)
         {
             if (w is CoreLabel)
@@ -70,33 +65,29 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-        /**
-   * Construct an IndexedWord from a CoreLabel just as for a CoreMap.
-   * <i>Implementation note:</i> this is a the same as the constructor
-   * that takes a CoreMap, but is needed to ensure unique most specific
-   * type inference for selecting a constructor at compile-time.
-   *
-   * @param w A Label to initialize this IndexedWord from
-   */
-
+        /// <summary>
+        /// Construct an IndexedWord from a CoreLabel just as for a CoreMap.
+        /// <i>Implementation note:</i> this is a the same as the constructor
+        /// that takes a CoreMap, but is needed to ensure unique most specific
+        /// type inference for selecting a constructor at compile-time.
+        /// </summary>
+        /// <param name="w">A Label to initialize this IndexedWord from</param>
         public IndexedWord(CoreLabel w)
         {
             label = w;
         }
-
-        /**
-   * Constructor for setting docID, sentenceIndex, and
-   * index without any other annotations.
-   *
-   * @param docID The document ID (arbitrary string)
-   * @param sentenceIndex The sentence number in the document (normally 0-based)
-   * @param index The index of the word in the sentence (normally 0-based)
-   */
-
-        public IndexedWord(string docID, int sentenceIndex, int index)
+        
+        /// <summary>
+        /// Constructor for setting docID, sentenceIndex, and
+        /// index without any other annotations.
+        /// </summary>
+        /// <param name="docId">The document ID (arbitrary string)</param>
+        /// <param name="sentenceIndex">The sentence number in the document (normally 0-based)</param>
+        /// <param name="index">The index of the word in the sentence (normally 0-based)</param>
+        public IndexedWord(string docId, int sentenceIndex, int index)
         {
             label = new CoreLabel();
-            label.Set(typeof (CoreAnnotations.DocIDAnnotation), docID);
+            label.Set(typeof (CoreAnnotations.DocIdAnnotation), docId);
             label.Set(typeof (CoreAnnotations.SentenceIndexAnnotation), sentenceIndex);
             label.Set(typeof (CoreAnnotations.IndexAnnotation), index);
         }
@@ -209,21 +200,21 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         //@Override
-        public void SetNER(string ner)
+        public void SetNer(string ner)
         {
-            label.SetNER(ner);
+            label.SetNer(ner);
         }
 
         //@Override
-        public string DocID()
+        public string DocId()
         {
-            return label.DocID();
+            return label.DocId();
         }
 
         //@Override
-        public void SetDocID(string docID)
+        public void SetDocId(string docId)
         {
-            label.SetDocID(docID);
+            label.SetDocId(docId);
         }
 
         //@Override
@@ -302,13 +293,12 @@ namespace OpenNLP.Tools.Util.Ling
             return StringUtils.Repeat('\'', copy);
         }
 
-        /**
-   * This .equals is dependent only on docID, sentenceIndex, and index.
-   * It doesn't consider the actual word value, but assumes that it is
-   * validly represented by token position.
-   * All IndexedWords that lack these fields will be regarded as equal.
-   */
-        //@Override
+        /// <summary>
+        /// This .equals is dependent only on docID, sentenceIndex, and index.
+        /// It doesn't consider the actual word value, but assumes that it is
+        /// validly represented by token position.
+        /// All IndexedWords that lack these fields will be regarded as equal.
+        /// </summary>
         public override bool Equals(Object o)
         {
             if (this == o) return true;
@@ -338,14 +328,14 @@ namespace OpenNLP.Tools.Util.Ling
             {
                 return false;
             }
-            string myDocID = GetString(typeof (CoreAnnotations.DocIDAnnotation));
-            string otherDocID = otherWord.GetString(typeof (CoreAnnotations.DocIDAnnotation));
-            if (myDocID == null)
+            string myDocId = GetString(typeof (CoreAnnotations.DocIdAnnotation));
+            string otherDocId = otherWord.GetString(typeof (CoreAnnotations.DocIdAnnotation));
+            if (myDocId == null)
             {
-                if (otherDocID != null)
+                if (otherDocId != null)
                     return false;
             }
-            else if (! myDocID.Equals(otherDocID))
+            else if (! myDocId.Equals(otherDocId))
             {
                 return false;
             }
@@ -356,19 +346,16 @@ namespace OpenNLP.Tools.Util.Ling
             return true;
         }
 
-
-        /**
-   * This hashCode uses only the docID, sentenceIndex, and index.
-   * See compareTo for more info.
-   */
-        //@Override
+        /// <summary>
+        /// This hashCode uses only the docID, sentenceIndex, and index. See compareTo for more info.
+        /// </summary>
         public override int GetHashCode()
         {
             bool sensible = false;
             int result = 0;
-            if (Get(typeof (CoreAnnotations.DocIDAnnotation)) != null)
+            if (Get(typeof (CoreAnnotations.DocIdAnnotation)) != null)
             {
-                result = Get(typeof (CoreAnnotations.DocIDAnnotation)).GetHashCode();
+                result = Get(typeof (CoreAnnotations.DocIdAnnotation)).GetHashCode();
                 sensible = true;
             }
             if (Has(typeof (CoreAnnotations.SentenceIndexAnnotation)))
@@ -388,28 +375,23 @@ namespace OpenNLP.Tools.Util.Ling
             return result;
         }
 
-        /**
-   * NOTE: This compareTo is based on and made to be compatible with the one
-   * from IndexedFeatureLabel.  You <em>must</em> have a DocIDAnnotation,
-   * SentenceIndexAnnotation, and IndexAnnotation for this to make sense and
-   * be guaranteed to work properly. Currently, it won't error out and will
-   * try to return something sensible if these are not defined, but that really
-   * isn't proper usage!
-   *
-   * This compareTo method is based not by value elements like the word(),
-   *  but on passage position. It puts NO_WORD elements first, and then orders
-   *  by document, sentence, and word index.  If these do not differ, it
-   *  returns equal.
-   *
-   *  @param w The IndexedWord to compare with
-   *  @return Whether this is less than w or not in the ordering
-   */
-
+        /// <summary>
+        /// NOTE: This compareTo is based on and made to be compatible with the one
+        /// from IndexedFeatureLabel.  You <em>must</em> have a DocIDAnnotation,
+        /// SentenceIndexAnnotation, and IndexAnnotation for this to make sense and
+        /// be guaranteed to work properly. Currently, it won't error out and will
+        /// try to return something sensible if these are not defined, but that really
+        /// isn't proper usage!
+        /// 
+        /// This compareTo method is based not by value elements like the word(),
+        /// but on passage position. It puts NO_WORD elements first, and then orders
+        /// by document, sentence, and word index.  If these do not differ, it returns equal.
+        /// </summary>
         public int CompareTo(IndexedWord w)
         {
-            if (this.Equals(IndexedWord.NO_WORD))
+            if (this.Equals(IndexedWord.NoWord))
             {
-                if (w.Equals(IndexedWord.NO_WORD))
+                if (w.Equals(IndexedWord.NoWord))
                 {
                     return 0;
                 }
@@ -418,13 +400,13 @@ namespace OpenNLP.Tools.Util.Ling
                     return -1;
                 }
             }
-            if (w.Equals(IndexedWord.NO_WORD))
+            if (w.Equals(IndexedWord.NoWord))
             {
                 return 1;
             }
 
-            string docID = this.GetString(typeof (CoreAnnotations.DocIDAnnotation));
-            int docComp = docID.CompareTo(w.GetString(typeof (CoreAnnotations.DocIDAnnotation)));
+            string docId = this.GetString(typeof (CoreAnnotations.DocIdAnnotation));
+            int docComp = docId.CompareTo(w.GetString(typeof (CoreAnnotations.DocIdAnnotation)));
             if (docComp != 0) return docComp;
 
             int sentComp = SentIndex() - w.SentIndex();
@@ -436,10 +418,7 @@ namespace OpenNLP.Tools.Util.Ling
             return CopyCount() - w.CopyCount();
         }
 
-        /**
-   * Returns the value-tag of this label.
-   */
-        //@Override
+        /// <summary>Returns the value-tag of this label.</summary>
         public override string ToString()
         {
             return label.ToString(CoreLabel.OutputFormat.VALUE_TAG);
@@ -449,13 +428,8 @@ namespace OpenNLP.Tools.Util.Ling
         public string ToString(CoreLabel.OutputFormat format)
         {
             return label.ToString(format);
-            //return label.ToString();
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public void SetFromString(string labelStr)
         {
             throw new InvalidOperationException("Cannot set from string");
@@ -517,10 +491,6 @@ namespace OpenNLP.Tools.Util.Ling
             return new LabFact();
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public LabelFactory LabelFactory()
         {
             return IndexedWord.Factory();

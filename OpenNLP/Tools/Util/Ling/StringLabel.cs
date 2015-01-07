@@ -6,59 +6,49 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
-    /**
- * A <code>StringLabel</code> object acts as a Label by containing a
- * single String, which it sets or returns in response to requests.
- * The hashCode() and compareTo() methods for this class assume that this
- * string value is non-null.  equals() is correctly implemented
- *
- * @author Christopher Manning
- * @version 2000/12/20
- */
-
+    /// <summary>
+    /// A <code>StringLabel</code> object acts as a Label by containing a
+    /// single String, which it sets or returns in response to requests.
+    /// The hashCode() and compareTo() methods for this class assume that this
+    /// string value is non-null.  equals() is correctly implemented
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public class StringLabel : ValueLabel, HasOffset
     {
         private string str;
 
-        /**
-   * Start position of the word in the original input string
-   */
-        private int pbeginPosition = -1;
+        /// <summary>Start position of the word in the original input string</summary>
+        private int _beginPosition = -1;
 
-        /**
-   * End position of the word in the original input string
-   */
-        private int pendPosition = -1;
+        /// <summary>End position of the word in the original input string</summary>
+        private int _endPosition = -1;
 
 
-        /**
-   * Create a new <code>StringLabel</code> with a null content (i.e., str).
-   */
-
+        /// <summary>
+        /// Create a new <code>StringLabel</code> with a null content (i.e., str).
+        /// </summary>
         public StringLabel()
         {
         }
 
-
-        /**
-   * Create a new <code>StringLabel</code> with the given content.
-   *
-   * @param str The new label's content
-   */
-
+        /// <summary>
+        /// Create a new <code>StringLabel</code> with the given content.
+        /// </summary>
+        /// <param name="str">The new label's content</param>
         public StringLabel(string str)
         {
             this.str = str;
         }
 
-        /**
-   * Create a new <code>StringLabel</code> with the given content.
-   *
-   * @param str The new label's content
-   * @param beginPosition Start offset in original text
-   * @param endPosition End offset in original text
-   */
-
+        /// <summary>
+        /// Create a new <code>StringLabel</code> with the given content.
+        /// </summary>
+        /// <param name="str">The new label's content</param>
+        /// <param name="beginPosition">Start offset in original text</param>
+        /// <param name="endPosition">End offset in original text</param>
         public StringLabel(string str, int beginPosition, int endPosition)
         {
             this.str = str;
@@ -66,14 +56,11 @@ namespace OpenNLP.Tools.Util.Ling
             SetEndPosition(endPosition);
         }
 
-
-        /**
-   * Create a new <code>StringLabel</code> with the
-   * <code>value()</code> of another label as its label.
-   *
-   * @param label The other label
-   */
-
+        /// <summary>
+        /// Create a new <code>StringLabel</code> with the
+        /// <code>value()</code> of another label as its label.
+        /// </summary>
+        /// <param name="label">The other label</param>
         public StringLabel(Label label)
         {
             this.str = label.Value();
@@ -85,37 +72,25 @@ namespace OpenNLP.Tools.Util.Ling
             }
         }
 
-
-        /**
-   * Return the word value of the label (or null if none).
-   *
-   * @return string the word value for the label
-   */
-        //@Override
+        /// <summary>
+        /// Return the word value of the label (or null if none).
+        /// </summary>
         public override string Value()
         {
             return str;
         }
 
-
-        /**
-   * Set the value for the label.
-   *
-   * @param value The value for the label
-   */
-        //@Override
+        /// <summary>
+        /// Set the value for the label.
+        /// </summary>
         public override void SetValue( /*final */ string value)
         {
             str = value;
         }
 
-
-        /**
-   * Set the label from a string.
-   *
-   * @param str The str for the label
-   */
-        //@Override
+        /// <summary>
+        /// Set the label from a string.
+        /// </summary>
         public override void SetFromString( /*final */ string str)
         {
             this.str = str;
@@ -130,32 +105,23 @@ namespace OpenNLP.Tools.Util.Ling
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class StringLabelFactoryHolder
         {
-
-            //private StringLabelFactoryHolder() {}
-
             public static readonly LabelFactory lf = new StringLabelFactory();
         }
 
-        /**
-   * Return a factory for this kind of label
-   * (i.e., <code>StringLabel</code>).
-   * The factory returned is always the same one (a singleton).
-   *
-   * @return The label factory
-   */
-        //@Override
+        /// <summary>
+        /// Return a factory for this kind of label (i.e., <code>StringLabel</code>).
+        /// The factory returned is always the same one (a singleton).
+        /// </summary>
+        /// <returns>The label factory</returns>
         public override LabelFactory LabelFactory()
         {
             return StringLabelFactoryHolder.lf;
         }
 
-
-        /**
-   * Return a factory for this kind of label.
-   *
-   * @return The label factory
-   */
-
+        /// <summary>
+        /// Return a factory for this kind of label.
+        /// </summary>
+        /// <returns>The label factory</returns>
         public static LabelFactory Factory()
         {
             return StringLabelFactoryHolder.lf;
@@ -163,22 +129,22 @@ namespace OpenNLP.Tools.Util.Ling
 
         public int BeginPosition()
         {
-            return pbeginPosition;
+            return _beginPosition;
         }
 
         public int EndPosition()
         {
-            return pendPosition;
+            return _endPosition;
         }
 
         public void SetBeginPosition(int beginPosition)
         {
-            this.pbeginPosition = beginPosition;
+            this._beginPosition = beginPosition;
         }
 
         public void SetEndPosition(int endPosition)
         {
-            this.pendPosition = endPosition;
+            this._endPosition = endPosition;
         }
 
         private static readonly long serialVersionUID = -4153619273767524247L;

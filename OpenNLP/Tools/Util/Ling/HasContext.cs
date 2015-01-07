@@ -6,50 +6,41 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
-    /**
- * @author grenager
- */
-
+    /// <summary>
+    /// @author grenager
+    /// 
+    /// Code...
+    /// </summary>
     public interface HasContext
     {
-
-        /**
-         * @return the string before the word
-         */
+        /// <summary>
+        /// Returns the string before the word
+        /// </summary>
         string Before();
 
-        /**
-         * Set the whitespace string before the word.
-         * @param before the whitespace string before the word
-         */
+        /// <summary>
+        /// Set the whitespace string before the word.
+        /// </summary>
         void SetBefore(string before);
 
-        /**
-         * Return the string which is the original character sequence of the token.
-         *
-         * @return The original character sequence of the token
-         */
+        /// <summary>
+        /// Returns the string which is the original character sequence of the token.
+        /// </summary>
         string OriginalText();
 
-        /**
-         * Set the string which is the original character sequence of the token.
-         *
-         * @param originalText The original character sequence of the token
-         */
+        /// <summary>
+        /// Set the string which is the original character sequence of the token.
+        /// </summary>
         void SetOriginalText(string originalText);
 
-        /**
-         * Return the whitespace string after the word.
-         *
-         * @return The whitespace string after the word
-         */
+        /// <summary>
+        /// Returns the whitespace string after the word.
+        /// </summary>
         string After();
 
-        /**
-         * Set the whitespace string after the word.
-         *
-         * @param after The whitespace string after the word
-         */
+        /// <summary>
+        /// Sets the whitespace string after the word.
+        /// </summary>
         void SetAfter(string after);
 
     }

@@ -6,28 +6,23 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
-    /**
- * Something that implements the <code>HasTag</code> interface
- * knows about part-of-speech tags.
- *
- * @author Christopher Manning
- */
-
+    /// <summary>
+    /// Something that implements the <code>HasTag</code> interface knows about part-of-speech tags.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public interface HasTag
     {
-        /**
-   * Return the tag value of the label (or null if none).
-   *
-   * @return string the tag value for the label
-   */
+        /// <summary>
+        /// Return the tag value of the label (or null if none).
+        /// </summary>
         string Tag();
 
-
-        /**
-         * Set the tag value for the label (if one is stored).
-         *
-         * @param tag The tag value for the label
-         */
+        /// <summary>
+        /// Set the tag value for the label (if one is stored).
+        /// </summary>
         void SetTag(string tag);
     }
 }

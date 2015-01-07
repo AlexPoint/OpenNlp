@@ -6,17 +6,23 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
-    /**
- * @author grenager
- */
-
+    /// <summary>
+    /// @author grenager
+    /// 
+    /// Code...
+    /// </summary>
     public interface HasIndex
     {
-        string DocID();
-        void SetDocID(string docID);
+        string DocId();
+
+        void SetDocId(string docId);
+
         int SentIndex();
+
         void SetSentIndex(int sentIndex);
+
         int Index();
+
         void SetIndex(int index);
     }
 }

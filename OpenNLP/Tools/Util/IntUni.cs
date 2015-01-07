@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
 {
+    /// <summary>
+    /// Just a single integer
+    /// 
+    /// @author Kristina Toutanova (kristina@cs.stanford.edu)
+    /// Code ...
+    /// </summary>
     public class IntUni : IntTuple
     {
         public IntUni() : base(1)

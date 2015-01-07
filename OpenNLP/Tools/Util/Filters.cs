@@ -6,30 +6,27 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
 {
+    /// <summary>
+    /// Some simple implementations of the {@link java.util.function.Predicate} interface.
+    /// 
+    /// @author Christopher Manning
+    /// @version 1.0
+    /// </summary>
     public class Filters
     {
-        /**
-   * Nothing to instantiate
-   */
 
-        private Filters()
-        {
-        }
-
-        /**
-   * The acceptFilter accepts everything.
-   */
-
+        /// <summary>
+        /// The acceptFilter accepts everything.
+        /// </summary>
         public static Predicate<T> AcceptFilter<T>()
         {
             return s => true;
             //return new CategoricalFilter<T>(true);
         }
 
-        /**
-   * The rejectFilter accepts nothing.
-   */
-
+        /// <summary>
+        /// The rejectFilter accepts nothing.
+        /// </summary>
         public static Predicate<T> RejectFilter<T>()
         {
             return s => false;
@@ -85,11 +82,10 @@ namespace OpenNLP.Tools.Util
   public static <E> Predicate<E> collectionAcceptFilter(E[] objs) {
     return new CollectionAcceptFilter<E>(Arrays.asList(objs), true);
   }*/
-
-        /**
-   * The collectionAcceptFilter accepts a certain collection.
-   */
-
+        
+        /// <summary>
+        /// The collectionAcceptFilter accepts a certain collection.
+        /// </summary>
         public static Predicate<E> CollectionAcceptFilter<E>(IEnumerable<E> objs)
         {
             return s => objs.Any(o => o.Equals(s));
@@ -103,10 +99,9 @@ namespace OpenNLP.Tools.Util
     return new CollectionAcceptFilter<E>(objs.ToList(), false);
   }*/
 
-        /**
-   * The collectionRejectFilter rejects a certain collection.
-   */
-
+        /// <summary>
+        /// The collectionRejectFilter rejects a certain collection.
+        /// </summary>
         public static Predicate<E> CollectionRejectFilter<E>(IEnumerable<E> objs)
         {
             return s => objs.All(o => !o.Equals(s));
@@ -143,20 +138,18 @@ namespace OpenNLP.Tools.Util
 
   } // end class CollectionAcceptFilter*/
 
-        /**
-   * Filter that accepts only when both filters accept (AND).
-   */
-
+        /// <summary>
+        /// Filter that accepts only when both filters accept (AND).
+        /// </summary>
         public static Predicate<E> AndFilter<E>(Predicate<E> f1, Predicate<E> f2)
         {
             return s => f1(s) && f2(s);
             //return (new CombinedFilter<E>(f1, f2, true));
         }
 
-        /**
-   * Filter that accepts when either filter accepts (OR).
-   */
-
+        /// <summary>
+        /// Filter that accepts when either filter accepts (OR).
+        /// </summary>
         public static Predicate<E> OrFilter<E>(Predicate<E> f1, Predicate<E> f2)
         {
             return s => f1(s) || f2(s);
@@ -245,20 +238,18 @@ namespace OpenNLP.Tools.Util
     private static readonly long serialVersionUID = 1L;
   }*/
 
-        /**
-   * Filter that does the opposite of given filter (NOT).
-   */
-
+        /// <summary>
+        /// Filter that does the opposite of given filter (NOT).
+        /// </summary>
         public static Predicate<E> NotFilter<E>(Predicate<E> filter)
         {
             return s => !filter(s);
             //return (new NegatedFilter<E>(filter));
         }
 
-        /**
-   * Filter that's either negated or normal as specified.
-   */
-
+        /// <summary>
+        /// Filter that's either negated or normal as specified.
+        /// </summary>
         public static Predicate<E> SwitchedFilter<E>(Predicate<E> filter, bool negated)
         {
             return s => negated ? !filter(s) : filter(s);

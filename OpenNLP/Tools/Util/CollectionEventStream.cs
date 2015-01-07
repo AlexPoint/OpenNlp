@@ -43,14 +43,14 @@ namespace OpenNLP.Tools.Util
     /// </summary>
     public class CollectionEventReader : SharpEntropy.ITrainingEventReader
 	{
-		private IEnumerator mCollection;
+		private readonly IEnumerator mCollection;
 		
 		public CollectionEventReader(ICollection c)
 		{
 			mCollection = c.GetEnumerator();
 		}
 
-        #region ITrainingEventReader Members
+        // ITrainingEventReader Members ------
 
         public virtual bool HasNext()
         {
@@ -61,7 +61,5 @@ namespace OpenNLP.Tools.Util
         {
             return (SharpEntropy.TrainingEvent)mCollection.Current;
         }
-
-        #endregion
     }
 }

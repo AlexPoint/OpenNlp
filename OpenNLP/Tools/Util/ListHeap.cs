@@ -46,8 +46,8 @@ namespace OpenNLP.Tools.Util
 	public class ListHeap<T> : IHeap<T>, IEnumerable<T>
 	{
 		private List<T> mList;
-		private IComparer<T> mComparer;
-		private int mSize;
+		private readonly IComparer<T> mComparer;
+		private readonly int mSize;
 		private T mMax;
 		
 		/// <summary>

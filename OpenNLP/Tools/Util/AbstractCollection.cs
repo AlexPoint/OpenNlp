@@ -8,49 +8,33 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
 {
-    /*
-      * This class provides a skeletal implementation of the <tt>Collection</tt>
-      * interface, to minimize the effort required to implement this interface. <p>
-      *
-      * To implement an unmodifiable collection, the programmer needs only to
-      * extend this class and provide implementations for the <tt>iterator</tt> and
-      * <tt>size</tt> methods.  (The iterator returned by the <tt>iterator</tt>
-      * method must implement <tt>hasNext</tt> and <tt>next</tt>.)<p>
-      *
-      * To implement a modifiable collection, the programmer must additionally
-      * override this class's <tt>add</tt> method (which otherwise throws an
-      * <tt>UnsupportedOperationException</tt>), and the iterator returned by the
-      * <tt>iterator</tt> method must additionally implement its <tt>remove</tt>
-      * method.<p>
-      *
-      * The programmer should generally provide a void (no argument) and
-      * <tt>Collection</tt> constructor, as per the recommendation in the
-      * <tt>Collection</tt> interface specification.<p>
-      *
-      * The documentation for each non-abstract method in this class describes its
-      * implementation in detail.  Each of these methods may be overridden if
-      * the collection being implemented admits a more efficient implementation.<p>
-      *
-      * This class is a member of the
-      * <a href="{@docRoot}/../technotes/guides/collections/index.html">
-      * Java Collections Framework</a>.
-      *
-      * @author  Josh Bloch
-      * @author  Neal Gafter
-      * @see Collection
-      * @since 1.2
-      */
-
+    /// <summary>
+    /// This class provides a skeletal implementation of the <tt>Collection</tt> interface, 
+    /// to minimize the effort required to implement this interface.
+    /// 
+    /// To implement an unmodifiable collection, the programmer needs only to extend 
+    /// this class and provide implementations for the <tt>iterator</tt> and <tt>size</tt> methods.
+    /// (The iterator returned by the <tt>iterator</tt> method must implement <tt>hasNext</tt> and <tt>next</tt>.)
+    /// 
+    /// To implement a modifiable collection, the programmer must additionally
+    /// override this class's <tt>add</tt> method (which otherwise throws an <tt>UnsupportedOperationException</tt>),
+    /// and the iterator returned by the <tt>iterator</tt> method must additionally implement its <tt>remove</tt> method.
+    /// 
+    /// The programmer should generally provide a void (no argument) and <tt>Collection</tt> constructor,
+    /// as per the recommendation in the <tt>Collection</tt> interface specification.
+    /// 
+    /// The documentation for each non-abstract method in this class describes its implementation in detail.
+    /// Each of these methods may be overridden if the collection being implemented admits a more efficient implementation.
+    /// 
+    /// This class is a member of the <a href="{@docRoot}/../technotes/guides/collections/index.html">Java Collections Framework</a>.
+    /// 
+    /// @author  Josh Bloch
+    /// @author  Neal Gafter
+    /// 
+    /// Code...
+    /// </summary>
     public abstract class AbstractCollection<E> : IEnumerable<E>
     {
-        /**
-          * Sole constructor.  (For invocation by subclass constructors, typically
-          * implicit.)
-          */
-
-        protected AbstractCollection()
-        {
-        }
 
         // Query Operations
 
@@ -63,27 +47,18 @@ namespace OpenNLP.Tools.Util
 
         //public abstract int Count();
 
-        /**
-          * {@inheritDoc}
-          *
-          * <p>This implementation returns <tt>size() == 0</tt>.
-          */
-
+        /// <summary>
+        /// This implementation returns <tt>size() == 0</tt>.
+        /// </summary>
         public bool Any()
         {
             return this.Count() != 0;
         }
 
-        /**
-          * {@inheritDoc}
-          *
-          * <p>This implementation iterates over the elements in the collection,
-          * checking each element in turn for equality with the specified element.
-          *
-          * @throws ClassCastException   {@inheritDoc}
-          * @throws NullPointerException {@inheritDoc}
-          */
-
+        /// <summary>
+        /// This implementation iterates over the elements in the collection,
+        /// checking each element in turn for equality with the specified element.
+        /// </summary>
         public bool Contains(E o)
         {
             IEnumerator<E> it = GetEnumerator();
@@ -110,29 +85,16 @@ namespace OpenNLP.Tools.Util
             return false;
         }
 
-        /**
-        * {@inheritDoc}
-        *
-        * <p>This implementation returns an array containing all the elements
-        * returned by this collection's iterator, in the same order, stored in
-        * consecutive elements of the array, starting with index {@code 0}.
-        * The length of the returned array is equal to the number of elements
-        * returned by the iterator, even if the size of this collection changes
-        * during iteration, as might happen if the collection permits
-        * concurrent modification during iteration.  The {@code size} method is
-        * called only as an optimization hint; the correct result is returned
-        * even if the iterator returns a different number of elements.
-        *
-        * <p>This method is equivalent to:
-        *
-        *  <pre> {@code
-        * List<E> list = new ArrayList<E>(size());
-        * for (E e : this)
-        *     list.add(e);
-        * return list.toArray();
-        * }</pre>
-        */
-
+        /// <summary>
+        /// This implementation returns an array containing all the elements
+        /// returned by this collection's iterator, in the same order, 
+        /// stored in consecutive elements of the array, starting with index {@code 0}.
+        /// The length of the returned array is equal to the number of elements returned by the iterator, 
+        /// even if the size of this collection changes during iteration, 
+        /// as might happen if the collection permits concurrent modification during iteration.
+        /// The {@code size} method is called only as an optimization hint; 
+        /// the correct result is returned even if the iterator returns a different number of elements.
+        /// </summary>
         public E[] ToArray()
         {
             var list = new List<E>();
@@ -200,13 +162,13 @@ namespace OpenNLP.Tools.Util
            return it.hasNext() ? finishToArray(r, it) : r;
        }*/
 
-        /**
-        * The maximum size of array to allocate.
-        * Some VMs reserve some header words in an array.
-        * Attempts to allocate larger arrays may result in
-        * OutOfMemoryError: Requested array size exceeds VM limit
-        */
-        private static readonly int MAX_ARRAY_SIZE = int.MaxValue - 8;
+        /// <summary>
+        /// The maximum size of array to allocate.
+        /// Some VMs reserve some header words in an array.
+        /// Attempts to allocate larger arrays may result in
+        /// OutOfMemoryError: Requested array size exceeds VM limit
+        /// </summary>
+        private static readonly int MaxArraySize = int.MaxValue - 8;
 
         /**
         * Reallocates the array being used within toArray when the iterator
@@ -242,19 +204,6 @@ namespace OpenNLP.Tools.Util
        }*/
 
         // Modification Operations
-
-        /**
-        * {@inheritDoc}
-        *
-        * <p>This implementation always throws an
-        * <tt>UnsupportedOperationException</tt>.
-        *
-        * @throws UnsupportedOperationException {@inheritDoc}
-        * @throws ClassCastException            {@inheritDoc}
-        * @throws NullPointerException          {@inheritDoc}
-        * @throws IllegalArgumentException      {@inheritDoc}
-        * @throws IllegalStateException         {@inheritDoc}
-        */
 
         public void Add(E e)
         {
@@ -300,19 +249,12 @@ namespace OpenNLP.Tools.Util
 
         // Bulk Operations
 
-        /**
-        * {@inheritDoc}
-        *
-        * <p>This implementation iterates over the specified collection,
-        * checking each element returned by the iterator in turn to see
-        * if it's contained in this collection.  If all elements are so
-        * contained <tt>true</tt> is returned, otherwise <tt>false</tt>.
-        *
-        * @throws ClassCastException            {@inheritDoc}
-        * @throws NullPointerException          {@inheritDoc}
-        * @see #contains(Object)
-        */
-
+        /// <summary>
+        /// This implementation iterates over the specified collection,
+        /// checking each element returned by the iterator in turn to see 
+        /// if it's contained in this collection.
+        /// If all elements are so contained <tt>true</tt> is returned, otherwise <tt>false</tt>.
+        /// </summary>
         public bool ContainsAll(ICollection<E> c)
         {
             foreach (E e in c)
@@ -325,25 +267,13 @@ namespace OpenNLP.Tools.Util
             return true;
         }
 
-        /**
-        * {@inheritDoc}
-        *
-        * <p>This implementation iterates over the specified collection, and adds
-        * each object returned by the iterator to this collection, in turn.
-        *
-        * <p>Note that this implementation will throw an
-        * <tt>UnsupportedOperationException</tt> unless <tt>add</tt> is
-        * overridden (assuming the specified collection is non-empty).
-        *
-        * @throws UnsupportedOperationException {@inheritDoc}
-        * @throws ClassCastException            {@inheritDoc}
-        * @throws NullPointerException          {@inheritDoc}
-        * @throws IllegalArgumentException      {@inheritDoc}
-        * @throws IllegalStateException         {@inheritDoc}
-        *
-        * @see #add(Object)
-        */
-
+        /// <summary>
+        /// This implementation iterates over the specified collection, 
+        /// and adds each object returned by the iterator to this collection, in turn.
+        /// 
+        /// Note that this implementation will throw an <tt>UnsupportedOperationException</tt> 
+        /// unless <tt>add</tt> is overridden (assuming the specified collection is non-empty).
+        /// </summary>
         public void AddAll(ICollection<E> c)
         {
             foreach (E e in c)

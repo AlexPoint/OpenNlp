@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
 {
-    /**
- * A factory class for vending different sorts of Maps.
- *
- * @author Dan Klein (klein@cs.stanford.edu)
- * @author Kayur Patel (kdpatel@cs)
- */
-
+    /// <summary>
+    /// A factory class for vending different sorts of Maps.
+    /// 
+    /// @author Dan Klein (klein@cs.stanford.edu)
+    /// @author Kayur Patel (kdpatel@cs)
+    /// Code ...
+    /// </summary>
     public abstract class MapFactory<K, V>
     {
         // allow people to write subclasses
@@ -40,16 +40,13 @@ namespace OpenNLP.Tools.Util
         //@SuppressWarnings("unchecked")
         //private static readonly MapFactory ARRAY_MAP_FACTORY = new ArrayMapFactory();
 
-
-        /** Return a MapFactory that returns a HashMap.
-   *  <i>Implementation note: This method uses the same trick as the methods
-   *  like emptyMap() introduced in the Collections class in JDK1.5 where
-   *  callers can call this method with apparent type safety because this
-   *  method takes the hit for the cast.
-   *
-   *  @return A MapFactory that makes a HashMap.
-   */
-        //@SuppressWarnings("unchecked")
+        /// <summary>
+        /// Return a MapFactory that returns a HashMap.
+        /// Implementation note: This method uses the same trick as the methods
+        /// like emptyMap() introduced in the Collections class in JDK1.5 where
+        /// callers can call this method with apparent type safety because this
+        /// method takes the hit for the cast.
+        /// </summary>
         public static /*<K,V>*/ MapFactory<K, V> hashMapFactory<K, V>()
         {
             return new HashMapFactory<K, V>();
@@ -101,29 +98,25 @@ namespace OpenNLP.Tools.Util
     return new TreeMapFactory<K,V>(comparator);
   }*/
 
-        /** Return a MapFactory that returns an LinkedHashMap.
-   *  <i>Implementation note: This method uses the same trick as the methods
-   *  like emptyMap() introduced in the Collections class in JDK1.5 where
-   *  callers can call this method with apparent type safety because this
-   *  method takes the hit for the cast.
-   *
-   *  @return A MapFactory that makes an LinkedHashMap.
-   */
-        //@SuppressWarnings("unchecked")
+        /// <summary>
+        /// Return a MapFactory that returns an LinkedHashMap.
+        /// Implementation note: This method uses the same trick as the methods
+        /// like emptyMap() introduced in the Collections class in JDK1.5 where
+        /// callers can call this method with apparent type safety because this
+        /// method takes the hit for the cast.
+        /// </summary>
         public static /*<K,V>*/ MapFactory<K, V> linkedHashMapFactory<K, V>()
         {
             return new LinkedHashMapFactory<K, V>();
         }
 
-        /** Return a MapFactory that returns an ArrayMap.
-   *  <i>Implementation note: This method uses the same trick as the methods
-   *  like emptyMap() introduced in the Collections class in JDK1.5 where
-   *  callers can call this method with apparent type safety because this
-   *  method takes the hit for the cast.
-   *
-   *  @return A MapFactory that makes an ArrayMap.
-   */
-        //@SuppressWarnings("unchecked")
+        /// <summary>
+        /// Return a MapFactory that returns an ArrayMap.
+        /// Implementation note: This method uses the same trick as the methods
+        /// like emptyMap() introduced in the Collections class in JDK1.5 where
+        /// callers can call this method with apparent type safety because this
+        /// method takes the hit for the cast.
+        /// </summary>
         public static /*<K,V>*/ MapFactory<K, V> arrayMapFactory<K, V>()
         {
             return new ArrayMapFactory<K, V>();

@@ -8,68 +8,57 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
 {
-    /**
- * <p>
- * Base implementation of {@link CoreMap} backed by two Java arrays.
- * </p>
- *
- * <p>
- * Reasonable care has been put into ensuring that this class is both fast and
- * has a light memory footprint.
- * </p>
- *
- * <p>
- * Note that like the base classes in the Collections API, this implementation
- * is <em>not thread-safe</em>. For speed reasons, these methods are not
- * synchronized. A synchronized wrapper could be developed by anyone so
- * inclined.
- * </p>
- *
- * <p>
- * Equality is defined over the complete set of keys and values currently
- * stored in the map.  Because this class is mutable, it should not be used
- * as a key in a Map.
- * </p>
- *
- * @author dramage
- * @author rafferty
- */
-
+    
+    /// <summary>
+    /// Base implementation of {@link CoreMap} backed by two Java arrays.
+    /// 
+    /// Reasonable care has been put into ensuring that this class is both fast and
+    /// has a light memory footprint.
+    /// 
+    /// Note that like the base classes in the Collections API, this implementation
+    /// is <em>not thread-safe</em>. For speed reasons, these methods are not
+    /// synchronized. A synchronized wrapper could be developed by anyone so inclined.
+    /// 
+    /// Equality is defined over the complete set of keys and values currently
+    /// stored in the map.  Because this class is mutable, it should not be used
+    /// as a key in a Map.
+    /// 
+    /// @author dramage
+    /// @author rafferty
+    /// 
+    /// Code...
+    /// </summary>
     public class ArrayCoreMap : CoreMap
     {
-        /** Initial capacity of the array */
-        private const int INITIAL_CAPACITY = 4;
+        /// <summary>Initial capacity of the array</summary>
+        private const int InitialCapacity = 4;
 
-        /** Array of keys */
+        /// <summary>Array of keys</summary>
         private /*Class<? extends Key<?>>*/ Type[] keys;
 
         /** Array of values */
         private Object[] values;
 
-        /** Total number of elements actually in keys,values */
+        /// <summary>Total number of elements actually in keys,values</summary>
         public int psize { get; private set; }
 
         public int Size()
         {
             return psize;
         }
-
-        /**
-   * Default constructor - initializes with default initial annotation
-   * capacity of 4.
-   */
-
-        public ArrayCoreMap() : this(INITIAL_CAPACITY)
+        
+        /// <summary>
+        /// Default constructor - initializes with default initial annotation capacity of 4.
+        /// </summary>
+        public ArrayCoreMap() : this(InitialCapacity)
         {
         }
-
-        /**
-   * Initializes this ArrayCoreMap, pre-allocating arrays to hold
-   * up to capacity key,value pairs.  This array will grow if necessary.
-   *
-   * @param capacity Initial capacity of object in key,value pairs
-   */
-
+        
+        /// <summary>
+        /// Initializes this ArrayCoreMap, pre-allocating arrays to hold up to capacity key,value pairs.
+        /// This array will grow if necessary.
+        /// </summary>
+        /// <param name="capacity">Initial capacity of object in key,value pairs</param>
         public ArrayCoreMap(int capacity)
         {
             keys = new Type[capacity];
@@ -77,11 +66,10 @@ namespace OpenNLP.Tools.Util
             // size starts at 0
         }
 
-        /**
-   * Copy constructor.
-   * @param other The ArrayCoreMap to copy. It may not be null.
-   */
-
+        /// <summary>
+        /// Copy constructor.
+        /// </summary>
+        /// <param name="other">The ArrayCoreMap to copy. It may not be null.</param>
         public ArrayCoreMap(ArrayCoreMap other)
         {
             psize = other.psize;
@@ -89,11 +77,10 @@ namespace OpenNLP.Tools.Util
             values = other.values.Take(psize).ToArray();
         }
 
-        /**
-   * Copy constructor.
-   * @param other The ArrayCoreMap to copy. It may not be null.
-   */
-        //@SuppressWarnings("unchecked")
+        /// <summary>
+        /// Copy constructor.
+        /// </summary>
+        /// <param name="other">The ArrayCoreMap to copy. It may not be null.</param>
         public ArrayCoreMap(CoreMap other)
         {
             /*Set<Class<?>>*/
@@ -112,11 +99,6 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
-        //@SuppressWarnings("unchecked")
         public /*<VALUE> VALUE*/ object Get( /*Class<? extends Key<VALUE>>*/ Type key)
         {
             for (int i = 0; i < psize; i++)
@@ -129,12 +111,6 @@ namespace OpenNLP.Tools.Util
             return default(object);
         }
 
-
-
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public /*<VALUE>*/ bool Has( /*Class<? extends Key<VALUE>>*/ Type key)
         {
             for (int i = 0; i < psize; i++)
@@ -148,11 +124,6 @@ namespace OpenNLP.Tools.Util
             return false;
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
-        //@SuppressWarnings("unchecked")
         public virtual /*<VALUE> VALUE*/ object Set( /*Class<? extends Key<VALUE>>*/ Type key, object value)
         {
 
@@ -188,10 +159,6 @@ namespace OpenNLP.Tools.Util
             return default(object);
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public Set<Type> KeySet()
         {
             return new Set<Type>(keys);
@@ -231,11 +198,6 @@ namespace OpenNLP.Tools.Util
     };*/
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
-        //@SuppressWarnings("unchecked")
         public /*<VALUE> VALUE*/ object Remove( /*Class<? extends Key<VALUE>>*/ Type key)
         {
 
@@ -257,10 +219,6 @@ namespace OpenNLP.Tools.Util
             return rv;
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public /*<VALUE>*/ bool ContainsKey( /*Class<? extends Key<VALUE>>*/ Type key)
         {
             for (int i = 0; i < psize; i++)
@@ -273,12 +231,10 @@ namespace OpenNLP.Tools.Util
             return false;
         }
 
-
-        /**
-   * Reduces memory consumption to the minimum for representing the values
-   * currently stored stored in this object.
-   */
-
+        /// <summary>
+        /// Reduces memory consumption to the minimum for representing 
+        /// the values currently stored stored in this object.
+        /// </summary>
         public void Compact()
         {
             if (keys.Length > psize)
@@ -314,17 +270,15 @@ namespace OpenNLP.Tools.Util
         /*public int size() {
     return size;
   }*/
-
-        /**
-   * Keeps track of which ArrayCoreMaps have had ToString called on
-   * them.  We do not want to loop forever when there are cycles in
-   * the annotation graph.  This is kept on a per-thread basis so that
-   * each thread where ToString gets called can keep track of its own
-   * state.  When a call to ToString is about to return, this is reset
-   * to null for that particular thread.
-   */
-
-        private static readonly ThreadLocal<IdentityHashSet<CoreMap>> toStringCalled =
+        
+        /// <summary>
+        /// Keeps track of which ArrayCoreMaps have had ToString called on them.
+        /// We do not want to loop forever when there are cycles in the annotation graph.
+        /// This is kept on a per-thread basis so that each thread 
+        /// where ToString gets called can keep track of its own state.
+        /// When a call to ToString is about to return, this is reset to null for that particular thread.
+        /// </summary>
+        private static readonly ThreadLocal<IdentityHashSet<CoreMap>> ToStringCalled =
             new ThreadLocal<IdentityHashSet<CoreMap>>()
             {
 /*
@@ -333,15 +287,9 @@ namespace OpenNLP.Tools.Util
             }*/
             };
 
-        /** Prints a full dump of a CoreMap. This method is robust to
-   *  circularity in the CoreMap.
-   *
-   *  @return A string representation of the CoreMap
-   */
-        //@Override
         public override string ToString()
         {
-            IdentityHashSet<CoreMap> calledSet = toStringCalled.Value;
+            IdentityHashSet<CoreMap> calledSet = ToStringCalled.Value;
             if (calledSet == null)
             {
                 calledSet = new IdentityHashSet<CoreMap>();
@@ -370,7 +318,7 @@ namespace OpenNLP.Tools.Util
             bool createdCalledSet = calledSet == null || calledSet.IsEmpty();
             if (createdCalledSet)
             {
-                toStringCalled.Dispose(); /*remove();*/
+                ToStringCalled.Dispose(); /*remove();*/
             }
             else
             {
@@ -382,10 +330,6 @@ namespace OpenNLP.Tools.Util
             return s.ToString();
         }
 
-        /**
-   * {@inheritDoc}
-   */
-        //@Override
         public string ToShorterString(string[] what)
         {
             var s = new StringBuilder("[");
@@ -429,40 +373,42 @@ namespace OpenNLP.Tools.Util
             return s.ToString();
         }
 
-        /** This gives a very short string representation of a CoreMap
-   *  by leaving it to the content to reveal what field is being printed.
-   *
-   *  @param what An array (varargs) of strings that say what annotation keys
-   *     to print.  These need to be provided in a shortened form where you
-   *     are just giving the part of the class name without package and up to
-   *     "Annotation". That is,
-   *     edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation
-   *     -&gt; PartOfSpeech . As a special case, an empty array means
-   *     to print everything, not nothing.
-   *  @return Brief string where the field values are just separated by a
-   *     character. If the string contains spaces, it is wrapped in "{...}".
-   */
-
+        /// <summary>
+        /// This gives a very short string representation of a CoreMap
+        /// by leaving it to the content to reveal what field is being printed.
+        /// </summary>
+        /// <param name="what">
+        /// An array (varargs) of strings that say what annotation keys to print.
+        /// These need to be provided in a shortened form where you are just giving 
+        /// the part of the class name without package and up to "Annotation".
+        /// That is, edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation -> PartOfSpeech.
+        /// As a special case, an empty array means to print everything, not nothing.
+        /// </param>
+        /// <returns>
+        /// Brief string where the field values are just separated by a character.
+        /// If the string contains spaces, it is wrapped in "{...}".
+        /// </returns>
         public string ToShortString(string[] what)
         {
             return ToShortString('/', what);
         }
 
-        /** This gives a very short string representation of a CoreMap
-   *  by leaving it to the content to reveal what field is being printed.
-   *
-   *  @param separator Character placed between fields in output
-   *  @param what An array (varargs) of strings that say what annotation keys
-   *     to print.  These need to be provided in a shortened form where you
-   *     are just giving the part of the class name without package and up to
-   *     "Annotation". That is,
-   *     edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation
-   *     -&gt; PartOfSpeech . As a special case, an empty array means
-   *     to print everything, not nothing.
-   *  @return Brief string where the field values are just separated by a
-   *     character. If the string contains spaces, it is wrapped in "{...}".
-   */
-
+        /// <summary>
+        /// This gives a very short string representation of a CoreMap
+        /// by leaving it to the content to reveal what field is being printed.
+        /// </summary>
+        /// <param name="separator">Character placed between fields in output</param>
+        /// <param name="what">
+        /// An array (varargs) of strings that say what annotation keys to print.
+        /// These need to be provided in a shortened form where you are just giving 
+        /// the part of the class name without package and up to "Annotation". 
+        /// That is, edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation -> PartOfSpeech.
+        /// As a special case, an empty array means to print everything, not nothing.
+        /// </param>
+        /// <returns>
+        /// Brief string where the field values are just separated by a character. 
+        /// If the string contains spaces, it is wrapped in "{...}".
+        /// </returns>
         public string ToShortString(char separator, string[] what)
         {
             var s = new StringBuilder();
@@ -511,24 +457,16 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        /**
-   * Keeps track of which pairs of ArrayCoreMaps have had equals
-   * called on them.  We do not want to loop forever when there are
-   * cycles in the annotation graph.  This is kept on a per-thread
-   * basis so that each thread where equals gets called can keep
-   * track of its own state.  When a call to ToString is about to
-   * return, this is reset to null for that particular thread.
-   */
-
-        private static readonly ThreadLocal<Dictionary<Tuple<CoreMap, CoreMap>, Boolean>> equalsCalled =
+        /// <summary>
+        /// Keeps track of which pairs of ArrayCoreMaps have had equals called on them.
+        /// We do not want to loop forever when there are cycles in the annotation graph.
+        /// This is kept on a per-thread basis so that each thread where equals gets called can keep track of its own state.
+        /// When a call to ToString is about to return, this is reset to null for that particular thread.
+        /// </summary>
+        private static readonly ThreadLocal<Dictionary<Tuple<CoreMap, CoreMap>, Boolean>> EqualsCalled =
             new ThreadLocal<Dictionary<Tuple<CoreMap, CoreMap>, Boolean>>();
 
-
-        /**
-   * Two CoreMaps are equal iff all keys and values are .equal.
-   */
-        //@SuppressWarnings("unchecked")
-        //@Override
+        /// <summary>Two CoreMaps are equal iff all keys and values are .equal.</summary>
         public override bool Equals(Object obj)
         {
             if (!(obj is CoreMap))
@@ -587,12 +525,12 @@ namespace OpenNLP.Tools.Util
 
         private bool Equals(ArrayCoreMap other)
         {
-            Dictionary<Tuple<CoreMap, CoreMap>, Boolean> calledMap = equalsCalled.Value;
+            Dictionary<Tuple<CoreMap, CoreMap>, Boolean> calledMap = EqualsCalled.Value;
             bool createdCalledMap = (calledMap == null);
             if (createdCalledMap)
             {
                 calledMap = new Dictionary<Tuple<CoreMap, CoreMap>, bool>();
-                equalsCalled.Value = calledMap;
+                EqualsCalled.Value = calledMap;
             }
 
             // Note that for the purposes of recursion, we assume the two maps
@@ -651,38 +589,28 @@ namespace OpenNLP.Tools.Util
 
             if (createdCalledMap)
             {
-                equalsCalled.Value = null;
+                EqualsCalled.Value = null;
             }
             return result;
         }
 
-        /**
-   * Keeps track of which ArrayCoreMaps have had hashCode called on
-   * them.  We do not want to loop forever when there are cycles in
-   * the annotation graph.  This is kept on a per-thread basis so that
-   * each thread where hashCode gets called can keep track of its own
-   * state.  When a call to ToString is about to return, this is reset
-   * to null for that particular thread.
-   */
-
-        private static readonly ThreadLocal<IdentityHashSet<CoreMap>> hashCodeCalled =
+        /// <summary>
+        /// Keeps track of which ArrayCoreMaps have had hashCode called on them.
+        /// We do not want to loop forever when there are cycles in the annotation graph.
+        /// This is kept on a per-thread basis so that each thread where hashCode gets called can keep track of its own state.
+        /// When a call to ToString is about to return, this is reset to null for that particular thread.
+        /// </summary>
+        private static readonly ThreadLocal<IdentityHashSet<CoreMap>> HashCodeCalled =
             new ThreadLocal<IdentityHashSet<CoreMap>>();
 
-
-        /**
-   * Returns a composite hashCode over all the keys and values currently
-   * stored in the map.  Because they may change over time, this class
-   * is not appropriate for use as map keys.
-   */
-        //@Override
         public override int GetHashCode()
         {
-            IdentityHashSet<CoreMap> calledSet = hashCodeCalled.Value;
+            IdentityHashSet<CoreMap> calledSet = HashCodeCalled.Value;
             bool createdCalledSet = (calledSet == null);
             if (createdCalledSet)
             {
                 calledSet = new IdentityHashSet<CoreMap>();
-                hashCodeCalled.Value = calledSet;
+                HashCodeCalled.Value = calledSet;
             }
 
             if (calledSet.Contains(this))
@@ -702,7 +630,7 @@ namespace OpenNLP.Tools.Util
 
             if (createdCalledSet)
             {
-                hashCodeCalled.Value = null;
+                HashCodeCalled.Value = null;
             }
             else
             {

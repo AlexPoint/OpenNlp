@@ -6,22 +6,25 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
 {
-    /** This class provides a <code>IdentityHashMap</code>-backed
- *  implementation of the <code>Set</code> interface.  This means that
- *  whether an object is an element of the set depends on whether it is ==
- *  (rather than <code>equals()</code>) to an element of the set.  This is
- *  different from a normal <code>HashSet</code>, where set membership
- *  depends on <code>equals()</code>, rather than ==.
- *
- *  Each element in the set is a key in the backing IdentityHashMap; each key
- *  maps to a static token, denoting that the key does, in fact, exist.
- *
- *  Most operations are O(1), assuming no hash collisions.  In the worst
- *  case (where all hashes collide), operations are O(n).
- *
- *  @author Bill MacCartney
- */
 
+    /// <summary>
+    /// This class provides a <code>IdentityHashMap</code>-backed
+    /// implementation of the <code>Set</code> interface.
+    /// This means that whether an object is an element of the set depends 
+    /// on whether it is == (rather than <code>equals()</code>) to an element of the set.
+    /// This is different from a normal <code>HashSet</code>, where set membership
+    /// depends on <code>equals()</code>, rather than ==.
+    /// 
+    /// Each element in the set is a key in the backing IdentityHashMap; each key
+    /// maps to a static token, denoting that the key does, in fact, exist.
+    /// 
+    /// Most operations are O(1), assuming no hash collisions.  In the worst
+    /// case (where all hashes collide), operations are O(n).
+    /// 
+    /// @author Bill MacCartney
+    /// 
+    /// Code...
+    /// </summary>
     public class IdentityHashSet<T> : Set<T>
         where T : class
     {
@@ -30,7 +33,7 @@ namespace OpenNLP.Tools.Util
         // INSTANCE VARIABLES -------------------------------------------------
 
         // the IdentityHashMap which backs this set
-        private IdentityDictionary<T, Boolean> map;
+        private readonly IdentityDictionary<T, Boolean> map;
         private static readonly long serialVersionUID = -5024744406713321676L;
 
 
@@ -55,15 +58,15 @@ namespace OpenNLP.Tools.Util
         /*public IdentityHashSet(int expectedMaxSize) {
     map = new IdentityDictionary<T, Boolean>(expectedMaxSize);
   }*/
-
-        /** Construct a new IdentityHashSet with the same elements as the supplied
-   *  Collection (eliminating any duplicates, of course); the backing
-   *  IdentityHashMap will have the default expected maximum size (21).
-   *
-   * @param c a Collection containing the elements with which this set will
-   *          be initialized.
-   */
-
+        
+        /// <summary>
+        /// Construct a new IdentityHashSet with the same elements as the supplied
+        /// Collection (eliminating any duplicates, of course); the backing
+        /// IdentityHashMap will have the default expected maximum size (21).
+        /// </summary>
+        /// <param name="c">
+        /// a Collection containing the elements with which this set will be initialized.
+        /// </param>
         public IdentityHashSet(ICollection<T> c)
         {
             map = new IdentityDictionary<T, Boolean>();
@@ -73,17 +76,13 @@ namespace OpenNLP.Tools.Util
 
         // PUBLIC METHODS ---------------------------------------------------------
 
-        /** Adds the specified element to this set if it is not already present.
-   *
-   *  Remember that this set implementation uses == (not
-   *  <code>equals()</code>) to test whether an element is present in the
-   *  set.
-   *
-   * @param       o             element to add to this set
-   * @return      true          if the element was added,
-   *              false         otherwise
-   */
-        //@Override
+        /// <summary>
+        /// dds the specified element to this set if it is not already present.
+        /// Remember that this set implementation uses == (not <code>equals()</code>)
+        /// to test whether an element is present in the set.
+        /// </summary>
+        /// <param name="o">element to add to this set</param>
+        /// <returns>true if the element was added, false otherwise</returns>
         public override bool Add(T o)
         {
             if (map.ContainsKey(o))
@@ -97,9 +96,9 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        /** Removes all of the elements from this set.
-   */
-        //@Override
+        /// <summary>
+        /// Removes all of the elements from this set.
+        /// </summary>
         public void Clear()
         {
             map.Clear();
@@ -120,28 +119,21 @@ namespace OpenNLP.Tools.Util
     return clone;
   }*/
 
-        /** Returns true if this set contains the specified element.
-   *
-   *  Remember that this set implementation uses == (not
-   *  <code>equals()</code>) to test whether an element is present in the
-   *  set.
-   *
-   *  @param o Element whose presence in this set is to be
-   *  tested.
-   *
-   *  @return <code>true</code> if this set contains the specified element.
-   */
-        //@Override
+        /// <summary>
+        /// Returns true if this set contains the specified element.
+        /// Remember that this set implementation uses == (not <code>equals()</code>)
+        /// to test whether an element is present in the set.
+        /// </summary>
+        /// <param name="o">Element whose presence in this set is to be</param>
+        /// <returns><code>true</code> if this set contains the specified element.</returns>
         public bool Contains(T o)
         {
             return map.ContainsKey(o);
         }
 
-        /** Returns <code>true</code> if this set contains no elements.
-   *
-   *  @return <code>true</code> if this set contains no elements.
-   */
-        //@Override
+        /// <summary>
+        /// Returns <code>true</code> if this set contains no elements.
+        /// </summary>
         public override bool IsEmpty()
         {
             return !map.Any();
@@ -157,27 +149,21 @@ namespace OpenNLP.Tools.Util
     return map.keySet().iterator();
   }*/
 
-        /** Removes the specified element from this set if it is present.
-   *
-   *  Remember that this set implementation uses == (not
-   *  <code>equals()</code>) to test whether an element is present in the
-   *  set.
-   *
-   *  @param o Object to be removed from this set, if present.
-   *
-   *  @return <code>true</code> if the set contained the specified element.
-   */
-        //@Override
+        /// <summary>
+        /// Removes the specified element from this set if it is present.
+        /// Remember that this set implementation uses == (not <code>equals()</code>) 
+        /// to test whether an element is present in the set.
+        /// </summary>
+        /// <param name="o">Object to be removed from this set, if present.</param>
+        /// <returns><code>true</code> if the set contained the specified element.</returns>
         public override bool Remove(T o)
         {
             return map.Remove(o);
         }
 
-        /** Returns the number of elements in this set (its cardinality).
-   *
-   *  @return the number of elements in this set (its cardinality).
-   */
-        //@Override
+        /// <summary>
+        /// Returns the number of elements in this set (its cardinality).
+        /// </summary>
         public int Size()
         {
             return map.Count;
@@ -186,13 +172,12 @@ namespace OpenNLP.Tools.Util
 
         // PRIVATE METHODS -----------------------------------------------------------
 
-        /** Adds the supplied element to this set.  This private method is used
-   *  internally [by clone()] instead of add(), because add() can be
-   *  overridden to do unexpected things.
-   *
-   *  @param    o        the element to add to this set
-   */
-
+        /// <summary>
+        /// Adds the supplied element to this set.
+        /// This private method is used internally [by clone()] instead of add(), because add() 
+        /// can be overridden to do unexpected things.
+        /// </summary>
+        /// <param name="o">the element to add to this set</param>
         private void InternalAdd(T o)
         {
             map.Add(o, true);

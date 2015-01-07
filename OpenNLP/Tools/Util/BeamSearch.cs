@@ -118,7 +118,6 @@ namespace OpenNLP.Tools.Util
             int sequenceCount = sequence.Length;
             var previousHeap = new ListHeap<Sequence>(Size);
             var nextHeap = new ListHeap<Sequence>(Size);
-            ListHeap<Sequence> tempHeap;
 
             previousHeap.Add(new Sequence());
             if (additionalContext == null)
@@ -193,7 +192,7 @@ namespace OpenNLP.Tools.Util
                 }
                 //    make prev = next; and re-init next (we reuse existing prev set once we clear it)
                 previousHeap.Clear();
-                tempHeap = previousHeap;
+                ListHeap<Sequence> tempHeap = previousHeap;
                 previousHeap = nextHeap;
                 nextHeap = tempHeap;
             }

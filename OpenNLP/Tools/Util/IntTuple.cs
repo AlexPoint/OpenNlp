@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
 {
+    /// <summary>
+    /// A tuple of int. There are special classes for IntUni, IntPair, IntTriple
+    /// and IntQuadruple. The motivation for that was the different hashCode implementations.
+    /// By using the static IntTuple.getIntTuple(numElements) one can obtain an
+    /// instance of the appropriate sub-class.
+    /// 
+    /// @author Kristina Toutanova (kristina@cs.stanford.edu)
+    /// 
+    /// Code ...
+    /// </summary>
     [Serializable]
     public class IntTuple : IComparable<IntTuple>
     {

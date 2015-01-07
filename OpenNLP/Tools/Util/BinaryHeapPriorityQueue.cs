@@ -7,24 +7,24 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
 {
-    /**
- * PriorityQueue with explicit double priority values.  Larger doubles are higher priorities.  BinaryHeap-backed.
- *
- * For each entry, uses ~ 24 (entry) + 16? (Map.Entry) + 4 (List entry) = 44 bytes?
- *
- * @author Dan Klein
- * @author Christopher Manning
- * @param <E> Type of elements in the priority queue
- */
-
+    
+    /// <summary>
+    /// PriorityQueue with explicit double priority values.  Larger doubles are higher priorities.  BinaryHeap-backed.
+    /// For each entry, uses ~ 24 (entry) + 16? (Map.Entry) + 4 (List entry) = 44 bytes?
+    /// 
+    /// @author Dan Klein
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
+    /// <typeparam name="E">Type of elements in the priority queue</typeparam>
     public class BinaryHeapPriorityQueue<E> : PriorityQueue<E>
     {
-        /**
-   * An {@code Entry} stores an object in the queue along with
-   * its current location (array position) and priority.
-   * uses ~ 8 (self) + 4 (key ptr) + 4 (index) + 8 (priority) = 24 bytes?
-   */
-
+        /// <summary>
+        /// An {@code Entry} stores an object in the queue along with
+        /// its current location (array position) and priority.
+        /// uses ~ 8 (self) + 4 (key ptr) + 4 (index) + 8 (priority) = 24 bytes?
+        /// </summary>
         public sealed class Entry<E>
         {
             public E key;
@@ -60,16 +60,14 @@ namespace OpenNLP.Tools.Util
             throw new KeyNotFoundException();
         }
 
-        /**
-   * {@code indexToEntry} maps linear array locations (not
-   * priorities) to heap entries.
-   */
+        /// <summary>
+        /// {@code indexToEntry} maps linear array locations (not priorities) to heap entries.
+        /// </summary>
         private readonly List<Entry<E>> indexToEntry;
 
-        /**
-   * {@code keyToEntry} maps heap objects to their heap
-   * entries.
-   */
+        /// <summary>
+        /// {@code keyToEntry} maps heap objects to their heap entries.
+        /// </summary>
         private readonly Dictionary<E, Entry<E>> keyToEntry;
 
         private Entry<E> Parent(Entry<E> entry)
@@ -120,11 +118,7 @@ namespace OpenNLP.Tools.Util
             return 0;
         }
 
-        /**
-   * Structural swap of two entries.
-   *
-   */
-
+        /// <summary>Structural swap of two entries.</summary>
         private void Swap(Entry<E> entryA, Entry<E> entryB)
         {
             int indexA = entryA.index;
@@ -135,10 +129,7 @@ namespace OpenNLP.Tools.Util
             indexToEntry.Insert(indexB, entryA);
         }
 
-        /**
-   * Remove the last element of the heap (last in the index array).
-   */
-
+        /// <summary>Remove the last element of the heap (last in the index array)</summary>
         private void RemoveLastEntry()
         {
             var last = indexToEntry.Last();
@@ -146,19 +137,13 @@ namespace OpenNLP.Tools.Util
             keyToEntry.Remove(last.key);
         }
 
-        /**
-   * Get the entry by key (null if none).
-   */
-
+        /// <summary>Get the entry by key (null if none)</summary>
         private Entry<E> GetEntry(E key)
         {
             return keyToEntry[key];
         }
 
-        /**
-   * Get entry by index, exception if none.
-   */
-
+        /// <summary>Get entry by index, exception if none.</summary>
         private Entry<E> GetEntry(int index)
         {
             Entry<E> entry = indexToEntry[index];
@@ -167,19 +152,18 @@ namespace OpenNLP.Tools.Util
 
         private Entry<E> MakeEntry(E key)
         {
-            var entry = new Entry<E>();
-            entry.index = Size();
-            entry.key = key;
-            entry.priority = Double.NegativeInfinity;
+            var entry = new Entry<E>
+            {
+                index = Size(), 
+                key = key, 
+                priority = Double.NegativeInfinity
+            };
             indexToEntry.Add(entry);
             keyToEntry.Add(key, entry);
             return entry;
         }
 
-        /**
-   * iterative heapify up: move item o at index up until correctly placed
-   */
-
+        /// <summary>iterative heapify up: move item o at index up until correctly placed</summary>
         private void HeapifyUp(Entry<E> entry)
         {
             while (true)
@@ -197,14 +181,12 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        /**
-   * On the assumption that
-   * leftChild(entry) and rightChild(entry) satisfy the heap property,
-   * make sure that the heap at entry satisfies this property by possibly
-   * percolating the element entry downwards.  I've replaced the obvious
-   * recursive formulation with an iterative one to gain (marginal) speed
-   */
-
+        /// <summary>
+        /// On the assumption that leftChild(entry) and rightChild(entry) satisfy the heap property,
+        /// make sure that the heap at entry satisfies this property by possibly
+        /// percolating the element entry downwards.  I've replaced the obvious
+        /// recursive formulation with an iterative one to gain (marginal) speed.
+        /// </summary>
         private void HeapifyDown( /*final*/ Entry<E> entry)
         {
             Entry<E> bestEntry; // initialized below
@@ -249,14 +231,10 @@ namespace OpenNLP.Tools.Util
             HeapifyDown(entry);
         }
 
-
-        /**
-   * Finds the E with the highest priority, removes it,
-   * and returns it.
-   *
-   * @return the E with highest priority
-   */
-        //@Override
+        /// <summary>
+        /// Finds the E with the highest priority, removes it, and returns it.
+        /// </summary>
+        /// <returns>the E with highest priority</returns>
         public E RemoveFirst()
         {
             E first = GetFirst();
@@ -264,13 +242,10 @@ namespace OpenNLP.Tools.Util
             return first;
         }
 
-        /**
-   * Finds the E with the highest priority and returns it, without
-   * modifying the queue.
-   *
-   * @return the E with minimum key
-   */
-        //@Override
+        /// <summary>
+        /// Finds the E with the highest priority and returns it, without modifying the queue.
+        /// </summary>
+        /// <returns>the E with minimum key</returns>
         public E GetFirst()
         {
             if (IsEmpty())
@@ -280,8 +255,6 @@ namespace OpenNLP.Tools.Util
             return GetEntry(0).key;
         }
 
-        /** {@inheritDoc} */
-        //@Override
         public double GetPriority()
         {
             if (IsEmpty())
@@ -291,16 +264,12 @@ namespace OpenNLP.Tools.Util
             return GetEntry(0).priority;
         }
 
-        /**
-   * Searches for the object in the queue and returns it.  May be useful if
-   * you can create a new object that is .equals() to an object in the queue
-   * but is not actually identical, or if you want to modify an object that is
-   * in the queue.
-   *
-   * @return null if the object is not in the queue, otherwise returns the
-   * object.
-   */
-
+        /// <summary>
+        /// Searches for the object in the queue and returns it. 
+        /// May be useful if you can create a new object that is .equals() to an object in the queue
+        /// but is not actually identical, or if you want to modify an object that is in the queue.
+        /// </summary>
+        /// <returns>null if the object is not in the queue, otherwise returns the object.</returns>
         public E GetObject(E key)
         {
             if (! Contains(key)) return default(E);
@@ -308,8 +277,6 @@ namespace OpenNLP.Tools.Util
             return e.key;
         }
 
-        /** {@inheritDoc} */
-        //@Override
         public double GetPriority(E key)
         {
             Entry<E> entry = GetEntry(key);
@@ -320,17 +287,13 @@ namespace OpenNLP.Tools.Util
             return entry.priority;
         }
 
-        /**
-   * Adds an object to the queue with the minimum priority
-   * (Double.NEGATIVE_INFINITY).  If the object is already in the queue
-   * with worse priority, this does nothing.  If the object is
-   * already present, with better priority, it will NOT cause an
-   * a decreasePriority.
-   *
-   * @param key an <code>E</code> value
-   * @return whether the key was present before
-   */
-        //@Override
+        /// <summary>
+        /// Adds an object to the queue with the minimum priority (Double.NEGATIVE_INFINITY).
+        /// If the object is already in the queue with worse priority, this does nothing.  
+        /// If the object is already present, with better priority, it will NOT cause an a decreasePriority.
+        /// </summary>
+        /// <param name="key">an <code>E</code> value</param>
+        /// <returns>whether the key was present before</returns>
         public bool Add(E key)
         {
             if (Contains(key))
@@ -341,8 +304,6 @@ namespace OpenNLP.Tools.Util
             return true;
         }
 
-        /** {@inheritDoc} */
-        //@Override
         public bool Add(E key, double priority)
         {
 //    System.err.println("Adding " + key + " with priority " + priority);
@@ -354,9 +315,6 @@ namespace OpenNLP.Tools.Util
             return false;
         }
 
-
-        //@SuppressWarnings("unchecked")
-        //@Override
         public bool Remove(Object key)
         {
             E eKey = (E) key;
@@ -389,13 +347,13 @@ namespace OpenNLP.Tools.Util
             return GetEntry(Size() - 1);
         }
 
-        /**
-   * Promotes a key in the queue, adding it if it wasn't there already.  If the specified priority is worse than the current priority, nothing happens.  Faster than add if you don't care about whether the key is new.
-   *
-   * @param key an <code>Object</code> value
-   * @return whether the priority actually improved.
-   */
-        //@Override
+        /// <summary>
+        /// Promotes a key in the queue, adding it if it wasn't there already.
+        /// If the specified priority is worse than the current priority, nothing happens.
+        /// Faster than add if you don't care about whether the key is new.
+        /// </summary>
+        /// <param name="key">an <code>Object</code> value</param>
+        /// <returns>whether the priority actually improved.</returns>
         public bool RelaxPriority(E key, double priority)
         {
             Entry<E> entry = GetEntry(key);
@@ -412,13 +370,13 @@ namespace OpenNLP.Tools.Util
             return true;
         }
 
-        /**
-   * Demotes a key in the queue, adding it if it wasn't there already.  If the specified priority is better than the current priority, nothing happens.  If you decrease the priority on a non-present key, it will get added, but at it's old implicit priority of Double.NEGATIVE_INFINITY.
-   *
-   * @param key an <code>Object</code> value
-   * @return whether the priority actually improved.
-   */
-
+        /// <summary>
+        /// Demotes a key in the queue, adding it if it wasn't there already.
+        /// If the specified priority is better than the current priority, nothing happens.
+        /// If you decrease the priority on a non-present key, it will get added, but at it's old implicit priority of Double.NEGATIVE_INFINITY.
+        /// </summary>
+        /// <param name="key">an <code>Object</code> value</param>
+        /// <returns>whether the priority actually improved.</returns>
         public bool DecreasePriority(E key, double priority)
         {
             Entry<E> entry = GetEntry(key);
@@ -435,13 +393,11 @@ namespace OpenNLP.Tools.Util
             return true;
         }
 
-        /**
-   * Changes a priority, either up or down, adding the key it if it wasn't there already.
-   *
-   * @param key an <code>Object</code> value
-   * @return whether the priority actually changed.
-   */
-        //@Override
+        /// <summary>
+        /// Changes a priority, either up or down, adding the key it if it wasn't there already.
+        /// </summary>
+        /// <param name="key">an <code>Object</code> value</param>
+        /// <returns>whether the priority actually changed.</returns>
         public bool ChangePriority(E key, double priority)
         {
             Entry<E> entry = GetEntry(key);
@@ -458,33 +414,27 @@ namespace OpenNLP.Tools.Util
             return true;
         }
 
-        /**
-   * Checks if the queue is empty.
-   *
-   * @return a <code>bool</code> value
-   */
-        //@Override
+        /// <summary>
+        /// Checks if the queue is empty.
+        /// </summary>
+        /// <returns>a <code>bool</code> value</returns>
         public bool IsEmpty()
         {
             return !indexToEntry.Any();
         }
 
-        /**
-   * Get the number of elements in the queue.
-   *
-   * @return queue size
-   */
-        //@Override
+        /// <summary>
+        /// Get the number of elements in the queue.
+        /// </summary>
+        /// <returns>queue size</returns>
         public int Size()
         {
             return indexToEntry.Count;
         }
 
-        /**
-   * Returns whether the queue contains the given key.
-   */
-        //@SuppressWarnings("SuspiciousMethodCalls")
-        //@Override
+        /// <summary>
+        /// Returns whether the queue contains the given key.
+        /// </summary>
         public bool Contains(E key)
         {
             return keyToEntry.ContainsKey(key);
@@ -523,10 +473,9 @@ namespace OpenNLP.Tools.Util
             return new ReadOnlyCollection<E>(ToSortedList()).GetEnumerator();
         }
 
-        /**
-   * Clears the queue.
-   */
-        //@Override
+        /// <summary>
+        /// Clears the queue.
+        /// </summary>
         public void Clear()
         {
             indexToEntry.Clear();
@@ -589,14 +538,14 @@ namespace OpenNLP.Tools.Util
                 }
             }
             /*for (Iterator<E> keyI = sortedKeys.iterator(); keyI.hasNext();) {
-      E key = keyI.next();
-      sb.Append(key);
-      sb.Append('\t');
-      sb.Append(getPriority(key));
-      if (keyI.hasNext()) {
-        sb.Append('\n');
-      }
-    }*/
+              E key = keyI.next();
+              sb.Append(key);
+              sb.Append('\t');
+              sb.Append(getPriority(key));
+              if (keyI.hasNext()) {
+                sb.Append('\n');
+              }
+            }*/
             return sb.ToString();
         }
 
@@ -607,8 +556,8 @@ namespace OpenNLP.Tools.Util
         }
 
         /*public BinaryHeapPriorityQueue(int initCapacity) {
-      this(MapFactory<E, Entry<E>>.hashMapFactory<E, Entry<E>>(initCapacity));
-  }*/
+            this(MapFactory<E, Entry<E>>.hashMapFactory<E, Entry<E>>(initCapacity));
+        }*/
 
         public BinaryHeapPriorityQueue(MapFactory<E, Entry<E>> mapFactory)
         {

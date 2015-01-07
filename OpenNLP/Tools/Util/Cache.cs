@@ -68,17 +68,17 @@ namespace OpenNLP.Tools.Util
         /// <summary>
         /// Holds the object wrappers which the keys are mapped to.
         /// </summary>
-        private ObjectWrapper[] mWrappers;
+        private readonly ObjectWrapper[] mWrappers;
 
         /// <summary>
         /// Hashtable which stores the keys and values of the cache.
         /// </summary>
-        private Hashtable mMap;
+        private readonly Hashtable mMap;
 
         /// <summary>
         /// The size of the cache.
         /// </summary>
-        private int mCacheSize;
+        private readonly int mCacheSize;
 
         public virtual ICollection Keys
         {
@@ -109,10 +109,9 @@ namespace OpenNLP.Tools.Util
             mMap = new Hashtable(size);
             mWrappers = new ObjectWrapper[size];
             mCacheSize = size;
-            object item = new object();
+            var item = new object();
             mFirstElement = new DoubleLinkedListElement(null, null, item);
-            object tempObject;
-            tempObject = new ObjectWrapper(null, mFirstElement);
+            object tempObject = new ObjectWrapper(null, mFirstElement);
             mMap[item] = tempObject;
             mWrappers[0] = new ObjectWrapper(null, mFirstElement);
 
@@ -122,8 +121,7 @@ namespace OpenNLP.Tools.Util
                 item = new object();
                 element = new DoubleLinkedListElement(element, null, item);
                 mWrappers[currentItem] = new ObjectWrapper(null, element);
-                object tempObject2;
-                tempObject2 = mWrappers[currentItem];
+                object tempObject2 = mWrappers[currentItem];
                 mMap[item] = tempObject2;
                 element.Previous.Next = element;
             }
@@ -138,7 +136,7 @@ namespace OpenNLP.Tools.Util
             for (int currentItem = 0; currentItem < mCacheSize; currentItem++)
             {
                 mWrappers[currentItem].Item = null;
-                object o = new object();
+                var o = new object();
                 mMap.Add(o, mWrappers[currentItem]);
                 element.Item = o;
                 element = element.Next;
@@ -248,8 +246,7 @@ namespace OpenNLP.Tools.Util
                 mTempSwapWrapper.Item = value;
                 mTempSwapWrapper.ListItem = mFirstElement;
 
-                object tempObject;
-                tempObject = mTempSwapWrapper;
+                object tempObject = mTempSwapWrapper;
                 mMap[key] = tempObject;
             }
         }
@@ -270,8 +267,7 @@ namespace OpenNLP.Tools.Util
             var hashSet = new Set<IDictionaryEnumerator>();
             while (hashEnumerator.MoveNext())
             {
-                var tempHash = new Hashtable();
-                tempHash.Add(hashEnumerator.Key, hashEnumerator.Value);
+                var tempHash = new Hashtable {{hashEnumerator.Key, hashEnumerator.Value}};
                 hashSet.Add(tempHash.GetEnumerator());
             }
             return hashSet;
@@ -311,7 +307,7 @@ namespace OpenNLP.Tools.Util
             get { return mMap.SyncRoot; }
         }
 
-        public void CopyTo(System.Array copyArray, int arrayIndex)
+        public void CopyTo(Array copyArray, int arrayIndex)
         {
             mMap.CopyTo(copyArray, arrayIndex);
         }
@@ -542,7 +538,7 @@ namespace OpenNLP.Tools.Util
     public class LinkedListNodeWrapper<K, V>
     {
         private V mItem;
-        private LinkedListNode<K> mNode;
+        private readonly LinkedListNode<K> mNode;
 
         public LinkedListNodeWrapper(K key, V value)
         {
@@ -567,17 +563,17 @@ namespace OpenNLP.Tools.Util
         /// <summary>
         /// Hashtable which stores the keys of the cache.
         /// </summary>
-        private Dictionary<K, LinkedListNodeWrapper<K, V>> mMap;
+        private readonly Dictionary<K, LinkedListNodeWrapper<K, V>> mMap;
 
         /// <summary>
         /// Double-linked list which stores the values of the cache.
         /// </summary>
-        private LinkedList<K> mList;
+        private readonly LinkedList<K> mList;
 
         /// <summary>
         /// The size of the cache.
         /// </summary>
-        private int mCacheSize;
+        private readonly int mCacheSize;
 
         /// <summary>
         /// Creates a new cache of the specified size.
@@ -592,7 +588,7 @@ namespace OpenNLP.Tools.Util
             mList = new LinkedList<K>();
         }
 
-        #region IDictionary<K,V> Members
+        // IDictionary<K,V> Members ----------------
 
         public void Add(K key, V value)
         {
@@ -680,9 +676,7 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        #endregion
-
-        #region ICollection<KeyValuePair<K,V>> Members
+        // ICollection<KeyValuePair<K,V>> Members -----------
 
         public void Add(KeyValuePair<K, V> item)
         {
@@ -720,24 +714,19 @@ namespace OpenNLP.Tools.Util
             return Remove(item.Key);
         }
 
-        #endregion
-
-        #region IEnumerable<KeyValuePair<K,V>> Members
+        // IEnumerable<KeyValuePair<K,V>> Members ----------
 
         public IEnumerator<KeyValuePair<K, V>> GetEnumerator()
         {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        #endregion
-
-        #region IEnumerable Members
+        // IEnumerable Members -------------
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             throw new Exception("The method or operation is not implemented.");
         }
 
-        #endregion
     }
 }

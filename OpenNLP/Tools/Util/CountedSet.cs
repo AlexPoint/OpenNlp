@@ -47,7 +47,7 @@ namespace OpenNLP.Tools.Util
     /// </summary>
     public class CountedSet<T> : ICollection<T>
     {
-        private IDictionary<T, int> mCountedSet;
+        private readonly IDictionary<T, int> mCountedSet;
 
         /// <summary> Creates a new counted set.</summary>
         public CountedSet()

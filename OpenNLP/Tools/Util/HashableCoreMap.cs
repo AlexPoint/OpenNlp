@@ -6,26 +6,27 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
 {
-    /**
- * An extension of {@link ArrayCoreMap} with an immutable set of key,value
- * pairs that is used for equality and hashcode comparisons.
- * 
- * @author dramage
- */
 
+    /// <summary>
+    ///  An extension of {@link ArrayCoreMap} with an immutable set of key,value
+    /// pairs that is used for equality and hashcode comparisons.
+    /// 
+    /// @author dramage
+    /// 
+    /// Code...
+    /// </summary>
     public class HashableCoreMap : ArrayCoreMap
     {
-        /** Set of immutable keys */
+        /// <summary>Set of immutable keys</summary>
         private readonly Set<Type> immutableKeys;
 
-        /** Pre-computed hashcode */
+        /// <summary>Pre-computed hashcode</summary>
         private readonly int hashcode;
 
-        /**
-   * Creates an instance of HashableCoreMap with initial key,value pairs
-   * for the immutable, hashable keys as provided in the given map.
-   */
-        //@SuppressWarnings("unchecked")
+        /// <summary>
+        /// Creates an instance of HashableCoreMap with initial key,value pairs
+        /// for the immutable, hashable keys as provided in the given map.
+        /// </summary>
         public HashableCoreMap(Dictionary<Type, Object> hashkey)
         {
             int keyHashcode = 0;
@@ -67,14 +68,11 @@ namespace OpenNLP.Tools.Util
     this.hashcode = keyHashcode * 31 + valueHashcode;
   }*/
 
-        /**
-   * Sets the value associated with the given key; if the the key is one
-   * of the hashable keys, throws an exception.
-   * 
-   * @throws HashableCoreMapException Attempting to set the value for an
-   *   immutable, hashable key.
-   */
-        //@Override
+        /// <summary>
+        /// Sets the value associated with the given key; if the the key is one
+        /// of the hashable keys, throws an exception.
+        /// </summary>
+        /// <exception cref="HashableCoreMapException">Attempting to set the value for an immutable, hashable key.</exception>
         public override /*<VALUE> VALUE*/ Object Set(Type key, Object value)
         {
 
@@ -87,23 +85,11 @@ namespace OpenNLP.Tools.Util
             return base.Set(key, value);
         }
 
-        /**
-   * Provides a hash code based on the immutable keys and values provided
-   * to the constructor.
-   */
-        //@Override
         public override int GetHashCode()
         {
             return hashcode;
         }
 
-        /**
-   * If the provided object is a HashableCoreMap, equality is based only
-   * upon the values of the immutable hashkeys; otherwise, defaults to
-   * behavior of the superclass's equals method.
-   */
-        //    @SuppressWarnings("unchecked")
-        //@Override
         public override bool Equals(Object o)
         {
             if (o is HashableCoreMap)
@@ -130,17 +116,13 @@ namespace OpenNLP.Tools.Util
 
         private static readonly long serialVersionUID = 1L;
 
-        //
-        // Exception type
-        //
 
-        /**
-   * An exception thrown when attempting to change the value associated
-   * with an (immutable) hash key in a HashableCoreMap.
-   * 
-   * @author dramage
-   */
-
+        /// <summary>
+        /// An exception thrown when attempting to change the value associated
+        /// with an (immutable) hash key in a HashableCoreMap.
+        /// 
+        /// @author dramage
+        /// </summary>
         public class HashableCoreMapException : SystemException
         {
 
@@ -148,9 +130,6 @@ namespace OpenNLP.Tools.Util
             {
             }
 
-            /**
-     * 
-     */
             private static readonly long serialVersionUID = 1L;
         }
     }

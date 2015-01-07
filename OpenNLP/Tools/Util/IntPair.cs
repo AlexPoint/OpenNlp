@@ -20,21 +20,19 @@ namespace OpenNLP.Tools.Util
             elements[0] = src;
             elements[1] = trgt;
         }
-
-
-        /**
-   * Return the first element of the pair
-   */
-
+        
+        /// <summary>
+        /// Return the first element of the pair
+        /// </summary>
         public int GetSource()
         {
             return Get(0);
         }
 
-        /**
-   * Return the second element of the pair
-   */
-
+        /// <summary>
+        /// Return the second element of the pair
+        /// </summary>
+        /// <returns></returns>
         public int GetTarget()
         {
             return Get(1);

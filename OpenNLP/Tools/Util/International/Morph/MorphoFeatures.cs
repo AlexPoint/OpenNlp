@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.International.Morph
 {
+    /// <summary>
+    /// Holds a set of morphosyntactic features for a given surface form.
+    /// 
+    /// @author Spence Green
+    /// </summary>
     public class MorphoFeatures
     {
         private static readonly long serialVersionUID = -3893316324305154940L;
 
-        public static readonly string KEY_VAL_DELIM = ":";
+        public static readonly string KeyValDelim = ":";
 
         protected readonly Dictionary<MorphoFeatureSpecification.MorphoFeatureType, string> fSpec;
         protected string altTag;
@@ -60,13 +65,9 @@ namespace OpenNLP.Tools.Util.International.Morph
             return fSpec.Count;
         }
 
-        /**
-   * Build a POS tag consisting of a base category plus inflectional features.
-   * 
-   * @param baseTag
-   * @return the tag
-   */
-
+        /// <summary>
+        /// Build a POS tag consisting of a base category plus inflectional features.
+        /// </summary>
         public string GetTag(string baseTag)
         {
             return baseTag + ToString();
@@ -77,30 +78,23 @@ namespace OpenNLP.Tools.Util.International.Morph
             altTag = tag;
         }
 
-
-        /**
-   * An alternate tag form than the one produced by getTag(). Subclasses
-   * may want to use this form to implement someone else's tagset (e.g., CC, ERTS, etc.)
-   * 
-   * @return the tag
-   */
-
+        /// <summary>
+        /// An alternate tag form than the one produced by getTag().
+        /// Subclasses may want to use this form to implement someone else's tagset (e.g., CC, ERTS, etc.)
+        /// </summary>
         public string GetAltTag()
         {
             return altTag;
         }
 
-        /**
-   * Assumes that the tag string has been formed using a call to getTag(). As such,
-   * it removes the basic category from the feature string.
-   * <p>
-   * Note that this method returns a <b>new</b> MorphoFeatures object. As a result, it
-   * behaves like a static method, but is non-static so that subclasses can override
-   * this method.
-   * 
-   * @param str
-   */
-
+        /// <summary>
+        /// Assumes that the tag string has been formed using a call to getTag().
+        /// As such, it removes the basic category from the feature string.
+        /// 
+        /// Note that this method returns a <b>new</b> MorphoFeatures object.
+        /// As a result, it behaves like a static method, but is non-static so that subclasses can override
+        /// this method.
+        /// </summary>
         public MorphoFeatures FromTagString(string str)
         {
             //List<string> feats = str.Split(new string[]{"\\-"}, StringSplitOptions.None).ToList();
@@ -108,7 +102,7 @@ namespace OpenNLP.Tools.Util.International.Morph
             var mFeats = new MorphoFeatures();
             foreach (string fPair in feats)
             {
-                string[] keyValue = Regex.Split(fPair, KEY_VAL_DELIM);
+                string[] keyValue = Regex.Split(fPair, KeyValDelim);
                 if (keyValue.Length != 2) //Manual state split annotations
                     continue;
                 MorphoFeatureSpecification.MorphoFeatureType fName;
@@ -126,19 +120,18 @@ namespace OpenNLP.Tools.Util.International.Morph
             return mFeats;
         }
 
-        /**
-   * values() returns the values in the order in which they are declared. Thus we will not have
-   * the case where two feature types can yield two strings:
-   *    -feat1:A-feat2:B
-   *    -feat2:B-feat1:A
-   */
-        //@Override
+        /// <summary>
+        /// values() returns the values in the order in which they are declared.
+        /// Thus we will not have the case where two feature types can yield two strings:
+        /// -feat1:A-feat2:B
+        /// -feat2:B-feat1:A
+        /// </summary>
         public override string ToString()
         {
             var sb = new StringBuilder();
             foreach (var entry in fSpec)
             {
-                sb.Append(String.Format("-{0}{1}{2}", entry.Key.ToString(), KEY_VAL_DELIM, entry.Value));
+                sb.Append(String.Format("-{0}{1}{2}", entry.Key.ToString(), KeyValDelim, entry.Value));
             }
             /*foreach(MorphoFeatureSpecification.MorphoFeatureType feat in MorphoFeatureSpecification.MorphoFeatureType.values()) {
       if(fSpec.ContainsKey(feat)) {

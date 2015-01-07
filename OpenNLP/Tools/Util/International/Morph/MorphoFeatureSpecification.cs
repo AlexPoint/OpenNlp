@@ -9,64 +9,64 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.International.Morph
 {
-    /**
- * Morphological feature specification for surface forms in a given language.
- * Currently supported feature names are the values of MorphFeatureType.
- * 
- * @author Spence Green
- *
- */
-
+    /// <summary>
+    /// Morphological feature specification for surface forms in a given language.
+    /// Currently supported feature names are the values of MorphFeatureType.
+    /// 
+    /// @author Spence Green
+    /// 
+    /// Code...
+    /// </summary>
     public abstract class MorphoFeatureSpecification
     {
         private static readonly long serialVersionUID = -5720683653931585664L;
 
-        //Delimiter for associating a surface form with a morphological analysis, e.g.,
-        //
-        //     his~#PRP_3ms
-        //
-        public static readonly string MORPHO_MARK = "~#";
+        /// <summary>
+        /// Delimiter for associating a surface form with a morphological analysis, e.g., his~#PRP_3ms
+        /// </summary>
+        public static readonly string MorphoMark = "~#";
 
-        public static readonly string LEMMA_MARK = "|||";
+        public static readonly string LemmaMark = "|||";
 
-        public static readonly string NO_ANALYSIS = "XXX";
+        public static readonly string NoAnalysis = "XXX";
 
-        // WSGDEBUG --
-        //   Added NNUM and NGEN for nominals in Arabic
+        /// <summary>
+        /// WSGDEBUG -- Added NNUM and NGEN for nominals in Arabic
+        /// </summary>
         public enum MorphoFeatureType
         {
-            TENSE,
-            DEF,
-            ASP,
-            MOOD,
-            NNUM,
-            NUM,
-            NGEN,
-            GEN,
-            CASE,
-            PER,
-            POSS,
-            VOICE,
-            OTHER,
-            PROP
+            Tense,
+            Def,
+            Asp,
+            Mood,
+            Nnum,
+            Num,
+            Ngen,
+            Gen,
+            Case,
+            Per,
+            Poss,
+            Voice,
+            Other,
+            Prop
         };
 
-        protected readonly Set<MorphoFeatureType> activeFeatures;
+        protected readonly Set<MorphoFeatureType> ActiveFeatures;
 
         public MorphoFeatureSpecification()
         {
-            activeFeatures = new HashSet<MorphoFeatureType>();
+            ActiveFeatures = new HashSet<MorphoFeatureType>();
             //activeFeatures = Generics.newHashSet();
         }
 
         public void Activate(MorphoFeatureType feat)
         {
-            activeFeatures.Add(feat);
+            ActiveFeatures.Add(feat);
         }
 
         public bool IsActive(MorphoFeatureType feat)
         {
-            return activeFeatures.Contains(feat);
+            return ActiveFeatures.Contains(feat);
         }
 
         public abstract List<string> GetValues(MorphoFeatureType feat);
@@ -81,9 +81,9 @@ namespace OpenNLP.Tools.Util.International.Morph
         {
             if (morphStr == null || morphStr.Trim().Equals(""))
             {
-                return new Tuple<string, string>(word, NO_ANALYSIS);
+                return new Tuple<string, string>(word, NoAnalysis);
             }
-            string[] toks = morphStr.Split(new[] {ToLiteral(LEMMA_MARK)}, StringSplitOptions.None);
+            string[] toks = morphStr.Split(new[] {ToLiteral(LemmaMark)}, StringSplitOptions.None);
             if (toks.Length != 2)
             {
                 throw new Exception("Invalid morphology string: " + morphStr);
@@ -95,7 +95,7 @@ namespace OpenNLP.Tools.Util.International.Morph
         //@Override
         public override string ToString()
         {
-            return activeFeatures.ToString();
+            return ActiveFeatures.ToString();
         }
 
         private static string ToLiteral(string input)

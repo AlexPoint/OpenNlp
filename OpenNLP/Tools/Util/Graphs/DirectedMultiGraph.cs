@@ -8,19 +8,17 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Graphs
 {
-    /**
- * Simple graph library; this is directed for now. This class focuses on time
- * efficiency rather than memory efficiency.
- *
- * @author sonalg
- * @author John Bauer
- *
- * @param <V>
- *          Type of vertices
- * @param <E>
- *          Type of edges.
- */
-
+    /// <summary>
+    /// Simple graph library; this is directed for now. This class focuses on time
+    /// efficiency rather than memory efficiency.
+    /// 
+    /// @author sonalg
+    /// @author John Bauer
+    /// 
+    /// Code...
+    /// </summary>
+    /// <typeparam name="V">Type of vertices</typeparam>
+    /// <typeparam name="E">Type of edges.</typeparam>
     public class DirectedMultiGraph<V, E> : Graph<V, E>
     {
         private readonly Dictionary<V, Dictionary<V, List<E>>> outgoingEdges;
@@ -46,13 +44,11 @@ namespace OpenNLP.Tools.Util.Graphs
             this.incomingEdges = outerMapFactory.newMap();
         }
 
-        /**
-   * Creates a copy of the given graph. This will copy the entire data structure (this may be slow!), but will not copy
-   * any of the edge or vertex objects.
-   *
-   * @param graph The graph to copy into this object.
-   */
-
+        /// <summary>
+        /// Creates a copy of the given graph. This will copy the entire data structure (this may be slow!), 
+        /// but will not copy any of the edge or vertex objects.
+        /// </summary>
+        /// <param name="graph">The graph to copy into this object.</param>
         public DirectedMultiGraph(DirectedMultiGraph<V, E> graph) :
             this(graph.outerMapFactory, graph.innerMapFactory)
         {
@@ -77,9 +73,9 @@ namespace OpenNLP.Tools.Util.Graphs
         }
 
         /**
-   * Be careful hashing these. They are mutable objects, and changing the object
-   * will throw off the hash code, messing up your hash table
-   */
+         * Be careful hashing these. They are mutable objects, and changing the object
+         * will throw off the hash code, messing up your hash table
+         */
 
         public override int GetHashCode()
         {
@@ -95,12 +91,9 @@ namespace OpenNLP.Tools.Util.Graphs
             return outgoingEdges.Equals(((DirectedMultiGraph<V, E>) that).outgoingEdges);
         }
 
-        /**
-   * For adding a zero degree vertex
-   *
-   * @param v
-   */
-        //@Override
+        /// <summary>
+        /// For adding a zero degree vertex
+        /// </summary>
         public bool AddVertex(V v)
         {
             if (outgoingEdges.ContainsKey(v))
@@ -136,14 +129,9 @@ namespace OpenNLP.Tools.Util.Graphs
             return map;
         }
 
-        /**
-   * adds vertices (if not already in the graph) and the edge between them
-   *
-   * @param source
-   * @param dest
-   * @param data
-   */
-        //@Override
+        /// <summary>
+        /// adds vertices (if not already in the graph) and the edge between them
+        /// </summary>
         public void Add(V source, V dest, E data)
         {
             Dictionary<V, List<E>> outgoingMap = GetOutgoingEdgesMap(source);
@@ -230,13 +218,10 @@ namespace OpenNLP.Tools.Util.Graphs
             return foundOut;
         }
 
-        /**
-   * remove a vertex (and its edges) from the graph.
-   *
-   * @param vertex
-   * @return true if successfully removes the node
-   */
-        //@Override
+        /// <summary>
+        /// remove a vertex (and its edges) from the graph.
+        /// </summary>
+        /// <returns>true if successfully removes the node</returns>
         public bool RemoveVertex(V vertex)
         {
             if (!outgoingEdges.ContainsKey(vertex))
@@ -332,12 +317,9 @@ namespace OpenNLP.Tools.Util.Graphs
             return new ReadOnlyCollection<V>(childMap.Keys.ToList());
         }
 
-        /**
-   * Gets both parents and children nodes
-   *
-   * @param v
-   */
-        //@Override
+        /// <summary>
+        /// Gets both parents and children nodes
+        /// </summary>
         public Set<V> GetNeighbors(V v)
         {
             // TODO: pity we have to copy the sets... is there a combination set?
@@ -352,10 +334,9 @@ namespace OpenNLP.Tools.Util.Graphs
             return neighbors;
         }
 
-        /**
-   * clears the graph, removes all edges and nodes
-   */
-        //@Override
+        /// <summary>
+        /// clears the graph, removes all edges and nodes
+        /// </summary>
         public void Clear()
         {
             incomingEdges.Clear();
@@ -368,14 +349,10 @@ namespace OpenNLP.Tools.Util.Graphs
             return outgoingEdges.ContainsKey(v);
         }
 
-        /**
-   * only checks if there is an edge from source to dest. To check if it is
-   * connected in either direction, use isNeighbor
-   *
-   * @param source
-   * @param dest
-   */
-        //@Override
+        /// <summary>
+        /// Only checks if there is an edge from source to dest.
+        /// To check if it is connected in either direction, use isNeighbor
+        /// </summary>
         public bool IsEdge(V source, V dest)
         {
             Dictionary<V, List<E>> childrenMap;
@@ -415,20 +392,18 @@ namespace OpenNLP.Tools.Util.Graphs
             return edges;
         }
 
-        /**
-   * False if there are any vertices in the graph, true otherwise. Does not care
-   * about the number of edges.
-   */
-        //@Override
+        /// <summary>
+        /// False if there are any vertices in the graph, true otherwise.
+        /// Does not care about the number of edges.
+        /// </summary>
         public bool IsEmpty()
         {
             return !outgoingEdges.Any();
         }
 
-        /**
-   * Deletes nodes with zero incoming and zero outgoing edges
-   */
-        //@Override
+        /// <summary>
+        /// Deletes nodes with zero incoming and zero outgoing edges
+        /// </summary>
         public void RemoveZeroDegreeNodes()
         {
             var toDelete = new List<V>();
@@ -462,10 +437,9 @@ namespace OpenNLP.Tools.Util.Graphs
             return new ReadOnlyCollection<E>(edges);
         }
 
-        /**
-   * direction insensitive (the paths can go "up" or through the parents)
-   */
-
+        /// <summary>
+        /// Direction insensitive (the paths can go "up" or through the parents)
+        /// </summary>
         public List<V> GetShortestPath(V node1, V node2)
         {
             if (!outgoingEdges.ContainsKey(node1) || !outgoingEdges.ContainsKey(node2))
@@ -479,17 +453,12 @@ namespace OpenNLP.Tools.Util.Graphs
         {
             return ConvertPath(GetShortestPath(node1, node2), false);
         }
-
-        /**
-   * can specify the direction sensitivity
-   *
-   * @param node1
-   * @param node2
-   * @param directionSensitive
-   *          - whether the path can go through the parents
-   * @return the list of nodes you get through to get there
-   */
-
+        
+        /// <summary>
+        /// Can specify the direction sensitivity
+        /// </summary>
+        /// <param name="directionSensitive">whether the path can go through the parents</param>
+        /// <returns>the list of nodes you get through to get there</returns>
         public List<V> GetShortestPath(V node1, V node2, bool directionSensitive)
         {
             if (!outgoingEdges.ContainsKey(node1) || !outgoingEdges.ContainsKey(node2))
@@ -653,13 +622,11 @@ namespace OpenNLP.Tools.Util.Graphs
       edgeIterator.Remove();
     }
   }*/
-
-        /**
-   * Cast this multi-graph as a map from vertices, to the outgoing data along edges out of those vertices.
-   *
-   * @return A map representation of the graph.
-   */
-
+        
+        /// <summary>
+        /// Cast this multi-graph as a map from vertices, to the outgoing data along edges out of those vertices.
+        /// </summary>
+        /// <returns>A map representation of the graph.</returns>
         public Dictionary<V, List<E>> ToMap()
         {
             Dictionary<V, List<E>> map = innerMapFactory.newMap();

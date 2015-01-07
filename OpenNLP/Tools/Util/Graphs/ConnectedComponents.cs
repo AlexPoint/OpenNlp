@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Graphs
 {
-    /**
- * Finds connected components in the graph, currently uses inefficient list for
- * variable 'verticesLeft'. It might give a problem for big graphs
- *
- * @author sonalg 08/08/11
- */
-
+    /// <summary>
+    /// Finds connected components in the graph, currently uses inefficient list for
+    /// variable 'verticesLeft'. It might give a problem for big graphs
+    /// 
+    /// @author sonalg 08/08/11
+    /// 
+    /// Code...
+    /// </summary>
     public class ConnectedComponents
     {
         public static /*<V, E>*/ List<Set<V>> GetConnectedComponents<V, E>(Graph<V, E> graph)

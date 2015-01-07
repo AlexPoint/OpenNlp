@@ -7,31 +7,26 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Graphs
 {
-    /**
- *
- * @author Sonal Gupta
- * @param <V> Type of the vertices
- * @param <E> Type of the edges
- */
-
+    
+    /// <summary>
+    /// @author Sonal Gupta
+    /// 
+    /// Code...
+    /// </summary>
+    /// <typeparam name="V">Type of the vertices</typeparam>
+    /// <typeparam name="E">Type of the edges</typeparam>
     public interface Graph<V, E>
     {
-        /**
-   * Adds vertices (if not already in the graph) and the edge between them.
-   * (If the graph is undirected, the choice of which vertex to call
-   * source and dest is arbitrary.)
-   *
-   * @param source
-   * @param dest
-   * @param data
-   */
-        void Add(V source, V dest, E data);
-        /**
-         * For adding a zero degree vertex
-         *
-         * @param v
-         */
 
+        /// <summary>
+        /// Adds vertices (if not already in the graph) and the edge between them.
+        /// (If the graph is undirected, the choice of which vertex to call source and dest is arbitrary.)
+        /// </summary>
+        void Add(V source, V dest, E data);
+        
+        /// <summary>
+        /// For adding a zero degree vertex
+        /// </summary>
         bool AddVertex(V v);
 
 
@@ -40,61 +35,51 @@ namespace OpenNLP.Tools.Util.Graphs
 
         bool RemoveEdge(V source, V dest, E data);
 
-        /**
-         * remove a vertex (and its edges) from the graph.
-         *
-         * @param vertex
-         * @return true if successfully removes the node
-         */
+        /// <summary>
+        /// Remove a vertex (and its edges) from the graph.
+        /// </summary>
+        /// <returns>true if successfully removes the node</returns>
         bool RemoveVertex(V vertex);
 
         bool RemoveVertices(ICollection<V> vertices);
 
         int GetNumVertices();
 
-        /**
-         * for undirected graph, it is just the edges from the node
-         * @param v
-         */
+        /// <summary>
+        /// For undirected graph, it is just the edges from the node
+        /// </summary>
         List<E> GetOutgoingEdges(V v);
 
-        /**
-         * for undirected graph, it is just the edges from the node
-         * @param v
-         */
+        /// <summary>
+        /// For undirected graph, it is just the edges from the node
+        /// </summary>
         List<E> GetIncomingEdges(V v);
 
         int GetNumEdges();
 
-        /**
-         * for undirected graph, it is just the neighbors
-         * @param vertex
-         */
+        /// <summary>
+        /// For undirected graph, it is just the neighbors
+        /// </summary>
         ReadOnlyCollection<V> GetParents(V vertex);
-
-        /**
-         * for undirected graph, it is just the neighbors
-         * @param vertex
-         */
-
+        
+        /// <summary>
+        /// For undirected graph, it is just the neighbors
+        /// </summary>
         ReadOnlyCollection<V> GetChildren(V vertex);
 
         Set<V> GetNeighbors(V v);
 
-        /**
-         * clears the graph, removes all edges and nodes
-         */
+        /// <summary>
+        /// Clears the graph, removes all edges and nodes
+        /// </summary>
         void Clear();
 
         bool ContainsVertex(V v);
 
-        /**
-         * only checks if there is an edge from source to dest. To check if it is
-         * connected in either direction, use isNeighbor
-         *
-         * @param source
-         * @param dest
-         */
+        /// <summary>
+        /// Only checks if there is an edge from source to dest.
+        /// To check if it is connected in either direction, use isNeighbor
+        /// </summary>
         bool IsEdge(V source, V dest);
 
         bool IsNeighbor(V source, V dest);
@@ -103,24 +88,22 @@ namespace OpenNLP.Tools.Util.Graphs
 
         List<E> GetAllEdges();
 
-        /**
-         * False if there are any vertices in the graph, true otherwise. Does not care
-         * about the number of edges.
-         */
+        /// <summary>
+        /// False if there are any vertices in the graph, true otherwise.
+        /// Does not care about the number of edges.
+        /// </summary>
         bool IsEmpty();
 
-        /**
-         * Deletes nodes with zero incoming and zero outgoing edges
-         */
+        /// <summary>
+        /// Deletes nodes with zero incoming and zero outgoing edges
+        /// </summary>
         void RemoveZeroDegreeNodes();
 
         ReadOnlyCollection<E> GetEdges(V source, V dest);
 
-
-        /**
-         * for undirected graph, it should just be the degree
-         * @param vertex
-         */
+        /// <summary>
+        /// For undirected graph, it should just be the degree
+        /// </summary>
         int GetInDegree(V vertex);
 
         int GetOutDegree(V vertex);

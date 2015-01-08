@@ -10,48 +10,95 @@ using OpenNLP.Tools.Util.Trees.TRegex;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    public class EnglishGrammaticalRelations
+    /// <summary>
+    /// <code>EnglishGrammaticalRelations</code> is a
+    /// set of {@link GrammaticalRelation} objects for the English language.
+    /// These relations are commonly called Stanford Dependencies (SD).
+    /// 
+    /// Grammatical relations can either be shown in their basic form, where each
+    /// input token receives a relation, or "collapsed" which does certain normalizations
+    /// which group words or turns them into relations. See
+    /// {@link EnglishGrammaticalStructure}.  What is presented here mainly
+    /// shows the basic form, though there is some mixture. The "collapsed" grammatical
+    /// relations primarily differ as follows:
+    /// <ul>
+    /// <li>Some multiword conjunctions and prepositions are treated as single
+    /// words, and then processed as below.</li>
+    /// <li>Prepositions do not appear as words but are turned into new "prep" or "prepc"
+    /// grammatical relations, one for each preposition.</li>
+    /// <li>Conjunctions do not appear as words but are turned into new "conj"
+    /// grammatical relations, one for each conjunction.</li>
+    /// <li>The possessive "'s" is deleted, leaving just the relation between the
+    /// possessor and possessum.</li>
+    /// <li>Agents of passive sentences are recognized and marked as agent and not as prep_by.</li>
+    /// </ul>
+    /// 
+    /// This set of English grammatical relations is not intended to be
+    /// exhaustive or immutable.  It's just where we're at now.
+    /// 
+    /// See {@link GrammaticalRelation} for details of fields and matching.
+    /// 
+    /// If using LexicalizedParser, it should be run with the
+    /// <code>-retainTmpSubcategories</code> option and one of the
+    /// <code>-splitTMP</code> options (e.g., <code>-splitTMP 1</code>) in order to
+    /// get the temporal NP dependencies maximally right!
+    /// 
+    /// <i>Implementation notes: </i> Don't change the set of GRs without discussing it
+    /// with people first.  If a change is needed, to add a new grammatical relation:
+    /// <ul>
+    /// <li> Governor nodes of the grammatical relations should be the lowest ones.</li>
+    /// <li> Check the semantic head rules in SemanticHeadFinder and ModCollinsHeadFinder, 
+    /// both in the trees package. That's what will be used to match here.</li>
+    /// <li> Create and define the GrammaticalRelation similarly to the others.</li>
+    /// <li> Add it to the <code>values</code> array at the end of the file.</li>
+    /// </ul>
+    /// The patterns in this code assume that an NP may be followed by either a
+    /// -ADV or -TMP functional tag but there are no other functional tags represented.
+    /// This corresponds to what we currently get from NPTmpRetainingTreeNormalizer or
+    /// DependencyTreeTransformer.
+    ///
+    /// @author Bill MacCartney
+    /// @author Marie-Catherine de Marneffe
+    /// @author Christopher Manning
+    /// @author Galen Andrew (refactoring English-specific stuff)
+    /// 
+    /// @see GrammaticalStructure
+    /// @see GrammaticalRelation
+    /// @see EnglishGrammaticalStructure
+    /// 
+    /// Code...
+    /// </summary>
+    public static class EnglishGrammaticalRelations
     {
         //todo: Things still to fix: comparatives, in order to clauses, automatic Vadas-like NP structure
 
-        /** This class is just a holder for static classes
-   *  that act a bit like an enum.
-   */
-
-        private EnglishGrammaticalRelations()
-        {
-        }
-
-        // By setting the HeadFinder to null, we find out right away at
-        // runtime if we have incorrectly set the HeadFinder for the
-        // dependency tregexes
+        /// <summary>
+        /// By setting the HeadFinder to null, we find out right away at runtime 
+        /// if we have incorrectly set the HeadFinder for the dependency tregexes
+        /// </summary>
         private static readonly TregexPatternCompiler TregexCompiler = new TregexPatternCompiler((HeadFinder) null);
-
-        /**
-   * The "predicate" grammatical relation.  The predicate of a
-   * clause is the main VP of that clause; the predicate of a
-   * subject is the predicate of the clause to which the subject
-   * belongs.<p>
-   * <p/>
-   * Example: <br/>
-   * "Reagan died" &rarr; <code>pred</code>(Reagan, died)
-   */
-
-        public static readonly GrammaticalRelation PREDICATE =
+        
+        /// <summary>
+        /// The "predicate" grammatical relation.  The predicate of a
+        /// clause is the main VP of that clause; the predicate of a
+        /// subject is the predicate of the clause to which the subject belongs.
+        /// 
+        /// Example:
+        /// "Reagan died" &rarr; <code>pred</code>(Reagan, died)
+        /// </summary>
+        public static readonly GrammaticalRelation Predicate =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "pred", "predicate",
                 GrammaticalRelation.Dependent, "S|SINV", TregexCompiler,
                 new[] {"S|SINV <# VP=target"});
 
-
-        /**
-   * The "auxiliary" grammatical relation.  An auxiliary of a clause is a
-   * non-main verb of the clause.<p>
-   * <p/>
-   * Example: <br/>
-   * "Reagan has died" &rarr; <code>aux</code>(died, has)
-   */
-
-        public static readonly GrammaticalRelation AUX_MODIFIER =
+        /// <summary>
+        /// The "auxiliary" grammatical relation.  An auxiliary of a clause is a
+        /// non-main verb of the clause.
+        /// 
+        /// Example:
+        /// "Reagan has died" &rarr; <code>aux</code>(died, has)
+        /// </summary>
+        public static readonly GrammaticalRelation AuxModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "aux", "auxiliary",
                 GrammaticalRelation.Dependent, "VP|SQ|SINV|CONJP", TregexCompiler,
                 new string[]
@@ -63,19 +110,16 @@ namespace OpenNLP.Tools.Util.Trees
                     "SINV < (VP=target < (/^(?:VB|AUX|POS)/ < " + EnglishPatterns.BeAuxiliaryRegex + ") $-- (VP < VBG))"
                 });
 
-
-        /**
-    * The "passive auxiliary" grammatical relation. A passive auxiliary of a
-    * clause is a
-    * non-main verb of the clause which contains the passive information.
-    * <p/>
-    * Example: <br/>
-    * "Kennedy has been killed" &rarr; <code>auxpass</code>(killed, been)
-    */
-
-        public static readonly GrammaticalRelation AUX_PASSIVE_MODIFIER =
+        /// <summary>
+        /// The "passive auxiliary" grammatical relation. A passive auxiliary of a
+        /// clause is a non-main verb of the clause which contains the passive information.
+        /// 
+        /// Example:
+        /// "Kennedy has been killed" &rarr; <code>auxpass</code>(killed, been)
+        /// </summary>
+        public static readonly GrammaticalRelation AuxPassiveModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "auxpass", "passive auxiliary",
-                AUX_MODIFIER, "VP|SQ|SINV", TregexCompiler,
+                AuxModifier, "VP|SQ|SINV", TregexCompiler,
                 new string[]
                 {
                     "VP < (/^(?:VB|AUX|POS)/=target < " + EnglishPatterns.PassiveAuxWordRegex +
@@ -88,18 +132,17 @@ namespace OpenNLP.Tools.Util.Trees
                     ")) $-- (VP < VBD|VBN))"
                 });
 
-        /**
-   * The "copula" grammatical relation.  A copula is the relation between
-   * the complement of a copular verb and the copular verb.<p>
-   * <p/>
-   * Examples: <br/>
-   * "Bill is big" &rarr; <code>cop</code>(big, is) <br/>
-   * "Bill is an honest man" &rarr; <code>cop</code>(man, is)
-   */
-
-        public static readonly GrammaticalRelation COPULA =
+        /// <summary>
+        /// The "copula" grammatical relation.  A copula is the relation between
+        /// the complement of a copular verb and the copular verb.
+        /// 
+        /// Examples:
+        /// "Bill is big" &rarr; <code>cop</code>(big, is)
+        /// "Bill is an honest man" &rarr; <code>cop</code>(man, is)
+        /// </summary>
+        public static readonly GrammaticalRelation Copula =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "cop", "copula",
-                AUX_MODIFIER, "VP|SQ|SINV|SBARQ", TregexCompiler,
+                AuxModifier, "VP|SQ|SINV|SBARQ", TregexCompiler,
                 new string[]
                 {
                     "VP < (/^(?:VB|AUX)/=target < " + EnglishPatterns.CopularWordRegex +
@@ -126,19 +169,18 @@ namespace OpenNLP.Tools.Util.Trees
 
         private const string AsianSmiley = "/(?!^--$)^(?:-LRB-)?[\\-\\^x=~<>'][_.]?[\\-\\^x=~<>'](?:-RRB-)?$/";
 
-        /**
-   * The "conjunct" grammatical relation.  A conjunct is the relation between
-   * two elements connected by a conjunction word.  We treat conjunctions
-   * asymmetrically: The head of the relation is the first conjunct and other
-   * conjunctions depend on it via the <i>conj</i> relation.<p>
-   * <p/>
-   * Example: <br/>
-   * "Bill is big and honest" &rarr; <code>conj</code>(big, honest)
-   * <p/>
-   * <i>Note:</i>Modified in 2010 to exclude the case of a CC/CONJP first in its phrase: it has to conjoin things.
-   */
-
-        public static readonly GrammaticalRelation CONJUNCT =
+        /// <summary>
+        /// The "conjunct" grammatical relation.  A conjunct is the relation between
+        /// two elements connected by a conjunction word.  We treat conjunctions
+        /// asymmetrically: The head of the relation is the first conjunct and other
+        /// conjunctions depend on it via the <i>conj</i> relation.
+        /// 
+        /// Example:
+        /// "Bill is big and honest" &rarr; <code>conj</code>(big, honest)
+        /// 
+        /// Note: Modified in 2010 to exclude the case of a CC/CONJP first in its phrase: it has to conjoin things.
+        /// </summary>
+        public static readonly GrammaticalRelation Conjunct =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "conj", "conjunct",
                 GrammaticalRelation.Dependent,
                 "VP|(?:WH)?NP(?:-TMP|-ADV)?|ADJP|PP|QP|ADVP|UCP(?:-TMP|-ADV)?|S|NX|SBAR|SBARQ|SINV|SQ|JJP|NML|RRC",
@@ -186,16 +228,14 @@ namespace OpenNLP.Tools.Util.Trees
                     EtcPatTarget + " | <- " + FwEtcPatTarget + " ]"
                 });
 
-
-        /**
-   * The "coordination" grammatical relation.  A coordination is the relation
-   * between an element and a conjunction.
-   * <p/>
-   * Example: <br/>
-   * "Bill is big and honest." &rarr; <code>cc</code>(big, and)
-   */
-
-        public static readonly GrammaticalRelation COORDINATION =
+        /// <summary>
+        /// The "coordination" grammatical relation.  A coordination is the relation
+        /// between an element and a conjunction.
+        /// 
+        /// Example:
+        /// "Bill is big and honest." &rarr; <code>cc</code>(big, and)
+        /// </summary>
+        public static readonly GrammaticalRelation Coordination =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "cc", "coordination",
                 GrammaticalRelation.Dependent, ".*", TregexCompiler,
                 new string[]
@@ -203,19 +243,16 @@ namespace OpenNLP.Tools.Util.Trees
                     "__ [ < (CC=target !< /^(?i:either|neither|both)$/ ) | < (CONJP=target !< (RB < /^(?i:not)$/ $+ (RB|JJ < /^(?i:only|just|merely)$/))) ]"
                 });
 
-
-        /**
-   * The "punctuation" grammatical relation.  This is used for any piece of
-   * punctuation in a clause, if punctuation is being retained in the
-   * typed dependencies.
-   * <p/>
-   * Example: <br/>
-   * "Go home!" &rarr; <code>punct</code>(Go, !)
-   * <p/>
-   * The condition for NFP to appear hear is that it does not match the emoticon patterns under discourse.
-   */
-
-        public static readonly GrammaticalRelation PUNCTUATION =
+        /// <summary>
+        /// The "punctuation" grammatical relation.  This is used for any piece of
+        /// punctuation in a clause, if punctuation is being retained in the typed dependencies.
+        /// 
+        /// Example:
+        /// "Go home!" &rarr; <code>punct</code>(Go, !)
+        /// 
+        /// The condition for NFP to appear hear is that it does not match the emoticon patterns under discourse.
+        /// </summary>
+        public static readonly GrammaticalRelation Punctuation =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "punct", "punctuation",
                 GrammaticalRelation.Dependent, ".*", TregexCompiler,
                 new string[]
@@ -224,48 +261,41 @@ namespace OpenNLP.Tools.Util.Trees
                     "__ < (NFP=target !< " + WesternSmiley + " !< " + AsianSmiley + ")"
                 });
 
-
-        /**
-   * The "argument" grammatical relation.  An argument of a VP is a
-   * subject or complement of that VP; an argument of a clause is
-   * an argument of the VP which is the predicate of that
-   * clause.<p>
-   * <p/>
-   * Example: <br/>
-   * "Clinton defeated Dole" &rarr; <code>arg</code>(defeated, Clinton), <code>arg</code>(defeated, Dole)
-   */
-
-        public static readonly GrammaticalRelation ARGUMENT =
+        /// <summary>
+        /// The "argument" grammatical relation.  An argument of a VP is a
+        /// subject or complement of that VP; an argument of a clause is
+        /// an argument of the VP which is the predicate of that clause.
+        /// 
+        /// Example:
+        /// "Clinton defeated Dole" &rarr; <code>arg</code>(defeated, Clinton), <code>arg</code>(defeated, Dole)
+        /// </summary>
+        public static readonly GrammaticalRelation Argument =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "arg", "argument",
                 GrammaticalRelation.Dependent);
 
+        /// <summary>
+        /// The "subject" grammatical relation.  The subject of a VP is
+        /// the noun or clause that performs or experiences the VP; the
+        /// subject of a clause is the subject of the VP which is the
+        /// predicate of that clause.
+        /// 
+        /// Examples:
+        /// "Clinton defeated Dole" &rarr; <code>subj</code>(defeated, Clinton)
+        /// "What she said is untrue" &rarr; <code>subj</code>(is, What she said)
+        /// </summary>
+        public static readonly GrammaticalRelation Subject =
+            new GrammaticalRelation(GrammaticalRelation.Language.English, "subj", "subject", Argument);
 
-        /**
-   * The "subject" grammatical relation.  The subject of a VP is
-   * the noun or clause that performs or experiences the VP; the
-   * subject of a clause is the subject of the VP which is the
-   * predicate of that clause.<p>
-   * <p/>
-   * Examples: <br/>
-   * "Clinton defeated Dole" &rarr; <code>subj</code>(defeated, Clinton) <br/>
-   * "What she said is untrue" &rarr; <code>subj</code>(is, What she said)
-   */
-
-        public static readonly GrammaticalRelation SUBJECT =
-            new GrammaticalRelation(GrammaticalRelation.Language.English, "subj", "subject", ARGUMENT);
-
-
-        /**
-   * The "nominal subject" grammatical relation.  A nominal subject is
-   * a subject which is an noun phrase.<p>
-   * <p/>
-   * Example: <br/>
-   * "Clinton defeated Dole" &rarr; <code>nsubj</code>(defeated, Clinton)
-   */
-
-        public static readonly GrammaticalRelation NOMINAL_SUBJECT =
+        /// <summary>
+        /// The "nominal subject" grammatical relation.  A nominal subject is
+        /// a subject which is an noun phrase.
+        /// 
+        /// Example:
+        /// "Clinton defeated Dole" &rarr; <code>nsubj</code>(defeated, Clinton)
+        /// </summary>
+        public static readonly GrammaticalRelation NominalSubject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "nsubj", "nominal subject",
-                SUBJECT, "S|SQ|SBARQ|SINV|SBAR|PRN", TregexCompiler,
+                Subject, "S|SQ|SBARQ|SINV|SBAR|PRN", TregexCompiler,
                 new string[]
                 {
                     "S=subj < ((NP|WHNP=target !< EX !<# (/^NN/ < (" + EnglishPatterns.TimeWordRegex +
@@ -311,57 +341,50 @@ namespace OpenNLP.Tools.Util.Trees
                     ") [< (NP < EX) | < PP])"
                 });
 
-
-        /**
-   * The "nominal passive subject" grammatical relation.  A nominal passive
-   * subject is a subject of a passive which is an noun phrase.<p>
-   * <p/>
-   * Example: <br/>
-   * "Dole was defeated by Clinton" &rarr; <code>nsubjpass</code>(defeated, Dole)
-   * <p>
-   * This pattern recognizes basic (non-coordinated) examples.  The coordinated
-   * examples are currently handled by correctDependencies() in
-   * EnglishGrammaticalStructure.  This seemed more accurate than any tregex
-   * expression we could come up with.
-   */
-
-        public static readonly GrammaticalRelation NOMINAL_PASSIVE_SUBJECT =
+        /// <summary>
+        /// The "nominal passive subject" grammatical relation.  A nominal passive
+        /// subject is a subject of a passive which is an noun phrase.
+        /// 
+        /// Example:
+        /// "Dole was defeated by Clinton" &rarr; <code>nsubjpass</code>(defeated, Dole)
+        /// 
+        /// This pattern recognizes basic (non-coordinated) examples.  The coordinated
+        /// examples are currently handled by correctDependencies() in
+        /// EnglishGrammaticalStructure.  This seemed more accurate than any tregex
+        /// expression we could come up with.
+        /// </summary>
+        public static readonly GrammaticalRelation NominalPassiveSubject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "nsubjpass", "nominal passive subject",
-                NOMINAL_SUBJECT, "S|SQ", TregexCompiler,
+                NominalSubject, "S|SQ", TregexCompiler,
                 new string[]
                 {
                     "S|SQ < (WHNP|NP=target !< EX) < (VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.PassiveAuxWordRegex +
                     ")  < (VP < VBN|VBD))"
                 });
 
-
-        /**
-   * The "clausal subject" grammatical relation.  A clausal subject is
-   * a subject which is a clause.<p>
-   * <p/>
-   * Examples: (subject is "what she said" in both examples) <br/>
-   * "What she said makes sense" &rarr; <code>csubj</code>(makes, said) <br/>
-   * "What she said is untrue" &rarr; <code>csubj</code>(untrue, said)
-   */
-
-        public static readonly GrammaticalRelation CLAUSAL_SUBJECT =
+        /// <summary>
+        /// The "clausal subject" grammatical relation.  A clausal subject is
+        /// a subject which is a clause.
+        /// 
+        /// Examples: (subject is "what she said" in both examples)
+        /// "What she said makes sense" &rarr; <code>csubj</code>(makes, said)
+        /// "What she said is untrue" &rarr; <code>csubj</code>(untrue, said)
+        /// </summary>
+        public static readonly GrammaticalRelation ClausalSubject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "csubj", "clausal subject",
-                SUBJECT, "S", TregexCompiler,
+                Subject, "S", TregexCompiler,
                 new string[] {"S < (SBAR|S=target !$+ /^,$/ $++ (VP !$-- NP))"});
 
-
-
-        /**
-   * The "clausal passive subject" grammatical relation.  A clausal passive subject is
-   * a subject of a passive verb which is a clause.<p>
-   * <p/>
-   * Example: (subject is "that she lied") <br/>
-   * "That she lied was suspected by everyone" &rarr; <code>csubjpass</code>(suspected, lied)
-   */
-
-        public static readonly GrammaticalRelation CLAUSAL_PASSIVE_SUBJECT =
+        /// <summary>
+        /// The "clausal passive subject" grammatical relation.  A clausal passive subject 
+        /// is a subject of a passive verb which is a clause.
+        /// 
+        /// Example: (subject is "that she lied")
+        /// "That she lied was suspected by everyone" &rarr; <code>csubjpass</code>(suspected, lied)
+        /// </summary>
+        public static readonly GrammaticalRelation ClausalPassiveSubject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "csubjpass", "clausal passive subject",
-                CLAUSAL_SUBJECT, "S", TregexCompiler,
+                ClausalSubject, "S", TregexCompiler,
                 new string[]
                 {
                     "S < (SBAR|S=target !$+ /^,$/ $++ (VP < (VP < VBN|VBD) < (/^(?:VB|AUXG?)/ < " +
@@ -370,58 +393,45 @@ namespace OpenNLP.Tools.Util.Trees
                     EnglishPatterns.PassiveAuxWordRegex + "))) !$-- NP))"
                 });
 
+        /// <summary>
+        /// The "complement" grammatical relation.  A complement of a VP
+        /// is any object (direct or indirect) of that VP, or a clause or
+        /// adjectival phrase which functions like an object; a complement
+        /// of a clause is an complement of the VP which is the predicate
+        /// of that clause.
+        /// 
+        /// Examples:
+        /// "She gave me a raise" &rarr; <code>comp</code>(gave, me), <code>comp</code>(gave, a raise)
+        /// "I like to swim" &rarr; <code>comp</code>(like, to swim)
+        /// </summary>
+        public static readonly GrammaticalRelation Complement =
+            new GrammaticalRelation(GrammaticalRelation.Language.English, "comp", "complement", Argument);
 
+        /// <summary>
+        /// The "object" grammatical relation.  An object of a VP
+        /// is any direct object or indirect object of that VP; an object
+        /// of a clause is an object of the VP which is the predicate
+        /// of that clause.
+        /// 
+        /// Examples:
+        /// "She gave me a raise" &rarr; <code>obj</code>(gave, me), <code>obj</code>(gave, raise)
+        /// </summary>
+        public static readonly GrammaticalRelation Object =
+            new GrammaticalRelation(GrammaticalRelation.Language.English, "obj", "object", Complement);
 
-        /**
-   * The "complement" grammatical relation.  A complement of a VP
-   * is any object (direct or indirect) of that VP, or a clause or
-   * adjectival phrase which functions like an object; a complement
-   * of a clause is an complement of the VP which is the predicate
-   * of that clause.<p>
-   * <p/>
-   * Examples: <br/>
-   * "She gave me a raise" &rarr;
-   * <code>comp</code>(gave, me),
-   * <code>comp</code>(gave, a raise) <br/>
-   * "I like to swim" &rarr;
-   * <code>comp</code>(like, to swim)
-   */
-
-        public static readonly GrammaticalRelation COMPLEMENT =
-            new GrammaticalRelation(GrammaticalRelation.Language.English, "comp", "complement", ARGUMENT);
-
-
-        /**
-   * The "object" grammatical relation.  An object of a VP
-   * is any direct object or indirect object of that VP; an object
-   * of a clause is an object of the VP which is the predicate
-   * of that clause.<p>
-   * <p/>
-   * Examples: <br/>
-   * "She gave me a raise" &rarr;
-   * <code>obj</code>(gave, me),
-   * <code>obj</code>(gave, raise)
-   */
-
-        public static readonly GrammaticalRelation OBJECT =
-            new GrammaticalRelation(GrammaticalRelation.Language.English, "obj", "object", COMPLEMENT);
-
-
-        /**
-   * The "direct object" grammatical relation.  The direct object
-   * of a verb is the noun phrase which is the (accusative) object of
-   * the verb; the direct object of a clause or VP is the direct object of
-   * the head predicate of that clause.<p>
-   * <p/>
-   * Example: <br/>
-   * "She gave me a raise" &rarr;
-   * <code>dobj</code>(gave, raise) <p/>
-   * Note that dobj can also be assigned by the conversion of rel in the postprocessing.
-   */
-
-        public static readonly GrammaticalRelation DIRECT_OBJECT =
+        /// <summary>
+        /// The "direct object" grammatical relation.  The direct object
+        /// of a verb is the noun phrase which is the (accusative) object of
+        /// the verb; the direct object of a clause or VP is the direct object of
+        /// the head predicate of that clause.
+        /// 
+        /// Example:
+        /// "She gave me a raise" &rarr; <code>dobj</code>(gave, raise)
+        /// Note that dobj can also be assigned by the conversion of rel in the postprocessing.
+        /// </summary>
+        public static readonly GrammaticalRelation DirectObject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "dobj", "direct object",
-                OBJECT, "VP|SQ|SBARQ?", TregexCompiler,
+                Object, "VP|SQ|SBARQ?", TregexCompiler,
                 new string[]
                 {
                     "VP !< (/^(?:VB|AUX)/ [ < " + EnglishPatterns.CopularWordRegex + " | < " +
@@ -493,21 +503,18 @@ namespace OpenNLP.Tools.Util.Trees
                     // we now don't match "VBG > PP $+ NP=target", since it seems better to CM to regard these quasi preposition uses (like "including soya") as prepositions rather than verbs with objects -- that's certainly what the phrase structure at least suggests in the PTB.  They're now matched as pobj
                 });
 
-
-        /**
-   * The "indirect object" grammatical relation.  The indirect
-   * object of a VP is the noun phrase which is the (dative) object
-   * of the verb; the indirect object of a clause is the indirect
-   * object of the VP which is the predicate of that clause.
-   * <p/>
-   * Example:  <br/>
-   * "She gave me a raise" &rarr;
-   * <code>iobj</code>(gave, me)
-   */
-
-        public static readonly GrammaticalRelation INDIRECT_OBJECT =
+        /// <summary>
+        /// The "indirect object" grammatical relation.  The indirect
+        /// object of a VP is the noun phrase which is the (dative) object
+        /// of the verb; the indirect object of a clause is the indirect
+        /// object of the VP which is the predicate of that clause.
+        /// 
+        /// Example:
+        /// "She gave me a raise" &rarr; <code>iobj</code>(gave, me)
+        /// </summary>
+        public static readonly GrammaticalRelation IndirectObject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "iobj", "indirect object",
-                OBJECT, "VP", TregexCompiler,
+                Object, "VP", TregexCompiler,
                 new string[]
                 {
                     "VP < (NP=target !< /\\$/ !<# (/^NN/ < " + EnglishPatterns.TimeWordRegex + ") $+ (NP !<# (/^NN/ < " +
@@ -519,31 +526,28 @@ namespace OpenNLP.Tools.Util.Trees
                     ") !<: DT !< (/^NN/ < " + EnglishPatterns.TimeWordLotRegex + ")) !$ CC|CONJP !$ /^,$/ !$++ /^:$/))"
                 });
 
-
-        /**
-   * The "prepositional object" grammatical relation.  The object of a
-   * preposition is the head of a noun phrase following the preposition, or
-   * the adverbs "here" and "there".
-   * (The preposition in turn may be modifying a noun, verb, etc.)
-   * We here define cases of VBG quasi-prepositions like "including",
-   * "concerning", etc. as instances of pobj (unlike the Penn Treebank).
-   * <p/>
-   * Example: <br/>
-   * "I sat on the chair" &rarr;
-   * <code>pobj</code>(on, chair)
-   * <p/>
-   * (The preposition can be called a FW for pace, versus, etc.  It can also
-   * be called a CC - but we don't currently handle that and would need to
-   * distinguish from conjoined PPs. Jan 2010 update: We now insist that the
-   * NP must follow the preposition. This prevents a preceding NP measure
-   * phrase being matched as a pobj.  We do allow a preposition tagged RB
-   * followed by an NP pobj, as happens in the Penn Treebank for adverbial uses
-   * of PP like "up 19%")
-   */
-
-        public static readonly GrammaticalRelation PREPOSITIONAL_OBJECT =
+        /// <summary>
+        /// The "prepositional object" grammatical relation.  The object of a
+        /// preposition is the head of a noun phrase following the preposition, or
+        /// the adverbs "here" and "there".
+        /// (The preposition in turn may be modifying a noun, verb, etc.)
+        /// We here define cases of VBG quasi-prepositions like "including",
+        /// "concerning", etc. as instances of pobj (unlike the Penn Treebank).
+        /// 
+        /// Example:
+        /// "I sat on the chair" &rarr; <code>pobj</code>(on, chair)
+        /// 
+        /// (The preposition can be called a FW for pace, versus, etc.  It can also
+        /// be called a CC - but we don't currently handle that and would need to
+        /// distinguish from conjoined PPs. Jan 2010 update: We now insist that the
+        /// NP must follow the preposition. This prevents a preceding NP measure
+        /// phrase being matched as a pobj.  We do allow a preposition tagged RB
+        /// followed by an NP pobj, as happens in the Penn Treebank for adverbial uses
+        /// of PP like "up 19%")
+        /// </summary>
+        public static readonly GrammaticalRelation PrepositionalObject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "pobj", "prepositional object",
-                OBJECT, "SBARQ|PP(?:-TMP)?|WHPP|PRT|ADVP|WHADVP|XS", TregexCompiler,
+                Object, "SBARQ|PP(?:-TMP)?|WHPP|PRT|ADVP|WHADVP|XS", TregexCompiler,
                 new string[]
                 {
                     "/^(?:PP(?:-TMP)?|(?:WH)?(?:PP|ADVP))$/ < (SYM|IN|VBG|VBN|TO|FW|RB|RBR $++ (/^(?:WH)?(?:NP|ADJP)(?:-TMP|-ADV)?$/=target !$- @NP) !< /^(?i:not)$/)",
@@ -566,27 +570,22 @@ namespace OpenNLP.Tools.Util.Trees
                     ") $++ (ADJP=adj < (PP !< NP)) $++ (NP $++ =adj)))"
                 });
 
-
-        /**
-   * The "prepositional complement" grammatical relation.
-   * This is used when the complement of a preposition is a clause or
-   * an adverbial or prepositional phrase.
-   * The prepositional complement of
-   * a preposition is the head of the sentence following the preposition,
-   * or the preposition head of the PP.
-   * <p/>
-   * Examples: <br/>
-   * "We have no useful information on whether users are at risk" &arr;
-   * <code>pcomp</code>(on, are) <br/>
-   * "They heard about you missing classes." &arr;
-   * <code>pcomp</code>(about, missing) <br/>
-   * It is warmer in Greece than in Italy &arr;
-   * <code>pcomp</code>(than, in)
-   */
-
-        public static readonly GrammaticalRelation PREPOSITIONAL_COMPLEMENT =
+        /// <summary>
+        /// The "prepositional complement" grammatical relation.
+        /// This is used when the complement of a preposition is a clause or
+        /// an adverbial or prepositional phrase.
+        /// The prepositional complement of
+        /// a preposition is the head of the sentence following the preposition,
+        /// or the preposition head of the PP.
+        /// 
+        /// Examples:
+        /// "We have no useful information on whether users are at risk" &arr; <code>pcomp</code>(on, are)
+        /// "They heard about you missing classes." &arr; <code>pcomp</code>(about, missing)
+        /// It is warmer in Greece than in Italy &arr; <code>pcomp</code>(than, in)
+        /// </summary>
+        public static readonly GrammaticalRelation PrepositionalComplement =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "pcomp", "prepositional complement",
-                COMPLEMENT, "(?:WH)?PP(?:-TMP)?", TregexCompiler,
+                Complement, "(?:WH)?PP(?:-TMP)?", TregexCompiler,
                 new string[]
                 {
                     "@PP|WHPP < (IN|VBG|VBN|TO $+ @SBAR|S|PP|ADVP=target)",
@@ -618,31 +617,26 @@ namespace OpenNLP.Tools.Util.Trees
         //         "SQ <, (/^(?:VB|AUX)/ < " + EnglishPatterns.copularWordRegex + ") < (NP=target $-- (NP !< EX))"
         //       });
 
-
-        /**
-   * The "clausal complement" grammatical relation.  A clausal complement of
-   * a verb or adjective is a dependent clause with an internal subject which
-   * functions like an object of the verb, or adjective.  Clausal complements
-   * for nouns are limited to complement clauses with a subset of nouns
-   * like "fact" or "report".  We analyze them the same (parallel to the
-   * analysis of this class as "content clauses" in Huddleston and Pullum 2002).
-   * Clausal complements are usually finite (though there
-   * are occasional exceptions including remnant English subjunctives, and we
-   * also classify the complement of causative "have" (She had him arrested)
-   * in this category.<p>
-   * <p/>
-   * Example: <br/>
-   * "He says that you like to swim" &rarr;
-   * <code>ccomp</code>(says, like) <br/>
-   * "I am certain that he did it" &rarr;
-   * <code>ccomp</code>(certain, did) <br/>
-   * "I admire the fact that you are honest" &rarr;
-   * <code>ccomp</code>(fact, honest)
-   */
-
-        public static readonly GrammaticalRelation CLAUSAL_COMPLEMENT =
+        /// <summary>
+        /// The "clausal complement" grammatical relation.  A clausal complement of
+        /// a verb or adjective is a dependent clause with an internal subject which
+        /// functions like an object of the verb, or adjective.  Clausal complements
+        /// for nouns are limited to complement clauses with a subset of nouns
+        /// like "fact" or "report".  We analyze them the same (parallel to the
+        /// analysis of this class as "content clauses" in Huddleston and Pullum 2002).
+        /// Clausal complements are usually finite (though there
+        /// are occasional exceptions including remnant English subjunctives, and we
+        /// also classify the complement of causative "have" (She had him arrested)
+        /// in this category.
+        /// 
+        /// Example:
+        /// "He says that you like to swim" &rarr; <code>ccomp</code>(says, like)
+        /// "I am certain that he did it" &rarr; <code>ccomp</code>(certain, did)
+        /// "I admire the fact that you are honest" &rarr; <code>ccomp</code>(fact, honest)
+        /// </summary>
+        public static readonly GrammaticalRelation ClausalComplement =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "ccomp", "clausal complement",
-                COMPLEMENT, "VP|SINV|S|ADJP|ADVP|NP(?:-.*)?", TregexCompiler,
+                Complement, "VP|SINV|S|ADJP|ADVP|NP(?:-.*)?", TregexCompiler,
                 new string[]
                 {
                     "VP < (S=target < (VP !<, TO|VBG|VBN) !$-- NP)",
@@ -677,25 +671,20 @@ namespace OpenNLP.Tools.Util.Trees
                     "@NP < JJ|NN|NNS < (SBAR=target [ !<(S < (VP < TO )) | !$-- NP|NN|NNP|NNS ] )"
                 });
 
-
-        /**
-   * An open clausal complement (<i>xcomp</i>) of a VP or an ADJP is a clausal
-   * complement without its own subject, whose reference is determined by an
-   * external subject.  These complements are always non-finite.
-   * The name <i>xcomp</i> is borrowed from Lexical-Functional Grammar.
-   * (Mainly "TO-clause" are recognized, but also some VBG like "stop eating")
-   * <p/>
-   * <p/>
-   * Examples: <br/>
-   * "I like to swim" &rarr;
-   * <code>xcomp</code>(like, swim) <br/>
-   * "I am ready to leave" &rarr;
-   * <code>xcomp</code>(ready, leave)
-   */
-
-        public static readonly GrammaticalRelation XCLAUSAL_COMPLEMENT =
+        /// <summary>
+        /// An open clausal complement (<i>xcomp</i>) of a VP or an ADJP is a clausal
+        /// complement without its own subject, whose reference is determined by an
+        /// external subject.  These complements are always non-finite.
+        /// The name <i>xcomp</i> is borrowed from Lexical-Functional Grammar.
+        /// (Mainly "TO-clause" are recognized, but also some VBG like "stop eating")
+        /// 
+        /// Examples:
+        /// "I like to swim" &rarr; <code>xcomp</code>(like, swim)
+        /// "I am ready to leave" &rarr; <code>xcomp</code>(ready, leave)
+        /// </summary>
+        public static readonly GrammaticalRelation XclausalComplement =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "xcomp", "xclausal complement",
-                COMPLEMENT, "VP|ADJP|SINV", TregexCompiler,
+                Complement, "VP|ADJP|SINV", TregexCompiler,
                 new string[]
                 {
                     "VP < (S=target [ !$-- NP | $-- (/^V/ < " + EnglishPatterns.XCompVerbRegex +
@@ -728,68 +717,55 @@ namespace OpenNLP.Tools.Util.Trees
                     "SINV <# (VP < (/^(?:VB|AUX)/ < " + EnglishPatterns.CopularWordRegex + ") $-- (NP $-- NP=target))"
                 });
 
-
-        /**
-   * The RELATIVE grammatical relation is only here as a temporary
-   * relation.  This tregex triggering indicates either a dobj or a
-   * pobj should be here.  We figure this out in a post-processing
-   * step by looking at the surrounding dependencies.
-   */
-
-        public static readonly GrammaticalRelation RELATIVE =
+        /// <summary>
+        /// The RELATIVE grammatical relation is only here as a temporary
+        /// relation.  This tregex triggering indicates either a dobj or a
+        /// pobj should be here.  We figure this out in a post-processing
+        /// step by looking at the surrounding dependencies.
+        /// </summary>
+        public static readonly GrammaticalRelation Relative =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "rel", "relative",
-                COMPLEMENT, "SBAR", TregexCompiler,
+                Complement, "SBAR", TregexCompiler,
                 new string[]
                 {"SBAR < (WHNP=target !< WRB) < (S < NP < (VP [ < SBAR | <+(VP) (PP <- IN|TO) | < (S < (VP < TO)) ] ))"});
 
-        /**
-   * The "referent" grammatical relation.  A
-   * referent of the Wh-word of a NP is  the relative word introducing the relative clause modifying the NP.
-   * <p/>
-   * Example: <br/>
-   * "I saw the book which you bought" &rarr;
-   * <code>ref</code>(book, which) <br/>
-   * "I saw the book the cover of which you designed" &rarr;
-   * <code>ref</code>(book, which)
-   */
-
-        public static readonly GrammaticalRelation REFERENT =
+        /// <summary>
+        /// The "referent" grammatical relation.
+        /// A referent of the Wh-word of a NP is  the relative word introducing the relative clause modifying the NP.
+        /// 
+        /// Example:
+        /// "I saw the book which you bought" &rarr; <code>ref</code>(book, which)
+        /// "I saw the book the cover of which you designed" &rarr; <code>ref</code>(book, which)
+        /// </summary>
+        public static readonly GrammaticalRelation Referent =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "ref", "referent",
                 GrammaticalRelation.Dependent);
 
-
-
-        /**
-   * The "expletive" grammatical relation.
-   * This relation captures an existential there.
-   * <p/>
-   * <p/>
-   * Example: <br/>
-   * "There is a statue in the corner" &rarr;
-   * <code>expl</code>(is, there)
-   */
-
-        public static readonly GrammaticalRelation EXPLETIVE =
+        /// <summary>
+        /// The "expletive" grammatical relation.
+        /// This relation captures an existential there.
+        /// 
+        /// Example:
+        /// "There is a statue in the corner" &rarr; <code>expl</code>(is, there)
+        /// </summary>
+        public static readonly GrammaticalRelation Expletive =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "expl", "expletive",
                 GrammaticalRelation.Dependent, "S|SQ|SINV", TregexCompiler,
                 new string[] {"S|SQ|SINV < (NP=target <+(NP) EX)"});
 
-
-        /**
-   * The "adjectival complement" grammatical relation.  An
-   * adjectival complement of a VP is an adjectival phrase which
-   * functions as the complement (like an object of the verb); an adjectival
-   * complement of a clause is the adjectival complement of the VP which is
-   * the predicate of that clause.<p>
-   * <p/>
-   * Example: <br/>
-   * "She looks very beautiful" &rarr;
-   * <code>acomp</code>(looks, beautiful)
-   */
-
-        public static readonly GrammaticalRelation ADJECTIVAL_COMPLEMENT =
+        /// <summary>
+        /// The "adjectival complement" grammatical relation.  An
+        /// adjectival complement of a VP is an adjectival phrase which
+        /// functions as the complement (like an object of the verb); an adjectival
+        /// complement of a clause is the adjectival complement of the VP which is
+        /// the predicate of that clause.
+        /// 
+        /// Example:
+        /// "She looks very beautiful" &rarr; <code>acomp</code>(looks, beautiful)
+        /// </summary>
+        public static readonly GrammaticalRelation AdjectivalComplement =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "acomp", "adjectival complement",
-                COMPLEMENT, "VP", TregexCompiler,
+                Complement, "VP", TregexCompiler,
                 new string[]
                 {
                     "VP [ < ADJP=target | ( < (/^VB/ [ ( < " + EnglishPatterns.ClausalComplementRegex +
@@ -797,40 +773,32 @@ namespace OpenNLP.Tools.Util.Trees
                     EnglishPatterns.CopularWordRegex + " )) ]"
                 });
 
-
-        /**
-   * The "modifier" grammatical relation.  A modifier of a VP is
-   * any constituent that serves to modify the meaning of the VP
-   * (but is not an <code>ARGUMENT</code> of that
-   * VP); a modifier of a clause is an modifier of the VP which is
-   * the predicate of that clause.<p>
-   * <p/>
-   * Examples: <br/>
-   * "Last night, I swam in the pool" &rarr;
-   * <code>mod</code>(swam, in the pool),
-   * <code>mod</code>(swam, last night)
-   */
-
-        public static readonly GrammaticalRelation MODIFIER =
+        /// <summary>
+        /// The "modifier" grammatical relation.  A modifier of a VP is
+        /// any constituent that serves to modify the meaning of the VP
+        /// (but is not an <code>ARGUMENT</code> of that
+        /// VP); a modifier of a clause is an modifier of the VP which is
+        /// the predicate of that clause.
+        /// 
+        /// Examples:
+        /// "Last night, I swam in the pool" &rarr; <code>mod</code>(swam, in the pool), <code>mod</code>(swam, last night)
+        /// </summary>
+        public static readonly GrammaticalRelation Modifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "mod", "modifier",
                 GrammaticalRelation.Dependent);
 
-
-        /**
-   * The "adverbial clause modifier" grammatical relation.  An adverbial clause
-   * modifier of some predicates, such as a VP or (inverted) sentence is a clause modifying the verb
-   * (temporal clauses, consequences, conditional clauses, etc.).
-   * <p/>
-   * Examples: <br/>
-   * "The accident happened as the night was falling" &rarr;
-   * <code>advcl</code>(happened, falling) <br/>
-   * "If you know who did it, you should tell the teacher" &rarr;
-   * <code>advcl</code>(tell, know)
-   */
-
-        public static readonly GrammaticalRelation ADV_CLAUSE_MODIFIER =
+        /// <summary>
+        /// The "adverbial clause modifier" grammatical relation.  An adverbial clause
+        /// modifier of some predicates, such as a VP or (inverted) sentence is a clause modifying the verb
+        /// (temporal clauses, consequences, conditional clauses, etc.).
+        /// 
+        /// Examples:
+        /// "The accident happened as the night was falling" &rarr; <code>advcl</code>(happened, falling)
+        /// "If you know who did it, you should tell the teacher" &rarr; <code>advcl</code>(tell, know)
+        /// </summary>
+        public static readonly GrammaticalRelation AdvClauseModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "advcl", "adverbial clause modifier",
-                MODIFIER, "VP|S|SQ|SINV|SBARQ|NP|ADVP", TregexCompiler,
+                Modifier, "VP|S|SQ|SINV|SBARQ|NP|ADVP", TregexCompiler,
                 new string[]
                 {
                     "VP < (@SBAR=target <= (@SBAR [ < (IN !< /^(?i:that|whether)$/) | <: (SINV <1 /^(?:VB|MD|AUX)/) | < (RB|IN < so|now) < (IN < that) | <1 (ADVP < (RB < now)) <2 (IN < that) ] ))",
@@ -877,37 +845,32 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         /*
-   * The "purpose clause modifier" grammatical relation has been discontinued
-   * It is now just seen as a special case of an advcl.  A purpose clause
-   * modifier of a VP is a clause headed by "(in order) to" specifying a
-   * purpose.  Note: at present we only recognize ones that have
-   * "in order to" or are fronted.  Otherwise we can't use our surface representations to
-   * distinguish these from xcomp's. We can also recognize "to" clauses
-   * introduced by "be VBN".
-   * <p/>
-   * Example: <br/>
-   * "He talked to the president in order to secure the account" &rarr;
-   * <code>purpcl</code>(talked, secure)
-   */
+        * The "purpose clause modifier" grammatical relation has been discontinued
+        * It is now just seen as a special case of an advcl.  A purpose clause
+        * modifier of a VP is a clause headed by "(in order) to" specifying a
+        * purpose.  Note: at present we only recognize ones that have
+        * "in order to" or are fronted.  Otherwise we can't use our surface representations to
+        * distinguish these from xcomp's. We can also recognize "to" clauses
+        * introduced by "be VBN".
+        * <p/>
+        * Example: <br/>
+        * "He talked to the president in order to secure the account" &rarr;
+        * <code>purpcl</code>(talked, secure)
+        */
 
-
-        /**
-   * The "relative clause modifier" grammatical relation.  A relative clause
-   * modifier of an NP is a relative clause modifying the NP.  The link
-   * points from the head noun of the NP to the head of the relative clause,
-   * normally a verb.
-   * <p/>
-   * <p/>
-   * Examples: <br/>
-   * "I saw the man you love" &rarr;
-   * <code>rcmod</code>(man, love)  <br/>
-   * "I saw the book which you bought" &rarr;
-   * <code>rcmod</code>(book, bought)
-   */
-
-        public static readonly GrammaticalRelation RELATIVE_CLAUSE_MODIFIER =
+        /// <summary>
+        /// The "relative clause modifier" grammatical relation.  A relative clause
+        /// modifier of an NP is a relative clause modifying the NP.  The link
+        /// points from the head noun of the NP to the head of the relative clause,
+        /// normally a verb.
+        /// 
+        /// Examples:
+        /// "I saw the man you love" &rarr; <code>rcmod</code>(man, love)
+        /// "I saw the book which you bought" &rarr; <code>rcmod</code>(book, bought)
+        /// </summary>
+        public static readonly GrammaticalRelation RelativeClauseModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "rcmod", "relative clause modifier",
-                MODIFIER, "(?:WH)?(?:NP|NML|ADVP)(?:-.*)?", TregexCompiler,
+                Modifier, "(?:WH)?(?:NP|NML|ADVP)(?:-.*)?", TregexCompiler,
                 new string[]
                 {
                     "@NP|WHNP|NML=np $++ (SBAR=target [ <+(SBAR) WHPP|WHNP | <: (S !< (VP < TO)) ]) !$-- @NP|WHNP|NML !$++ " +
@@ -926,58 +889,52 @@ namespace OpenNLP.Tools.Util.Trees
 
 
         /*
-  * The "complementizer" grammatical relation is a discontinued grammatical relation. A
-  * A complementizer of a clausal complement was the word introducing it.
-  * It only matched "that" or "whether". We've now merged this in with "mark" which plays a similar
-  * role with other clausal modifiers.
-  * <p/>
-  * <p/>
-  * Example: <br/>
-  * "He says that you like to swim" &rarr;
-  * <code>complm</code>(like, that)
-  */
+        * The "complementizer" grammatical relation is a discontinued grammatical relation. A
+        * A complementizer of a clausal complement was the word introducing it.
+        * It only matched "that" or "whether". We've now merged this in with "mark" which plays a similar
+        * role with other clausal modifiers.
+        * <p/>
+        * <p/>
+        * Example: <br/>
+        * "He says that you like to swim" &rarr;
+        * <code>complm</code>(like, that)
+        */
 
-
-        /**
-   * The "marker" grammatical relation.  A marker is the word introducing a finite clause subordinate to another clause.
-   * For a complement clause, this will typically be "that" or "whether".
-   * For an adverbial clause, the marker is typically a preposition like "while" or "although".
-   * <p/>
-   * Example: <br/>
-   * "U.S. forces have been engaged in intense fighting after insurgents launched simultaneous attacks" &rarr;
-   * <code>mark</code>(launched, after)
-   */
-
-        public static readonly GrammaticalRelation MARKER =
+        /// <summary>
+        /// The "marker" grammatical relation.  A marker is the word introducing a finite clause subordinate to another clause.
+        /// For a complement clause, this will typically be "that" or "whether".
+        /// For an adverbial clause, the marker is typically a preposition like "while" or "although".
+        /// 
+        /// Example:
+        /// "U.S. forces have been engaged in intense fighting after insurgents launched simultaneous attacks" &rarr;
+        /// <code>mark</code>(launched, after)
+        /// </summary>
+        public static readonly GrammaticalRelation Marker =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "mark", "marker",
-                MODIFIER, "SBAR(?:-TMP)?", TregexCompiler,
+                Modifier, "SBAR(?:-TMP)?", TregexCompiler,
                 new string[]
                 {
                     "SBAR|SBAR-TMP < (IN|DT=target $++ S|FRAG)",
                     "SBAR < (IN|DT=target < that|whether) [ $-- /^(?:VB|AUX)/ | $- NP|NN|NNS | > ADJP|PP | > (@NP|UCP|SBAR < CC|CONJP $-- /^(?:VB|AUX)/) ]"
                 });
 
-
-        /**
-   * The "adjectival modifier" grammatical relation.  An adjectival
-   * modifier of an NP is any adjectival phrase that serves to modify
-   * the meaning of the NP.<p>
-   * <p/>
-   * Example: <br/>
-   * "Sam eats red meat" &rarr;
-   * <code>amod</code>(meat, red) <p/>
-   * The relation amod is also used for multiword country adjectives, despite their
-   * questionable treebank representation.
-   * <p/>
-   * Example: <br/>
-   * "the West German economy" &rarr;
-   * <code>amod</code>(German, West),
-   * <code>amod</code>(economy, German)
-   */
-
-        public static readonly GrammaticalRelation ADJECTIVAL_MODIFIER =
+        /// <summary>
+        /// The "adjectival modifier" grammatical relation.  An adjectival
+        /// modifier of an NP is any adjectival phrase that serves to modify
+        /// the meaning of the NP.
+        /// 
+        /// Example:
+        /// "Sam eats red meat" &rarr; <code>amod</code>(meat, red)
+        /// The relation amod is also used for multiword country adjectives, despite their
+        /// questionable treebank representation.
+        /// 
+        /// Example:
+        /// "the West German economy" &rarr; <code>amod</code>(German, West),
+        /// <code>amod</code>(economy, German)
+        /// </summary>
+        public static readonly GrammaticalRelation AdjectivalModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "amod", "adjectival modifier",
-                MODIFIER, "NP(?:-TMP|-ADV)?|NX|NML|NAC|WHNP|ADJP", TregexCompiler,
+                Modifier, "NP(?:-TMP|-ADV)?|NX|NML|NAC|WHNP|ADJP", TregexCompiler,
                 new string[]
                 {
                     "/^(?:NP(?:-TMP|-ADV)?|NX|NML|NAC|WHNP)$/ < (ADJP|WHADJP|JJ|JJR|JJS|JJP|VBN|VBG|VBD|IN=target !< (QP !< /^[$]$/) !$- CC)",
@@ -987,20 +944,17 @@ namespace OpenNLP.Tools.Util.Trees
                     "WHNP|WHNP-TMP|WHNP-ADV|NP|NP-TMP|NP-ADV < (NP=target <: CD $- /^,$/ $-- /^(?:WH)?NP/ !$ CC|CONJP)"
                 });
 
-
-        /**
-   * The "numeric modifier" grammatical relation.  A numeric
-   * modifier of an NP is any number phrase that serves to modify
-   * the meaning of the NP.<p>
-   * <p/>
-   * Example: <br/>
-   * "Sam eats 3 sheep" &rarr;
-   * <code>num</code>(sheep, 3)
-   */
-
-        public static readonly GrammaticalRelation NUMERIC_MODIFIER =
+        /// <summary>
+        /// The "numeric modifier" grammatical relation.  A numeric
+        /// modifier of an NP is any number phrase that serves to modify
+        /// the meaning of the NP.
+        /// 
+        /// Example:
+        /// "Sam eats 3 sheep" &rarr; <code>num</code>(sheep, 3)
+        /// </summary>
+        public static readonly GrammaticalRelation NumericModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "num", "numeric modifier",
-                MODIFIER, "(?:WH)?NP(?:-TMP|-ADV)?|NML|NX|ADJP|WHADJP|QP", TregexCompiler,
+                Modifier, "(?:WH)?NP(?:-TMP|-ADV)?|NML|NX|ADJP|WHADJP|QP", TregexCompiler,
                 new string[]
                 {
                     "/^(?:WH)?(?:NP|NX|NML)(?:-TMP|-ADV)?$/ < (CD|QP=target !$- CC)",
@@ -1014,60 +968,50 @@ namespace OpenNLP.Tools.Util.Trees
                     "QP < QP=target < /^[$]$/"
                 });
 
-
-        /**
-   * The "compound number modifier" grammatical relation.  A compound number
-   * modifier is a part of a number phrase or currency amount.
-   * <p/>
-   * Example: <br/>
-   * "I lost $ 3.2 billion" &rarr;
-   * <code>number</code>($, billion)
-   */
-
-        public static readonly GrammaticalRelation NUMBER_MODIFIER =
+        /// <summary>
+        /// The "compound number modifier" grammatical relation.  A compound number
+        /// modifier is a part of a number phrase or currency amount.
+        /// 
+        /// Example:
+        /// "I lost $ 3.2 billion" &rarr; <code>number</code>($, billion)
+        /// </summary>
+        public static readonly GrammaticalRelation NumberModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "number", "compound number modifier",
-                MODIFIER, "QP|ADJP", TregexCompiler,
+                Modifier, "QP|ADJP", TregexCompiler,
                 new string[] {"QP|ADJP < (/^(?:CD|$|#)$/=target !$- CC)"});
 
-
-        /**
-   * The "quantifier phrase modifier" grammatical relation.  A quantifier
-   * modifier is an element modifying the head of a QP constituent.
-   * <p/>
-   * Example: <br/>
-   * "About 200 people came to the party" &rarr;
-   * <code>quantmod</code>(200, About)
-   */
-
-        public static readonly GrammaticalRelation QUANTIFIER_MODIFIER =
+        /// <summary>
+        /// The "quantifier phrase modifier" grammatical relation.  A quantifier
+        /// modifier is an element modifying the head of a QP constituent.
+        /// 
+        /// Example:
+        /// "About 200 people came to the party" &rarr; <code>quantmod</code>(200, About)
+        /// </summary>
+        public static readonly GrammaticalRelation QuantifierModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "quantmod", "quantifier modifier",
-                MODIFIER, "QP", TregexCompiler,
+                Modifier, "QP", TregexCompiler,
                 new string[] {"QP < IN|RB|RBR|RBS|PDT|DT|JJ|JJR|JJS|XS=target"});
 
-
-        /**
-   * The "noun compound modifier" grammatical relation.  A noun compound
-   * modifier of an NP is any noun that serves to modify the head noun.
-   * Note that this has all nouns modify the rightmost a la Penn headship
-   * rules.  There is no intelligent noun compound analysis.
-   * <p/>
-   * We eliminate nouns that are detected as part of a POS, since that
-   * will turn into the dependencies denoting possession instead.
-   * Note we have to include (VBZ &lt; /^\'s$/) as part of the POS
-   * elimination, since quite a lot of text such as
-   * "yesterday's widely published sequester" was misannotated as a
-   * VBZ instead of a POS.  TODO: remove that if a revised PTB is ever
-   * released.
-   * <p/>
-   * Example: <br/>
-   * "Oil price futures" &rarr;
-   * <code>nn</code>(futures, oil),
-   * <code>nn</code>(futures, price) <p/>
-   */
-
-        public static readonly GrammaticalRelation NOUN_COMPOUND_MODIFIER =
+        /// <summary>
+        /// The "noun compound modifier" grammatical relation.  A noun compound
+        /// modifier of an NP is any noun that serves to modify the head noun.
+        /// Note that this has all nouns modify the rightmost a la Penn headship
+        /// rules.  There is no intelligent noun compound analysis.
+        /// 
+        /// We eliminate nouns that are detected as part of a POS, since that
+        /// will turn into the dependencies denoting possession instead.
+        /// Note we have to include (VBZ &lt; /^\'s$/) as part of the POS
+        /// elimination, since quite a lot of text such as
+        /// "yesterday's widely published sequester" was misannotated as a
+        /// VBZ instead of a POS.  
+        /// TODO: remove that if a revised PTB is ever released.
+        /// 
+        /// Example:
+        /// "Oil price futures" &rarr; <code>nn</code>(futures, oil), <code>nn</code>(futures, price)
+        /// </summary>
+        public static readonly GrammaticalRelation NounCompoundModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "nn", "nn modifier",
-                MODIFIER, "(?:WH)?(?:NP|NX|NAC|NML|ADVP|ADJP)(?:-TMP|-ADV)?", TregexCompiler,
+                Modifier, "(?:WH)?(?:NP|NX|NAC|NML|ADVP|ADJP)(?:-TMP|-ADV)?", TregexCompiler,
                 new string[]
                 {
                     "/^(?:WH)?(?:NP|NX|NAC|NML)(?:-TMP|-ADV)?$/ < (NP|NML|NN|NNS|NNP|NNPS|FW|AFX=target $++ NN|NNS|NNP|NNPS|FW|CD=sister !<<- POS !<<- (VBZ < /^\'s$/) !$- /^,$/ !$++ (POS $++ =sister))",
@@ -1078,28 +1022,24 @@ namespace OpenNLP.Tools.Util.Trees
                 });
 
         /*
-   * There used to be a relation "abbrev" for when abbreviations were defined in brackets after a noun
-   * phrase, like "the Australian Broadcasting Corporation (ABC)", but it has now been disbanded, and
-   * subsumed under appos.
-   */
+       * There used to be a relation "abbrev" for when abbreviations were defined in brackets after a noun
+       * phrase, like "the Australian Broadcasting Corporation (ABC)", but it has now been disbanded, and
+       * subsumed under appos.
+       */
 
-        /**
-   * The "appositional modifier" grammatical relation.  An appositional
-   * modifier of an NP is an NP that serves to modify
-   * the meaning of the NP.  It includes parenthesized examples, as well as defining abbreviations.
-   * <p/>
-   * Examples: <br/>
-   * "Sam, my brother, eats red meat" &rarr;
-   * <code>appos</code>(Sam, brother) <br/>
-   * "Bill (John's cousin)" &rarr; <code>appos</code>(Bill, cousin).
-   *
-   * "The Australian Broadcasting Corporation (ABC)" &rarr;
-   *  <code>appos</code>(Corporation, ABC)
-   */
-
-        public static readonly GrammaticalRelation APPOSITIONAL_MODIFIER =
+        /// <summary>
+        /// The "appositional modifier" grammatical relation.  An appositional
+        /// modifier of an NP is an NP that serves to modify
+        /// the meaning of the NP.  It includes parenthesized examples, as well as defining abbreviations.
+        /// 
+        /// Examples:
+        /// "Sam, my brother, eats red meat" &rarr; <code>appos</code>(Sam, brother)
+        /// "Bill (John's cousin)" &rarr; <code>appos</code>(Bill, cousin).
+        /// "The Australian Broadcasting Corporation (ABC)" &rarr; <code>appos</code>(Corporation, ABC)
+        /// </summary>
+        public static readonly GrammaticalRelation AppositionalModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "appos", "appositional modifier",
-                MODIFIER, "(?:WH)?NP(?:-TMP|-ADV)?", TregexCompiler,
+                Modifier, "(?:WH)?NP(?:-TMP|-ADV)?", TregexCompiler,
                 new string[]
                 {
                     "WHNP|WHNP-TMP|WHNP-ADV|NP|NP-TMP|NP-ADV < (NP=target !<: CD $- /^,$/ $-- /^(?:WH)?NP/) !< CC|CONJP !< " +
@@ -1119,47 +1059,38 @@ namespace OpenNLP.Tools.Util.Trees
                     FwEtcPat + " !< " + EtcPat
                 });
 
-
-        /**
-   * The "discourse element" grammatical relation. This is used for interjections and
-   * other discourse particles and elements (which are not clearly linked to the structure
-   * of the sentence, except in an expressive way). We generally follow the
-   * guidelines of what the Penn Treebanks count as an INTJ.  They
-   * define this to include: interjections (oh, uh-huh, Welcome), fillers (um, ah),
-   * and discourse markers (well, like, actually, but not: you know).
-   * We also use it for emoticons.
-   */
-
-        public static readonly GrammaticalRelation DISCOURSE_ELEMENT =
+        /// <summary>
+        /// The "discourse element" grammatical relation. This is used for interjections and
+        /// other discourse particles and elements (which are not clearly linked to the structure
+        /// of the sentence, except in an expressive way). We generally follow the
+        /// guidelines of what the Penn Treebanks count as an INTJ.  They
+        /// define this to include: interjections (oh, uh-huh, Welcome), fillers (um, ah),
+        /// and discourse markers (well, like, actually, but not: you know).
+        /// We also use it for emoticons.
+        /// </summary>
+        public static readonly GrammaticalRelation DiscourseElement =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "discourse", "discourse element",
-                MODIFIER, ".*", TregexCompiler,
+                Modifier, ".*", TregexCompiler,
                 new string[]
                 {
                     "__ < (NFP=target [ < " + WesternSmiley + " | < " + AsianSmiley + " ] )",
                     "__ [ < INTJ=target | < (PRN=target <1 /^(?:,|-LRB-)$/ <2 INTJ [ !<3 __ | <3 /^(?:,|-RRB-)$/ ] ) ]"
                 });
 
-
-
-        /**
-   * The "verb modifier" grammatical relation.  A verb
-   * modifier of an NP, VP, or S is a S/VP[part] that serves to modify
-   * the meaning of the NP or VP.
-   * <p/>
-   * Examples: <br/>
-   * "truffles picked during the spring are tasty" &rarr;
-   * <code>vmod</code>(truffles, picked) <br>
-   * "Bill picked Fred for the team demonstrating his incompetence" &rarr;
-   * <code>vmod</code>(picked, demonstrating) <br>
-   * "points to establish are ..." &rarr;
-   * <code>vmod</code>(points, establish) <br>
-   * "who am i to judge" &rarr;
-   * <code>vmod</code>(who, judge) <br>
-   */
-
-        public static readonly GrammaticalRelation VERBAL_MODIFIER =
+        /// <summary>
+        /// The "verb modifier" grammatical relation.  A verb
+        /// modifier of an NP, VP, or S is a S/VP[part] that serves to modify
+        /// the meaning of the NP or VP.
+        /// 
+        /// Examples:
+        /// "truffles picked during the spring are tasty" &rarr; <code>vmod</code>(truffles, picked)
+        /// "Bill picked Fred for the team demonstrating his incompetence" &rarr; <code>vmod</code>(picked, demonstrating)
+        /// "points to establish are ..." &rarr; <code>vmod</code>(points, establish)
+        /// "who am i to judge" &rarr; <code>vmod</code>(who, judge)
+        /// </summary>
+        public static readonly GrammaticalRelation VerbalModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "vmod", "verb modifier",
-                MODIFIER, "(?:WH)?NP(?:-TMP|-ADV)?|NML|NX|VP|S|SINV|SBARQ", TregexCompiler,
+                Modifier, "(?:WH)?NP(?:-TMP|-ADV)?|NML|NX|VP|S|SINV|SBARQ", TregexCompiler,
                 new string[]
                 {
                     "WHNP|WHNP-TMP|WHNP-ADV|NP|NP-TMP|NP-ADV|NML|NX < (VP=target < VBG|VBN|VBD $-- @NP|NML|NX)",
@@ -1183,22 +1114,18 @@ namespace OpenNLP.Tools.Util.Trees
                     "SBARQ < WHNP < (S=target < (VP <1 TO))"
                 });
 
-
-        /**
-   * The "adverbial modifier" grammatical relation.  An adverbial
-   * modifier of a word is a (non-clausal) RB or ADVP that serves to modify
-   * the meaning of the word.<p>
-   * <p/>
-   * Examples: <br/>
-   * "genetically modified food" &rarr;
-   * <code>advmod</code>(modified, genetically) <br/>
-   * "less often" &rarr;
-   * <code>advmod</code>(often, less)
-   */
-
-        public static readonly GrammaticalRelation ADVERBIAL_MODIFIER =
+        /// <summary>
+        /// The "adverbial modifier" grammatical relation.  An adverbial
+        /// modifier of a word is a (non-clausal) RB or ADVP that serves to modify
+        /// the meaning of the word.
+        /// 
+        /// Examples:
+        /// "genetically modified food" &rarr; <code>advmod</code>(modified, genetically)
+        /// "less often" &rarr; <code>advmod</code>(often, less)
+        /// </summary>
+        public static readonly GrammaticalRelation AdverbialModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "advmod", "adverbial modifier",
-                MODIFIER,
+                Modifier,
                 "VP|ADJP|WHADJP|ADVP|WHADVP|S|SBAR|SINV|SQ|SBARQ|XS|(?:WH)?(?:PP|NP)(?:-TMP|-ADV)?|RRC|CONJP|JJP",
                 TregexCompiler,
                 new string[]
@@ -1223,21 +1150,17 @@ namespace OpenNLP.Tools.Util.Trees
                     "CONJP < (RB=target !< " + NotPat + " !< " + EtcPat + ")"
                 });
 
-
-        /**
-   * The "negation modifier" grammatical relation.  The negation modifier
-   * is the relation between a negation word and the word it modifies.
-   * <p/>
-   * Examples: <br/>
-   * "Bill is not a scientist" &rarr;
-   * <code>neg</code>(scientist, not) <br/>
-   * "Bill doesn't drive" &rarr;
-   * <code>neg</code>(drive, n't)
-   */
-
-        public static readonly GrammaticalRelation NEGATION_MODIFIER =
+        /// <summary>
+        /// The "negation modifier" grammatical relation.  The negation modifier
+        /// is the relation between a negation word and the word it modifies.
+        /// 
+        /// Examples:
+        /// "Bill is not a scientist" &rarr; <code>neg</code>(scientist, not)
+        /// "Bill doesn't drive" &rarr; <code>neg</code>(drive, n't)
+        /// </summary>
+        public static readonly GrammaticalRelation NegationModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "neg", "negation modifier",
-                ADVERBIAL_MODIFIER,
+                AdverbialModifier,
                 "VP|ADJP|S|SBAR|SINV|SQ|NP(?:-TMP|-ADV)?|FRAG|CONJP|PP|NAC|NML|NX|ADVP|WHADVP", TregexCompiler,
                 new string[]
                 {
@@ -1254,51 +1177,46 @@ namespace OpenNLP.Tools.Util.Trees
                     "ADVP|WHADVP < (RB|RBR|RBS|WRB|ADVP|WHADVP|JJ=target < /^(?i:no)$/) !< CC|CONJP"
                 });
 
-
-        /**
-   * The "noun phrase as adverbial modifier" grammatical relation.
-   * This relation captures various places where something syntactically a noun
-   * phrase is used as an adverbial modifier in a sentence.  These usages include:
-   * <ul>
-   * <li> A measure phrase, which is the relation between
-   * the head of an ADJP/ADVP and the head of a measure-phrase modifying the ADJP/ADVP.
-   * <p/>
-   * Example: <br/>
-   * "The director is 65 years old" &rarr;
-   * <code>npadvmod</code>(old, years)
-   * </li>
-   * <li> Noun phrases giving extent inside a VP which are not objects
-   * <p/>
-   * Example: <br/>
-   * "Shares eased a fraction" &rarr;
-   * <code>npadvmod</code>(eased, fraction)
-   * </li>
-   * <li> Financial constructions involving an adverbial or PP-like NP, notably
-   * the following construction where the NP means "per share"
-   * <p/>
-   * Example: <br/>
-   * "IBM earned $ 5 a share" &rarr;
-   * <code>npadvmod</code>($, share)
-   * </li>
-   * <li>Reflexives
-   * <p/>
-   * Example: <br/>
-   * "The silence is itself significant" &rarr;
-   * <code>npadvmod</code>(significant, itself)
-   * </li>
-   * <li>Certain other absolutive NP constructions.
-   * <p/>
-   * Example: <br/>
-   * "90% of Australians like him, the most of any country" &rarr;
-   * <code>npadvmod</code>(like, most)
-   * </ul>
-   * A temporal modifier (tmod) is a subclass of npadvmod which is distinguished
-   * as a separate relation.
-   */
-
-        public static readonly GrammaticalRelation NP_ADVERBIAL_MODIFIER =
+        /// <summary>
+        /// The "noun phrase as adverbial modifier" grammatical relation.
+        /// This relation captures various places where something syntactically a noun
+        /// phrase is used as an adverbial modifier in a sentence.  These usages include:
+        /// <ul>
+        /// <li> A measure phrase, which is the relation between
+        /// the head of an ADJP/ADVP and the head of a measure-phrase modifying the ADJP/ADVP.
+        /// 
+        /// Example:
+        /// "The director is 65 years old" &rarr; <code>npadvmod</code>(old, years)
+        /// </li>
+        /// <li> Noun phrases giving extent inside a VP which are not objects
+        /// 
+        /// Example:
+        /// "Shares eased a fraction" &rarr; <code>npadvmod</code>(eased, fraction)
+        /// </li>
+        /// <li> Financial constructions involving an adverbial or PP-like NP, notably
+        /// the following construction where the NP means "per share"
+        /// 
+        /// Example:
+        /// "IBM earned $ 5 a share" &rarr; <code>npadvmod</code>($, share)
+        /// </li>
+        /// <li>Reflexives
+        /// 
+        /// Example:
+        /// "The silence is itself significant" &rarr; <code>npadvmod</code>(significant, itself)
+        /// </li>
+        /// <li>Certain other absolutive NP constructions.
+        /// 
+        /// Example:
+        /// "90% of Australians like him, the most of any country" &rarr;
+        /// <code>npadvmod</code>(like, most)
+        /// </li>
+        /// </ul>
+        /// A temporal modifier (tmod) is a subclass of npadvmod which is distinguished
+        /// as a separate relation.
+        /// </summary>
+        public static readonly GrammaticalRelation NpAdverbialModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "npadvmod", "noun phrase adverbial modifier",
-                MODIFIER, "VP|(?:WH)?(?:NP|ADJP|ADVP|PP)(?:-TMP|-ADV)?", TregexCompiler,
+                Modifier, "VP|(?:WH)?(?:NP|ADJP|ADVP|PP)(?:-TMP|-ADV)?", TregexCompiler,
                 new string[]
                 {
                     "@ADVP|ADJP|WHADJP|WHADVP|PP|WHPP <# (JJ|JJR|IN|RB|RBR !< notwithstanding $- (@NP=target !< NNP|NNPS))",
@@ -1316,22 +1234,19 @@ namespace OpenNLP.Tools.Util.Trees
                     "@VP < /^NP-ADV/=target"
                 });
 
-
-        /**
-   * The "temporal modifier" grammatical relation.  A temporal
-   * modifier of a VP or an ADJP is any constituent that serves to modify the
-   * meaning of the VP or the ADJP by specifying a time; a temporal modifier of a
-   * clause is an temporal modifier of the VP which is the
-   * predicate of that clause.<p>
-   * <p/>
-   * Example: <br/>
-   * "Last night, I swam in the pool" &rarr;
-   * {@code tmod}(swam, night)
-   */
-
-        public static readonly GrammaticalRelation TEMPORAL_MODIFIER =
+        /// <summary>
+        /// The "temporal modifier" grammatical relation.  A temporal
+        /// modifier of a VP or an ADJP is any constituent that serves to modify the
+        /// meaning of the VP or the ADJP by specifying a time; a temporal modifier of a
+        /// clause is an temporal modifier of the VP which is the
+        /// predicate of that clause.
+        /// 
+        /// Example:
+        /// "Last night, I swam in the pool" &rarr; {@code tmod}(swam, night)
+        /// </summary>
+        public static readonly GrammaticalRelation TemporalModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "tmod", "temporal modifier",
-                NP_ADVERBIAL_MODIFIER, "VP|S|ADJP|PP|SBAR|SBARQ|NP|RRC", TregexCompiler,
+                NpAdverbialModifier, "VP|S|ADJP|PP|SBAR|SBARQ|NP|RRC", TregexCompiler,
                 new string[]
                 {
                     "VP|ADJP|RRC [ < NP-TMP=target | < (VP=target <# NP-TMP !$ /^,|CC|CONJP$/) | < (NP=target <# (/^NN/ < " +
@@ -1349,25 +1264,20 @@ namespace OpenNLP.Tools.Util.Trees
                     "NP < NP-TMP=target"
                 });
 
-
-        /**
-   * The "multi-word expression" grammatical relation.
-   * This covers various multi-word constructions for which it would
-   * seem pointless or arbitrary to claim grammatical relations between words:
-   * as well as, rather than, instead of, but also;
-   * such as, because of, all but, in addition to ....
-   * <p/>
-   * Examples: <br/>
-   * "dogs as well as cats" &rarr;
-   * <code>mwe</code>(well, as)<br/>
-   * <code>mwe</code>(well, as)<p/>
-   * "fewer than 700 bottles" &rarr;
-   * <code>mwe</code>(than, fewer)
-   */
-
-        public static readonly GrammaticalRelation MULTI_WORD_EXPRESSION =
+        /// <summary>
+        /// The "multi-word expression" grammatical relation.
+        /// This covers various multi-word constructions for which it would
+        /// seem pointless or arbitrary to claim grammatical relations between words:
+        /// as well as, rather than, instead of, but also;
+        /// such as, because of, all but, in addition to ....
+        /// 
+        /// Examples:
+        /// "dogs as well as cats" &rarr; <code>mwe</code>(well, as) <code>mwe</code>(well, as)
+        /// "fewer than 700 bottles" &rarr; <code>mwe</code>(than, fewer)
+        /// </summary>
+        public static readonly GrammaticalRelation MultiWordExpression =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "mwe", "multi-word expression",
-                MODIFIER, "PP|XS|ADVP|CONJP", TregexCompiler,
+                Modifier, "PP|XS|ADVP|CONJP", TregexCompiler,
                 new string[]
                 {
                     "PP|XS < (IN|TO < as|of|at|to|in) < (JJ|IN|JJR|JJS|NN=target < such|because|Because|least|instead|due|Due|addition|to)",
@@ -1381,37 +1291,35 @@ namespace OpenNLP.Tools.Util.Trees
                 });
 
         /* mihai: this block needs to be uncommented to get the KBP 2010 system to work (due to the cached sentences using old code)
-   * (Note: in 2011, the measure phrase relation was collapsed into the scope of npadvmod, rather than being separated out.)
-   **
-   * The "measure-phrase" grammatical relation. The measure-phrase is the relation between
-   * the head of an ADJP/ADVP and the head of a measure-phrase modifying the ADJP/ADVP.
-   * <p/>
-   * Example: <br/>
-   * "The director is 65 years old" &rarr;
-   * <code>measure</code>(old, years)
-   *
-  public static readonly GrammaticalRelation MEASURE_PHRASE =
-    new GrammaticalRelation(Language.English, "measure", "measure-phrase",
-        MODIFIER, "ADJP|ADVP", tregexCompiler,
-        new string[] {
-          "ADJP <- JJ <, (NP=target !< NNP)",
-          "ADVP|ADJP <# (JJ|IN $- NP=target)"
-        });
-  */ // mihai: end block
+        * (Note: in 2011, the measure phrase relation was collapsed into the scope of npadvmod, rather than being separated out.)
+        **
+        * The "measure-phrase" grammatical relation. The measure-phrase is the relation between
+        * the head of an ADJP/ADVP and the head of a measure-phrase modifying the ADJP/ADVP.
+        * <p/>
+        * Example: <br/>
+        * "The director is 65 years old" &rarr;
+        * <code>measure</code>(old, years)
+        *
+        public static readonly GrammaticalRelation MEASURE_PHRASE =
+        new GrammaticalRelation(Language.English, "measure", "measure-phrase",
+            MODIFIER, "ADJP|ADVP", tregexCompiler,
+            new string[] {
+                "ADJP <- JJ <, (NP=target !< NNP)",
+                "ADVP|ADJP <# (JJ|IN $- NP=target)"
+            });
+        */ // mihai: end block
 
-        /**
-   * The "determiner" grammatical relation.
-   * <p> <p/>
-   * Examples: <br/>
-   * "The man is here" &rarr; <code>det</code>(man,the) <br/>
-   * "Which man do you prefer?" &rarr; <code>det</code>(man,which) <br>
-   * (The ADVP match is because sometimes "a little" or "every time" is tagged
-   * as an AVDVP with POS tags straight under it.)
-   */
-
-        public static readonly GrammaticalRelation DETERMINER =
+        /// <summary>
+        /// The "determiner" grammatical relation.
+        /// Examples:
+        /// "The man is here" &rarr; <code>det</code>(man,the)
+        /// "Which man do you prefer?" &rarr; <code>det</code>(man,which)
+        /// (The ADVP match is because sometimes "a little" or "every time" is tagged
+        /// as an AVDVP with POS tags straight under it.)
+        /// </summary>
+        public static readonly GrammaticalRelation Determiner =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "det", "determiner",
-                MODIFIER, "(?:WH)?NP(?:-TMP|-ADV)?|NAC|NML|NX|X|ADVP|ADJP", TregexCompiler,
+                Modifier, "(?:WH)?NP(?:-TMP|-ADV)?|NAC|NML|NX|X|ADVP|ADJP", TregexCompiler,
                 new string[]
                 {
                     "/^(?:NP(?:-TMP|-ADV)?|NAC|NML|NX|X)$/ < (DT=target !< /^(?i:either|neither|both|no)$/ !$+ DT !$++ CC $++ /^(?:N[MNXP]|CD|JJ|FW|ADJP|QP|RB|PRP(?![$])|PRN)/=det !$++ (/^PRP[$]|POS/ $++ =det !$++ (/''/ $++ =det)))",
@@ -1429,17 +1337,13 @@ namespace OpenNLP.Tools.Util.Trees
                     "@NP < (/^(?:NP|NN|CD|RBS)/ $-- WDT|WP=target)"
                 });
 
-
-        /**
-   * The "predeterminer" grammatical relation.
-   * <p> <p/>
-   * Example: <br/>
-   * "All the boys are here" &rarr; <code>predet</code>(boys,all)
-   */
-
-        public static readonly GrammaticalRelation PREDETERMINER =
+        /// <summary>
+        /// The "predeterminer" grammatical relation.
+        /// Example: "All the boys are here" &rarr; <code>predet</code>(boys,all)
+        /// </summary>
+        public static readonly GrammaticalRelation Predeterminer =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "predet", "predeterminer",
-                MODIFIER, "(?:WH)?(?:NP|NX|NAC|NML)(?:-TMP|-ADV)?", TregexCompiler,
+                Modifier, "(?:WH)?(?:NP|NX|NAC|NML)(?:-TMP|-ADV)?", TregexCompiler,
                 new string[]
                 {
                     "/^(?:(?:WH)?NP(?:-TMP|-ADV)?|NX|NAC|NML)$/ < (PDT|DT=target $+ /^(?:DT|WP\\$|PRP\\$)$/ $++ /^(?:NN|NX|NML)/ !$++ CC)",
@@ -1447,17 +1351,14 @@ namespace OpenNLP.Tools.Util.Trees
                     "WHNP|WHNP-TMP|WHNP-ADV|NP|NP-TMP|NP-ADV < PDT=target <- DT"
                 });
 
-
-        /**
-   * The "preconjunct" grammatical relation.
-   * <p/>
-   * Example: <br/>
-   * "Both the boys and the girls are here" &rarr; <code>preconj</code>(boys,both)
-   */
-
-        public static readonly GrammaticalRelation PRECONJUNCT =
+        /// <summary>
+        /// The "preconjunct" grammatical relation.
+        /// 
+        /// Example: "Both the boys and the girls are here" &rarr; <code>preconj</code>(boys,both)
+        /// </summary>
+        public static readonly GrammaticalRelation Preconjunct =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "preconj", "preconjunct",
-                MODIFIER,
+                Modifier,
                 "S|VP|ADJP|PP|ADVP|UCP(?:-TMP|-ADV)?|NX|NML|SBAR|NP(?:-TMP|-ADV)?", TregexCompiler,
                 new string[]
                 {
@@ -1469,20 +1370,16 @@ namespace OpenNLP.Tools.Util.Trees
                     "/^S|VP|ADJP|PP|ADVP|UCP(?:-TMP|-ADV)?|NX|NML|SBAR$/ < (CONJP=target < (RB < /^(?i:not)$/) < (RB|JJ < /^(?i:only|merely|just)$/) $++ CC|CONJP)"
                 });
 
-
-        /**
-   * The "possession" grammatical relation between the possessum and the possessor.<p>
-   * </p>
-   * Examples: <br/>
-   * "their offices" &rarr;
-   * {@code poss}(offices, their)<br/>
-   * "Bill 's clothes" &rarr;
-   * {@code poss}(clothes, Bill)
-   */
-
-        public static readonly GrammaticalRelation POSSESSION_MODIFIER =
+        /// <summary>
+        /// The "possession" grammatical relation between the possessum and the possessor.
+        /// 
+        /// Examples:
+        /// "their offices" &rarr; {@code poss}(offices, their)
+        /// "Bill 's clothes" &rarr; {@code poss}(clothes, Bill)
+        /// </summary>
+        public static readonly GrammaticalRelation PossessionModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "poss", "possession modifier",
-                MODIFIER, "(?:WH)?(NP|ADJP|INTJ|PRN|NAC|NX|NML)(?:-.*)?", TregexCompiler,
+                Modifier, "(?:WH)?(NP|ADJP|INTJ|PRN|NAC|NX|NML)(?:-.*)?", TregexCompiler,
                 new string[]
                 {
                     "/^(?:WH)?(?:NP|INTJ|ADJP|PRN|NAC|NX|NML)(?:-.*)?$/ < /^(?:WP\\$|PRP\\$)$/=target",
@@ -1494,45 +1391,36 @@ namespace OpenNLP.Tools.Util.Trees
                     "/^(?:WH)?(?:NP|NML|NX)(?:-.*)?$/ < (/^NN|NP/=target $++ (POS=pos < /\'/ $++ /^NN/) !$++ (/^NN|NP/ $++ =pos))"
                 });
 
-
-        /**
-   * The "possessive" grammatical relation.  This is the relation given to
-   * 's (or ' with plurals).<p>
-   * </p>
-   * Example: <br/>
-   * "John's book" &rarr;
-   * <code>possessive</code>(John, 's)
-   */
-
-        public static readonly GrammaticalRelation POSSESSIVE_MODIFIER =
+        /// <summary>
+        /// The "possessive" grammatical relation.  This is the relation given to
+        /// 's (or ' with plurals).
+        /// 
+        /// Example: "John's book" &rarr; <code>possessive</code>(John, 's)
+        /// </summary>
+        public static readonly GrammaticalRelation PossessiveModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "possessive", "possessive modifier",
-                MODIFIER, "(?:WH)?(?:NP|NML)(?:-TMP|-ADV)?", TregexCompiler,
+                Modifier, "(?:WH)?(?:NP|NML)(?:-TMP|-ADV)?", TregexCompiler,
                 new string[]
                 {
                     "/^(?:WH)?(?:NP|NML)(?:-TMP|-ADV)?$/ < POS=target",
                     "/^(?:WH)?(?:NP|NML)(?:-TMP|-ADV)?$/ < (VBZ=target < /^'s$/)"
                 });
 
-
-        /**
-   * The "prepositional modifier" grammatical relation.  A prepositional
-   * modifier of a verb, adjective, or noun is any prepositional phrase that serves to modify
-   * the meaning of the verb, adjective, or noun.
-   * We also generate prep modifiers of PPs to account for treebank (PP PP PP) constructions
-   * (from 1984 through 2002). <p>
-   * <p/>
-   * Examples: <br/>
-   * "I saw a cat in a hat" &rarr;
-   * <code>prep</code>(cat, in) <br/>
-   * "I saw a cat with a telescope" &rarr;
-   * <code>prep</code>(saw, with) <br/>
-   * "He is responsible for meals" &rarr;
-   * <code>prep</code>(responsible, for)
-   */
-
-        public static readonly GrammaticalRelation PREPOSITIONAL_MODIFIER =
+        /// <summary>
+        /// The "prepositional modifier" grammatical relation.  A prepositional
+        /// modifier of a verb, adjective, or noun is any prepositional phrase that serves to modify
+        /// the meaning of the verb, adjective, or noun.
+        /// We also generate prep modifiers of PPs to account for treebank (PP PP PP) constructions
+        /// (from 1984 through 2002).
+        /// 
+        /// Examples:
+        /// "I saw a cat in a hat" &rarr; <code>prep</code>(cat, in)
+        /// "I saw a cat with a telescope" &rarr; <code>prep</code>(saw, with)
+        /// "He is responsible for meals" &rarr; <code>prep</code>(responsible, for)
+        /// </summary>
+        public static readonly GrammaticalRelation PrepositionalModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "prep", "prepositional modifier",
-                MODIFIER, ".*", TregexCompiler,
+                Modifier, ".*", TregexCompiler,
                 new string[]
                 {
                     "/^(?:(?:WH)?(?:NP|ADJP|ADVP|NX|NML)(?:-TMP|-ADV)?|VP|NAC|SQ|FRAG|PRN|X|RRC)$/ < (WHPP|WHPP-TMP|PP|PP-TMP=target !$- (@CC|CONJP $- __)) !<- " +
@@ -1545,37 +1433,31 @@ namespace OpenNLP.Tools.Util.Trees
                     "@NP < (@UCP|PRN=target <# @PP)"
                 });
 
-
-        /**
-   * The "phrasal verb particle" grammatical relation.  The "phrasal verb particle"
-   * relation identifies phrasal verb.<p>
-   * <p/>
-   * Example: <br/>
-   * "They shut down the station." &rarr;
-   * <code>prt</code>(shut, down)
-   */
-
-        public static readonly GrammaticalRelation PHRASAL_VERB_PARTICLE =
+        /// <summary>
+        /// The "phrasal verb particle" grammatical relation.  The "phrasal verb particle"
+        /// relation identifies phrasal verb.
+        /// 
+        /// Example:
+        /// "They shut down the station." &rarr; <code>prt</code>(shut, down)
+        /// </summary>
+        public static readonly GrammaticalRelation PhrasalVerbParticle =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "prt", "phrasal verb particle",
-                MODIFIER, "VP|ADJP", TregexCompiler,
+                Modifier, "VP|ADJP", TregexCompiler,
                 new string[]
                 {
                     "VP < PRT=target",
                     "ADJP < /^VB/ < RP=target"
                 });
 
-
-        /**
-   * The "parataxis" grammatical relation. Relation between the main verb of a sentence
-   * and other sentential elements, such as a sentential parenthetical, a sentence after a ":" or a ";", when two
-   * sentences are juxtaposed next to each other without any coordinator or subordinator, etc.
-   * <p> <p/>
-   * Examples: <br/>
-   * "The guy, John said, left early in the morning." &rarr; <code>parataxis</code>(left,said) <br/>
-   * "
-   */
-
-        public static readonly GrammaticalRelation PARATAXIS =
+        /// <summary>
+        /// The "parataxis" grammatical relation. Relation between the main verb of a sentence
+        /// and other sentential elements, such as a sentential parenthetical, a sentence after a ":" or a ";", when two
+        /// sentences are juxtaposed next to each other without any coordinator or subordinator, etc.
+        /// 
+        /// Examples:
+        /// "The guy, John said, left early in the morning." &rarr; <code>parataxis</code>(left,said)
+        /// </summary>
+        public static readonly GrammaticalRelation Parataxis =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "parataxis", "parataxis",
                 GrammaticalRelation.Dependent, "S|VP", TregexCompiler,
                 new string[]
@@ -1596,209 +1478,199 @@ namespace OpenNLP.Tools.Util.Trees
                     // sometimes CC cases are right node raising, etc.
                 });
 
-        /**
-   * The "goes with" grammatical relation.  This corresponds to use of the GW (goes with) part-of-speech tag
-   * in the recent Penn Treebanks. It marks partial words that should be combined with some other word. <p>
-   * <p/>
-   * Example: <br/>
-   * "They come here with out legal permission." &rarr;
-   * <code>goeswith</code>(out, with)
-   */
-
-        public static readonly GrammaticalRelation GOES_WITH =
+        /// <summary>
+        /// The "goes with" grammatical relation.  This corresponds to use of the GW (goes with) part-of-speech tag
+        /// in the recent Penn Treebanks. It marks partial words that should be combined with some other word. <p>
+        /// 
+        /// Example:
+        /// "They come here with out legal permission." &rarr;
+        /// <code>goeswith</code>(out, with)
+        /// </summary>
+        public static readonly GrammaticalRelation GoesWith =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "goeswith", "goes with",
-                MODIFIER, ".*", TregexCompiler,
+                Modifier, ".*", TregexCompiler,
                 new string[] {"__ < GW=target"});
 
-
-
-        /**
-   * The "semantic dependent" grammatical relation has been
-   * introduced as a supertype for the controlling subject relation.
-   */
-
-        public static readonly GrammaticalRelation SEMANTIC_DEPENDENT =
+        /// <summary>
+        /// The "semantic dependent" grammatical relation has been
+        /// introduced as a supertype for the controlling subject relation.
+        /// </summary>
+        public static readonly GrammaticalRelation SemanticDependent =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "sdep", "semantic dependent",
                 GrammaticalRelation.Dependent);
 
-
-        /**
-   * The "agent" grammatical relation. The agent of a passive VP
-   * is the complement introduced by "by" and doing the action.<p>
-   * <p/>
-   * Example: <br/>
-   * "The man has been killed by the police" &rarr;
-   * <code>agent</code>(killed, police)
-   */
-
-        public static readonly GrammaticalRelation AGENT =
+        /// <summary>
+        /// The "agent" grammatical relation. The agent of a passive VP
+        /// is the complement introduced by "by" and doing the action.
+        /// 
+        /// Example:
+        /// "The man has been killed by the police" &rarr;
+        /// <code>agent</code>(killed, police)
+        /// </summary>
+        public static readonly GrammaticalRelation Agent =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "agent", "agent",
                 GrammaticalRelation.Dependent);
 
 
         // TODO would be nice to have this set up automatically...
-        /**
-   * A list of GrammaticalRelation values.  New GrammaticalRelations must be
-   * added to this list (until we make this an enum!).
-   * The GR recognizers are tried in the order listed.  A taxonomic
-   * relationship trumps an ordering relationship, but otherwise, the first
-   * listed relation will appear in dependency output.  Known ordering
-   * constraints where both match include:
-   * <ul>
-   * <li>NUMERIC_MODIFIER &lt; ADJECTIVAL_MODIFIER
-   * </ul>
-   */
-        //@SuppressWarnings({"RedundantArrayCreation"})
+        /// <summary>
+        /// A list of GrammaticalRelation values.  New GrammaticalRelations must be
+        /// added to this list (until we make this an enum!).
+        /// The GR recognizers are tried in the order listed.  A taxonomic
+        /// relationship trumps an ordering relationship, but otherwise, the first
+        /// listed relation will appear in dependency output.  Known ordering
+        /// constraints where both match include:
+        /// <ul>
+        /// <li>NUMERIC_MODIFIER &lt; ADJECTIVAL_MODIFIER</li>
+        /// </ul>
+        /// </summary>
         private static readonly List<GrammaticalRelation> values =
             new List<GrammaticalRelation>()
             {
                 GrammaticalRelation.Governor,
                 GrammaticalRelation.Dependent,
-                PREDICATE,
-                AUX_MODIFIER,
-                AUX_PASSIVE_MODIFIER,
-                COPULA,
-                CONJUNCT,
-                COORDINATION,
-                PUNCTUATION,
-                ARGUMENT,
-                SUBJECT,
-                NOMINAL_SUBJECT,
-                NOMINAL_PASSIVE_SUBJECT,
-                CLAUSAL_SUBJECT,
-                CLAUSAL_PASSIVE_SUBJECT,
-                COMPLEMENT,
-                OBJECT,
-                DIRECT_OBJECT,
-                INDIRECT_OBJECT,
-                PREPOSITIONAL_OBJECT,
-                PREPOSITIONAL_COMPLEMENT,
-                CLAUSAL_COMPLEMENT,
-                XCLAUSAL_COMPLEMENT,
-                MARKER,
-                RELATIVE,
-                REFERENT,
-                EXPLETIVE,
-                ADJECTIVAL_COMPLEMENT,
-                MODIFIER,
-                ADV_CLAUSE_MODIFIER,
-                TEMPORAL_MODIFIER,
-                RELATIVE_CLAUSE_MODIFIER,
-                NUMERIC_MODIFIER,
-                ADJECTIVAL_MODIFIER,
-                NOUN_COMPOUND_MODIFIER,
-                APPOSITIONAL_MODIFIER,
-                VERBAL_MODIFIER,
-                ADVERBIAL_MODIFIER,
-                NEGATION_MODIFIER,
-                MULTI_WORD_EXPRESSION,
-                DETERMINER,
-                PREDETERMINER,
-                PRECONJUNCT,
-                POSSESSION_MODIFIER,
-                POSSESSIVE_MODIFIER,
-                PREPOSITIONAL_MODIFIER,
-                PHRASAL_VERB_PARTICLE,
-                SEMANTIC_DEPENDENT,
-                AGENT,
-                NUMBER_MODIFIER,
-                QUANTIFIER_MODIFIER,
-                NP_ADVERBIAL_MODIFIER,
-                PARATAXIS,
-                DISCOURSE_ELEMENT,
-                GOES_WITH,
+                Predicate,
+                AuxModifier,
+                AuxPassiveModifier,
+                Copula,
+                Conjunct,
+                Coordination,
+                Punctuation,
+                Argument,
+                Subject,
+                NominalSubject,
+                NominalPassiveSubject,
+                ClausalSubject,
+                ClausalPassiveSubject,
+                Complement,
+                Object,
+                DirectObject,
+                IndirectObject,
+                PrepositionalObject,
+                PrepositionalComplement,
+                ClausalComplement,
+                XclausalComplement,
+                Marker,
+                Relative,
+                Referent,
+                Expletive,
+                AdjectivalComplement,
+                Modifier,
+                AdvClauseModifier,
+                TemporalModifier,
+                RelativeClauseModifier,
+                NumericModifier,
+                AdjectivalModifier,
+                NounCompoundModifier,
+                AppositionalModifier,
+                VerbalModifier,
+                AdverbialModifier,
+                NegationModifier,
+                MultiWordExpression,
+                Determiner,
+                Predeterminer,
+                Preconjunct,
+                PossessionModifier,
+                PossessiveModifier,
+                PrepositionalModifier,
+                PhrasalVerbParticle,
+                SemanticDependent,
+                Agent,
+                NumberModifier,
+                QuantifierModifier,
+                NpAdverbialModifier,
+                Parataxis,
+                DiscourseElement,
+                GoesWith,
             };
 
         // Cache frequently used views of the values list
-        private static readonly ReadOnlyCollection<GrammaticalRelation> unmodifiableValues =
+        private static readonly ReadOnlyCollection<GrammaticalRelation> UnmodifiableValues =
             new ReadOnlyCollection<GrammaticalRelation>(values);
 
-        private static readonly ReadOnlyCollection<GrammaticalRelation> synchronizedValues =
+        private static readonly ReadOnlyCollection<GrammaticalRelation> SynchronizedValues =
             new ReadOnlyCollection<GrammaticalRelation>(values);
 
-        private static readonly ReadOnlyCollection<GrammaticalRelation> unmodifiableSynchronizedValues =
+        private static readonly ReadOnlyCollection<GrammaticalRelation> UnmodifiableSynchronizedValues =
             new ReadOnlyCollection<GrammaticalRelation>(values);
 
         public static readonly Object valuesLock = new Object();
 
-        // Map from English GrammaticalRelation short names to their corresponding
-        // GrammaticalRelation objects
-        public static readonly Dictionary<string, GrammaticalRelation> shortNameToGRel = Values()
+        /// <summary>
+        /// Map from English GrammaticalRelation short names to their corresponding GrammaticalRelation objects
+        /// </summary>
+        public static readonly Dictionary<string, GrammaticalRelation> ShortNameToGRel = Values()
             .ToDictionary(v => v.ToString().ToLower(), v => v);
 
         /*new ConcurrentHashMap<string, GrammaticalRelation>();
-  static {
-    for (GrammaticalRelation gr : values()) {
-      shortNameToGRel.put(gr.ToString().toLowerCase(), gr);
-    }
-  }*/
+          static {
+            for (GrammaticalRelation gr : values()) {
+              shortNameToGRel.put(gr.ToString().toLowerCase(), gr);
+            }
+          }*/
 
         public static ICollection<GrammaticalRelation> Values()
         {
             //return values(false);
-            return unmodifiableValues;
+            return UnmodifiableValues;
         }
 
         public static ICollection<GrammaticalRelation> Values(bool threadSafe)
         {
-            return threadSafe ? unmodifiableSynchronizedValues : unmodifiableValues;
+            return threadSafe ? UnmodifiableSynchronizedValues : UnmodifiableValues;
         }
 
         /*public static Lock valuesLock() {
-    return valuesLock.readLock();
-  }*/
+            return valuesLock.readLock();
+          }*/
 
-        /**
-   * This method is meant to be called when you want to add a relation
-   * to the values list in a thread-safe manner.  Currently, this method
-   * is always used in preference to values.add() because we expect to
-   * add new EnglishGrammaticalRelations very rarely, so the eased
-   * concurrency seems to outweigh the fairly slight cost of thread-safe
-   * access.
-   * @param relation the relation to be added to the values list
-   */
-        /*private static void threadSafeAddRelation(GrammaticalRelation relation) {
-    valuesLock.writeLock().lock();
-    try { // try-readonlyly structure taken from Javadoc code sample for ReentrantReadWriteLock
-      synchronizedValues.add(relation);
-      shortNameToGRel.put(relation.ToString(), relation);
-    } readonlyly {
-      valuesLock.writeLock().unlock();
-    }
-  }*/
-
-
-
+                /**
+           * This method is meant to be called when you want to add a relation
+           * to the values list in a thread-safe manner.  Currently, this method
+           * is always used in preference to values.add() because we expect to
+           * add new EnglishGrammaticalRelations very rarely, so the eased
+           * concurrency seems to outweigh the fairly slight cost of thread-safe
+           * access.
+           * @param relation the relation to be added to the values list
+           */
+                /*private static void threadSafeAddRelation(GrammaticalRelation relation) {
+            valuesLock.writeLock().lock();
+            try { // try-readonlyly structure taken from Javadoc code sample for ReentrantReadWriteLock
+              synchronizedValues.add(relation);
+              shortNameToGRel.put(relation.ToString(), relation);
+            } readonlyly {
+              valuesLock.writeLock().unlock();
+            }
+          }*/
+        
         // the exhaustive list of conjunction relations
-        private static readonly ConcurrentDictionary<string, GrammaticalRelation> conjs =
+        private static readonly ConcurrentDictionary<string, GrammaticalRelation> Conjs =
             new ConcurrentDictionary<string, GrammaticalRelation>();
 
         public static ICollection<GrammaticalRelation> GetConjs()
         {
-            return conjs.Values;
+            return Conjs.Values;
         }
 
-        /**
-   * The "conj" grammatical relation. Used to collapse conjunct relations.
-   * They will be turned into conj_word, where "word" is a conjunction.
-   *
-   * @param conjunctionString The conjunction to make a GrammaticalRelation out of
-   * @return A grammatical relation for this conjunction
-   */
-
+        /// <summary>
+        /// The "conj" grammatical relation. Used to collapse conjunct relations.
+        /// They will be turned into conj_word, where "word" is a conjunction.
+        /// </summary>
+        /// <param name="conjunctionString">The conjunction to make a GrammaticalRelation out of</param>
+        /// <returns>A grammatical relation for this conjunction</returns>
         public static GrammaticalRelation GetConj(string conjunctionString)
         {
-            GrammaticalRelation result = conjs[conjunctionString];
+            GrammaticalRelation result = Conjs[conjunctionString];
             if (result == null)
             {
-                lock (conjs)
+                lock (Conjs)
                 {
-                    result = conjs[conjunctionString];
+                    result = Conjs[conjunctionString];
                     if (result == null)
                     {
                         result = new GrammaticalRelation(GrammaticalRelation.Language.English, "conj", "conj_collapsed",
-                            CONJUNCT, conjunctionString);
-                        conjs.TryAdd(conjunctionString, result);
+                            Conjunct, conjunctionString);
+                        Conjs.TryAdd(conjunctionString, result);
                         //threadSafeAddRelation(result);
                     }
                 }
@@ -1807,45 +1679,42 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         // the exhaustive list of preposition relations
-        private static readonly ConcurrentDictionary<string, GrammaticalRelation> preps =
+        private static readonly ConcurrentDictionary<string, GrammaticalRelation> Preps =
             new ConcurrentDictionary<string, GrammaticalRelation>();
 
-        private static readonly ConcurrentDictionary<string, GrammaticalRelation> prepsC =
+        private static readonly ConcurrentDictionary<string, GrammaticalRelation> PrepsC =
             new ConcurrentDictionary<string, GrammaticalRelation>();
 
 
         public static ICollection<GrammaticalRelation> GetPreps()
         {
-            return preps.Values;
+            return Preps.Values;
         }
 
         public static ICollection<GrammaticalRelation> GetPrepsC()
         {
-            return prepsC.Values;
+            return PrepsC.Values;
         }
 
-
-        /**
-   * The "prep" grammatical relation. Used to collapse prepositions.<p>
-   * They will be turned into prep_word, where "word" is a preposition
-   *
-   * @param prepositionString The preposition to make a GrammaticalRelation out of
-   * @return A grammatical relation for this preposition
-   */
-
+        /// <summary>
+        /// The "prep" grammatical relation. Used to collapse prepositions.
+        /// They will be turned into prep_word, where "word" is a preposition
+        /// </summary>
+        /// <param name="prepositionString">The preposition to make a GrammaticalRelation out of</param>
+        /// <returns>A grammatical relation for this preposition</returns>
         public static GrammaticalRelation GetPrep(string prepositionString)
         {
-            GrammaticalRelation result = preps[prepositionString];
+            GrammaticalRelation result = Preps[prepositionString];
             if (result == null)
             {
-                lock (preps)
+                lock (Preps)
                 {
-                    result = preps[prepositionString];
+                    result = Preps[prepositionString];
                     if (result == null)
                     {
                         result = new GrammaticalRelation(GrammaticalRelation.Language.English, "prep", "prep_collapsed",
-                            PREPOSITIONAL_MODIFIER, prepositionString);
-                        preps.TryAdd(prepositionString, result);
+                            PrepositionalModifier, prepositionString);
+                        Preps.TryAdd(prepositionString, result);
                         //threadSafeAddRelation(result);
                     }
                 }
@@ -1853,29 +1722,25 @@ namespace OpenNLP.Tools.Util.Trees
             return result;
         }
 
-
-        /**
-   * The "prepc" grammatical relation. Used to collapse preposition
-   * complements.<p>
-   * They will be turned into prep_word, where "word" is a preposition
-   *
-   * @param prepositionString The preposition to make a GrammaticalRelation out of
-   * @return A grammatical relation for this preposition
-   */
-
+        /// <summary>
+        /// The "prepc" grammatical relation. Used to collapse preposition complements.
+        /// They will be turned into prep_word, where "word" is a preposition
+        /// </summary>
+        /// <param name="prepositionString">The preposition to make a GrammaticalRelation out of</param>
+        /// <returns>A grammatical relation for this preposition</returns>
         public static GrammaticalRelation GetPrepC(string prepositionString)
         {
-            GrammaticalRelation result = prepsC[prepositionString];
+            GrammaticalRelation result = PrepsC[prepositionString];
             if (result == null)
             {
-                lock (prepsC)
+                lock (PrepsC)
                 {
-                    result = prepsC[prepositionString];
+                    result = PrepsC[prepositionString];
                     if (result == null)
                     {
                         result = new GrammaticalRelation(GrammaticalRelation.Language.English, "prepc",
                             "prepc_collapsed", GrammaticalRelation.Dependent, prepositionString);
-                        prepsC.TryAdd(prepositionString, result);
+                        PrepsC.TryAdd(prepositionString, result);
                         //threadSafeAddRelation(result);
                     }
                 }
@@ -1883,49 +1748,44 @@ namespace OpenNLP.Tools.Util.Trees
             return result;
         }
 
-
-        /**
-   * Returns the EnglishGrammaticalRelation having the given string
-   * representation (e.g. "nsubj"), or null if no such is found.
-   *
-   * @param s The short name of the GrammaticalRelation
-   * @return The EnglishGrammaticalRelation with that name
-   */
-
+        /// <summary>
+        /// Returns the EnglishGrammaticalRelation having the given string
+        /// representation (e.g. "nsubj"), or null if no such is found.
+        /// </summary>
+        /// <param name="s">The short name of the GrammaticalRelation</param>
+        /// <returns>The EnglishGrammaticalRelation with that name</returns>
         public static GrammaticalRelation ValueOf(string s)
         {
             return GrammaticalRelation.ValueOf(s, Values());
 
-//    // TODO does this need to be changed?
-//    // modification NOTE: do not commit until go-ahead
-//    // If this is a collapsed relation (indicated by a "_" separating
-//    // the type and the dependent, instantiate a collapsed version.
-//    // Currently handcode against conjunctions and prepositions, but
-//    // should do this in a more robust fashion.
-//    string[] tuples = s.trim().split("_", 2);
-//    if (tuples.length == 2) {
-//      string reln = tuples[0];
-//      string specific = tuples[1];
-//      if (reln.equals(PREPOSITIONAL_MODIFIER.getShortName())) {
-//        return getPrep(specific);
-//      } else if (reln.equals(CONJUNCT.getShortName())) {
-//        return getConj(specific);
-//      }
-//    }
-//
-//    return null;
+            //    // TODO does this need to be changed?
+            //    // modification NOTE: do not commit until go-ahead
+            //    // If this is a collapsed relation (indicated by a "_" separating
+            //    // the type and the dependent, instantiate a collapsed version.
+            //    // Currently handcode against conjunctions and prepositions, but
+            //    // should do this in a more robust fashion.
+            //    string[] tuples = s.trim().split("_", 2);
+            //    if (tuples.length == 2) {
+            //      string reln = tuples[0];
+            //      string specific = tuples[1];
+            //      if (reln.equals(PREPOSITIONAL_MODIFIER.getShortName())) {
+            //        return getPrep(specific);
+            //      } else if (reln.equals(CONJUNCT.getShortName())) {
+            //        return getConj(specific);
+            //      }
+            //    }
+            //
+            //    return null;
         }
 
-        /**
-   * Returns an EnglishGrammaticalRelation based on the argument.
-   * It works if passed a GrammaticalRelation or the String
-   * representation of one (e.g. "nsubj").  It returns <code>null</code>
-   * for other classes or if no string match is found.
-   *
-   * @param o A GrammaticalRelation or String
-   * @return The EnglishGrammaticalRelation with that name
-   */
-        //@SuppressWarnings("unchecked")
+        /// <summary>
+        /// Returns an EnglishGrammaticalRelation based on the argument.
+        /// It works if passed a GrammaticalRelation or the String
+        /// representation of one (e.g. "nsubj").  It returns <code>null</code>
+        /// for other classes or if no string match is found.
+        /// </summary>
+        /// <param name="o">A GrammaticalRelation or String</param>
+        /// <returns>The EnglishGrammaticalRelation with that name</returns>
         public static GrammaticalRelation ValueOf(Object o)
         {
             var rel = o as GrammaticalRelation;

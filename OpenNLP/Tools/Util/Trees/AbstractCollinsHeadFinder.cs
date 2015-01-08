@@ -8,93 +8,91 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * A base class for a HeadFinder similar to the one described in
- * Michael Collins' 1999 thesis.  For a given constituent we perform operations
- * like (this is for "left" or "right":
- * <pre>
- * for categoryList in categoryLists
- *   for index = 1 to n [or n to 1 if R->L]
- *     for category in categoryList
- *       if category equals daughter[index] choose it.
- * </pre>
- * <p>
- * with a readonly default that goes with the direction (L->R or R->L)
- * For most constituents, there will be only one category in the list,
- * the exception being, in Collins' original version, NP.
- * </p>
- * <p>
- * It is up to the overriding base class to initialize the map
- * from constituent type to categoryLists, "nonTerminalInfo",
- * in its constructor.
- * Entries are presumed to be of type string[][].  Each string[] is a list of
- * categories, except for the first entry, which specifies direction of
- * traversal and must be one of the following:
- * </p>
- * <ul>
- * <li> "left" means search left-to-right by category and then by position
- * <li> "leftdis" means search left-to-right by position and then by category
- * <li> "right" means search right-to-left by category and then by position
- * <li> "rightdis" means search right-to-left by position and then by category
- * <li> "leftexcept" means to take the first thing from the left that isn't in the list
- * <li> "rightexcept" means to take the first thing from the right that isn't on the list
- * </ul>
- * <p>
- * Changes:
- * </p>
- * <ul>
- * <li> 2002/10/28 -- Category label identity checking now uses the
- * equals() method instead of ==, so not interning category labels
- * shouldn't break things anymore.  (Roger Levy) <br>
- * <li> 2003/02/10 -- Changed to use TreebankLanguagePack and to cut on
- * characters that set off annotations, so this should work even if
- * functional tags are still on nodes. <br>
- * <li> 2004/03/30 -- Made abstract base class and subclasses for CollinsHeadFinder,
- * ModCollinsHeadFinder, SemanticHeadFinder, ChineseHeadFinder
- * (and trees.icegb.ICEGBHeadFinder, trees.international.negra.NegraHeadFinder,
- * and movetrees.EnglishPennMaxProjectionHeadFinder)
- * <li> 2011/01/13 -- Add support for categoriesToAvoid (which can be set to ensure that
- * punctuation is not the head if there are other options)
- * </ul>
- *
- * @author Christopher Manning
- * @author Galen Andrew
- */
-
+    /// <summary>
+    /// A base class for a HeadFinder similar to the one described in
+    /// Michael Collins' 1999 thesis.  For a given constituent we perform operations
+    /// like (this is for "left" or "right":
+    /// <pre>
+    /// for categoryList in categoryLists
+    ///   for index = 1 to n [or n to 1 if R->L]
+    ///     for category in categoryList
+    ///       if category equals daughter[index] choose it.
+    /// </pre>
+    /// 
+    /// with a readonly default that goes with the direction (L->R or R->L)
+    /// For most constituents, there will be only one category in the list,
+    /// the exception being, in Collins' original version, NP.
+    /// 
+    /// It is up to the overriding base class to initialize the map
+    /// from constituent type to categoryLists, "nonTerminalInfo",
+    /// in its constructor.
+    /// Entries are presumed to be of type string[][].  Each string[] is a list of
+    /// categories, except for the first entry, which specifies direction of
+    /// traversal and must be one of the following:
+    /// 
+    /// <ul>
+    /// <li> "left" means search left-to-right by category and then by position</li>
+    /// <li> "leftdis" means search left-to-right by position and then by category</li>
+    /// <li> "right" means search right-to-left by category and then by position</li>
+    /// <li> "rightdis" means search right-to-left by position and then by category</li>
+    /// <li> "leftexcept" means to take the first thing from the left that isn't in the list</li>
+    /// <li> "rightexcept" means to take the first thing from the right that isn't on the list</li>
+    /// </ul>
+    /// 
+    /// Changes:
+    /// <ul>
+    /// <li> 2002/10/28 -- Category label identity checking now uses the
+    /// equals() method instead of ==, so not interning category labels
+    /// shouldn't break things anymore.  (Roger Levy)</li>
+    /// <li> 2003/02/10 -- Changed to use TreebankLanguagePack and to cut on
+    /// characters that set off annotations, so this should work even if
+    /// functional tags are still on nodes.</li>
+    /// <li> 2004/03/30 -- Made abstract base class and subclasses for CollinsHeadFinder,
+    /// ModCollinsHeadFinder, SemanticHeadFinder, ChineseHeadFinder
+    /// (and trees.icegb.ICEGBHeadFinder, trees.international.negra.NegraHeadFinder,
+    /// and movetrees.EnglishPennMaxProjectionHeadFinder)</li>
+    /// <li> 2011/01/13 -- Add support for categoriesToAvoid (which can be set to ensure that
+    /// punctuation is not the head if there are other options)</li>
+    /// </ul>
+    /// 
+    /// @author Christopher Manning
+    /// @author Galen Andrew
+    /// 
+    /// Code...
+    /// </summary>
     public abstract class AbstractCollinsHeadFinder : HeadFinder
     {
         //private static readonly bool DEBUG = System.getProperty("HeadFinder", null) != null;
         protected readonly AbstractTreebankLanguagePack tlp;
         protected Dictionary<string, string[][]> nonTerminalInfo;
 
-        /** Default direction if no rule is found for category (the head/parent).
-   *  Subclasses can turn it on if they like.
-   *  If they don't it is an error if no rule is defined for a category
-   *  (null is returned).
-   */
+        /// <summary>
+        /// Default direction if no rule is found for category (the head/parent).
+        /// Subclasses can turn it on if they like.
+        /// If they don't it is an error if no rule is defined for a category (null is returned).
+        /// </summary>
         protected string[] DefaultRule; // = null;
 
-        /** These are built automatically from categoriesToAvoid and used in a fairly
-   *  different fashion from defaultRule (above).  These are used for categories
-   *  that do have defined rules but where none of them have matched.  Rather
-   *  than picking the rightmost or leftmost child, we will use these to pick
-   *  the the rightmost or leftmost child which isn't in categoriesToAvoid.
-   */
+        /// <summary>
+        /// These are built automatically from categoriesToAvoid and used in a fairly
+        /// different fashion from defaultRule (above).  These are used for categories
+        /// that do have defined rules but where none of them have matched.  Rather
+        /// than picking the rightmost or leftmost child, we will use these to pick
+        /// the the rightmost or leftmost child which isn't in categoriesToAvoid.
+        /// </summary>
         protected string[] DefaultLeftRule;
         protected string[] DefaultRightRule;
 
-        /**
-   * Construct a HeadFinder.
-   * The TreebankLanguagePack is used to get basic categories. The remaining arguments
-   * set categories which, if it comes to last resort processing (i.e., none of
-   * the rules matched), will be avoided as heads. In last resort processing,
-   * it will attempt to match the leftmost or rightmost constituent not in this
-   * set but will fall back to the left or rightmost constituent if necessary.
-   *
-   * @param tlp TreebankLanguagePack used to determine basic category
-   * @param categoriesToAvoid Constituent types to avoid as head
-   */
-
+        /// <summary>
+        /// Construct a HeadFinder.
+        /// The TreebankLanguagePack is used to get basic categories. The remaining arguments
+        /// set categories which, if it comes to last resort processing (i.e., none of
+        /// the rules matched), will be avoided as heads. In last resort processing,
+        /// it will attempt to match the leftmost or rightmost constituent not in this
+        /// set but will fall back to the left or rightmost constituent if necessary.
+        /// </summary>
+        /// <param name="tlp">TreebankLanguagePack used to determine basic category</param>
+        /// <param name="categoriesToAvoid">Constituent types to avoid as head</param>
         protected AbstractCollinsHeadFinder(AbstractTreebankLanguagePack tlp, string[] categoriesToAvoid)
         {
             this.tlp = tlp;
@@ -115,56 +113,52 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        /**
-   * Generally will be false, except for SemanticHeadFinder
-   */
-        //@Override
+        /// <summary>
+        /// Generally will be false, except for SemanticHeadFinder
+        /// </summary>
         public virtual bool MakesCopulaHead()
         {
             return false;
         }
 
-        /**
-   * A way for subclasses for corpora with explicit head markings
-   * to return the explicitly marked head
-   *
-   * @param t a tree to find the head of
-   * @return the marked head-- null if no marked head
-   */
-        // to be overridden in subclasses for corpora
-        //
+        /// <summary>
+        /// A way for subclasses for corpora with explicit head markings
+        /// to return the explicitly marked head
+        /// </summary>
+        /// <param name="t">a tree to find the head of</param>
+        /// <returns>the marked head-- null if no marked head</returns>
         protected Tree FindMarkedHead(Tree t)
         {
             return null;
         }
 
-        /**
-   * Determine which daughter of the current parse tree is the head.
-   *
-   * @param t The parse tree to examine the daughters of.
-   *          If this is a leaf, <code>null</code> is returned
-   * @return The daughter parse tree that is the head of <code>t</code>
-   * @see Tree#percolateHeads(HeadFinder)
-   *      for a routine to call this and spread heads throughout a tree
-   */
-        //@Override
+        /// <summary>
+        /// Determine which daughter of the current parse tree is the head.
+        /// </summary>
+        /// <param name="t">
+        /// The parse tree to examine the daughters of.
+        /// If this is a leaf, <code>null</code> is returned
+        /// </param>
+        /// <returns>
+        /// The daughter parse tree that is the head of <code>t</code>
+        /// </returns>
         public Tree DetermineHead(Tree t)
         {
             return DetermineHead(t, null);
         }
 
-        /**
-   * Determine which daughter of the current parse tree is the head.
-   *
-   * @param t The parse tree to examine the daughters of.
-   *          If this is a leaf, <code>null</code> is returned
-   * @param parent The parent of t
-   * @return The daughter parse tree that is the head of <code>t</code>.
-   *   Returns null for leaf nodes.
-   * @see Tree#percolateHeads(HeadFinder)
-   *      for a routine to call this and spread heads throughout a tree
-   */
-        //@Override
+        /// <summary>
+        /// Determine which daughter of the current parse tree is the head.
+        /// </summary>
+        /// <param name="t">
+        /// The parse tree to examine the daughters of. 
+        /// If this is a leaf, <code>null</code> is returned
+        /// </param>
+        /// <param name="parent">The parent of t</param>
+        /// <returns>
+        /// The daughter parse tree that is the head of <code>t</code>.
+        /// Returns null for leaf nodes.
+        /// </returns>
         public Tree DetermineHead(Tree t, Tree parent)
         {
             if (nonTerminalInfo == null)
@@ -208,14 +202,13 @@ namespace OpenNLP.Tools.Util.Trees
             return DetermineNonTrivialHead(t, parent);
         }
 
-        /** Called by determineHead and may be overridden in subclasses
-   *  if special treatment is necessary for particular categories.
-   *
-   *  @param t The tre to determine the head daughter of
-   *  @param parent The parent of t (or may be null)
-   *  @return The head daughter of t
-   */
-
+        /// <summary>
+        /// Called by determineHead and may be overridden in subclasses
+        /// if special treatment is necessary for particular categories.
+        /// </summary>
+        /// <param name="t">The tre to determine the head daughter of</param>
+        /// <param name="parent">The parent of t (or may be null)</param>
+        /// <returns>The head daughter of t</returns>
         protected virtual Tree DetermineNonTrivialHead(Tree t, Tree parent)
         {
             Tree theHead = null;
@@ -278,14 +271,13 @@ namespace OpenNLP.Tools.Util.Trees
             return theHead;
         }
 
-        /**
-   * Attempt to locate head daughter tree from among daughters.
-   * Go through daughterTrees looking for things from or not in a set given by
-   * the contents of the array how, and if
-   * you do not find one, take leftmost or rightmost perhaps matching thing iff
-   * lastResort is true, otherwise return <code>null</code>.
-   */
-
+        /// <summary>
+        /// Attempt to locate head daughter tree from among daughters.
+        /// Go through daughterTrees looking for things from or not in a set given by
+        /// the contents of the array how, and if
+        /// you do not find one, take leftmost or rightmost perhaps matching thing iff
+        /// lastResort is true, otherwise return <code>null</code>.
+        /// </summary>
         protected Tree TraverseLocate(Tree[] daughterTrees, string[] how, bool lastResort)
         {
             int headIdx;
@@ -463,15 +455,13 @@ namespace OpenNLP.Tools.Util.Trees
             return -1;
         }
 
-        /**
-   * A way for subclasses to fix any heads under special conditions.
-   * The default does nothing.
-   *
-   * @param headIdx       The index of the proposed head
-   * @param daughterTrees The array of daughter trees
-   * @return The new headIndex
-   */
-
+        /// <summary>
+        /// A way for subclasses to fix any heads under special conditions.
+        /// The default does nothing.
+        /// </summary>
+        /// <param name="headIdx">The index of the proposed head</param>
+        /// <param name="daughterTrees">The array of daughter trees</param>
+        /// <returns>The new headIndex</returns>
         protected virtual int PostOperationFix(int headIdx, Tree[] daughterTrees)
         {
             return headIdx;

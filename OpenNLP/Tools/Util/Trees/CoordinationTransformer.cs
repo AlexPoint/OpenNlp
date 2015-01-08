@@ -9,30 +9,30 @@ using OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * Coordination transformer transforms a PennTreebank tree containing
- * a coordination in a flat structure in order to get the dependencies
- * right.
- * <br>
- * The transformer goes through several steps:
- * <ul>
- * <li> Removes empty nodes and simplifies many tags (<code>DependencyTreeTransformer</code>)
- * <li> Relabels UCP phrases to either ADVP or NP depending on their content
- * <li> Turn flat CC structures into structures with an intervening node
- * <li> Add extra structure to QP phrases - combine "well over", unflattened structures with CC (<code>QPTreeTransformer</code>)
- * <li> Flatten SQ structures to get the verb as the head
- * <li> Rearrange structures that appear to be dates
- * <li> Flatten X over only X structures
- * <li> Turn some fixed conjunction phrases into CONJP, such as "and yet", etc
- * <li> Attach RB such as "not" to the next phrase to get the RB headed by the phrase it modifies
- * <li> Turn SBAR to PP if parsed as SBAR in phrases such as "The day after the airline was planning ..."
- * <li> Rearrange "now that" into an SBAR phrase if it was misparsed as ADVP
- * </ul>
- *
- * @author Marie-Catherine de Marneffe
- * @author John Bauer
- */
-
+    /// <summary>
+    /// Coordination transformer transforms a PennTreebank tree containing
+    /// a coordination in a flat structure in order to get the dependencies right.
+    /// 
+    /// The transformer goes through several steps:
+    /// <ul>
+    /// <li> Removes empty nodes and simplifies many tags (<code>DependencyTreeTransformer</code>)</li>
+    /// <li> Relabels UCP phrases to either ADVP or NP depending on their content</li>
+    /// <li> Turn flat CC structures into structures with an intervening node</li>
+    /// <li> Add extra structure to QP phrases - combine "well over", unflattened structures with CC (<code>QPTreeTransformer</code>)</li>
+    /// <li> Flatten SQ structures to get the verb as the head</li>
+    /// <li> Rearrange structures that appear to be dates</li>
+    /// <li> Flatten X over only X structures</li>
+    /// <li> Turn some fixed conjunction phrases into CONJP, such as "and yet", etc</li>
+    /// <li> Attach RB such as "not" to the next phrase to get the RB headed by the phrase it modifies</li>
+    /// <li> Turn SBAR to PP if parsed as SBAR in phrases such as "The day after the airline was planning ..."</li>
+    /// <li> Rearrange "now that" into an SBAR phrase if it was misparsed as ADVP</li>
+    /// </ul>
+    /// 
+    /// @author Marie-Catherine de Marneffe
+    /// @author John Bauer
+    /// 
+    /// Code...
+    /// </summary>
     public class CoordinationTransformer : TreeTransformer
     {
         //private static readonly bool VERBOSE = System.getProperty("CoordinationTransformer", null) != null;
@@ -42,20 +42,20 @@ namespace OpenNLP.Tools.Util.Trees
 
         private readonly HeadFinder headFinder;
 
-        // default constructor
+        /// <summary>
+        /// default constructor
+        /// </summary>
         public CoordinationTransformer(HeadFinder hf)
         {
             this.headFinder = hf;
         }
 
-        /**
-   * Transforms t if it contains a coordination in a flat structure (CCtransform)
-   * and transforms UCP (UCPtransform).
-   *
-   * @param t a tree to be transformed
-   * @return t transformed
-   */
-        //@Override
+        /// <summary>
+        /// Transforms t if it contains a coordination in a flat structure (CCtransform)
+        /// and transforms UCP (UCPtransform).
+        /// </summary>
+        /// <param name="t">a tree to be transformed</param>
+        /// <returns>t transformed</returns>
         public Tree TransformTree(Tree t)
         {
             /*if (VERBOSE) {
@@ -134,14 +134,13 @@ namespace OpenNLP.Tools.Util.Trees
         private static readonly TsurgeonPattern ChangeSbarToPpTsurgeon =
             Tsurgeon.ParseOperation("relabel sbar PP");
 
-        /**
-   * For certain phrases, we change the SBAR to a PP to get prep/pcomp
-   * dependencies.  For example, in "The day after the airline was
-   * planning...", we want prep(day, after) and pcomp(after,
-   * planning).  If "after the airline was planning" was parsed as an
-   * SBAR, either by the parser or in the treebank, we fix that here.
-   */
-
+        /// <summary>
+        /// For certain phrases, we change the SBAR to a PP to get prep/pcomp
+        /// dependencies.  For example, in "The day after the airline was
+        /// planning...", we want prep(day, after) and pcomp(after,
+        /// planning).  If "after the airline was planning" was parsed as an
+        /// SBAR, either by the parser or in the treebank, we fix that here.
+        /// </summary>
         private static Tree ChangeSbarToPp(Tree t)
         {
             if (t == null)
@@ -203,8 +202,7 @@ namespace OpenNLP.Tools.Util.Trees
         // Matches to be questions if the question starts with WHNP, such as
         // Who, What, if there is an SQ after the WH question.
         //
-        // TODO: maybe we want to catch more complicated tree structures
-        // with something in between the WH and the actual question.
+        // TODO: maybe we want to catch more complicated tree structures with something in between the WH and the actual question.
         private static readonly TregexPattern FlattenSqTregex =
             TregexPattern.Compile("SBARQ < ((WHNP=what < WP) $+ (SQ=sq < (/^VB/=verb < " +
                                   EnglishPatterns.CopularWordRegex + ") " +
@@ -219,15 +217,14 @@ namespace OpenNLP.Tools.Util.Trees
 
         private static readonly TsurgeonPattern FlattenSqTsurgeon = Tsurgeon.ParseOperation("excise sq sq");
 
-        /**
-   * Removes the SQ structure under a WHNP question, such as "Who am I
-   * to judge?".  We do this so that it is easier to pick out the head
-   * and then easier to connect that head to all of the other words in
-   * the question in this situation.  In the specific case of making
-   * the copula head, we don't do this so that the existing headfinder
-   * code can easily find the "am" or other copula verb.
-   */
-
+        /// <summary>
+        /// Removes the SQ structure under a WHNP question, such as "Who am I
+        /// to judge?".  We do this so that it is easier to pick out the head
+        /// and then easier to connect that head to all of the other words in
+        /// the question in this situation.  In the specific case of making
+        /// the copula head, we don't do this so that the existing headfinder
+        /// code can easily find the "am" or other copula verb.
+        /// </summary>
         public Tree SqFlatten(Tree t)
         {
             if (headFinder != null && (headFinder is CopulaHeadFinder))
@@ -254,17 +251,19 @@ namespace OpenNLP.Tools.Util.Trees
             return Tsurgeon.ProcessPattern(RemoveXOverXTregex, RemoveXOverXTsurgeon, t);
         }
 
-        // UCP (JJ ...) -> ADJP
-        // UCP (DT JJ ...) -> ADJP
-        // UCP (... (ADJP (JJR older|younger))) -> ADJP
-        // UCP (N ...) -> NP
-        // UCP ADVP -> ADVP
-        // Might want to look for ways to include RB for flatter structures,
-        // but then we have to watch out for (RB not) for example
-        // Note that the order of OR expressions means the older|younger
-        // pattern takes precedence
-        // By searching for everything at once, then using one tsurgeon
-        // which fixes everything at once, we can save quite a bit of time
+        /// <summary>
+        /// UCP (JJ ...) -> ADJP
+        /// UCP (DT JJ ...) -> ADJP
+        /// UCP (... (ADJP (JJR older|younger))) -> ADJP
+        /// UCP (N ...) -> NP
+        /// UCP ADVP -> ADVP
+        /// Might want to look for ways to include RB for flatter structures,
+        /// but then we have to watch out for (RB not) for example
+        /// Note that the order of OR expressions means the older|younger
+        /// pattern takes precedence
+        /// By searching for everything at once, then using one tsurgeon
+        /// which fixes everything at once, we can save quite a bit of time
+        /// </summary>
         private static readonly TregexPattern UcpRenameTregex =
             TregexPattern.Compile("/^UCP/=ucp [ <, /^JJ|ADJP/=adjp | ( <1 DT <2 /^JJ|ADJP/=adjp ) |" +
                                   " <- (ADJP=adjp < (JJR < /^(?i:younger|older)$/)) |" +
@@ -276,17 +275,15 @@ namespace OpenNLP.Tools.Util.Trees
             Tsurgeon.ParseOperation(
                 "[if exists adjp relabel ucp /^UCP(.*)$/ADJP$1/] [if exists np relabel ucp /^UCP(.*)$/NP$1/] [if exists advp relabel ucp /^UCP(.*)$/ADVP/]");
 
-        /**
-   * Transforms t if it contains an UCP, it will change the UCP tag
-   * into the phrasal tag of the first word of the UCP
-   * (UCP (JJ electronic) (, ,) (NN computer) (CC and) (NN building))
-   * will become
-   * (ADJP (JJ electronic) (, ,) (NN computer) (CC and) (NN building))
-   *
-   * @param t a tree to be transformed
-   * @return t transformed
-   */
-
+        /// <summary>
+        /// Transforms t if it contains an UCP, it will change the UCP tag
+        /// into the phrasal tag of the first word of the UCP
+        /// (UCP (JJ electronic) (, ,) (NN computer) (CC and) (NN building))
+        /// will become
+        /// (ADJP (JJ electronic) (, ,) (NN computer) (CC and) (NN building))
+        /// </summary>
+        /// <param name="t">a tree to be transformed</param>
+        /// <returns>t transformed</returns>
         public static Tree UcpTransform(Tree t)
         {
             if (t == null)
@@ -296,14 +293,11 @@ namespace OpenNLP.Tools.Util.Trees
             return Tsurgeon.ProcessPattern(UcpRenameTregex, UcpRenameTsurgeon, t);
         }
 
-
-        /**
-   * Transforms t if it contains a coordination in a flat structure
-   *
-   * @param t a tree to be transformed
-   * @return t transformed (give t not null, return will not be null)
-   */
-
+        /// <summary>
+        /// Transforms t if it contains a coordination in a flat structure
+        /// </summary>
+        /// <param name="t">a tree to be transformed</param>
+        /// <returns>transformed (give t not null, return will not be null)</returns>
         public static Tree CcTransform(Tree t)
         {
             bool notDone = true;
@@ -338,16 +332,14 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-
-        /** If things match, this method destructively changes the children list
-   *  of the tree t.  When this method is called, t is an NP and there must
-   *  be at least two children to the right of ccIndex.
-   *
-   *  @param t The tree to transform a conjunction in
-   *  @param ccIndex The index of the CC child
-   *  @return t
-   */
-
+        /// <summary>
+        /// If things match, this method destructively changes the children list
+        /// of the tree t.  When this method is called, t is an NP and there must
+        /// be at least two children to the right of ccIndex.
+        /// </summary>
+        /// <param name="t">The tree to transform a conjunction in</param>
+        /// <param name="ccIndex">The index of the CC child</param>
+        /// <returns>t</returns>
         private static Tree TransformCc(Tree t, int ccIndex)
         {
             /*if (VERBOSE) {

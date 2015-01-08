@@ -7,12 +7,13 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * A factory for dependencies of a certain type.
- *
- * @author Christopher Manning
- */
-
+    /// <summary>
+    /// A factory for dependencies of a certain type.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public interface DependencyFactory
     {
         Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent);

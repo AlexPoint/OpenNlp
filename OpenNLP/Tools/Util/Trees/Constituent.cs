@@ -7,76 +7,64 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * A <code>Constituent</code> object defines a generic edge in a graph.
- * The <code>Constituent</code> class is designed to be extended.  It
- * implements the <code>Comparable</code> interface in order to allow
- * graphs to be topologically sorted by the ordinary <code>Collection</code>
- * library in <code>java.util</code>, keying primarily on right-hand
- * node ID number.  The <code>Constituent</code> class implements most
- * of the functionality of the the <code>Label</code>
- * interface by passing all requests down to the <code>Label</code> which
- * might be contained in the <code>Constituent</code>.  This allows one
- * to put a <code>Constituent</code> anywhere that a <code>Label</code> is
- * required.  A <code>Constituent</code> is always <code>Scored</code>.
- *
- * @author Christopher Manning
- */
-
+    /// <summary>
+    /// A <code>Constituent</code> object defines a generic edge in a graph.
+    /// The <code>Constituent</code> class is designed to be extended.  It
+    /// implements the <code>Comparable</code> interface in order to allow
+    /// graphs to be topologically sorted by the ordinary <code>Collection</code>
+    /// library in <code>java.util</code>, keying primarily on right-hand
+    /// node ID number.  The <code>Constituent</code> class implements most
+    /// of the functionality of the the <code>Label</code>
+    /// interface by passing all requests down to the <code>Label</code> which
+    /// might be contained in the <code>Constituent</code>.  This allows one
+    /// to put a <code>Constituent</code> anywhere that a <code>Label</code> is
+    /// required.  A <code>Constituent</code> is always <code>Scored</code>.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public abstract class Constituent : Labeled, Scored, Label
     {
-        public Constituent()
-        {
-        }
-
-        /**
-   * access start node.
-   */
+        /// <summary>
+        /// access start node
+        /// </summary>
         public abstract int Start();
 
-        /**
-   * set start node.
-   */
+        /// <summary>
+        /// set start node
+        /// </summary>
         public abstract void SetStart(int start);
 
-
-        /**
-   * access end node.
-   */
+        /// <summary>
+        /// access end node
+        /// </summary>
         public abstract int End();
 
-
-        /**
-   * set end node.
-   */
+        /// <summary>
+        ///  set end node
+        /// </summary>
         public abstract void SetEnd(int end);
 
-
-        /**
-   * access label
-   */
-
+        /// <summary>
+        /// access label
+        /// </summary>
         public Label Label()
         {
             return null;
         }
 
-
-        /**
-   * Sets the label associated with the current Constituent,
-   * if there is one.
-   */
-
+        /// <summary>
+        /// Sets the label associated with the current Constituent, if there is one.
+        /// </summary>
         public void SetLabel(Label label)
         {
             // a noop
         }
 
-
-        /**
-   * Access labels -- actually always a singleton here.
-   */
-
+        /// <summary>
+        /// Access labels -- actually always a singleton here.
+        /// </summary>
         public ICollection<Label> Labels()
         {
             return new List<Label>() {Label()};
@@ -88,33 +76,22 @@ namespace OpenNLP.Tools.Util.Trees
             throw new InvalidOperationException("Constituent can't be multilabeled");
         }
 
-
-        /**
-   * access score
-   */
-
+        /// <summary>
+        /// access score
+        /// </summary>
         public double Score()
         {
             return Double.NaN;
         }
 
-
-        /**
-   * Sets the score associated with the current node, if there is one
-   */
-
+        /// <summary>
+        /// Sets the score associated with the current node, if there is one
+        /// </summary>
         public void SetScore(double score)
         {
             // a no-op
         }
 
-
-        /**
-   * Return a string representation of a <code>Constituent</code>.
-   *
-   * @return The full string representation.
-   */
-        //@Override
         public override string ToString()
         {
             StringBuilder sb;
@@ -131,38 +108,32 @@ namespace OpenNLP.Tools.Util.Trees
             return sb.ToString();
         }
 
-
-        /**
-   * Return the length of a <code>Constituent</code>
-   */
-
+        /// <summary>
+        /// Return the length of a <code>Constituent</code>
+        /// </summary>
         public int Size()
         {
             return End() - Start();
         }
 
 
-        /**
-   * Compare with another Object for equality.
-   * Two Constituent objects are equal if they have the same start and end,
-   * and, if at least one of them has a non-null label, then their labels are equal.
-   * The score of a Constituent is not considered in the equality test.
-   * This seems to make sense for most of the applications we have in mind
-   * where one wants to assess equality independent of score, and then if
-   * necessary to relax a constituent if one with a better score is found.
-   * (Note, however, that if you do want to compare Constituent scores for
-   * equality, then you have to be careful,
-   * because two <code>double</code> NaN values are considered unequal in
-   * Java.)
-   * The general contract of equals() implies that one can't have a
-   * subclass of a concrete [non-abstract] class redefine equals() to use
-   * extra aspects, so subclasses shouldn't override this in ways that
-   * make use of extra fields.
-   *
-   * @param obj The object being compared with
-   * @return true if the objects are equal
-   */
-        //@Override
+        /// <summary>
+        /// Compare with another Object for equality.
+        /// Two Constituent objects are equal if they have the same start and end,
+        /// and, if at least one of them has a non-null label, then their labels are equal.
+        /// The score of a Constituent is not considered in the equality test.
+        /// This seems to make sense for most of the applications we have in mind
+        /// where one wants to assess equality independent of score, and then if
+        /// necessary to relax a constituent if one with a better score is found.
+        /// (Note, however, that if you do want to compare Constituent scores for
+        /// equality, then you have to be careful,
+        /// because two <code>double</code> NaN values are considered unequal in Java.)
+        /// 
+        /// The general contract of equals() implies that one can't have a
+        /// subclass of a concrete [non-abstract] class redefine equals() to use
+        /// extra aspects, so subclasses shouldn't override this in ways that
+        /// make use of extra fields.
+        /// </summary>
         public override bool Equals(Object obj)
         {
             // unclear if this will be a speedup in general
@@ -199,15 +170,12 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
 
-        /**
-   * A hashCode for Constituents done by shifting and or'ing for speed.
-   * Now includes the label if the constituent has one (otherwise things
-   * would work very badly if you were hashing constituents over the
-   * same span....).
-   *
-   * @return the integer hashCode
-   */
-        //@Override
+        /// <summary>
+        /// A hashCode for Constituents done by shifting and or'ing for speed.
+        /// Now includes the label if the constituent has one (otherwise things
+        /// would work very badly if you were hashing constituents over the
+        /// same span....).
+        /// </summary>
         public override int GetHashCode()
         {
             int hash = (Start() << 16) | End();
@@ -215,33 +183,24 @@ namespace OpenNLP.Tools.Util.Trees
             return (lab == null || lab.Value() == null) ? hash : hash ^ lab.Value().GetHashCode();
         }
 
-
-        /**
-   * Detects whether this constituent overlaps a constituent without
-   * nesting, that is, whether they "cross".
-   *
-   * @param c The constituent to check against
-   * @return True if the two constituents cross
-   */
-
+        /// <summary>
+        /// Detects whether this constituent overlaps a constituent without
+        /// nesting, that is, whether they "cross".
+        /// </summary>
+        /// <param name="c">The constituent to check against</param>
+        /// <returns>True if the two constituents cross</returns>
         public bool Crosses(Constituent c)
         {
             return (Start() < c.Start() && c.Start() < End() && End() < c.End()) ||
                    (c.Start() < Start() && Start() < c.End() && c.End() < End());
         }
 
-
-        /**
-   * Detects whether this constituent overlaps any of a Collection of
-   * Constituents without
-   * nesting, that is, whether it "crosses" any of them.
-   *
-   * @param constColl The set of constituent to check against
-   * @return True if some constituent in the collection is crossed
-   * @throws ClassCastException If some member of the Collection isn't
-   *                            a Constituent
-   */
-
+        /// <summary>
+        /// Detects whether this constituent overlaps any of a Collection of
+        /// Constituents without nesting, that is, whether it "crosses" any of them.
+        /// </summary>
+        /// <param name="constColl">The set of constituent to check against</param>
+        /// <returns>True if some constituent in the collection is crossed</returns>
         public bool Crosses(ICollection<Constituent> constColl)
         {
             foreach (Constituent c in constColl)
@@ -254,31 +213,25 @@ namespace OpenNLP.Tools.Util.Trees
             return false;
         }
 
-
-        /**
-   * Detects whether this constituent contains a constituent, that is
-   * whether they are nested.  That is, the other constituent's yield is
-   * a sublist of this constituent's yield.
-   *
-   * @param c The constituent to check against
-   * @return True if the other Constituent is contained in this one
-   */
-
+        /// <summary>
+        /// Detects whether this constituent contains a constituent, that is
+        /// whether they are nested.  That is, the other constituent's yield is
+        /// a sublist of this constituent's yield.
+        /// </summary>
+        /// <param name="c">The constituent to check against</param>
+        /// <returns>True if the other Constituent is contained in this one</returns>
         public bool Contains(Constituent c)
         {
             return Start() <= c.Start() && End() >= c.End();
         }
 
-
-
+        
         // -- below here is stuff to implement the Label interface
 
-        /**
-   * Return the value of the label (or null if none).
-   *
-   * @return string the value for the label
-   */
-
+        /// <summary>
+        /// Return the value of the label (or null if none).
+        /// </summary>
+        /// <returns>string the value for the label</returns>
         public string Value()
         {
             Label lab = Label();
@@ -289,13 +242,10 @@ namespace OpenNLP.Tools.Util.Trees
             return lab.Value();
         }
 
-
-        /**
-   * Set the value for the label (if one is stored).
-   *
-   * @param value The value for the label
-   */
-
+        /// <summary>
+        /// Set the value for the label (if one is stored).
+        /// </summary>
+        /// <param name="value">The value for the label</param>
         public void SetValue(string value)
         {
             Label lab = Label();
@@ -305,15 +255,11 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-
-        /**
-   * Make a new label with this <code>string</code> as the "name", perhaps
-   * by doing some appropriate decoding of the string.
-   *
-   * @param labelStr the string that translates into the content of the
-   *                 label
-   */
-
+        /// <summary>
+        /// Make a new label with this <code>string</code> as the "name", perhaps
+        /// by doing some appropriate decoding of the string.
+        /// </summary>
+        /// <param name="labelStr">the string that translates into the content of the label</param>
         public void SetFromString(string labelStr)
         {
             Label lab = Label();
@@ -325,14 +271,12 @@ namespace OpenNLP.Tools.Util.Trees
 
         public abstract LabelFactory LabelFactory();
 
-
-        /**
-   * Print out as a string the subpart of a sentence covered
-   * by this <code>Constituent</code>.
-   *
-   * @return The subpart of the sentence
-   */
         // TODO: genericize this!
+        /// <summary>
+        /// Print out as a string the subpart of a sentence covered
+        /// by this <code>Constituent</code>.
+        /// </summary>
+        /// <returns>The subpart of the sentence</returns>
         public string ToSentenceString(List<string> s)
         {
             var sb = new StringBuilder();

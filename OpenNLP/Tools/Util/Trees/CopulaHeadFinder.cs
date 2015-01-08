@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * A mix-in interface for HeadFinders which support the
- * makesCopulaHead method, which says how the HeadFinder in question
- * handles "to be" verbs.
- */
-
+    /// <summary>
+    /// A mix-in interface for HeadFinders which support the
+    /// makesCopulaHead method, which says how the HeadFinder in question handles "to be" verbs.
+    /// </summary>
     public interface CopulaHeadFinder
     {
         bool MakesCopulaHead();

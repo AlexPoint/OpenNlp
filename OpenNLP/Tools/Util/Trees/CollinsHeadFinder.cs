@@ -6,23 +6,24 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * Implements the HeadFinder found in Michael Collins' 1999 thesis.
- * Except: we've added a head rule for NX, which returns the leftmost item.
- * No rule for the head of NX is found in any of the versions of
- * Collins' head table that we have (did he perhaps use the NP rules
- * for NX? -- no Bikel, CL, 2005 says it defaults to leftmost).
- * These rules are suitable for the Penn Treebank.
- * <p>
- * May 2004: Added support for AUX and AUXG to the VP rules; these cause
- * no interference in Penn Treebank parsing, but means that these rules
- * also work for the BLLIP corpus (or Charniak parser output in general).
- * Feb 2005: Fixes to coordination reheading so that punctuation cannot
- * become head.
- *
- * @author Christopher Manning
- */
-
+    /// <summary>
+    /// Implements the HeadFinder found in Michael Collins' 1999 thesis.
+    /// Except: we've added a head rule for NX, which returns the leftmost item.
+    /// No rule for the head of NX is found in any of the versions of
+    /// Collins' head table that we have (did he perhaps use the NP rules
+    /// for NX? -- no Bikel, CL, 2005 says it defaults to leftmost).
+    /// These rules are suitable for the Penn Treebank.
+    /// 
+    /// May 2004: Added support for AUX and AUXG to the VP rules; these cause
+    /// no interference in Penn Treebank parsing, but means that these rules
+    /// also work for the BLLIP corpus (or Charniak parser output in general).
+    /// Feb 2005: Fixes to coordination reheading so that punctuation cannot
+    /// become head.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public class CollinsHeadFinder : AbstractCollinsHeadFinder
     {
         private static readonly string[] EmptyStringArray = {};
@@ -31,12 +32,11 @@ namespace OpenNLP.Tools.Util.Trees
         {
         }
 
-        /** This constructor provides the traditional behavior, where there is
-   *  no special avoidance of punctuation categories.
-   *
-   *  @param tlp TreebankLanguagePack used for basic category function
-   */
-
+        /// <summary>
+        /// This constructor provides the traditional behavior, where there is
+        /// no special avoidance of punctuation categories.
+        /// </summary>
+        /// <param name="tlp">TreebankLanguagePack used for basic category function</param>
         public CollinsHeadFinder(AbstractTreebankLanguagePack tlp) : this(tlp, EmptyStringArray)
         {
         }
@@ -126,7 +126,6 @@ namespace OpenNLP.Tools.Util.Trees
             nonTerminalInfo.Add("XS", new string[][] {new string[] {"right", "IN"}}); // rule for new structure in QP
         }
 
-        //@Override
         protected override int PostOperationFix(int headIdx, Tree[] daughterTrees)
         {
             if (headIdx >= 2)

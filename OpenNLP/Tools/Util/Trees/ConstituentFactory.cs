@@ -7,32 +7,24 @@ using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * A <code>ConstituentFactory</code> is a factory for creating objects
- * of class <code>Constituent</code>, or some descendent class.
- * An interface.
- *
- * @author Christopher Manning
- */
-
+    /// <summary>
+    /// A <code>ConstituentFactory</code> is a factory for creating objects
+    /// of class <code>Constituent</code>, or some descendent class.
+    /// 
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public interface ConstituentFactory
     {
-        /**
-   * Build a constituent with this start and end.
-   *
-   * @param start Start position
-   * @param end   End position
-   */
+        /// <summary>
+        /// Build a constituent with this start and end.
+        /// </summary>
         Constituent NewConstituent(int start, int end);
 
-        /**
-         * Build a constituent with this start and end.
-         *
-         * @param start Start position
-         * @param end   End position
-         * @param label Label
-         * @param score Score
-         */
+        /// <summary>
+        /// Build a constituent with this start and end.
+        /// </summary>
         Constituent NewConstituent(int start, int end, Label label, double score);
     }
 }

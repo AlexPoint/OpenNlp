@@ -7,27 +7,19 @@ using OpenNLP.Tools.Util.Trees.TRegex;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * Flattens the following two structures:
- * <br>
- * (NP (NP (NNP Month) (CD Day) )
- * (, ,) 
- * (NP (CD Year) ))
- * <br>
- * becomes
- * <br>
- * (NP (NNP Month) (CD Day) (, ,) (CD Year) )
- * <br>
- * (NP (NP (NNP Month) )
- * (NP (CD Year) ))
- * <br>
- * becomes
- * <br>
- * (NP (NNP Month) (CD Year))
- *
- * @author John Bauer
- */
-
+    /// <summary>
+    /// Flattens the following two structures:
+    /// (NP (NP (NNP Month) (CD Day) )(, ,)(NP (CD Year) ))
+    /// becomes
+    /// (NP (NNP Month) (CD Day) (, ,) (CD Year) )
+    /// (NP (NP (NNP Month) )(NP (CD Year) ))
+    /// becomes
+    /// (NP (NNP Month) (CD Year))
+    /// 
+    /// @author John Bauer
+    /// 
+    /// Code...
+    /// </summary>
     public class DateTreeTransformer : TreeTransformer
     {
         private const string MonthRegex = 

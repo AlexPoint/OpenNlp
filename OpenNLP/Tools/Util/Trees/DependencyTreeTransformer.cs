@@ -9,31 +9,30 @@ using OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    /**
- * Transforms an English structure parse tree in order to get the dependencies right:  <br>
- *  -- put a ROOT node  <br>
- *  -- remove NONE nodes  <br>
- *  -- retain only NP-TMP, NP-ADV, UCP-TMP tags  <br>
- * The UCP- tags will later be turned into NP- anyway <br>
- *
- * (Note [cdm]: A lot of this overlaps other existing functionality in trees.
- * Could aim to unify it.)
- *
- * @author mcdm
- */
-
+    /// <summary>
+    /// Transforms an English structure parse tree in order to get the dependencies right:
+    /// -- put a ROOT node
+    /// -- remove NONE nodes
+    /// -- retain only NP-TMP, NP-ADV, UCP-TMP tags
+    /// The UCP- tags will later be turned into NP- anyway
+    /// 
+    /// (Note [cdm]: A lot of this overlaps other existing functionality in trees. Could aim to unify it.)
+    /// 
+    /// @author mcdm
+    /// 
+    /// Code...
+    /// </summary>
     public class DependencyTreeTransformer : TreeTransformer
     {
         private static readonly Regex TmpPattern = new Regex("(NP|UCP).*-TMP.*", RegexOptions.Compiled);
         private static readonly Regex AdvPattern = new Regex("(NP|UCP).*-ADV.*", RegexOptions.Compiled);
-        protected readonly AbstractTreebankLanguagePack tlp;
+        protected readonly AbstractTreebankLanguagePack Tlp;
 
         public DependencyTreeTransformer()
         {
-            tlp = new PennTreebankLanguagePack();
+            Tlp = new PennTreebankLanguagePack();
         }
 
-        //@Override
         public Tree TransformTree(Tree t)
         {
             //deal with empty root
@@ -68,7 +67,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
             bool nptemp = TmpPattern.IsMatch(label);
             bool npadv = AdvPattern.IsMatch(label);
-            label = tlp.BasicCategory(label);
+            label = Tlp.BasicCategory(label);
             if (nptemp)
             {
                 label = label + "-TMP";

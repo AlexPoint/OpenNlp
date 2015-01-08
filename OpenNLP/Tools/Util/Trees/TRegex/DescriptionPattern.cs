@@ -26,40 +26,41 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private readonly Regex descPattern;
         private readonly Predicate<string> stringFilter;
 
-        // what size string matchers to use before switching to regex for
-        // disjunction matches
-        private static readonly int MAX_STRING_MATCHER_SIZE = 8;
+        /// <summary>
+        /// What size string matchers to use before switching to regex for disjunction matches
+        /// </summary>
+        private const int MaxStringMatcherSize = 8;
 
         private readonly string stringDesc;
-        /** The name to give the matched node */
+        /// <summary>The name to give the matched node</summary>
         private readonly string name;
-        /** If this pattern is a link, this is the node linked to */
+        /// <summary>If this pattern is a link, this is the node linked to</summary>
         private readonly string linkedName;
         private readonly bool isLink;
-        // todo: conceptually readonly, but we'd need to rewrite TregexParser
-        // to make it so.
+        // TODO: conceptually readonly, but we'd need to rewrite TregexParser to make it so.
         private TregexPattern child;
-        // also conceptually readonly, but it depends on the child
+        /// <summary>also conceptually readonly, but it depends on the child</summary>
         private readonly List<Tuple<int, string>> variableGroups;
-            // specifies the groups in a regex that are captured as matcher-global string variables
-
+        /// <summary>specifies the groups in a regex that are captured as matcher-global string variables</summary>
         private readonly Func<string, string> basicCatFunction;
 
-        /** Used to detect regex expressions which can be simplified to exact matches */
-
+        /// <summary>
+        /// Used to detect regex expressions which can be simplified to exact matches
+        /// </summary>
         private static readonly Regex SingleWordPattern = new Regex("/\\^(.)\\$/" + "|" + // for example, /^:$/
                                                                       "/\\^\\[(.)\\]\\$/" + "|" +
                                                                       // for example, /^[$]$/
                                                                       "/\\^([-a-zA-Z']+)\\$/");
-            // for example, /^-NONE-$/
 
+        /// <summary>for example, /^-NONE-$/</summary>
         private static readonly Regex MultiWordPattern = new Regex("/\\^\\(\\?\\:((?:[-a-zA-Z|]|\\\\\\$)+)\\)\\$\\/");
 
         private static readonly Regex CaseInsensitivePattern =
             new Regex("/\\^\\(\\?i\\:((?:[-a-zA-Z|]|\\\\\\$)+)\\)\\$\\/");
 
-        /** Used to detect regex expressions which can be simplified to exact matches */
-
+        /// <summary>
+        /// Used to detect regex expressions which can be simplified to exact matches
+        /// </summary>
         private static readonly Regex PrefixPattern = new Regex("/\\^([-a-zA-Z|]+)\\/" + "|" + // for example, /^JJ/
                                                                  "/\\^\\(\\?\\:([-a-zA-Z|]+)\\)\\/");
 
@@ -122,7 +123,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     //matchedGroup = matchedGroup.Replace("\\\\", "");
                     matchedGroup = matchedGroup.Replace("\\", "");
                     //if (matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None).Length > MAX_STRING_MATCHER_SIZE) {
-                    if (matchedGroup.Split('|').Length > MAX_STRING_MATCHER_SIZE)
+                    if (matchedGroup.Split('|').Length > MaxStringMatcherSize)
                     {
                         descriptionMode = DescriptionMode.PATTERN;
                         //descPattern = new Regex(desc.Substring(1, desc.Length - 1));
@@ -157,7 +158,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     //matchedGroup = matchedGroup.Replace("\\\\", "");
                     matchedGroup = matchedGroup.Replace("\\", "");
                     //if (matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None).Length > MAX_STRING_MATCHER_SIZE) {
-                    if (matchedGroup.Split('|').Length > MAX_STRING_MATCHER_SIZE)
+                    if (matchedGroup.Split('|').Length > MaxStringMatcherSize)
                     {
                         descriptionMode = DescriptionMode.PATTERN;
                         //descPattern = new Regex(desc.Substring(1, desc.Length - 1));
@@ -193,7 +194,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         }
                     }
                     //if (matchedGroup.Split(new []{"\\|"}, StringSplitOptions.None).Length > MAX_STRING_MATCHER_SIZE) {
-                    if (matchedGroup.Split('|').Length > MAX_STRING_MATCHER_SIZE)
+                    if (matchedGroup.Split('|').Length > MaxStringMatcherSize)
                     {
                         descriptionMode = DescriptionMode.PATTERN;
                         //descPattern = new Regex(desc.Substring(1, desc.Length - 1));
@@ -228,7 +229,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     // matcher can be more efficient than a regex.
                     //string[] words = desc.Split(new []{"[|]"}, StringSplitOptions.None);
                     string[] words = desc.Split('|');
-                    if (words.Length <= MAX_STRING_MATCHER_SIZE)
+                    if (words.Length <= MaxStringMatcherSize)
                     {
                         descriptionMode = DescriptionMode.STRINGS;
                         descPattern = null;
@@ -290,14 +291,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             this.variableGroups = oldPattern.variableGroups;
         }
 
-        //@Override
         public override string LocalString()
         {
             return rel.ToString() + ' ' + (negDesc ? "!" : "") + (basicCatFunction != null ? "@" : "") + stringDesc +
                    (name == null ? "" : '=' + name);
         }
 
-        //@Override
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -348,7 +347,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             child = n;
         }
 
-        //@Override
         public override List<TregexPattern> GetChildren()
         {
             if (child == null)
@@ -361,7 +359,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        //@Override
         public override TregexMatcher Matcher(Tree root, Tree tree,
             IdentityDictionary<Tree, Tree> nodesToParents,
             Dictionary<string, Tree> namesToNodes,
@@ -372,10 +369,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 namesToNodes, variableStrings, headFinder);
         }
 
-        // TODO: Why is this a static class with a pointer to the containing
-        // class?  There seems to be no reason for such a thing.
+        // TODO: Why is this a static class with a pointer to the containing class?  There seems to be no reason for such a thing.
         // cdm: agree: It seems like it should just be a non-static inner class.  Try this and check it works....
-        private /*static*/ class DescriptionMatcher : TregexMatcher
+        private class DescriptionMatcher : TregexMatcher
         {
             private IEnumerator<Tree> treeNodeMatchCandidateIterator;
             private readonly DescriptionPattern myNode;
@@ -388,11 +384,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             // myNode.child == null OR resetChild has never been called
             private TregexMatcher childMatcher;
 
+            /// <summary>
+            /// The Tree node that this DescriptionMatcher node is trying to match on
+            /// </summary>
             private Tree nextTreeNodeMatchCandidate;
-                // the Tree node that this DescriptionMatcher node is trying to match on.
-
+            
+            /// <summary>
+            /// when finished = true, it means I have exhausted my potential tree node match candidates
+            /// </summary>
             private bool finished = false;
-                // when finished = true, it means I have exhausted my potential tree node match candidates.
 
             private bool matchedOnce = false;
             private bool committedVariables = false;
@@ -411,7 +411,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 // resetChildIter();
             }
 
-            //@Override
             public override void ResetChildIter()
             {
                 DecommitVariableGroups();
@@ -443,9 +442,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
             }
 
-            /* goes to the next node in the tree that is a successful match to my description pattern.
-     * This is the hotspot method in running tregex, but not clear how to make it faster. */
-            // when finished = false; break; is called, it means I successfully matched.
+            /// <summary>
+            /// goes to the next node in the tree that is a successful match to my description pattern.
+            /// This is the hotspot method in running tregex, but not clear how to make it faster.
+            /// When finished = false; break; is called, it means I successfully matched
+            /// </summary>
             private void GoToNextTreeNodeMatch()
             {
                 //Console.WriteLine("goToNextTreeNodeMatch()");
@@ -458,8 +459,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     treeNodeMatchCandidateIterator = myNode.rel.GetSearchNodeIterator(tree, this);
                 }
-//        var success = treeNodeMatchCandidateIterator.MoveNext();
-                //while (success) {
                 while (treeNodeMatchCandidateIterator.MoveNext())
                 {
                     //Console.WriteLine("success = true");
@@ -572,7 +571,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             break;
                         }
                     }
-                    //success = treeNodeMatchCandidateIterator.MoveNext();
                 }
                 if (!finished)
                 {
@@ -643,9 +641,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
             }
 
-
-            /* tries to match the unique child of the DescriptionPattern node to a Tree node.  Returns "true" if succeeds.*/
-
+            /// <summary>
+            /// Tries to match the unique child of the DescriptionPattern node to a Tree node.
+            /// </summary>
+            /// <returns>"true" if succeeds</returns>
             private bool MatchChild()
             {
                 //Console.WriteLine("matchChild()");
@@ -677,8 +676,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 return childMatcher.Matches();
             }
 
-            // find the next local match
-            //@Override
+            /// <summary>
+            /// find the next local match
+            /// </summary>
             public override bool Matches()
             {
                 //Console.WriteLine("matches()");
@@ -727,7 +727,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
             }
 
-            //@Override
             public override Tree GetMatch()
             {
                 return nextTreeNodeMatchCandidate;

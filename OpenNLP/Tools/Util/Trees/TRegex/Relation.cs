@@ -9,53 +9,47 @@ using Microsoft.SqlServer.Server;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex
 {
-    /**
- * An abstract base class for relations between tree nodes in tregex. There are
- * two types of subclasses: static anonymous singleton instantiations for
- * relations that do not require arguments, and private subclasses for those
- * with arguments. All invocations should be made through the static factory
- * methods, which insure that there is only a single instance of each relation.
- * Thus == can be used instead of .equals.
- * <p/>
- * If you want to add a new
- * relation, you just have to fill in the definition of satisfies and
- * searchNodeIterator. Also be careful to make the appropriate adjustments to
- * getRelation and SIMPLE_RELATIONS. Finally, if you are using the TregexParser,
- * you need to add the new relation symbol to the list of tokens.
- *
- * @author Galen Andrew
- * @author Roger Levy
- * @author Christopher Manning
- */
-
+    /// <summary>
+    /// An abstract base class for relations between tree nodes in tregex. There are
+    /// two types of subclasses: static anonymous singleton instantiations for
+    /// relations that do not require arguments, and private subclasses for those
+    /// with arguments. All invocations should be made through the static factory
+    /// methods, which insure that there is only a single instance of each relation.
+    /// Thus == can be used instead of .equals.
+    /// 
+    /// If you want to add a new relation, you just have to fill in the definition of satisfies and
+    /// searchNodeIterator. Also be careful to make the appropriate adjustments to
+    /// getRelation and SIMPLE_RELATIONS. Finally, if you are using the TregexParser,
+    /// you need to add the new relation symbol to the list of tokens.
+    /// 
+    /// @author Galen Andrew
+    /// @author Roger Levy
+    /// @author Christopher Manning
+    /// 
+    /// Code...
+    /// </summary>
     public abstract class Relation
     {
-        /**
-   *
-   */
         private static readonly long serialVersionUID = -1564793674551362909L;
 
-        private readonly string symbol;
+        private readonly string _symbol;
 
-        /** Whether this relationship is satisfied between two trees.
-   *
-   * @param t1 The tree that is the left operand.
-   * @param t2 The tree that is the right operand.
-   * @param root The common root of t1 and t2
-   * @return Whether this relationship is satisfied.
-   */
+        /// <summary>
+        /// Whether this relationship is satisfied between two trees
+        /// </summary>
+        /// <param name="t1">The tree that is the left operand</param>
+        /// <param name="t2">The tree that is the right operand</param>
+        /// <param name="root">The common root of t1 and t2</param>
+        /// <returns>Whether this relationship is satisfied</returns>
         public abstract bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly*/ TregexMatcher matcher);
 
-        /**
-   * For a given node, returns an {@link Iterator} over the nodes
-   * of the tree containing the node that satisfy the relation.
-   *
-   * @param t A node in a Tree
-   * @param matcher The matcher that nodes have to satisfy
-   * @return An Iterator over the nodes
-   *     of the root tree that satisfy the relation.
-   */
-
+        /// <summary>
+        /// For a given node, returns an {@link Iterator} over the nodes
+        /// of the tree containing the node that satisfy the relation.
+        /// </summary>
+        /// <param name="t">A node in a Tree</param>
+        /// <param name="matcher">The matcher that nodes have to satisfy</param>
+        /// <returns>An Iterator over the nodes of the root tree that satisfy the relation.</returns>
         public abstract IEnumerator<Tree> GetSearchNodeIterator( /*readonly*/ Tree t,
             /*readonly*/ TregexMatcher matcher);
 
@@ -63,20 +57,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private static readonly Regex LastChildOfParent = new Regex("(>-|>`)");
 
-        /**
-   * Static factory method for all relations with no arguments. Includes:
-   * DOMINATES, DOMINATED_BY, PARENT_OF, CHILD_OF, PRECEDES,
-   * IMMEDIATELY_PRECEDES, HAS_LEFTMOST_DESCENDANT, HAS_RIGHTMOST_DESCENDANT,
-   * LEFTMOST_DESCENDANT_OF, RIGHTMOST_DESCENDANT_OF, SISTER_OF, LEFT_SISTER_OF,
-   * RIGHT_SISTER_OF, IMMEDIATE_LEFT_SISTER_OF, IMMEDIATE_RIGHT_SISTER_OF,
-   * HEADS, HEADED_BY, IMMEDIATELY_HEADS, IMMEDIATELY_HEADED_BY, ONLY_CHILD_OF,
-   * HAS_ONLY_CHILD, EQUALS
-   *
-   * @param s The string representation of the relation
-   * @return The singleton static relation of the specified type
-   * @throws ParseException If bad relation s
-   */
-
+        /// <summary>
+        /// Static factory method for all relations with no arguments. Includes:
+        /// DOMINATES, DOMINATED_BY, PARENT_OF, CHILD_OF, PRECEDES,
+        /// IMMEDIATELY_PRECEDES, HAS_LEFTMOST_DESCENDANT, HAS_RIGHTMOST_DESCENDANT,
+        /// LEFTMOST_DESCENDANT_OF, RIGHTMOST_DESCENDANT_OF, SISTER_OF, LEFT_SISTER_OF,
+        /// RIGHT_SISTER_OF, IMMEDIATE_LEFT_SISTER_OF, IMMEDIATE_RIGHT_SISTER_OF,
+        /// HEADS, HEADED_BY, IMMEDIATELY_HEADS, IMMEDIATELY_HEADED_BY, ONLY_CHILD_OF,
+        /// HAS_ONLY_CHILD, EQUALS
+        /// </summary>
+        /// <param name="s">The string representation of the relation</param>
+        /// <returns>The singleton static relation of the specified type</returns>
+        /// <exception cref="ParseException">If bad relation s</exception>
         public static Relation GetRelation(string s,
             Func<string, string> basicCatFunction,
             HeadFinder headFinder)
@@ -128,23 +120,20 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return Interner<Relation>.GlobalIntern(r);
         }
 
-        /**
-   * Static factory method for relations requiring an argument, including
-   * HAS_ITH_CHILD, ITH_CHILD_OF, UNBROKEN_CATEGORY_DOMINATES,
-   * UNBROKEN_CATEGORY_DOMINATED_BY.
-   *
-   * @param s The string representation of the relation
-   * @param arg The argument to the relation, as a string; could be a node
-   *          description or an integer
-   * @return The singleton static relation of the specified type with the
-   *         specified argument. Uses Interner to insure singleton-ity
-   * @throws ParseException If bad relation s
-   */
-
+        /// <summary>
+        /// Static factory method for relations requiring an argument, including
+        /// HAS_ITH_CHILD, ITH_CHILD_OF, UNBROKEN_CATEGORY_DOMINATES,
+        /// UNBROKEN_CATEGORY_DOMINATED_BY.
+        /// </summary>
+        /// <param name="s">The string representation of the relation</param>
+        /// <param name="arg">The argument to the relation, as a string; could be a node description or an integer</param>
+        /// <returns>
+        /// The singleton static relation of the specified type with the specified argument. Uses Interner to insure singleton-ity
+        /// </returns>
+        /// <exception cref="ParseException">If bad relation s</exception>
         public static Relation GetRelation(string s, string arg,
             Func<string, string> basicCatFunction,
             HeadFinder headFinder)
-            /*throws ParseException*/
         {
             if (arg == null)
             {
@@ -178,14 +167,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return Interner<Relation>.GlobalIntern(r);
         }
 
-        /**
-   * Produce a TregexPattern which represents the given MULTI_RELATION
-   * and its children
-   */
-
+        /// <summary>
+        /// Produce a TregexPattern which represents the given MULTI_RELATION and its children
+        /// </summary>
         public static TregexPattern ConstructMultiRelation(string s, List<DescriptionPattern> children,
             Func<string, string> basicCatFunction,
-            HeadFinder headFinder) /*throws ParseException */
+            HeadFinder headFinder)
         {
             if (s.Equals("<..."))
             {
@@ -212,38 +199,34 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private Relation(string symbol)
         {
-            this.symbol = symbol;
+            this._symbol = symbol;
         }
 
-        //@Override
         public override string ToString()
         {
-            return symbol;
+            return _symbol;
         }
 
-        /**
-   * This abstract Iterator implements a NULL iterator, but by subclassing and
-   * overriding advance and/or initialize, it is an efficient implementation.
-   */
-        /*abstract*/ /*static*/
-
+        /// <summary>
+        /// This abstract Iterator implements a NULL iterator, but by subclassing and
+        /// overriding advance and/or initialize, it is an efficient implementation.
+        /// </summary>
         private class SearchNodeIterator : IEnumerator<Tree>
         {
 
-            /**
-     * This is the next tree to be returned by the iterator, or null if there
-     * are no more items.
-     */
-            private Tree pnext; // = null;
+            /// <summary>
+            /// This is the next tree to be returned by the iterator, or null if there are no more items.
+            /// </summary>
+            private Tree _next; // = null;
 
             public SearchNodeIterator()
             {
-                pnext = null;
+                _next = null;
             }
 
             public SearchNodeIterator(Tree tree)
             {
-                pnext = tree;
+                _next = tree;
             }
 
             public void Dispose()
@@ -253,14 +236,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                if (pnext == null)
+                if (_next == null)
                 {
                     return false;
                 }
                 else
                 {
-                    this.Current = pnext;
-                    pnext = null;
+                    this.Current = _next;
+                    _next = null;
                     return true;
                 }
             }
@@ -295,32 +278,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        public static readonly Relation ROOT = new RootRelation("Root"); /*{  // used in TregexParser
-
-    private static readonly long serialVersionUID = -8311913236233762612L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, readonly TregexMatcher matcher) {
-      return t1 == t2;
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(readonly Tree t,
-                                      readonly TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          next = t;
-        }
-      };
-    }
-  };*/
+        /// <summary>Used in TregexParser</summary>
+        public static readonly Relation Root = new RootRelation("Root");
 
         private class EqualsRelation : Relation
         {
             private new static readonly long serialVersionUID = 164629344977943816L;
 
-            //@Override
             public EqualsRelation(string symbol) : base(symbol)
             {
             }
@@ -330,7 +294,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 return t1 == t2;
             }
 
-            //@Override
             public override IEnumerator<Tree> GetSearchNodeIterator(Tree t,
                 TregexMatcher matcher)
             {
@@ -339,22 +302,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         }
 
-        private static readonly Relation EQUALS = new EqualsRelation("=="); /*{
-
-    private static readonly long serialVersionUID = 164629344977943816L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, readonly TregexMatcher matcher) {
-      return t1 == t2;
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(readonly Tree t,
-                                      readonly TregexMatcher matcher) {
-      return Collections.singletonList(t).iterator();
-    }
-
-  };*/
+        private static readonly Relation EqualsRel = new EqualsRelation("==");
 
         private class PatternSplitterRelation : Relation
         {
@@ -373,23 +321,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        /* this is a "dummy" relation that allows you to segment patterns. */
-
-        private static readonly Relation PatternSplitter = new PatternSplitterRelation(":"); /*{
-
-    private static readonly long serialVersionUID = 3409941930361386114L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, readonly TregexMatcher matcher) {
-      return true;
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(readonly Tree t,
-                                      readonly TregexMatcher matcher) {
-      return matcher.getRoot().iterator();
-    }
-  };*/
+        /// <summary>
+        /// This is a "dummy" relation that allows you to segment patterns
+        /// </summary>
+        private static readonly Relation PatternSplitter = new PatternSplitterRelation(":");
 
         private class DominatesRelation : Relation
         {
@@ -410,14 +345,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class StackSearchNodeIterator : IEnumerator<Tree>
         {
-            private readonly Stack<Tree> searchStack;
+            private readonly Stack<Tree> _searchStack;
 
             public StackSearchNodeIterator(Tree t)
             {
-                searchStack = new Stack<Tree>();
+                _searchStack = new Stack<Tree>();
                 for (int i = t.NumChildren() - 1; i >= 0; i--)
                 {
-                    searchStack.Push(t.GetChild(i));
+                    _searchStack.Push(t.GetChild(i));
                 }
             }
 
@@ -428,16 +363,16 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                if (!searchStack.Any())
+                if (!_searchStack.Any())
                 {
                     return false;
                 }
                 else
                 {
-                    var elt = searchStack.Pop();
+                    var elt = _searchStack.Pop();
                     for (int i = elt.NumChildren() - 1; i >= 0; i--)
                     {
-                        searchStack.Push(elt.GetChild(i));
+                        _searchStack.Push(elt.GetChild(i));
                     }
                     this.Current = elt;
                     return true;
@@ -457,56 +392,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation Dominates = new DominatesRelation("<<"); /* {
-
-    private static readonly long serialVersionUID = -2580199434621268260L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, readonly TregexMatcher matcher) {
-      return t1 != t2 && t1.dominates(t2);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(readonly Tree t,
-                                      readonly TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        Stack<Tree> searchStack;
-
-        @Override
-        public void initialize() {
-          searchStack = new Stack<Tree>();
-          for (int i = t.numChildren() - 1; i >= 0; i--) {
-            searchStack.push(t.getChild(i));
-          }
-          if (!searchStack.isEmpty()) {
-            advance();
-          }
-        }
-
-        @Override
-        void advance() {
-          if (searchStack.isEmpty()) {
-            next = null;
-          } else {
-            next = searchStack.pop();
-            for (int i = next.numChildren() - 1; i >= 0; i--) {
-              searchStack.push(next.getChild(i));
-            }
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation Dominates = new DominatesRelation("<<");
 
         private class UpSearchNodeIterator : IEnumerator<Tree>
         {
-            private readonly Tree tree;
-            private readonly TregexMatcher matcher;
+            private readonly Tree _tree;
+            private readonly TregexMatcher _matcher;
 
             public UpSearchNodeIterator(Tree t, TregexMatcher matcher)
             {
-                this.tree = t;
-                this.matcher = matcher;
+                this._tree = t;
+                this._matcher = matcher;
             }
 
             public void Dispose()
@@ -516,7 +412,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                var parent = this.matcher.GetParent(this.tree);
+                var parent = this._matcher.GetParent(this._tree);
                 if (parent == null)
                 {
                     return false;
@@ -558,31 +454,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation DominatedBy = new DominatedByRelation(">>"); /*{
-
-    private static readonly long serialVersionUID = 6140614010121387690L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      return DOMINATES.satisfies(t2, t1, root, matcher);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          next = matcher.getParent(t);
-        }
-
-        @Override
-        public void advance() {
-          next = matcher.getParent(next);
-        }
-      };
-    }
-  };*/
+        private static readonly Relation DominatedBy = new DominatedByRelation(">>");
 
         private class ParentRelation : Relation
         {
@@ -609,44 +481,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation ParentOf = new ParentRelation("<"); /*{
-
-    private static readonly long serialVersionUID = 9140193735607580808L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, readonly TregexMatcher matcher) {
-      Tree[] kids = t1.children();
-      for (int i = 0, n = kids.Length; i < n; i++) {
-        if (kids[i] == t2) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(readonly Tree t,
-                                      readonly TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        // subtle bug warning here: if we use 
-        //   int nextNum=0;
-        // instead, we get the first daughter twice because the
-        // assignment occurs after advance() has already been called
-        // once by the constructor of SearchNodeIterator.
-        int nextNum;
-
-        @Override
-        public void advance() {
-          if (nextNum < t.numChildren()) {
-            next = t.getChild(nextNum);
-            nextNum++;
-          } else {
-            next = null;
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation ParentOf = new ParentRelation("<");
 
         private class ChildOfRelation : Relation
         {
@@ -665,36 +500,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation ChildOf = new ChildOfRelation(">"); /*{
-
-    private static readonly long serialVersionUID = 8919710375433372537L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, readonly TregexMatcher matcher) {
-      return PARENT_OF.satisfies(t2, t1, root, matcher);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          next = matcher.getParent(t);
-        }
-      };
-    }
-  };*/
+        private static readonly Relation ChildOf = new ChildOfRelation(">");
 
         private class PrecedeSearchNodeIterator : IEnumerator<Tree>
         {
-            private readonly Stack<Tree> searchStack;
-            private TregexMatcher matcher;
+            private readonly Stack<Tree> _searchStack;
 
             public PrecedeSearchNodeIterator(Tree t, TregexMatcher matcher)
             {
-                searchStack = new Stack<Tree>();
-                this.matcher = matcher;
+                _searchStack = new Stack<Tree>();
 
                 Tree current = t;
                 Tree parent = matcher.GetParent(t);
@@ -702,7 +516,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     for (int i = parent.NumChildren() - 1; parent.GetChild(i) != current; i--)
                     {
-                        searchStack.Push(parent.GetChild(i));
+                        _searchStack.Push(parent.GetChild(i));
                     }
                     current = parent;
                     parent = matcher.GetParent(parent);
@@ -716,16 +530,16 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                if (!searchStack.Any())
+                if (!_searchStack.Any())
                 {
                     return false;
                 }
                 else
                 {
-                    this.Current = searchStack.Pop();
+                    this.Current = _searchStack.Pop();
                     for (int i = this.Current.NumChildren() - 1; i >= 0; i--)
                     {
-                        searchStack.Push(this.Current.GetChild(i));
+                        _searchStack.Push(this.Current.GetChild(i));
                     }
                     return true;
                 }
@@ -761,54 +575,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation Precedes = new PrecedesRelation(".."); /*{
-
-    private static readonly long serialVersionUID = -9065012389549976867L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      return Trees.rightEdge(t1, root) <= Trees.leftEdge(t2, root);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        Stack<Tree> searchStack;
-
-        @Override
-        public void initialize() {
-          searchStack = new Stack<Tree>();
-          Tree current = t;
-          Tree parent = matcher.getParent(t);
-          while (parent != null) {
-            for (int i = parent.numChildren() - 1; parent.getChild(i) != current; i--) {
-              searchStack.push(parent.getChild(i));
-            }
-            current = parent;
-            parent = matcher.getParent(parent);
-          }
-          advance();
-        }
-
-        @Override
-        void advance() {
-          if (searchStack.isEmpty()) {
-            next = null;
-          } else {
-            next = searchStack.pop();
-            for (int i = next.numChildren() - 1; i >= 0; i--) {
-              searchStack.push(next.getChild(i));
-            }
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation Precedes = new PrecedesRelation("..");
 
         private class ImmediatelyPrecedesSearchNodeIterator : IEnumerator<Tree>
         {
-            private readonly Tree firstNode;
+            private readonly Tree _firstNode;
 
             public ImmediatelyPrecedesSearchNodeIterator(Tree t, TregexMatcher matcher)
             {
@@ -820,7 +591,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     parent = matcher.GetParent(parent);
                     if (parent == null)
                     {
-                        firstNode = null;
+                        _firstNode = null;
                         return;
                     }
                 } while (parent.LastChild() == current);
@@ -829,7 +600,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     if (parent.GetChild(i - 1) == current)
                     {
-                        firstNode = parent.GetChild(i);
+                        _firstNode = parent.GetChild(i);
                         return;
                     }
                 }
@@ -845,7 +616,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 if (this.Current == null)
                 {
                     // first call
-                    this.Current = firstNode;
+                    this.Current = _firstNode;
                     return true;
                 }
                 else if (this.Current.IsLeaf())
@@ -890,51 +661,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation ImmediatelyPrecedes = new ImmediatelyPrecedesRelation("."); /*{
-
-    private static readonly long serialVersionUID = 3390147676937292768L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      return Trees.leftEdge(t2, root) == Trees.rightEdge(t1, root);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          Tree current;
-          Tree parent = t;
-          do {
-            current = parent;
-            parent = matcher.getParent(parent);
-            if (parent == null) {
-              next = null;
-              return;
-            }
-          } while (parent.lastChild() == current);
-
-          for (int i = 1, n = parent.numChildren(); i < n; i++) {
-            if (parent.getChild(i - 1) == current) {
-              next = parent.getChild(i);
-              return;
-            }
-          }
-        }
-
-        @Override
-        public void advance() {
-          if (next.isLeaf()) {
-            next = null;
-          } else {
-            next = next.firstChild();
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation ImmediatelyPrecedes = new ImmediatelyPrecedesRelation(".");
 
         private class FollowsSearchNodeIterator : IEnumerator<Tree>
         {
@@ -1009,54 +736,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation Follows = new FollowsRelation(",,"); /*{
-
-    private static readonly long serialVersionUID = -5948063114149496983L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      return Trees.rightEdge(t2, root) <= Trees.leftEdge(t1, root);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        Stack<Tree> searchStack;
-
-        @Override
-        public void initialize() {
-          searchStack = new Stack<Tree>();
-          Tree current = t;
-          Tree parent = matcher.getParent(t);
-          while (parent != null) {
-            for (int i = 0; parent.getChild(i) != current; i++) {
-              searchStack.push(parent.getChild(i));
-            }
-            current = parent;
-            parent = matcher.getParent(parent);
-          }
-          advance();
-        }
-
-        @Override
-        void advance() {
-          if (searchStack.isEmpty()) {
-            next = null;
-          } else {
-            next = searchStack.pop();
-            for (int i = next.numChildren() - 1; i >= 0; i--) {
-              searchStack.push(next.getChild(i));
-            }
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation Follows = new FollowsRelation(",,");
 
         public class ImmediatelyFollowsSearchNodeIterator : IEnumerator<Tree>
         {
-            private readonly Tree firstNode;
+            private readonly Tree _firstNode;
 
             public ImmediatelyFollowsSearchNodeIterator(Tree t, TregexMatcher matcher)
             {
@@ -1068,7 +752,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     parent = matcher.GetParent(parent);
                     if (parent == null)
                     {
-                        firstNode = null;
+                        _firstNode = null;
                         return;
                     }
                 } while (parent.FirstChild() == current);
@@ -1077,7 +761,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     if (parent.GetChild(i + 1) == current)
                     {
-                        firstNode = parent.GetChild(i);
+                        _firstNode = parent.GetChild(i);
                         return;
                     }
                 }
@@ -1092,7 +776,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             {
                 if (this.Current == null)
                 {
-                    this.Current = firstNode;
+                    this.Current = _firstNode;
                     return true;
                 }
                 if (this.Current.IsLeaf())
@@ -1137,51 +821,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation ImmediatelyFollows = new ImmediatelyFolllowsRelation(","); /*{
-
-    private static readonly long serialVersionUID = -2895075562891296830L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      return Trees.leftEdge(t1, root) == Trees.rightEdge(t2, root);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(readonly Tree t,
-                                      readonly TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          Tree current;
-          Tree parent = t;
-          do {
-            current = parent;
-            parent = matcher.getParent(parent);
-            if (parent == null) {
-              next = null;
-              return;
-            }
-          } while (parent.firstChild() == current);
-
-          for (int i = 0, n = parent.numChildren() - 1; i < n; i++) {
-            if (parent.getChild(i + 1) == current) {
-              next = parent.getChild(i);
-              return;
-            }
-          }
-        }
-
-        @Override
-        public void advance() {
-          if (next.isLeaf()) {
-            next = null;
-          } else {
-            next = next.lastChild();
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation ImmediatelyFollows = new ImmediatelyFolllowsRelation(",");
 
         private class HasLeftmostDescendantSearchNodeIterator : IEnumerator<Tree>
         {
@@ -1251,40 +891,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation HasLeftmostDescendant = new HasLeftmostDescendantRelation("<<,"); /*{
-
-    private static readonly long serialVersionUID = -7352081789429366726L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      if (t1.isLeaf()) {
-        return false;
-      } else {
-        return (t1.children()[0] == t2) || satisfies(t1.children()[0], t2, root, matcher);
-      }
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          next = t;
-          advance();
-        }
-
-        @Override
-        public void advance() {
-          if (next.isLeaf()) {
-            next = null;
-          } else {
-            next = next.firstChild();
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation HasLeftmostDescendant = new HasLeftmostDescendantRelation("<<,");
 
         private class HasRighmostDescendantSearchNodeIterator : IEnumerator<Tree>
         {
@@ -1354,51 +961,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation HasRightmostDescendant = new HasRightmostDescendantRelation("<<-"); /*{
-
-    private static readonly long serialVersionUID = -1405509785337859888L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      if (t1.isLeaf()) {
-        return false;
-      } else {
-        Tree lastKid = t1.children()[t1.children().Length - 1];
-        return (lastKid == t2) || satisfies(lastKid, t2, root, matcher);
-      }
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          next = t;
-          advance();
-        }
-
-        @Override
-        public void advance() {
-          if (next.isLeaf()) {
-            next = null;
-          } else {
-            next = next.lastChild();
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation HasRightmostDescendant = new HasRightmostDescendantRelation("<<-");
 
         private class LeftmostDescendantOfSearchNodeIterator : IEnumerator<Tree>
         {
-            private Tree next;
-            private readonly TregexMatcher matcher;
+            private Tree _next;
+            private readonly TregexMatcher _matcher;
 
             public LeftmostDescendantOfSearchNodeIterator(Tree t, TregexMatcher matcher)
             {
-                next = t;
-                this.matcher = matcher;
+                _next = t;
+                this._matcher = matcher;
             }
 
             public void Dispose()
@@ -1408,17 +981,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                if (next == null)
+                if (_next == null)
                 {
                     return false;
                 }
                 else
                 {
-                    this.Current = next;
-                    next = this.matcher.GetParent(next);
-                    if (next != null && next.FirstChild() != this.Current)
+                    this.Current = _next;
+                    _next = this._matcher.GetParent(_next);
+                    if (_next != null && _next.FirstChild() != this.Current)
                     {
-                        next = null;
+                        _next = null;
                     }
                     return true;
                 }
@@ -1454,46 +1027,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation LeftmostDescendantOf = new LeftmostDescendantOfRelation(">>,"); /*{
-
-    private static readonly long serialVersionUID = 3103412865783190437L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      return HAS_LEFTMOST_DESCENDANT.satisfies(t2, t1, root, matcher);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          next = t;
-          advance();
-        }
-
-        @Override
-        public void advance() {
-          Tree last = next;
-          next = matcher.getParent(next);
-          if (next != null && next.firstChild() != last) {
-            next = null;
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation LeftmostDescendantOf = new LeftmostDescendantOfRelation(">>,");
 
         private class RightmostDescendantOfSearchNodeIterator : IEnumerator<Tree>
         {
-            private Tree next;
-            private readonly TregexMatcher matcher;
+            private Tree _next;
+            private readonly TregexMatcher _matcher;
 
             public RightmostDescendantOfSearchNodeIterator(Tree t, TregexMatcher matcher)
             {
-                next = t;
-                this.matcher = matcher;
+                _next = t;
+                this._matcher = matcher;
             }
 
             public void Dispose()
@@ -1503,17 +1047,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                if (next == null)
+                if (_next == null)
                 {
                     return false;
                 }
                 else
                 {
-                    this.Current = next;
-                    next = this.matcher.GetParent(next);
-                    if (next != null && next.LastChild() != this.Current)
+                    this.Current = _next;
+                    _next = this._matcher.GetParent(_next);
+                    if (_next != null && _next.LastChild() != this.Current)
                     {
-                        next = null;
+                        _next = null;
                     }
                     return true;
                 }
@@ -1549,51 +1093,21 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation RightmostDescendantOf = new RightmostDescendantOfRelation(">>-"); /*{
-
-    private static readonly long serialVersionUID = -2000255467314675477L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, readonly TregexMatcher matcher) {
-      return HAS_RIGHTMOST_DESCENDANT.satisfies(t2, t1, root, matcher);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          next = t;
-          advance();
-        }
-
-        @Override
-        public void advance() {
-          Tree last = next;
-          next = matcher.getParent(next);
-          if (next != null && next.lastChild() != last) {
-            next = null;
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation RightmostDescendantOf = new RightmostDescendantOfRelation(">>-");
 
         private class SisterOfSearchNodeIterator : IEnumerator<Tree>
         {
-            private readonly Tree parent;
-            private int nextNum;
-            private readonly Tree originalNode;
+            private readonly Tree _parent;
+            private int _nextNum;
+            private readonly Tree _originalNode;
 
             public SisterOfSearchNodeIterator(Tree t, TregexMatcher matcher)
             {
-                originalNode = t;
-                parent = matcher.GetParent(t);
-                if (parent != null)
+                _originalNode = t;
+                _parent = matcher.GetParent(t);
+                if (_parent != null)
                 {
-                    nextNum = 0;
-                    //advance();
+                    _nextNum = 0;
                 }
             }
 
@@ -1604,10 +1118,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                if (nextNum < parent.NumChildren())
+                if (_nextNum < _parent.NumChildren())
                 {
-                    this.Current = parent.GetChild(nextNum++);
-                    if (this.Current == originalNode)
+                    this.Current = _parent.GetChild(_nextNum++);
+                    if (this.Current == _originalNode)
                     {
                         return MoveNext();
                     }
@@ -1655,64 +1169,21 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation SisterOf = new SisterOfRelation("$"); /*{
-
-    private static readonly long serialVersionUID = -3776688096782419004L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      if (t1 == t2 || t1 == root) {
-        return false;
-      }
-      Tree parent = t1.parent(root);
-      return PARENT_OF.satisfies(parent, t2, root, matcher);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        Tree parent;
-
-        int nextNum;
-
-        @Override
-        void initialize() {
-          parent = matcher.getParent(t);
-          if (parent != null) {
-            nextNum = 0;
-            advance();
-          }
-        }
-
-        @Override
-        public void advance() {
-          if (nextNum < parent.numChildren()) {
-            next = parent.getChild(nextNum++);
-            if (next == t) {
-              advance();
-            }
-          } else {
-            next = null;
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation SisterOf = new SisterOfRelation("$");
 
         private class LeftSisterOfSearchNodeIterator : IEnumerator<Tree>
         {
-            private readonly Tree parent;
-            private int nextNum;
-            private readonly Tree originalNode;
+            private readonly Tree _parent;
+            private int _nextNum;
+            private readonly Tree _originalNode;
 
             public LeftSisterOfSearchNodeIterator(Tree t, TregexMatcher matcher)
             {
-                originalNode = t;
-                parent = matcher.GetParent(t);
-                if (parent != null)
+                _originalNode = t;
+                _parent = matcher.GetParent(t);
+                if (_parent != null)
                 {
-                    nextNum = parent.NumChildren() - 1;
+                    _nextNum = _parent.NumChildren() - 1;
                 }
             }
 
@@ -1723,8 +1194,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                this.Current = parent.GetChild(nextNum--);
-                if (this.Current == originalNode)
+                this.Current = _parent.GetChild(_nextNum--);
+                if (this.Current == _originalNode)
                 {
                     this.Current = null;
                     return false;
@@ -1779,69 +1250,21 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation LeftSisterOf = new LeftSisterOfRelation("$++"); /*{
-
-    private static readonly long serialVersionUID = -4516161080140406862L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      if (t1 == t2 || t1 == root) {
-        return false;
-      }
-      Tree parent = t1.parent(root);
-      Tree[] kids = parent.children();
-      for (int i = kids.Length - 1; i > 0; i--) {
-        if (kids[i] == t1) {
-          return false;
-        }
-        if (kids[i] == t2) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        Tree parent;
-
-        int nextNum;
-
-        @Override
-        void initialize() {
-          parent = matcher.getParent(t);
-          if (parent != null) {
-            nextNum = parent.numChildren() - 1;
-            advance();
-          }
-        }
-
-        @Override
-        public void advance() {
-          next = parent.getChild(nextNum--);
-          if (next == t) {
-            next = null;
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation LeftSisterOf = new LeftSisterOfRelation("$++");
 
         private class RightSisterOfSearchNodeIterator : IEnumerator<Tree>
         {
-            private readonly Tree parent;
-            private readonly Tree originalNode;
-            private int nextNum;
+            private readonly Tree _parent;
+            private readonly Tree _originalNode;
+            private int _nextNum;
 
             public RightSisterOfSearchNodeIterator(Tree t, TregexMatcher matcher)
             {
-                originalNode = t;
-                parent = matcher.GetParent(t);
-                if (parent != null)
+                _originalNode = t;
+                _parent = matcher.GetParent(t);
+                if (_parent != null)
                 {
-                    nextNum = 0;
+                    _nextNum = 0;
                 }
             }
 
@@ -1852,8 +1275,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                this.Current = parent.GetChild(nextNum++);
-                if (this.Current == originalNode)
+                this.Current = _parent.GetChild(_nextNum++);
+                if (this.Current == _originalNode)
                 {
                     this.Current = null;
                     return false;
@@ -1891,42 +1314,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation RightSisterOf = new RightSisterOfRelation("$--"); /*{
-
-    private static readonly long serialVersionUID = -5880626025192328694L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      return LEFT_SISTER_OF.satisfies(t2, t1, root, matcher);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        Tree parent;
-
-        int nextNum;
-
-        @Override
-        void initialize() {
-          parent = matcher.getParent(t);
-          if (parent != null) {
-            nextNum = 0;
-            advance();
-          }
-        }
-
-        @Override
-        public void advance() {
-          next = parent.getChild(nextNum++);
-          if (next == t) {
-            next = null;
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation RightSisterOf = new RightSisterOfRelation("$--");
 
         private class ImmediateLeftSisterOfRelation : Relation
         {
@@ -1975,47 +1363,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation ImmediateLeftSisterOf = new ImmediateLeftSisterOfRelation("$+"); /*{
-
-    private static readonly long serialVersionUID = 7745237994722126917L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      if (t1 == t2 || t1 == root) {
-        return false;
-      }
-      Tree[] sisters = t1.parent(root).children();
-      for (int i = sisters.Length - 1; i > 0; i--) {
-        if (sisters[i] == t1) {
-          return false;
-        }
-        if (sisters[i] == t2) {
-          return sisters[i - 1] == t1;
-        }
-      }
-      return false;
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          if (t != matcher.getRoot()) {
-            Tree parent = matcher.getParent(t);
-            int i = 0;
-            while (parent.getChild(i) != t) {
-              i++;
-            }
-            if (i + 1 < parent.numChildren()) {
-              next = parent.getChild(i + 1);
-            }
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation ImmediateLeftSisterOf = new ImmediateLeftSisterOfRelation("$+");
 
         private class ImmediateRightSisterOfRelation : Relation
         {
@@ -2049,35 +1397,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation ImmediateRightSisterOf = new ImmediateRightSisterOfRelation("$-"); /*{
-
-    private static readonly long serialVersionUID = -6555264189937531019L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      return IMMEDIATE_LEFT_SISTER_OF.satisfies(t2, t1, root, matcher);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          if (t != matcher.getRoot()) {
-            Tree parent = matcher.getParent(t);
-            int i = 0;
-            while (parent.getChild(i) != t) {
-              i++;
-            }
-            if (i > 0) {
-              next = parent.getChild(i - 1);
-            }
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation ImmediateRightSisterOf = new ImmediateRightSisterOfRelation("$-");
 
         private class OnlyChildOfRelation : Relation
         {
@@ -2104,31 +1424,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation OnlyChildOf = new OnlyChildOfRelation(">:"); /*{
-
-    private static readonly long serialVersionUID = 1719812660770087879L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      return t2.children().Length == 1 && t2.firstChild() == t1;
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          if (t != matcher.getRoot()) {
-            next = matcher.getParent(t);
-            if (next.numChildren() != 1) {
-              next = null;
-            }
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation OnlyChildOf = new OnlyChildOfRelation(">:");
 
         private class HasOnlyChildRelation : Relation
         {
@@ -2155,41 +1451,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation HasOnlyChild = new HasOnlyChildRelation("<:"); /*{
-
-    private static readonly long serialVersionUID = -8776487500849294279L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      return t1.children().Length == 1 && t1.firstChild() == t2;
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          if (!t.isLeaf() && t.numChildren() == 1) {
-            next = t.firstChild();
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation HasOnlyChild = new HasOnlyChildRelation("<:");
 
         private class UnaryPathAncestorSeachNodeIterator : IEnumerator<Tree>
         {
-            private readonly Stack<Tree> searchStack;
+            private readonly Stack<Tree> _searchStack;
 
             public UnaryPathAncestorSeachNodeIterator(Tree t)
             {
-                searchStack = new Stack<Tree>();
+                _searchStack = new Stack<Tree>();
                 if (!t.IsLeaf() && t.Children().Length == 1)
-                    searchStack.Push(t.GetChild(0));
-                /*if (searchStack.isEmpty()) {
-            advance();
-          }*/
+                    _searchStack.Push(t.GetChild(0));
             }
 
             public void Dispose()
@@ -2199,17 +1471,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                if (!searchStack.Any())
+                if (!_searchStack.Any())
                 {
                     this.Current = null;
                     return false;
                 }
                 else
                 {
-                    this.Current = searchStack.Pop();
+                    this.Current = _searchStack.Pop();
                     if (!this.Current.IsLeaf() && this.Current.Children().Length == 1)
                     {
-                        searchStack.Push(this.Current.GetChild(0));
+                        _searchStack.Push(this.Current.GetChild(0));
                     }
                     return true;
                 }
@@ -2251,68 +1523,22 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation UnaryPathAncestorOf = new UnaryPathAncestorOfRelation("<<:"); /* {
-
-    private static readonly long serialVersionUID = -742912038636163403L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      if (t1.isLeaf() || t1.children().Length > 1)
-        return false;
-      Tree onlyDtr = t1.children()[0];
-      if (onlyDtr == t2)
-        return true;
-      else
-        return satisfies(onlyDtr, t2, root, matcher);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        Stack<Tree> searchStack;
-
-        @Override
-        public void initialize() {
-          searchStack = new Stack<Tree>();
-          if (!t.isLeaf() && t.children().Length == 1)
-            searchStack.push(t.getChild(0));
-          if (!searchStack.isEmpty()) {
-            advance();
-          }
-        }
-
-        @Override
-        void advance() {
-          if (searchStack.isEmpty()) {
-            next = null;
-          } else {
-            next = searchStack.pop();
-            if (!next.isLeaf() && next.children().Length == 1)
-              searchStack.push(next.getChild(0));
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation UnaryPathAncestorOf = new UnaryPathAncestorOfRelation("<<:");
 
         private class UnaryPathDescendantSearchNodeIterator : IEnumerator<Tree>
         {
-            private readonly Stack<Tree> searchStack;
-            private readonly TregexMatcher matcher;
+            private readonly Stack<Tree> _searchStack;
+            private readonly TregexMatcher _matcher;
 
             public UnaryPathDescendantSearchNodeIterator(Tree t, TregexMatcher matcher)
             {
-                this.matcher = matcher;
-                searchStack = new Stack<Tree>();
+                this._matcher = matcher;
+                _searchStack = new Stack<Tree>();
                 Tree parent = matcher.GetParent(t);
                 if (parent != null && !parent.IsLeaf() && parent.Children().Length == 1)
                 {
-                    searchStack.Push(parent);
+                    _searchStack.Push(parent);
                 }
-                /*if (!searchStack.isEmpty()) {
-                    advance();
-                  }*/
             }
 
             public void Dispose()
@@ -2322,18 +1548,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                if (!searchStack.Any())
+                if (!_searchStack.Any())
                 {
                     this.Current = null;
                     return false;
                 }
                 else
                 {
-                    this.Current = searchStack.Pop();
-                    Tree parent = matcher.GetParent(this.Current);
+                    this.Current = _searchStack.Pop();
+                    Tree parent = _matcher.GetParent(this.Current);
                     if (parent != null && !parent.IsLeaf() && parent.Children().Length == 1)
                     {
-                        searchStack.Push(parent);
+                        _searchStack.Push(parent);
                     }
                     return true;
                 }
@@ -2381,55 +1607,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation UnaryPathDescendantOf = new UnaryPathDescendantOfRelation(">>:"); /*{
-
-    private static readonly long serialVersionUID = 4364021807752979404L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      if (t2.isLeaf() || t2.children().Length > 1)
-        return false;
-      Tree onlyDtr = t2.children()[0];
-      if (onlyDtr == t1)
-        return true;
-      else
-        return satisfies(t1, onlyDtr, root, matcher);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        Stack<Tree> searchStack;
-
-        @Override
-        public void initialize() {
-          searchStack = new Stack<Tree>();
-          Tree parent = matcher.getParent(t);
-          if (parent != null && !parent.isLeaf() &&
-              parent.children().Length == 1)
-            searchStack.push(parent);
-          if (!searchStack.isEmpty()) {
-            advance();
-          }
-        }
-
-        @Override
-        void advance() {
-          if (searchStack.isEmpty()) {
-            next = null;
-          } else {
-            next = searchStack.pop();
-            Tree parent = matcher.getParent(next);
-            if (parent != null && !parent.isLeaf() &&
-                parent.children().Length == 1)
-              searchStack.push(parent);
-          }
-        }
-      };
-    }
-  };
-*/
+        private static readonly Relation UnaryPathDescendantOf = new UnaryPathDescendantOfRelation(">>:");
 
         private class ParentEqualsRelation : Relation
         {
@@ -2453,41 +1631,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private static readonly Relation ParentEquals = new ParentEqualsRelation("<="); /*{
-    private static readonly long serialVersionUID = 98745298745198245L;
-
-    @Override
-    bool satisfies(Tree t1, Tree t2, Tree root, /*readonly#1# TregexMatcher matcher) {
-      if (t1 == t2) {
-        return true;
-      }
-      return PARENT_OF.satisfies(t1, t2, root, matcher);
-    }
-
-    @Override
-    Iterator<Tree> searchNodeIterator(/*readonly#1# Tree t,
-                                      /*readonly#1# TregexMatcher matcher) {
-      return new SearchNodeIterator() {
-        int nextNum;
-        bool usedParent;
-
-        @Override
-        public void advance() {
-          if (!usedParent) {
-            next = t;
-            usedParent = true;
-          } else {
-            if (nextNum < t.numChildren()) {
-              next = t.getChild(nextNum);
-              nextNum++;
-            } else {
-              next = null;
-            }
-          }
-        }
-      };
-    }
-  };*/
+        private static readonly Relation ParentEquals = new ParentEqualsRelation("<=");
 
         private static readonly Relation[] SimpleRelations =
         {
@@ -2496,7 +1640,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             HasLeftmostDescendant, HasRightmostDescendant,
             LeftmostDescendantOf, RightmostDescendantOf, SisterOf,
             LeftSisterOf, RightSisterOf, ImmediateLeftSisterOf,
-            ImmediateRightSisterOf, OnlyChildOf, HasOnlyChild, EQUALS,
+            ImmediateRightSisterOf, OnlyChildOf, HasOnlyChild, EqualsRel,
             PatternSplitter, UnaryPathAncestorOf, UnaryPathDescendantOf,
             ParentEquals
         };
@@ -2514,25 +1658,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         };
 
         private static readonly Dictionary<string, Relation> SimpleRelationsMap = SimpleRelations
-            .ToDictionary(r => r.symbol, r => r)
+            .ToDictionary(r => r._symbol, r => r)
             .Union(AdditionalRelationMap)
             .ToDictionary(ent => ent.Key, ent => ent.Value);
 
-        /*static {
-    for (Relation r : SIMPLE_RELATIONS) {
-      SIMPLE_RELATIONS_MAP.put(r.symbol, r);
-    }
-    SIMPLE_RELATIONS_MAP.put("<<`", HAS_RIGHTMOST_DESCENDANT);
-    SIMPLE_RELATIONS_MAP.put("<<,", HAS_LEFTMOST_DESCENDANT);
-    SIMPLE_RELATIONS_MAP.put(">>`", RIGHTMOST_DESCENDANT_OF);
-    SIMPLE_RELATIONS_MAP.put(">>,", LEFTMOST_DESCENDANT_OF);
-    SIMPLE_RELATIONS_MAP.put("$..", LEFT_SISTER_OF);
-    SIMPLE_RELATIONS_MAP.put("$,,", RIGHT_SISTER_OF);
-    SIMPLE_RELATIONS_MAP.put("$.", IMMEDIATE_LEFT_SISTER_OF);
-    SIMPLE_RELATIONS_MAP.put("$,", IMMEDIATE_RIGHT_SISTER_OF);
-  }*/
-
-        //@Override
         public override bool Equals(Object o)
         {
             if (this == o)
@@ -2544,21 +1673,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 return false;
             }
 
-            /*readonly*/
             var relation = (Relation) o;
-
-            return symbol.Equals(relation.symbol);
+            return _symbol.Equals(relation._symbol);
         }
-
-        /*@Override*/
 
         public override int GetHashCode()
         {
-            return symbol.GetHashCode();
+            return _symbol.GetHashCode();
         }
 
 
-        private /*static*/ class Heads : Relation
+        private class Heads : Relation
         {
 
             private new static readonly long serialVersionUID = 4681433462932265831L;
@@ -2570,7 +1695,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 this.hf = hf;
             }
 
-            //@Override
             public override bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly*/ TregexMatcher matcher)
             {
                 if (t2.IsLeaf())
@@ -2597,8 +1721,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
             }
 
-            /*@Override*/
-
             public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly*/ Tree t,
                 /*readonly */TregexMatcher matcher)
             {
@@ -2621,28 +1743,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     return new List<Tree>() {next}.GetEnumerator();
                 }
-                /*return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          next = t;
-          advance();
-        }
-
-        @Override
-        public void advance() {
-          HeadFinder headFinder = matcher.getHeadFinder();
-          if (headFinder == null) headFinder = hf;
-
-          Tree last = next;
-          next = matcher.getParent(next);
-          if (next != null && headFinder.determineHead(next) != last) {
-            next = null;
-          }
-        }
-      };*/
             }
 
-            //@Override
             public override bool Equals(Object o)
             {
                 if (this == o)
@@ -2658,18 +1760,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     return false;
                 }
 
-                /*readonly*/
                 var heads = (Heads) o;
-
                 if (hf != null ? !hf.Equals(heads.hf) : heads.hf != null)
                 {
                     return false;
                 }
-
                 return true;
             }
-
-            /*@Override*/
 
             public override int GetHashCode()
             {
@@ -2681,15 +1778,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class HeadedByIterator : IEnumerator<Tree>
         {
-            private readonly Tree initialNode;
-            private readonly HeadFinder hf;
-            private bool initialized;
+            private readonly Tree _initialNode;
+            private readonly HeadFinder _hf;
+            private bool _initialized;
 
             public HeadedByIterator(Tree t, TregexMatcher matcher, HeadFinder hf)
             {
-                this.initialNode = t;
-                this.hf = hf;
-                this.initialized = false;
+                this._initialNode = t;
+                this._hf = hf;
+                this._initialized = false;
             }
 
             public void Dispose()
@@ -2699,17 +1796,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                if (!initialized)
+                if (!_initialized)
                 {
-                    this.initialized = true;
-                    if (this.initialNode.IsLeaf())
+                    this._initialized = true;
+                    if (this._initialNode.IsLeaf())
                     {
                         this.Current = null;
                         return false;
                     }
                     else
                     {
-                        this.Current = this.hf.DetermineHead(this.initialNode);
+                        this.Current = this._hf.DetermineHead(this._initialNode);
                         return true;
                     }
                 }
@@ -2722,7 +1819,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     }
                     else
                     {
-                        this.Current = this.hf.DetermineHead(this.Current);
+                        this.Current = this._hf.DetermineHead(this.Current);
                         return true;
                     }
                 }
@@ -2741,55 +1838,29 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        private /*static*/ class HeadedBy : Relation
+        private class HeadedBy : Relation
         {
 
             private new static readonly long serialVersionUID = 2825997185749055693L;
 
-            private readonly Heads heads;
+            private readonly Heads _heads;
 
             public HeadedBy(HeadFinder hf) : base("<<#")
             {
-                this.heads = Interner<Heads>.GlobalIntern(new Heads(hf));
+                this._heads = Interner<Heads>.GlobalIntern(new Heads(hf));
             }
-
-            /*@Override*/
 
             public override bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly*/ TregexMatcher matcher)
             {
-                return heads.Satisfies(t2, t1, root, matcher);
+                return _heads.Satisfies(t2, t1, root, matcher);
             }
-
-            /*@Override*/
 
             public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly*/ Tree t,
                 /*readonly */TregexMatcher matcher)
             {
-                var finder = matcher.GetHeadFinder() != null ? matcher.GetHeadFinder() : this.heads.hf;
+                var finder = matcher.GetHeadFinder() != null ? matcher.GetHeadFinder() : this._heads.hf;
                 return new HeadedByIterator(t, matcher, finder);
-                /*return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          next = t;
-          advance();
-        }
-
-        @Override
-        public void advance() {
-          if (next.isLeaf()) {
-            next = null;
-          } else {
-            if (matcher.getHeadFinder() != null) {
-              next = matcher.getHeadFinder().determineHead(next);
-            } else {
-              next = heads.hf.determineHead(next);
             }
-          }
-        }
-      };*/
-            }
-
-            /*@Override*/
 
             public override bool Equals(Object o)
             {
@@ -2806,44 +1877,38 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     return false;
                 }
 
-                /*readonly */
                 var headedBy = (HeadedBy) o;
-
-                if (heads != null
-                    ? !heads.Equals(headedBy.heads)
-                    : headedBy.heads != null)
+                if (_heads != null
+                    ? !_heads.Equals(headedBy._heads)
+                    : headedBy._heads != null)
                 {
                     return false;
                 }
 
                 return true;
             }
-
-            /*@Override*/
-
+            
             public override int GetHashCode()
             {
                 int result = base.GetHashCode();
-                result = 29*result + (heads != null ? heads.GetHashCode() : 0);
+                result = 29*result + (_heads != null ? _heads.GetHashCode() : 0);
                 return result;
             }
         }
 
 
-        private /*static*/ class ImmediatelyHeads : Relation
+        private class ImmediatelyHeads : Relation
         {
 
 
             private new static readonly long serialVersionUID = 2085410152913894987L;
 
-            public readonly HeadFinder hf;
+            public readonly HeadFinder Hf;
 
             public ImmediatelyHeads(HeadFinder hf) : base(">#")
             {
-                this.hf = hf;
+                this.Hf = hf;
             }
-
-            /*@Override*/
 
             public override bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
             {
@@ -2853,11 +1918,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 else
                 {
-                    return hf.DetermineHead(t2) == t1;
+                    return Hf.DetermineHead(t2) == t1;
                 }
             }
-
-            /*@Override*/
 
             public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly*/ Tree t,
                 /*readonly*/ TregexMatcher matcher)
@@ -2865,28 +1928,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 if (t != matcher.GetRoot())
                 {
                     var next = matcher.GetParent(t);
-                    HeadFinder headFinder = matcher.GetHeadFinder() == null ? hf : matcher.GetHeadFinder();
+                    HeadFinder headFinder = matcher.GetHeadFinder() == null ? Hf : matcher.GetHeadFinder();
                     if (headFinder.DetermineHead(next) == t)
                     {
                         return new List<Tree>() {next}.GetEnumerator();
                     }
                 }
                 return new List<Tree>().GetEnumerator();
-                /*return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          if (t != matcher.getRoot()) {
-            next = matcher.getParent(t);
-            HeadFinder headFinder = matcher.getHeadFinder() == null ? hf : matcher.getHeadFinder();
-            if (headFinder.determineHead(next) != t) {
-              next = null;
             }
-          }
-        }
-      };*/
-            }
-
-            /*@Override*/
 
             public override bool Equals(Object o)
             {
@@ -2903,76 +1952,54 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     return false;
                 }
 
-                /*readonly*/
                 var immediatelyHeads = (ImmediatelyHeads) o;
-
-                if (hf != null ? !hf.Equals(immediatelyHeads.hf) : immediatelyHeads.hf != null)
+                if (Hf != null ? !Hf.Equals(immediatelyHeads.Hf) : immediatelyHeads.Hf != null)
                 {
                     return false;
                 }
 
                 return true;
             }
-
-            /*@Override*/
-
+            
             public override int GetHashCode()
             {
                 int result = base.GetHashCode();
-                result = 29*result + (hf != null ? hf.GetHashCode() : 0);
+                result = 29*result + (Hf != null ? Hf.GetHashCode() : 0);
                 return result;
             }
         }
 
 
-        private /*static*/ class ImmediatelyHeadedBy : Relation
+        private class ImmediatelyHeadedBy : Relation
         {
 
             private new static readonly long serialVersionUID = 5910075663419780905L;
 
-            private readonly ImmediatelyHeads immediatelyHeads;
+            private readonly ImmediatelyHeads _immediatelyHeads;
 
             public ImmediatelyHeadedBy(HeadFinder hf) : base("<#")
             {
-                this.immediatelyHeads = Interner<ImmediatelyHeads>
+                this._immediatelyHeads = Interner<ImmediatelyHeads>
                     .GlobalIntern(new ImmediatelyHeads(hf));
             }
-
-            /*@Override*/
-
+            
             public override bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
             {
-                return immediatelyHeads.Satisfies(t2, t1, root, matcher);
+                return _immediatelyHeads.Satisfies(t2, t1, root, matcher);
             }
-
-            /*@Override*/
 
             public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly*/ Tree t,
                 /*readonly */TregexMatcher matcher)
             {
                 if (!t.IsLeaf())
                 {
-                    var headFinder = matcher.GetHeadFinder() != null ? matcher.GetHeadFinder() : immediatelyHeads.hf;
+                    var headFinder = matcher.GetHeadFinder() != null ? matcher.GetHeadFinder() : _immediatelyHeads.Hf;
                     var next = headFinder.DetermineHead(t);
                     return new List<Tree>() {next}.GetEnumerator();
                 }
                 return new List<Tree>().GetEnumerator();
-                /*return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          if (!t.isLeaf()) {
-            if (matcher.getHeadFinder() != null) {
-              next = matcher.getHeadFinder().determineHead(t);
-            } else {
-              next = immediatelyHeads.hf.determineHead(t);
             }
-          }
-        }
-      };*/
-            }
-
-            /*@Override*/
-
+            
             public override bool Equals(Object o)
             {
                 if (this == o)
@@ -2988,38 +2015,32 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     return false;
                 }
 
-                /*readonly */
                 var immediatelyHeadedBy = (ImmediatelyHeadedBy) o;
-
-                if (immediatelyHeads != null
-                    ? !immediatelyHeads
-                        .Equals(immediatelyHeadedBy.immediatelyHeads)
-                    : immediatelyHeadedBy.immediatelyHeads != null)
+                if (_immediatelyHeads != null
+                    ? !_immediatelyHeads
+                        .Equals(immediatelyHeadedBy._immediatelyHeads)
+                    : immediatelyHeadedBy._immediatelyHeads != null)
                 {
                     return false;
                 }
-
                 return true;
             }
-
-            /*@Override*/
 
             public override int GetHashCode()
             {
                 int result = base.GetHashCode();
                 result = 29*result
-                         + (immediatelyHeads != null ? immediatelyHeads.GetHashCode() : 0);
+                         + (_immediatelyHeads != null ? _immediatelyHeads.GetHashCode() : 0);
                 return result;
             }
         }
 
 
-        private /*static */ class IthChildOf : Relation
+        private class IthChildOf : Relation
         {
-
             private new static readonly long serialVersionUID = -1463126827537879633L;
 
-            public readonly int childNum;
+            public readonly int ChildNum;
 
             public IthChildOf(int i) : base(">" + i)
             {
@@ -3030,45 +2051,41 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 else
                 {
-                    childNum = i;
+                    ChildNum = i;
                 }
             }
-
-            /*@Override*/
-
+            
             public override bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
             {
                 Tree[] kids = t2.Children();
-                if (kids.Length < Math.Abs(childNum))
+                if (kids.Length < Math.Abs(ChildNum))
                 {
                     return false;
                 }
-                if (childNum > 0 && kids[childNum - 1] == t1)
+                if (ChildNum > 0 && kids[ChildNum - 1] == t1)
                 {
                     return true;
                 }
-                if (childNum < 0 && kids[kids.Length + childNum] == t1)
+                if (ChildNum < 0 && kids[kids.Length + ChildNum] == t1)
                 {
                     return true;
                 }
                 return false;
             }
-
-            /*@Override*/
-
+            
             public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly */ Tree t,
                 /*readonly */TregexMatcher matcher)
             {
                 if (t != matcher.GetRoot())
                 {
                     var next = matcher.GetParent(t);
-                    if (childNum > 0
-                        && (next.NumChildren() < childNum || next
-                            .GetChild(childNum - 1) != t)
-                        || childNum < 0
-                        && (next.NumChildren() < -childNum || next.GetChild(next
+                    if (ChildNum > 0
+                        && (next.NumChildren() < ChildNum || next
+                            .GetChild(ChildNum - 1) != t)
+                        || ChildNum < 0
+                        && (next.NumChildren() < -ChildNum || next.GetChild(next
                             .NumChildren()
-                                                                            + childNum) != t))
+                                                                            + ChildNum) != t))
                     {
                         next = null;
                     }
@@ -3078,26 +2095,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     }
                 }
                 return new List<Tree>().GetEnumerator();
-                /*return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          if (t != matcher.getRoot()) {
-            next = matcher.getParent(t);
-            if (childNum > 0
-                && (next.numChildren() < childNum || next
-                    .getChild(childNum - 1) != t)
-                || childNum < 0
-                && (next.numChildren() < -childNum || next.getChild(next
-                    .numChildren()
-                    + childNum) != t)) {
-              next = null;
             }
-          }
-        }
-      };*/
-            }
-
-            /*@Override*/
 
             public override bool Equals(Object o)
             {
@@ -3110,52 +2108,44 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     return false;
                 }
 
-                /*readonly */
                 var ithChildOf = (IthChildOf) o;
-
-                if (childNum != ithChildOf.childNum)
+                if (ChildNum != ithChildOf.ChildNum)
                 {
                     return false;
                 }
 
                 return true;
             }
-
-            /*@Override*/
-
+            
             public override int GetHashCode()
             {
-                return childNum;
+                return ChildNum;
             }
 
         }
 
 
-        private /*static */ class HasIthChild : Relation
+        private class HasIthChild : Relation
         {
 
             private new static readonly long serialVersionUID = 3546853729291582806L;
 
-            private readonly IthChildOf ithChildOf;
+            private readonly IthChildOf _ithChildOf;
 
             public HasIthChild(int i) : base("<" + i)
             {
-                ithChildOf = Interner<IthChildOf>.GlobalIntern(new IthChildOf(i));
+                _ithChildOf = Interner<IthChildOf>.GlobalIntern(new IthChildOf(i));
             }
-
-            /*@Override*/
-
+            
             public override bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
             {
-                return ithChildOf.Satisfies(t2, t1, root, matcher);
+                return _ithChildOf.Satisfies(t2, t1, root, matcher);
             }
-
-            /*@Override*/
 
             public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly */ Tree t,
                 /*readonly */TregexMatcher matcher)
             {
-                int childNum = ithChildOf.childNum;
+                int childNum = _ithChildOf.ChildNum;
                 if (t.NumChildren() >= Math.Abs(childNum))
                 {
                     Tree next;
@@ -3170,22 +2160,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     return new List<Tree>() {next}.GetEnumerator();
                 }
                 return new List<Tree>().GetEnumerator();
-                /*return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          int childNum = ithChildOf.childNum;
-          if (t.numChildren() >= Math.abs(childNum)) {
-            if (childNum > 0) {
-              next = t.getChild(childNum - 1);
-            } else {
-              next = t.getChild(t.numChildren() + childNum);
             }
-          }
-        }
-      };*/
-            }
-
-            /*@Override*/
 
             public override bool Equals(Object o)
             {
@@ -3202,12 +2177,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     return false;
                 }
 
-                /*readonly */
                 var hasIthChild = (HasIthChild) o;
-
-                if (ithChildOf != null
-                    ? !ithChildOf.Equals(hasIthChild.ithChildOf)
-                    : hasIthChild.ithChildOf != null)
+                if (_ithChildOf != null
+                    ? !_ithChildOf.Equals(hasIthChild._ithChildOf)
+                    : hasIthChild._ithChildOf != null)
                 {
                     return false;
                 }
@@ -3215,32 +2188,27 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 return true;
             }
 
-            /*@Override*/
-
             public override int GetHashCode()
             {
                 int result = base.GetHashCode();
-                result = 29*result + (ithChildOf != null ? ithChildOf.GetHashCode() : 0);
+                result = 29*result + (_ithChildOf != null ? _ithChildOf.GetHashCode() : 0);
                 return result;
             }
         }
 
         private class UnbrokenCategoryDominatesIterator : IEnumerator<Tree>
         {
-            private readonly Stack<Tree> searchStack;
-            private readonly Func<Tree, bool> patchMatchesNode;
+            private readonly Stack<Tree> _searchStack;
+            private readonly Func<Tree, bool> _patchMatchesNode;
 
             public UnbrokenCategoryDominatesIterator(Tree t, Func<Tree, bool> patchMatchesNode)
             {
-                searchStack = new Stack<Tree>();
+                _searchStack = new Stack<Tree>();
                 for (int i = t.NumChildren() - 1; i >= 0; i--)
                 {
-                    searchStack.Push(t.GetChild(i));
+                    _searchStack.Push(t.GetChild(i));
                 }
-                /*if (!searchStack.isEmpty()) {
-            advance();
-          }*/
-                this.patchMatchesNode = patchMatchesNode;
+                this._patchMatchesNode = patchMatchesNode;
             }
 
             public void Dispose()
@@ -3250,19 +2218,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
             public bool MoveNext()
             {
-                if (!searchStack.Any())
+                if (!_searchStack.Any())
                 {
                     this.Current = null;
                     return false;
                 }
                 else
                 {
-                    this.Current = searchStack.Pop();
-                    if (this.patchMatchesNode(this.Current))
+                    this.Current = _searchStack.Pop();
+                    if (this._patchMatchesNode(this.Current))
                     {
                         for (int i = this.Current.NumChildren() - 1; i >= 0; i--)
                         {
-                            searchStack.Push(this.Current.GetChild(i));
+                            _searchStack.Push(this.Current.GetChild(i));
                         }
                     }
                     return true;
@@ -3284,63 +2252,59 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         }
 
 
-        private /*static */ class UnbrokenCategoryDominates : Relation
+        private class UnbrokenCategoryDominates : Relation
         {
-
             private new static readonly long serialVersionUID = -4174923168221859262L;
 
-            private readonly Regex pattern;
-            private readonly bool negatedPattern;
-            private readonly bool basicCat;
-            private readonly Func<string, string> basicCatFunction;
+            private readonly Regex _pattern;
+            private readonly bool _negatedPattern;
+            private readonly bool _basicCat;
+            private readonly Func<string, string> _basicCatFunction;
 
 
-            /**
-     *
-     * @param arg This may have a ! and then maybe a @ and then either an
-     *            identifier or regex
-     */
-
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="arg">
+            /// This may have a ! and then maybe a @ and then either an identifier or regex
+            /// </param>
             public UnbrokenCategoryDominates(string arg,
                 Func<string, string> basicCatFunction) : base("<+(" + arg + ')')
             {
                 if (arg.StartsWith("!"))
                 {
-                    negatedPattern = true;
+                    _negatedPattern = true;
                     arg = arg.Substring(1);
                 }
                 else
                 {
-                    negatedPattern = false;
+                    _negatedPattern = false;
                 }
                 if (arg.StartsWith("@"))
                 {
-                    basicCat = true;
-                    this.basicCatFunction = basicCatFunction;
+                    _basicCat = true;
+                    this._basicCatFunction = basicCatFunction;
                     arg = arg.Substring(1);
                 }
                 else
                 {
-                    basicCat = false;
+                    _basicCat = false;
                 }
                 if (Regex.IsMatch(arg, "/.*/"))
                 {
                     //pattern = new Regex(arg.Substring(1, arg.Length - 1));
-                    pattern = new Regex(arg.Substring(1, arg.Length - 2));
+                    _pattern = new Regex(arg.Substring(1, arg.Length - 2));
                 }
                 else if (Regex.IsMatch(arg, "__"))
                 {
-                    pattern = new Regex("^.*$");
+                    _pattern = new Regex("^.*$");
                 }
                 else
                 {
-                    pattern = new Regex("^(?:" + arg + ")$");
+                    _pattern = new Regex("^(?:" + arg + ")$");
                 }
             }
-
-            /** {@inheritDoc} */
-            /*@Override*/
-
+            
             public override bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
             {
                 foreach (Tree kid in t1.Children())
@@ -3367,57 +2331,24 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 if (lab == null)
                 {
                     // Say that a null label matches no positive pattern, but any negated patern
-                    return negatedPattern;
+                    return _negatedPattern;
                 }
                 else
                 {
-                    if (basicCat)
+                    if (_basicCat)
                     {
-                        lab = basicCatFunction(lab);
+                        lab = _basicCatFunction(lab);
                     }
-                    var m = pattern.Match(lab);
-                    return m.Success != negatedPattern;
+                    var m = _pattern.Match(lab);
+                    return m.Success != _negatedPattern;
                 }
             }
-
-            /** {@inheritDoc} */
-            /*@Override*/
 
             public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly */ Tree t,
                 /*readonly */TregexMatcher matcher)
             {
                 return new UnbrokenCategoryDominatesIterator(t, this.PathMatchesNode);
-                /*return new SearchNodeIterator() {
-        Stack<Tree> searchStack;
-
-        @Override
-        public void initialize() {
-          searchStack = new Stack<Tree>();
-          for (int i = t.numChildren() - 1; i >= 0; i--) {
-            searchStack.push(t.getChild(i));
-          }
-          if (!searchStack.isEmpty()) {
-            advance();
-          }
-        }
-
-        @Override
-        void advance() {
-          if (searchStack.isEmpty()) {
-            next = null;
-          } else {
-            next = searchStack.pop();
-            if (pathMatchesNode(next)) {
-              for (int i = next.numChildren() - 1; i >= 0; i--) {
-                searchStack.push(next.getChild(i));
-              }
             }
-          }
-        }
-      };*/
-            }
-
-            /*@Override*/
 
             public override bool Equals(Object o)
             {
@@ -3429,15 +2360,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 {
                     return false;
                 }
-
-                /*readonly*/
+                
                 var unbrokenCategoryDominates = (UnbrokenCategoryDominates) o;
-
-                if (negatedPattern != unbrokenCategoryDominates.negatedPattern)
+                if (_negatedPattern != unbrokenCategoryDominates._negatedPattern)
                 {
                     return false;
                 }
-                if (!pattern.Equals(unbrokenCategoryDominates.pattern))
+                if (!_pattern.Equals(unbrokenCategoryDominates._pattern))
                 {
                     return false;
                 }
@@ -3445,72 +2374,47 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 return true;
             }
 
-            /*@Override*/
-
             public override int GetHashCode()
             {
-                int result = pattern.GetHashCode();
-                result = 29*result + (negatedPattern ? 1 : 0);
+                int result = _pattern.GetHashCode();
+                result = 29*result + (_negatedPattern ? 1 : 0);
                 return result;
             }
 
         } // end class UnbrokenCategoryDominates
 
 
-        private /*static*/ class UnbrokenCategoryIsDominatedBy : Relation
+        private class UnbrokenCategoryIsDominatedBy : Relation
         {
 
             private new static readonly long serialVersionUID = 2867922828235355129L;
 
-            private readonly UnbrokenCategoryDominates unbrokenCategoryDominates;
+            private readonly UnbrokenCategoryDominates _unbrokenCategoryDominates;
 
             public UnbrokenCategoryIsDominatedBy(string arg,
                 Func<string, string> basicCatFunction) : base(">+(" + arg + ')')
             {
-                unbrokenCategoryDominates = Interner<UnbrokenCategoryDominates>
+                _unbrokenCategoryDominates = Interner<UnbrokenCategoryDominates>
                     .GlobalIntern((new UnbrokenCategoryDominates(arg, basicCatFunction)));
             }
 
-            /** {@inheritDoc} */
-            /*@Override*/
-
             public override bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
             {
-                return unbrokenCategoryDominates.Satisfies(t2, t1, root, matcher);
+                return _unbrokenCategoryDominates.Satisfies(t2, t1, root, matcher);
             }
-
-            /** {@inheritDoc} */
-            /*@Override*/
-
+            
             public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly */ Tree t,
                 /*readonly */TregexMatcher matcher)
             {
                 var nodes = new List<Tree>();
                 var node = t;
-                while (unbrokenCategoryDominates.PathMatchesNode(node))
+                while (_unbrokenCategoryDominates.PathMatchesNode(node))
                 {
                     node = matcher.GetParent(node);
                     nodes.Add(node);
                 }
                 return nodes.GetEnumerator();
-                /*return new SearchNodeIterator() {
-        @Override
-        void initialize() {
-          next = matcher.getParent(t);
-        }
-
-        @Override
-        public void advance() {
-          if (unbrokenCategoryDominates.pathMatchesNode(next)) {
-            next = matcher.getParent(next);
-          } else {
-            next = null;
-          }
-        }
-      };*/
             }
-
-            /*@Override*/
 
             public override bool Equals(Object o)
             {
@@ -3527,87 +2431,79 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     return false;
                 }
 
-                /*readonly */
                 var unbrokenCategoryIsDominatedBy = (UnbrokenCategoryIsDominatedBy) o;
-
-                return unbrokenCategoryDominates.Equals(unbrokenCategoryIsDominatedBy.unbrokenCategoryDominates);
+                return _unbrokenCategoryDominates.Equals(unbrokenCategoryIsDominatedBy._unbrokenCategoryDominates);
             }
-
-            /*@Override*/
 
             public override int GetHashCode()
             {
                 int result = base.GetHashCode();
-                result = 29*result + unbrokenCategoryDominates.GetHashCode();
+                result = 29*result + _unbrokenCategoryDominates.GetHashCode();
                 return result;
             }
         }
 
-
-        /**
-   * Note that this only works properly for context-free trees.
-   * Also, the use of initialize and advance is not very efficient just yet.  Finally, each node in the tree
-   * is added only once, even if there is more than one unbroken-category precedence path to it.
-   *
-   */
-
+        /// <summary>
+        /// Note that this only works properly for context-free trees.
+        /// Also, the use of initialize and advance is not very efficient just yet.  Finally, each node in the tree
+        /// is added only once, even if there is more than one unbroken-category precedence path to it.
+        /// </summary>
         private /*static*/ class UnbrokenCategoryPrecedes : Relation
         {
 
             private new static readonly long serialVersionUID = 6866888667804306111L;
 
-            private readonly Regex pattern;
-            private readonly bool negatedPattern;
-            private readonly bool basicCat;
-            private readonly Func<string, string> basicCatFunction;
+            private readonly Regex _pattern;
+            private readonly bool _negatedPattern;
+            private readonly bool _basicCat;
+            private readonly Func<string, string> _basicCatFunction;
 
-            /**
-     * @param arg The pattern to match, perhaps preceded by ! and/or @
-     */
-
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="arg">The pattern to match, perhaps preceded by ! and/or @</param>
             public UnbrokenCategoryPrecedes(string arg,
                 Func<string, string> basicCatFunction) : base(".+(" + arg + ')')
             {
                 if (arg.StartsWith("!"))
                 {
-                    negatedPattern = true;
+                    _negatedPattern = true;
                     arg = arg.Substring(1);
                 }
                 else
                 {
-                    negatedPattern = false;
+                    _negatedPattern = false;
                 }
                 if (arg.StartsWith("@"))
                 {
-                    basicCat = true;
-                    this.basicCatFunction = basicCatFunction;
-                        // todo -- this was missing a this. which must be testable in a unit test!!! Make one
+                    _basicCat = true;
+                    this._basicCatFunction = basicCatFunction;
+                    // TODO -- this was missing a this. which must be testable in a unit test!!! Make one
                     arg = arg.Substring(1);
                 }
                 else
                 {
-                    basicCat = false;
+                    _basicCat = false;
                 }
                 if (Regex.IsMatch(arg, "/.*/"))
                 {
                     //pattern = new Regex(arg.Substring(1, arg.Length - 1));
-                    pattern = new Regex(arg.Substring(1, arg.Length - 2));
+                    _pattern = new Regex(arg.Substring(1, arg.Length - 2));
                 }
                 else if (Regex.IsMatch(arg, "__"))
                 {
-                    pattern = new Regex("^.*$");
+                    _pattern = new Regex("^.*$");
                 }
                 else
                 {
-                    pattern = new Regex("^(?:" + arg + ")$");
+                    _pattern = new Regex("^(?:" + arg + ")$");
                 }
             }
 
-            /** {@inheritDoc} */
-            //@Override
             public override bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
             {
-                return true; // shouldn't have to do anything here.
+                // shouldn't have to do anything here.
+                return true;
             }
 
             private bool PathMatchesNode(Tree node)
@@ -3617,16 +2513,16 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 if (lab == null)
                 {
                     // Say that a null label matches no positive pattern, but any negated pattern
-                    return negatedPattern;
+                    return _negatedPattern;
                 }
                 else
                 {
-                    if (basicCat)
+                    if (_basicCat)
                     {
-                        lab = basicCatFunction(lab);
+                        lab = _basicCatFunction(lab);
                     }
-                    var m = pattern.Match(lab);
-                    return m.Success != negatedPattern;
+                    var m = _pattern.Match(lab);
+                    return m.Success != _negatedPattern;
                 }
             }
 
@@ -3677,8 +2573,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
             }
 
-            /** {@inheritDoc} */
-            //@Override
             public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly */ Tree t,
                 /*readonly */TregexMatcher matcher)
             {
@@ -3686,127 +2580,69 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 InitializeHelper(stack, t, matcher.GetRoot(), matcher, new IdentityHashSet<Tree>());
 
                 return stack.GetEnumerator();
-                /*return new SearchNodeIterator() {
-        private IdentityHashSet<Tree> nodesToSearch;
-        private Stack<Tree> searchStack;
-
-        @Override
-        public void initialize() {
-          nodesToSearch = new IdentityHashSet<Tree>();
-          searchStack = new Stack<Tree>();
-          initializeHelper(searchStack, t, matcher.getRoot());
-          advance();
-        }
-
-        private void initializeHelper(Stack<Tree> stack, Tree node, Tree root) {
-          if (node==root) {
-            return;
-          }
-          Tree parent = matcher.getParent(node);
-          int i = parent.objectIndexOf(node);
-          while (i == parent.children().Length-1 && parent != root) {
-            node = parent;
-            parent = matcher.getParent(parent);
-            i = parent.objectIndexOf(node);
-          }
-          Tree followingNode;
-          if (i+1 < parent.children().Length) {
-            followingNode = parent.children()[i+1];
-          } else {
-            followingNode = null;
-          }
-          while (followingNode != null) {
-            //System.err.println("adding to stack node " + followingNode.ToString());
-            if (! nodesToSearch.contains(followingNode)) {
-              stack.Add(followingNode);
-              nodesToSearch.Add(followingNode);
-            }
-            if (pathMatchesNode(followingNode)) {
-              initializeHelper(stack, followingNode, root);
-            }
-            if (! followingNode.isLeaf()) {
-              followingNode = followingNode.children()[0];
-            } else {
-              followingNode = null;
-            }
-          }
-        }
-
-        @Override
-        void advance() {
-          if (searchStack.isEmpty()) {
-            next = null;
-          } else {
-            next = searchStack.pop();
-          }
-        }
-      };*/
             }
         }
 
-
-        /**
-   * Note that this only works properly for context-free trees.
-   * Also, the use of initialize and advance is not very efficient just yet.  Finally, each node in the tree
-   * is added only once, even if there is more than one unbroken-category precedence path to it.
-   */
-
-        private /*static */ class UnbrokenCategoryFollows : Relation
+        /// <summary>
+        /// Note that this only works properly for context-free trees.
+        /// Also, the use of initialize and advance is not very efficient just yet.  Finally, each node in the tree
+        /// is added only once, even if there is more than one unbroken-category precedence path to it.
+        /// </summary>
+        private class UnbrokenCategoryFollows : Relation
         {
 
             private new static readonly long serialVersionUID = -7890430001297866437L;
 
-            private readonly Regex pattern;
-            private readonly bool negatedPattern;
-            private readonly bool basicCat;
-            private readonly Func<string, string> basicCatFunction;
+            private readonly Regex _pattern;
+            private readonly bool _negatedPattern;
+            private readonly bool _basicCat;
+            private readonly Func<string, string> _basicCatFunction;
 
-            /**
-     * @param arg The pattern to match, perhaps preceded by ! and/or @
-     */
-
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="arg">The pattern to match, perhaps preceded by ! and/or @</param>
             public UnbrokenCategoryFollows(string arg,
                 Func<string, string> basicCatFunction) : base(",+(" + arg + ')')
             {
                 if (arg.StartsWith("!"))
                 {
-                    negatedPattern = true;
+                    _negatedPattern = true;
                     arg = arg.Substring(1);
                 }
                 else
                 {
-                    negatedPattern = false;
+                    _negatedPattern = false;
                 }
                 if (arg.StartsWith("@"))
                 {
-                    basicCat = true;
-                    this.basicCatFunction = basicCatFunction;
+                    _basicCat = true;
+                    this._basicCatFunction = basicCatFunction;
                     arg = arg.Substring(1);
                 }
                 else
                 {
-                    basicCat = false;
+                    _basicCat = false;
                 }
                 if (Regex.IsMatch(arg, "/.*/"))
                 {
                     //pattern = new Regex(arg.Substring(1, arg.Length - 1));
-                    pattern = new Regex(arg.Substring(1, arg.Length - 2));
+                    _pattern = new Regex(arg.Substring(1, arg.Length - 2));
                 }
                 else if (Regex.IsMatch(arg, "__"))
                 {
-                    pattern = new Regex("^.*$");
+                    _pattern = new Regex("^.*$");
                 }
                 else
                 {
-                    pattern = new Regex("^(?:" + arg + ")$");
+                    _pattern = new Regex("^(?:" + arg + ")$");
                 }
             }
 
-            /** {@inheritDoc} */
-            //@Override
             public override bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly */TregexMatcher matcher)
             {
-                return true; // shouldn't have to do anything here.
+                // shouldn't have to do anything here
+                return true;
             }
 
             private bool PathMatchesNode(Tree node)
@@ -3816,16 +2652,16 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 if (lab == null)
                 {
                     // Say that a null label matches no positive pattern, but any negated pattern
-                    return negatedPattern;
+                    return _negatedPattern;
                 }
                 else
                 {
-                    if (basicCat)
+                    if (_basicCat)
                     {
-                        lab = basicCatFunction(lab);
+                        lab = _basicCatFunction(lab);
                     }
-                    var m = pattern.Match(lab);
-                    return m.Success != negatedPattern;
+                    var m = _pattern.Match(lab);
+                    return m.Success != _negatedPattern;
                 }
             }
 
@@ -3876,8 +2712,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
             }
 
-            /** {@inheritDoc} */
-            //@Override
             public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly */ Tree t,
                 /*readonly */TregexMatcher matcher)
             {
@@ -3885,61 +2719,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 InitializeHelper(searchStack, t, matcher.GetRoot(), matcher, new IdentityHashSet<Tree>());
 
                 return searchStack.GetEnumerator();
-                /*return new SearchNodeIterator() {
-        IdentityHashSet<Tree> nodesToSearch;
-        Stack<Tree> searchStack;
-
-        @Override
-        public void initialize() {
-          nodesToSearch = new IdentityHashSet<Tree>();
-          searchStack = new Stack<Tree>();
-          initializeHelper(searchStack, t, matcher.getRoot());
-          advance();
-        }
-
-        private void initializeHelper(Stack<Tree> stack, Tree node, Tree root) {
-          if (node==root) {
-            return;
-          }
-          Tree parent = matcher.getParent(node);
-          int i = parent.objectIndexOf(node);
-          while (i == 0 && parent != root) {
-            node = parent;
-            parent = matcher.getParent(parent);
-            i = parent.objectIndexOf(node);
-          }
-          Tree precedingNode;
-          if (i > 0) {
-            precedingNode = parent.children()[i-1];
-          } else {
-            precedingNode = null;
-          }
-          while (precedingNode != null) {
-            //System.err.println("adding to stack node " + precedingNode.ToString());
-            if ( ! nodesToSearch.contains(precedingNode)) {
-              stack.Add(precedingNode);
-              nodesToSearch.Add(precedingNode);
-            }
-            if (pathMatchesNode(precedingNode)) {
-              initializeHelper(stack, precedingNode, root);
-            }
-            if (! precedingNode.isLeaf()) {
-              precedingNode = precedingNode.children()[0];
-            } else {
-              precedingNode = null;
-            }
-          }
-        }
-
-        @Override
-        void advance() {
-          if (searchStack.isEmpty()) {
-            next = null;
-          } else {
-            next = searchStack.pop();
-          }
-        }
-      };*/
             }
         }
     }

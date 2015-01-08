@@ -52,7 +52,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             var nodes = new List<TregexPattern>();
             // a local variable
 
-            TregexPattern node = SubNode(TRegex.Relation.ROOT);
+            TregexPattern node = SubNode(TRegex.Relation.Root);
             nodes.Add(node);
             //label_1:
             while (true)
@@ -67,7 +67,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     break;
                 }
                 Jj_consume_token(12);
-                node = SubNode(TRegex.Relation.ROOT);
+                node = SubNode(TRegex.Relation.Root);
                 nodes.Add(node);
             }
             Jj_consume_token(13);

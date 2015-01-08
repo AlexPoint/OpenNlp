@@ -11,8 +11,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private readonly bool isConj;
         private readonly List<TregexPattern> children;
 
-        /* if isConj is true, then it is an "AND" ; if it is false, it is an "OR".*/
-
+        /// <summary>
+        /// if isConj is true, then it is an "AND" ; if it is false, it is an "OR"
+        /// </summary>
         public CoordinationPattern(List<TregexPattern> children, bool isConj)
         {
             if (children.Count < 2)
@@ -21,22 +22,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
             this.children = children;
             this.isConj = isConj;
-            //    System.out.println("Made " + (isConj ? "and " : "or ") + "node with " + children.size() + " children.");
         }
 
-        //@Override
         public override List<TregexPattern> GetChildren()
         {
             return children;
         }
 
-        //@Override
         public override string LocalString()
         {
             return (isConj ? "and" : "or");
         }
 
-        //@Override
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -64,18 +61,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 sb.Append('[');
                 sb.Append(string.Join(" |", children));
                 /*for (Iterator<TregexPattern> iter = children.iterator(); iter.hasNext();) {
-        TregexPattern node = iter.next();
-        sb.Append(node.ToString());
-        if (iter.hasNext()) {
-          sb.Append(" |");
-        }
-      }*/
+                TregexPattern node = iter.next();
+                sb.Append(node.ToString());
+                if (iter.hasNext()) {
+                    sb.Append(" |");
+                }
+                }*/
                 sb.Append(']');
             }
             return sb.ToString();
         }
 
-        //@Override
         public override TregexMatcher Matcher(Tree root, Tree tree,
             IdentityDictionary<Tree, Tree> nodesToParents,
             Dictionary<string, Tree> namesToNodes,
@@ -85,7 +81,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return new CoordinationMatcher(this, root, tree, nodesToParents, namesToNodes, variableStrings, headFinder);
         }
 
-        private /*static */ class CoordinationMatcher : TregexMatcher
+        private class CoordinationMatcher : TregexMatcher
         {
             private readonly TregexMatcher[] children;
             private readonly CoordinationPattern myNode;
@@ -114,7 +110,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 considerAll = myNode.isConj ^ myNode.IsNegated();
             }
 
-            //@Override
             public override void ResetChildIter()
             {
                 currChild = 0;
@@ -127,7 +122,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
             }
 
-            //@Override
             public override void ResetChildIter(Tree tree)
             {
                 this.tree = tree;
@@ -141,8 +135,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
             }
 
-            // find the next local match
-            //@Override
+            /// <summary>
+            /// find the next local match
+            /// </summary>
             public override bool Matches()
             {
                 // also known as "FUN WITH LOGIC"
@@ -243,7 +238,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
             }
 
-            //@Override
             public override Tree GetMatch()
             {
                 // in general, only DescriptionNodes can match

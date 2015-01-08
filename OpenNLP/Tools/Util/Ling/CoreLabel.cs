@@ -124,13 +124,9 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
         //Unchecked is below because eclipse can't handle the level of type inference if we correctly parameterize GenericAnnotation with String
-        //@SuppressWarnings("unchecked")
         /*public static /*readonly #1#Dictionary<string, typeof(GenericAnnotation)> genericKeys = Generics.newHashMap();
-  //@SuppressWarnings("unchecked")
-  public static /*readonly #1#Dictionary<Class<? extends GenericAnnotation>, string> genericValues = Generics.newHashMap();*/
+    public static /*readonly #1#Dictionary<Class<? extends GenericAnnotation>, string> genericValues = Generics.newHashMap();*/
 
-
-        //@SuppressWarnings("unchecked")
         /*private void initFromStrings(string[] keys, string[] values) {
     for(int i = 0; i < Math.Min(keys.Length, values.Length); i++) {
       string key = keys[i];

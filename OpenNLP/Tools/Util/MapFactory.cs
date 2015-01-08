@@ -15,22 +15,16 @@ namespace OpenNLP.Tools.Util
     /// </summary>
     public abstract class MapFactory<K, V>
     {
-        //@SuppressWarnings("unchecked")
         //public static readonly MapFactory HASH_MAP_FACTORY = new HashMapFactory();
 
-        //@SuppressWarnings("unchecked")
         //public static readonly MapFactory IDENTITY_HASH_MAP_FACTORY = new IdentityHashMapFactory();
 
-        //@SuppressWarnings("unchecked")
         //private static readonly MapFactory WEAK_HASH_MAP_FACTORY = new WeakHashMapFactory();
 
-        //@SuppressWarnings("unchecked")
         //private static readonly MapFactory TREE_MAP_FACTORY = new TreeMapFactory();
 
-        //@SuppressWarnings("unchecked")
         //private static readonly MapFactory LINKED_HASH_MAP_FACTORY = new LinkedHashMapFactory();
 
-        //@SuppressWarnings("unchecked")
         //private static readonly MapFactory ARRAY_MAP_FACTORY = new ArrayMapFactory();
 
         /// <summary>
@@ -53,7 +47,6 @@ namespace OpenNLP.Tools.Util
    *
    *  @return A MapFactory that makes a HashMap.
    */
-        //@SuppressWarnings("unchecked")
         /*public static /*<K,V>#1# MapFactory<K,V> identityHashMapFactory<K,V>() {
     return IDENTITY_HASH_MAP_FACTORY;
   }*/
@@ -66,7 +59,6 @@ namespace OpenNLP.Tools.Util
    *
    *  @return A MapFactory that makes a WeakHashMap.
    */
-        //@SuppressWarnings("unchecked")
         /*public static /*<K,V>#1# MapFactory<K,V> weakHashMapFactory<K,V>() {
     return WEAK_HASH_MAP_FACTORY;
   }*/
@@ -79,7 +71,6 @@ namespace OpenNLP.Tools.Util
    *
    *  @return A MapFactory that makes an TreeMap.
    */
-        //@SuppressWarnings("unchecked")
         /*public static /*<K,V>#1# MapFactory<K,V> treeMapFactory<K,V>() {
     return TREE_MAP_FACTORY;
   }*/

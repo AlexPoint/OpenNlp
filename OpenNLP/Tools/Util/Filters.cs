@@ -297,7 +297,6 @@ namespace OpenNLP.Tools.Util
    * list of elems that were accepted. The runtime type of the returned
    * array is the same as the passed in array.
    */
-        //@SuppressWarnings("unchecked")
         /*public static <E> E[] filter(E[] elems, Predicate<E> filter) {
     List<E> filtered = new ArrayList<E>();
     for (E elem: elems) {

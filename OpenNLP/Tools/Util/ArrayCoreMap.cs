@@ -181,7 +181,6 @@ namespace OpenNLP.Tools.Util
             }
           }
 
-          //@SuppressWarnings("unchecked")
           public void remove() {
             ArrayCoreMap.this.remove((Class)keys[i]);
           }
@@ -645,7 +644,6 @@ namespace OpenNLP.Tools.Util
         /**
    * {@inheritDoc}
    */
-        //@SuppressWarnings("unchecked")
         /*public void prettyLog(RedwoodChannels channels, string description) {
     Redwood.startTrack(description);
 

@@ -106,7 +106,6 @@ namespace OpenNLP.Tools.Util
    * @param properties Current properties
    * @param defaults Default properties which lists all known keys
    */
-        //@SuppressWarnings("unchecked")
         /*public static void checkProperties(Dictionary<string,String> properties, Dictionary<string,String> defaults) {
     Set<string> names = Generics.newHashSet();
     for (Enumeration<string> e = (Enumeration<string>) properties.propertyNames();

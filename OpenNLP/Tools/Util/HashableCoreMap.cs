@@ -51,7 +51,6 @@ namespace OpenNLP.Tools.Util
    * using the values it associates with the given set of hashkeys for
    * the immutable, hashable keys used by hashcode and equals.
    */
-        //@SuppressWarnings("unchecked")
         /*public HashableCoreMap<T>(ArrayCoreMap other, Set<Key<T>> hashkey):base(other) {
         
     int keyHashcode = 0;

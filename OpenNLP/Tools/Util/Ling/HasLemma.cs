@@ -13,7 +13,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public interface HasLemma
+    public interface IHasLemma
     {
         /// <summary>
         /// Return the lemma value of the label (or null if none).

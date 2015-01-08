@@ -31,12 +31,12 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public class PennTreeReader : TreeReader
+    public class PennTreeReader : ITreeReader
     {
         private readonly TextReader reader;
-        private readonly Tokenizer<string> tokenizer;
+        private readonly ITokenizer<string> tokenizer;
         private readonly TreeNormalizer treeNormalizer;
-        private readonly TreeFactory treeFactory;
+        private readonly ITreeFactory treeFactory;
         
         private Tree currentTree;
         // misuse a list as a stack, since we want to avoid the synchronized and old Stack, but don't need the power and JDK 1.6 dependency of a Deque
@@ -60,7 +60,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="input">the Reader</param>
         /// <param name="tf">TreeFactory -- factory to create some kind of Tree</param>
-        public PennTreeReader(TextReader input, TreeFactory tf) :
+        public PennTreeReader(TextReader input, ITreeFactory tf) :
             this(input, tf, null, new PennTreebankTokenizer(input))
         {
         }
@@ -71,7 +71,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <param name="input">The Reader</param>
         /// <param name="tf">TreeFactory -- factory to create some kind of Tree</param>
         /// <param name="tn">the method of normalizing trees</param>
-        public PennTreeReader(TextReader input, TreeFactory tf, TreeNormalizer tn) :
+        public PennTreeReader(TextReader input, ITreeFactory tf, TreeNormalizer tn) :
             this(input, tf, tn, new PennTreebankTokenizer(input))
         {
         }
@@ -83,7 +83,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <param name="tf">TreeFactory -- factory to create some kind of Tree</param>
         /// <param name="tn">the method of normalizing trees</param>
         /// <param name="st">Tokenizer that divides up Reader</param>
-        public PennTreeReader(TextReader input, TreeFactory tf, TreeNormalizer tn, Tokenizer<string> st)
+        public PennTreeReader(TextReader input, ITreeFactory tf, TreeNormalizer tn, ITokenizer<string> st)
         {
             reader = input;
             treeFactory = tf;
@@ -236,14 +236,14 @@ namespace OpenNLP.Tools.Util.Trees
                         terminal = StarPattern.Replace(terminal, "*");
                         terminal = SlashPattern.Replace(terminal, "/");
                         Tree leaf = treeFactory.NewLeaf(terminal);
-                        if (leaf.Label() is HasIndex)
+                        if (leaf.Label() is IHasIndex)
                         {
-                            var hi = (HasIndex) leaf.Label();
+                            var hi = (IHasIndex) leaf.Label();
                             hi.SetIndex(wordIndex);
                         }
-                        if (leaf.Label() is HasWord)
+                        if (leaf.Label() is IHasWord)
                         {
-                            var hw = (HasWord) leaf.Label();
+                            var hw = (IHasWord) leaf.Label();
                             hw.SetWord(leaf.Label().Value());
                         }
                         wordIndex++;

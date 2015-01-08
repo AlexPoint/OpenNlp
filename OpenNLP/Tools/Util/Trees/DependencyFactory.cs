@@ -14,10 +14,10 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public interface DependencyFactory
+    public interface IDependencyFactory
     {
-        Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent);
+        IDependency<ILabel, ILabel, Object> NewDependency(ILabel regent, ILabel dependent);
 
-        Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent, Object name);
+        IDependency<ILabel, ILabel, Object> NewDependency(ILabel regent, ILabel dependent, Object name);
     }
 }

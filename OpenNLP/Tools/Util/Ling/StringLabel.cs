@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public class StringLabel : ValueLabel, HasOffset
+    public class StringLabel : ValueLabel, IHasOffset
     {
         private string str;
 
@@ -61,12 +61,12 @@ namespace OpenNLP.Tools.Util.Ling
         /// <code>value()</code> of another label as its label.
         /// </summary>
         /// <param name="label">The other label</param>
-        public StringLabel(Label label)
+        public StringLabel(ILabel label)
         {
             this.str = label.Value();
-            if (label is HasOffset)
+            if (label is IHasOffset)
             {
-                var ofs = (HasOffset) label;
+                var ofs = (IHasOffset) label;
                 SetBeginPosition(ofs.BeginPosition());
                 SetEndPosition(ofs.EndPosition());
             }
@@ -104,7 +104,7 @@ namespace OpenNLP.Tools.Util.Ling
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class StringLabelFactoryHolder
         {
-            public static readonly LabelFactory lf = new StringLabelFactory();
+            public static readonly ILabelFactory lf = new StringLabelFactory();
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// The factory returned is always the same one (a singleton).
         /// </summary>
         /// <returns>The label factory</returns>
-        public override LabelFactory LabelFactory()
+        public override ILabelFactory LabelFactory()
         {
             return StringLabelFactoryHolder.lf;
         }
@@ -121,7 +121,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// Return a factory for this kind of label.
         /// </summary>
         /// <returns>The label factory</returns>
-        public static LabelFactory Factory()
+        public static ILabelFactory Factory()
         {
             return StringLabelFactoryHolder.lf;
         }

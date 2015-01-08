@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public interface Labeled
+    public interface ILabeled
     {
         
         /// <summary>
@@ -23,13 +23,13 @@ namespace OpenNLP.Tools.Util.Ling
         /// preferably the primary label, if it exists).
         /// Returns null if there is no label.
         /// </summary>
-        Label Label();
+        ILabel Label();
 
         /// <summary>
         /// Sets the label associated with this object.
         /// </summary>
         /// <param name="label">The Label value</param>
-        void SetLabel(Label label);
+        void SetLabel(ILabel label);
 
         /// <summary>
         /// Gives back all labels for this thing.
@@ -38,12 +38,12 @@ namespace OpenNLP.Tools.Util.Ling
         /// A Collection of the Object's labels.
         /// Returns an empty Collection if there are no labels.
         /// </returns>
-        ICollection<Label> Labels();
+        ICollection<ILabel> Labels();
 
         /// <summary>
         /// Sets the labels associated with this object.
         /// </summary>
         /// <param name="labels">The set of Label values</param>
-        void SetLabels(ICollection<Label> labels);
+        void SetLabels(ICollection<ILabel> labels);
     }
 }

@@ -29,7 +29,7 @@ namespace OpenNLP.Tools.Util.Trees
             this._name = name;
         }
 
-        public NamedDependency(Label regent, Label dependent, Object name) :
+        public NamedDependency(ILabel regent, ILabel dependent, Object name) :
             base(regent, dependent)
         {
             this._name = name;
@@ -84,12 +84,12 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        public override DependencyFactory DependencyFactory()
+        public override IDependencyFactory DependencyFactory()
         {
             return DependencyFactoryHolder.df;
         }
 
-        public new static DependencyFactory Factory()
+        public new static IDependencyFactory Factory()
         {
             return DependencyFactoryHolder.df;
         }
@@ -97,19 +97,19 @@ namespace OpenNLP.Tools.Util.Trees
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class DependencyFactoryHolder
         {
-            public static readonly DependencyFactory df = new NamedDependencyFactory();
+            public static readonly IDependencyFactory df = new NamedDependencyFactory();
         }
 
         /// <summary>
         /// A <code>DependencyFactory</code> acts as a factory for creating objects
         /// of class <code>Dependency</code>
         /// </summary>
-        private /*static */ class NamedDependencyFactory : DependencyFactory
+        private /*static */ class NamedDependencyFactory : IDependencyFactory
         {
             /// <summary>
             /// Create a new <code>Dependency</code>.
             /// </summary>
-            public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent)
+            public IDependency<ILabel, ILabel, Object> NewDependency(ILabel regent, ILabel dependent)
             {
                 return NewDependency(regent, dependent, null);
             }
@@ -117,7 +117,7 @@ namespace OpenNLP.Tools.Util.Trees
             /// <summary>
             /// Create a new <code>Dependency</code>.
             /// </summary>
-            public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent, Object name)
+            public IDependency<ILabel, ILabel, Object> NewDependency(ILabel regent, ILabel dependent, Object name)
             {
                 return new NamedDependency(regent, dependent, name);
             }

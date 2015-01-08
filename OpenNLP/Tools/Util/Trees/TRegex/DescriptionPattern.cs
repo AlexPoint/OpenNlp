@@ -355,7 +355,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             IdentityDictionary<Tree, Tree> nodesToParents,
             Dictionary<string, Tree> namesToNodes,
             VariableStrings variableStrings,
-            HeadFinder headFinder)
+            IHeadFinder headFinder)
         {
             return new DescriptionMatcher(this, root, tree, nodesToParents,
                 namesToNodes, variableStrings, headFinder);
@@ -394,7 +394,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 IdentityDictionary<Tree, Tree> nodesToParents,
                 Dictionary<string, Tree> namesToNodes,
                 VariableStrings variableStrings,
-                HeadFinder headFinder) :
+                IHeadFinder headFinder) :
                     base(root, tree, nodesToParents, namesToNodes, variableStrings, headFinder)
             {
                 myNode = n;

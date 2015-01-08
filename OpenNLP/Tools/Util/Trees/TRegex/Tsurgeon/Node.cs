@@ -11,7 +11,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     /// machinery for constructing the parent and child relationships
     /// between nodes.
     /// </summary>
-    public interface Node
+    public interface INode
     {
 
         /// <summary>
@@ -28,19 +28,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         /// <summary>
         /// This pair of methods are used to inform the node of its parent
         /// </summary>
-        void JjtSetParent(Node n);
+        void JjtSetParent(INode n);
 
-        Node JjtGetParent();
+        INode JjtGetParent();
 
         /// <summary>
         /// This method tells the node to add its argument to the node's list of children
         /// </summary>
-        void JjtAddChild(Node n, int i);
+        void JjtAddChild(INode n, int i);
 
         /// <summary>
         /// This method returns a child node.  The children are numbered from zero, left to right
         /// </summary>
-        Node JjtGetChild(int i);
+        INode JjtGetChild(int i);
 
         /// <summary>
         /// Return the number of children the node has

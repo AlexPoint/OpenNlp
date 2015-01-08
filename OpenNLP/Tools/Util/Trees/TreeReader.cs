@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public interface TreeReader
+    public interface ITreeReader
     {
         /// <summary>
         /// Reads a single tree

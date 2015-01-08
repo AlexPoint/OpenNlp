@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public interface ConstituentFactory
+    public interface IConstituentFactory
     {
         /// <summary>
         /// Build a constituent with this start and end.
@@ -25,6 +25,6 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Build a constituent with this start and end.
         /// </summary>
-        Constituent NewConstituent(int start, int end, Label label, double score);
+        Constituent NewConstituent(int start, int end, ILabel label, double score);
     }
 }

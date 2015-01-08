@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public class DateTreeTransformer : TreeTransformer
+    public class DateTreeTransformer : ITreeTransformer
     {
         private const string MonthRegex = 
             "January|February|March|April|May|June|July|August|September|October|November|December|Jan\\.|Feb\\.|Mar\\.|Apr\\.|Aug\\.|Sep\\.|Sept\\.|Oct\\.|Nov\\.|Dec\\.";

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Ling
 {
-    public interface AbstractCoreLabel : Label, HasWord, HasIndex, HasTag, HasLemma, HasOffset, TypesafeMap
+    public interface IAbstractCoreLabel : ILabel, IHasWord, IHasIndex, IHasTag, IHasLemma, IHasOffset, TypesafeMap
     {
         string Ner();
 

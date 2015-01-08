@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public class TaggedWord : Word, HasTag
+    public class TaggedWord : Word, IHasTag
     {
         private string vTag;
 
@@ -51,11 +51,11 @@ namespace OpenNLP.Tools.Util.Ling
         /// <param name="oldLabel">
         /// A Label.  If it implements the HasWord and/or HasTag interface, then the corresponding value will be set
         /// </param>
-        public TaggedWord(Label oldLabel) : base(oldLabel.Value())
+        public TaggedWord(ILabel oldLabel) : base(oldLabel.Value())
         {
-            if (oldLabel is HasTag)
+            if (oldLabel is IHasTag)
             {
-                this.vTag = ((HasTag) oldLabel).Tag();
+                this.vTag = ((IHasTag) oldLabel).Tag();
             }
         }
 
@@ -64,7 +64,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// </summary>
         /// <param name="word">This word is passed to the supertype constructor</param>
         /// <param name="tag">The <code>value()</code> of this label is set as the tag of this Label</param>
-        public TaggedWord(Label word, Label tag) : base(word)
+        public TaggedWord(ILabel word, ILabel tag) : base(word)
         {
             this.vTag = tag.Value();
         }
@@ -122,7 +122,7 @@ namespace OpenNLP.Tools.Util.Ling
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class LabelFactoryHolder
         {
-            public static readonly LabelFactory lf = new TaggedWordFactory();
+            public static readonly ILabelFactory lf = new TaggedWordFactory();
 
         }
 
@@ -131,7 +131,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// The factory returned is always the same one (a singleton).
         /// </summary>
         /// <returns>The label factory</returns>
-        public override LabelFactory LabelFactory()
+        public override ILabelFactory LabelFactory()
         {
             return LabelFactoryHolder.lf;
         }
@@ -140,7 +140,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// Return a factory for this kind of label.
         /// </summary>
         /// <returns>The label factory</returns>
-        public new static LabelFactory Factory()
+        public new static ILabelFactory Factory()
         {
             return LabelFactoryHolder.lf;
         }

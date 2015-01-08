@@ -14,7 +14,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public class TaggedWordFactory : LabelFactory
+    public class TaggedWordFactory : ILabelFactory
     {
         public static readonly int TAG_LABEL = 2;
 
@@ -48,7 +48,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// </summary>
         /// <param name="labelStr">The string that will be used for value</param>
         /// <returns>The new TaggedWord (tag will be <code>null</code>)</returns>
-        public Label NewLabel(string labelStr)
+        public ILabel NewLabel(string labelStr)
         {
             return new TaggedWord(labelStr);
         }
@@ -60,7 +60,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// <param name="labelStr">The string that will be used for value</param>
         /// <param name="options">what to make (use labelStr as word or tag)</param>
         /// <returns>The new TaggedWord (tag or word will be <code>null</code>)</returns>
-        public Label NewLabel(string labelStr, int options)
+        public ILabel NewLabel(string labelStr, int options)
         {
             if (options == TAG_LABEL)
             {
@@ -79,7 +79,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// </summary>
         /// <param name="word">The word that will go into the <code>Word</code></param>
         /// <returns>The new TaggedWord</returns>
-        public Label NewLabelFromString(string word)
+        public ILabel NewLabelFromString(string word)
         {
             int where = word.LastIndexOf(divider);
             if (where >= 0)
@@ -99,7 +99,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// </summary>
         /// <param name="oldLabel">The Label that the new label is being created from</param>
         /// <returns>a new label of a particular type</returns>
-        public Label NewLabel(Label oldLabel)
+        public ILabel NewLabel(ILabel oldLabel)
         {
             return new TaggedWord(oldLabel);
         }

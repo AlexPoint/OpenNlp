@@ -22,7 +22,7 @@ namespace OpenNLP.Tools.Util.Process
     /// 
     /// Code...
     /// </summary>
-    public class CoreLabelTokenFactory : CoreTokenFactory<CoreLabel>, LexedTokenFactory<CoreLabel> /*, Serializable*/
+    public class CoreLabelTokenFactory : ICoreTokenFactory<CoreLabel>, ILexedTokenFactory<CoreLabel> /*, Serializable*/
     {
         private readonly bool addIndices;
 

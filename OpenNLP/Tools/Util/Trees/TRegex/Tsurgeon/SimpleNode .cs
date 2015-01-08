@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
-    public class SimpleNode : Node
+    public class SimpleNode : INode
     {
-        protected Node parent;
-        protected Node[] children;
+        protected INode parent;
+        protected INode[] children;
         protected int id;
         protected TsurgeonParser parser;
 
@@ -31,32 +31,32 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
         }
 
-        public void JjtSetParent(Node n)
+        public void JjtSetParent(INode n)
         {
             parent = n;
         }
 
-        public Node JjtGetParent()
+        public INode JjtGetParent()
         {
             return parent;
         }
 
-        public void JjtAddChild(Node n, int i)
+        public void JjtAddChild(INode n, int i)
         {
             if (children == null)
             {
-                children = new Node[i + 1];
+                children = new INode[i + 1];
             }
             else if (i >= children.Length)
             {
-                var c = new Node[i + 1];
+                var c = new INode[i + 1];
                 Array.Copy(children, 0, c, 0, children.Length);
                 children = c;
             }
             children[i] = n;
         }
 
-        public Node JjtGetChild(int i)
+        public INode JjtGetChild(int i)
         {
             return children[i];
         }

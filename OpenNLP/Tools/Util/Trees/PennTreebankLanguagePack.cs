@@ -125,7 +125,7 @@ namespace OpenNLP.Tools.Util.Trees
             return PTBTokenizer.coreLabelFactory();
           }*/
 
-        public override TokenizerFactory<HasWord> GetTokenizerFactory()
+        public override ITokenizerFactory<IHasWord> GetTokenizerFactory()
         {
             throw new NotImplementedException();
         }
@@ -142,7 +142,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Return a GrammaticalStructure suitable for this language/treebank.
         /// </summary>
-        public override GrammaticalStructureFactory GrammaticalStructureFactory()
+        public override IGrammaticalStructureFactory GrammaticalStructureFactory()
         {
             return new EnglishGrammaticalStructureFactory();
         }
@@ -167,12 +167,12 @@ namespace OpenNLP.Tools.Util.Trees
             return true;
         }
 
-        public override HeadFinder HeadFinder()
+        public override IHeadFinder HeadFinder()
         {
             return new ModCollinsHeadFinder(this);
         }
 
-        public override HeadFinder TypedDependencyHeadFinder()
+        public override IHeadFinder TypedDependencyHeadFinder()
         {
             return new SemanticHeadFinder(this, true);
         }

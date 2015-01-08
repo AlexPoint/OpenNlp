@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util
     /// The classes that implement Key are the keys themselves - not instances of those classes.
     /// </summary>
     /// <typeparam name="T">The type of the value associated with this key.</typeparam>
-    public interface Key<T>
+    public interface IKey<T>
     {
     }
 }

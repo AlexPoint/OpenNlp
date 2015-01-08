@@ -12,7 +12,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// @author Christopher Manning.
     /// </summary>
-    public interface TreeTransformer
+    public interface ITreeTransformer
     {
         /// <summary>
         /// Does whatever one needs to do to a particular tree.

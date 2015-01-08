@@ -11,7 +11,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public interface HasContext
+    public interface IHasContext
     {
         /// <summary>
         /// Returns the string before the word

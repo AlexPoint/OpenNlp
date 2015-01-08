@@ -33,21 +33,21 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public class CoordinationTransformer : TreeTransformer
+    public class CoordinationTransformer : ITreeTransformer
     {
         /// <summary>to get rid of unwanted nodes and tag</summary>
-        private readonly TreeTransformer tn = new DependencyTreeTransformer();
+        private readonly ITreeTransformer tn = new DependencyTreeTransformer();
         /// <summary>to restructure the QP constituents</summary>
-        private readonly TreeTransformer qp = new QpTreeTransformer();
+        private readonly ITreeTransformer qp = new QpTreeTransformer();
         /// <summary>to flatten date patterns</summary>
-        private readonly TreeTransformer dates = new DateTreeTransformer();
+        private readonly ITreeTransformer dates = new DateTreeTransformer();
 
-        private readonly HeadFinder headFinder;
+        private readonly IHeadFinder headFinder;
 
         /// <summary>
         /// default constructor
         /// </summary>
-        public CoordinationTransformer(HeadFinder hf)
+        public CoordinationTransformer(IHeadFinder hf)
         {
             this.headFinder = hf;
         }
@@ -193,9 +193,9 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         public Tree SqFlatten(Tree t)
         {
-            if (headFinder != null && (headFinder is CopulaHeadFinder))
+            if (headFinder != null && (headFinder is ICopulaHeadFinder))
             {
-                if (((CopulaHeadFinder) headFinder).MakesCopulaHead())
+                if (((ICopulaHeadFinder) headFinder).MakesCopulaHead())
                 {
                     return t;
                 }
@@ -309,8 +309,8 @@ namespace OpenNLP.Tools.Util.Trees
         private static Tree TransformCc(Tree t, int ccIndex)
         {
             // use the factories of t to create new nodes
-            TreeFactory tf = t.TreeFactory();
-            LabelFactory lf = t.Label().LabelFactory();
+            ITreeFactory tf = t.TreeFactory();
+            ILabelFactory lf = t.Label().LabelFactory();
 
             Tree[] ccSiblings = t.Children();
 

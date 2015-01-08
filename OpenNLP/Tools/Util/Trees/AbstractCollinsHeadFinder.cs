@@ -60,7 +60,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public abstract class AbstractCollinsHeadFinder : HeadFinder
+    public abstract class AbstractCollinsHeadFinder : IHeadFinder
     {
         protected readonly AbstractTreebankLanguagePack tlp;
         protected Dictionary<string, string[][]> nonTerminalInfo;

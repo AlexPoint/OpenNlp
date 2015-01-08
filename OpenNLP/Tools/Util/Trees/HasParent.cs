@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public interface HasParent
+    public interface IHasParent
     {
         Tree Parent();
     }

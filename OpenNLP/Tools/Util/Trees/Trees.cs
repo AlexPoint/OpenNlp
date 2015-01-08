@@ -169,14 +169,14 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Returns the labels of the leaves in a Tree in the order that they're found
         /// </summary>
-        public static List<Label> LeafLabels(Tree t)
+        public static List<ILabel> LeafLabels(Tree t)
         {
-            var l = new List<Label>();
+            var l = new List<ILabel>();
             LeafLabels(t, l);
             return l;
         }
 
-        private static void LeafLabels(Tree t, List<Label> l)
+        private static void LeafLabels(Tree t, List<ILabel> l)
         {
             if (t.IsLeaf())
             {
@@ -223,7 +223,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// Returns the maximal projection of <code>head</code> in
         /// <code>root</code> given a {@link HeadFinder}
         /// </summary>
-        public static Tree MaximalProjection(Tree head, Tree root, HeadFinder hf)
+        public static Tree MaximalProjection(Tree head, Tree root, IHeadFinder hf)
         {
             Tree projection = head;
             if (projection == root)
@@ -802,7 +802,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         public static void ConvertToCoreLabels(Tree tree)
         {
-            Label l = tree.Label();
+            ILabel l = tree.Label();
             if (!(l is CoreLabel))
             {
                 var cl = new CoreLabel();
@@ -821,8 +821,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         public static void SetSentIndex(Tree tree, int sentIndex)
         {
-            List<Label> leaves = tree.Yield();
-            foreach (Label leaf in leaves)
+            List<ILabel> leaves = tree.Yield();
+            foreach (ILabel leaf in leaves)
             {
                 if (!(leaf is CoreLabel))
                 {

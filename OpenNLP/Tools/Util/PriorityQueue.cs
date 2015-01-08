@@ -57,7 +57,7 @@ namespace OpenNLP.Tools.Util
     /// 
     /// Code...
     /// </summary>
-    public interface PriorityQueue<E> /*:ISet<E>*/
+    public interface IPriorityQueue<E> /*:ISet<E>*/
     {
 
         /// <summary>

@@ -7,7 +7,7 @@ using OpenNLP.Tools.Parser;
 
 namespace OpenNLP.Tools.Util.Trees
 {
-    public class EnglishGrammaticalStructureFactory : GrammaticalStructureFactory
+    public class EnglishGrammaticalStructureFactory : IGrammaticalStructureFactory
     {
         /*private readonly Predicate<string> puncFilter;
         private readonly HeadFinder hf;*/

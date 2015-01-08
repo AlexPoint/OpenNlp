@@ -362,7 +362,7 @@
     </Compile>
     <Compile Include="Tools\Util\MapFactory.cs" />
     <Compile Include="Tools\Util\MutableWrapper.cs" />
-    <Compile Include="Tools\Util\ObjectBank\IteratorFromReaderFactory.cs" />
+    <Compile Include="Tools\Util\ObjectBank\IIteratorFromReaderFactory.cs" />
     <Compile Include="Tools\Util\PriorityQueue.cs" />
     <Compile Include="Tools\Util\Process\AbstractTokenizer.cs" />
     <Compile Include="Tools\Util\Process\CoreLabelTokenFactory.cs" />

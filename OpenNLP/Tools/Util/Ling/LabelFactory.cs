@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public interface LabelFactory
+    public interface ILabelFactory
     {
         
         /// <summary>
@@ -24,7 +24,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// </summary>
         /// <param name="labelStr">The string that will be used for value</param>
         /// <returns>The new Label</returns>
-        Label NewLabel(string labelStr);
+        ILabel NewLabel(string labelStr);
 
         /// <summary>
         /// Make a new label with this <code>string</code> as the value, and
@@ -33,7 +33,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// <param name="labelStr">The string that will be used for value</param>
         /// <param name="options">May determine what kind of label is created</param>
         /// <returns>The new Label</returns>
-        Label NewLabel(string labelStr, int options);
+        ILabel NewLabel(string labelStr, int options);
 
         /// <summary>
         /// Make a new label.  The string argument will be decomposed into
@@ -44,7 +44,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// The string that will be used for labelling the object (by decoding it into parts)
         /// </param>
         /// <returns>The new Label</returns>
-        Label NewLabelFromString(string encodedLabelStr);
+        ILabel NewLabelFromString(string encodedLabelStr);
 
         /// <summary>
         /// Create a new <code>Label</code>, where the label is formed from
@@ -59,6 +59,6 @@ namespace OpenNLP.Tools.Util.Ling
         /// </summary>
         /// <param name="oldLabel">The Label that the new label is being created from</param>
         /// <returns>The new label of a particular type</returns>
-        Label NewLabel(Label oldLabel);
+        ILabel NewLabel(ILabel oldLabel);
     }
 }

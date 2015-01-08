@@ -25,7 +25,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// The CoreMap key for getting the syntactic parse tree of a sentence.
         /// This key is typically set on sentence annotations.
         /// </summary>
-        public class TreeAnnotation : CoreAnnotation<Tree>
+        public class TreeAnnotation : ICoreAnnotation<Tree>
         {
             public Type GetAnnotationType()
             {
@@ -41,7 +41,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// this (parse.saveBinarized).  The sentiment annotator requires
         /// this kind of tree, but otherwise it is not typically used.
         /// </summary>
-        public class BinarizedTreeAnnotation : CoreAnnotation<Tree>
+        public class BinarizedTreeAnnotation : ICoreAnnotation<Tree>
         {
             public Type GetAnnotationType()
             {
@@ -52,7 +52,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// The standard key for storing a head word in the map as a pointer to another node
         /// </summary>
-        public class HeadWordAnnotation : CoreAnnotation<Tree>
+        public class HeadWordAnnotation : ICoreAnnotation<Tree>
         {
             public Type GetAnnotationType()
             {
@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// The standard key for storing a head tag in the map as a pointer to another node
         /// </summary>
-        public class HeadTagAnnotation : CoreAnnotation<Tree>
+        public class HeadTagAnnotation : ICoreAnnotation<Tree>
         {
             public Type GetAnnotationType()
             {

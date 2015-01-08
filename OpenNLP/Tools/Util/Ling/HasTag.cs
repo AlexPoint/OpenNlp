@@ -13,7 +13,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public interface HasTag
+    public interface IHasTag
     {
         /// <summary>
         /// Return the tag value of the label (or null if none).

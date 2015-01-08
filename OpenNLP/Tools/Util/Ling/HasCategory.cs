@@ -13,7 +13,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public interface HasCategory
+    public interface IHasCategory
     {
         /// <summary>
         /// Returns the category value of the label (or null if none).

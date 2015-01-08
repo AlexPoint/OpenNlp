@@ -14,9 +14,9 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public class PennTreeReaderFactory : TreeReaderFactory
+    public class PennTreeReaderFactory : ITreeReaderFactory
     {
-        private readonly TreeFactory tf;
+        private readonly ITreeFactory tf;
         private readonly TreeNormalizer tn;
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// uses a {@link PennTreebankTokenizer}, and a {@link TreeNormalizer}.
         /// </summary>
         /// <param name="tf">The TreeFactory to use in building Tree objects to return</param>
-        public PennTreeReaderFactory(TreeFactory tf) :
+        public PennTreeReaderFactory(ITreeFactory tf) :
             this(tf, new TreeNormalizer())
         {
         }
@@ -54,13 +54,13 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="tf">The TreeFactory to use in building Tree objects to return</param>
         /// <param name="tn">The TreeNormalizer to use</param>
-        public PennTreeReaderFactory(TreeFactory tf, TreeNormalizer tn)
+        public PennTreeReaderFactory(ITreeFactory tf, TreeNormalizer tn)
         {
             this.tf = tf;
             this.tn = tn;
         }
 
-        public TreeReader NewTreeReader(TextReader input)
+        public ITreeReader NewTreeReader(TextReader input)
         {
             return new PennTreeReader(input, tf, tn, new PennTreebankTokenizer(input));
         }

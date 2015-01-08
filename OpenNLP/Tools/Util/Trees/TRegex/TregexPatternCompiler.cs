@@ -21,10 +21,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         public static readonly AbstractTreebankLanguagePack.BasicCategoryStringFunction DEFAULT_BASIC_CAT_FUNCTION =
             new PennTreebankLanguagePack().GetBasicCategoryFunction();
 
-        public static readonly HeadFinder DEFAULT_HEAD_FINDER = new CollinsHeadFinder();
+        public static readonly IHeadFinder DEFAULT_HEAD_FINDER = new CollinsHeadFinder();
 
         private readonly AbstractTreebankLanguagePack.BasicCategoryStringFunction basicCatFunction;
-        private readonly HeadFinder headFinder;
+        private readonly IHeadFinder headFinder;
 
         private readonly List<Tuple<string, string>> macros =
             new List<Tuple<string, string>>();
@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /// A compiler that uses this HeadFinder and the default basicCategoryFunction
         /// </summary>
         /// <param name="headFinder">the HeadFinder</param>
-        public TregexPatternCompiler(HeadFinder headFinder) :
+        public TregexPatternCompiler(IHeadFinder headFinder) :
             this(headFinder, DEFAULT_BASIC_CAT_FUNCTION)
         {
         }
@@ -60,7 +60,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /// </summary>
         /// <param name="headFinder">the HeadFinder</param>
         /// <param name="basicCatFunction">The function mapping strings to strings</param>
-        public TregexPatternCompiler(HeadFinder headFinder,
+        public TregexPatternCompiler(IHeadFinder headFinder,
             AbstractTreebankLanguagePack.BasicCategoryStringFunction basicCatFunction)
         {
             this.headFinder = headFinder;

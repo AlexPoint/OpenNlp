@@ -18,7 +18,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public abstract class AbstractTreebankLanguagePack : TreebankLanguagePack
+    public abstract class AbstractTreebankLanguagePack : ITreebankLanguagePack
     {
         //Grammatical function parameters
         /**
@@ -211,7 +211,7 @@ namespace OpenNLP.Tools.Util.Trees
             return DefaultEncoding;
         }
 
-        public abstract TokenizerFactory<HasWord> GetTokenizerFactory();
+        public abstract ITokenizerFactory<IHasWord> GetTokenizerFactory();
 
 
         private static readonly char[] EmptyCharArray = new char[0];
@@ -347,9 +347,9 @@ namespace OpenNLP.Tools.Util.Trees
 
         public class CategoryAndFunctionStringFunction /*implements Function<string,String>, Serializable */
         {
-            private readonly TreebankLanguagePack tlp;
+            private readonly ITreebankLanguagePack tlp;
 
-            public CategoryAndFunctionStringFunction(TreebankLanguagePack tlp)
+            public CategoryAndFunctionStringFunction(ITreebankLanguagePack tlp)
             {
                 this.tlp = tlp;
             }
@@ -540,7 +540,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// (To be overridden in subclasses.)
         /// </summary>
         /// <returns>A GrammaticalStructureFactory suitable for this language/treebank</returns>
-        public virtual GrammaticalStructureFactory GrammaticalStructureFactory()
+        public virtual IGrammaticalStructureFactory GrammaticalStructureFactory()
         {
             throw new InvalidOperationException("No GrammaticalStructureFactory defined for " /*+ getClass().getName()*/);
         }
@@ -550,7 +550,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// (To be overridden in subclasses.)
         /// </summary>
         /// <returns>A GrammaticalStructureFactory suitable for this language/treebank</returns>
-        public GrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilt)
+        public IGrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilt)
         {
             return GrammaticalStructureFactory();
         }
@@ -560,8 +560,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// (To be overridden in subclasses.)
         /// </summary>
         /// <returns>A GrammaticalStructureFactory suitable for this language/treebank</returns>
-        public GrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilt,
-            HeadFinder typedDependencyHf)
+        public IGrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilt,
+            IHeadFinder typedDependencyHf)
         {
             return GrammaticalStructureFactory();
         }
@@ -581,18 +581,18 @@ namespace OpenNLP.Tools.Util.Trees
             this.GfCharacter = gfCharacter;
         }
 
-        public TreeReaderFactory TreeReaderFactory()
+        public ITreeReaderFactory TreeReaderFactory()
         {
             return new PennTreeReaderFactory();
         }
 
-        public TokenizerFactory<Tree> TreeTokenizerFactory()
+        public ITokenizerFactory<Tree> TreeTokenizerFactory()
         {
             return new TreeTokenizerFactory(TreeReaderFactory());
         }
 
-        public abstract HeadFinder HeadFinder();
-        public abstract HeadFinder TypedDependencyHeadFinder();
+        public abstract IHeadFinder HeadFinder();
+        public abstract IHeadFinder TypedDependencyHeadFinder();
 
         /// <summary>
         /// Returns a morphological feature specification for words in this language.

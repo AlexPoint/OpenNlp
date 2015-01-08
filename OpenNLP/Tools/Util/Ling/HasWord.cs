@@ -13,7 +13,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public interface HasWord
+    public interface IHasWord
     {
         /// <summary>
         /// Return the word value of the label (or null if none).

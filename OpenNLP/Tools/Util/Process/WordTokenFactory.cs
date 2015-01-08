@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Process
     /// 
     /// Code...
     /// </summary>
-    public class WordTokenFactory : LexedTokenFactory<Word>
+    public class WordTokenFactory : ILexedTokenFactory<Word>
     {
         
         public Word MakeToken(string str, int begin, int length)

@@ -18,7 +18,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public class LabeledScoredTreeFactory : SimpleTreeFactory
     {
-        private readonly LabelFactory _lf;
+        private readonly ILabelFactory _lf;
 
         /// <summary>
         /// Make a TreeFactory that produces LabeledScoredTree trees.
@@ -33,7 +33,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// labels are as specified by the user.
         /// </summary>
         /// <param name="lf">the <code>LabelFactory</code> to be used to create labels</param>
-        public LabeledScoredTreeFactory(LabelFactory lf)
+        public LabeledScoredTreeFactory(ILabelFactory lf)
         {
             this._lf = lf;
         }
@@ -48,7 +48,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="label">the label for the leaf node</param>
         /// <returns>A new tree leaf</returns>
-        public override Tree NewLeaf(Label label)
+        public override Tree NewLeaf(ILabel label)
         {
             return new LabeledScoredTreeNode(_lf.NewLabel(label));
         }
@@ -67,7 +67,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// each of which should itself be a <code>LabeledScoredTree</code>
         /// </param>
         /// <returns>A new internal tree node</returns>
-        public override Tree NewTreeNode(Label parentLabel, List<Tree> children)
+        public override Tree NewTreeNode(ILabel parentLabel, List<Tree> children)
         {
             return new LabeledScoredTreeNode(_lf.NewLabel(parentLabel), children);
         }

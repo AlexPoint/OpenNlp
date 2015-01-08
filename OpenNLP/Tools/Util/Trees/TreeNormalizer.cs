@@ -68,7 +68,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <param name="tree">The tree to be normalized</param>
         /// <param name="tf">the TreeFactory to create new nodes (if needed)</param>
         /// <returns>the normalized tree</returns>
-        public virtual Tree NormalizeWholeTree(Tree tree, TreeFactory tf)
+        public virtual Tree NormalizeWholeTree(Tree tree, ITreeFactory tf)
         {
             return tree;
         }

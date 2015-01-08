@@ -13,7 +13,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public class WordFactory : LabelFactory
+    public class WordFactory : ILabelFactory
     {
         
         /// <summary>
@@ -21,7 +21,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// </summary>
         /// <param name="word">The word that will go into the <code>Word</code></param>
         /// <returns>The new label</returns>
-        public Label NewLabel(string word)
+        public ILabel NewLabel(string word)
         {
             return new Word(word);
         }
@@ -32,7 +32,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// <param name="word">The word that will go into the <code>Word</code></param>
         /// <param name="options">is ignored by a WordFactory</param>
         /// <returns>The new label</returns>
-        public Label NewLabel(string word, int options)
+        public ILabel NewLabel(string word, int options)
         {
             return new Word(word);
         }
@@ -42,7 +42,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// </summary>
         /// <param name="word">The word that will go into the <code>Word</code></param>
         /// <returns>The new label</returns>
-        public Label NewLabelFromString(string word)
+        public ILabel NewLabelFromString(string word)
         {
             return new Word(word);
         }
@@ -54,7 +54,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// </summary>
         /// <param name="oldLabel">The Label that the new label is being created from</param>
         /// <returns>a new label of a particular type</returns>
-        public Label NewLabel(Label oldLabel)
+        public ILabel NewLabel(ILabel oldLabel)
         {
             return new Word(oldLabel);
         }

@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public class SimpleConstituentFactory : ConstituentFactory
+    public class SimpleConstituentFactory : IConstituentFactory
     {
         public Constituent NewConstituent(int start, int end)
         {
@@ -23,7 +23,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
 
-        public Constituent NewConstituent(int start, int end, Label label, double score)
+        public Constituent NewConstituent(int start, int end, ILabel label, double score)
         {
             return new SimpleConstituent(start, end);
         }

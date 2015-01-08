@@ -14,7 +14,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public class StringLabelFactory : LabelFactory
+    public class StringLabelFactory : ILabelFactory
     {
         
         /// <summary>
@@ -24,7 +24,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// A string that determines the content of the label. For a StringLabel, it is exactly the given string
         /// </param>
         /// <returns>The created label</returns>
-        public Label NewLabel(string labelStr)
+        public ILabel NewLabel(string labelStr)
         {
             return new StringLabel(labelStr);
         }
@@ -37,7 +37,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// </param>
         /// <param name="options">The options are ignored by a StringLabelFactory</param>
         /// <returns>The created label</returns>
-        public Label NewLabel(string labelStr, int options)
+        public ILabel NewLabel(string labelStr, int options)
         {
             return new StringLabel(labelStr);
         }
@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// A string that determines the content of the label. For a StringLabel, it is exactly the given string
         /// </param>
         /// <returns>The created label</returns>
-        public Label NewLabelFromString(string labelStr)
+        public ILabel NewLabelFromString(string labelStr)
         {
             return new StringLabel(labelStr);
         }
@@ -62,7 +62,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// </summary>
         /// <param name="oldLabel">The Label that the new label is being created from</param>
         /// <returns>a new label of a particular type</returns>
-        public Label NewLabel(Label oldLabel)
+        public ILabel NewLabel(ILabel oldLabel)
         {
             return new StringLabel(oldLabel);
         }

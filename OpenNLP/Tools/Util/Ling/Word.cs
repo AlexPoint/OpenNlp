@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public class Word : StringLabel, HasWord
+    public class Word : StringLabel, IHasWord
     {
         /// <summary>string representation of an empty</summary>
         public static readonly string EmptyString = "*t*";
@@ -53,7 +53,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// class that supports the <code>Label</code> interface.
         /// </summary>
         /// <param name="lab">The label to be used as the basis of the new Word</param>
-        public Word(Label lab) : base(lab)
+        public Word(ILabel lab) : base(lab)
         {
         }
 
@@ -70,7 +70,7 @@ namespace OpenNLP.Tools.Util.Ling
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class WordFactoryHolder
         {
-            public static readonly LabelFactory lf = new WordFactory();
+            public static readonly ILabelFactory lf = new WordFactory();
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// The factory returned is always the same one (a singleton).
         /// </summary>
         /// <returns>The label factory</returns>
-        public override LabelFactory LabelFactory()
+        public override ILabelFactory LabelFactory()
         {
             return WordFactoryHolder.lf;
         }
@@ -87,7 +87,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// Return a factory for this kind of label.
         /// </summary>
         /// <returns>The label factory</returns>
-        public new static LabelFactory Factory()
+        public new static ILabelFactory Factory()
         {
             return WordFactoryHolder.lf;
         }

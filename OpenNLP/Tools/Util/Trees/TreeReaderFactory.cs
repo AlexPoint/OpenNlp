@@ -15,13 +15,13 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public interface TreeReaderFactory
+    public interface ITreeReaderFactory
     {
         /// <summary>
         /// Create a new <code>TreeReader</code> using the provided <code>Reader</code>
         /// </summary>
         /// <param name="reader">The <code>Reader</code> to build on</param>
         /// <returns>The new TreeReader</returns>
-        TreeReader NewTreeReader(TextReader reader);
+        ITreeReader NewTreeReader(TextReader reader);
     }
 }

@@ -17,7 +17,7 @@ namespace OpenNLP.Tools.Util.Process
     /// 
     /// Code...
     /// </summary>
-    public interface Tokenizer<T> : IEnumerator<T>
+    public interface ITokenizer<T> : IEnumerator<T>
     {
         
         /// <summary>

@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.Graphs
     /// </summary>
     public class ConnectedComponents
     {
-        public static /*<V, E>*/ List<Set<V>> GetConnectedComponents<V, E>(Graph<V, E> graph)
+        public static /*<V, E>*/ List<Set<V>> GetConnectedComponents<V, E>(IGraph<V, E> graph)
         {
             var ccs = new List<Set<V>>();
             var todo = new List<V>();
@@ -31,7 +31,7 @@ namespace OpenNLP.Tools.Util.Graphs
             return ccs;
         }
 
-        private static /*<V, E>*/ Set<V> Bfs<V, E>(List<V> todo, Graph<V, E> graph, List<V> verticesLeft)
+        private static /*<V, E>*/ Set<V> Bfs<V, E>(List<V> todo, IGraph<V, E> graph, List<V> verticesLeft)
         {
             Set<V> cc = new HashSet<V>();
             while (todo.Count > 0)

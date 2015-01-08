@@ -17,14 +17,14 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public class SimpleTreeFactory : TreeFactory
+    public class SimpleTreeFactory : ITreeFactory
     {
         public virtual Tree NewLeaf(string word)
         {
             return new SimpleTree();
         }
 
-        public virtual Tree NewLeaf(Label word)
+        public virtual Tree NewLeaf(ILabel word)
         {
             return new SimpleTree();
         }
@@ -34,7 +34,7 @@ namespace OpenNLP.Tools.Util.Trees
             return new SimpleTree(null, children);
         }
 
-        public virtual Tree NewTreeNode(Label parentLabel,List<Tree> children)
+        public virtual Tree NewTreeNode(ILabel parentLabel,List<Tree> children)
         {
             return new SimpleTree(parentLabel, children);
         }

@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public interface GrammaticalStructureFactory
+    public interface IGrammaticalStructureFactory
     {
         /// <summary>
         /// Vend a new {@link GrammaticalStructure} based on the given {@link Tree}.

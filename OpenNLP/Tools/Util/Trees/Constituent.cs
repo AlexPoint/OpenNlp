@@ -24,7 +24,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public abstract class Constituent : Labeled, Scored, Label
+    public abstract class Constituent : ILabeled, IScored, ILabel
     {
         /// <summary>
         /// access start node
@@ -49,7 +49,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// access label
         /// </summary>
-        public Label Label()
+        public ILabel Label()
         {
             return null;
         }
@@ -57,7 +57,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Sets the label associated with the current Constituent, if there is one.
         /// </summary>
-        public void SetLabel(Label label)
+        public void SetLabel(ILabel label)
         {
             // a noop
         }
@@ -65,13 +65,13 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Access labels -- actually always a singleton here.
         /// </summary>
-        public ICollection<Label> Labels()
+        public ICollection<ILabel> Labels()
         {
-            return new List<Label>() {Label()};
+            return new List<ILabel>() {Label()};
         }
 
 
-        public void SetLabels(ICollection<Label> labels)
+        public void SetLabels(ICollection<ILabel> labels)
         {
             throw new InvalidOperationException("Constituent can't be multilabeled");
         }
@@ -95,7 +95,7 @@ namespace OpenNLP.Tools.Util.Trees
         public override string ToString()
         {
             StringBuilder sb;
-            Label lab = Label();
+            ILabel lab = Label();
             if (lab != null)
             {
                 sb = new StringBuilder(lab.ToString());
@@ -144,8 +144,8 @@ namespace OpenNLP.Tools.Util.Trees
                 var c = (Constituent) obj;
                 if ((Start() == c.Start()) && (End() == c.End()))
                 {
-                    Label lab1 = Label();
-                    Label lab2 = c.Label();
+                    ILabel lab1 = Label();
+                    ILabel lab2 = c.Label();
                     if (lab1 == null)
                     {
                         return lab2 == null;
@@ -176,7 +176,7 @@ namespace OpenNLP.Tools.Util.Trees
         public override int GetHashCode()
         {
             int hash = (Start() << 16) | End();
-            Label lab = Label();
+            ILabel lab = Label();
             return (lab == null || lab.Value() == null) ? hash : hash ^ lab.Value().GetHashCode();
         }
 
@@ -231,7 +231,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <returns>string the value for the label</returns>
         public string Value()
         {
-            Label lab = Label();
+            ILabel lab = Label();
             if (lab == null)
             {
                 return null;
@@ -245,7 +245,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <param name="value">The value for the label</param>
         public void SetValue(string value)
         {
-            Label lab = Label();
+            ILabel lab = Label();
             if (lab != null)
             {
                 lab.SetValue(value);
@@ -259,14 +259,14 @@ namespace OpenNLP.Tools.Util.Trees
         /// <param name="labelStr">the string that translates into the content of the label</param>
         public void SetFromString(string labelStr)
         {
-            Label lab = Label();
+            ILabel lab = Label();
             if (lab != null)
             {
                 lab.SetFromString(labelStr);
             }
         }
 
-        public abstract LabelFactory LabelFactory();
+        public abstract ILabelFactory LabelFactory();
 
         // TODO: genericize this!
         /// <summary>

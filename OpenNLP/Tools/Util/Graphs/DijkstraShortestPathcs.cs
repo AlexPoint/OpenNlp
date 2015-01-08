@@ -9,7 +9,7 @@ namespace OpenNLP.Tools.Util.Graphs
 {
     public static class DijkstraShortestPath
     {
-        public static /*<V, E>*/ List<V> GetShortestPath<V, E>(Graph<V, E> graph,
+        public static /*<V, E>*/ List<V> GetShortestPath<V, E>(IGraph<V, E> graph,
             V node1, V node2,
             bool directionSensitive)
         {

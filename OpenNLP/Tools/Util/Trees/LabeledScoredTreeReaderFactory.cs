@@ -19,9 +19,9 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public class LabeledScoredTreeReaderFactory : TreeReaderFactory
+    public class LabeledScoredTreeReaderFactory : ITreeReaderFactory
     {
-        private readonly LabelFactory lf;
+        private readonly ILabelFactory lf;
         private readonly TreeNormalizer tm;
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace OpenNLP.Tools.Util.Trees
             tm = new BobChrisTreeNormalizer();
         }
 
-        public LabeledScoredTreeReaderFactory(LabelFactory lf)
+        public LabeledScoredTreeReaderFactory(ILabelFactory lf)
         {
             this.lf = lf;
             tm = new BobChrisTreeNormalizer();
@@ -45,7 +45,7 @@ namespace OpenNLP.Tools.Util.Trees
             this.tm = tm;
         }
 
-        public LabeledScoredTreeReaderFactory(LabelFactory lf, TreeNormalizer tm)
+        public LabeledScoredTreeReaderFactory(ILabelFactory lf, TreeNormalizer tm)
         {
             this.lf = lf;
             this.tm = tm;
@@ -59,7 +59,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <code>CategoryWordTag</code> labels (unless otherwise specified on
         /// construction).
         /// </summary>
-        public TreeReader NewTreeReader(TextReader input)
+        public ITreeReader NewTreeReader(TextReader input)
         {
             return new PennTreeReader(input, new LabeledScoredTreeFactory(lf), tm);
         }

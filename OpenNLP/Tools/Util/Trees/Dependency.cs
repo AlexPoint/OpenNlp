@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public interface Dependency<G, D, N> where G : Label where D : Label
+    public interface IDependency<G, D, N> where G : ILabel where D : ILabel
     {
 
         /// <summary>
@@ -62,6 +62,6 @@ namespace OpenNLP.Tools.Util.Trees
         /// Provide a factory for this kind of dependency
         /// </summary>
         /// <returns>A DependencyFactory</returns>
-        DependencyFactory DependencyFactory();
+        IDependencyFactory DependencyFactory();
     }
 }

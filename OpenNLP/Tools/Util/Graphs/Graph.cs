@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Graphs
     /// </summary>
     /// <typeparam name="V">Type of the vertices</typeparam>
     /// <typeparam name="E">Type of the edges</typeparam>
-    public interface Graph<V, E>
+    public interface IGraph<V, E>
     {
 
         /// <summary>

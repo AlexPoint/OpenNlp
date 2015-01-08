@@ -22,7 +22,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public abstract class ValueLabel : Label, IComparable<ValueLabel>
+    public abstract class ValueLabel : ILabel, IComparable<ValueLabel>
     {
         /// <summary>
         /// Return the value of the label (or null if none).
@@ -72,7 +72,7 @@ namespace OpenNLP.Tools.Util.Ling
         {
             string val = Value();
             return (obj is ValueLabel) &&
-                   (val == null ? ((Label) obj).Value() == null : val.Equals(((Label) obj).Value()));
+                   (val == null ? ((ILabel) obj).Value() == null : val.Equals(((ILabel) obj).Value()));
         }
 
         public override int GetHashCode()
@@ -90,7 +90,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// <summary>
         /// Returns a factory that makes Labels of the appropriate sort.
         /// </summary>
-        public abstract LabelFactory LabelFactory();
+        public abstract ILabelFactory LabelFactory();
     
     }
 }

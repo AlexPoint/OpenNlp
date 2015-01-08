@@ -37,7 +37,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="label">root label of new tree to construct.
         /// For a SimpleTree this parameter is ignored</param>
-        public SimpleTree(Label label) : this()
+        public SimpleTree(ILabel label) : this()
         {
         }
 
@@ -48,7 +48,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// root label of tree to construct.  For a SimpleTree this parameter is ignored
         /// </param>
         /// <param name="daughterTreesList">list of daughter trees to construct</param>
-        public SimpleTree(Label label, List<Tree> daughterTreesList)
+        public SimpleTree(ILabel label, List<Tree> daughterTreesList)
         {
             SetChildren(daughterTreesList.ToArray());
         }
@@ -83,7 +83,7 @@ namespace OpenNLP.Tools.Util.Trees
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class TreeFactoryHolder
         {
-            public static readonly TreeFactory tf = new SimpleTreeFactory();
+            public static readonly ITreeFactory tf = new SimpleTreeFactory();
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <code>SimpleTree</code> type.
         /// The factory returned is always the same one (a singleton).
         /// </summary>
-        public override TreeFactory TreeFactory()
+        public override ITreeFactory TreeFactory()
         {
             return TreeFactoryHolder.tf;
         }
@@ -101,7 +101,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <code>SimpleTree</code> type.
         /// The factory returned is always the same one (a singleton).
         /// </summary>
-        public static TreeFactory Factory()
+        public static ITreeFactory Factory()
         {
             return TreeFactoryHolder.tf;
         }

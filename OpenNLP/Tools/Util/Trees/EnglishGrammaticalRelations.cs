@@ -76,7 +76,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// By setting the HeadFinder to null, we find out right away at runtime 
         /// if we have incorrectly set the HeadFinder for the dependency tregexes
         /// </summary>
-        private static readonly TregexPatternCompiler TregexCompiler = new TregexPatternCompiler((HeadFinder) null);
+        private static readonly TregexPatternCompiler TregexCompiler = new TregexPatternCompiler((IHeadFinder) null);
         
         /// <summary>
         /// The "predicate" grammatical relation.  The predicate of a
@@ -84,7 +84,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// subject is the predicate of the clause to which the subject belongs.
         /// 
         /// Example:
-        /// "Reagan died" &rarr; <code>pred</code>(Reagan, died)
+        /// "Reagan died" -> <code>pred</code>(Reagan, died)
         /// </summary>
         public static readonly GrammaticalRelation Predicate =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "pred", "predicate",
@@ -96,7 +96,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// non-main verb of the clause.
         /// 
         /// Example:
-        /// "Reagan has died" &rarr; <code>aux</code>(died, has)
+        /// "Reagan has died" -> <code>aux</code>(died, has)
         /// </summary>
         public static readonly GrammaticalRelation AuxModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "aux", "auxiliary",
@@ -115,7 +115,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// clause is a non-main verb of the clause which contains the passive information.
         /// 
         /// Example:
-        /// "Kennedy has been killed" &rarr; <code>auxpass</code>(killed, been)
+        /// "Kennedy has been killed" -> <code>auxpass</code>(killed, been)
         /// </summary>
         public static readonly GrammaticalRelation AuxPassiveModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "auxpass", "passive auxiliary",
@@ -137,8 +137,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// the complement of a copular verb and the copular verb.
         /// 
         /// Examples:
-        /// "Bill is big" &rarr; <code>cop</code>(big, is)
-        /// "Bill is an honest man" &rarr; <code>cop</code>(man, is)
+        /// "Bill is big" -> <code>cop</code>(big, is)
+        /// "Bill is an honest man" -> <code>cop</code>(man, is)
         /// </summary>
         public static readonly GrammaticalRelation Copula =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "cop", "copula",
@@ -176,7 +176,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// conjunctions depend on it via the <i>conj</i> relation.
         /// 
         /// Example:
-        /// "Bill is big and honest" &rarr; <code>conj</code>(big, honest)
+        /// "Bill is big and honest" -> <code>conj</code>(big, honest)
         /// 
         /// Note: Modified in 2010 to exclude the case of a CC/CONJP first in its phrase: it has to conjoin things.
         /// </summary>
@@ -233,7 +233,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// between an element and a conjunction.
         /// 
         /// Example:
-        /// "Bill is big and honest." &rarr; <code>cc</code>(big, and)
+        /// "Bill is big and honest." -> <code>cc</code>(big, and)
         /// </summary>
         public static readonly GrammaticalRelation Coordination =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "cc", "coordination",
@@ -248,7 +248,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// punctuation in a clause, if punctuation is being retained in the typed dependencies.
         /// 
         /// Example:
-        /// "Go home!" &rarr; <code>punct</code>(Go, !)
+        /// "Go home!" -> <code>punct</code>(Go, !)
         /// 
         /// The condition for NFP to appear hear is that it does not match the emoticon patterns under discourse.
         /// </summary>
@@ -267,7 +267,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// an argument of the VP which is the predicate of that clause.
         /// 
         /// Example:
-        /// "Clinton defeated Dole" &rarr; <code>arg</code>(defeated, Clinton), <code>arg</code>(defeated, Dole)
+        /// "Clinton defeated Dole" -> <code>arg</code>(defeated, Clinton), <code>arg</code>(defeated, Dole)
         /// </summary>
         public static readonly GrammaticalRelation Argument =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "arg", "argument",
@@ -280,8 +280,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// predicate of that clause.
         /// 
         /// Examples:
-        /// "Clinton defeated Dole" &rarr; <code>subj</code>(defeated, Clinton)
-        /// "What she said is untrue" &rarr; <code>subj</code>(is, What she said)
+        /// "Clinton defeated Dole" -> <code>subj</code>(defeated, Clinton)
+        /// "What she said is untrue" -> <code>subj</code>(is, What she said)
         /// </summary>
         public static readonly GrammaticalRelation Subject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "subj", "subject", Argument);
@@ -291,7 +291,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// a subject which is an noun phrase.
         /// 
         /// Example:
-        /// "Clinton defeated Dole" &rarr; <code>nsubj</code>(defeated, Clinton)
+        /// "Clinton defeated Dole" -> <code>nsubj</code>(defeated, Clinton)
         /// </summary>
         public static readonly GrammaticalRelation NominalSubject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "nsubj", "nominal subject",
@@ -346,7 +346,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// subject is a subject of a passive which is an noun phrase.
         /// 
         /// Example:
-        /// "Dole was defeated by Clinton" &rarr; <code>nsubjpass</code>(defeated, Dole)
+        /// "Dole was defeated by Clinton" -> <code>nsubjpass</code>(defeated, Dole)
         /// 
         /// This pattern recognizes basic (non-coordinated) examples.  The coordinated
         /// examples are currently handled by correctDependencies() in
@@ -367,8 +367,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// a subject which is a clause.
         /// 
         /// Examples: (subject is "what she said" in both examples)
-        /// "What she said makes sense" &rarr; <code>csubj</code>(makes, said)
-        /// "What she said is untrue" &rarr; <code>csubj</code>(untrue, said)
+        /// "What she said makes sense" -> <code>csubj</code>(makes, said)
+        /// "What she said is untrue" -> <code>csubj</code>(untrue, said)
         /// </summary>
         public static readonly GrammaticalRelation ClausalSubject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "csubj", "clausal subject",
@@ -380,7 +380,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// is a subject of a passive verb which is a clause.
         /// 
         /// Example: (subject is "that she lied")
-        /// "That she lied was suspected by everyone" &rarr; <code>csubjpass</code>(suspected, lied)
+        /// "That she lied was suspected by everyone" -> <code>csubjpass</code>(suspected, lied)
         /// </summary>
         public static readonly GrammaticalRelation ClausalPassiveSubject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "csubjpass", "clausal passive subject",
@@ -401,8 +401,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// of that clause.
         /// 
         /// Examples:
-        /// "She gave me a raise" &rarr; <code>comp</code>(gave, me), <code>comp</code>(gave, a raise)
-        /// "I like to swim" &rarr; <code>comp</code>(like, to swim)
+        /// "She gave me a raise" -> <code>comp</code>(gave, me), <code>comp</code>(gave, a raise)
+        /// "I like to swim" -> <code>comp</code>(like, to swim)
         /// </summary>
         public static readonly GrammaticalRelation Complement =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "comp", "complement", Argument);
@@ -414,7 +414,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// of that clause.
         /// 
         /// Examples:
-        /// "She gave me a raise" &rarr; <code>obj</code>(gave, me), <code>obj</code>(gave, raise)
+        /// "She gave me a raise" -> <code>obj</code>(gave, me), <code>obj</code>(gave, raise)
         /// </summary>
         public static readonly GrammaticalRelation Object =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "obj", "object", Complement);
@@ -426,7 +426,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// the head predicate of that clause.
         /// 
         /// Example:
-        /// "She gave me a raise" &rarr; <code>dobj</code>(gave, raise)
+        /// "She gave me a raise" -> <code>dobj</code>(gave, raise)
         /// Note that dobj can also be assigned by the conversion of rel in the postprocessing.
         /// </summary>
         public static readonly GrammaticalRelation DirectObject =
@@ -510,7 +510,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// object of the VP which is the predicate of that clause.
         /// 
         /// Example:
-        /// "She gave me a raise" &rarr; <code>iobj</code>(gave, me)
+        /// "She gave me a raise" -> <code>iobj</code>(gave, me)
         /// </summary>
         public static readonly GrammaticalRelation IndirectObject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "iobj", "indirect object",
@@ -535,7 +535,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// "concerning", etc. as instances of pobj (unlike the Penn Treebank).
         /// 
         /// Example:
-        /// "I sat on the chair" &rarr; <code>pobj</code>(on, chair)
+        /// "I sat on the chair" -> <code>pobj</code>(on, chair)
         /// 
         /// (The preposition can be called a FW for pace, versus, etc.  It can also
         /// be called a CC - but we don't currently handle that and would need to
@@ -630,9 +630,9 @@ namespace OpenNLP.Tools.Util.Trees
         /// in this category.
         /// 
         /// Example:
-        /// "He says that you like to swim" &rarr; <code>ccomp</code>(says, like)
-        /// "I am certain that he did it" &rarr; <code>ccomp</code>(certain, did)
-        /// "I admire the fact that you are honest" &rarr; <code>ccomp</code>(fact, honest)
+        /// "He says that you like to swim" -> <code>ccomp</code>(says, like)
+        /// "I am certain that he did it" -> <code>ccomp</code>(certain, did)
+        /// "I admire the fact that you are honest" -> <code>ccomp</code>(fact, honest)
         /// </summary>
         public static readonly GrammaticalRelation ClausalComplement =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "ccomp", "clausal complement",
@@ -679,8 +679,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// (Mainly "TO-clause" are recognized, but also some VBG like "stop eating")
         /// 
         /// Examples:
-        /// "I like to swim" &rarr; <code>xcomp</code>(like, swim)
-        /// "I am ready to leave" &rarr; <code>xcomp</code>(ready, leave)
+        /// "I like to swim" -> <code>xcomp</code>(like, swim)
+        /// "I am ready to leave" -> <code>xcomp</code>(ready, leave)
         /// </summary>
         public static readonly GrammaticalRelation XclausalComplement =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "xcomp", "xclausal complement",
@@ -734,8 +734,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// A referent of the Wh-word of a NP is  the relative word introducing the relative clause modifying the NP.
         /// 
         /// Example:
-        /// "I saw the book which you bought" &rarr; <code>ref</code>(book, which)
-        /// "I saw the book the cover of which you designed" &rarr; <code>ref</code>(book, which)
+        /// "I saw the book which you bought" -> <code>ref</code>(book, which)
+        /// "I saw the book the cover of which you designed" -> <code>ref</code>(book, which)
         /// </summary>
         public static readonly GrammaticalRelation Referent =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "ref", "referent",
@@ -746,7 +746,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// This relation captures an existential there.
         /// 
         /// Example:
-        /// "There is a statue in the corner" &rarr; <code>expl</code>(is, there)
+        /// "There is a statue in the corner" -> <code>expl</code>(is, there)
         /// </summary>
         public static readonly GrammaticalRelation Expletive =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "expl", "expletive",
@@ -761,7 +761,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// the predicate of that clause.
         /// 
         /// Example:
-        /// "She looks very beautiful" &rarr; <code>acomp</code>(looks, beautiful)
+        /// "She looks very beautiful" -> <code>acomp</code>(looks, beautiful)
         /// </summary>
         public static readonly GrammaticalRelation AdjectivalComplement =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "acomp", "adjectival complement",
@@ -781,7 +781,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// the predicate of that clause.
         /// 
         /// Examples:
-        /// "Last night, I swam in the pool" &rarr; <code>mod</code>(swam, in the pool), <code>mod</code>(swam, last night)
+        /// "Last night, I swam in the pool" -> <code>mod</code>(swam, in the pool), <code>mod</code>(swam, last night)
         /// </summary>
         public static readonly GrammaticalRelation Modifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "mod", "modifier",
@@ -793,8 +793,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// (temporal clauses, consequences, conditional clauses, etc.).
         /// 
         /// Examples:
-        /// "The accident happened as the night was falling" &rarr; <code>advcl</code>(happened, falling)
-        /// "If you know who did it, you should tell the teacher" &rarr; <code>advcl</code>(tell, know)
+        /// "The accident happened as the night was falling" -> <code>advcl</code>(happened, falling)
+        /// "If you know who did it, you should tell the teacher" -> <code>advcl</code>(tell, know)
         /// </summary>
         public static readonly GrammaticalRelation AdvClauseModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "advcl", "adverbial clause modifier",
@@ -854,7 +854,7 @@ namespace OpenNLP.Tools.Util.Trees
         * introduced by "be VBN".
         * <p/>
         * Example: <br/>
-        * "He talked to the president in order to secure the account" &rarr;
+        * "He talked to the president in order to secure the account" ->
         * <code>purpcl</code>(talked, secure)
         */
 
@@ -865,8 +865,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// normally a verb.
         /// 
         /// Examples:
-        /// "I saw the man you love" &rarr; <code>rcmod</code>(man, love)
-        /// "I saw the book which you bought" &rarr; <code>rcmod</code>(book, bought)
+        /// "I saw the man you love" -> <code>rcmod</code>(man, love)
+        /// "I saw the book which you bought" -> <code>rcmod</code>(book, bought)
         /// </summary>
         public static readonly GrammaticalRelation RelativeClauseModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "rcmod", "relative clause modifier",
@@ -896,7 +896,7 @@ namespace OpenNLP.Tools.Util.Trees
         * <p/>
         * <p/>
         * Example: <br/>
-        * "He says that you like to swim" &rarr;
+        * "He says that you like to swim" ->
         * <code>complm</code>(like, that)
         */
 
@@ -906,7 +906,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// For an adverbial clause, the marker is typically a preposition like "while" or "although".
         /// 
         /// Example:
-        /// "U.S. forces have been engaged in intense fighting after insurgents launched simultaneous attacks" &rarr;
+        /// "U.S. forces have been engaged in intense fighting after insurgents launched simultaneous attacks" ->
         /// <code>mark</code>(launched, after)
         /// </summary>
         public static readonly GrammaticalRelation Marker =
@@ -924,12 +924,12 @@ namespace OpenNLP.Tools.Util.Trees
         /// the meaning of the NP.
         /// 
         /// Example:
-        /// "Sam eats red meat" &rarr; <code>amod</code>(meat, red)
+        /// "Sam eats red meat" -> <code>amod</code>(meat, red)
         /// The relation amod is also used for multiword country adjectives, despite their
         /// questionable treebank representation.
         /// 
         /// Example:
-        /// "the West German economy" &rarr; <code>amod</code>(German, West),
+        /// "the West German economy" -> <code>amod</code>(German, West),
         /// <code>amod</code>(economy, German)
         /// </summary>
         public static readonly GrammaticalRelation AdjectivalModifier =
@@ -950,7 +950,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// the meaning of the NP.
         /// 
         /// Example:
-        /// "Sam eats 3 sheep" &rarr; <code>num</code>(sheep, 3)
+        /// "Sam eats 3 sheep" -> <code>num</code>(sheep, 3)
         /// </summary>
         public static readonly GrammaticalRelation NumericModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "num", "numeric modifier",
@@ -973,7 +973,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// modifier is a part of a number phrase or currency amount.
         /// 
         /// Example:
-        /// "I lost $ 3.2 billion" &rarr; <code>number</code>($, billion)
+        /// "I lost $ 3.2 billion" -> <code>number</code>($, billion)
         /// </summary>
         public static readonly GrammaticalRelation NumberModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "number", "compound number modifier",
@@ -985,7 +985,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// modifier is an element modifying the head of a QP constituent.
         /// 
         /// Example:
-        /// "About 200 people came to the party" &rarr; <code>quantmod</code>(200, About)
+        /// "About 200 people came to the party" -> <code>quantmod</code>(200, About)
         /// </summary>
         public static readonly GrammaticalRelation QuantifierModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "quantmod", "quantifier modifier",
@@ -1007,7 +1007,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// TODO: remove that if a revised PTB is ever released.
         /// 
         /// Example:
-        /// "Oil price futures" &rarr; <code>nn</code>(futures, oil), <code>nn</code>(futures, price)
+        /// "Oil price futures" -> <code>nn</code>(futures, oil), <code>nn</code>(futures, price)
         /// </summary>
         public static readonly GrammaticalRelation NounCompoundModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "nn", "nn modifier",
@@ -1033,9 +1033,9 @@ namespace OpenNLP.Tools.Util.Trees
         /// the meaning of the NP.  It includes parenthesized examples, as well as defining abbreviations.
         /// 
         /// Examples:
-        /// "Sam, my brother, eats red meat" &rarr; <code>appos</code>(Sam, brother)
-        /// "Bill (John's cousin)" &rarr; <code>appos</code>(Bill, cousin).
-        /// "The Australian Broadcasting Corporation (ABC)" &rarr; <code>appos</code>(Corporation, ABC)
+        /// "Sam, my brother, eats red meat" -> <code>appos</code>(Sam, brother)
+        /// "Bill (John's cousin)" -> <code>appos</code>(Bill, cousin).
+        /// "The Australian Broadcasting Corporation (ABC)" -> <code>appos</code>(Corporation, ABC)
         /// </summary>
         public static readonly GrammaticalRelation AppositionalModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "appos", "appositional modifier",
@@ -1083,10 +1083,10 @@ namespace OpenNLP.Tools.Util.Trees
         /// the meaning of the NP or VP.
         /// 
         /// Examples:
-        /// "truffles picked during the spring are tasty" &rarr; <code>vmod</code>(truffles, picked)
-        /// "Bill picked Fred for the team demonstrating his incompetence" &rarr; <code>vmod</code>(picked, demonstrating)
-        /// "points to establish are ..." &rarr; <code>vmod</code>(points, establish)
-        /// "who am i to judge" &rarr; <code>vmod</code>(who, judge)
+        /// "truffles picked during the spring are tasty" -> <code>vmod</code>(truffles, picked)
+        /// "Bill picked Fred for the team demonstrating his incompetence" -> <code>vmod</code>(picked, demonstrating)
+        /// "points to establish are ..." -> <code>vmod</code>(points, establish)
+        /// "who am i to judge" -> <code>vmod</code>(who, judge)
         /// </summary>
         public static readonly GrammaticalRelation VerbalModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "vmod", "verb modifier",
@@ -1120,8 +1120,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// the meaning of the word.
         /// 
         /// Examples:
-        /// "genetically modified food" &rarr; <code>advmod</code>(modified, genetically)
-        /// "less often" &rarr; <code>advmod</code>(often, less)
+        /// "genetically modified food" -> <code>advmod</code>(modified, genetically)
+        /// "less often" -> <code>advmod</code>(often, less)
         /// </summary>
         public static readonly GrammaticalRelation AdverbialModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "advmod", "adverbial modifier",
@@ -1155,8 +1155,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// is the relation between a negation word and the word it modifies.
         /// 
         /// Examples:
-        /// "Bill is not a scientist" &rarr; <code>neg</code>(scientist, not)
-        /// "Bill doesn't drive" &rarr; <code>neg</code>(drive, n't)
+        /// "Bill is not a scientist" -> <code>neg</code>(scientist, not)
+        /// "Bill doesn't drive" -> <code>neg</code>(drive, n't)
         /// </summary>
         public static readonly GrammaticalRelation NegationModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "neg", "negation modifier",
@@ -1186,28 +1186,28 @@ namespace OpenNLP.Tools.Util.Trees
         /// the head of an ADJP/ADVP and the head of a measure-phrase modifying the ADJP/ADVP.
         /// 
         /// Example:
-        /// "The director is 65 years old" &rarr; <code>npadvmod</code>(old, years)
+        /// "The director is 65 years old" -> <code>npadvmod</code>(old, years)
         /// </li>
         /// <li> Noun phrases giving extent inside a VP which are not objects
         /// 
         /// Example:
-        /// "Shares eased a fraction" &rarr; <code>npadvmod</code>(eased, fraction)
+        /// "Shares eased a fraction" -> <code>npadvmod</code>(eased, fraction)
         /// </li>
         /// <li> Financial constructions involving an adverbial or PP-like NP, notably
         /// the following construction where the NP means "per share"
         /// 
         /// Example:
-        /// "IBM earned $ 5 a share" &rarr; <code>npadvmod</code>($, share)
+        /// "IBM earned $ 5 a share" -> <code>npadvmod</code>($, share)
         /// </li>
         /// <li>Reflexives
         /// 
         /// Example:
-        /// "The silence is itself significant" &rarr; <code>npadvmod</code>(significant, itself)
+        /// "The silence is itself significant" -> <code>npadvmod</code>(significant, itself)
         /// </li>
         /// <li>Certain other absolutive NP constructions.
         /// 
         /// Example:
-        /// "90% of Australians like him, the most of any country" &rarr;
+        /// "90% of Australians like him, the most of any country" ->
         /// <code>npadvmod</code>(like, most)
         /// </li>
         /// </ul>
@@ -1242,7 +1242,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// predicate of that clause.
         /// 
         /// Example:
-        /// "Last night, I swam in the pool" &rarr; {@code tmod}(swam, night)
+        /// "Last night, I swam in the pool" -> {@code tmod}(swam, night)
         /// </summary>
         public static readonly GrammaticalRelation TemporalModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "tmod", "temporal modifier",
@@ -1272,8 +1272,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// such as, because of, all but, in addition to ....
         /// 
         /// Examples:
-        /// "dogs as well as cats" &rarr; <code>mwe</code>(well, as) <code>mwe</code>(well, as)
-        /// "fewer than 700 bottles" &rarr; <code>mwe</code>(than, fewer)
+        /// "dogs as well as cats" -> <code>mwe</code>(well, as) <code>mwe</code>(well, as)
+        /// "fewer than 700 bottles" -> <code>mwe</code>(than, fewer)
         /// </summary>
         public static readonly GrammaticalRelation MultiWordExpression =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "mwe", "multi-word expression",
@@ -1297,7 +1297,7 @@ namespace OpenNLP.Tools.Util.Trees
         * the head of an ADJP/ADVP and the head of a measure-phrase modifying the ADJP/ADVP.
         * <p/>
         * Example: <br/>
-        * "The director is 65 years old" &rarr;
+        * "The director is 65 years old" ->
         * <code>measure</code>(old, years)
         *
         public static readonly GrammaticalRelation MEASURE_PHRASE =
@@ -1312,8 +1312,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// The "determiner" grammatical relation.
         /// Examples:
-        /// "The man is here" &rarr; <code>det</code>(man,the)
-        /// "Which man do you prefer?" &rarr; <code>det</code>(man,which)
+        /// "The man is here" -> <code>det</code>(man,the)
+        /// "Which man do you prefer?" -> <code>det</code>(man,which)
         /// (The ADVP match is because sometimes "a little" or "every time" is tagged
         /// as an AVDVP with POS tags straight under it.)
         /// </summary>
@@ -1339,7 +1339,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         /// <summary>
         /// The "predeterminer" grammatical relation.
-        /// Example: "All the boys are here" &rarr; <code>predet</code>(boys,all)
+        /// Example: "All the boys are here" -> <code>predet</code>(boys,all)
         /// </summary>
         public static readonly GrammaticalRelation Predeterminer =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "predet", "predeterminer",
@@ -1354,7 +1354,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// The "preconjunct" grammatical relation.
         /// 
-        /// Example: "Both the boys and the girls are here" &rarr; <code>preconj</code>(boys,both)
+        /// Example: "Both the boys and the girls are here" -> <code>preconj</code>(boys,both)
         /// </summary>
         public static readonly GrammaticalRelation Preconjunct =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "preconj", "preconjunct",
@@ -1374,8 +1374,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// The "possession" grammatical relation between the possessum and the possessor.
         /// 
         /// Examples:
-        /// "their offices" &rarr; {@code poss}(offices, their)
-        /// "Bill 's clothes" &rarr; {@code poss}(clothes, Bill)
+        /// "their offices" -> {@code poss}(offices, their)
+        /// "Bill 's clothes" -> {@code poss}(clothes, Bill)
         /// </summary>
         public static readonly GrammaticalRelation PossessionModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "poss", "possession modifier",
@@ -1395,7 +1395,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// The "possessive" grammatical relation.  This is the relation given to
         /// 's (or ' with plurals).
         /// 
-        /// Example: "John's book" &rarr; <code>possessive</code>(John, 's)
+        /// Example: "John's book" -> <code>possessive</code>(John, 's)
         /// </summary>
         public static readonly GrammaticalRelation PossessiveModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "possessive", "possessive modifier",
@@ -1414,9 +1414,9 @@ namespace OpenNLP.Tools.Util.Trees
         /// (from 1984 through 2002).
         /// 
         /// Examples:
-        /// "I saw a cat in a hat" &rarr; <code>prep</code>(cat, in)
-        /// "I saw a cat with a telescope" &rarr; <code>prep</code>(saw, with)
-        /// "He is responsible for meals" &rarr; <code>prep</code>(responsible, for)
+        /// "I saw a cat in a hat" -> <code>prep</code>(cat, in)
+        /// "I saw a cat with a telescope" -> <code>prep</code>(saw, with)
+        /// "He is responsible for meals" -> <code>prep</code>(responsible, for)
         /// </summary>
         public static readonly GrammaticalRelation PrepositionalModifier =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "prep", "prepositional modifier",
@@ -1438,7 +1438,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// relation identifies phrasal verb.
         /// 
         /// Example:
-        /// "They shut down the station." &rarr; <code>prt</code>(shut, down)
+        /// "They shut down the station." -> <code>prt</code>(shut, down)
         /// </summary>
         public static readonly GrammaticalRelation PhrasalVerbParticle =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "prt", "phrasal verb particle",
@@ -1455,7 +1455,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// sentences are juxtaposed next to each other without any coordinator or subordinator, etc.
         /// 
         /// Examples:
-        /// "The guy, John said, left early in the morning." &rarr; <code>parataxis</code>(left,said)
+        /// "The guy, John said, left early in the morning." -> <code>parataxis</code>(left,said)
         /// </summary>
         public static readonly GrammaticalRelation Parataxis =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "parataxis", "parataxis",
@@ -1483,7 +1483,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// in the recent Penn Treebanks. It marks partial words that should be combined with some other word. <p>
         /// 
         /// Example:
-        /// "They come here with out legal permission." &rarr;
+        /// "They come here with out legal permission." ->
         /// <code>goeswith</code>(out, with)
         /// </summary>
         public static readonly GrammaticalRelation GoesWith =
@@ -1504,7 +1504,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// is the complement introduced by "by" and doing the action.
         /// 
         /// Example:
-        /// "The man has been killed by the police" &rarr;
+        /// "The man has been killed by the police" ->
         /// <code>agent</code>(killed, police)
         /// </summary>
         public static readonly GrammaticalRelation Agent =

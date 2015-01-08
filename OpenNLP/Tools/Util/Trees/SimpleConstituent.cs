@@ -87,24 +87,24 @@ namespace OpenNLP.Tools.Util.Trees
         /// A <code>SimpleConstituentLabelFactory</code> object makes a
         /// <code>StringLabel</code> <code>LabeledScoredConstituent</code>.
         /// </summary>
-        private class SimpleConstituentLabelFactory : LabelFactory
+        private class SimpleConstituentLabelFactory : ILabelFactory
         {
-            public Label NewLabel(string labelStr)
+            public ILabel NewLabel(string labelStr)
             {
                 return new SimpleConstituent(0, 0);
             }
 
-            public Label NewLabel(string labelStr,int options)
+            public ILabel NewLabel(string labelStr,int options)
             {
                 return NewLabel(labelStr);
             }
 
-            public Label NewLabelFromString(string labelStr)
+            public ILabel NewLabelFromString(string labelStr)
             {
                 return NewLabel(labelStr);
             }
 
-            public Label NewLabel(Label oldLabel)
+            public ILabel NewLabel(ILabel oldLabel)
             {
                 return new SimpleConstituent(0, 0);
             }
@@ -115,7 +115,7 @@ namespace OpenNLP.Tools.Util.Trees
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class LabelFactoryHolder
         {
-            public static readonly LabelFactory lf = new SimpleConstituentLabelFactory();
+            public static readonly ILabelFactory lf = new SimpleConstituentLabelFactory();
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// The factory returned is always the same one (a singleton)
         /// </summary>
         /// <returns>the label factory</returns>
-        public override LabelFactory LabelFactory()
+        public override ILabelFactory LabelFactory()
         {
             return LabelFactoryHolder.lf;
         }
@@ -137,7 +137,7 @@ namespace OpenNLP.Tools.Util.Trees
             /// A <code>SimpleConstituentFactory</code> acts as a factory for
             /// creating objects of class <code>SimpleConstituent</code>.
             /// </summary>
-            private class SimpleConstituentFactory : ConstituentFactory
+            private class SimpleConstituentFactory : IConstituentFactory
             {
 
                 public Constituent NewConstituent(int start, int end)
@@ -145,14 +145,14 @@ namespace OpenNLP.Tools.Util.Trees
                     return new SimpleConstituent(start, end);
                 }
 
-                public Constituent NewConstituent(int start, int end, Label label, double score)
+                public Constituent NewConstituent(int start, int end, ILabel label, double score)
                 {
                     return new SimpleConstituent(start, end);
                 }
 
             }
 
-            public static readonly ConstituentFactory cf = new SimpleConstituentFactory();
+            public static readonly IConstituentFactory cf = new SimpleConstituentFactory();
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// The factory returned is always the same one (a singleton).
         /// </summary>
         /// <returns>The constituent factory</returns>
-        public ConstituentFactory ConstituentFactory()
+        public IConstituentFactory ConstituentFactory()
         {
             return ConstituentFactoryHolder.cf;
         }
@@ -170,7 +170,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// The factory returned is always the same one (a singleton).
         /// </summary>
         /// <returns>The constituent factory</returns>
-        public static ConstituentFactory Factory()
+        public static IConstituentFactory Factory()
         {
             return ConstituentFactoryHolder.cf;
         }

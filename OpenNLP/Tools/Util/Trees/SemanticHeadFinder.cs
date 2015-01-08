@@ -342,7 +342,7 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return false;
             }
-            Label label = tree.Label();
+            ILabel label = tree.Label();
             if (label == null)
             {
                 return false;
@@ -550,8 +550,8 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     if (!kid.Value().Equals("VP"))
                     {
-                        List<Label> tags = kid.PreTerminalYield();
-                        foreach (Label tag in tags)
+                        List<ILabel> tags = kid.PreTerminalYield();
+                        foreach (ILabel tag in tags)
                         {
                             if (tag.Value().Equals("EX"))
                             {
@@ -576,8 +576,8 @@ namespace OpenNLP.Tools.Util.Trees
                     if (!kid.Value().StartsWith("VB"))
                     {
                         //not necessary to look into the verb
-                        List<Label> tags = kid.PreTerminalYield();
-                        foreach (Label tag in tags)
+                        List<ILabel> tags = kid.PreTerminalYield();
+                        foreach (ILabel tag in tags)
                         {
                             if (tag.Value().Equals("EX"))
                             {
@@ -625,21 +625,21 @@ namespace OpenNLP.Tools.Util.Trees
         {
             if (preterminal.IsPreTerminal())
             {
-                Label kidLabel = preterminal.Label();
+                ILabel kidLabel = preterminal.Label();
                 string tag = null;
-                if (kidLabel is HasTag)
+                if (kidLabel is IHasTag)
                 {
-                    tag = ((HasTag) kidLabel).Tag();
+                    tag = ((IHasTag) kidLabel).Tag();
                 }
                 if (tag == null)
                 {
                     tag = preterminal.Value();
                 }
-                Label wordLabel = preterminal.FirstChild().Label();
+                ILabel wordLabel = preterminal.FirstChild().Label();
                 string word = null;
-                if (wordLabel is HasWord)
+                if (wordLabel is IHasWord)
                 {
-                    word = ((HasWord) wordLabel).GetWord();
+                    word = ((IHasWord) wordLabel).GetWord();
                 }
                 if (word == null)
                 {
@@ -680,11 +680,11 @@ namespace OpenNLP.Tools.Util.Trees
                 }
                 else if (kid.IsPhrasal())
                 {
-                    Label kidLabel = kid.Label();
+                    ILabel kidLabel = kid.Label();
                     string cat = null;
-                    if (kidLabel is HasCategory)
+                    if (kidLabel is IHasCategory)
                     {
-                        cat = ((HasCategory) kidLabel).Category();
+                        cat = ((IHasCategory) kidLabel).Category();
                     }
                     if (cat == null)
                     {
@@ -700,11 +700,11 @@ namespace OpenNLP.Tools.Util.Trees
                     {
                         if (kidkid.IsPreTerminal())
                         {
-                            Label kidkidLabel = kidkid.Label();
+                            ILabel kidkidLabel = kidkid.Label();
                             string tag = null;
-                            if (kidkidLabel is HasTag)
+                            if (kidkidLabel is IHasTag)
                             {
-                                tag = ((HasTag) kidkidLabel).Tag();
+                                tag = ((IHasTag) kidkidLabel).Tag();
                             }
                             if (tag == null)
                             {
@@ -725,9 +725,9 @@ namespace OpenNLP.Tools.Util.Trees
                         else if (kidkid.IsPhrasal())
                         {
                             string catcat = null;
-                            if (kidLabel is HasCategory)
+                            if (kidLabel is IHasCategory)
                             {
-                                catcat = ((HasCategory) kidLabel).Category();
+                                catcat = ((IHasCategory) kidLabel).Category();
                             }
                             if (catcat == null)
                             {
@@ -760,11 +760,11 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 if (kid.IsPreTerminal())
                 {
-                    Label kidLabel = kid.Label();
+                    ILabel kidLabel = kid.Label();
                     string tag = null;
-                    if (kidLabel is HasTag)
+                    if (kidLabel is IHasTag)
                     {
-                        tag = ((HasTag) kidLabel).Tag();
+                        tag = ((IHasTag) kidLabel).Tag();
                     }
                     if (tag == null)
                     {

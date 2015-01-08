@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code ...
     /// </summary>
-    public class UnnamedDependency : Dependency<Label, Label, Object>
+    public class UnnamedDependency : IDependency<ILabel, ILabel, Object>
     {
         // We store the text of the labels separately because it looks like
         // it is possible for an object to request a hash code using itself
@@ -32,8 +32,8 @@ namespace OpenNLP.Tools.Util.Trees
         protected readonly string RegentText;
         protected readonly string DependentText;
 
-        private readonly Label _regent;
-        private readonly Label _dependent;
+        private readonly ILabel _regent;
+        private readonly ILabel _dependent;
 
         public UnnamedDependency(string regent, string dependent)
         {
@@ -56,7 +56,7 @@ namespace OpenNLP.Tools.Util.Trees
             DependentText = dependent;
         }
 
-        public UnnamedDependency(Label regent, Label dependent)
+        public UnnamedDependency(ILabel regent, ILabel dependent)
         {
             if (regent == null || dependent == null)
             {
@@ -69,12 +69,12 @@ namespace OpenNLP.Tools.Util.Trees
             DependentText = GetText(dependent);
         }
 
-        public Label Governor()
+        public ILabel Governor()
         {
             return _regent;
         }
 
-        public Label Dependent()
+        public ILabel Dependent()
         {
             return _dependent;
         }
@@ -84,11 +84,11 @@ namespace OpenNLP.Tools.Util.Trees
             return null;
         }
 
-        protected string GetText(Label label)
+        protected string GetText(ILabel label)
         {
-            if (label is HasWord)
+            if (label is IHasWord)
             {
-                string word = ((HasWord) label).GetWord();
+                string word = ((IHasWord) label).GetWord();
                 if (word != null)
                 {
                     return word;
@@ -153,12 +153,12 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        public virtual DependencyFactory DependencyFactory()
+        public virtual IDependencyFactory DependencyFactory()
         {
             return DependencyFactoryHolder.df;
         }
 
-        public static DependencyFactory Factory()
+        public static IDependencyFactory Factory()
         {
             return DependencyFactoryHolder.df;
         }
@@ -166,19 +166,19 @@ namespace OpenNLP.Tools.Util.Trees
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class DependencyFactoryHolder
         {
-            public static readonly DependencyFactory df = new UnnamedDependencyFactory();
+            public static readonly IDependencyFactory df = new UnnamedDependencyFactory();
         }
 
         /// <summary>
         /// A <code>DependencyFactory</code> acts as a factory for creating objects 
         /// of class <code>Dependency</code>
         /// </summary>
-        private class UnnamedDependencyFactory : DependencyFactory
+        private class UnnamedDependencyFactory : IDependencyFactory
         {
             /// <summary>
             /// Create a new <code>Dependency</code>.
             /// </summary>
-            public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent)
+            public IDependency<ILabel, ILabel, Object> NewDependency(ILabel regent, ILabel dependent)
             {
                 return NewDependency(regent, dependent, null);
             }
@@ -186,7 +186,7 @@ namespace OpenNLP.Tools.Util.Trees
             /// <summary>
             /// Create a new <code>Dependency</code>.
             /// </summary>
-            public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent, Object name)
+            public IDependency<ILabel, ILabel, Object> NewDependency(ILabel regent, ILabel dependent, Object name)
             {
                 return new UnnamedDependency(regent, dependent);
             }

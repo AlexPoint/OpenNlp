@@ -361,7 +361,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             IdentityDictionary<Tree, Tree> nodesToParents,
             Dictionary<string, Tree> namesToNodes,
             VariableStrings variableStrings,
-            HeadFinder headFinder);
+            IHeadFinder headFinder);
 
         /// <summary>
         /// Get a {@link TregexMatcher} for this pattern on this tree.
@@ -384,7 +384,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /// <param name="t">a tree to match on</param>
         /// <param name="headFinder">a HeadFinder to use when matching</param>
         /// <returns>a TregexMatcher</returns>
-        public TregexMatcher Matcher(Tree t, HeadFinder headFinder)
+        public TregexMatcher Matcher(Tree t, IHeadFinder headFinder)
         {
             return Matcher(t, t, null, new Dictionary<string, Tree>(), new VariableStrings(), headFinder);
         }

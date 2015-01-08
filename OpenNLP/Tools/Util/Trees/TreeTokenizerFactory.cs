@@ -17,22 +17,22 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public class TreeTokenizerFactory : TokenizerFactory<Tree>
+    public class TreeTokenizerFactory : ITokenizerFactory<Tree>
     {
         /// <summary>
         /// Create a TreeTokenizerFactory from a TreeReaderFactory.
         /// </summary>
-        public TreeTokenizerFactory(TreeReaderFactory trf)
+        public TreeTokenizerFactory(ITreeReaderFactory trf)
         {
             this.trf = trf;
         }
 
-        private TreeReaderFactory trf;
+        private ITreeReaderFactory trf;
 
         /// <summary>
         /// Gets a tokenizer from a reader
         /// </summary>
-        public Tokenizer<Tree> GetTokenizer(TextReader r)
+        public ITokenizer<Tree> GetTokenizer(TextReader r)
         {
             /*return new AbstractTokenizer<Tree>() {
               TreeReader tr = trf.newTreeReader(r);
@@ -49,7 +49,7 @@ namespace OpenNLP.Tools.Util.Trees
             throw new NotImplementedException();
         }
 
-        public Tokenizer<Tree> GetTokenizer(TextReader r, string extraOptions)
+        public ITokenizer<Tree> GetTokenizer(TextReader r, string extraOptions)
         {
             // Silently ignore extra options
             return GetTokenizer(r);

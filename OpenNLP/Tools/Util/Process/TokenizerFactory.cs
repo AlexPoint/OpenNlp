@@ -26,11 +26,11 @@ namespace OpenNLP.Tools.Util.Process
     /// Code...
     /// </summary>
     /// <typeparam name="T">The type of the tokens returned by the Tokenizer</typeparam>
-    public interface TokenizerFactory<T> : IteratorFromReaderFactory<T>
+    public interface ITokenizerFactory<T> : IIteratorFromReaderFactory<T>
     {
-        Tokenizer<T> GetTokenizer(TextReader r);
+        ITokenizer<T> GetTokenizer(TextReader r);
 
-        Tokenizer<T> GetTokenizer(TextReader r, string extraOptions);
+        ITokenizer<T> GetTokenizer(TextReader r, string extraOptions);
 
         void SetOptions(string options);
     }

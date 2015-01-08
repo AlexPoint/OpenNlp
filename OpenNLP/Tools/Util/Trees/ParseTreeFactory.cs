@@ -9,7 +9,7 @@ namespace OpenNLP.Tools.Util.Trees
 {
     public class ParseTreeFactory : LabeledScoredTreeFactory
     {
-        public ParseTreeFactory(LabelFactory lf) : base(lf)
+        public ParseTreeFactory(ILabelFactory lf) : base(lf)
         {
         }
     }

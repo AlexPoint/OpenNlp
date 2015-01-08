@@ -18,7 +18,7 @@ namespace OpenNLP.Tools.Util
     /// Code...
     /// </summary>
     /// <typeparam name="E">Type of elements in the priority queue</typeparam>
-    public class BinaryHeapPriorityQueue<E> : PriorityQueue<E>
+    public class BinaryHeapPriorityQueue<E> : IPriorityQueue<E>
     {
         /// <summary>
         /// An {@code Entry} stores an object in the queue along with

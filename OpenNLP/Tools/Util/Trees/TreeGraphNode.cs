@@ -21,7 +21,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// @author Bill MacCartney
     /// </summary>
-    public class TreeGraphNode : Tree, HasParent
+    public class TreeGraphNode : Tree, IHasParent
     {
         /// <summary>
         /// Label for this node
@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         protected static readonly TreeGraphNode[] ZeroTgnChildren = new TreeGraphNode[0];
 
-        private static readonly LabelFactory Mlf = CoreLabel.Factory();
+        private static readonly ILabelFactory Mlf = CoreLabel.Factory();
 
         /// <summary>
         /// Create a new empty <code>TreeGraphNode</code>
@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// Create a new <code>TreeGraphNode</code> with the supplied label
         /// </summary>
         /// <param name="label">the label for this node</param>
-        public TreeGraphNode(Label label)
+        public TreeGraphNode(ILabel label)
         {
             this._label = (CoreLabel) Mlf.NewLabel(label);
         }
@@ -74,7 +74,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="label">the label for this node</param>
         /// <param name="children">the list of child <code>TreeGraphNode</code>s for this node</param>
-        public TreeGraphNode(Label label, List<Tree> children) :
+        public TreeGraphNode(ILabel label, List<Tree> children) :
             this(label)
         {
             SetChildren(children);
@@ -142,7 +142,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Returns the label associated with the current node, or null if there is no label.
         /// </summary>
-        public override /*CoreLabel */ Label Label()
+        public override /*CoreLabel */ ILabel Label()
         {
             return _label;
         }
@@ -274,7 +274,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// potential problems in sentences which contain the same word more than once.
         /// </summary>
         /// <param name="hf">The headfinding algorithm to use</param>
-        public override void PercolateHeads(HeadFinder hf)
+        public override void PercolateHeads(IHeadFinder hf)
         {
             if (IsLeaf())
             {
@@ -439,9 +439,9 @@ namespace OpenNLP.Tools.Util.Trees
         /// allocated each time.
         /// </summary>
         /// <returns>a factory to produce treegraphs</returns>
-        public override TreeFactory TreeFactory()
+        public override ITreeFactory TreeFactory()
         {
-            LabelFactory lf;
+            ILabelFactory lf;
             if (Label() != null)
             {
                 lf = Label().LabelFactory();
@@ -458,7 +458,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// The factory returned is always the same one (a singleton).
         /// </summary>
         /// <returns>a factory to produce treegraphs</returns>
-        public static TreeFactory Factory()
+        public static ITreeFactory Factory()
         {
             return TreeFactoryHolder.tgnf;
         }
@@ -471,7 +471,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="lf">The <code>LabelFactory</code> to use</param>
         /// <returns>a factory to produce treegraphs</returns>
-        public static TreeFactory Factory(LabelFactory lf)
+        public static ITreeFactory Factory(ILabelFactory lf)
         {
             return new TreeGraphNodeFactory(lf);
         }

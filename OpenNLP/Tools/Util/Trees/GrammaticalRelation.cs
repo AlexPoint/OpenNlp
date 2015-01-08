@@ -89,14 +89,14 @@ namespace OpenNLP.Tools.Util.Trees
 
         /// <summary>
         /// The "governor" grammatical relation, which is the inverse of "dependent".
-        /// Example: "the red car" &rarr; <code>gov</code>(red, car)
+        /// Example: "the red car" -> <code>gov</code>(red, car)
         /// </summary>
         public static readonly GrammaticalRelation Governor =
             new GrammaticalRelation(Language.Any, "gov", "governor", null);
 
         /// <summary>
         /// The "dependent" grammatical relation, which is the inverse of "governor".
-        /// Example: "the red car" &rarr; <code>dep</code>(car, red)
+        /// Example: "the red car" -> <code>dep</code>(car, red)
         /// </summary>
         public static readonly GrammaticalRelation Dependent = new GrammaticalRelation(Language.Any, "dep", "dependent",
             null);
@@ -375,7 +375,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <param name="t">Target for finding dependents of t related by this GR</param>
         /// <param name="root">The root of the Tree</param>
         /// <returns>A Collection of dependent nodes to which t bears this GR</returns>
-        public ICollection<TreeGraphNode> GetRelatedNodes(TreeGraphNode t, TreeGraphNode root, HeadFinder headFinder)
+        public ICollection<TreeGraphNode> GetRelatedNodes(TreeGraphNode t, TreeGraphNode root, IHeadFinder headFinder)
         {
             Set<TreeGraphNode> nodeList = new HashSet<TreeGraphNode>();
             foreach (TregexPattern p in targetPatterns)

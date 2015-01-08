@@ -23,7 +23,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public class IndexedWord : AbstractCoreLabel, IComparable<IndexedWord>
+    public class IndexedWord : IAbstractCoreLabel, IComparable<IndexedWord>
     {
         /// <summary>
         /// The identifier that points to no word.
@@ -47,7 +47,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// the word to the value.
         /// </summary>
         /// <param name="w">A Label to initialize this IndexedWord from</param>
-        public IndexedWord(Label w)
+        public IndexedWord(ILabel w)
         {
             if (w is CoreLabel)
             {
@@ -408,27 +408,27 @@ namespace OpenNLP.Tools.Util.Ling
         }
 
 
-        public class LabFact : LabelFactory
+        public class LabFact : ILabelFactory
         {
-            public Label NewLabel(string labelStr)
+            public ILabel NewLabel(string labelStr)
             {
                 var label = new CoreLabel();
                 label.SetValue(labelStr);
                 return new IndexedWord(label);
             }
 
-            public Label NewLabel(string labelStr, int options)
+            public ILabel NewLabel(string labelStr, int options)
             {
                 return NewLabel(labelStr);
             }
 
-            public Label NewLabelFromString(string encodedLabelStr)
+            public ILabel NewLabelFromString(string encodedLabelStr)
             {
                 throw new InvalidOperationException("This code branch left blank" +
                                                     " because we do not understand what this method should do.");
             }
 
-            public Label NewLabel(Label oldLabel)
+            public ILabel NewLabel(ILabel oldLabel)
             {
                 return new IndexedWord(oldLabel);
             }
@@ -458,12 +458,12 @@ namespace OpenNLP.Tools.Util.Ling
     };
   }*/
 
-        public static LabelFactory Factory()
+        public static ILabelFactory Factory()
         {
             return new LabFact();
         }
 
-        public LabelFactory LabelFactory()
+        public ILabelFactory LabelFactory()
         {
             return IndexedWord.Factory();
         }

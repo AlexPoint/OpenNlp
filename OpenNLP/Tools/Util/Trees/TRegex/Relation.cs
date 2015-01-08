@@ -69,7 +69,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /// <exception cref="ParseException">If bad relation s</exception>
         public static Relation GetRelation(string s,
             Func<string, string> basicCatFunction,
-            HeadFinder headFinder)
+            IHeadFinder headFinder)
             /*throws ParseException*/
         {
             if (SimpleRelationsMap.ContainsKey(s))
@@ -131,7 +131,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /// <exception cref="ParseException">If bad relation s</exception>
         public static Relation GetRelation(string s, string arg,
             Func<string, string> basicCatFunction,
-            HeadFinder headFinder)
+            IHeadFinder headFinder)
         {
             if (arg == null)
             {
@@ -170,7 +170,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /// </summary>
         public static TregexPattern ConstructMultiRelation(string s, List<DescriptionPattern> children,
             Func<string, string> basicCatFunction,
-            HeadFinder headFinder)
+            IHeadFinder headFinder)
         {
             if (s.Equals("<..."))
             {
@@ -1681,9 +1681,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class Heads : Relation
         {
-            public readonly HeadFinder hf;
+            public readonly IHeadFinder hf;
 
-            public Heads(HeadFinder hf) : base(">>#")
+            public Heads(IHeadFinder hf) : base(">>#")
             {
                 this.hf = hf;
             }
@@ -1700,7 +1700,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 else
                 {
-                    HeadFinder headFinder = matcher.GetHeadFinder();
+                    IHeadFinder headFinder = matcher.GetHeadFinder();
                     if (headFinder == null) headFinder = this.hf;
                     Tree head = headFinder.DetermineHead(t2);
                     if (head == t1)
@@ -1719,7 +1719,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             {
                 var next = t;
 
-                HeadFinder headFinder = matcher.GetHeadFinder();
+                IHeadFinder headFinder = matcher.GetHeadFinder();
                 if (headFinder == null)
                 {
                     headFinder = this.hf;
@@ -1772,10 +1772,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private class HeadedByIterator : IEnumerator<Tree>
         {
             private readonly Tree _initialNode;
-            private readonly HeadFinder _hf;
+            private readonly IHeadFinder _hf;
             private bool _initialized;
 
-            public HeadedByIterator(Tree t, TregexMatcher matcher, HeadFinder hf)
+            public HeadedByIterator(Tree t, TregexMatcher matcher, IHeadFinder hf)
             {
                 this._initialNode = t;
                 this._hf = hf;
@@ -1835,7 +1835,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
             private readonly Heads _heads;
 
-            public HeadedBy(HeadFinder hf) : base("<<#")
+            public HeadedBy(IHeadFinder hf) : base("<<#")
             {
                 this._heads = Interner<Heads>.GlobalIntern(new Heads(hf));
             }
@@ -1889,9 +1889,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class ImmediatelyHeads : Relation
         {
-            public readonly HeadFinder Hf;
+            public readonly IHeadFinder Hf;
 
-            public ImmediatelyHeads(HeadFinder hf) : base(">#")
+            public ImmediatelyHeads(IHeadFinder hf) : base(">#")
             {
                 this.Hf = hf;
             }
@@ -1914,7 +1914,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 if (t != matcher.GetRoot())
                 {
                     var next = matcher.GetParent(t);
-                    HeadFinder headFinder = matcher.GetHeadFinder() == null ? Hf : matcher.GetHeadFinder();
+                    IHeadFinder headFinder = matcher.GetHeadFinder() == null ? Hf : matcher.GetHeadFinder();
                     if (headFinder.DetermineHead(next) == t)
                     {
                         return new List<Tree>() {next}.GetEnumerator();
@@ -1960,7 +1960,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
             private readonly ImmediatelyHeads _immediatelyHeads;
 
-            public ImmediatelyHeadedBy(HeadFinder hf) : base("<#")
+            public ImmediatelyHeadedBy(IHeadFinder hf) : base("<#")
             {
                 this._immediatelyHeads = Interner<ImmediatelyHeads>
                     .GlobalIntern(new ImmediatelyHeads(hf));

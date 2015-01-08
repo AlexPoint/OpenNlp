@@ -35,7 +35,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public interface TreebankLanguagePack
+    public interface ITreebankLanguagePack
     {
         /// <summary>
         /// Accepts a string that is a punctuation tag name, and rejects everything else
@@ -154,13 +154,13 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Return a GrammaticalStructureFactory suitable for this language/treebank
         /// </summary>
-        GrammaticalStructureFactory GrammaticalStructureFactory();
+        IGrammaticalStructureFactory GrammaticalStructureFactory();
 
         /// <summary>
         /// Return a GrammaticalStructureFactory suitable for this language/treebank
         /// </summary>
         /// <param name="puncFilter">A filter which should reject punctuation words (as Strings)</param>
-        GrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilter);
+        IGrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilter);
 
         /// <summary>
         /// Return a GrammaticalStructureFactory suitable for this language/treebank
@@ -168,8 +168,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// <param name="puncFilter">A filter which should reject punctuation words (as Strings)</param>
         /// <param name="typedDependencyHf">A HeadFinder which finds heads for typed dependencies</param>
         /// <returns>A GrammaticalStructureFactory suitable for this language/treebank</returns>
-        GrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilter,
-            HeadFinder typedDependencyHf);
+        IGrammaticalStructureFactory GrammaticalStructureFactory(Predicate<string> puncFilter,
+            IHeadFinder typedDependencyHf);
 
         /// <summary>
         ///  Whether or not we have typed dependencies for this language.
@@ -189,7 +189,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// that will be used with this Treebank/Language pair.  This is for
         /// real text of this language pair, not for reading stuff inside the treebank files
         /// </summary>
-        TokenizerFactory<HasWord> GetTokenizerFactory();
+        ITokenizerFactory<IHasWord> GetTokenizerFactory();
 
         /// <summary>
         /// Return an array of characters at which a string should be
@@ -302,17 +302,17 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Return a TokenizerFactory for Trees of this language/treebank
         /// </summary>
-        TokenizerFactory<Tree> TreeTokenizerFactory();
+        ITokenizerFactory<Tree> TreeTokenizerFactory();
 
         /// <summary>
         /// The HeadFinder to use for your treebank
         /// </summary>
-        HeadFinder HeadFinder();
+        IHeadFinder HeadFinder();
 
         /// <summary>
         /// The HeadFinder to use when making typed dependencies
         /// </summary>s
-        HeadFinder TypedDependencyHeadFinder();
+        IHeadFinder TypedDependencyHeadFinder();
 
 
         /**

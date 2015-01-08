@@ -75,7 +75,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// should pass in a Filters.&lt;String&gt;acceptFilter().
         /// </param>
         public GrammaticalStructure(Tree t, ICollection<GrammaticalRelation> relations,
-            Object relationsLock, HeadFinder hf, Predicate<string> puncFilter)
+            Object relationsLock, IHeadFinder hf, Predicate<string> puncFilter)
         {
             this.root = new TreeGraphNode(t, this);
             IndexNodes(this.root);
@@ -338,7 +338,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         public GrammaticalStructure(Tree t, ICollection<GrammaticalRelation> relations,
-            HeadFinder hf, Predicate<string> puncFilter) :
+            IHeadFinder hf, Predicate<string> puncFilter) :
                 this(t, relations, null, hf, puncFilter)
         {
         }
@@ -387,7 +387,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         // cdm dec 2009: I changed this to automatically fail on preterminal nodes, since they shouldn't match for GR parent patterns. Should speed it up.
         private static void AnalyzeNode(TreeGraphNode t, TreeGraphNode root, ICollection<GrammaticalRelation> relations,
-            HeadFinder hf, Predicate<string> puncFilter,
+            IHeadFinder hf, Predicate<string> puncFilter,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> completeGraph)
         {
@@ -575,7 +575,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        private class NoPunctFilter : IPredicate<Dependency<Label, Label, Object>>
+        private class NoPunctFilter : IPredicate<IDependency<ILabel, ILabel, Object>>
         {
             private readonly Predicate<string> npf;
 
@@ -584,13 +584,13 @@ namespace OpenNLP.Tools.Util.Trees
                 this.npf = f;
             }
 
-            public bool Test(Dependency<Label, Label, Object> d)
+            public bool Test(IDependency<ILabel, ILabel, Object> d)
             {
                 if (d == null)
                 {
                     return false;
                 }
-                Label lab = d.Dependent();
+                ILabel lab = d.Dependent();
                 if (lab == null)
                 {
                     return false;
@@ -659,8 +659,8 @@ namespace OpenNLP.Tools.Util.Trees
         /// ancestor of the list of relations passed in.  The IndexedWords
         /// are passed in only for debugging reasons.
         /// </summary>
-        private static GrammaticalRelation GetGrammaticalRelationCommonAncestor(AbstractCoreLabel govH,
-            AbstractCoreLabel depH, List<GrammaticalRelation> labels)
+        private static GrammaticalRelation GetGrammaticalRelationCommonAncestor(IAbstractCoreLabel govH,
+            IAbstractCoreLabel depH, List<GrammaticalRelation> labels)
         {
             GrammaticalRelation reln = GrammaticalRelation.Dependent;
 

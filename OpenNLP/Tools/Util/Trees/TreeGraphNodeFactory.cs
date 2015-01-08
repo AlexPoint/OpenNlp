@@ -17,9 +17,9 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public class TreeGraphNodeFactory : TreeFactory
+    public class TreeGraphNodeFactory : ITreeFactory
     {
-        private readonly LabelFactory mlf;
+        private readonly ILabelFactory mlf;
 
         /// <summary>
         /// Make a <code>TreeFactory</code> that produces <code>TreeGraphNode</code>s.
@@ -30,7 +30,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
         }
 
-        public TreeGraphNodeFactory(LabelFactory mlf)
+        public TreeGraphNodeFactory(ILabelFactory mlf)
         {
             this.mlf = mlf;
         }
@@ -40,7 +40,7 @@ namespace OpenNLP.Tools.Util.Trees
             return NewLeaf(mlf.NewLabel(word));
         }
 
-        public Tree NewLeaf(Label label)
+        public Tree NewLeaf(ILabel label)
         {
             return new TreeGraphNode(label);
         }
@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Util.Trees
             return NewTreeNode(mlf.NewLabel(parent), children);
         }
 
-        public Tree NewTreeNode(Label parentLabel, List<Tree> children)
+        public Tree NewTreeNode(ILabel parentLabel, List<Tree> children)
         {
             return new TreeGraphNode(parentLabel, children);
         }

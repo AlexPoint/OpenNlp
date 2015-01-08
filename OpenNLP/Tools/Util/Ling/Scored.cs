@@ -18,7 +18,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public interface Scored
+    public interface IScored
     {
         /// <summary>
         /// Returns the score of this thing.

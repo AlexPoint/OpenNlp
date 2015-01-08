@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public class QpTreeTransformer : TreeTransformer
+    public class QpTreeTransformer : ITreeTransformer
     {
 
         /// <summary>

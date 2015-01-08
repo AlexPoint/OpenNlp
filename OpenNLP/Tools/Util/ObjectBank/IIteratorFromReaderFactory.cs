@@ -16,7 +16,7 @@ namespace OpenNLP.Tools.Util.ObjectBank
     /// 
     /// Code...
     /// </summary>
-    public interface IteratorFromReaderFactory<T>
+    public interface IIteratorFromReaderFactory<T>
     {
 
         /// <summary>

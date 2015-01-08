@@ -18,7 +18,7 @@ namespace OpenNLP.Tools.Util.Process
     /// 
     /// Code...
     /// </summary>
-    public abstract class AbstractTokenizer<T> : Tokenizer<T>
+    public abstract class AbstractTokenizer<T> : ITokenizer<T>
     {
         protected T NextToken; // = null;
 

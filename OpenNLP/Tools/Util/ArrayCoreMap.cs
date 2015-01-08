@@ -28,7 +28,7 @@ namespace OpenNLP.Tools.Util
     /// 
     /// Code...
     /// </summary>
-    public class ArrayCoreMap : CoreMap
+    public class ArrayCoreMap : ICoreMap
     {
         /// <summary>Initial capacity of the array</summary>
         private const int InitialCapacity = 4;
@@ -81,7 +81,7 @@ namespace OpenNLP.Tools.Util
         /// Copy constructor.
         /// </summary>
         /// <param name="other">The ArrayCoreMap to copy. It may not be null.</param>
-        public ArrayCoreMap(CoreMap other)
+        public ArrayCoreMap(ICoreMap other)
         {
             /*Set<Class<?>>*/
             var otherKeys = other.KeySet();
@@ -272,8 +272,8 @@ namespace OpenNLP.Tools.Util
         /// where ToString gets called can keep track of its own state.
         /// When a call to ToString is about to return, this is reset to null for that particular thread.
         /// </summary>
-        private static readonly ThreadLocal<IdentityHashSet<CoreMap>> ToStringCalled =
-            new ThreadLocal<IdentityHashSet<CoreMap>>()
+        private static readonly ThreadLocal<IdentityHashSet<ICoreMap>> ToStringCalled =
+            new ThreadLocal<IdentityHashSet<ICoreMap>>()
             {
 /*
             protected IdentityHashSet<CoreMap> initialValue() {
@@ -283,10 +283,10 @@ namespace OpenNLP.Tools.Util
 
         public override string ToString()
         {
-            IdentityHashSet<CoreMap> calledSet = ToStringCalled.Value;
+            IdentityHashSet<ICoreMap> calledSet = ToStringCalled.Value;
             if (calledSet == null)
             {
-                calledSet = new IdentityHashSet<CoreMap>();
+                calledSet = new IdentityHashSet<ICoreMap>();
             }
 
             if (calledSet.Contains(this))
@@ -457,13 +457,13 @@ namespace OpenNLP.Tools.Util
         /// This is kept on a per-thread basis so that each thread where equals gets called can keep track of its own state.
         /// When a call to ToString is about to return, this is reset to null for that particular thread.
         /// </summary>
-        private static readonly ThreadLocal<Dictionary<Tuple<CoreMap, CoreMap>, Boolean>> EqualsCalled =
-            new ThreadLocal<Dictionary<Tuple<CoreMap, CoreMap>, Boolean>>();
+        private static readonly ThreadLocal<Dictionary<Tuple<ICoreMap, ICoreMap>, Boolean>> EqualsCalled =
+            new ThreadLocal<Dictionary<Tuple<ICoreMap, ICoreMap>, Boolean>>();
 
         /// <summary>Two CoreMaps are equal iff all keys and values are .equal.</summary>
         public override bool Equals(Object obj)
         {
-            if (!(obj is CoreMap))
+            if (!(obj is ICoreMap))
             {
                 return false;
             }
@@ -484,7 +484,7 @@ namespace OpenNLP.Tools.Util
             // in the object graph
 
             // general equality
-            var other = (CoreMap) obj;
+            var other = (ICoreMap) obj;
             if (! this.KeySet().Equals(other.KeySet()))
             {
                 return false;
@@ -519,11 +519,11 @@ namespace OpenNLP.Tools.Util
 
         private bool Equals(ArrayCoreMap other)
         {
-            Dictionary<Tuple<CoreMap, CoreMap>, Boolean> calledMap = EqualsCalled.Value;
+            Dictionary<Tuple<ICoreMap, ICoreMap>, Boolean> calledMap = EqualsCalled.Value;
             bool createdCalledMap = (calledMap == null);
             if (createdCalledMap)
             {
-                calledMap = new Dictionary<Tuple<CoreMap, CoreMap>, bool>();
+                calledMap = new Dictionary<Tuple<ICoreMap, ICoreMap>, bool>();
                 EqualsCalled.Value = calledMap;
             }
 
@@ -535,13 +535,13 @@ namespace OpenNLP.Tools.Util
             // will unwind with false if any one equality check returns false.
             // TODO: since we only ever keep "true", we would rather use a
             // TwoDimensionalSet, but no such thing exists
-            if (calledMap.ContainsKey(new Tuple<CoreMap, CoreMap>(this, other)))
+            if (calledMap.ContainsKey(new Tuple<ICoreMap, ICoreMap>(this, other)))
             {
                 return true;
             }
             bool result = true;
-            calledMap.Add(new Tuple<CoreMap, CoreMap>(this, other), true);
-            calledMap.Add(new Tuple<CoreMap, CoreMap>(other, this), true);
+            calledMap.Add(new Tuple<ICoreMap, ICoreMap>(this, other), true);
+            calledMap.Add(new Tuple<ICoreMap, ICoreMap>(other, this), true);
 
             if (this.psize != other.psize)
             {
@@ -594,16 +594,16 @@ namespace OpenNLP.Tools.Util
         /// This is kept on a per-thread basis so that each thread where hashCode gets called can keep track of its own state.
         /// When a call to ToString is about to return, this is reset to null for that particular thread.
         /// </summary>
-        private static readonly ThreadLocal<IdentityHashSet<CoreMap>> HashCodeCalled =
-            new ThreadLocal<IdentityHashSet<CoreMap>>();
+        private static readonly ThreadLocal<IdentityHashSet<ICoreMap>> HashCodeCalled =
+            new ThreadLocal<IdentityHashSet<ICoreMap>>();
 
         public override int GetHashCode()
         {
-            IdentityHashSet<CoreMap> calledSet = HashCodeCalled.Value;
+            IdentityHashSet<ICoreMap> calledSet = HashCodeCalled.Value;
             bool createdCalledSet = (calledSet == null);
             if (createdCalledSet)
             {
-                calledSet = new IdentityHashSet<CoreMap>();
+                calledSet = new IdentityHashSet<ICoreMap>();
                 HashCodeCalled.Value = calledSet;
             }
 

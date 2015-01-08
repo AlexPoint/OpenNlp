@@ -21,7 +21,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Label of the parse tree.
         /// </summary>
-        private Label _label; // = null;
+        private ILabel _label; // = null;
 
         /// <summary>
         /// Score of <code>TreeNode</code>
@@ -47,7 +47,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <param name="label">
         /// the <code>Label</code> representing the <i>word</i> for this new tree leaf.
         /// </param>
-        public LabeledScoredTreeNode(Label label) : this(label, Double.NaN)
+        public LabeledScoredTreeNode(ILabel label) : this(label, Double.NaN)
         {
         }
 
@@ -56,7 +56,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="label">The <code>Label</code> representing the <i>word</i> for</param>
         /// <param name="score">The score for the node this new tree leaf.</param>
-        public LabeledScoredTreeNode(Label label, double score) : this()
+        public LabeledScoredTreeNode(ILabel label, double score) : this()
         {
             this._label = label;
             this._score = score;
@@ -67,7 +67,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="label">root label of tree to construct.</param>
         /// <param name="daughterTreesList">List of daughter trees to construct.</param>
-        public LabeledScoredTreeNode(Label label, List<Tree> daughterTreesList)
+        public LabeledScoredTreeNode(ILabel label, List<Tree> daughterTreesList)
         {
             this._label = label;
             SetChildren(daughterTreesList);
@@ -102,7 +102,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Returns the label associated with the current node, or null if there is no label
         /// </summary>
-        public override Label Label()
+        public override ILabel Label()
         {
             return _label;
         }
@@ -110,7 +110,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Sets the label associated with the current node, if there is one.
         /// </summary>
-        public override void SetLabel(Label label)
+        public override void SetLabel(ILabel label)
         {
             this._label = label;
         }
@@ -145,16 +145,16 @@ namespace OpenNLP.Tools.Util.Trees
         /// The factories returned on different calls a different: a new one is
         /// allocated each time.
         /// </summary>
-        public override TreeFactory TreeFactory()
+        public override ITreeFactory TreeFactory()
         {
-            LabelFactory lf = (Label() == null) ? CoreLabel.Factory() : Label().LabelFactory();
+            ILabelFactory lf = (Label() == null) ? CoreLabel.Factory() : Label().LabelFactory();
             return new LabeledScoredTreeFactory(lf);
         }
 
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class TreeFactoryHolder
         {
-            public static readonly TreeFactory tf = new LabeledScoredTreeFactory();
+            public static readonly ITreeFactory tf = new LabeledScoredTreeFactory();
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// The factory returned is always the same one (a singleton).
         /// </summary>
         /// <returns>a factory to produce labeled, scored trees</returns>
-        public static TreeFactory Factory()
+        public static ITreeFactory Factory()
         {
             return TreeFactoryHolder.tf;
         }
@@ -176,7 +176,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="lf">The LabelFactory to use</param>
         /// <returns>a factory to produce labeled, scored trees</returns>
-        public static TreeFactory Factory(LabelFactory lf)
+        public static ITreeFactory Factory(ILabelFactory lf)
         {
             return new LabeledScoredTreeFactory(lf);
         }

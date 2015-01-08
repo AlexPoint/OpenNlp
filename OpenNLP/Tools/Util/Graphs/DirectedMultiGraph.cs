@@ -19,7 +19,7 @@ namespace OpenNLP.Tools.Util.Graphs
     /// </summary>
     /// <typeparam name="V">Type of vertices</typeparam>
     /// <typeparam name="E">Type of edges.</typeparam>
-    public class DirectedMultiGraph<V, E> : Graph<V, E>
+    public class DirectedMultiGraph<V, E> : IGraph<V, E>
     {
         private readonly Dictionary<V, Dictionary<V, List<E>>> outgoingEdges;
 

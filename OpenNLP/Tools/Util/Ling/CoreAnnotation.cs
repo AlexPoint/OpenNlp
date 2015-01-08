@@ -18,7 +18,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public interface CoreAnnotation<T> /*:Key<T>*/
+    public interface ICoreAnnotation<T> /*:Key<T>*/
     {
         /// <summary>
         /// Returns the type associated with this annotation.

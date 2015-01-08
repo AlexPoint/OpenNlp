@@ -11,7 +11,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     public class TsurgeonParser : TsurgeonParserTreeConstants
     {
         protected JjtTsurgeonParserState JjTree = new JjtTsurgeonParserState();
-        private readonly TreeFactory treeFactory = new LabeledScoredTreeFactory();
+        private readonly ITreeFactory treeFactory = new LabeledScoredTreeFactory();
 
         
         // TODO: this is wasteful in terms of creating TsurgeonPatternRoot.

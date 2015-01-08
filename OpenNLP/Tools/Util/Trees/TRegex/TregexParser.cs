@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private readonly Func<string, string> basicCatFunction =
             TregexPatternCompiler.DEFAULT_BASIC_CAT_FUNCTION.Apply;
 
-        private readonly HeadFinder headFinder =
+        private readonly IHeadFinder headFinder =
             TregexPatternCompiler.DEFAULT_HEAD_FINDER;
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         public TregexParser(TextReader stream,
             Func<string, string> basicCatFunction,
-            HeadFinder headFinder) :
+            IHeadFinder headFinder) :
                 this(stream)
         {
             this.basicCatFunction = basicCatFunction;

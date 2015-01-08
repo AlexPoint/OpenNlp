@@ -29,7 +29,7 @@ namespace OpenNLP.Tools.Util
     /// 
     /// Code...
     /// </summary>
-    public interface CoreMap : TypesafeMap
+    public interface ICoreMap : TypesafeMap
     {
         /// <summary>
         /// Attempt to provide a briefer and more human readable string for the contents of a CoreMap.

@@ -11,7 +11,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public interface HasIndex
+    public interface IHasIndex
     {
         string DocId();
 

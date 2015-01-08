@@ -53,7 +53,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <param name="t">Parse tree to make grammatical structure from</param>
         /// <param name="puncFilter">Filter to remove punctuation dependencies</param>
         /// <param name="hf">HeadFinder to use when building it</param>
-        public EnglishGrammaticalStructure(Tree t, Predicate<string> puncFilter, HeadFinder hf) :
+        public EnglishGrammaticalStructure(Tree t, Predicate<string> puncFilter, IHeadFinder hf) :
             this(t, puncFilter, hf, true)
         {
         }
@@ -71,7 +71,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <param name="puncFilter">Filter for punctuation words</param>
         /// <param name="hf">HeadFinder to use when building it</param>
         /// <param name="threadSafe">Whether or not to support simultaneous instances among multiple threads</param>
-        public EnglishGrammaticalStructure(Tree t, Predicate<string> puncFilter, HeadFinder hf, bool threadSafe) :
+        public EnglishGrammaticalStructure(Tree t, Predicate<string> puncFilter, IHeadFinder hf, bool threadSafe) :
             base((new CoordinationTransformer(hf)).TransformTree(t.DeepCopy()),
                 EnglishGrammaticalRelations.Values(threadSafe),
                 threadSafe ? EnglishGrammaticalRelations.valuesLock : null,

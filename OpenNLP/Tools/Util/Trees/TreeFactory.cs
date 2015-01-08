@@ -21,7 +21,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public interface TreeFactory
+    public interface ITreeFactory
     {
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="label">The label for the leaf node</param>
         /// <returns>The new leaf</returns>
-        Tree NewLeaf(Label label);
+        Tree NewLeaf(ILabel label);
 
         /// <summary>
         /// Create a new tree non-leaf node, with the given label
@@ -60,6 +60,6 @@ namespace OpenNLP.Tools.Util.Trees
         /// The children may be a (possibly empty) <code>List</code> of children or <code>null</code>
         /// </param>
         /// <returns>The new interior tree node</returns>
-        Tree NewTreeNode(Label label, List<Tree> children);
+        Tree NewTreeNode(ILabel label, List<Tree> children);
     }
 }

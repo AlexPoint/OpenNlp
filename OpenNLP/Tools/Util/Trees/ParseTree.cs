@@ -22,7 +22,7 @@ namespace OpenNLP.Tools.Util.Trees
             return this.parse.GetChildren().Select(ch => new ParseTree(ch)).ToArray();
         }
 
-        public override Label Label()
+        public override ILabel Label()
         {
             // TODO: move this CoreLabel construction logic somewhere appropriate
             var cLabel = new CoreLabel();
@@ -45,9 +45,9 @@ namespace OpenNLP.Tools.Util.Trees
             return cLabel;
         }
 
-        public override TreeFactory TreeFactory()
+        public override ITreeFactory TreeFactory()
         {
-            LabelFactory lf = (Label() == null) ? CoreLabel.Factory() : Label().LabelFactory();
+            ILabelFactory lf = (Label() == null) ? CoreLabel.Factory() : Label().LabelFactory();
             return new ParseTreeFactory(lf);
         }
     }

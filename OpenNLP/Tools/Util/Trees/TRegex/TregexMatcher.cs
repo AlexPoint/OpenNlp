@@ -26,10 +26,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private Tree.TreeIterator findIterator;
         private Tree findCurrent;
 
-        public readonly HeadFinder headFinder;
+        public readonly IHeadFinder headFinder;
 
         public TregexMatcher(Tree root, Tree tree, IdentityDictionary<Tree, Tree> nodesToParents,
-            Dictionary<string, Tree> namesToNodes, VariableStrings variableStrings, HeadFinder headFinder)
+            Dictionary<string, Tree> namesToNodes, VariableStrings variableStrings, IHeadFinder headFinder)
         {
             this.root = root;
             this.tree = tree;
@@ -39,7 +39,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             this.headFinder = headFinder;
         }
 
-        public HeadFinder GetHeadFinder()
+        public IHeadFinder GetHeadFinder()
         {
             return this.headFinder;
         }
@@ -190,7 +190,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         public Tree GetParent(Tree node)
         {
-            if (node is HasParent)
+            if (node is IHasParent)
             {
                 return node.Parent();
             }

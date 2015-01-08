@@ -33,7 +33,7 @@ namespace OpenNLP.Tools.Util.Trees
             depIndex = dependentIndex;
         }
 
-        public UnnamedConcreteDependency(Label regent, int regentIndex, Label dependent, int dependentIndex) :
+        public UnnamedConcreteDependency(ILabel regent, int regentIndex, ILabel dependent, int dependentIndex) :
             base(regent, dependent)
         {
 
@@ -41,21 +41,21 @@ namespace OpenNLP.Tools.Util.Trees
             depIndex = dependentIndex;
         }
 
-        public UnnamedConcreteDependency(Label regent, Label dep) :
+        public UnnamedConcreteDependency(ILabel regent, ILabel dep) :
             base(regent, dep)
         {
 
-            if (Governor() is HasIndex)
+            if (Governor() is IHasIndex)
             {
-                headIndex = ((HasIndex) Governor()).Index();
+                headIndex = ((IHasIndex) Governor()).Index();
             }
             else
             {
                 throw new ArgumentException("Label argument lacks IndexAnnotation.");
             }
-            if (Dependent() is HasIndex)
+            if (Dependent() is IHasIndex)
             {
-                depIndex = ((HasIndex) Dependent()).Index();
+                depIndex = ((IHasIndex) Dependent()).Index();
             }
             else
             {
@@ -121,12 +121,12 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        public override DependencyFactory DependencyFactory()
+        public override IDependencyFactory DependencyFactory()
         {
             return DependencyFactoryHolder.df;
         }
 
-        public new static DependencyFactory Factory()
+        public new static IDependencyFactory Factory()
         {
             return DependencyFactoryHolder.df;
         }
@@ -134,19 +134,19 @@ namespace OpenNLP.Tools.Util.Trees
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class DependencyFactoryHolder
         {
-            public static readonly DependencyFactory df = new UnnamedConcreteDependencyFactory();
+            public static readonly IDependencyFactory df = new UnnamedConcreteDependencyFactory();
         }
 
         /// <summary>
         /// A <code>DependencyFactory</code> acts as a factory for creating objects
         /// of class <code>Dependency</code>
         /// </summary>
-        private class UnnamedConcreteDependencyFactory : DependencyFactory
+        private class UnnamedConcreteDependencyFactory : IDependencyFactory
         {
             /// <summary>
             /// Create a new <code>Dependency</code>.
             /// </summary>
-            public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent)
+            public IDependency<ILabel, ILabel, Object> NewDependency(ILabel regent, ILabel dependent)
             {
                 return NewDependency(regent, dependent, null);
             }
@@ -154,7 +154,7 @@ namespace OpenNLP.Tools.Util.Trees
             /// <summary>
             /// Create a new <code>Dependency</code>.
             /// </summary>
-            public Dependency<Label, Label, Object> NewDependency(Label regent, Label dependent, Object name)
+            public IDependency<ILabel, ILabel, Object> NewDependency(ILabel regent, ILabel dependent, Object name)
             {
                 return new UnnamedConcreteDependency(regent, dependent);
             }

@@ -30,7 +30,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public interface Label
+    public interface ILabel
     {
         /// <summary>
         /// Return a string representation of just the "main" value of this label.
@@ -69,6 +69,6 @@ namespace OpenNLP.Tools.Util.Ling
         /// May return <code>null</code> if no appropriate factory is known.
         /// </summary>
         /// <returns>the LabelFactory for this kind of label</returns>
-        LabelFactory LabelFactory();
+        ILabelFactory LabelFactory();
     }
 }

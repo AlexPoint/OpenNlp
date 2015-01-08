@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public interface HeadFinder
+    public interface IHeadFinder
     {
         /// <summary>
         /// Determine which daughter of the current parse tree is the head.

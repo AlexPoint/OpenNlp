@@ -41,9 +41,9 @@ namespace OpenNLP.Tools.Util.Trees
     /// 
     /// Code...
     /// </summary>
-    public class BobChrisTreeNormalizer : TreeNormalizer, TreeTransformer
+    public class BobChrisTreeNormalizer : TreeNormalizer, ITreeTransformer
     {
-        protected readonly TreebankLanguagePack tlp;
+        protected readonly ITreebankLanguagePack tlp;
 
 
         public BobChrisTreeNormalizer() :
@@ -51,7 +51,7 @@ namespace OpenNLP.Tools.Util.Trees
         {
         }
 
-        public BobChrisTreeNormalizer(TreebankLanguagePack tlp)
+        public BobChrisTreeNormalizer(ITreebankLanguagePack tlp)
         {
             this.tlp = tlp;
         }
@@ -101,7 +101,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// nonterminal tag label '-NONE-') from the tree, and splices out
         /// unary A over A nodes.  It does work for a null tree.
         /// </summary>
-        public override Tree NormalizeWholeTree(Tree tree, TreeFactory tf)
+        public override Tree NormalizeWholeTree(Tree tree, ITreeFactory tf)
         {
             return tree.Prune(emptyFilter.Test, tf).SpliceOut(aOverAFilter.Test, tf);
         }
@@ -124,7 +124,7 @@ namespace OpenNLP.Tools.Util.Trees
             public bool Test(Tree t)
             {
                 Tree[] kids = t.Children();
-                Label l = t.Label();
+                ILabel l = t.Label();
                 // Delete (return false for) empty/trace nodes (ones marked '-NONE-')
                 return
                     ! ((l != null) && "-NONE-".Equals(l.Value()) && !t.IsLeaf() && kids.Length == 1 && kids[0].IsLeaf());

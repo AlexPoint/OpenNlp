@@ -26,8 +26,8 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public class CoreLabel : ArrayCoreMap, AbstractCoreLabel, HasWord, HasTag, HasCategory, HasLemma, HasContext,
-        HasIndex, HasOffset
+    public class CoreLabel : ArrayCoreMap, IAbstractCoreLabel, IHasWord, IHasTag, IHasCategory, IHasLemma, IHasContext,
+        IHasIndex, IHasOffset
     {
         /// <summary>
         /// Default constructor, calls base()
@@ -53,7 +53,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// type inference for selecting a constructor at compile-time.
         /// </summary>
         /// <param name="label">The CoreLabel to copy</param>
-        public CoreLabel(CoreLabel label) : this((CoreMap) label)
+        public CoreLabel(CoreLabel label) : this((ICoreMap) label)
         {
         }
 
@@ -62,7 +62,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// CoreMap.  It copies the contents of the other CoreMap.
         /// </summary>
         /// <param name="label">The CoreMap to copy</param>
-        public CoreLabel(CoreMap label) : base(label.Size())
+        public CoreLabel(ICoreMap label) : base(label.Size())
         {
             foreach (var key in label.KeySet())
             {
@@ -78,11 +78,11 @@ namespace OpenNLP.Tools.Util.Ling
         /// value() and word iff it implements HasWord is copied.
         /// </summary>
         /// <param name="label">Basis for this label</param>
-        public CoreLabel(Label label) : base(0)
+        public CoreLabel(ILabel label) : base(0)
         {
-            if (label is CoreMap)
+            if (label is ICoreMap)
             {
-                var cl = (CoreMap) label;
+                var cl = (ICoreMap) label;
                 SetCapacity(cl.Size());
                 foreach (var key in cl.KeySet())
                 {
@@ -91,9 +91,9 @@ namespace OpenNLP.Tools.Util.Ling
             }
             else
             {
-                if (label is HasWord)
+                if (label is IHasWord)
                 {
-                    SetWord(((HasWord) label).GetWord());
+                    SetWord(((IHasWord) label).GetWord());
                 }
                 SetValue(label.Value());
             }
@@ -119,7 +119,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// This allows you to read in arbitrary values from a file as features, for example.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public /*static */ interface GenericAnnotation<T> : CoreAnnotation<T>
+        public /*static */ interface IGenericAnnotation<T> : ICoreAnnotation<T>
         {
         }
 
@@ -177,22 +177,22 @@ namespace OpenNLP.Tools.Util.Ling
   }*/
 
 
-        public class CoreLabelFactory : LabelFactory
+        public class CoreLabelFactory : ILabelFactory
         {
 
-            public Label NewLabel(string labelStr)
+            public ILabel NewLabel(string labelStr)
             {
                 var label = new CoreLabel();
                 label.SetValue(labelStr);
                 return label;
             }
 
-            public Label NewLabel(string labelStr, int options)
+            public ILabel NewLabel(string labelStr, int options)
             {
                 return NewLabel(labelStr);
             }
 
-            public Label NewLabel(Label oldLabel)
+            public ILabel NewLabel(ILabel oldLabel)
             {
                 if (oldLabel is CoreLabel)
                 {
@@ -204,19 +204,19 @@ namespace OpenNLP.Tools.Util.Ling
                     //Map the old interfaces to the correct key/value pairs
                     //Don't need to worry about HasIndex, which doesn't appear in any legacy code
                     var label = new CoreLabel();
-                    if (oldLabel is HasWord)
-                        label.SetWord(((HasWord) oldLabel).GetWord());
-                    if (oldLabel is HasTag)
-                        label.SetTag(((HasTag) oldLabel).Tag());
-                    if (oldLabel is HasOffset)
+                    if (oldLabel is IHasWord)
+                        label.SetWord(((IHasWord) oldLabel).GetWord());
+                    if (oldLabel is IHasTag)
+                        label.SetTag(((IHasTag) oldLabel).Tag());
+                    if (oldLabel is IHasOffset)
                     {
-                        label.SetBeginPosition(((HasOffset) oldLabel).BeginPosition());
-                        label.SetEndPosition(((HasOffset) oldLabel).EndPosition());
+                        label.SetBeginPosition(((IHasOffset) oldLabel).BeginPosition());
+                        label.SetEndPosition(((IHasOffset) oldLabel).EndPosition());
                     }
-                    if (oldLabel is HasCategory)
-                        label.SetCategory(((HasCategory) oldLabel).Category());
-                    if (oldLabel is HasIndex)
-                        label.SetIndex(((HasIndex) oldLabel).Index());
+                    if (oldLabel is IHasCategory)
+                        label.SetCategory(((IHasCategory) oldLabel).Category());
+                    if (oldLabel is IHasIndex)
+                        label.SetIndex(((IHasIndex) oldLabel).Index());
 
                     label.SetValue(oldLabel.Value());
 
@@ -224,7 +224,7 @@ namespace OpenNLP.Tools.Util.Ling
                 }
             }
 
-            public Label NewLabelFromString(string encodedLabelStr)
+            public ILabel NewLabelFromString(string encodedLabelStr)
             {
                 throw new InvalidOperationException("This code branch left blank" +
                                                     " because we do not understand what this method should do.");
@@ -235,12 +235,12 @@ namespace OpenNLP.Tools.Util.Ling
         /// <summary>
         /// Return a factory for this kind of label
         /// </summary>
-        public static LabelFactory Factory()
+        public static ILabelFactory Factory()
         {
             return new CoreLabelFactory();
         }
 
-        public LabelFactory LabelFactory()
+        public ILabelFactory LabelFactory()
         {
             return CoreLabel.Factory();
         }

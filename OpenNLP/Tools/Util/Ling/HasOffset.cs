@@ -14,7 +14,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// 
     /// Code...
     /// </summary>
-    public interface HasOffset
+    public interface IHasOffset
     {
         /// <summary>
         /// Return the beginning character offset of the label (or -1 if none).

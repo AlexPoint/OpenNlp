@@ -13,7 +13,7 @@ namespace OpenNLP.Tools.Util.Ling
     /// </summary>
     public class LabeledWord : Word
     {
-        private Label _tag;
+        private ILabel _tag;
 
         private const string Divider = "/";
 
@@ -37,24 +37,24 @@ namespace OpenNLP.Tools.Util.Ling
         /// <summary>
         /// Create a new <code>TaggedWord</code>.
         /// </summary>
-        public LabeledWord(string word, Label tag) :
+        public LabeledWord(string word, ILabel tag) :
             base(word)
         {
             this._tag = tag;
         }
 
-        public LabeledWord(Label word, Label tag) :
+        public LabeledWord(ILabel word, ILabel tag) :
             base(word)
         {
             this._tag = tag;
         }
 
-        public Label Tag()
+        public ILabel Tag()
         {
             return _tag;
         }
 
-        public void SetTag(Label tag)
+        public void SetTag(ILabel tag)
         {
             this._tag = tag;
         }
@@ -72,11 +72,11 @@ namespace OpenNLP.Tools.Util.Ling
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class LabelFactoryHolder
         {
-            public static readonly LabelFactory lf = new TaggedWordFactory();
+            public static readonly ILabelFactory lf = new TaggedWordFactory();
 
         }
 
-        public override LabelFactory LabelFactory()
+        public override ILabelFactory LabelFactory()
         {
             return LabelFactoryHolder.lf;
         }
@@ -85,7 +85,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// Return a factory for this kind of label.
         /// </summary>
         /// <returns>The label factory</returns>
-        public new static LabelFactory Factory()
+        public new static ILabelFactory Factory()
         {
             return LabelFactoryHolder.lf;
         }

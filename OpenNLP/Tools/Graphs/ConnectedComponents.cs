@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Util;
 
-namespace OpenNLP.Tools.Util.Graphs
+namespace OpenNLP.Tools.Graphs
 {
     /// <summary>
     /// Finds connected components in the graph, currently uses inefficient list for
@@ -33,7 +34,7 @@ namespace OpenNLP.Tools.Util.Graphs
 
         private static /*<V, E>*/ Set<V> Bfs<V, E>(List<V> todo, IGraph<V, E> graph, List<V> verticesLeft)
         {
-            Set<V> cc = new HashSet<V>();
+            Set<V> cc = new Util.HashSet<V>();
             while (todo.Count > 0)
             {
                 V node = todo.First();

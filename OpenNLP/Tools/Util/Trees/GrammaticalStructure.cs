@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using OpenNLP.Tools.Util.Graphs;
+using OpenNLP.Tools.Graphs;
 using OpenNLP.Tools.Util.Ling;
 
 namespace OpenNLP.Tools.Util.Trees

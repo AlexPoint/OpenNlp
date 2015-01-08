@@ -4,8 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Util;
 
-namespace OpenNLP.Tools.Util.Graphs
+namespace OpenNLP.Tools.Graphs
 {
     public static class DijkstraShortestPath
     {
@@ -19,7 +20,7 @@ namespace OpenNLP.Tools.Util.Graphs
                 return new List<V>() {node2};
             }
 
-            Set<V> visited = new HashSet<V>();
+            Set<V> visited = new Util.HashSet<V>();
 
             var previous = new Dictionary<V, V>();
 

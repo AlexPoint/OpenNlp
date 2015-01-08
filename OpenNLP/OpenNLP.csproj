@@ -310,10 +310,10 @@
     <Compile Include="Tools\Util\CoreMap.cs" />
     <Compile Include="Tools\Util\CountedSet.cs" />
     <Compile Include="Tools\Util\Filters.cs" />
-    <Compile Include="Tools\Util\Graphs\ConnectedComponents.cs" />
-    <Compile Include="Tools\Util\Graphs\DijkstraShortestPathcs.cs" />
-    <Compile Include="Tools\Util\Graphs\DirectedMultiGraph.cs" />
-    <Compile Include="Tools\Util\Graphs\Graph.cs" />
+    <Compile Include="Tools\Graphs\ConnectedComponents.cs" />
+    <Compile Include="Tools\Graphs\DijkstraShortestPathcs.cs" />
+    <Compile Include="Tools\Graphs\DirectedMultiGraph.cs" />
+    <Compile Include="Tools\Graphs\Graph.cs" />
     <Compile Include="Tools\Util\HashableCoreMap.cs" />
     <Compile Include="Tools\Util\HashList.cs" />
     <Compile Include="Tools\Util\HashSet.cs">

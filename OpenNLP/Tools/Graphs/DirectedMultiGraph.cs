@@ -5,8 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Util;
 
-namespace OpenNLP.Tools.Util.Graphs
+namespace OpenNLP.Tools.Graphs
 {
     /// <summary>
     /// Simple graph library; this is directed for now. This class focuses on time

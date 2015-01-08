@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util
     /// 
     /// Code ...
     /// </summary>
-    public interface TypesafeMap
+    public interface ITypesafeMap
     {
 
         /// <summary>

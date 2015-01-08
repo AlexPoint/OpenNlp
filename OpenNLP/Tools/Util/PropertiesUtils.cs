@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util
 {
-    public class PropertiesUtils
+    public static class PropertiesUtils
     {
-        private PropertiesUtils()
-        {
-        }
-
         /// <summary>
         /// Returns true iff the given Properties contains a property with the given
         /// key (name), and its value is not "false" or "no" or "off".

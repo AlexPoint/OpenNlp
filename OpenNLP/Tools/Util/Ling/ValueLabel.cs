@@ -91,8 +91,6 @@ namespace OpenNLP.Tools.Util.Ling
         /// Returns a factory that makes Labels of the appropriate sort.
         /// </summary>
         public abstract LabelFactory LabelFactory();
-
-
-        private static readonly long serialVersionUID = -1413303679077285530L;
+    
     }
 }

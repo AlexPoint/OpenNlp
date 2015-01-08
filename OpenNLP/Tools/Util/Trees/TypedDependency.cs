@@ -21,8 +21,6 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public class TypedDependency : IComparable<TypedDependency>
     {
-        private static readonly long serialVersionUID = -7690294213151279779L;
-
         // TODO FIXME: these should all be final.  That they are mutable is
         // awful design.  Awful.  It means that underlying data structures
         // can be mutated in ways you don't intend.  For example, there was

@@ -30,8 +30,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     /// </summary>
     public abstract class Relation
     {
-        private static readonly long serialVersionUID = -1564793674551362909L;
-
         private readonly string _symbol;
 
         /// <summary>
@@ -283,8 +281,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class EqualsRelation : Relation
         {
-            private new static readonly long serialVersionUID = 164629344977943816L;
-
             public EqualsRelation(string symbol) : base(symbol)
             {
             }
@@ -1685,9 +1681,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class Heads : Relation
         {
-
-            private new static readonly long serialVersionUID = 4681433462932265831L;
-
             public readonly HeadFinder hf;
 
             public Heads(HeadFinder hf) : base(">>#")
@@ -1840,9 +1833,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class HeadedBy : Relation
         {
-
-            private new static readonly long serialVersionUID = 2825997185749055693L;
-
             private readonly Heads _heads;
 
             public HeadedBy(HeadFinder hf) : base("<<#")
@@ -1899,10 +1889,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class ImmediatelyHeads : Relation
         {
-
-
-            private new static readonly long serialVersionUID = 2085410152913894987L;
-
             public readonly HeadFinder Hf;
 
             public ImmediatelyHeads(HeadFinder hf) : base(">#")
@@ -1972,9 +1958,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class ImmediatelyHeadedBy : Relation
         {
-
-            private new static readonly long serialVersionUID = 5910075663419780905L;
-
             private readonly ImmediatelyHeads _immediatelyHeads;
 
             public ImmediatelyHeadedBy(HeadFinder hf) : base("<#")
@@ -2038,8 +2021,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class IthChildOf : Relation
         {
-            private new static readonly long serialVersionUID = -1463126827537879633L;
-
             public readonly int ChildNum;
 
             public IthChildOf(int i) : base(">" + i)
@@ -2127,9 +2108,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class HasIthChild : Relation
         {
-
-            private new static readonly long serialVersionUID = 3546853729291582806L;
-
             private readonly IthChildOf _ithChildOf;
 
             public HasIthChild(int i) : base("<" + i)
@@ -2254,8 +2232,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class UnbrokenCategoryDominates : Relation
         {
-            private new static readonly long serialVersionUID = -4174923168221859262L;
-
             private readonly Regex _pattern;
             private readonly bool _negatedPattern;
             private readonly bool _basicCat;
@@ -2386,9 +2362,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private class UnbrokenCategoryIsDominatedBy : Relation
         {
-
-            private new static readonly long serialVersionUID = 2867922828235355129L;
-
             private readonly UnbrokenCategoryDominates _unbrokenCategoryDominates;
 
             public UnbrokenCategoryIsDominatedBy(string arg,
@@ -2450,9 +2423,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /// </summary>
         private class UnbrokenCategoryPrecedes : Relation
         {
-
-            private new static readonly long serialVersionUID = 6866888667804306111L;
-
             private readonly Regex _pattern;
             private readonly bool _negatedPattern;
             private readonly bool _basicCat;
@@ -2590,9 +2560,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /// </summary>
         private class UnbrokenCategoryFollows : Relation
         {
-
-            private new static readonly long serialVersionUID = -7890430001297866437L;
-
             private readonly Regex _pattern;
             private readonly bool _negatedPattern;
             private readonly bool _basicCat;

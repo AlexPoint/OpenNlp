@@ -176,8 +176,6 @@ namespace OpenNLP.Tools.Util.Trees
         {
             return new SemanticHeadFinder(this, true);
         }
-
         
-        private static readonly long serialVersionUID = 9081305982861675328L;
     }
 }

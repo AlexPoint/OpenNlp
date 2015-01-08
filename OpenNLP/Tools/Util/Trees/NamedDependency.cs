@@ -21,8 +21,6 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public class NamedDependency : UnnamedDependency
     {
-        private static readonly long serialVersionUID = -1635646451505721133L;
-
         private readonly Object _name;
 
         public NamedDependency(string regent, string dependent, Object name) :

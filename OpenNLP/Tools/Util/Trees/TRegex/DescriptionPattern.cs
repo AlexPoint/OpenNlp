@@ -734,6 +734,5 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         } // end class DescriptionMatcher
 
-        private static readonly long serialVersionUID = 1179819056757295757L;
     }
 }

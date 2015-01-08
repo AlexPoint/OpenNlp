@@ -144,7 +144,5 @@ namespace OpenNLP.Tools.Util.Ling
         {
             return LabelFactoryHolder.lf;
         }
-
-        private static readonly long serialVersionUID = -7252006452127051085L;
     }
 }

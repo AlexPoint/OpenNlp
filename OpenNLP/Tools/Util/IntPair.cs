@@ -8,9 +8,6 @@ namespace OpenNLP.Tools.Util
 {
     public class IntPair : IntTuple
     {
-        private static readonly long serialVersionUID = 1L;
-
-
         public IntPair() : base(2)
         {
         }

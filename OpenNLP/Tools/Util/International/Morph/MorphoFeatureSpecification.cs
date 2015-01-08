@@ -19,8 +19,6 @@ namespace OpenNLP.Tools.Util.International.Morph
     /// </summary>
     public abstract class MorphoFeatureSpecification
     {
-        private static readonly long serialVersionUID = -5720683653931585664L;
-
         /// <summary>
         /// Delimiter for associating a surface form with a morphological analysis, e.g., his~#PRP_3ms
         /// </summary>

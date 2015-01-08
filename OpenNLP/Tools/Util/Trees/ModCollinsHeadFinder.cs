@@ -243,6 +243,5 @@ namespace OpenNLP.Tools.Util.Trees
             // defaultRule = defaultLeftRule; // Don't exception, take leftmost if no rule defined for a certain parent category
         }
 
-        private static readonly long serialVersionUID = -5870387458902637256L;
     }
 }

@@ -261,6 +261,5 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         } // end private class CoordinationMatcher
 
-        private static readonly long serialVersionUID = -7797084959452603087L;
     }
 }

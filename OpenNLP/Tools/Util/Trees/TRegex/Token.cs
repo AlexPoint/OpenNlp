@@ -11,13 +11,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     /// </summary>
     public class Token
     {
-        /**
-   * The version identifier for this Serializable class.
-   * Increment only if the <i>serialized</i> form of the
-   * class changes.
-   */
-        private static readonly long serialVersionUID = 1L;
-
         /// <summary>
         /// An integer that describes the kind of this token.  This numbering
         /// system is determined by JavaCCParser, and a table of these numbers is

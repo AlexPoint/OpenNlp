@@ -84,10 +84,6 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public class GrammaticalRelation : IComparable<GrammaticalRelation>
     {
-        private static readonly long serialVersionUID = 892618003417550128L;
-
-        //private static readonly bool DEBUG = System.getProperty("GrammaticalRelation", null) != null;
-
         private static readonly Dictionary<Language, Dictionary<string, GrammaticalRelation>>
             StringsToRelations = new Dictionary<Language, Dictionary<string, GrammaticalRelation>>( /*Language.class*/);
 

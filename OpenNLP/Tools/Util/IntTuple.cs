@@ -21,9 +21,6 @@ namespace OpenNLP.Tools.Util
     {
         protected readonly int[] elements;
 
-        private static readonly long serialVersionUID = 7266305463893511982L;
-
-
         public IntTuple(int[] arr)
         {
             elements = arr;

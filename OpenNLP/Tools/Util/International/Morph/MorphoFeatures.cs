@@ -14,8 +14,6 @@ namespace OpenNLP.Tools.Util.International.Morph
     /// </summary>
     public class MorphoFeatures
     {
-        private static readonly long serialVersionUID = -3893316324305154940L;
-
         public static readonly string KeyValDelim = ":";
 
         protected readonly Dictionary<MorphoFeatureSpecification.MorphoFeatureType, string> fSpec;

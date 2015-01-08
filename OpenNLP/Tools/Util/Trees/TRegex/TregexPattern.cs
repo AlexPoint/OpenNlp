@@ -612,9 +612,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         }
 
         } // end class TRegexTreeVisitor*/
-
-        private static readonly long serialVersionUID = 5060298043763944913L;
-
+        
 
         /*public static class TRegexTreeReaderFactory: TreeReaderFactory {
 
@@ -625,7 +623,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 /**
                     *
                     #1#
-                private static final long serialVersionUID = -2998972954089638189L;
 
                 @Override
                 public string normalizeNonterminal(string str) {

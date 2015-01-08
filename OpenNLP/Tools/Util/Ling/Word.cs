@@ -92,6 +92,5 @@ namespace OpenNLP.Tools.Util.Ling
             return WordFactoryHolder.lf;
         }
 
-        private static readonly long serialVersionUID = -4817252915997034058L;
     }
 }

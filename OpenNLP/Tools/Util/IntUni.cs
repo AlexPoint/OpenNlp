@@ -43,7 +43,5 @@ namespace OpenNLP.Tools.Util
         {
             elements[0] += val;
         }
-
-        private static readonly long serialVersionUID = -7182556672628741200L;
     }
 }

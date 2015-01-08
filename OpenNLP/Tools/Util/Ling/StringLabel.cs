@@ -145,7 +145,5 @@ namespace OpenNLP.Tools.Util.Ling
         {
             this._endPosition = endPosition;
         }
-
-        private static readonly long serialVersionUID = -4153619273767524247L;
     }
 }

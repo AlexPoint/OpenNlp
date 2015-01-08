@@ -638,23 +638,6 @@ namespace OpenNLP.Tools.Util
             return keysCode*37 + valuesCode;
         }
 
-        //
-        // serialization magic
-        //
-
-        /** Serialization version id */
-        private static readonly long serialVersionUID = 1L;
-
-        /**
-   * Overridden serialization method: compacts our map before writing.
-   *
-   * @param out Stream to write to
-   * @throws IOException If IO error
-   */
-        /*private void writeObject(ObjectOutputStream out) throws IOException {
-    compact();
-    out.defaultWriteObject();
-  }*/
 
         // TODO: make prettyLog work in the situation of loops
         // in the object graph

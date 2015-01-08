@@ -20,12 +20,6 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public abstract class AbstractTreebankLanguagePack : TreebankLanguagePack
     {
-        /**
-   * So changed versions deserialize correctly.
-   */
-        //private static readonly long serialVersionUID = -6506749780512708352L;
-
-
         //Grammatical function parameters
         /**
         * Default character for indicating that something is a grammatical fn; probably should be overridden by
@@ -336,10 +330,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public class BasicCategoryStringFunction /*:Func<string,String>, Serializables*/
         {
-
-            private static readonly long serialVersionUID = 1L;
-
-            private AbstractTreebankLanguagePack tlp;
+            private readonly AbstractTreebankLanguagePack tlp;
 
             public BasicCategoryStringFunction(AbstractTreebankLanguagePack tlp)
             {
@@ -356,10 +347,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public class CategoryAndFunctionStringFunction /*implements Function<string,String>, Serializable */
         {
-
-            private static readonly long serialVersionUID = 1L;
-
-            private TreebankLanguagePack tlp;
+            private readonly TreebankLanguagePack tlp;
 
             public CategoryAndFunctionStringFunction(TreebankLanguagePack tlp)
             {

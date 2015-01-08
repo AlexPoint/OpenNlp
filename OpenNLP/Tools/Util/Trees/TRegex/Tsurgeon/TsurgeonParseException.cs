@@ -16,8 +16,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     /// </summary>
     public class TsurgeonParseException : SystemException
     {
-        private static readonly long serialVersionUID = -4417368416943652737L;
-
         public TsurgeonParseException(string message) : base(message)
         {
         }

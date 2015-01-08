@@ -25,8 +25,6 @@ namespace OpenNLP.Tools.Util.Ling
     /// </summary>
     public class IndexedWord : AbstractCoreLabel, IComparable<IndexedWord>
     {
-        private static readonly long serialVersionUID = 3739633991145239829L;
-
         /// <summary>
         /// The identifier that points to no word.
         /// </summary>

@@ -15,9 +15,6 @@ namespace OpenNLP.Tools.Util
     /// </summary>
     public abstract class MapFactory<K, V>
     {
-
-        private static readonly long serialVersionUID = 4529666940763477360L;
-
         //@SuppressWarnings("unchecked")
         //public static readonly MapFactory HASH_MAP_FACTORY = new HashMapFactory();
 
@@ -122,9 +119,6 @@ namespace OpenNLP.Tools.Util
 
         private class HashMapFactory<K, V> : MapFactory<K, V>
         {
-
-            private new static readonly long serialVersionUID = -9222344631596580863L;
-
             public override Dictionary<K, V> NewMap()
             {
                 return new Dictionary<K, V>();
@@ -157,8 +151,6 @@ namespace OpenNLP.Tools.Util
 
         /*private class IdentityHashMapFactory<K,V> : MapFactory<K,V> {
 
-            private static readonly long serialVersionUID = -9222344631596580863L;
-
             public Dictionary<K,V> newMap() {
               return new IdentityHashDictionary<K,V>();
             }
@@ -185,8 +177,6 @@ namespace OpenNLP.Tools.Util
 
 
         /*private static class WeakHashMapFactory<K,V> : MapFactory<K,V> {
-
-            private static readonly long serialVersionUID = 4790014244304941000L;
 
             public override Dictionary<K,V> newMap() {
               return new WeakHashDictionary<K,V>();
@@ -216,8 +206,6 @@ namespace OpenNLP.Tools.Util
 
 
         /*private static class TreeMapFactory<K,V> : MapFactory<K,V> {
-
-            private static readonly long serialVersionUID = -9138736068025818670L;
 
             private readonly Comparator<? super K> comparator;
 
@@ -263,9 +251,6 @@ namespace OpenNLP.Tools.Util
 
         private class LinkedHashMapFactory<K, V> : MapFactory<K, V>
         {
-
-            private new static readonly long serialVersionUID = -9138736068025818671L;
-
             public override Dictionary<K, V> NewMap()
             {
                 //return new LinkedHashDictionary<K,V>();
@@ -301,9 +286,6 @@ namespace OpenNLP.Tools.Util
 
         private class ArrayMapFactory<K, V> : MapFactory<K, V>
         {
-
-            private new static readonly long serialVersionUID = -5855812734715185523L;
-
             public override Dictionary<K, V> NewMap()
             {
                 //return new ArrayDictionary<K,V>();

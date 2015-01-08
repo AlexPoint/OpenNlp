@@ -13,8 +13,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     /// </summary>
     public class TsurgeonRuntimeException : SystemException
     {
-        private static readonly long serialVersionUID = 1;
-
         /// <summary>
         /// Creates a new exception with a message.
         /// </summary>

@@ -8,9 +8,6 @@ namespace OpenNLP.Tools.Util
 {
     public class IntQuadruple : IntTuple
     {
-        private static readonly long serialVersionUID = 7154973101012473479L;
-
-
         public IntQuadruple() : base(4)
         {
         }

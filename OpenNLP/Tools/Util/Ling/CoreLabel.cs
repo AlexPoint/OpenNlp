@@ -29,9 +29,6 @@ namespace OpenNLP.Tools.Util.Ling
     public class CoreLabel : ArrayCoreMap, AbstractCoreLabel, HasWord, HasTag, HasCategory, HasLemma, HasContext,
         HasIndex, HasOffset
     {
-        private static readonly long serialVersionUID = 2L;
-
-
         // /**
         //  * Should warnings be printed when converting from MapLabel family.
         //  */

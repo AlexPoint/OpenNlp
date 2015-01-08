@@ -73,6 +73,5 @@ namespace OpenNLP.Tools.Util.Trees
             return tree;
         }
 
-        private static readonly long serialVersionUID = 1540681875853883387L;
     }
 }

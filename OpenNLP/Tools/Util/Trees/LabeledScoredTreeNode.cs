@@ -18,8 +18,6 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public class LabeledScoredTreeNode : Tree
     {
-        private static readonly long serialVersionUID = -8992385140984593817L;
-
         /// <summary>
         /// Label of the parse tree.
         /// </summary>

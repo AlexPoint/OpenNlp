@@ -88,7 +88,5 @@ namespace OpenNLP.Tools.Util.Process
             var l = new CoreLabel(labelToBeCopied);
             return l;
         }
-
-        private static readonly long serialVersionUID = 4L;
     }
 }

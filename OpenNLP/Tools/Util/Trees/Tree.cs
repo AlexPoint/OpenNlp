@@ -44,9 +44,6 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public abstract class Tree : AbstractCollection<Tree>, Label, Labeled, Scored
     {
-
-        private static readonly long serialVersionUID = 5441849457648722744L;
-
         /// <summary>
         ///  A leaf node should have a zero-length array for its children.
         /// For efficiency, classes can use this array as a return value 

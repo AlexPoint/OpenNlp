@@ -22,8 +22,6 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public class UnnamedDependency : Dependency<Label, Label, Object>
     {
-        private static readonly long serialVersionUID = -3768440215342256085L;
-
         // We store the text of the labels separately because it looks like
         // it is possible for an object to request a hash code using itself
         // in a partially reconstructed state when unserializing.  For

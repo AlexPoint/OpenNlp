@@ -114,9 +114,6 @@ namespace OpenNLP.Tools.Util
             }
         }
 
-        private static readonly long serialVersionUID = 1L;
-
-
         /// <summary>
         /// An exception thrown when attempting to change the value associated
         /// with an (immutable) hash key in a HashableCoreMap.
@@ -130,7 +127,6 @@ namespace OpenNLP.Tools.Util
             {
             }
 
-            private static readonly long serialVersionUID = 1L;
         }
     }
 }

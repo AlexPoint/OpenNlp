@@ -646,7 +646,5 @@ namespace OpenNLP.Tools.Util.Graphs
             s.Append('}');
             return s.ToString();
         }
-
-        private static readonly long serialVersionUID = 609823567298345145L;
     }
 }

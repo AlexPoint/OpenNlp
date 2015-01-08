@@ -34,8 +34,7 @@ namespace OpenNLP.Tools.Util
 
         // the IdentityHashMap which backs this set
         private readonly IdentityDictionary<T, Boolean> map;
-        private static readonly long serialVersionUID = -5024744406713321676L;
-
+        
 
         // CONSTRUCTORS ---------------------------------------------------------
 

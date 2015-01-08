@@ -16,13 +16,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
     /// </summary>
     public class ParseException : Exception
     {
-        /**
-   * The version identifier for this Serializable class.
-   * Increment only if the <i>serialized</i> form of the
-   * class changes.
-   */
-        private static readonly long serialVersionUID = 1L;
-
         /// <summary>
         /// This constructor is used by the method "generateParseException"
         /// in the generated parser.  Calling this constructor generates

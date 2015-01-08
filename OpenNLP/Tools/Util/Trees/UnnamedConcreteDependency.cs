@@ -22,8 +22,6 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public class UnnamedConcreteDependency : UnnamedDependency
     {
-        private static readonly long serialVersionUID = -8836949694741145222L;
-
         private readonly int headIndex;
         private readonly int depIndex;
 

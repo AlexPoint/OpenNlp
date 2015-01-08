@@ -116,14 +116,8 @@ namespace OpenNLP.Tools.Util.Trees
 
         protected AOverAFilter aOverAFilter = new AOverAFilter();
 
-        private static readonly long serialVersionUID = -1005188028979810143L;
-
-
         public class EmptyFilter /*: Predicate<Tree>*/ /*, Serializable*/
         {
-
-            private static readonly long serialVersionUID = 8914098359495987617L;
-
             /// <summary>
             /// Doesn't accept nodes that only cover an empty.
             /// </summary>
@@ -135,8 +129,6 @@ namespace OpenNLP.Tools.Util.Trees
                 return
                     ! ((l != null) && "-NONE-".Equals(l.Value()) && !t.IsLeaf() && kids.Length == 1 && kids[0].IsLeaf());
             }
-
-            //    private static readonly long serialVersionUID = 1L;
 
         } // end class EmptyFilter
 
@@ -166,8 +158,6 @@ namespace OpenNLP.Tools.Util.Trees
                     ! (t.Label() != null && t.Label().Value() != null &&
                        t.Label().Value().Equals(t.GetChild(0).Label().Value()));
             }
-
-            private static readonly long serialVersionUID = 1L;
 
         } // end class AOverAFilter
     }

@@ -21,8 +21,6 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public class SimpleTree : Tree
     {
-        private static readonly long serialVersionUID = -8075763706877132926L;
-
         /// <summary>Daughters of the parse tree</summary>
         private Tree[] daughterTrees;
 

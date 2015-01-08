@@ -37,9 +37,7 @@ namespace OpenNLP.Tools.Util.Trees
         private readonly Tokenizer<string> tokenizer;
         private readonly TreeNormalizer treeNormalizer;
         private readonly TreeFactory treeFactory;
-
-        //private static readonly bool DEBUG = false;
-
+        
         private Tree currentTree;
         // misuse a list as a stack, since we want to avoid the synchronized and old Stack, but don't need the power and JDK 1.6 dependency of a Deque
         private List<Tree> stack;
@@ -96,9 +94,6 @@ namespace OpenNLP.Tools.Util.Trees
             string first = (st.HasNext() ? st.Peek() : null);
             if (first != null && first.StartsWith("*x*x*x"))
             {
-                /*if (DEBUG) {
-        System.err.printf("%s: Skipping past whacked out header (%s)%n",this.getClass().getName(),first);
-      }*/
                 int foundCount = 0;
                 while (foundCount < 4 && st.HasNext())
                 {
@@ -109,13 +104,6 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                 }
             }
-
-            /*if (DEBUG) {
-      System.err.printf("%s: Built from%n %s ", this.getClass().getName(), in.getClass().getName());
-      System.err.println(' ' + ((tf == null) ? "no tf" : tf.getClass().getName()));
-      System.err.println(' ' + ((tn == null) ? "no tn" : tn.getClass().getName()));
-      System.err.println(' ' + ((st == null) ? "no st" : st.getClass().getName()));
-    }*/
         }
 
         /// <summary>
@@ -222,7 +210,6 @@ namespace OpenNLP.Tools.Util.Trees
                         if (!stack.Any())
                         {
                             // Warn that file has too many right parens
-                            //System.err.println("PennTreeReader: warning: file has extra non-matching right parenthesis [ignored]");
                             //break label;
                             goto post_while_label;
                         }
@@ -241,7 +228,6 @@ namespace OpenNLP.Tools.Util.Trees
                             // A careful Reader should warn here, but it's kind of useful to
                             // suppress this because then the TreeReader doesn't print a ton of
                             // messages if there is a README file in a directory of Trees.
-                            // System.err.println("PennTreeReader: warning: file has extra token not in a s-expression tree: " + token + " [ignored]");
                             //break label;
                             goto post_while_label;
                         }
@@ -272,10 +258,6 @@ namespace OpenNLP.Tools.Util.Trees
             }
 
             //Reject
-            if (currentTree != null)
-            {
-                //System.err.println("PennTreeReader: warning: incomplete tree (extra left parentheses in input): " + currentTree);
-            }
             return null;
         }
 

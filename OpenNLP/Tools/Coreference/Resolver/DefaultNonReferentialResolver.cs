@@ -81,9 +81,8 @@ namespace OpenNLP.Tools.Coreference.Resolver
 
         protected internal virtual List<string> GetFeatures(Mention.MentionContext mention)
 		{
-            List<string> features = new List<string>();
-			features.Add(MaximumEntropyResolver.Default);
-			features.AddRange(GetNonReferentialFeatures(mention));
+            var features = new List<string> {MaximumEntropyResolver.Default};
+            features.AddRange(GetNonReferentialFeatures(mention));
 			return features;
 		}
 		
@@ -98,9 +97,8 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		/// </returns>
         protected internal virtual List<string> GetNonReferentialFeatures(Mention.MentionContext mention)
 		{
-            List<string> features = new List<string>();
+            var features = new List<string>();
             Mention.IParse[] mentionTokens = mention.TokenParses;
-			//System.err.println("getNonReferentialFeatures: mention has "+mtokens.length+" tokens");
 			for (int tokenIndex = 0; tokenIndex <= mention.HeadTokenIndex; tokenIndex++)
 			{
                 Mention.IParse token = mentionTokens[tokenIndex];
@@ -118,11 +116,11 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		{
 			if (ResolverMode.Train == mResolverMode)
 			{
-				System.Console.Error.WriteLine(this + " referential");
+				Console.Error.WriteLine(this + " referential");
 
 				if (mDebugOn)
 				{
-					System.IO.StreamWriter writer = new System.IO.StreamWriter(mModelName + ".events", false, System.Text.Encoding.Default);
+					var writer = new System.IO.StreamWriter(mModelName + ".events", false, System.Text.Encoding.Default);
 					foreach (SharpEntropy.TrainingEvent trainingEvent in mEvents)
 					{
 						writer.Write(trainingEvent.ToString() + "\n");
@@ -130,7 +128,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 					writer.Close();
 				}
 
-                SharpEntropy.GisTrainer trainer = new SharpEntropy.GisTrainer();
+                var trainer = new SharpEntropy.GisTrainer();
                 trainer.TrainModel(new Util.CollectionEventReader(mEvents), 100, 10);
                 new SharpEntropy.IO.BinaryGisModelWriter().Persist(new SharpEntropy.GisModel(trainer), mModelName + mModelExtension);
 			}

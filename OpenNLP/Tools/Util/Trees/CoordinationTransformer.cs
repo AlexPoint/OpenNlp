@@ -35,10 +35,12 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public class CoordinationTransformer : TreeTransformer
     {
-        //private static readonly bool VERBOSE = System.getProperty("CoordinationTransformer", null) != null;
-        private readonly TreeTransformer tn = new DependencyTreeTransformer(); //to get rid of unwanted nodes and tag
-        private readonly TreeTransformer qp = new QpTreeTransformer(); //to restructure the QP constituents
-        private readonly TreeTransformer dates = new DateTreeTransformer(); //to flatten date patterns
+        /// <summary>to get rid of unwanted nodes and tag</summary>
+        private readonly TreeTransformer tn = new DependencyTreeTransformer();
+        /// <summary>to restructure the QP constituents</summary>
+        private readonly TreeTransformer qp = new QpTreeTransformer();
+        /// <summary>to flatten date patterns</summary>
+        private readonly TreeTransformer dates = new DateTreeTransformer();
 
         private readonly HeadFinder headFinder;
 
@@ -58,57 +60,21 @@ namespace OpenNLP.Tools.Util.Trees
         /// <returns>t transformed</returns>
         public Tree TransformTree(Tree t)
         {
-            /*if (VERBOSE) {
-      System.err.println("Input to CoordinationTransformer: " + t);
-    }*/
             t = tn.TransformTree(t);
-            /*if (VERBOSE) {
-      System.err.println("After DependencyTreeTransformer:  " + t);
-    }*/
             if (t == null)
             {
                 return t;
             }
             t = UcpTransform(t);
-            /*if (VERBOSE) {
-      System.err.println("After UCPTransformer:             " + t);
-    }*/
             t = CcTransform(t);
-            /*if (VERBOSE) {
-      System.err.println("After CCTransformer:              " + t);
-    }*/
             t = qp.TransformTree(t);
-            /*if (VERBOSE) {
-      System.err.println("After QPTreeTransformer:          " + t);
-    }*/
             t = SqFlatten(t);
-            /*if (VERBOSE) {
-      System.err.println("After SQ flattening:              " + t);
-    }*/
             t = dates.TransformTree(t);
-            /*if (VERBOSE) {
-      System.err.println("After DateTreeTransformer:        " + t);
-    }*/
             t = RemoveXOverX(t);
-            /*if (VERBOSE) {
-      System.err.println("After removeXoverX:               " + t);
-    }*/
             t = CombineConjp(t);
-            /*if (VERBOSE) {
-      System.err.println("After combineConjp:               " + t);
-    }*/
             t = MoveRb(t);
-            /*if (VERBOSE) {
-      System.err.println("After moveRB:                     " + t);
-    }*/
             t = ChangeSbarToPp(t);
-            /*if (VERBOSE) {
-      System.err.println("After changeSbarToPP:             " + t);
-    }*/
             t = RearrangeNowThat(t);
-            /*if (VERBOSE) {
-      System.err.println("After rearrangeNowThat:           " + t);
-    }*/
             return t;
         }
 
@@ -342,10 +308,6 @@ namespace OpenNLP.Tools.Util.Trees
         /// <returns>t</returns>
         private static Tree TransformCc(Tree t, int ccIndex)
         {
-            /*if (VERBOSE) {
-      System.err.println("transformCC in:  " + t);
-    }*/
-            //System.out.println(ccIndex);
             // use the factories of t to create new nodes
             TreeFactory tf = t.TreeFactory();
             LabelFactory lf = t.Label().LabelFactory();
@@ -379,21 +341,12 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     left.AddChild(ccSiblings[i]);
                 }
-                /*if (VERBOSE) {
-        System.out.println("print left tree");
-        left.pennPrint();
-        System.out.println();
-      }*/
 
                 // remove all the children of t before ccIndex+2
                 for (int i = 0; i < ccIndex + 2; i++)
                 {
                     t.RemoveChild(0);
                 }
-                /*if (VERBOSE)
-                {
-                    if (t.numChildren() == 0) { System.out.println("Youch! No t children"); }
-                }*/
 
                 // if stuff after (like "soya or maize oil and vegetables")
                 // we need to put the tree in another tree
@@ -401,14 +354,12 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     bool comma = false;
                     int index = ccPositions[0];
-                    /*if (VERBOSE) {System.err.println("more CC index " +  index);}s*/
                     if (ccSiblings[index - 1].Value().Equals(","))
                     {
-//to handle the case of a comma ("soya and maize oil, and vegetables")
+                        //to handle the case of a comma ("soya and maize oil, and vegetables")
                         index = index - 1;
                         comma = true;
                     }
-                    /*if (VERBOSE) {System.err.println("more CC index " +  index);}*/
                     string head = GetHeadTag(ccSiblings[index - 1]);
 
                     if (ccIndex + 2 < index)
@@ -419,20 +370,10 @@ namespace OpenNLP.Tools.Util.Trees
                         int k = 1;
                         for (int j = ccIndex + 2; j < index; j++)
                         {
-                            /*if (VERBOSE) ccSiblings[j].pennPrint();*/
                             t.RemoveChild(0);
                             tree.AddChild(k, ccSiblings[j]);
                             k++;
                         }
-
-                        /*if (VERBOSE) {
-            System.out.println("print t");
-            t.pennPrint();
-
-            System.out.println("print tree");
-            tree.pennPrint();
-            System.out.println();
-          }*/
                         t.AddChild(0, tree);
                     }
                     else
@@ -459,7 +400,7 @@ namespace OpenNLP.Tools.Util.Trees
                     t.AddChild(0, left);
                 }
             }
-                // DT a CC b c -> DT (a CC b) c
+            // DT a CC b c -> DT (a CC b) c
             else if (ccIndex == 2 && ccSiblings[0].Value().StartsWith("DT") &&
                      !ccSiblings[ccIndex - 1].Value().Equals("NNS") &&
                      (ccSiblings.Length == 5 || (ccPositions.Any() && ccPositions[0] == 5)))
@@ -472,12 +413,8 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     child.AddChild(ccSiblings[i]);
                 }
-                /*if (VERBOSE) { if (child.numChildren() == 0) { System.out.println("Youch! No child children"); } }*/
 
                 // remove all the children of t between the determiner and ccIndex+2
-                //System.out.println("print left tree");
-                //child.pennPrint();
-
                 for (int i = 1; i < ccIndex + 2; i++)
                 {
                     t.RemoveChild(1);
@@ -485,8 +422,7 @@ namespace OpenNLP.Tools.Util.Trees
 
                 t.AddChild(1, child);
             }
-
-                // ... a, b CC c ... -> ... (a, b CC c) ...
+            // ... a, b CC c ... -> ... (a, b CC c) ...
             else if (ccIndex > 2 && ccSiblings[ccIndex - 2].Value().Equals(",") &&
                      !ccSiblings[ccIndex - 1].Value().Equals("NNS"))
             {
@@ -497,7 +433,6 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     child.AddChild(ccSiblings[j]);
                 }
-                /*if (VERBOSE) { if (child.numChildren() == 0) { System.out.println("Youch! No child children"); } }*/
 
                 int i = ccIndex - 4;
                 while (i > 0 && ccSiblings[i].Value().Equals(","))
@@ -589,11 +524,6 @@ namespace OpenNLP.Tools.Util.Trees
                     right.AddChild(ccSiblings[nextCc - 1]);
                 }
 
-                /*if (VERBOSE) {
-        if (left.numChildren() == 0) { System.out.println("Youch! No left children"); }
-        if (right.numChildren() == 0) { System.out.println("Youch! No right children"); }
-      }*/
-
                 // put trees together in old t, first we remove the old nodes
                 for (int i = 0; i < nextCc; i++)
                 {
@@ -652,10 +582,6 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                 }
             }
-
-            /*if (VERBOSE) {
-      System.err.println("transformCC out: " + t);
-    }*/
             return t;
         }
 
@@ -671,14 +597,13 @@ namespace OpenNLP.Tools.Util.Trees
             return true;
         }
 
-        /*
-   * Given a tree t, if this tree contains a CC inside a NP followed by 2 nodes
-   * (i.e. we have a flat structure that will not work for the dependencies),
-   * it will call transform CC on the NP containing the CC and the index of the
-   * CC, and then return the root of the whole transformed tree.
-   * If it finds no such tree, this method returns null.
-   */
-
+        /// <summary>
+        /// Given a tree t, if this tree contains a CC inside a NP followed by 2 nodes
+        /// (i.e. we have a flat structure that will not work for the dependencies),
+        /// it will call transform CC on the NP containing the CC and the index of the
+        /// CC, and then return the root of the whole transformed tree.
+        /// If it finds no such tree, this method returns null.
+        /// </summary>
         private static Tree FindCcParent(Tree t, Tree root)
         {
             if (t.IsPreTerminal())
@@ -689,15 +614,11 @@ namespace OpenNLP.Tools.Util.Trees
                     if (parent != null && parent.Value().StartsWith("NP"))
                     {
                         List<Tree> children = parent.GetChildrenAsList();
-                        //System.out.println(children);
                         int ccIndex = children.IndexOf(t);
                         if (children.Count > ccIndex + 2 && NotNp(children, ccIndex) && ccIndex != 0 &&
                             (ccIndex == children.Count - 1 || !children[ccIndex + 1].Value().StartsWith("CC")))
                         {
                             TransformCc(parent, ccIndex);
-                            /*if (VERBOSE) {
-              System.err.println("After transformCC:             " + root);
-            }*/
                             return root;
                         }
                     }

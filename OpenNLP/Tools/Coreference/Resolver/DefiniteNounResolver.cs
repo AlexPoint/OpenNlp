@@ -59,13 +59,10 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		
 		public override bool CanResolve(MentionContext mention)
 		{
-			System.Object[] mtokens = mention.Tokens;
+			Object[] mtokens = mention.Tokens;
 			
 			string firstTok = mention.FirstTokenText.ToLower();
 			bool rv = mtokens.Length > 1 && !mention.HeadTokenTag.StartsWith("NNP") && IsDefiniteArticle(firstTok, mention.FirstTokenTag);
-			//if (rv) {
-			//  System.err.println("defNp "+ec);
-			//}
 			return (rv);
 		}
 		

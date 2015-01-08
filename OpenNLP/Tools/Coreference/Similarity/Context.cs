@@ -141,7 +141,6 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			Util.Set<string> synsetSet = new Util.HashSet<string>();
 			string[] lemmas = GetLemmas(context);
             Mention.IDictionary dictionary = Mention.DictionaryFactory.GetDictionary();
-			//System.err.println(lemmas.length+" lemmas for "+c.headToken);
 			foreach (string lemma in lemmas)
 			{
 			    synsetSet.Add(dictionary.GetSenseKey(lemma, "NN", 0));

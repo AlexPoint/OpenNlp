@@ -99,7 +99,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 					//UPGRADE_TODO: Constructor 'java.io.FileReader.FileReader' was converted to 'System.IO.StreamReader' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073'"
 					str = new StreamReader(new StreamReader(name, Encoding.Default).BaseStream, new StreamReader(name, Encoding.Default).CurrentEncoding);
 				//}
-				//System.err.println("Reading acronyms database: " + file + " ");
 				string line;
 				while (null != (line = str.ReadLine()))
 				{
@@ -174,8 +173,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		
 		protected internal override List<string> GetFeatures(MentionContext mention, DiscourseEntity entity)
 		{
-			//System.err.println("ProperNounResolver.getFeatures: "+mention.toText()+" -> "+entity);
-            List<string> features = base.GetFeatures(mention, entity);
+			List<string> features = base.GetFeatures(mention, entity);
 			
 			if (entity != null)
 			{
@@ -197,7 +195,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				if (xec.HeadTokenTag.StartsWith("NNP"))
 				{
 					// || initialCaps.matcher(xec.headToken.ToString()).find()) {
-					//System.err.println("MaxentProperNounResolver.exclude: kept "+xec.toText()+" with "+xec.headTag);
 					return false;
 				}
 			}

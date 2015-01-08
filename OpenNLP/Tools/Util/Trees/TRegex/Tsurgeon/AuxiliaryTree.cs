@@ -56,8 +56,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
             var newNamesToNodes = new Dictionary<string, Tree>();
             Tuple<Tree, Tree> result = CopyHelper(Tree, newNamesToNodes);
-            //if(! result.Item1.dominates(result.Item2))
-            //System.err.println("Error -- aux tree copy doesn't dominate foot copy.");
             foreach (var entry in newNamesToNodes)
             {
                 matcher.NewNodeNames.Add(entry.Key, entry.Value);
@@ -91,10 +89,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     newChildren.Add(newChild.Item1);
                     if (newChild.Item2 != null)
                     {
-                        if (newFoot != null)
-                        {
-                            //System.err.println("Error -- two feet found when copying auxiliary tree " + tree.ToString() + "; using last foot found.");
-                        }
                         newFoot = newChild.Item2;
                     }
                 }

@@ -142,9 +142,6 @@ namespace OpenNLP.Tools.Util.Trees
             if (obj is Constituent)
             {
                 var c = (Constituent) obj;
-                // System.out.println("Comparing " + this + " to " + c + "\n  " +
-                //	"start: " + (start() == c.start()) + " end: " +
-                //	(end() == c.end()) + " score: " + (score() == c.score()));
                 if ((Start() == c.Start()) && (End() == c.End()))
                 {
                     Label lab1 = Label();

@@ -70,23 +70,18 @@ namespace OpenNLP.Tools.Coreference.Mention
 		List basals = new ArrayList();
 		for (int ni=0,ns=nps.size();ni<ns;ni++) {
 		Parse np = (Parse) nps.get(ni);
-		//System.err.println("getNounPhrases: np="+np);
 		if (isBasalNounPhrase(np)) {
-		//System.err.println("basal");
 		basals.add(np);
 		}
 		else if (isPossessive(np)) {
-		//System.err.println("pos np");
 		basals.add(np);
 		basals.addAll(getNounPhrases(np));
 		}
 		else if (isOfPrepPhrase(np)) {
-		//System.err.println("of np");
 		basals.add(np);
 		basals.addAll(getNounPhrases(np));
 		}
 		else {
-		//System.err.println("big np");
 		basals.addAll(getNounPhrases(np));
 		}
 		}

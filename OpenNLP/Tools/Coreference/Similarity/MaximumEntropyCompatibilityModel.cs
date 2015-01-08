@@ -43,7 +43,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			double[] genderDistribution = mGenderModel.GenderDistribution(context);
 			if (mDebugOn)
 			{
-				System.Console.Error.WriteLine("MaxentCompatibilityModel.computeGender: " + context.ToString() + " m=" + genderDistribution[mGenderModel.MaleIndex] + " f=" + genderDistribution[mGenderModel.FemaleIndex] + " n=" + genderDistribution[mGenderModel.NeuterIndex]);
+				Console.Error.WriteLine("MaxentCompatibilityModel.computeGender: " + context.ToString() + " m=" + genderDistribution[mGenderModel.MaleIndex] + " f=" + genderDistribution[mGenderModel.FemaleIndex] + " n=" + genderDistribution[mGenderModel.NeuterIndex]);
 			}
 			if (mGenderModel.MaleIndex >= 0 && genderDistribution[mGenderModel.MaleIndex] > mMinimumGenderProbability)
 			{
@@ -68,7 +68,6 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		{
 			double[] numberDistribution = mNumberModel.NumberDistribution(context);
 			Number number;
-			//System.err.println("MaxentCompatibiltyResolver.computeNumber: "+c+" sing="+dist[numModel.getSingularIndex()]+" plural="+dist[numModel.getPluralIndex()]);
 			if (numberDistribution[mNumberModel.SingularIndex] > mMinimumNumberProbability)
 			{
 				number = new Number(NumberEnum.Singular, numberDistribution[mNumberModel.SingularIndex]);

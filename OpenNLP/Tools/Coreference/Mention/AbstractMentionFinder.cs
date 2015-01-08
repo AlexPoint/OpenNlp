@@ -193,7 +193,6 @@ namespace OpenNLP.Tools.Coreference.Mention
 		
 		private void CollectCoordinatedNounPhraseMentions(IParse nounPhrase, List<Mention> entities)
 		{
-			//System.err.println("collectCoordNp: "+np);
 			List<IParse> nounPhraseTokens = nounPhrase.Tokens;
 			bool inCoordinatedNounPhrase = false;
 			int lastNounPhraseTokenIndex = mHeadFinder.GetHeadIndex(nounPhrase);
@@ -207,10 +206,9 @@ namespace OpenNLP.Tools.Coreference.Mention
 					{
 						if (tokenIndex - 1 >= 0 && (nounPhraseTokens[tokenIndex - 1]).SyntacticType.StartsWith("NN"))
 						{
-                            Util.Span nounPhraseSpan = new Util.Span((nounPhraseTokens[tokenIndex + 1]).Span.Start, (nounPhraseTokens[lastNounPhraseTokenIndex]).Span.End);
-							Mention nounPhraseSpanExtent = new Mention(nounPhraseSpan, nounPhraseSpan, token.EntityId, null, "CNP");
+                            var nounPhraseSpan = new Util.Span((nounPhraseTokens[tokenIndex + 1]).Span.Start, (nounPhraseTokens[lastNounPhraseTokenIndex]).Span.End);
+							var nounPhraseSpanExtent = new Mention(nounPhraseSpan, nounPhraseSpan, token.EntityId, null, "CNP");
 							entities.Add(nounPhraseSpanExtent);
-							//System.err.println("adding extent for conjunction in: "+np+" preeceeded by "+((Parse) npTokens.get(ti-1)).getSyntacticType());
 							inCoordinatedNounPhrase = true;
 						}
 						else
@@ -224,19 +222,17 @@ namespace OpenNLP.Tools.Coreference.Mention
 				{
 					if (lastNounPhraseTokenIndex != tokenIndex)
 					{
-                        Util.Span nounPhraseSpan = new Util.Span((nounPhraseTokens[tokenIndex + 1]).Span.Start, (nounPhraseTokens[lastNounPhraseTokenIndex]).Span.End);
-						Mention nounPhraseSpanExtent = new Mention(nounPhraseSpan, nounPhraseSpan, token.EntityId, null, "CNP");
+                        var nounPhraseSpan = new Util.Span((nounPhraseTokens[tokenIndex + 1]).Span.Start, (nounPhraseTokens[lastNounPhraseTokenIndex]).Span.End);
+						var nounPhraseSpanExtent = new Mention(nounPhraseSpan, nounPhraseSpan, token.EntityId, null, "CNP");
 						entities.Add(nounPhraseSpanExtent);
-						//System.err.println("adding extent for comma in: "+np);
 					}
 					lastNounPhraseTokenIndex = tokenIndex - 1;
 				}
 				else if (inCoordinatedNounPhrase && tokenIndex == 0 && lastNounPhraseTokenIndex >= 0)
 				{
-                    Util.Span nounPhraseSpan = new Util.Span((nounPhraseTokens[tokenIndex]).Span.Start, (nounPhraseTokens[lastNounPhraseTokenIndex]).Span.End);
-					Mention nounPhraseSpanExtent = new Mention(nounPhraseSpan, nounPhraseSpan, token.EntityId, null, "CNP");
+                    var nounPhraseSpan = new Util.Span((nounPhraseTokens[tokenIndex]).Span.Start, (nounPhraseTokens[lastNounPhraseTokenIndex]).Span.End);
+					var nounPhraseSpanExtent = new Mention(nounPhraseSpan, nounPhraseSpan, token.EntityId, null, "CNP");
 					entities.Add(nounPhraseSpanExtent);
-					//System.err.println("adding extent for start coord in: "+np);
 				}
 			}
 		}
@@ -254,7 +250,6 @@ namespace OpenNLP.Tools.Coreference.Mention
 			/*
 			List snps = np.getSubNounPhrases();
 			if (snps.size() != 0) {
-			//System.err.println("AbstractMentionFinder: Found existing snps");
 			for (int si = 0, sl = snps.size(); si < sl; si++) {
 			Parse snp = (Parse) snps.get(si);
 			Extent ppExtent = new Extent(snp.getSpan(), snp.getSpan(), snp.getEntityId(), null,Linker.PRONOUN_MODIFIER);
@@ -263,7 +258,6 @@ namespace OpenNLP.Tools.Coreference.Mention
 			}
 			else {
 			*/
-			//System.err.println("AbstractEntityFinder.collectPossesivePronouns: "+np);
 			List<IParse> nounPhraseTokens = nounPhrase.Tokens;
 			IParse headToken = mHeadFinder.GetHeadToken(nounPhrase);
 			for (int tokenIndex = nounPhraseTokens.Count - 2; tokenIndex >= 0; tokenIndex--)
@@ -275,10 +269,8 @@ namespace OpenNLP.Tools.Coreference.Mention
 				}
 				if (token.SyntacticType.StartsWith("PRP") && IsHandledPronoun(token.ToString()))
 				{
-					Mention possessivePronounExtent = new Mention(token.Span, token.Span, token.EntityId, null, OpenNLP.Tools.Coreference.Linker.PronounModifier);
-					//System.err.println("AbstractEntityFinder.collectPossesivePronouns: adding possesive pronoun: "+tok+" "+tok.getEntityId());
+					var possessivePronounExtent = new Mention(token.Span, token.Span, token.EntityId, null, OpenNLP.Tools.Coreference.Linker.PronounModifier);
 					entities.Add(possessivePronounExtent);
-					//System.err.println("AbstractMentionFinder: adding pos-pro: "+ppExtent);
 					break;
 				}
 			}
@@ -331,21 +323,18 @@ namespace OpenNLP.Tools.Coreference.Mention
 
         private Mention[] CollectMentions(List<IParse> nounPhrases, Dictionary<IParse, IParse> headMap)
 		{
-            List<Mention> mentions = new List<Mention>(nounPhrases.Count);
+            var mentions = new List<Mention>(nounPhrases.Count);
 			Util.Set<IParse> recentMentions = new Util.HashSet<IParse>();
-			//System.err.println("AbtractMentionFinder.collectMentions: "+headMap);
 			for (int nounPhraseIndex = 0; nounPhraseIndex < nounPhrases.Count; nounPhraseIndex++)
 			{
 				IParse nounPhrase = nounPhrases[nounPhraseIndex];
-				//System.err.println("AbstractMentionFinder: collectMentions: np[" + npi + "]=" + np + " head=" + headMap.get(np));
 				if (!IsHeadOfExistingMention(nounPhrase, headMap, recentMentions))
 				{
 					ClearMentions(recentMentions, nounPhrase);
 					if (!IsPartOfName(nounPhrase))
 					{
 						IParse head = mHeadFinder.GetLastHead(nounPhrase);
-						Mention extent = new Mention(nounPhrase.Span, head.Span, head.EntityId, nounPhrase, null);
-						//System.err.println("adding "+np+" with head "+head);
+						var extent = new Mention(nounPhrase.Span, head.Span, head.EntityId, nounPhrase, null);
 						mentions.Add(extent);
 						recentMentions.Add(nounPhrase);
 						// determine name-entity type
@@ -355,14 +344,6 @@ namespace OpenNLP.Tools.Coreference.Mention
 							extent.NameType = entityType;
 						}
 					}
-					else
-					{
-						//System.err.println("AbstractMentionFinder.collectMentions excluding np as part of name. np=" + np);
-					}
-				}
-				else
-				{
-					//System.err.println("AbstractMentionFinder.collectMentions excluding np as head of previous mention. np=" + np);
 				}
 				if (IsBasalNounPhrase(nounPhrase))
 				{
@@ -430,8 +411,7 @@ namespace OpenNLP.Tools.Coreference.Mention
 				IParse namedEntity = namedEntities[namedEntityIndex];
 				if (!namedEntity.Span.Contains(headTokenSpan))
 				{
-					//System.err.println("adding extent for prenominal ne: "+ne);
-					Mention extent = new Mention(namedEntity.Span, namedEntity.Span, namedEntity.EntityId, null, "NAME");
+					var extent = new Mention(namedEntity.Span, namedEntity.Span, namedEntity.EntityId, null, "NAME");
 					extent.NameType = namedEntity.EntityType;
 					extents.Add(extent);
 				}
@@ -473,10 +453,8 @@ namespace OpenNLP.Tools.Coreference.Mention
 			for (IParse parent = nounPhrase.Parent; parent != null; parent = parent.Parent)
 			{
 				entityType = parent.EntityType;
-				//System.err.println("AbstractMentionFinder.isPartOfName: entityType="+entityType);
 				if (entityType != null)
 				{
-					//System.err.println("npSpan = "+np.getSpan()+" parentSpan="+parent.getSpan());
 					if (!nounPhrase.Span.Contains(parent.Span))
 					{
 						return true;
@@ -511,7 +489,6 @@ namespace OpenNLP.Tools.Coreference.Mention
 			List<IParse> nounPhrases = parse.NounPhrases;
 			nounPhrases.Sort();
             Dictionary<IParse, IParse> headMap = ConstructHeadMap(nounPhrases);
-			//System.err.println("AbstractMentionFinder.getMentions: got " + nps.size()); // + " nps, and " + nes.size() + " named entities");
 			Mention[] mentions = CollectMentions(nounPhrases, headMap);
 			return mentions;
 		}

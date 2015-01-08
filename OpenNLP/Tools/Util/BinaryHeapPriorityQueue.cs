@@ -217,7 +217,6 @@ namespace OpenNLP.Tools.Util
                     // this indexation now holds current, so it is unchanged
                 }
             } while (bestEntry != entry);
-            // System.err.println("Done with heapify down");
             // verify();
         }
 
@@ -302,7 +301,6 @@ namespace OpenNLP.Tools.Util
 
         public bool Add(E key, double priority)
         {
-//    System.err.println("Adding " + key + " with priority " + priority);
             if (Add(key))
             {
                 RelaxPriority(key, priority);
@@ -481,13 +479,9 @@ namespace OpenNLP.Tools.Util
         //      if (i != 0) {
         //        // check ordering
         //        if (compare(getEntry(i), parent(getEntry(i))) < 0) {
-        //          System.err.println("Error in the ordering of the heap! ("+i+")");
         //          System.exit(0);
         //        }
         //      }
-        //      // check placement
-        //      if (i != ((Entry)indexToEntry[i)).index)
-        //        System.err.println("Error in placement in the heap!");
         //    }
         //  }
 

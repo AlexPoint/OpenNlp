@@ -77,11 +77,7 @@ namespace OpenNLP.Tools.Util
             }
             stream.println();
           }*/
-
-        /* public static void printProperties(string message, Dictionary<string,String> properties) {
-            printProperties(message, properties, System.out);
-          }*/
-
+        
         /// <summary>
         /// Tired of Properties not behaving like {@code Map<string,string>}s?
         /// This method will solve that problem for you.

@@ -75,9 +75,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     /// </summary>
     public static class Tsurgeon
     {
-        //private static readonly bool DEBUG = false;
-        //private static bool verbose; // = false;
-
         private static readonly Regex EmptyLinePattern = new Regex("^\\s*$", RegexOptions.Compiled);
         private const string CommentIntroducingCharacter = "%";
         private static readonly Regex CommentPattern = new Regex("(?<!\\\\)%.*$", RegexOptions.Compiled);
@@ -96,7 +93,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         */
             /*public static Tuple<TregexPattern, TsurgeonPattern> getOperationFromReader(BufferedReader reader, TregexPatternCompiler compiler) /*throws IOException#1# {
         string patternString = getTregexPatternFromReader(reader);
-        // System.err.println("Read tregex pattern: " + patternString);
         if ("".equals(patternString)) {
             return null;
         }
@@ -146,7 +142,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             if (emptyLinePattern.matcher(thisLine).matches()) {
             continue;
             }
-            // System.err.println("Read tsurgeon op: " + thisLine);
             operations.add(parseOperation(thisLine));
         }
 
@@ -259,9 +254,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             {
                 try
                 {
-                    /*if (DEBUG) {
-                      System.err.println("Running pattern " + op.first());
-                    }*/
                     TregexMatcher m = op.Item1.Matcher(t);
                     TsurgeonMatcher tsm = op.Item2.GetMatcher();
                     while (m.Find())

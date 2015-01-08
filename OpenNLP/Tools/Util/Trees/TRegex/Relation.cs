@@ -2522,7 +2522,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 while (followingNode != null)
                 {
-                    //System.err.println("adding to stack node " + followingNode.ToString());
                     if (! nodesToSearch.Contains(followingNode))
                     {
                         stack.Push(followingNode);
@@ -2658,7 +2657,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 while (precedingNode != null)
                 {
-                    //System.err.println("adding to stack node " + precedingNode.ToString());
                     if (! nodesToSearch.Contains(precedingNode))
                     {
                         stack.Push(precedingNode);

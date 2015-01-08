@@ -796,23 +796,6 @@ namespace OpenNLP.Tools.Util.Trees
     return readTree(str, defaultTreeFactory);
   }*/
 
-        /**
-   * Outputs the labels on the trees, not just the words.
-   */
-        /*public static void outputTreeLabels(Tree tree) {
-    outputTreeLabels(tree, 0);
-  }
-
-  public static void outputTreeLabels(Tree tree, int depth) {
-    for (int i = 0; i < depth; ++i) {
-      System.out.print(" ");
-    }
-    System.out.println(tree.label());
-    for (Tree child : tree.children()) {
-      outputTreeLabels(child, depth + 1);
-    }
-  }*/
-
         /// <summary>
         /// Converts the tree labels to CoreLabels.
         /// We need this because we store additional info in the CoreLabel, like token span.

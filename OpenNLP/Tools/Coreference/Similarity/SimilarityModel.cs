@@ -87,7 +87,6 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			//populate data structures
 			foreach (Context currentExtent in extents)
 			{
-			    //System.err.println("SimilarityModel: setExtents: ec("+ec.getId()+") "+ec.getNameType()+" "+ec);
 			    if (currentExtent.Id == -1)
 			    {
 			        singletons.Add(currentExtent);
@@ -156,13 +155,11 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			if (same)
 			{
 				List<string> features = GetFeatures(firstNounPhrase, secondNounPhrase);
-				//System.err.println(SAME+" "+np1.headTokenText+" ("+np1.id+") -> "+np2.headTokenText+" ("+np2.id+") "+feats);
                 _events.Add(new SharpEntropy.TrainingEvent(Same, features.ToArray()));
 			}
 			else
 			{
                 List<string> features = GetFeatures(firstNounPhrase, secondNounPhrase);
-				//System.err.println(DIFF+" "+np1.headTokenText+" ("+np1.id+") -> "+np2.headTokenText+" ("+np2.id+") "+feats);
                 _events.Add(new SharpEntropy.TrainingEvent(Different, features.ToArray()));
 			}
 		}
@@ -712,10 +709,6 @@ namespace OpenNLP.Tools.Coreference.Similarity
 				{
                     features.AddRange(GetCommonNumberFeatures(np1, np2));
 				}
-				else
-				{
-					//System.err.println("unknown group for " + np1.headTokenText + " -> " + np2.headTokenText);
-				}
 			}
 			else if (IsPronoun(np1))
 			{
@@ -735,10 +728,6 @@ namespace OpenNLP.Tools.Coreference.Similarity
 				{
                     features.AddRange(GetNumberPronounFeatures(np2, np1));
 				}
-				else
-				{
-					//System.err.println("unknown group for " + np1.headTokenText + " -> " + np2.headTokenText);
-				}
 			}
 			else if (IsNumber(np1))
 			{
@@ -757,14 +746,6 @@ namespace OpenNLP.Tools.Coreference.Similarity
 				else if (IsNumber(np2))
 				{
 				}
-				else
-				{
-					//System.err.println("unknown group for " + np1.headTokenText + " -> " + np2.headTokenText);
-				}
-			}
-			else
-			{
-				//System.err.println("unknown group for " + np1.headToken);
 			}
 			return features;
 		}

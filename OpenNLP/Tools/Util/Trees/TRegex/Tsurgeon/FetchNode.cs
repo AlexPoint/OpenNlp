@@ -35,10 +35,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 {
                     result = tregex.GetNode(node.label);
                 }
-                /*if (result == null) {
-                    System.err.println("Warning -- null node fetched by Tsurgeon operation for node: " + this +
-                                       " (either no node labeled this, or the labeled node didn't match anything)");
-                  }*/
                 return result;
             }
         }

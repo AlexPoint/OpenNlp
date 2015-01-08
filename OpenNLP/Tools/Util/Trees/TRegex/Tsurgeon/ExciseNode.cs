@@ -48,11 +48,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             {
                 Tree topNode = ChildMatcher[0].Evaluate(tree, tregex);
                 Tree bottomNode = ChildMatcher[1].Evaluate(tree, tregex);
-                /*if(Tsurgeon.verbose) {
-                    System.err.println("Excising...original tree:");
-                    tree.pennPrint(System.err);
-                    System.err.println("top: " + topNode + "\nbottom:" + bottomNode);
-                  }*/
                 if (topNode == tree)
                 {
                     if (bottomNode.Children().Length == 1)
@@ -65,8 +60,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     }
                 }
                 Tree parent = topNode.Parent(tree);
-                /*if(Tsurgeon.verbose)
-                     System.err.println("Parent: " + parent);*/
                 int i = Trees.ObjectEqualityIndexOf(parent, topNode);
                 parent.RemoveChild(i);
                 foreach (Tree child in bottomNode.Children())
@@ -74,8 +67,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     parent.AddChild(i, child);
                     i++;
                 }
-                /*if(Tsurgeon.verbose)
-                  tree.pennPrint(System.err);*/
                 return tree;
             }
         }

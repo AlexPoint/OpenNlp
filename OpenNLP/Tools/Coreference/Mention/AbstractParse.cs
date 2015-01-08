@@ -54,13 +54,12 @@ namespace OpenNLP.Tools.Coreference.Mention
 			get
 			{
                 List<IParse> parts = SyntacticChildren;
-                List<IParse> nounPhrases = new List<IParse>();
+                var nounPhrases = new List<IParse>();
 				while (parts.Count > 0)
 				{
-                    List<IParse> newParts = new List<IParse>();
+                    var newParts = new List<IParse>();
 					for (int currentPart = 0; currentPart < parts.Count; currentPart++)
 					{
-						//System.err.println("AbstractParse.getNounPhrases "+parts.get(pi).getClass());
 						IParse currentPartParse = parts[currentPart];
 						if (currentPartParse.IsNounPhrase)
 						{

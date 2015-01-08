@@ -393,14 +393,6 @@ namespace OpenNLP.Tools.Util.Trees
                         throw new InvalidDataException("Expression has no target: " + p);
                     }
                     nodeList.Add(target);
-                    /*if (DEBUG) {
-          System.err.println("found " + this + "(" + t + "-" + t.headWordNode() + ", " + m.getNode("target") + "-" + ((TreeGraphNode) m.getNode("target")).headWordNode() + ") using pattern " + p);
-          foreach(string nodeName : m.getNodeNames()) {
-            if (nodeName.Equals("target"))
-              continue;
-            System.err.println("  node " + nodeName + ": " + m.getNode(nodeName));
-          }
-        }*/
                 }
             }
             return nodeList;
@@ -415,7 +407,6 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         public bool IsApplicable(Tree t)
         {
-            // System.err.println("Testing whether " + sourcePattern + " matches " + ((TreeGraphNode) t).toOneLineString());
             return (sourcePattern != null) && (t.Value() != null) &&
                    sourcePattern.IsMatch(t.Value()) /*matcher(t.value()).matches()*/;
         }

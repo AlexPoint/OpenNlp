@@ -29,12 +29,6 @@ namespace OpenNLP.Tools.Util.Ling
     public class CoreLabel : ArrayCoreMap, AbstractCoreLabel, HasWord, HasTag, HasCategory, HasLemma, HasContext,
         HasIndex, HasOffset
     {
-        // /**
-        //  * Should warnings be printed when converting from MapLabel family.
-        //  */
-        // private static readonly boolean VERBOSE = false;
-
-
         /// <summary>
         /// Default constructor, calls base()
         /// </summary>
@@ -167,10 +161,6 @@ namespace OpenNLP.Tools.Util.Ling
         //  genericValues.put(newKey.getClass(), keys[i]);
         //}
         // unknown key; ignore
-        //if (VERBOSE) {
-        //  System.err.println("CORE: CoreLabel.fromAbstractMapLabel: " +
-        //      "Unknown key "+key);
-        //}
       } else {
         try {
           Class<?> valueClass = AnnotationLookup.getValueType(lookup.coreKey);
@@ -184,12 +174,7 @@ namespace OpenNLP.Tools.Util.Ling
             this.set(lookup.coreKey, Long.parseLong(values[i]));
           }
         } catch (Exception e) {
-          /*e.printStackTrace();
-          // unexpected value type
-          System.err.println("CORE: CoreLabel.initFromStrings: "
-              + "Bad type for " + key
-              + ". Value was: " + value
-              + "; expected "+AnnotationLookup.getValueType(lookup.coreKey));#1#
+          /*e.printStackTrace();#1#
         }
       }
     }

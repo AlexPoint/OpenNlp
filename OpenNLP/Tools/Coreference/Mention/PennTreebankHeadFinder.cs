@@ -93,7 +93,7 @@ namespace OpenNLP.Tools.Coreference.Mention
                         List<IParse> childTokens = parts[0].Tokens;
 						if (childTokens.Count == 0)
 						{
-                            System.Console.Error.WriteLine("PTBHeadFinder: NP " + parts[0] + " with no tokens");
+                            Console.Error.WriteLine("PTBHeadFinder: NP " + parts[0] + " with no tokens");
 						}
 						IParse tok = childTokens[childTokens.Count - 1];
 						if (tok.SyntacticType == "POS")
@@ -116,7 +116,6 @@ namespace OpenNLP.Tools.Coreference.Mention
 				//all other NPs
 				for (int currentPart = 0; currentPart < parts.Count; currentPart++)
 				{
-                    //System.err.println("PTBHeadFinder.getHead: "+p.getSyntacticType()+" "+p+" parts[currentPart] "+pi+"="+parts[currentPart].getSyntacticType()+" "+parts[currentPart]);
                     if (parts[currentPart].IsNounPhrase)
 					{
                         return parts[currentPart];
@@ -139,16 +138,11 @@ namespace OpenNLP.Tools.Coreference.Mention
             for (int currentSyntacticChild = 0; currentSyntacticChild < syntacticChildren.Count; currentSyntacticChild++)
 			{
 				IParse syntacticChild = syntacticChildren[currentSyntacticChild];
-				//System.err.println("PTBHeadFinder.getHeadIndex "+p+" "+p.getSyntacticType()+" sChild "+sci+" type = "+sc.getSyntacticType());
 				if (syntacticChild.SyntacticType.StartsWith("S"))
 				{
 					if (currentSyntacticChild != 0)
 					{
 						countTokens = true;
-					}
-					else
-					{
-						//System.err.println("PTBHeadFinder.getHeadIndex(): NP -> S production assuming right-most head");
 					}
 				}
 				if (countTokens)
@@ -159,7 +153,7 @@ namespace OpenNLP.Tools.Coreference.Mention
 			List<IParse> tokens = parse.Tokens;
 			if (tokens.Count == 0)
 			{
-				System.Console.Error.WriteLine("PTBHeadFinder.getHeadIndex(): empty tok list for parse " + parse);
+				Console.Error.WriteLine("PTBHeadFinder.getHeadIndex(): empty tok list for parse " + parse);
 			}
 			for (int currentToken = tokens.Count - tokenCount - 1; currentToken >= 0; currentToken--)
 			{
@@ -169,7 +163,6 @@ namespace OpenNLP.Tools.Coreference.Mention
 					return currentToken;
 				}
 			}
-			//System.err.println("PTBHeadFinder.getHeadIndex: "+p+" hi="+toks.size()+"-"+tokenCount+" -1 = "+(toks.size()-tokenCount -1));
 			return (tokens.Count - tokenCount - 1);
 		}
 		
@@ -181,15 +174,11 @@ namespace OpenNLP.Tools.Coreference.Mention
 		public IParse GetLastHead(IParse parse)
 		{
 			IParse head;
-			//System.err.print("EntityFinder.getLastHead: "+p);
 
             while (null != (head = GetHead(parse)))
 			{
-				//System.err.print(" -> "+head);
-				//if (p.getEntityId() != -1 && head.getEntityId() != p.getEntityId()) {	System.err.println(p+" ("+p.getEntityId()+") -> "+head+" ("+head.getEntityId()+")");      }
                 parse = head;
 			}
-			//System.err.println(" -> null");
             return parse;
 		}
 		

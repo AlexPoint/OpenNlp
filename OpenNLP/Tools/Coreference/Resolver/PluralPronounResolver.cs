@@ -81,7 +81,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		protected internal override bool IsOutOfRange(MentionContext mention, DiscourseEntity entity)
 		{
 			MentionContext cec = entity.LastExtent;
-			//System.err.println("MaxentPluralPronounResolver.outOfRange: ["+ec.toText()+" ("+ec.id+")] ["+cec.toText()+" ("+cec.id+")] ec.sentenceNumber=("+ec.sentenceNumber+")-cec.sentenceNumber=("+cec.sentenceNumber+") > "+NUM_SENTS_BACK_PRONOUNS);    
 			return (mention.SentenceNumber - cec.SentenceNumber > NUM_SENTS_BACK_PRONOUNS);
 		}
 		

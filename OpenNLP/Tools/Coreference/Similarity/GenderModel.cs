@@ -108,10 +108,6 @@ namespace OpenNLP.Tools.Coreference.Similarity
         public virtual double[] GenderDistribution(Context nounPhrase)
         {
             List<string> features = GetFeatures(nounPhrase);
-            if (mDebugOn)
-            {
-                //System.err.println("GenderModel.genderDistribution: "+features);
-            }
             return mTestModel.Evaluate(features.ToArray());
         }
 
@@ -121,12 +117,11 @@ namespace OpenNLP.Tools.Coreference.Similarity
 
         virtual public void SetExtents(Context[] extents)
         {
-            Util.HashList<int, Context> entities = new Util.HashList<int, Context>();
-            List<Context> singletons = new List<Context>();
+            var entities = new Util.HashList<int, Context>();
+            var singletons = new List<Context>();
             for (int currentExtent = 0; currentExtent < extents.Length; currentExtent++)
             {
                 Context extent = extents[currentExtent];
-                //System.err.println("GenderModel.setExtents: ec("+ec.getId()+") "+ec.toText());
                 if (extent.Id != -1)
                 {
                     entities.Put(extent.Id, extent);
@@ -136,9 +131,9 @@ namespace OpenNLP.Tools.Coreference.Similarity
                     singletons.Add(extent);
                 }
             }
-            List<Context> males = new List<Context>();
-            List<Context> females = new List<Context>();
-            List<Context> eunuches = new List<Context>();
+            var males = new List<Context>();
+            var females = new List<Context>();
+            var eunuches = new List<Context>();
             //coref entities
             foreach (int key in entities.Keys)
            {
@@ -216,13 +211,13 @@ namespace OpenNLP.Tools.Coreference.Similarity
 
 		public static ITestGenderModel TestModel(string name)
 		{
-			GenderModel genderModel = new GenderModel(name, false);
+			var genderModel = new GenderModel(name, false);
 			return genderModel;
 		}
 		
 		public static ITrainSimilarityModel TrainModel(string name)
 		{
-            GenderModel genderModel = new GenderModel(name, true);
+            var genderModel = new GenderModel(name, true);
             return genderModel;
 		}
 
@@ -230,7 +225,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		{
 			Util.Set<string> names = new Util.HashSet<string>();
 			
-            System.IO.StreamReader nameReader = new System.IO.StreamReader(nameFile, System.Text.Encoding.Default);
+            var nameReader = new StreamReader(nameFile, System.Text.Encoding.Default);
 			for (string line = nameReader.ReadLine(); line != null; line = nameReader.ReadLine())
 			{
 				names.Add(line);
@@ -240,7 +235,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 
 		private List<string> GetFeatures(Context nounPhrase)
 		{
-            List<string> features = new List<string>();
+            var features = new List<string>();
 			features.Add("default");
 			for (int tokenIndex = 0; tokenIndex < nounPhrase.HeadTokenIndex; tokenIndex++)
 			{
@@ -251,19 +246,16 @@ namespace OpenNLP.Tools.Coreference.Similarity
             if (nounPhrase.NameType != null && nounPhrase.NameType == "person")
 			{
 				object[] tokens = nounPhrase.Tokens;
-				//System.err.println("GenderModel.getFeatures: person name="+np1);
 				for (int tokenIndex = 0; tokenIndex < nounPhrase.HeadTokenIndex || tokenIndex == 0; tokenIndex++)
 				{
 					string name = tokens[tokenIndex].ToString().ToLower();
 					if (mFemaleNames.Contains(name))
 					{
 						features.Add("fem");
-						//System.err.println("GenderModel.getFeatures: person (fem) "+np1);
 					}
 					if (mMaleNames.Contains(name))
 					{
 						features.Add("mas");
-						//System.err.println("GenderModel.getFeatures: person (mas) "+np1);
 					}
 				}
 			}

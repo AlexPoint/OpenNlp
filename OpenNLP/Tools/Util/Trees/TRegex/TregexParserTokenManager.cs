@@ -9,12 +9,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 {
     public class TregexParserTokenManager : TregexParserConstants
     {
-
-        /*/** Debug output. #1#
-  public  java.io.PrintStream debugStream = System.out;
-  /** Set debug output. #1#
-  public  void setDebugStream(java.io.PrintStream ds) { debugStream = ds; }*/
-
+        
         private int JjStopStringLiteralDfa_0(int pos, long active0)
         {
             switch (pos)

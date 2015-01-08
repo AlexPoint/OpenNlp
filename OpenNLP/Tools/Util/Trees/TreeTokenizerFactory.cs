@@ -42,7 +42,6 @@ namespace OpenNLP.Tools.Util.Trees
                   return tr.readTree();
                 }
                 catch(IOException e) {
-                  System.err.println("Error in reading tree.");
                   return null;
                 }
               }

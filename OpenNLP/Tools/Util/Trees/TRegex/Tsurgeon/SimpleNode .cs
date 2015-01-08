@@ -87,7 +87,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         // Override this method if you want to customize how the node dumps out its children
         public void Dump(string prefix)
         {
-            //System.out.println(ToString(prefix));
             if (children != null)
             {
                 for (int i = 0; i < children.Length; ++i)

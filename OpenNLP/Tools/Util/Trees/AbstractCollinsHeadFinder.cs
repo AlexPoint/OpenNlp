@@ -62,7 +62,6 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public abstract class AbstractCollinsHeadFinder : HeadFinder
     {
-        //private static readonly bool DEBUG = System.getProperty("HeadFinder", null) != null;
         protected readonly AbstractTreebankLanguagePack tlp;
         protected Dictionary<string, string[][]> nonTerminalInfo;
 
@@ -170,9 +169,6 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 throw new ArgumentException("Can't return head of null or leaf Tree.");
             }
-            /*if (DEBUG) {
-      System.err.println("determineHead for " + t.value());
-    }*/
 
             Tree[] kids = t.Children();
 
@@ -180,10 +176,6 @@ namespace OpenNLP.Tools.Util.Trees
             // first check if subclass found explicitly marked head
             if ((theHead = FindMarkedHead(t)) != null)
             {
-                /*if (DEBUG) {
-        System.err.println("Find marked head method returned " +
-                           theHead.label() + " as head of " + t.label());
-      }*/
                 return theHead;
             }
 
@@ -192,10 +184,6 @@ namespace OpenNLP.Tools.Util.Trees
             // but that seemed bad (especially hardcoding string "ROOT")
             if (kids.Length == 1)
             {
-                /*if (DEBUG) {
-        System.err.println("Only one child determines " +
-                           kids[0].label() + " as head of " + t.label());
-      }*/
                 return kids[0];
             }
 
@@ -217,11 +205,6 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 motherCat = motherCat.Substring(1);
             }
-            /*if (DEBUG) {
-      System.err.println("Looking for head of " + t.label() +
-                         "; value is |" + t.label().value() + "|, " +
-                         " baseCat is |" + motherCat + '|');
-    }*/
             // We know we have nonterminals underneath
             // (a bit of a Penn Treebank assumption, but).
 
@@ -238,16 +221,8 @@ namespace OpenNLP.Tools.Util.Trees
             Tree[] kids = t.Children();
             if (!success)
             {
-                /*if (DEBUG) {
-        System.err.println("Warning: No rule found for " + motherCat +
-                           " (first char: " + motherCat.charAt(0) + ')');
-        System.err.println("Known nonterms are: " + nonTerminalInfo.keySet());
-      }*/
                 if (DefaultRule != null)
                 {
-                    /*if (DEBUG) {
-          System.err.println("  Using defaultRule");
-        }*/
                     return TraverseLocate(kids, DefaultRule, true);
                 }
                 else
@@ -265,9 +240,6 @@ namespace OpenNLP.Tools.Util.Trees
                     break;
                 }
             }
-            /*if (DEBUG) {
-      System.err.println("  Chose " + theHead.label());
-    }*/
             return theHead;
         }
 

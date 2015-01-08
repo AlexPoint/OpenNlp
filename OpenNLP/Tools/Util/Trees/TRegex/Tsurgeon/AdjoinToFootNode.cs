@@ -40,11 +40,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 Tree parent = targetNode.Parent(tree);
                 // substitute original node for foot of auxiliary tree.  Foot node is ignored
                 AuxiliaryTree ft = node.AdjunctionTree().Copy(this);
-                // System.err.println("ft=" + ft + "; ft.foot=" + ft.foot + "; ft.tree=" + ft.tree);
                 Tree parentOfFoot = ft.Foot.Parent(ft.Tree);
                 if (parentOfFoot == null)
                 {
-                    //System.err.println("Warning: adjoin to foot for depth-1 auxiliary tree has no effect.");
                     return tree;
                 }
                 int i = parentOfFoot.ObjectIndexOf(ft.Foot);

@@ -44,9 +44,6 @@ namespace OpenNLP.Tools.Util.Trees
     [Serializable]
     public /*abstract*/ class GrammaticalStructure
     {
-
-        //private static readonly bool PRINT_DEBUGGING = System.getProperty("GrammaticalStructure", null) != null;
-
         protected readonly List<TypedDependency> typedDependencies;
         protected readonly List<TypedDependency> allTypedDependencies;
 
@@ -315,7 +312,7 @@ namespace OpenNLP.Tools.Util.Trees
                 if (parentDash == -1) ThrowDepFormatException(depString);
                 int childDash = childArg.LastIndexOf('-');
                 if (childDash == -1) ThrowDepFormatException(depString);
-                //System.err.printf("parentArg: %s\n", parentArg);
+                
                 int parentIdx = int.Parse(parentArg.Substring(parentDash + 1).Replace("'", ""));
 
                 int childIdx = int.Parse(childArg.Substring(childDash + 1).Replace("'", ""));
@@ -423,7 +420,6 @@ namespace OpenNLP.Tools.Util.Trees
                             if ((parents == null || parents.Count == 0 || parents.Contains(tHigh)) &&
                                 basicGraph.GetShortestPath(uHigh, tHigh, true) == null)
                             {
-                                // System.err.println("Adding " + egr.getShortName() + " from " + t + " to " + u + " tHigh=" + tHigh + "(" + tHigh.headWordNode() + ") uHigh=" + uHigh + "(" + uHigh.headWordNode() + ")");
                                 basicGraph.Add(tHigh, uHigh, egr);
                             }
                         }
@@ -465,7 +461,6 @@ namespace OpenNLP.Tools.Util.Trees
                     {
                         GrammaticalRelation reln = GetGrammaticalRelationCommonAncestor(govCLabel, depCLabel,
                             basicGraph.GetEdges(gov, dep).ToList());
-                        // System.err.println("  Gov: " + gov + " Dep: " + dep + " Reln: " + reln);
                         basicDep.Add(new TypedDependency(reln, new IndexedWord(gov.HeadWordNode().Label()),
                             new IndexedWord(dep.HeadWordNode().Label())));
                     }
@@ -679,28 +674,14 @@ namespace OpenNLP.Tools.Util.Trees
                 sortedLabels = labels.ToList();
                 sortedLabels.Sort(new NameComparator<GrammaticalRelation>());
             }
-            // System.err.println(" gov " + govH + " dep " + depH + " arc labels: " + sortedLabels);
 
             foreach (GrammaticalRelation reln2 in sortedLabels)
             {
                 if (reln.IsAncestor(reln2))
                 {
                     reln = reln2;
-                } /* else if (PRINT_DEBUGGING && ! reln2.isAncestor(reln)) {
-        System.err.println("@@@\t" + reln + "\t" + reln2 + "\t" +
-                           govH[CoreAnnotations.ValueAnnotation.class) + "\t" + depH[CoreAnnotations.ValueAnnotation.class));
-      }*/
+                }
             }
-            /*if (PRINT_DEBUGGING && reln.Equals(GrammaticalRelation.DEPENDENT)) {
-      string topCat = govH[CoreAnnotations.ValueAnnotation.class);
-      string topTag = govH[TreeCoreAnnotations.HeadTagAnnotation.class).value();
-      string topWord = govH[TreeCoreAnnotations.HeadWordAnnotation.class).value();
-      string botCat = depH[CoreAnnotations.ValueAnnotation.class);
-      string botTag = depH[TreeCoreAnnotations.HeadTagAnnotation.class).value();
-      string botWord = depH[TreeCoreAnnotations.HeadWordAnnotation.class).value();
-      System.err.println("### dep\t" + topCat + "\t" + topTag + "\t" + topWord +
-                         "\t" + botCat + "\t" + botTag + "\t" + botWord + "\t");
-    }*/
             return reln;
         }
 
@@ -977,26 +958,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         public static readonly string DefaultParserFile = "/u/nlp/data/lexparser/englishPCFG.ser.gz";
 
-        /**
-   * Print typed dependencies in either the Stanford dependency representation
-   * or in the conllx format.
-   *
-   * @param deps
-   *          Typed dependencies to print
-   * @param tree
-   *          Tree corresponding to typed dependencies (only necessary if conllx
-   *          == true)
-   * @param conllx
-   *          If true use conllx format, otherwise use Stanford representation
-   * @param extraSep
-   *          If true, in the Stanford representation, the extra dependencies
-   *          (which do not preserve the tree structure) are printed after the
-   *          basic dependencies
-   */
-        /*public static void printDependencies(GrammaticalStructure gs, Collection<TypedDependency> deps, Tree tree, bool conllx, bool extraSep) {
-    System.out.println(dependenciesToString(gs, deps, tree, conllx, extraSep));
-  }
-
+        /*
   public static string dependenciesToString(GrammaticalStructure gs, Collection<TypedDependency> deps, Tree tree, bool conllx, bool extraSep) {
     StringBuilder bf = new StringBuilder();
 
@@ -1195,8 +1157,6 @@ namespace OpenNLP.Tools.Util.Trees
         }
       } else {
         if (parentId >= tgWords.Count) {
-          /*System.err.printf("Warning: Invalid Parent Id %d Sentence Length: %d%n", parentId+1, tgWords.Count);
-          System.err.printf("         Assigning to root (0)%n");#1#
           parentId = -1;
         }
         tdep = new TypedDependency(grel, (parentId == -1 ? dependencyRoot : tgWords[parentId)),
@@ -1245,7 +1205,6 @@ namespace OpenNLP.Tools.Util.Trees
       }
     }
     if (altDepReaderClass == null) {
-      //System.err.println("Can't load dependency reader " + altDepReaderName + " or edu.stanford.nlp.trees." + altDepReaderName);
       return null;
     }
 
@@ -1256,7 +1215,6 @@ namespace OpenNLP.Tools.Util.Trees
       } catch (InstantiationException e) {
         throw new SystemException(e);
       } catch (IllegalAccessException e) {
-        System.err.println("No argument constructor to " + altDepReaderName + " is not public");
         return null;
       }
     } else {
@@ -1270,12 +1228,10 @@ namespace OpenNLP.Tools.Util.Trees
         e.printStackTrace();
         return null;
       } catch (IllegalAccessException e) {
-        System.err.println(depReaderArgs.Length + " argument constructor to " + altDepReaderName + " is not public.");
         return null;
       } catch (InvocationTargetException e) {
         throw new SystemException(e);
       } catch (NoSuchMethodException e) {
-        System.err.println("String arguments constructor to " + altDepReaderName + " does not exist.");
         return null;
       }
     }
@@ -1305,7 +1261,6 @@ namespace OpenNLP.Tools.Util.Trees
       }
     }
     if (altDepPrinterClass == null) {
-      System.err.printf("Unable to load alternative printer %s or %s. Is your classpath set correctly?\n", altDepPrinterName, "edu.stanford.nlp.trees." + altDepPrinterName);
       return null;
     }
     try {
@@ -1332,11 +1287,6 @@ namespace OpenNLP.Tools.Util.Trees
       e.printStackTrace();
       return null;
     } catch (NoSuchMethodException e) {
-      if (depPrintArgs == null) {
-        System.err.printf("Can't find no-argument constructor %s().\n", altDepPrinterName);
-      } else {
-        System.err.printf("Can't find constructor %s(%s).\n", altDepPrinterName, Arrays.ToString(depPrintArgs));
-      }
       return null;
     }
   }
@@ -1430,8 +1380,6 @@ namespace OpenNLP.Tools.Util.Trees
         GrammaticalStructure gs = null;
         while (gs == null && tbIterator.hasNext()) {
           Tree t = tbIterator.next();
-          // System.err.println("GsIterator: Next tree is");
-          // System.err.println(t);
           if (t == null) {
             continue;
           }
@@ -1439,12 +1387,8 @@ namespace OpenNLP.Tools.Util.Trees
             gs = params.getGrammaticalStructure(t, puncFilter, hf);
             origTrees.put(gs, t);
             next = gs;
-            // System.err.println("GsIterator: Next tree is");
-            // System.err.println(t);
             return;
           } catch (NullPointerException npe) {
-            System.err.println("Bung tree caused below dump. Continuing....");
-            System.err.println(t);
             npe.printStackTrace();
           }
         }

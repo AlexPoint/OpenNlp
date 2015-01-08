@@ -50,8 +50,6 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public class SemanticHeadFinder : ModCollinsHeadFinder
     {
-        //private static readonly bool DEBUG = System.getProperty("SemanticHeadFinder", null) != null;
-
         /* A few times the apostrophe is missing on "'s", so we have "s" */
         /* Tricky auxiliaries: "na" is from "gonna", "ve" from "Weve", etc.  "of" as non-standard for "have" */
 
@@ -375,11 +373,7 @@ namespace OpenNLP.Tools.Util.Trees
         protected override Tree DetermineNonTrivialHead(Tree t, Tree parent)
         {
             string motherCat = tlp.BasicCategory(t.Label().Value());
-
-            /*if (DEBUG) {
-      System.err.println("At " + motherCat + ", my parent is " + parent);
-    }*/
-
+            
             // Some conj expressions seem to make more sense with the "not" or
             // other key words as the head.  For example, "and not" means
             // something completely different than "and".  Furthermore,
@@ -445,14 +439,6 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 Tree[] kids = t.Children();
                 // try to find if there is an auxiliary verb
-
-                /*if (DEBUG) {
-        System.err.println("Semantic head finder: at VP");
-        System.err.println("Class is " + t.getClass().getName());
-        t.pennPrint(System.err);
-        //System.err.println("hasVerbalAuxiliary = " + hasVerbalAuxiliary(kids, verbalAuxiliaries));
-      }*/
-
                 // looks for auxiliaries
                 if (HasVerbalAuxiliary(kids, verbalAuxiliaries, true) || HasPassiveProgressiveAuxiliary(kids))
                 {
@@ -467,17 +453,9 @@ namespace OpenNLP.Tools.Util.Trees
                         tmpFilteredChildren = kids.Where(k => RemoveTmpAndAdv(k)).ToArray();
                     }
                     Tree pti = TraverseLocate(tmpFilteredChildren, how, false);
-                    /*if (DEBUG) {
-          System.err.println("Determined head (case 1) for " + t.value() + " is: " + pti);
-        }*/
                     if (pti != null)
                     {
                         return pti;
-                        // } else {
-                        // System.err.println("------");
-                        // System.err.println("SemanticHeadFinder failed to reassign head for");
-                        // t.pennPrint(System.err);
-                        // System.err.println("------");
                     }
                 }
 
@@ -523,21 +501,9 @@ namespace OpenNLP.Tools.Util.Trees
                         }
                     }
 
-                    /*if (DEBUG) {
-          System.err.println("Determined head (case 2) for " + t.value() + " is: " + pti);
-        }s*/
                     if (pti != null)
                     {
                         return pti;
-                    }
-                    else
-                    {
-                        /*if (DEBUG) {
-            System.err.println("------");
-            System.err.println("SemanticHeadFinder failed to reassign head for");
-            t.pennPrint(System.err);
-            System.err.println("------");
-          }*/
                     }
                 }
             }
@@ -552,25 +518,15 @@ namespace OpenNLP.Tools.Util.Trees
         hdChildren[0].isLeaf()) {
       if (tlp.isPunctuationWord(hdChildren[0].label().value())) {
          Tree[] tChildren = t.children();
-         if (DEBUG) {
-           System.err.printf("head is punct: %s\n", hdChildren[0].label());
-         }
          for (int i = tChildren.length - 1; i >= 0; i--) {
            if (!tlp.isPunctuationWord(tChildren[i].children()[0].label().value())) {
              hd = tChildren[i];
-             if (DEBUG) {
-               System.err.printf("New head of %s is %s%n", hd.label(), hd.children()[0].label());
-             }
              break;
            }
          }
       }
     }
     */
-
-            /*if (DEBUG) {
-      System.err.println("Determined head (case 3) for " + t.value() + " is: " + hd);
-    }*/
             return hd;
         }
 
@@ -582,9 +538,6 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         private bool IsExistential(Tree t, Tree parent)
         {
-            /*if (DEBUG) {
-      System.err.println("isExistential: " + t + ' ' + parent);
-    }*/
             bool toReturn = false;
             string motherCat = tlp.BasicCategory(t.Label().Value());
             // affirmative case
@@ -622,7 +575,7 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     if (!kid.Value().StartsWith("VB"))
                     {
-//not necessary to look into the verb
+                        //not necessary to look into the verb
                         List<Label> tags = kid.PreTerminalYield();
                         foreach (Label tag in tags)
                         {
@@ -634,11 +587,6 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                 }
             }
-
-            /*if (DEBUG) {
-      System.err.println("decision " + toReturn);
-    }*/
-
             return toReturn;
         }
 
@@ -670,11 +618,6 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                 }
             }
-
-            /*if (DEBUG) {
-      System.err.println("in isWH, decision: " + toReturn + " for node " + t);
-    }s*/
-
             return toReturn;
         }
 
@@ -703,16 +646,10 @@ namespace OpenNLP.Tools.Util.Trees
                     word = wordLabel.Value();
                 }
 
-                /*if (DEBUG) {
-        System.err.println("Checking " + preterminal.value() + " head is " + word + '/' + tag);
-      }*/
                 string lcWord = word.ToLower();
                 if (allowJustTagMatch && unambiguousAuxiliaryTags.Contains(tag) ||
                     verbalTags.Contains(tag) && verbalSet.Contains(lcWord))
                 {
-                    /*if (DEBUG) {
-          System.err.println("isAuxiliary found desired type of aux");
-        }*/
                     return true;
                 }
             }
@@ -733,16 +670,10 @@ namespace OpenNLP.Tools.Util.Trees
         // now overly complex so it deals with coordinations.  Maybe change this class to use tregrex?
         private bool HasPassiveProgressiveAuxiliary(Tree[] kids)
         {
-            /*if (DEBUG) {
-      System.err.println("Checking for passive/progressive auxiliary");
-    }*/
-            bool foundPassiveVP = false;
+            bool foundPassiveVp = false;
             bool foundPassiveAux = false;
             foreach (Tree kid in kids)
             {
-                /*if (DEBUG) {
-        System.err.println("  checking in " + kid);
-      }*/
                 if (IsVerbalAuxiliary(kid, passiveAuxiliaries, false))
                 {
                     foundPassiveAux = true;
@@ -763,16 +694,10 @@ namespace OpenNLP.Tools.Util.Trees
                     {
                         continue;
                     }
-                    /*if (DEBUG) {
-          System.err.println("hasPassiveProgressiveAuxiliary found VP");
-        }*/
                     Tree[] kidkids = kid.Children();
                     bool foundParticipleInVp = false;
                     foreach (Tree kidkid in kidkids)
                     {
-                        /*if (DEBUG) {
-            System.err.println("  hasPassiveProgressiveAuxiliary examining " + kidkid);
-          }*/
                         if (kidkid.IsPreTerminal())
                         {
                             Label kidkidLabel = kidkid.Label();
@@ -788,18 +713,12 @@ namespace OpenNLP.Tools.Util.Trees
                             // we allow in VBD because of frequent tagging mistakes
                             if ("VBN".Equals(tag) || "VBG".Equals(tag) || "VBD".Equals(tag))
                             {
-                                foundPassiveVP = true;
-                                /*if (DEBUG) {
-                System.err.println("hasPassiveAuxiliary found VBN/VBG/VBD VP");
-              }*/
+                                foundPassiveVp = true;
                                 break;
                             }
                             else if ("CC".Equals(tag) && foundParticipleInVp)
                             {
-                                foundPassiveVP = true;
-                                /*if (DEBUG) {
-                System.err.println("hasPassiveAuxiliary [coordination] found (VP (VP[VBN/VBG/VBD] CC");
-              }*/
+                                foundPassiveVp = true;
                                 break;
                             }
                         }
@@ -816,41 +735,29 @@ namespace OpenNLP.Tools.Util.Trees
                             }
                             if ("VP".Equals(catcat))
                             {
-                                /*if (DEBUG) {
-                System.err.println("hasPassiveAuxiliary found (VP (VP)), recursing");
-              }*/
                                 foundParticipleInVp = VpContainsParticiple(kidkid);
                             }
                             else if (("CONJP".Equals(catcat) || "PRN".Equals(catcat)) && foundParticipleInVp)
                             {
                                 // occasionally get PRN in CONJ-like structures
-                                foundPassiveVP = true;
-                                /*if (DEBUG) {
-                System.err.println("hasPassiveAuxiliary [coordination] found (VP (VP[VBN/VBG/VBD] CONJP");
-              }*/
+                                foundPassiveVp = true;
                                 break;
                             }
                         }
                     }
                 }
-                if (foundPassiveAux && foundPassiveVP)
+                if (foundPassiveAux && foundPassiveVp)
                 {
                     break;
                 }
             } // end for (Tree kid : kids)
-            /*if (DEBUG) {
-      System.err.println("hasPassiveProgressiveAuxiliary returns " + (foundPassiveAux && foundPassiveVP));
-    }*/
-            return foundPassiveAux && foundPassiveVP;
+            return foundPassiveAux && foundPassiveVp;
         }
 
         private static bool VpContainsParticiple(Tree t)
         {
             foreach (Tree kid in t.Children())
             {
-                /*if (DEBUG) {
-        System.err.println("vpContainsParticiple examining " + kid);
-      }*/
                 if (kid.IsPreTerminal())
                 {
                     Label kidLabel = kid.Label();
@@ -865,9 +772,6 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                     if ("VBN".Equals(tag) || "VBG".Equals(tag) || "VBD".Equals(tag))
                     {
-                        /*if (DEBUG) {
-            System.err.println("vpContainsParticiple found VBN/VBG/VBD VP");
-          }*/
                         return true;
                     }
                 }
@@ -892,22 +796,13 @@ namespace OpenNLP.Tools.Util.Trees
         /// </returns>
         private bool HasVerbalAuxiliary(Tree[] kids, Set<string> verbalSet, bool allowTagOnlyMatch)
         {
-            /*if (DEBUG) {
-      System.err.println("Checking for verbal auxiliary");
-    }*/
             foreach (Tree kid in kids)
             {
-                /*if (DEBUG) {
-        System.err.println("  checking in " + kid);
-      }*/
                 if (IsVerbalAuxiliary(kid, verbalSet, allowTagOnlyMatch))
                 {
                     return true;
                 }
             }
-            /*if (DEBUG) {
-      System.err.println("hasVerbalAuxiliary returns false");
-    }*/
             return false;
         }
 

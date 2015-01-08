@@ -277,30 +277,13 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		/*
 		protected double getNonReferentialProbability(MentionContext ec) {
 		if (useFixedNonReferentialProbability) {
-		if (debugOn) {
-		System.err.println(this +".resolve: " + ec.toText() + " -> " + null +" " + fixedNonReferentialProbability);
-		System.err.println();
-		}
 		return fixedNonReferentialProbability;
 		}
 		List lfeatures = getFeatures(ec, null);
 		string[] features = (string[]) lfeatures.toArray(new string[lfeatures.size()]);
 		
-		if (features == null) {
-		System.err.println("features=null in " + this);
-		}
-		if (model == null) {
-		System.err.println("model=null in " + this);
-		}
 		double[] dist = nrModel.eval(features);
 		
-		if (dist == null) {
-		System.err.println("dist=null in " + this);
-		}
-		if (debugOn) {
-		System.err.println(this +".resolve: " + ec.toText() + " -> " + null +" " + dist[nrSameIndex] + " " + lfeatures);
-		System.err.println();
-		}
 		return (dist[nrSameIndex]);
 		}
 		*/
@@ -328,7 +311,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 
         public override DiscourseEntity Retain(Mention.MentionContext mention, DiscourseModel discourseModel)
 		{
-			//System.err.println(this+".retain("+ec+") "+mode);
 			if (_resolverMode == ResolverMode.Train)
 			{
 				DiscourseEntity discourseEntity = null;
@@ -341,10 +323,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
                     Mention.MentionContext entityMention = currentDiscourseEntity.LastExtent;
 					if (IsOutOfRange(mention, currentDiscourseEntity))
 					{
-						if (mention.Id != -1 && !referentFound)
-						{
-							//System.err.println("retain: Referent out of range: "+ec.toText()+" "+ec.parse.getSpan());
-						}
 						break;
 					}
 					if (IsExcluded(mention, currentDiscourseEntity))
@@ -367,14 +345,13 @@ namespace OpenNLP.Tools.Coreference.Resolver
 						//add Event to Model
 						if (DebugOn)
 						{
-							System.Console.Error.WriteLine(this + ".retain: " + mention.Id + " " + mention.ToText() + " -> " + entityMention.Id + " " + currentDiscourseEntity);
+							Console.Error.WriteLine(this + ".retain: " + mention.Id + " " + mention.ToText() + " -> " + entityMention.Id + " " + currentDiscourseEntity);
 						}
 						if (mention.Id != - 1 && entityMention.Id == mention.Id)
 						{
 							referentFound = true;
                             _events.Add(new SharpEntropy.TrainingEvent(Same, features.ToArray()));
 							discourseEntity = currentDiscourseEntity;
-							//System.err.println("MaxentResolver.retain: resolved at "+ei);
 							Distances.Add(entityIndex);
 						}
 						else if (!PairedSampleSelection || (!nonReferentFound && useAsDifferentExample))
@@ -503,7 +480,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
         private string GetGenderCompatibilityFeature(Mention.MentionContext entityContext, DiscourseEntity discourseEntity)
 		{
             Similarity.GenderEnum entityGender = discourseEntity.Gender;
-			//System.err.println("getGenderCompatibility: mention="+ec.getGender()+" entity="+eg);
             if (entityGender == Similarity.GenderEnum.Unknown || entityContext.GetGender() == Similarity.GenderEnum.Unknown)
 			{
 				return GenderUnknown;
@@ -646,8 +622,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		
 		private bool IsSubstring(string mentionStrip, string entityMentionStrip)
 		{
-            //System.err.println("MaxentResolver.IsSubstring: mentionStrip="+mentionStrip+" entityMentionStrip="+entityMentionStrip);
-			int index = entityMentionStrip.IndexOf(mentionStrip);
+            int index = entityMentionStrip.IndexOf(mentionStrip);
 			if (index != - 1)
 			{
 				//check boundries
@@ -784,7 +759,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			if (mention.HeadTokenTag.StartsWith("PRP"))
 			{
                 Dictionary<string, string> pronounMap = GetPronounFeatureMap(mention.HeadTokenText);
-				//System.err.println("getPronounMatchFeatures.pronounMap:"+pronounMap);
 				foreach (Mention.MentionContext candidateMention in entity.Mentions)
                 {
 					if (candidateMention.HeadTokenTag.StartsWith("PRP"))
@@ -797,7 +771,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 						else
 						{
                             Dictionary<string, string> candidatePronounMap = GetPronounFeatureMap(candidateMention.HeadTokenText);
-							//System.err.println("getPronounMatchFeatures.candidatePronounMap:"+candidatePronounMap);
 							bool allKeysMatch = true;
 							foreach (string key in pronounMap.Keys)
                            {
@@ -883,7 +856,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
                 Mention.IParse[] entityMentionTokens = entityMention.TokenParses;
 				int headIndex = entityMention.HeadTokenIndex;
 				//if (!mention.getHeadTokenTag().equals(entityMention.getHeadTokenTag())) {
-				//  //System.err.println("skipping "+mention.headTokenText+" with "+xec.headTokenText+" because "+mention.headTokenTag+" != "+xec.headTokenTag);
 				//  continue;
 				//}  want to match NN NNP
 				string entityMentionHeadString = entityMention.HeadTokenText.ToLower();
@@ -947,7 +919,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 
         private string MentionString(Mention.MentionContext entityContext)
 		{
-			System.Text.StringBuilder output = new System.Text.StringBuilder();
+			var output = new StringBuilder();
 			object[] mentionTokens = entityContext.Tokens;
 			output.Append(mentionTokens[0].ToString());
 			for (int tokenIndex = 1; tokenIndex < mentionTokens.Length; tokenIndex++)
@@ -955,7 +927,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				string token = mentionTokens[tokenIndex].ToString();
 				output.Append(" ").Append(token);
 			}
-			//System.err.println("mentionString "+ec+" == "+sb.ToString()+" mtokens.length="+mtokens.length);
 			return output.ToString();
 		}
 
@@ -1025,7 +996,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 
         private string GetExactMatchFeature(Mention.MentionContext entityContext, Mention.MentionContext compareContext)
 		{
-			//System.err.println("getExactMatchFeature: ec="+mentionString(ec)+" mc="+mentionString(xec));
 			if (MentionString(entityContext).Equals(MentionString(compareContext)))
 			{
 				return "exactMatch";

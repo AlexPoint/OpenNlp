@@ -528,7 +528,6 @@ namespace OpenNLP.Tools.Util.Trees
             foreach (Tree kid in kids)
             {
                 position = kid.Constituents(constituentsSet, position, cf, charLevel, filter, maxDepth, depth + 1);
-                // System.err.println("  position went to " + position);
             }
 
             if ((filter == null || filter(this)) &&
@@ -678,46 +677,6 @@ namespace OpenNLP.Tools.Util.Trees
             return sb.ToString();
         }
 
-
-        /*public void printLocalTree() {
-    printLocalTree(new PrintWriter(System.out, true));
-  }*/
-
-        /**
-   * Only prints the local tree structure, does not recurse
-   */
-        /*public void printLocalTree(PrintWriter pw) {
-    pw.print("(" + label() + ' ');
-    foreach (Tree kid in children()) {
-      pw.print("(");
-      pw.print(kid.label());
-      pw.print(") ");
-    }
-    pw.println(")");
-  }*/
-
-
-        /**
-   * Indented list printing of a tree.  The tree is printed in an
-   * indented list notation, with node labels followed by node scores.
-   */
-        /*public void indentedListPrint() {
-    indentedListPrint(new PrintWriter(System.out, true), false);
-  }*/
-
-
-        /**
-   * Indented list printing of a tree.  The tree is printed in an
-   * indented list notation, with node labels followed by node scores.
-   *
-   * @param pw The PrintWriter to print the tree to
-   * @param printScores Whether to print the scores (log probs) of tree nodes
-   */
-        /*public void indentedListPrint(PrintWriter pw, bool printScores) {
-    indentedListPrint("", makeIndentString(indentIncr), pw, printScores);
-  }*/
-
-
         /**
    * Indented list printing of a tree.  The tree is printed in an
    * indented list notation, with node labels followed by node scores.
@@ -747,81 +706,7 @@ namespace OpenNLP.Tools.Util.Trees
       child.indentedListPrint(newIndent, pad, pw, printScores);
     }
   }*/
-
-        /**
-   * Indented xml printing of a tree.  The tree is printed in an
-   * indented xml notation.
-   */
-        /*public void indentedXMLPrint() {
-    indentedXMLPrint(new PrintWriter(System.out, true), false);
-  }*/
-
-
-        /**
-   * Indented xml printing of a tree.  The tree is printed in an
-   * indented xml notation, with node labels followed by node scores.
-   *
-   * @param pw The PrintWriter to print the tree to
-   * @param printScores Whether to print the scores (log probs) of tree nodes
-   */
-        /*public void indentedXMLPrint(PrintWriter pw, bool printScores) {
-    indentedXMLPrint("", makeIndentString(indentIncr), pw, printScores);
-  }*/
-
-
-        /**
-   * Indented xml printing of a tree.  The tree is printed in an
-   * indented xml notation, with node labels followed by node scores.
-   * string parameters are used rather than integer levels for efficiency.
-   *
-   * @param indent The base <code>string</code> (normally just spaces)
-   *               to print before each line of tree
-   * @param pad    The additional <code>string</code> (normally just more
-   *               spaces) to add when going to a deeper level of
-   *               <code>Tree</code>.
-   * @param pw     The PrintWriter to print the tree to
-   * @param printScores Whether to print the scores (log probs) of tree nodes
-   */
-        /*private void indentedXMLPrint(string indent, string pad,
-                                PrintWriter pw, bool printScores) {
-    StringBuilder sb = new StringBuilder(indent);
-    Tree[] children = children();
-    Label label = label();
-    if (label != null) {
-      sb.Append("<");
-      if (children.Length > 0) {
-        sb.Append("node value=\"");
-      } else {
-        sb.Append("leaf value=\"");
-      }
-      sb.Append(XMLUtils.escapeXML(Sentence.wordToString(label, true)));
-      sb.Append("\"");
-      if (printScores) {
-        sb.Append(" score=");
-        sb.Append(score());
-      }
-      if (children.Length > 0) {
-        sb.Append(">");
-      } else {
-        sb.Append("/>");
-      }
-    } else {
-      if (children.Length > 0) {
-        sb.Append("<node>");
-      } else {
-        sb.Append("<leaf/>");
-      }
-    }
-    pw.println(sb.ToString());
-    if (children.Length > 0) {
-      string newIndent = indent + pad;
-      for (Tree child : children) {
-        child.indentedXMLPrint(newIndent, pad, pw, printScores);
-      }
-      pw.println(indent + "</node>");
-    }
-  }*/
-
+        
 
         /*private static void displayChildren(Tree[] trChildren, int indent, bool parentLabelNull, bool onlyLabelValue, PrintWriter pw) {
     bool firstSibling = true;
@@ -942,22 +827,6 @@ namespace OpenNLP.Tools.Util.Trees
     StringWriter sw = new StringWriter();
     pennPrint(new PrintWriter(sw));
     return sw.ToString();
-  }*/
-
-        /**
-   * Print the tree as done in Penn Treebank merged files.
-   * The formatting should be exactly the same, but we don't print the
-   * trailing whitespace found in Penn Treebank trees.
-   * The tree is printed to <code>System.out</code>. The basic deviation
-   * from a bracketed indented tree is to in general
-   * collapse the printing of adjacent preterminals onto one line of
-   * tags and words.  Additional complexities are that conjunctions
-   * (tag CC) are not collapsed in this way, and that the unlabeled
-   * outer brackets are collapsed onto the same line as the next
-   * bracket down.
-   */
-        /*public void pennPrint() {
-    pennPrint(System.out);
   }*/
 
         /// <summary>
@@ -1342,10 +1211,8 @@ namespace OpenNLP.Tools.Util.Trees
                     continue;
                 }
                 // Label l = node.label();
-                // System.err.println("doing kids of label: " + l);
                 //Tree hwt = node.headPreTerminal(hf);
                 Tree hwt = node.HeadTerminal(hf);
-                // System.err.println("have hf, found head preterm: " + hwt);
                 if (hwt == null)
                 {
                     throw new InvalidDataException("mapDependencies: HeadFinder failed!");
@@ -1360,8 +1227,6 @@ namespace OpenNLP.Tools.Util.Trees
                     {
                         throw new InvalidDataException("mapDependencies: HeadFinder failed!");
                     }
-                    //System.err.println("kid is " + dl);
-                    //System.err.println("transformed to " + dml.ToString("value{map}"));
                     if (dwt != hwt)
                     {
                         Dependency<Label, Label, Object> p = new UnnamedDependency(hwt.Label(), dwt.Label());

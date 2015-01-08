@@ -221,7 +221,6 @@ namespace OpenNLP.Tools.Coreference
 		/// </param>
 		protected internal virtual void Resolve(MentionContext mention, DiscourseModel discourseModel)
 		{
-			//System.err.println("AbstractLinker.resolve: "+mode+"("+econtext.id+") "+econtext.toText());
 			bool validEntity = true; // true if we should add this entity to the dm
 			bool canResolve = false;
 			
@@ -264,7 +263,6 @@ namespace OpenNLP.Tools.Coreference
 			}
 			if (!canResolve && mRemoveUnresolvedMentions)
 			{
-				//System.err.println("No resolver for: "+econtext.toText()+ " head="+econtext.headTokenText+" "+econtext.headTokenTag);
 				validEntity = false;
 			}
 			DiscourseEntity discourseEntity = CheckForMerges(discourseModel, mEntities);
@@ -295,8 +293,6 @@ namespace OpenNLP.Tools.Coreference
 			{
 				if (entity != null)
 				{
-					//System.err.println("AbstractLinker.updateExtent: addingExtent:
-					// "+econtext.toText());
 					if (entity.GenderProbability < mention.GenderProbability)
 					{
 						entity.Gender = mention.GetGender();
@@ -312,8 +308,6 @@ namespace OpenNLP.Tools.Coreference
 				}
 				else
 				{
-					//System.err.println("AbstractLinker.updateExtent: creatingExtent:
-					// "+econtext.toText()+" "+econtext.gender+" "+econtext.number);
 					entity = new DiscourseEntity(mention, mention.GetGender(), mention.GenderProbability, mention.GetNumber(), mention.NumberProbability);
 					discourseModel.AddEntity(entity);
 				}
@@ -322,28 +316,25 @@ namespace OpenNLP.Tools.Coreference
 			{
 				if (entity != null)
 				{
-					DiscourseEntity newEntity = new DiscourseEntity(mention, mention.GetGender(), mention.GenderProbability, mention.GetNumber(), mention.NumberProbability);
+					var newEntity = new DiscourseEntity(mention, mention.GetGender(), mention.GenderProbability, mention.GetNumber(), mention.NumberProbability);
 					discourseModel.AddEntity(newEntity);
 					newEntity.Id = entity.Id;
 				}
 				else
 				{
-					DiscourseEntity newEntity = new DiscourseEntity(mention, mention.GetGender(), mention.GenderProbability, mention.GetNumber(), mention.NumberProbability);
+					var newEntity = new DiscourseEntity(mention, mention.GetGender(), mention.GenderProbability, mention.GetNumber(), mention.NumberProbability);
 					discourseModel.AddEntity(newEntity);
 				}
 			}
-			//System.err.println(de1);
 		}
 		
 		protected internal virtual DiscourseEntity CheckForMerges(DiscourseModel discourseModel, DiscourseEntity[] discourseEntities)
 		{
-			DiscourseEntity firstDiscourseEntity; //temporary variable
-			DiscourseEntity secondDiscourseEntity; //temporary variable
-			firstDiscourseEntity = discourseEntities[0];
+		    DiscourseEntity firstDiscourseEntity = discourseEntities[0];
 			for (int discourseEntityIndex = 1; discourseEntityIndex < discourseEntities.Length; discourseEntityIndex++)
 			{
-				secondDiscourseEntity = discourseEntities[discourseEntityIndex];
-				if (secondDiscourseEntity != null)
+			    DiscourseEntity secondDiscourseEntity = discourseEntities[discourseEntityIndex]; //temporary variable
+			    if (secondDiscourseEntity != null)
 				{
 					if (firstDiscourseEntity != null && firstDiscourseEntity != secondDiscourseEntity)
 					{
@@ -355,16 +346,15 @@ namespace OpenNLP.Tools.Coreference
 					}
 				}
 			}
-			return firstDiscourseEntity;
+		    return firstDiscourseEntity;
 		}
 
         public virtual DiscourseEntity[] GetEntitiesFromMentions(Mention.Mention[] mentions)
 		{
 			MentionContext[] extentContexts = ConstructMentionContexts(mentions);
-			DiscourseModel discourseModel = new DiscourseModel();
+			var discourseModel = new DiscourseModel();
 			for (int extentIndex = 0; extentIndex < extentContexts.Length; extentIndex++)
 			{
-				//System.err.println(ei+" "+extentContexts[ei].toText());
 				Resolve(extentContexts[extentIndex], discourseModel);
 			}
 			return discourseModel.Entities;
@@ -393,14 +383,13 @@ namespace OpenNLP.Tools.Coreference
 			int mentionInSentenceIndex = -1;
 			int mentionsInSentenceCount = -1;
 			int previousSentenceIndex = -1;
-			MentionContext[] contexts = new MentionContext[mentions.Length];
+			var contexts = new MentionContext[mentions.Length];
 			for (int mentionIndex = 0, mentionCount = mentions.Length; mentionIndex < mentionCount; mentionIndex++)
 			{
 				IParse mentionParse = mentions[mentionIndex].Parse;
-				//System.err.println("AbstractLinker.constructMentionContexts: mentionParse="+mentionParse);
 				if (mentionParse == null)
 				{
-					System.Console.Error.WriteLine("no parse for " + mentions[mentionIndex]);
+					Console.Error.WriteLine("no parse for " + mentions[mentionIndex]);
 				}
 				int sentenceIndex = mentionParse.SentenceNumber;
 				if (sentenceIndex != previousSentenceIndex)
@@ -418,7 +407,6 @@ namespace OpenNLP.Tools.Coreference
 					}
 				}
 				contexts[mentionIndex] = new MentionContext(mentions[mentionIndex], mentionInSentenceIndex, mentionsInSentenceCount, mentionIndex, sentenceIndex, HeadFinder);
-				//System.err.println("AbstractLinker.constructMentionContexts: mi="+mi+" sn="+mentionParse.getSentenceNumber()+" extent="+mentions[mi]+" parse="+mentionParse.getSpan()+" mc="+contexts[mi].toText());
 				contexts[mentionIndex].Id = mentions[mentionIndex].Id;
 				mentionInSentenceIndex++;
 				if (mMode != LinkerMode.Sim)

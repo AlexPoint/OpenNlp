@@ -422,7 +422,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             {
                 if (verbose)
                 {
-                    //System.err.println("Could not parse " + tregex + ":");
                     //ex.printStackTrace();
                 }
             }
@@ -462,14 +461,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         #1#
         public void prettyPrint(PrintStream ps) {
         prettyPrint(new PrintWriter(new OutputStreamWriter(ps), true));
-        }
-
-        /**
-        * Print a multi-line representation of the pattern illustrating
-        * it's syntax to System.out.
-        #1#
-        public void prettyPrint() {
-        prettyPrint(System.out);
         }*/
 
 
@@ -529,19 +520,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private readonly TregexPattern p;
         string[] handles;
         int numMatches;
-
-        TRegexTreeVisitor(TregexPattern p, string[] handles, string encoding) {
-            this.p = p;
-            this.handles = handles;
-            try {
-            pw = new PrintWriter(new OutputStreamWriter(System.out, encoding),true);
-            }
-            catch (UnsupportedEncodingException e) {
-            System.err.println("Error -- encoding " + encoding + " is unsupported.  Using platform default PrintWriter instead.");
-            pw = new PrintWriter(System.out,true);
-            }
-        }
-
+        
         // todo: add an option to only print each tree once, regardless.  Most useful in conjunction with -w
         public void visitTree(Tree t) {
             treeNumber++;
@@ -593,9 +572,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
                 for (string handle : handles) {
                     Tree labeledNode = match.getNode(handle);
-                    if (labeledNode == null) {
-                    System.err.println("Error!!  There is no matched node \"" + handle + "\"!  Did you specify such a label in the pattern?");
-                    } else {
+                    if (labeledNode != null) {
                     tp.printTree(labeledNode,pw);
                     }
                 }

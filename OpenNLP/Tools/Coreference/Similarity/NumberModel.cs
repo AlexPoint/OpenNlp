@@ -45,12 +45,11 @@ namespace OpenNLP.Tools.Coreference.Similarity
 	{
 		virtual public void SetExtents(Context[] extents)
 		{
-            Util.HashList<int, Context> entities = new Util.HashList<int, Context>();
-            List<Context> singletons = new List<Context>();
+            var entities = new Util.HashList<int, Context>();
+            var singletons = new List<Context>();
 			for (int extentIndex = 0; extentIndex < extents.Length; extentIndex++)
 			{
 				Context currentExtent = extents[extentIndex];
-				//System.err.println("NumberModel.setExtents: ec("+ec.getId()+") "+ec.toText());
 				if (currentExtent.Id != -1)
 				{
 					entities.Put(currentExtent.Id, currentExtent);
@@ -60,8 +59,8 @@ namespace OpenNLP.Tools.Coreference.Similarity
 					singletons.Add(currentExtent);
 				}
 			}
-            List<Context> singles = new List<Context>();
-            List<Context> plurals = new List<Context>();
+            var singles = new List<Context>();
+            var plurals = new List<Context>();
 			// coref entities
 			foreach (int key in entities.Keys)
             {
@@ -118,23 +117,23 @@ namespace OpenNLP.Tools.Coreference.Similarity
 			}
 		}
 		
-		private string mModelName;
-		private string mModelExtension = ".nbin";
-        private SharpEntropy.IMaximumEntropyModel mTestModel;
-		private List<SharpEntropy.TrainingEvent> mEvents;
+		private readonly string mModelName;
+	    private const string mModelExtension = ".nbin";
+	    private readonly SharpEntropy.IMaximumEntropyModel mTestModel;
+		private readonly List<SharpEntropy.TrainingEvent> mEvents;
 		
-		private int mSingularIndex;
-		private int mPluralIndex;
+		private readonly int mSingularIndex;
+		private readonly int mPluralIndex;
 		
 		public static ITestNumberModel TestModel(string name)
 		{
-			NumberModel numberModel = new NumberModel(name, false);
+			var numberModel = new NumberModel(name, false);
 			return numberModel;
 		}
 		
 		public static ITrainSimilarityModel TrainModel(string modelName)
 		{
-			NumberModel numberModel = new NumberModel(modelName, true);
+			var numberModel = new NumberModel(modelName, true);
 			return numberModel;
 		}
 		
@@ -156,9 +155,8 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		
 		private List<string> GetFeatures(Context nounPhrase)
 		{
-            List<string> features = new List<string>();
-			features.Add("default");
-			object[] nounPhraseTokens = nounPhrase.Tokens;
+            var features = new List<string> {"default"};
+		    object[] nounPhraseTokens = nounPhrase.Tokens;
 			for (int tokenIndex = 0, tokenLength = nounPhraseTokens.Length - 1; tokenIndex < tokenLength; tokenIndex++)
 			{
 				features.Add("mw=" + nounPhraseTokens[tokenIndex].ToString());
@@ -211,7 +209,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		
 		public virtual void TrainModel()
 		{
-            SharpEntropy.GisTrainer trainer = new SharpEntropy.GisTrainer();
+            var trainer = new SharpEntropy.GisTrainer();
             trainer.TrainModel(new Util.CollectionEventReader(mEvents), 100, 10);
             new SharpEntropy.IO.BinaryGisModelWriter().Persist(new SharpEntropy.GisModel(trainer), mModelName + mModelExtension);
 		}

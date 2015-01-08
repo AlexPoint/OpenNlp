@@ -141,7 +141,6 @@ namespace OpenNLP.Tools.Coreference
             {
 				firstEntity.AddMention(mc);
 			}
-			//System.err.println("DiscourseModel.mergeEntities: removing "+e2);
 			mEntities.Remove(secondEntity);
 		}
 		

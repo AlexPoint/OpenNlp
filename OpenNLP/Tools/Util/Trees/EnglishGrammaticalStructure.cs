@@ -116,92 +116,43 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         protected override void CollapseDependencies(List<TypedDependency> list, bool cCprocess, bool includeExtras)
         {
-            /*if (DEBUG) {
-      printListSorted("collapseDependencies: CCproc: " + CCprocess + " includeExtras: " + includeExtras, list);
-    }*/
             CorrectDependencies(list);
-            /*if (DEBUG) {
-      printListSorted("After correctDependencies:", list);
-    }*/
 
             EraseMultiConj(list);
-            /*if (DEBUG) {
-      printListSorted("After collapse multi conj:", list);
-    }*/
 
             Collapse2Wp(list);
-            /*if (DEBUG) {
-      printListSorted("After collapse2WP:", list);
-    }*/
 
             CollapseFlatMwp(list);
-            /*if (DEBUG) {
-      printListSorted("After collapseFlatMWP:", list);
-    }*/
 
             Collapse2WpBis(list);
-            /*if (DEBUG) {
-      printListSorted("After collapse2WPbis:", list);
-    }*/
 
             Collapse3Wp(list);
-            /*if (DEBUG) {
-      printListSorted("After collapse3WP:", list);
-    }*/
 
             CollapsePrepAndPoss(list);
-            /*if (DEBUG) {
-      printListSorted("After PrepAndPoss:", list);
-    }*/
 
             CollapseConj(list);
-            /*if (DEBUG) {
-      printListSorted("After conj:", list);
-    }*/
 
             if (includeExtras)
             {
                 AddRef(list);
-                /*if (DEBUG) {
-        printListSorted("After adding ref:", list);
-      }*/
 
                 CollapseReferent(list);
-                /*if (DEBUG) {
-        printListSorted("After collapse referent:", list);
-      }*/
             }
 
             if (cCprocess)
             {
                 TreatCc(list);
-                /*if (DEBUG) {
-        printListSorted("After treatCC:", list);
-      }*/
             }
 
             if (includeExtras)
             {
                 AddExtraNSubj(list);
-                /*if (DEBUG) {
-        printListSorted("After adding extra nsubj:", list);
-      }*/
 
                 CorrectSubjPass(list);
-                /*if (DEBUG) {
-        printListSorted("After correctSubjPass:", list);
-      }*/
             }
 
             RemoveDep(list);
-            /*if (DEBUG) {
-      printListSorted("After remove dep:", list);
-    }*/
-
             list.Sort();
-            /*if (DEBUG) {
-      printListSorted("After all collapse:", list);
-    }*/
         }
 
         /*
@@ -776,7 +727,6 @@ namespace OpenNLP.Tools.Util.Trees
                     }
                 }
             }
-            // System.err.println("here's the vmod list: " + vmod);
 
             // Do preposition conjunction interaction for
             // governor p NP and p NP case ... a lot of special code cdm jan 2006
@@ -881,10 +831,6 @@ namespace OpenNLP.Tools.Util.Trees
                     {
                         IndexedWord td2Dep = td2.Dep();
                         string td2DepPOS = td2Dep.Tag();
-                        // System.err.println("prepDep find: td1.reln: " + td1.reln() +
-                        // "; td2.reln: " + td2.reln() + "; td1DepPos: " + td1DepPOS +
-                        // "; td2DepPos: " + td2DepPOS + "; index " + index +
-                        // "; td2.dep().index(): " + td2.dep().index());
                         if ((td2.Reln() == GrammaticalRelation.Dependent ||
                              td2.Reln() == EnglishGrammaticalRelations.PrepositionalObject ||
                              td2.Reln() == EnglishGrammaticalRelations.PrepositionalComplement) &&
@@ -900,7 +846,7 @@ namespace OpenNLP.Tools.Util.Trees
                         }
                         else if (!inConjDeps(td2, conjs))
                         {
-// don't want to add the conjDep
+                            // don't want to add the conjDep
                             // again!
                             otherDtrs.Add(td2);
                         }
@@ -912,20 +858,7 @@ namespace OpenNLP.Tools.Util.Trees
                     continue; // we can't deal with it in the hairy prep/conj interaction
                     // case!
                 }
-
-                /*if (DEBUG) {
-        if (ccDep != null) {
-          System.err.println("!! Conj and prep case:");
-          System.err.println("  td1 (prep): " + td1);
-          System.err.println("  Kids of td1 are: " + possibles);
-          System.err.println("  prepDep: " + prepDep);
-          System.err.println("  ccDep: " + ccDep);
-          System.err.println("  conjs: " + conjs);
-          System.err.println("  samePrepositionInEachConjunct: " + samePrepositionInEachConjunct);
-          System.err.println("  otherDtrs: " + otherDtrs);
-        }
-      }*/
-
+                
                 // check if we have the same prepositions in the conjunction
                 if (samePrepositionInEachConjunct)
                 {
@@ -937,10 +870,6 @@ namespace OpenNLP.Tools.Util.Trees
 
                     var tdNew = new TypedDependency(reln, td1.Gov(), prepDep.Item1.Dep());
                     newTypedDeps.Add(tdNew);
-                    /*if (DEBUG) {
-          System.err.println("PrepPoss Conj branch (two parallel PPs) adding: " + tdNew);
-          System.err.println("  removing: " + td1 + "  " + prepDep + "  " + ccDep);
-        }*/
                     td1.SetReln(GrammaticalRelation.Kill); // remember these are "used up"
                     prepDep.Item1.SetReln(GrammaticalRelation.Kill);
                     ccDep.SetReln(GrammaticalRelation.Kill);
@@ -955,10 +884,6 @@ namespace OpenNLP.Tools.Util.Trees
                             // misparse, but it has happened in such circumstances. You have
                             // something like (PP in or in (NP Serbia)), with the two
                             // prepositions the same. We just clean up the mess.
-                            /*if (DEBUG) {
-              System.err.println("  apparent misparse: same P twice with only one NP object (prepOtherDep is null)");
-              System.err.println("  removing: " + conjDep);
-            }*/
                             ccDep.SetReln(GrammaticalRelation.Kill);
                         }
                         else
@@ -966,10 +891,6 @@ namespace OpenNLP.Tools.Util.Trees
                             var tdNew2 = new TypedDependency(ConjValue(ccDep.Dep().Value()),
                                 prepDep.Item1.Dep(), prepOtherDep.Dep());
                             newTypedDeps.Add(tdNew2);
-                            /*if (DEBUG) {
-              System.err.println("  adding: " + tdNew2);
-              System.err.println("  removing: " + conjDep + "  " + prepOtherDep);
-            }*/
                             prepOtherDep.SetReln(GrammaticalRelation.Kill);
                         }
                         conjDep.SetReln(GrammaticalRelation.Kill);
@@ -978,13 +899,7 @@ namespace OpenNLP.Tools.Util.Trees
                     // promote dtrs that would be orphaned
                     foreach (TypedDependency otd in otherDtrs)
                     {
-                        /*if (DEBUG) {
-            System.err.print("Changed " + otd);
-          }*/
                         otd.SetGov(td1.Gov());
-                        /*if (DEBUG) {
-            System.err.println(" to " + otd);
-          }*/
                     }
 
                     // Now we need to see if there are any TDs that will be "orphaned"
@@ -998,24 +913,14 @@ namespace OpenNLP.Tools.Util.Trees
                     // CDM Feb 2010: This used to not move COORDINATION OR CONJUNCT, but now
                     // it does, since they're not automatically deleted
                     // Some things in possibles may have already been changed, so check gov
-                    /*if (DEBUG) {
-          System.err.println("td1: " + td1 + "; possibles: " + possibles);
-        }*/
                     foreach (TypedDependency td2 in possibles)
                     {
-                        // if (DEBUG) {
-                        // System.err.println("[a] td2.reln " + td2.reln() + " td2.gov " +
-                        // td2.gov() + " td1.dep " + td1.dep());
-                        // }
                         if (td2.Reln() != GrammaticalRelation.Kill && td2.Gov().Equals(td1.Dep()))
                         {
                             // && td2.reln()
                             // != COORDINATION
                             // && td2.reln()
                             // != CONJUNCT
-                            /*if (DEBUG) {
-              System.err.println("Changing " + td2 + " to have governor of " + td1 + " [a]");
-            }*/
                             td2.SetGov(td1.Gov());
                         }
                     }
@@ -1053,10 +958,7 @@ namespace OpenNLP.Tools.Util.Trees
                 GrammaticalRelation _reln = DeterminePrepRelation(map, vmod, td1, td1, prepDep.Item2);
                 var _tdNew = new TypedDependency(_reln, td1.Gov(), prepDep.Item1.Dep());
                 newTypedDeps.Add(_tdNew);
-                /*if (DEBUG) {
-        System.err.println("ConjPP (different preps) adding: " + tdNew);
-        System.err.println("  deleting: " + td1 + "  " + prepDep.first() + "  " + ccDep);
-      }*/
+
                 td1.SetReln(GrammaticalRelation.Kill); // remember these are "used up"
                 prepDep.Item1.SetReln(GrammaticalRelation.Kill);
                 ccDep.SetReln(GrammaticalRelation.Kill);
@@ -1084,16 +986,10 @@ namespace OpenNLP.Tools.Util.Trees
 
                     // now we still need to add the second prep grammatical relation
                     // between the copy and the dependent of the prepOtherDep node
-                    TypedDependency tdNew3;
-
                     GrammaticalRelation reln2 = DeterminePrepRelation(map, vmod, conjDep, td1, pobj);
-                    tdNew3 = new TypedDependency(reln2, label, prepOtherDep.Dep());
+                    var tdNew3 = new TypedDependency(reln2, label, prepOtherDep.Dep());
                     newTypedDeps.Add(tdNew3);
 
-                    /*if (DEBUG) {
-          System.err.println("  adding: " + tdNew2 + "  " + tdNew3);
-          System.err.println("  deleting: " + conjDep + "  " + prepOtherDep);
-        }*/
                     conjDep.SetReln(GrammaticalRelation.Kill);
                     prepOtherDep.SetReln(GrammaticalRelation.Kill);
 
@@ -1127,9 +1023,6 @@ namespace OpenNLP.Tools.Util.Trees
                     {
                         // && td2.reln() != COORDINATION &&
                         // td2.reln() != CONJUNCT) {
-                        /*if (DEBUG) {
-            System.err.println("Changing " + td2 + " to have governor of " + td1 + " [b]");
-          }*/
                         td2.SetGov(td1.Gov());
                     }
                 }
@@ -1186,9 +1079,6 @@ namespace OpenNLP.Tools.Util.Trees
                                 // we don't collapse preposition conjoined with a non-preposition
                                 // to avoid disconnected constituents
                                 // OK, we have a pair td1, td2 to collapse to td3
-                                /*if (DEBUG) {
-                System.err.println("(Single prep/poss base case collapsing " + td1 + " and " + td2);
-              }*/
 
                                 // check whether we are in a pcomp case:
                                 if (td2.Reln() == EnglishGrammaticalRelations.PrepositionalComplement)
@@ -1198,9 +1088,6 @@ namespace OpenNLP.Tools.Util.Trees
 
                                 GrammaticalRelation reln = DeterminePrepRelation(map, vmod, td1, td1, pobj);
                                 var td3 = new TypedDependency(reln, td1.Gov(), td2.Dep());
-                                /*if (DEBUG) {
-                System.err.println("PP adding: " + td3 + " deleting: " + td1 + ' ' + td2);
-              }*/
                                 // add it to map to deal with recursive cases like "achieved this (PP (PP in part) with talent)"
                                 map[td3.Gov()].Add(td3);
 
@@ -1230,9 +1117,6 @@ namespace OpenNLP.Tools.Util.Trees
                         {
                             // && td2.reln() != COORDINATION &&
                             // td2.reln() != CONJUNCT) {
-                            /*if (DEBUG) {
-              System.err.println("Changing " + td2 + " to have governor of " + td1 + " [c]");
-            }*/
                             td2.SetGov(td1.Gov());
                         }
                     }
@@ -1244,9 +1128,6 @@ namespace OpenNLP.Tools.Util.Trees
             /*for (Iterator<TypedDependency> iter = list.iterator(); iter.hasNext();) {
       TypedDependency td = iter.next();
       if (td.reln() == KILL) {
-        if (DEBUG) {
-          System.err.println("Removing dep killed in poss/prep (conj) collapse: " + td);
-        }
         iter.remove();
       }
     }*/
@@ -1283,8 +1164,8 @@ namespace OpenNLP.Tools.Util.Trees
                 {
                     // we have a conjunct
                     // check the POS of the dependent
-                    string tdDepPOS = td.Dep().Tag();
-                    if (!(tdDepPOS.Equals("IN") || tdDepPOS.Equals("TO")))
+                    string tdDepPos = td.Dep().Tag();
+                    if (!(tdDepPos.Equals("IN") || tdDepPos.Equals("TO")))
                     {
                         return true;
                     }
@@ -1368,9 +1249,6 @@ namespace OpenNLP.Tools.Util.Trees
                     // i.e. "cc"
                     IndexedWord gov = td.Gov();
                     GrammaticalRelation conj = ConjValue(td.Dep().Value());
-                    /*if (DEBUG) {
-          System.err.println("Set conj to " + conj + " based on " + td);
-        }*/
 
                     // find other deps of that gov having reln "conj"
                     bool foundOne = false;
@@ -1382,18 +1260,12 @@ namespace OpenNLP.Tools.Util.Trees
                             {
                                 // i.e., "conj"
                                 // change "conj" to the actual (lexical) conjunction
-                                /*if (DEBUG) {
-                System.err.println("Changing " + td1 + " to have relation " + conj);
-              }*/
                                 td1.SetReln(conj);
                                 foundOne = true;
                             }
                             else if (td1.Reln() == EnglishGrammaticalRelations.Coordination)
                             {
                                 conj = ConjValue(td1.Dep().Value());
-                                /*if (DEBUG) {
-                System.err.println("Set conj to " + conj + " based on " + td1);
-              }*/
                             }
                         }
                     }
@@ -1550,11 +1422,7 @@ namespace OpenNLP.Tools.Util.Trees
                     if (td.Dep().Equals(dep) && td.Reln() != EnglishGrammaticalRelations.Referent &&
                         !td.Gov().Equals(ant))
                     {
-                        /*if (DEBUG)
-            System.err.print("referent: changing " + td);*/
                         td.SetDep(ant);
-                        /*if (DEBUG)
-            System.err.println(" to " + td);*/
                     }
                 }
             }
@@ -1626,12 +1494,7 @@ namespace OpenNLP.Tools.Util.Trees
                     prepcDep.Add(typedDep.Dep());
                 }
             }
-
-            // System.err.println(map);
-            // if (DEBUG) System.err.println("Subject map: " + subjectMap);
-            // if (DEBUG) System.err.println("Object map: " + objectMap);
-            // System.err.println(rcmodHeads);
-
+            
             // create a new list of typed dependencies
             var newTypedDeps = new List<TypedDependency>(list);
 
@@ -1645,12 +1508,10 @@ namespace OpenNLP.Tools.Util.Trees
 
                     // look at the dep in the conjunct
                     Set<TypedDependency> govRelations = map[gov];
-                    // System.err.println("gov " + gov);
                     if (govRelations != null)
                     {
                         foreach (TypedDependency td1 in govRelations)
                         {
-                            // System.err.println("gov rel " + td1);
                             IndexedWord newGov = td1.Gov();
                             // in the case of errors in the basic dependencies, it
                             // is possible to have overlapping newGov & dep
@@ -1667,17 +1528,11 @@ namespace OpenNLP.Tools.Util.Trees
                                     if (newRel != EnglishGrammaticalRelations.DirectObject &&
                                         newRel != EnglishGrammaticalRelations.NominalSubject)
                                     {
-                                        /*if (DEBUG) {
-                    System.err.println("Adding new " + newRel + " dependency from " + newGov + " to " + dep + " (subj/obj case)");
-                  }*/
                                         newTypedDeps.Add(new TypedDependency(newRel, newGov, dep));
                                     }
                                 }
                                 else
                                 {
-                                    /*if (DEBUG) {
-                  System.err.println("Adding new " + newRel + " dependency from " + newGov + " to " + dep);
-                }*/
                                     newTypedDeps.Add(new TypedDependency(newRel, newGov, dep));
                                 }
                             }
@@ -1730,9 +1585,6 @@ namespace OpenNLP.Tools.Util.Trees
                                 relation = EnglishGrammaticalRelations.ClausalPassiveSubject;
                             }
                         }
-                        /*if (DEBUG) {
-            System.err.println("Adding new " + relation + " dependency from " + dep + " to " + tdsubj.dep() + " (subj propagation case)");
-          }*/
                         newTypedDeps.Add(new TypedDependency(relation, dep, tdsubj.Dep()));
                     }
 
@@ -1749,10 +1601,6 @@ namespace OpenNLP.Tools.Util.Trees
                     // dep.tag().startsWith("VB") && ! objectMap.containsKey(dep)
                     // && ! prepcDep.contains(gov)) {
                     // TypedDependency tdobj = objectMap.get(gov);
-                    // if (DEBUG) {
-                    // System.err.println("Adding new " + tdobj.reln() + " dependency from "
-                    // + dep + " to " + tdobj.dep() + " (obj propagation case)");
-                    // }
                     // newTypedDeps.add(new TypedDependency(tdobj.reln(), dep,
                     // tdobj.dep()));
                     // }
@@ -1897,12 +1745,10 @@ namespace OpenNLP.Tools.Util.Trees
                 // correct nsubj
                 if (td.Reln() == EnglishGrammaticalRelations.NominalSubject && list_auxpass.Contains(td.Gov()))
                 {
-                    // System.err.println("%%% Changing subj to passive: " + td);
                     td.SetReln(EnglishGrammaticalRelations.NominalPassiveSubject);
                 }
                 if (td.Reln() == EnglishGrammaticalRelations.ClausalSubject && list_auxpass.Contains(td.Gov()))
                 {
-                    // System.err.println("%%% Changing subj to passive: " + td);
                     td.SetReln(EnglishGrammaticalRelations.ClausalPassiveSubject);
                 }
 
@@ -1914,7 +1760,6 @@ namespace OpenNLP.Tools.Util.Trees
                 // it's probably okay to keep it a dep.  So I'm disabling this.
                 // string tag = td.dep().tag();
                 // if (td.reln() == DEPENDENT && (tag.equals("PRP$") || tag.equals("WP$"))) {
-                //  System.err.println("%%% Unrecognized basic possessive pronoun: " + td);
                 //  td.setReln(POSSESSION_MODIFIER);
                 // }
             }
@@ -1953,9 +1798,6 @@ namespace OpenNLP.Tools.Util.Trees
             /*for (Iterator<TypedDependency> iter = list.iterator(); iter.hasNext();) {
       TypedDependency td = iter.next();
       if (td.reln() == KILL) {
-        if (DEBUG) {
-          System.err.println("Removing duplicate relation: " + td);
-        }
         iter.remove();
       }
     }*/
@@ -2197,10 +2039,6 @@ namespace OpenNLP.Tools.Util.Trees
             // and add the new one
             // Necessarily from the above: prep != null, dep != null, pobj != null, newtd != null
 
-            /*if (DEBUG) {
-              System.err.println("Removing " + prep + ", " + dep + ", and " + pobj);
-              System.err.println("  and adding " + newtd);
-            }*/
             prep.SetReln(GrammaticalRelation.Kill);
             dep.SetReln(GrammaticalRelation.Kill);
             pobj.SetReln(GrammaticalRelation.Kill);

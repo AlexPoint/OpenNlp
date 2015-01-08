@@ -164,7 +164,6 @@ namespace OpenNLP.Tools.Lang.English
                     {
                         Parse mentionParse = ((DefaultParse)mc.Parse).Parse;
                         mParseMap[mentionParse] = currentEntity + 1;
-                        //System.err.println("CorefParse: "+mc.getParse().hashCode()+" -> "+ (ei+1));
                     }
 				}
 			}

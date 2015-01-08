@@ -344,10 +344,6 @@ namespace OpenNLP.Tools.Util.Ling
                 result = 29*result + Get(typeof (CoreAnnotations.IndexAnnotation)).GetHashCode();
                 sensible = true;
             }
-            if (! sensible)
-            {
-                //System.err.println("WARNING!!!  You have hashed an IndexedWord with no docID, sentIndex or wordIndex. You will almost certainly lose");
-            }
             return result;
         }
 

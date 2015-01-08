@@ -105,7 +105,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     }
                     exactMatch = matchedGroup;
                     stringFilter = null;
-                    //System.err.println("DescriptionPattern: converting " + desc + " to " + exactMatch);
                 }
                 else if (MultiWordPattern.IsMatch(desc))
                 {
@@ -130,7 +129,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         descPattern = new Regex(desc.Substring(1, desc.Length - 2));
                         exactMatch = null;
                         stringFilter = null;
-                        //System.err.println("DescriptionPattern: not converting " + desc);
                     }
                     else
                     {
@@ -139,7 +137,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         exactMatch = null;
                         //stringFilter = new ArrayStringFilter(ArrayStringFilter.Mode.EXACT, matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None)); 
                         stringFilter = a => matchedGroup.Split('|').Any(s => s == a);
-                        //System.err.println("DescriptionPattern: converting " + desc + " to " + stringFilter);
                     }
                 }
                 else if (CaseInsensitivePattern.IsMatch(desc))
@@ -165,7 +162,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         descPattern = new Regex(desc.Substring(1, desc.Length - 2));
                         exactMatch = null;
                         stringFilter = null;
-                        //System.err.println("DescriptionPattern: not converting " + desc);
                     }
                     else
                     {
@@ -177,7 +173,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             a =>
                                 matchedGroup.Split('|')
                                     .Any(s => s.Equals(a, StringComparison.InvariantCultureIgnoreCase));
-                        //System.err.println("DescriptionPattern: converting " + desc + " to " + stringFilter);
                     }
                 }
                 else if (PrefixPattern.IsMatch(desc))
@@ -201,7 +196,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         descPattern = new Regex(desc.Substring(1, desc.Length - 2));
                         exactMatch = null;
                         stringFilter = null;
-                        //System.err.println("DescriptionPattern: not converting " + desc);
                     }
                     else
                     {
@@ -210,7 +204,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                         exactMatch = null;
                         //stringFilter = new ArrayStringFilter(ArrayStringFilter.Mode.PREFIX, matchedGroup.Split(new []{"[|]"}, StringSplitOptions.None)); 
                         stringFilter = a => matchedGroup.Split('|').Any(s => a.StartsWith(s));
-                        //System.err.println("DescriptionPattern: converting " + desc + " to " + stringFilter);
                     }
                 }
                 else if (Regex.IsMatch(desc, "/.*/"))
@@ -270,7 +263,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             this.name = name;
             SetChild(null);
             this.basicCatFunction = (useBasicCat ? basicCatFunction : null);
-            //    System.out.println("Made " + (negDesc ? "negated " : "") + "DescNode with " + desc);
             this.variableGroups = variableGroups;
         }
 

@@ -471,7 +471,6 @@ namespace OpenNLP.Tools.Util
         ret.Add(vm.group());
         str = str.Substring(vm.end());
         // string got = vm.group();
-        // System.err.println("vmatched " + got + "; now str is " + str);
       } else {
         throw new IllegalArgumentException("valueSplit: " + valueRegex + " doesn't match " + str);
       }
@@ -480,7 +479,6 @@ namespace OpenNLP.Tools.Util
         if (sm.lookingAt()) {
           str = str.Substring(sm.end());
           // string got = sm.group();
-          // System.err.println("smatched " + got + "; now str is " + str);
         } else {
           throw new IllegalArgumentException("valueSplit: " + separatorRegex + " doesn't match " + str);
         }
@@ -906,7 +904,6 @@ namespace OpenNLP.Tools.Util
               is.close();
             } catch (IOException e) {
               result.remove(key);
-              System.err.println("argsToProperties could not read properties file: " + result.getProperty(key));
               throw new RuntimeIOException(e);
             }
           }
@@ -1040,7 +1037,6 @@ namespace OpenNLP.Tools.Util
         pw.print(message);
       }
     } catch (Exception e) {
-      System.err.println("Exception: in printToFile " + file.getAbsolutePath());
       e.printStackTrace();
     } readonlyly {
       if (pw != null) {
@@ -1062,7 +1058,6 @@ namespace OpenNLP.Tools.Util
       pw = new PrintWriter(fw);
       pw.println(message);
     } catch (Exception e) {
-      System.err.println("Exception: in printToFileLn " + file.getAbsolutePath() + ' ' + message);
       e.printStackTrace();
     } readonlyly {
       if (pw != null) {
@@ -1083,7 +1078,6 @@ namespace OpenNLP.Tools.Util
       pw = new PrintWriter(fw);
       pw.print(message);
     } catch (Exception e) {
-      System.err.println("Exception: in printToFile " + file.getAbsolutePath());
       e.printStackTrace();
     } readonlyly {
       if (pw != null) {
@@ -1207,13 +1201,6 @@ namespace OpenNLP.Tools.Util
       Pattern sgmlPattern = Pattern.compile("<.*?>", Pattern.DOTALL);
       Matcher sgmlMatcher = sgmlPattern.matcher(orig);
       return sgmlMatcher.replaceAll("");
-  }
-
-  public static void printStringOneCharPerLine(string s) {
-    for (int i = 0; i < s.Length(); i++) {
-      int c = s.charAt(i);
-      System.out.println(c + " \'" + (char) c + "\' ");
-    }
   }*/
 
         public static string EscapeString(string s, char[] charsToEscape, char escapeChar)
@@ -1360,24 +1347,6 @@ namespace OpenNLP.Tools.Util
         }
       }
     }
-    /* ----
-      // num chars needed to display longest num
-      int numChars = (int) Math.ceil(Math.log(d[n][m]) / Math.log(10));
-      for (i = 0; i < numChars + 3; i++) {
-        System.err.print(' ');
-      }
-      for (j = 0; j < m; j++) {
-        System.err.print(t.charAt(j) + " ");
-      }
-      System.err.println();
-      for (i = 0; i <= n; i++) {
-        System.err.print((i == 0 ? ' ' : s.charAt(i - 1)) + " ");
-        for (j = 0; j <= m; j++) {
-          System.err.print(d[i][j] + " ");
-        }
-        System.err.println();
-      }
-    ---- #1#
     // Step 7
     return d[n][m];
   }*/
@@ -1425,7 +1394,6 @@ namespace OpenNLP.Tools.Util
                     }
                 }
             }
-            // System.err.println("LCCS(" + s + "," + t + ") = " + max);
             return max;
         }
 
@@ -1909,13 +1877,7 @@ namespace OpenNLP.Tools.Util
         {
             return Chomp(o.ToString());
         }
-
-
-        /*public static void printErrInvocationString(string cls, string[] args) {
-    System.err.println(toInvocationString(cls, args));
-  }*/
-
-
+        
         /*public static string toInvocationString(string cls, string[] args) {
     StringBuilder sb = new StringBuilder();
     sb.Append(cls).Append(" invoked on ").Append(new Date());

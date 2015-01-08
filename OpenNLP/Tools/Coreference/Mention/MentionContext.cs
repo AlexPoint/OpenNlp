@@ -208,7 +208,6 @@ namespace OpenNLP.Tools.Coreference.Mention
 			List<IParse> headTokens = Head.Tokens;
             Tokens = headTokens.ToArray();
 			NextTokenBasal = Head.NextToken;
-			//System.err.println("MentionContext.init: "+ent+" "+ent.getEntityId()+" head="+head);
 			//mNonDescriptorStart = 0;
 			InitializeHeads(headFinder.GetHeadIndex(Head));
             mGender = Similarity.GenderEnum.Unknown;
@@ -278,7 +277,6 @@ namespace OpenNLP.Tools.Coreference.Mention
         List headTokens = head.getTokens();
         tokens = (Parse[]) headTokens.toArray(new Parse[headTokens.size()]);
         basalNextToken = head.getNextToken();
-        //System.err.println("MentionContext.init: "+ent+" "+ent.getEntityId()+" head="+head);
         indexHeadSpan = head.getSpan();
         nonDescriptorStart = 0;
         initHeads(headFinder.getHeadIndex(head));
@@ -327,7 +325,6 @@ namespace OpenNLP.Tools.Coreference.Mention
 		}
 		
 		private static Set getSynsetSet(MentionContext xec) {
-		//System.err.println("getting synsets for mention:"+xec.toText());
 		Set synsetSet = new HashSet();
 		string[] lemmas = getLemmas(xec);
 		for (int li = 0; li < lemmas.length; li++) {

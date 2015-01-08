@@ -291,12 +291,10 @@ namespace OpenNLP.Tools.Parser
 						{
 							if (mNewDerivationsHeap.Count < K) 
 							{
-								//System.Console.Error.WriteLine("advancing ts " + derivationsProcessed + " " + mNewDerivationsHeap.Count + " < " + K);
 								newDerivations = AdvanceChunks(currentParse, bestComplete);
 							}
 							else 
 							{
-								//System.Console.Error.WriteLine("advancing ts " + derivationsProcessed + " prob=" + ((Parse) mNewDerivationsHeap.Last()).Probability);
 								newDerivations = AdvanceChunks(currentParse,((Parse) mNewDerivationsHeap.Last()).Probability);
 							}
 						}
@@ -309,7 +307,6 @@ namespace OpenNLP.Tools.Parser
 						{
 							for (int currentDerivation = 0, derivationCount = newDerivations.Length; currentDerivation < derivationCount; currentDerivation++)
 							{
-								//System.out.println("currentDerivation="+currentDerivation+" of "+newDerivations.length);
 								if (newDerivations[currentDerivation].IsComplete)
 								{
 									AdvanceTop(newDerivations[currentDerivation]);

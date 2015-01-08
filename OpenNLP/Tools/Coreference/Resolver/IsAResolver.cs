@@ -74,14 +74,11 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		 protected internal override bool IsExcluded(MentionContext context, DiscourseEntity discourseEntity)
 		{
 			MentionContext currentContext = discourseEntity.LastExtent;
-			//System.err.println("IsAResolver.excluded?: ec.span="+ec.getSpan()+" cec.span="+cec.getSpan()+" cec="+cec.toText()+" lastToken="+ec.getNextToken());
 			if (context.SentenceNumber != currentContext.SentenceNumber)
 			{
-				//System.err.println("IsAResolver.excluded: (true) not same sentence");
 				return true;
 			}
 			//shallow parse appositives
-			//System.err.println("IsAResolver.excluded: ec="+ec.toText()+" "+ec.span+" cec="+cec.toText()+" "+cec.span);
 			if (currentContext.IndexSpan.End == context.IndexSpan.Start - 2)
 			{
 				return false;
@@ -89,16 +86,13 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			//full parse w/o trailing comma
 			if (currentContext.IndexSpan.End == context.IndexSpan.End)
 			{
-				//System.err.println("IsAResolver.excluded: (false) spans share end");
 				return false;
 			}
 			//full parse w/ trailing comma or period
 			if (currentContext.IndexSpan.End <= context.IndexSpan.End + 2 && (context.NextToken != null && (context.NextToken.ToString().Equals(",") || context.NextToken.ToString().Equals("."))))
 			{
-				//System.err.println("IsAResolver.excluded: (false) spans end + punct");
 				return false;
 			}
-			//System.err.println("IsAResolver.excluded: (true) default");
 			return true;
 		}
 		
@@ -134,7 +128,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			}
 			/*
 			if (entity != null) {
-			//System.err.println("MaxentIsResolver.getFeatures: ["+ec2.toText()+"] -> ["+de.getLastExtent().toText()+"]");
 			//previous word and tag
 			if (ant.prevToken != null) {
 			features.add("pw=" + ant.prevToken);
@@ -211,7 +204,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			}
 			}
 			else if (!re.headTokenTag.startsWith("NNP") && re.headTokenTag.startsWith("NN")) {
-			//System.err.println("MaxentIsaResolover.getFeatures: both common re="+re.parse+" ant="+ant.parse);
 			Set synsets1 = ant.synsets;
 			Set synsets2 = re.synsets;
 			for (Iterator si=synsets1.iterator();si.hasNext();) {
@@ -224,7 +216,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			}
 			}
 			*/
-			//System.err.println("MaxentIsResolver.getFeatures: "+features.ToString());
 			return features;
 		}
 	}

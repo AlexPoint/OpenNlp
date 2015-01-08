@@ -63,7 +63,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		
 		public override bool CanResolve(MentionContext mention)
 		{
-			//System.err.println("MaxentSingularPronounResolver.canResolve: ec= ("+mention.id+") "+ mention.toText());
 			string tag = mention.HeadTokenTag;
 			return (tag != null && tag.StartsWith("PRP") && Linker.SingularThirdPersonPronounPattern.IsMatch(mention.HeadTokenText));
 		}
@@ -149,7 +148,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		protected internal override bool IsOutOfRange(MentionContext mention, DiscourseEntity entity)
 		{
 			MentionContext cec = entity.LastExtent;
-			//System.err.println("MaxentSingularPronounresolve.outOfRange: ["+entity.getLastExtent().toText()+" ("+entity.getId()+")] ["+mention.toText()+" ("+mention.getId()+")] entity.sentenceNumber=("+entity.getLastExtent().getSentenceNumber()+")-mention.sentenceNumber=("+mention.getSentenceNumber()+") > "+numSentencesBack);    
 			return (mention.SentenceNumber - cec.SentenceNumber > NumberSentencesBack);
 		}
 		

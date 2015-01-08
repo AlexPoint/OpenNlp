@@ -34,6 +34,7 @@
 //Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
+using System.Text;
 
 namespace OpenNLP.Tools.Coreference.Resolver
 {
@@ -245,7 +246,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 					return currentDiscourseEntity;
 				}
 			}
-			//System.err.println("AbstractResolver.Retain: non-referring entity with id: "+ec.toText()+" id="+ec.id);
 			return null;
 		}
 		
@@ -260,7 +260,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		/// </returns>
         protected internal virtual string GetFeatureString(Mention.MentionContext mention)
 		{
-			System.Text.StringBuilder output = new System.Text.StringBuilder();
+			var output = new StringBuilder();
 			object[] mentionTokens = mention.Tokens;
 			output.Append(mentionTokens[0].ToString());
             for (int currentToken = 1; currentToken < mentionTokens.Length; currentToken++)
@@ -287,7 +287,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			int end = mention.HeadTokenIndex + 1;
 			if (start == end)
 			{
-				//System.err.println("StripNounPhrase: return null 1");
                 return null;
 			}
 			//strip determiners
@@ -297,7 +296,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			}
 			if (start == end)
 			{
-                //System.err.println("StripNounPhrase: return null 2");
 				return null;
 			}
 			//get to first NNP
@@ -313,7 +311,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			}
 			if (start == end)
 			{
-                //System.err.println("StripNounPhrase: return null 3");
 				return null;
 			}
 			if (start + 1 != end)
@@ -326,7 +323,6 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				}
 				if (start == end)
 				{
-                    //System.err.println("StripNounPhrase: return null 4");
 					return null;
 				}
 				//strip off and honorifics on the end
@@ -337,10 +333,9 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			}
 			if (start == end)
 			{
-                //System.err.println("StripNounPhrase: return null 5");
 				return null;
 			}
-            System.Text.StringBuilder strip = new System.Text.StringBuilder();
+            var strip = new StringBuilder();
 			for (int i = start; i < end; i++)
 			{
 				strip.Append(mentionTokens[i].ToString()).Append(" ");

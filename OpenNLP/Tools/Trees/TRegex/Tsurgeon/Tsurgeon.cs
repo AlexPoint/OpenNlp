@@ -71,7 +71,7 @@ namespace OpenNLP.Tools.Trees.TRegex.Tsurgeon
     /// 
     /// @author Roger Levy
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public static class Tsurgeon
     {

@@ -13,7 +13,7 @@ namespace OpenNLP.Tools.Trees
     /// @author Christopher Manning
     /// @author Roger Levy (mod. 2003/01)
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public interface ITreeReader
     {

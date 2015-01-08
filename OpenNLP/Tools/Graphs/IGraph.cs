@@ -12,7 +12,7 @@ namespace OpenNLP.Tools.Graphs
     /// <summary>
     /// @author Sonal Gupta
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     /// <typeparam name="V">Type of the vertices</typeparam>
     /// <typeparam name="E">Type of the edges</typeparam>

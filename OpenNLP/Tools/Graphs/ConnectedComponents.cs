@@ -13,7 +13,7 @@ namespace OpenNLP.Tools.Graphs
     /// 
     /// @author sonalg 08/08/11
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public class ConnectedComponents
     {

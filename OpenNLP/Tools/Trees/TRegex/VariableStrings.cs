@@ -11,7 +11,7 @@ namespace OpenNLP.Tools.Trees.TRegex
     /// 
     ///  @author Roger Levy (rog@nlp.stanford.edu)
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public class VariableStrings
     {

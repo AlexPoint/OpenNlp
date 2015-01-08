@@ -25,7 +25,7 @@ namespace OpenNLP.Tools.Trees.TRegex.Tsurgeon
     /// 
     /// @author John Bauer
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public abstract class TsurgeonMatcher
     {

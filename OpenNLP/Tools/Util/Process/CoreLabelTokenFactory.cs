@@ -20,7 +20,7 @@ namespace OpenNLP.Tools.Util.Process
     /// @author Anna Rafferty
     /// @author Sonal Gupta (now implements CoreTokenFactory, you can make tokens using many options)
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public class CoreLabelTokenFactory : ICoreTokenFactory<CoreLabel>, ILexedTokenFactory<CoreLabel> /*, Serializable*/
     {

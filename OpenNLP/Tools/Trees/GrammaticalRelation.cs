@@ -81,7 +81,7 @@ namespace OpenNLP.Tools.Trees
     /// @author Galen Andrew (refactoring English-specific stuff)
     /// @author Ilya Sherman (refactoring annotation-relation pairing, which is now gone)
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public class GrammaticalRelation : IComparable<GrammaticalRelation>
     {

@@ -40,7 +40,7 @@ namespace OpenNLP.Tools.Trees
     /// @author Dan Klein
     /// @author Sarah Spikes (sdspikes@cs.stanford.edu) - filled in types
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public abstract class Tree : AbstractCollection<Tree>, ILabel, ILabeled, IScored
     {

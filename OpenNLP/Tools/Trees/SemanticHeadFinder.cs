@@ -47,7 +47,7 @@ namespace OpenNLP.Tools.Trees
     /// @author Marie-Catherine de Marneffe
     /// @author Anna Rafferty
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public class SemanticHeadFinder : ModCollinsHeadFinder
     {

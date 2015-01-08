@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Trees
     /// @author Christopher Manning
     /// @author Roger Levy
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public class PennTreebankTokenizer : TokenizerAdapter
     {

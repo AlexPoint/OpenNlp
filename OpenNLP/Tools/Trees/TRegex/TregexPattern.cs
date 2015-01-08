@@ -302,7 +302,7 @@ namespace OpenNLP.Tools.Trees.TRegex
     /// @author Anna Rafferty (filter mode)
     /// @author John Bauer (extensively tested and bugfixed)
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public abstract class TregexPattern
     {

@@ -28,7 +28,7 @@ namespace OpenNLP.Tools.Trees
     /// @author Roger Levy
     /// @author Spence Green
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public class PennTreeReader : ITreeReader
     {

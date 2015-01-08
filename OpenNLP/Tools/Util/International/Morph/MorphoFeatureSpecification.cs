@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.International.Morph
     /// 
     /// @author Spence Green
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public abstract class MorphoFeatureSpecification
     {

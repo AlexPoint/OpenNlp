@@ -19,7 +19,7 @@ namespace OpenNLP.Tools.Trees
     /// @author Christopher Manning
     /// @author Daniel Cer (CoNLLX format and alternative user selected dependency printer/reader interface)
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public class EnglishGrammaticalStructure : GrammaticalStructure
     {

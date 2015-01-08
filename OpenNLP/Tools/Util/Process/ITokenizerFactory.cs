@@ -23,7 +23,7 @@ namespace OpenNLP.Tools.Util.Process
     /// 
     /// @author Christopher Manning
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     /// <typeparam name="T">The type of the tokens returned by the Tokenizer</typeparam>
     public interface ITokenizerFactory<T> : IIteratorFromReaderFactory<T>

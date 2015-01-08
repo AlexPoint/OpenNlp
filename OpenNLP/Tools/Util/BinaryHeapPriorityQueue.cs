@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util
     /// @author Dan Klein
     /// @author Christopher Manning
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     /// <typeparam name="E">Type of elements in the priority queue</typeparam>
     public class BinaryHeapPriorityQueue<E> : IPriorityQueue<E>

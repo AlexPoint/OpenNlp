@@ -33,7 +33,7 @@ namespace OpenNLP.Tools.Trees
     /// 
     /// @author Christopher Manning
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public interface ITreebankLanguagePack
     {

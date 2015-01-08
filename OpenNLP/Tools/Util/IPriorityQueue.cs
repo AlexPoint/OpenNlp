@@ -55,7 +55,7 @@ namespace OpenNLP.Tools.Util
     /// @author Teg Grenager (grenager@cs.stanford.edu)
     /// @author Bill MacCartney
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public interface IPriorityQueue<E> /*:ISet<E>*/
     {

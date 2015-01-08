@@ -39,7 +39,7 @@ namespace OpenNLP.Tools.Trees
     /// @see GrammaticalRelation
     /// @see EnglishGrammaticalStructure
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     [Serializable]
     public /*abstract*/ class GrammaticalStructure

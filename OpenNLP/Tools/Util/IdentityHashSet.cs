@@ -23,7 +23,7 @@ namespace OpenNLP.Tools.Util
     /// 
     /// @author Bill MacCartney
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public class IdentityHashSet<T> : Set<T>
         where T : class

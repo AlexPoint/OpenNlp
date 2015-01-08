@@ -31,7 +31,7 @@ namespace OpenNLP.Tools.Util
     /// @author  Josh Bloch
     /// @author  Neal Gafter
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public abstract class AbstractCollection<E> : IEnumerable<E>
     {

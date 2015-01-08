@@ -15,7 +15,7 @@ namespace OpenNLP.Tools.Util.Process
     /// 
     /// @author Teg Grenager (grenager@stanford.edu)
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public interface ITokenizer<T> : IEnumerator<T>
     {

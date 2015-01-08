@@ -11,7 +11,7 @@ namespace OpenNLP.Tools.Ling
     /// 
     /// @author Christopher Manning
     /// 
-    /// Code...
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
     /// </summary>
     public interface IHasTag
     {

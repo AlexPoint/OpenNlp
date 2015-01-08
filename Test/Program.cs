@@ -9,9 +9,7 @@ using OpenNLP.Tools.Chunker;
 using OpenNLP.Tools.PosTagger;
 using OpenNLP.Tools.SentenceDetect;
 using OpenNLP.Tools.Tokenize;
-using OpenNLP.Tools.Util.Trees;
-using OpenNLP.Tools.Util.Trees.TRegex;
-using OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon;
+using OpenNLP.Tools.Trees;
 using SharpEntropy;
 using SharpEntropy.IO;
 

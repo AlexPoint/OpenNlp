@@ -11,7 +11,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     {
 
         private int curLexState = 2;
-        private int defaultLexState = 2;
+        private const int DefaultLexState = 2;
         private int jjnewStateCnt;
         private uint jjround;
         private int jjmatchedPos;
@@ -1238,10 +1238,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             endColumn = input_stream.GetEndColumn();
             t = Token.NewToken(jjmatchedKind, curTokenImage);
 
-            t.beginLine = beginLine;
-            t.endLine = endLine;
-            t.beginColumn = beginColumn;
-            t.endColumn = endColumn;
+            t.BeginLine = beginLine;
+            t.EndLine = endLine;
+            t.BeginColumn = beginColumn;
+            t.EndColumn = endColumn;
 
             return t;
         }
@@ -1372,7 +1372,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         error_after = curPos <= 1 ? "" : input_stream.GetImage();
                     }
                     throw new TokenMgrException(EOFSeen, curLexState, error_line, error_column, error_after, curChar,
-                        TokenMgrException.LEXICAL_ERROR);
+                        TokenMgrException.LexError);
                 }
             }
         }
@@ -1432,7 +1432,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         public void ReInit(SimpleCharStream stream)
         {
             jjmatchedPos = jjnewStateCnt = 0;
-            curLexState = defaultLexState;
+            curLexState = DefaultLexState;
             input_stream = stream;
             ReInitRounds();
         }
@@ -1460,7 +1460,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             if (lexState >= 3 || lexState < 0)
                 throw new TokenMgrException(
                     "Error: Ignoring invalid lexical state : " + lexState + ". State unchanged.",
-                    TokenMgrException.INVALID_LEXICAL_STATE);
+                    TokenMgrException.InvalidLexicalState);
             else
                 curLexState = lexState;
         }

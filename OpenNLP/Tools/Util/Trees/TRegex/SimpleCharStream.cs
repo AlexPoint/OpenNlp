@@ -8,19 +8,21 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex
 {
-    /**
- * An implementation of interface CharStream, where the stream is assumed to
- * contain only ASCII characters (without unicode processing).
- */
-
+    /// <summary>
+    /// An implementation of interface CharStream, where the stream is assumed to
+    /// contain only ASCII characters (without unicode processing).
+    /// </summary>
     public class SimpleCharStream
     {
-        /** Whether parser is static. */
+        /// <summary>
+        /// Whether parser is static
+        /// </summary>
         public static readonly bool staticFlag = false;
         private int bufsize;
         private int available;
         private int tokenBegin;
-/** Position in buffer. */
+
+        /// <summary>Position in buffer</summary>
         public int bufpos = -1;
         protected int[] bufline;
         protected int[] bufcolumn;
@@ -99,7 +101,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             tokenBegin = 0;
         }
 
-        protected void FillBuff() /* throws java.io.IOException*/
+        protected void FillBuff()
         {
             if (maxNextCharInd == available)
             {
@@ -148,10 +150,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 throw e;
             }
         }
-
-/** Start. */
-
-        public char BeginToken() /*throws java.io.IOException*/
+        
+        public char BeginToken()
         {
             tokenBegin = -1;
             char c = ReadChar();
@@ -200,9 +200,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             bufcolumn[bufpos] = column;
         }
 
-/** Read a character. */
-
-        public char ReadChar() /*throws java.io.IOException*/
+        /// <summary>Read a character</summary>
+        public char ReadChar()
         {
             if (inBuf > 0)
             {
@@ -223,58 +222,53 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return c;
         }
 
-        //@Deprecated
-        /**
-   * @deprecated
-   * @see #getEndColumn
-   */
-
+        [Obsolete("see GetEndColumn")]
         public int GetColumn()
         {
             return bufcolumn[bufpos];
         }
 
-        //@Deprecated
-        /**
-   * @deprecated
-   * @see #getEndLine
-   */
-
+        [Obsolete("see GetEndLine")]
         public int GetLine()
         {
             return bufline[bufpos];
         }
 
-        /** Get token end column number. */
-
+        /// <summary>
+        /// Get token end column number
+        /// </summary>
         public int GetEndColumn()
         {
             return bufcolumn[bufpos];
         }
 
-        /** Get token end line number. */
-
+        /// <summary>
+        /// Get token end line number
+        /// </summary>
         public int GetEndLine()
         {
             return bufline[bufpos];
         }
 
-        /** Get token beginning column number. */
-
+        /// <summary>
+        /// Get token beginning column number
+        /// </summary>
         public int GetBeginColumn()
         {
             return bufcolumn[tokenBegin];
         }
 
-        /** Get token beginning line number. */
-
+        /// <summary>
+        /// Get token beginning line number
+        /// </summary>
         public int GetBeginLine()
         {
             return bufline[tokenBegin];
         }
 
-/** Backup a number of characters. */
-
+        /// <summary>
+        /// Backup a number of characters
+        /// </summary>
         public void Backup(int amount)
         {
 
@@ -283,8 +277,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 bufpos += bufsize;
         }
 
-        /** Constructor. */
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public SimpleCharStream( /*java.io.Reader*/ TextReader dstream, int startline,
             int startcolumn, int buffersize)
         {
@@ -298,23 +293,20 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             bufcolumn = new int[buffersize];
         }
 
-        /** Constructor. */
-
+        /// <summary>Constructor</summary>
         public SimpleCharStream( /*java.io.Reader*/ TextReader dstream, int startline,
             int startcolumn) :
                 this(dstream, startline, startcolumn, 4096)
         {
         }
 
-        /** Constructor. */
-
+        /// <summary>Constructor</summary>
         public SimpleCharStream( /*java.io.Reader*/ TextReader dstream) :
             this(dstream, 1, 1, 4096)
         {
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit( /*java.io.Reader*/ TextReader dstream, int startline,
             int startcolumn, int buffersize)
         {
@@ -334,23 +326,20 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             bufpos = -1;
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit( /*java.io.Reader*/ TextReader dstream, int startline,
             int startcolumn)
         {
             ReInit(dstream, startline, startcolumn, 4096);
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit( /*java.io.Reader*/ TextReader dstream)
         {
             ReInit(dstream, 1, 1, 4096);
         }
 
-        /** Constructor. */
-
+        /// <summary>Constructor</summary>
         public SimpleCharStream( /*java.io.InputStream*/ Stream dstream, string encoding, int startline,
             int startcolumn, int buffersize) /*throws java.io.UnsupportedEncodingException*/ :
                 this(encoding == null
@@ -360,47 +349,41 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
         }
 
-        /** Constructor. */
-
+        /// <summary>Constructor</summary>
         public SimpleCharStream( /*java.io.InputStream*/ Stream dstream, int startline,
             int startcolumn, int buffersize) :
                 this(new /*java.io.InputStreamReader*/ StreamReader(dstream), startline, startcolumn, buffersize)
         {
         }
 
-        /** Constructor. */
-
+        /// <summary>Constructor</summary>
         public SimpleCharStream( /*java.io.InputStream*/ Stream dstream, string encoding, int startline,
             int startcolumn) /*throws java.io.UnsupportedEncodingException*/ :
                 this(dstream, encoding, startline, startcolumn, 4096)
         {
         }
 
-        /** Constructor. */
-
+        /// <summary>Constructor</summary>
         public SimpleCharStream( /*java.io.InputStream*/ Stream dstream, int startline,
             int startcolumn) :
                 this(dstream, startline, startcolumn, 4096)
         {
         }
 
-        /** Constructor. */
-
+        /// <summary>Constructor</summary>
         public SimpleCharStream( /*java.io.InputStream*/ Stream dstream, string encoding)
             /*throws java.io.UnsupportedEncodingException*/ :
                 this(dstream, encoding, 1, 1, 4096)
         {
         }
 
-        /** Constructor. */
-
+        /// <summary>Constructor</summary>
         public SimpleCharStream( /*java.io.InputStream*/ Stream dstream) :
             this(dstream, 1, 1, 4096)
         {
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit( /*java.io.InputStream*/ Stream dstream, string encoding, int startline,
             int startcolumn, int buffersize) /*throws java.io.UnsupportedEncodingException*/
         {
@@ -411,47 +394,43 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 startcolumn, buffersize);
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit( /*java.io.InputStream*/ Stream dstream, int startline,
             int startcolumn, int buffersize)
         {
             ReInit(new /*java.io.InputStreamReader*/ StreamReader(dstream), startline, startcolumn, buffersize);
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit( /*java.io.InputStream*/ Stream dstream, string encoding)
             /*throws java.io.UnsupportedEncodingException*/
         {
             ReInit(dstream, encoding, 1, 1, 4096);
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit( /*java.io.InputStream*/ Stream dstream)
         {
             ReInit(dstream, 1, 1, 4096);
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit( /*java.io.InputStream*/ Stream dstream, string encoding, int startline,
             int startcolumn) /*throws java.io.UnsupportedEncodingException*/
         {
             ReInit(dstream, encoding, startline, startcolumn, 4096);
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit( /*java.io.InputStream*/ Stream dstream, int startline,
             int startcolumn)
         {
             ReInit(dstream, startline, startcolumn, 4096);
         }
 
-        /** Get token literal value. */
-
+        /// <summary>
+        /// Get token literal value
+        /// </summary>
         public string GetImage()
         {
             if (bufpos >= tokenBegin)
@@ -461,8 +440,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                        new string(buffer, 0, bufpos + 1);
         }
 
-        /** Get the suffix. */
-
+        /// <summary>
+        /// Get the suffix
+        /// </summary>
         public char[] GetSuffix(int len)
         {
             char[] ret = new char[len];
@@ -479,8 +459,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return ret;
         }
 
-        /** Reset buffer when finished. */
-
+        /// <summary>
+        /// Reset buffer when finished
+        /// </summary>
         public void Done()
         {
             buffer = null;
@@ -488,10 +469,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             bufcolumn = null;
         }
 
-        /**
-   * Method to adjust line and column numbers for the start of a token.
-   */
-
+        /// <summary>
+        /// Adjust line and column numbers for the start of a token
+        /// </summary>
         public void AdjustBeginLineColumn(int newLine, int newCol)
         {
             int start = tokenBegin;
@@ -507,12 +487,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
 
             int i = 0, j = 0, k = 0;
-            int nextColDiff = 0, columnDiff = 0;
+            int columnDiff = 0;
 
             while (i < len && bufline[j = start%bufsize] == bufline[k = ++start%bufsize])
             {
                 bufline[j] = newLine;
-                nextColDiff = columnDiff + bufcolumn[k] - bufcolumn[j];
+                int nextColDiff = columnDiff + bufcolumn[k] - bufcolumn[j];
                 bufcolumn[j] = newCol + columnDiff;
                 columnDiff = nextColDiff;
                 i++;

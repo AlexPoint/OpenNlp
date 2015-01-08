@@ -744,23 +744,24 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             endColumn = InputStream.GetEndColumn();
             t = Token.NewToken(jjmatchedKind, curTokenImage);
 
-            t.beginLine = beginLine;
-            t.endLine = endLine;
-            t.beginColumn = beginColumn;
-            t.endColumn = endColumn;
+            t.BeginLine = beginLine;
+            t.EndLine = endLine;
+            t.BeginColumn = beginColumn;
+            t.EndColumn = endColumn;
 
             return t;
         }
 
         private int curLexState = 0;
-        private int defaultLexState = 0;
+        private const int DefaultLexState = 0;
         private int jjnewStateCnt;
         private uint jjround;
         private int jjmatchedPos;
         private int jjmatchedKind;
 
-/** Get the next Token. */
-
+        /// <summary>
+        /// Get the next Token
+        /// </summary>
         public Token GetNextToken()
         {
             Token matchedToken;
@@ -841,7 +842,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     error_after = curPos <= 1 ? "" : InputStream.GetImage();
                 }
                 throw new TokenMgrException(EOFSeen, curLexState, error_line, error_column, error_after, CurChar,
-                    TokenMgrException.LEXICAL_ERROR);
+                    TokenMgrException.LexError);
             }
         }
 
@@ -876,8 +877,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             } while (start++ != end);
         }
 
-        /** Constructor. */
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public TregexParserTokenManager(SimpleCharStream stream)
         {
 
@@ -889,20 +891,22 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             InputStream = stream;
         }
 
-        /** Constructor. */
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public TregexParserTokenManager(SimpleCharStream stream, int lexState)
         {
             ReInit(stream);
             SwitchTo(lexState);
         }
 
-        /** Reinitialise parser. */
-
+        /// <summary>
+        /// Reinitialise parser
+        /// </summary>
         public void ReInit(SimpleCharStream stream)
         {
             jjmatchedPos = jjnewStateCnt = 0;
-            curLexState = defaultLexState;
+            curLexState = DefaultLexState;
             InputStream = stream;
             ReInitRounds();
         }
@@ -915,22 +919,24 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 jjrounds[i] = 0x80000000;
         }
 
-        /** Reinitialise parser. */
-
+        /// <summary>
+        /// Reinitialise parser
+        /// </summary>
         public void ReInit(SimpleCharStream stream, int lexState)
         {
             ReInit(stream);
             SwitchTo(lexState);
         }
 
-        /** Switch to specified lex state. */
-
+        /// <summary>
+        /// Switch to specified lex state
+        /// </summary>
         public void SwitchTo(int lexState)
         {
             if (lexState >= 1 || lexState < 0)
                 throw new TokenMgrException(
                     "Error: Ignoring invalid lexical state : " + lexState + ". State unchanged.",
-                    TokenMgrException.INVALID_LEXICAL_STATE);
+                    TokenMgrException.InvalidLexicalState);
             else
                 curLexState = lexState;
         }

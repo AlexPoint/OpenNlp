@@ -10,9 +10,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 {
     public class TregexParser : TregexParserConstants
     {
-        // this is so we can tell, at any point during the parse
-        // whether we are under a negation, which we need to know
-        // because labeling nodes under negation is illegal
+        /// <summary>
+        /// this is so we can tell, at any point during the parse
+        /// whether we are under a negation, which we need to know
+        /// because labeling nodes under negation is illegal
+        /// </summary>
         private bool underNegation = false;
 
         private readonly Func<string, string> basicCatFunction =
@@ -21,9 +23,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private readonly HeadFinder headFinder =
             TregexPatternCompiler.DEFAULT_HEAD_FINDER;
 
-        // keep track of which variables we've seen, so that we can reject
-        // some nonsense patterns such as ones that reset variables or link
-        // to variables that haven't been set
+        /// <summary>
+        /// keep track of which variables we've seen, so that we can reject
+        /// some nonsense patterns such as ones that reset variables or link
+        /// to variables that haven't been set
+        /// </summary>
         private Set<string> knownVariables = new Set<string>();
 
         public TregexParser(TextReader stream,
@@ -35,19 +39,20 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             this.headFinder = headFinder;
         }
 
-// TODO: IDENTIFIER should not allow | after the first character, but
-// it breaks some | queries to allow it.  We should fix that.
+        // TODO: IDENTIFIER should not allow | after the first character, but it breaks some | queries to allow it.
 
-// the grammar starts here
-// each of these BNF rules will be converted into a function
-// first expr is return val- passed up the tree after a production
-        public TregexPattern Root() /*throws ParseException*/
+        /// <summary>
+        /// the grammar starts here
+        /// each of these BNF rules will be converted into a function
+        /// first expr is return val- passed up the tree after a production
+        /// </summary>
+        /// <returns></returns>
+        public TregexPattern Root()
         {
-            TregexPattern node;
             var nodes = new List<TregexPattern>();
             // a local variable
 
-            node = SubNode(TRegex.Relation.ROOT);
+            TregexPattern node = SubNode(TRegex.Relation.ROOT);
             nodes.Add(node);
             //label_1:
             while (true)
@@ -76,11 +81,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-// passing arguments down the tree - in this case the relation that
-// pertains to this node gets passed all the way down to the Description node
-        /*readonly*/
-
-        public DescriptionPattern Node(Relation r) /*throws ParseException */
+        /// <summary>
+        /// passing arguments down the tree - in this case the relation that
+        /// pertains to this node gets passed all the way down to the Description node
+        /// </summary>
+        public DescriptionPattern Node(Relation r)
         {
             DescriptionPattern node;
             switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
@@ -92,9 +97,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     Jj_consume_token(15);
                     break;
                 }
-                case IDENTIFIER:
-                case BLANK:
-                case REGEX:
+                case Identifier:
+                case Blank:
+                case Regex:
                 case 16:
                 case 17:
                 case 20:
@@ -111,9 +116,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return node;
         }
 
-        /*readonly */
-
-        public DescriptionPattern SubNode(Relation r) /*throws ParseException*/
+        public DescriptionPattern SubNode(Relation r)
         {
             DescriptionPattern result = null;
             TregexPattern child = null;
@@ -127,8 +130,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                     {
                         case RELATION:
-                        case MULTI_RELATION:
-                        case REL_W_STR_ARG:
+                        case MultiRelation:
+                        case RelWStrArg:
                         case 14:
                         case 16:
                         case 23:
@@ -150,9 +153,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     }
                     return result;
                 }
-                case IDENTIFIER:
-                case BLANK:
-                case REGEX:
+                case Identifier:
+                case Blank:
+                case Regex:
                 case 16:
                 case 17:
                 case 20:
@@ -162,8 +165,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                     {
                         case RELATION:
-                        case MULTI_RELATION:
-                        case REL_W_STR_ARG:
+                        case MultiRelation:
+                        case RelWStrArg:
                         case 14:
                         case 16:
                         case 23:
@@ -186,11 +189,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        /*readonly*/
-
-        public DescriptionPattern ModDescription(Relation r) /*throws ParseException */
+        public DescriptionPattern ModDescription(Relation r)
         {
-            DescriptionPattern node;
             bool neg = false, cat = false;
             switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
             {
@@ -216,42 +216,38 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     jj_la1[5] = jj_gen;
                     break;
             }
-            node = Description(r, neg, cat);
+            DescriptionPattern node = Description(r, neg, cat);
             return node;
         }
 
-        /*readonly*/
-
-        public DescriptionPattern Description(Relation r, bool negateDesc, bool cat) /*throws ParseException */
+        public DescriptionPattern Description(Relation r, bool negateDesc, bool cat)
         {
             Token desc = null;
             Token name = null;
             Token linkedName = null;
             bool link = false;
-            Token groupNum;
-            Token groupVar;
             var varGroups = new List<Tuple<int, string>>();
             switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
             {
-                case IDENTIFIER:
-                case BLANK:
-                case REGEX:
+                case Identifier:
+                case Blank:
+                case Regex:
                 {
                     switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                     {
-                        case IDENTIFIER:
+                        case Identifier:
                         {
-                            desc = Jj_consume_token(IDENTIFIER);
+                            desc = Jj_consume_token(Identifier);
                             break;
                         }
-                        case REGEX:
+                        case Regex:
                         {
-                            desc = Jj_consume_token(REGEX);
+                            desc = Jj_consume_token(Regex);
                             break;
                         }
-                        case BLANK:
+                        case Blank:
                         {
-                            desc = Jj_consume_token(BLANK);
+                            desc = Jj_consume_token(Blank);
                             break;
                         }
                         default:
@@ -275,10 +271,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                 goto post_label_2;
                         }
                         Jj_consume_token(18);
-                        groupNum = Jj_consume_token(NUMBER);
+                        Token groupNum = Jj_consume_token(Number);
                         Jj_consume_token(19);
-                        groupVar = Jj_consume_token(IDENTIFIER);
-                        varGroups.Add(new Tuple<int, string>(int.Parse(groupNum.image), groupVar.image));
+                        Token groupVar = Jj_consume_token(Identifier);
+                        varGroups.Add(new Tuple<int, string>(int.Parse(groupNum.Image), groupVar.Image));
                     }
                     post_label_2:
                     {
@@ -287,24 +283,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             case 20:
                             {
                                 Jj_consume_token(20);
-                                name = Jj_consume_token(IDENTIFIER);
-                                if (knownVariables.Contains(name.image))
+                                name = Jj_consume_token(Identifier);
+                                if (knownVariables.Contains(name.Image))
                                 {
-                                    {
-                                        if (true)
-                                            throw new ParseException("Variable " + name.image +
+                                    throw new ParseException("Variable " + name.Image +
                                                                      " has been declared twice, which makes no sense");
-                                    }
                                 }
                                 else
                                 {
-                                    knownVariables.Add(name.image);
+                                    knownVariables.Add(name.Image);
                                 }
                                 if (underNegation)
                                 {
-                                    if (true)
-                                        throw new ParseException(
-                                            "No named tregex nodes allowed in the scope of negation.");
+                                    throw new ParseException("No named tregex nodes allowed in the scope of negation.");
                                 }
                                 break;
                             }
@@ -318,40 +309,34 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 case 21:
                 {
                     Jj_consume_token(21);
-                    linkedName = Jj_consume_token(IDENTIFIER);
+                    linkedName = Jj_consume_token(Identifier);
                     switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                     {
                         case 20:
                         {
                             Jj_consume_token(20);
-                            name = Jj_consume_token(IDENTIFIER);
+                            name = Jj_consume_token(Identifier);
                             break;
                         }
                         default:
                             jj_la1[9] = jj_gen;
                             break;
                     }
-                    if (!knownVariables.Contains(linkedName.image))
+                    if (!knownVariables.Contains(linkedName.Image))
                     {
-                        {
-                            if (true)
-                                throw new ParseException("Variable " + linkedName.image +
+                        throw new ParseException("Variable " + linkedName.Image +
                                                          " was referenced before it was declared");
-                        }
                     }
                     if (name != null)
                     {
-                        if (knownVariables.Contains(name.image))
+                        if (knownVariables.Contains(name.Image))
                         {
-                            {
-                                if (true)
-                                    throw new ParseException("Variable " + name.image +
+                            throw new ParseException("Variable " + name.Image +
                                                              " has been declared twice, which makes no sense");
-                            }
                         }
                         else
                         {
-                            knownVariables.Add(name.image);
+                            knownVariables.Add(name.Image);
                         }
                     }
                     link = true;
@@ -360,14 +345,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 case 20:
                 {
                     Jj_consume_token(20);
-                    name = Jj_consume_token(IDENTIFIER);
-                    if (!knownVariables.Contains(name.image))
+                    name = Jj_consume_token(Identifier);
+                    if (!knownVariables.Contains(name.Image))
                     {
-                        {
-                            if (true)
-                                throw new ParseException("Variable " + name.image +
+                        throw new ParseException("Variable " + name.Image +
                                                          " was referenced before it was declared");
-                        }
                     }
                     break;
                 }
@@ -376,17 +358,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     Jj_consume_token(-1);
                     throw new ParseException();
             }
-            var ret = new DescriptionPattern(r, negateDesc, desc != null ? desc.image : null,
-                name != null ? name.image : null, cat, basicCatFunction, varGroups, link,
-                linkedName != null ? linkedName.image : null);
+            var ret = new DescriptionPattern(r, negateDesc, desc != null ? desc.Image : null,
+                name != null ? name.Image : null, cat, basicCatFunction, varGroups, link,
+                linkedName != null ? linkedName.Image : null);
             return ret;
         }
 
-        /*readonly*/
-
-        public TregexPattern ChildrenDisj() /*throws ParseException*/
+        public TregexPattern ChildrenDisj()
         {
-            TregexPattern child;
             var children = new List<TregexPattern>();
             // When we keep track of the known variables to assert that
             // variables are not redefined, or that links are only set to known
@@ -397,7 +376,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             // However, we want to keep track of all the known variables, so that after
             // the disjunction is over, we know them all.
             var allKnownVariables = new Set<string>(knownVariables);
-            child = ChildrenConj();
+            TregexPattern child = ChildrenConj();
             children.Add(child);
             allKnownVariables.AddAll(knownVariables);
             //label_3:
@@ -429,13 +408,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        /*readonly*/
-
-        public TregexPattern ChildrenConj() /*throws ParseException */
+        public TregexPattern ChildrenConj()
         {
-            TregexPattern child;
             var children = new List<TregexPattern>();
-            child = ModChild();
+            TregexPattern child = ModChild();
             children.Add(child);
             //label_4:
             while (true)
@@ -443,8 +419,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                 {
                     case RELATION:
-                    case MULTI_RELATION:
-                    case REL_W_STR_ARG:
+                    case MultiRelation:
+                    case RelWStrArg:
                     case 14:
                     case 16:
                     case 22:
@@ -486,17 +462,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        /*readonly*/
-
-        public TregexPattern ModChild() /*throws ParseException*/
+        public TregexPattern ModChild()
         {
             TregexPattern child;
-            bool startUnderNeg;
             switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
             {
                 case RELATION:
-                case MULTI_RELATION:
-                case REL_W_STR_ARG:
+                case MultiRelation:
+                case RelWStrArg:
                 case 14:
                 case 24:
                 {
@@ -506,7 +479,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 case 16:
                 {
                     Jj_consume_token(16);
-                    startUnderNeg = underNegation;
+                    bool startUnderNeg = underNegation;
                     underNegation = true;
                     child = ModChild();
                     underNegation = startUnderNeg;
@@ -528,9 +501,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return child;
         }
 
-        /*readonly*/
-
-        public TregexPattern Child() /*throws ParseException*/
+        public TregexPattern Child()
         {
             TregexPattern child;
             switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
@@ -550,8 +521,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     break;
                 }
                 case RELATION:
-                case MULTI_RELATION:
-                case REL_W_STR_ARG:
+                case MultiRelation:
+                case RelWStrArg:
                 {
                     child = Relation();
                     break;
@@ -564,9 +535,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return child;
         }
 
-        /*readonly*/
-
-        public TregexPattern Relation() /*throws ParseException*/
+        public TregexPattern Relation()
         {
             Token t, strArg = null, numArg = null, negation = null, cat = null;
             // the easiest way to check if an optional production was used
@@ -577,7 +546,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
             {
                 case RELATION:
-                case REL_W_STR_ARG:
+                case RelWStrArg:
                 {
                     switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                     {
@@ -586,9 +555,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             t = Jj_consume_token(RELATION);
                             switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                             {
-                                case NUMBER:
+                                case Number:
                                 {
-                                    numArg = Jj_consume_token(NUMBER);
+                                    numArg = Jj_consume_token(Number);
                                     break;
                                 }
                                 default:
@@ -597,9 +566,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             }
                             break;
                         }
-                        case REL_W_STR_ARG:
+                        case RelWStrArg:
                         {
-                            t = Jj_consume_token(REL_W_STR_ARG);
+                            t = Jj_consume_token(RelWStrArg);
                             switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                             {
                                 case 14:
@@ -629,19 +598,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                     }
                                     switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                                     {
-                                        case REGEX:
+                                        case Regex:
                                         {
-                                            strArg = Jj_consume_token(REGEX);
+                                            strArg = Jj_consume_token(Regex);
                                             break;
                                         }
-                                        case IDENTIFIER:
+                                        case Identifier:
                                         {
-                                            strArg = Jj_consume_token(IDENTIFIER);
+                                            strArg = Jj_consume_token(Identifier);
                                             break;
                                         }
-                                        case BLANK:
+                                        case Blank:
                                         {
-                                            strArg = Jj_consume_token(BLANK);
+                                            strArg = Jj_consume_token(Blank);
                                             break;
                                         }
                                         default:
@@ -679,19 +648,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                     }
                                     switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                                     {
-                                        case REGEX:
+                                        case Regex:
                                         {
-                                            strArg = Jj_consume_token(REGEX);
+                                            strArg = Jj_consume_token(Regex);
                                             break;
                                         }
-                                        case IDENTIFIER:
+                                        case Identifier:
                                         {
-                                            strArg = Jj_consume_token(IDENTIFIER);
+                                            strArg = Jj_consume_token(Identifier);
                                             break;
                                         }
-                                        case BLANK:
+                                        case Blank:
                                         {
-                                            strArg = Jj_consume_token(BLANK);
+                                            strArg = Jj_consume_token(Blank);
                                             break;
                                         }
                                         default:
@@ -702,7 +671,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                     Jj_consume_token(25);
                                     break;
                                 }
-                                case REGEX:
+                                case Regex:
                                 case 16:
                                 {
                                     switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
@@ -716,7 +685,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                                             jj_la1[22] = jj_gen;
                                             break;
                                     }
-                                    strArg = Jj_consume_token(REGEX);
+                                    strArg = Jj_consume_token(Regex);
                                     break;
                                 }
                                 default:
@@ -735,35 +704,35 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     {
                         string negStr = negation == null ? "" : "!";
                         string catStr = cat == null ? "" : "@";
-                        r = TRegex.Relation.GetRelation(t.image, negStr + catStr + strArg.image,
+                        r = TRegex.Relation.GetRelation(t.Image, negStr + catStr + strArg.Image,
                             basicCatFunction, headFinder);
                     }
                     else if (numArg != null)
                     {
-                        if (t.image.EndsWith("-"))
+                        if (t.Image.EndsWith("-"))
                         {
-                            t.image = t.image.Substring(0, t.image.Length - 1);
-                            numArg.image = "-" + numArg.image;
+                            t.Image = t.Image.Substring(0, t.Image.Length - 1);
+                            numArg.Image = "-" + numArg.Image;
                         }
-                        r = TRegex.Relation.GetRelation(t.image, numArg.image,
+                        r = TRegex.Relation.GetRelation(t.Image, numArg.Image,
                             basicCatFunction, headFinder);
                     }
                     else
                     {
-                        r = TRegex.Relation.GetRelation(t.image, basicCatFunction, headFinder);
+                        r = TRegex.Relation.GetRelation(t.Image, basicCatFunction, headFinder);
                     }
                     child = Node(r);
                     return child;
                 }
-                case MULTI_RELATION:
+                case MultiRelation:
                 {
-                    t = Jj_consume_token(MULTI_RELATION);
+                    t = Jj_consume_token(MultiRelation);
                     Jj_consume_token(26);
                     switch ((jj_ntk == -1) ? Jj_ntk_f() : jj_ntk)
                     {
-                        case IDENTIFIER:
-                        case BLANK:
-                        case REGEX:
+                        case Identifier:
+                        case Blank:
+                        case Regex:
                         case 14:
                         case 16:
                         case 17:
@@ -801,7 +770,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                             break;
                     }
                     Jj_consume_token(28);
-                    return TRegex.Relation.ConstructMultiRelation(t.image, children, basicCatFunction,
+                    return TRegex.Relation.ConstructMultiRelation(t.Image, children, basicCatFunction,
                                 headFinder);
                 }
                 default:
@@ -809,7 +778,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     Jj_consume_token(-1);
                     throw new ParseException();
             }
-            //throw new Exception("Missing return statement in function");
         }
 
         private bool Jj_2_1(int xla)
@@ -850,8 +818,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private bool Jj_3R_25()
         {
-            Token xsp;
-            xsp = jj_scanpos;
+            Token xsp = jj_scanpos;
             if (Jj_3R_26())
             {
                 jj_scanpos = xsp;
@@ -905,8 +872,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private bool Jj_3R_18()
         {
-            Token xsp;
-            xsp = jj_scanpos;
+            Token xsp = jj_scanpos;
             if (Jj_3R_22())
             {
                 jj_scanpos = xsp;
@@ -927,8 +893,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private bool Jj_3R_6()
         {
-            Token xsp;
-            xsp = jj_scanpos;
+            Token xsp = jj_scanpos;
             if (Jj_3R_8())
             {
                 jj_scanpos = xsp;
@@ -945,14 +910,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private bool Jj_3R_27()
         {
-            if (Jj_scan_token(MULTI_RELATION)) return true;
+            if (Jj_scan_token(MultiRelation)) return true;
             return false;
         }
 
         private bool Jj_3R_19()
         {
-            Token xsp;
-            xsp = jj_scanpos;
+            Token xsp = jj_scanpos;
             if (Jj_scan_token(8))
             {
                 jj_scanpos = xsp;
@@ -973,8 +937,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private bool Jj_3R_17()
         {
-            Token xsp;
-            xsp = jj_scanpos;
+            Token xsp = jj_scanpos;
             if (Jj_3R_19())
             {
                 jj_scanpos = xsp;
@@ -995,8 +958,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private bool Jj_3R_10()
         {
-            Token xsp;
-            xsp = jj_scanpos;
+            Token xsp = jj_scanpos;
             if (Jj_3R_12())
             {
                 jj_scanpos = xsp;
@@ -1017,7 +979,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private bool Jj_3R_29()
         {
-            if (Jj_scan_token(REL_W_STR_ARG)) return true;
+            if (Jj_scan_token(RelWStrArg)) return true;
             return false;
         }
 
@@ -1036,8 +998,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private bool Jj_3R_11()
         {
-            Token xsp;
-            xsp = jj_scanpos;
+            Token xsp = jj_scanpos;
             if (Jj_3R_15()) jj_scanpos = xsp;
             xsp = jj_scanpos;
             if (Jj_3R_16()) jj_scanpos = xsp;
@@ -1059,8 +1020,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         private bool Jj_3R_26()
         {
-            Token xsp;
-            xsp = jj_scanpos;
+            Token xsp = jj_scanpos;
             if (Jj_3R_28())
             {
                 jj_scanpos = xsp;
@@ -1069,12 +1029,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return false;
         }
 
-        /** Generated Token Manager. */
+        /// <summary>Generated Token Manager</summary>
         public TregexParserTokenManager token_source;
         private readonly SimpleCharStream jj_input_stream;
-        /** Current token. */
+        /// <summary>Current token</summary>
         public Token token;
-        /** Next token. */
+        /// <summary>Next token</summary>
         public Token jj_nt;
         private int jj_ntk;
         private Token jj_scanpos, jj_lastpos;
@@ -1093,15 +1053,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         private bool jj_rescan = false;
         private int jj_gc = 0;
 
-        /** Constructor with InputStream. */
-
+        /// <summary>Constructor with Stream</summary>
         public TregexParser(Stream stream) :
             this(stream, null)
         {
         }
 
-        /** Constructor with InputStream and supplied encoding */
-
+        /// <summary>
+        /// Constructor with Stream and supplied encoding
+        /// </summary>
         public TregexParser(Stream stream, string encoding)
         {
             try
@@ -1120,15 +1080,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JjCalls();
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit(Stream stream)
         {
             ReInit(stream, null);
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit(Stream stream, string encoding)
         {
             try
@@ -1147,8 +1105,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JjCalls();
         }
 
-        /** Constructor. */
-
+        /// <summary>Constructor</summary>
         public TregexParser(TextReader stream)
         {
             jj_input_stream = new SimpleCharStream(stream, 1, 1);
@@ -1160,8 +1117,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JjCalls();
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit(TextReader stream)
         {
             jj_input_stream.ReInit(stream, 1, 1);
@@ -1173,8 +1129,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JjCalls();
         }
 
-        /** Constructor with generated Token Manager. */
-
+        /// <summary>
+        /// Constructor with generated Token Manager
+        /// </summary>
         public TregexParser(TregexParserTokenManager tm)
         {
             token_source = tm;
@@ -1185,8 +1142,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JjCalls();
         }
 
-        /** Reinitialise. */
-
+        /// <summary>Reinitialize</summary>
         public void ReInit(TregexParserTokenManager tm)
         {
             token_source = tm;
@@ -1197,19 +1153,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             for (int i = 0; i < jj_2_rtns.Length; i++) jj_2_rtns[i] = new JjCalls();
         }
 
-        private Token Jj_consume_token(int kind) /*throws ParseException*/
+        private Token Jj_consume_token(int kind)
         {
             Token oldToken;
-            if ((oldToken = token).next != null)
+            if ((oldToken = token).Next != null)
             {
-                token = token.next;
+                token = token.Next;
             }
             else
             {
-                token = token.next = token_source.GetNextToken();
+                token = token.Next = token_source.GetNextToken();
             }
             jj_ntk = -1;
-            if (token.kind == kind)
+            if (token.Kind == kind)
             {
                 jj_gen++;
                 if (++jj_gc > 100)
@@ -1232,9 +1188,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             throw GenerateParseException();
         }
 
-        //@SuppressWarnings("serial")
-        /*static */
-
         private class LookaheadSuccess : Exception
         {
         }
@@ -1246,18 +1199,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             if (jj_scanpos == jj_lastpos)
             {
                 jj_la--;
-                if (jj_scanpos.next == null)
+                if (jj_scanpos.Next == null)
                 {
-                    jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.GetNextToken();
+                    jj_lastpos = jj_scanpos = jj_scanpos.Next = token_source.GetNextToken();
                 }
                 else
                 {
-                    jj_lastpos = jj_scanpos = jj_scanpos.next;
+                    jj_lastpos = jj_scanpos = jj_scanpos.Next;
                 }
             }
             else
             {
-                jj_scanpos = jj_scanpos.next;
+                jj_scanpos = jj_scanpos.Next;
             }
             if (jj_rescan)
             {
@@ -1266,54 +1219,49 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 while (tok != null && tok != jj_scanpos)
                 {
                     i++;
-                    tok = tok.next;
+                    tok = tok.Next;
                 }
                 if (tok != null) Jj_add_error_token(kind, i);
             }
-            if (jj_scanpos.kind != kind) return true;
+            if (jj_scanpos.Kind != kind) return true;
             if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;
             return false;
         }
 
-
-/** Get the next Token. */
-        /*readonly*/
-
+        /// <summary>Get the next Token</summary>
         public Token GetNextToken()
         {
-            if (token.next != null) token = token.next;
-            else token = token.next = token_source.GetNextToken();
+            if (token.Next != null) token = token.Next;
+            else token = token.Next = token_source.GetNextToken();
             jj_ntk = -1;
             jj_gen++;
             return token;
         }
 
-/** Get the specific Token. */
-        /*readonly */
-
+        /// <summary>Get the specific Token</summary>
         public Token GetToken(int index)
         {
             Token t = token;
             for (int i = 0; i < index; i++)
             {
-                if (t.next != null) t = t.next;
-                else t = t.next = token_source.GetNextToken();
+                if (t.Next != null) t = t.Next;
+                else t = t.Next = token_source.GetNextToken();
             }
             return t;
         }
 
         private int Jj_ntk_f()
         {
-            if ((jj_nt = token.next) == null)
+            if ((jj_nt = token.Next) == null)
             {
                 //return (jj_ntk = (token.next = token_source.getNextToken()).kind);
-                token.next = token_source.GetNextToken();
-                jj_ntk = token.next.kind;
+                token.Next = token_source.GetNextToken();
+                jj_ntk = token.Next.Kind;
                 return jj_ntk;
             }
             else
             {
-                return (jj_ntk = jj_nt.kind);
+                return (jj_ntk = jj_nt.Kind);
             }
         }
 
@@ -1338,17 +1286,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     jj_expentry[i] = jj_lasttokens[i];
                 }
                 /*jj_entries_loop: for (java.util.Iterator<?> it = jj_expentries.iterator(); it.hasNext();) {
-        int[] oldentry = (int[])(it.next());
-        if (oldentry.length == jj_expentry.length) {
-          for (int i = 0; i < jj_expentry.length; i++) {
-            if (oldentry[i] != jj_expentry[i]) {
-              continue jj_entries_loop;
-            }
-          }
-          jj_expentries.Add(jj_expentry);
-          break jj_entries_loop;
-        }
-      }*/
+                int[] oldentry = (int[])(it.next());
+                if (oldentry.length == jj_expentry.length) {
+                    for (int i = 0; i < jj_expentry.length; i++) {
+                    if (oldentry[i] != jj_expentry[i]) {
+                        continue jj_entries_loop;
+                    }
+                    }
+                    jj_expentries.Add(jj_expentry);
+                    break jj_entries_loop;
+                }
+                }*/
                 foreach (var oldentry in jj_expentries)
                 {
                     //int[] oldentry = (int[])(it.next());
@@ -1376,15 +1324,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             }
         }
 
-        /** Generate ParseException. */
-
+        /// <summary>Generate ParseException</summary>
         public ParseException GenerateParseException()
         {
             jj_expentries.Clear();
-            var la1tokens = new bool[29];
+            var la1Tokens = new bool[29];
             if (jj_kind >= 0)
             {
-                la1tokens[jj_kind] = true;
+                la1Tokens[jj_kind] = true;
                 jj_kind = -1;
             }
             for (int i = 0; i < 28; i++)
@@ -1395,14 +1342,14 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                     {
                         if ((jj_la1_0[i] & (1 << j)) != 0)
                         {
-                            la1tokens[j] = true;
+                            la1Tokens[j] = true;
                         }
                     }
                 }
             }
             for (int i = 0; i < 29; i++)
             {
-                if (la1tokens[i])
+                if (la1Tokens[i])
                 {
                     jj_expentry = new int[1];
                     jj_expentry[0] = i;
@@ -1418,20 +1365,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 exptokseq[i] = jj_expentries[i];
             }
             return new ParseException(token, exptokseq, TokenImage);
-        }
-
-        /** Enable tracing. */
-        /*final*/
-
-        public void Enable_tracing()
-        {
-        }
-
-        /** Disable tracing. */
-        /*final*/
-
-        public void Disable_tracing()
-        {
         }
 
         private void Jj_rescan_token()
@@ -1484,9 +1417,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             p.first = token;
             p.arg = xla;
         }
-
-        /*static */
-
+        
         private sealed class JjCalls
         {
             public int gen;

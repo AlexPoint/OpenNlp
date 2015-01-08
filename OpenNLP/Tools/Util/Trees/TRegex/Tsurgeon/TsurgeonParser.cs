@@ -57,7 +57,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             result = Root();
                             jjtree.CloseNodeScope(jjtn000, true);
                             jjtc000 = false;
-                            return new TsurgeonPatternRoot(new IfExistsNode(name.image, false, result.children));
+                            return new TsurgeonPatternRoot(new IfExistsNode(name.Image, false, result.children));
                         }
                         else if (Jj_2_2(2))
                         {
@@ -68,7 +68,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             result = Root();
                             jjtree.CloseNodeScope(jjtn000, true);
                             jjtc000 = false;
-                            return new TsurgeonPatternRoot(new IfExistsNode(name.image, true, result.children));
+                            return new TsurgeonPatternRoot(new IfExistsNode(name.Image, true, result.children));
                         }
                         else
                         {
@@ -203,7 +203,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             newLabel = Jj_consume_token(IDENTIFIER);
                             jjtree.CloseNodeScope(jjtn000, true);
                             jjtc000 = false;
-                            return new RelabelNode(child1, newLabel.image);
+                            return new RelabelNode(child1, newLabel.Image);
                         }
                         else if (Jj_2_4(3))
                         {
@@ -212,7 +212,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             newLabel = Jj_consume_token(QUOTEX);
                             jjtree.CloseNodeScope(jjtn000, true);
                             jjtc000 = false;
-                            return new RelabelNode(child1, newLabel.image);
+                            return new RelabelNode(child1, newLabel.Image);
                         }
                         else if (Jj_2_5(3))
                         {
@@ -221,7 +221,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             regex = Jj_consume_token(REGEX);
                             jjtree.CloseNodeScope(jjtn000, true);
                             jjtc000 = false;
-                            return new RelabelNode(child1, regex.image);
+                            return new RelabelNode(child1, regex.Image);
                         }
                         else if (Jj_2_6(3))
                         {
@@ -230,7 +230,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             newLabel = Jj_consume_token(GENERAL_RELABEL);
                             jjtree.CloseNodeScope(jjtn000, true);
                             jjtc000 = false;
-                            return new RelabelNode(child1, newLabel.image);
+                            return new RelabelNode(child1, newLabel.Image);
                         }
                         else if (Jj_2_7(3))
                         {
@@ -400,7 +400,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 child = NodeSelection();
                 jjtree.CloseNodeScope(jjtn000, true);
                 jjtc000 = false;
-                return new TreeLocation(rel.image, child);
+                return new TreeLocation(rel.Image, child);
             }
             catch (Exception jjte000)
             {
@@ -565,7 +565,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 t = Jj_consume_token(IDENTIFIER);
                 jjtree.CloseNodeScope(jjtn000, true);
                 jjtc000 = false;
-                return new FetchNode(t.image);
+                return new FetchNode(t.Image);
             }
             finally
             {
@@ -717,21 +717,21 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                         dtrs = TreeDtrs(new List<Tree>());
                         jjtree.CloseNodeScope(jjtn000, true);
                         jjtc000 = false;
-                        return treeFactory.NewTreeNode(label.image.Substring(1), dtrs);
+                        return treeFactory.NewTreeNode(label.Image.Substring(1), dtrs);
                     }
                     case TREE_NODE_TERMINAL_LABEL:
                     {
                         label = Jj_consume_token(TREE_NODE_TERMINAL_LABEL);
                         jjtree.CloseNodeScope(jjtn000, true);
                         jjtc000 = false;
-                        return treeFactory.NewTreeNode(label.image, new List<Tree>());
+                        return treeFactory.NewTreeNode(label.Image, new List<Tree>());
                     }
                     case IDENTIFIER:
                     {
                         label = Jj_consume_token(IDENTIFIER);
                         jjtree.CloseNodeScope(jjtn000, true);
                         jjtc000 = false;
-                        return treeFactory.NewTreeNode(label.image, new List<Tree>());
+                        return treeFactory.NewTreeNode(label.Image, new List<Tree>());
                     }
                     default:
                         jj_la1[8] = jj_gen;
@@ -1320,10 +1320,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         private Token Jj_consume_token(int kind) /*throws ParseException*/
         {
             Token oldToken;
-            if ((oldToken = token).next != null) token = token.next;
-            else token = token.next = token_source.GetNextToken();
+            if ((oldToken = token).Next != null) token = token.Next;
+            else token = token.Next = token_source.GetNextToken();
             jj_ntk = -1;
-            if (token.kind == kind)
+            if (token.Kind == kind)
             {
                 jj_gen++;
                 if (++jj_gc > 100)
@@ -1358,18 +1358,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             if (jj_scanpos == jj_lastpos)
             {
                 jj_la--;
-                if (jj_scanpos.next == null)
+                if (jj_scanpos.Next == null)
                 {
-                    jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.GetNextToken();
+                    jj_lastpos = jj_scanpos = jj_scanpos.Next = token_source.GetNextToken();
                 }
                 else
                 {
-                    jj_lastpos = jj_scanpos = jj_scanpos.next;
+                    jj_lastpos = jj_scanpos = jj_scanpos.Next;
                 }
             }
             else
             {
-                jj_scanpos = jj_scanpos.next;
+                jj_scanpos = jj_scanpos.Next;
             }
             if (jj_rescan)
             {
@@ -1378,11 +1378,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 while (tok != null && tok != jj_scanpos)
                 {
                     i++;
-                    tok = tok.next;
+                    tok = tok.Next;
                 }
                 if (tok != null) Jj_add_error_token(kind, i);
             }
-            if (jj_scanpos.kind != kind) return true;
+            if (jj_scanpos.Kind != kind) return true;
             if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;
             return false;
         }
@@ -1393,8 +1393,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         public Token GetNextToken()
         {
-            if (token.next != null) token = token.next;
-            else token = token.next = token_source.GetNextToken();
+            if (token.Next != null) token = token.Next;
+            else token = token.Next = token_source.GetNextToken();
             jj_ntk = -1;
             jj_gen++;
             return token;
@@ -1416,10 +1416,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
         private int Jj_ntk_f()
         {
-            if ((jj_nt = token.next) == null)
-                return (jj_ntk = (token.next = token_source.GetNextToken()).kind);
+            if ((jj_nt = token.Next) == null)
+                return (jj_ntk = (token.Next = token_source.GetNextToken()).Kind);
             else
-                return (jj_ntk = jj_nt.kind);
+                return (jj_ntk = jj_nt.Kind);
         }
 
         private readonly List<int[]> jj_expentries = new List<int[]>();

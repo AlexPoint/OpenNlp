@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex
 {
-    /** A class that takes care of the stuff necessary for variable strings.
- *
- *  @author Roger Levy (rog@nlp.stanford.edu)
- */
-
+    /// <summary>
+    ///  A class that takes care of the stuff necessary for variable strings.
+    /// 
+    ///  @author Roger Levy (rog@nlp.stanford.edu)
+    /// 
+    /// Code...
+    /// </summary>
     public class VariableStrings
     {
         private readonly Dictionary<string, string> varsToStrings;

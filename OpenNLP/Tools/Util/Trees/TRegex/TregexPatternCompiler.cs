@@ -9,6 +9,13 @@ using OpenNLP.Tools.Parser;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex
 {
+    /// <summary>
+    /// A class for compiling TregexPatterns with specific HeadFinders and or basicCategoryFunctions.
+    /// 
+    /// @author Galen Andrew
+    /// 
+    /// Code...
+    /// </summary>
     public class TregexPatternCompiler
     {
         public static readonly AbstractTreebankLanguagePack.BasicCategoryStringFunction DEFAULT_BASIC_CAT_FUNCTION =
@@ -30,35 +37,29 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
         }
 
-        /**
-   * A compiler that uses this basicCatFunction and the default HeadFinder.
-   *
-   * @param basicCatFunction the function mapping strings to Strings
-   */
-
+        /// <summary>
+        /// A compiler that uses this basicCatFunction and the default HeadFinder.
+        /// </summary>
+        /// <param name="basicCatFunction">the function mapping strings to Strings</param>
         public TregexPatternCompiler(AbstractTreebankLanguagePack.BasicCategoryStringFunction basicCatFunction) :
             this(DEFAULT_HEAD_FINDER, basicCatFunction)
         {
         }
 
-        /**
-   * A compiler that uses this HeadFinder and the default basicCategoryFunction
-   *
-   * @param headFinder the HeadFinder
-   */
-
+        /// <summary>
+        /// A compiler that uses this HeadFinder and the default basicCategoryFunction
+        /// </summary>
+        /// <param name="headFinder">the HeadFinder</param>
         public TregexPatternCompiler(HeadFinder headFinder) :
             this(headFinder, DEFAULT_BASIC_CAT_FUNCTION)
         {
         }
 
-        /**
-   * A compiler that uses this HeadFinder and this basicCategoryFunction
-   *
-   * @param headFinder       the HeadFinder
-   * @param basicCatFunction The function mapping strings to Strings
-   */
-
+        /// <summary>
+        /// A compiler that uses this HeadFinder and this basicCategoryFunction
+        /// </summary>
+        /// <param name="headFinder">the HeadFinder</param>
+        /// <param name="basicCatFunction">The function mapping strings to strings</param>
         public TregexPatternCompiler(HeadFinder headFinder,
             AbstractTreebankLanguagePack.BasicCategoryStringFunction basicCatFunction)
         {
@@ -66,44 +67,40 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             this.basicCatFunction = basicCatFunction;
         }
 
-        // todo [cdm 2013]: Provide an easy way to do Matcher.quoteReplacement(): This would be quite useful, since the replacement will often contain $ or \
-
-        /** Define a macro for rewriting a pattern in any tregex expression compiled
-   *  by this compiler. The semantics of this is that all instances of the
-   *  original in the pattern are replaced by the replacement, using exactly
-   *  the semantics of string.replaceAll(original, replacement) and the
-   *  result will then be compiled by the compiler. As such, note that a
-   *  macro can replace any part of a tregex expression, in a syntax
-   *  insensitive way.  Here's an example:
-   *  {@code tpc.addMacro("FINITE_BE_AUX", "/^(?i:am|is|are|was|were)$/");}
-   *
-   *  @param original The string to match; becomes the first argument of a
-   *                  string.replaceAll()
-   *  @param replacement The replacement String; becomes the second argument
-   *                  of a string.replaceAll()
-   */
-
+        // TODO [cdm 2013]: Provide an easy way to do Matcher.quoteReplacement(): This would be quite useful, since the replacement will often contain $ or \
+        /// <summary>
+        /// Define a macro for rewriting a pattern in any tregex expression compiled
+        /// by this compiler. The semantics of this is that all instances of the
+        /// original in the pattern are replaced by the replacement, using exactly
+        /// the semantics of string.replaceAll(original, replacement) and the
+        /// result will then be compiled by the compiler. As such, note that a
+        /// macro can replace any part of a tregex expression, in a syntax
+        /// insensitive way.  Here's an example:
+        /// {@code tpc.addMacro("FINITE_BE_AUX", "/^(?i:am|is|are|was|were)$/");}
+        /// </summary>
+        /// <param name="original">
+        /// The string to match; becomes the first argument of a string.replaceAll()
+        /// </param>
+        /// <param name="replacement">
+        /// The replacement String; becomes the second argument of a string.replaceAll()
+        /// </param>
         public void AddMacro(string original, string replacement)
         {
             macros.Add(new Tuple<string, string>(original, replacement));
         }
 
-
-        /**
-   * Create a TregexPattern from this tregex string using the headFinder and
-   * basicCat function this TregexPatternCompiler was created with.
-   *
-   * <i>Implementation note:</i> If there is an invalid token in the Tregex
-   * parser, JavaCC will throw a TokenMgrError.  This is a class
-   * that extends Error, not Exception (OMG! - bad!), and so rather than
-   * requiring clients to catch it, we wrap it in a ParseException.
-   * (The original Error's are thrown in TregexParserTokenManager.)
-   *
-   * @param tregex The pattern to parse
-   * @return A new TregexPattern object based on this string
-   * @throws TregexParseException If the expression is syntactically invalid
-   */
-
+        /// <summary>
+        /// Create a TregexPattern from this tregex string using the headFinder and
+        /// basicCat function this TregexPatternCompiler was created with.
+        /// Implementation note: If there is an invalid token in the Tregex
+        /// parser, JavaCC will throw a TokenMgrError.  This is a class
+        /// that extends Error, not Exception (OMG! - bad!), and so rather than
+        /// requiring clients to catch it, we wrap it in a ParseException.
+        /// (The original Error's are thrown in TregexParserTokenManager.)
+        /// </summary>
+        /// <param name="tregex">The pattern to parse</param>
+        /// <returns>A new TregexPattern object based on this string</returns>
+        /// <exception cref="TregexParseException">If the expression is syntactically invalid</exception>
         public TregexPattern Compile(string tregex)
         {
             foreach (Tuple<string, string> macro in macros)

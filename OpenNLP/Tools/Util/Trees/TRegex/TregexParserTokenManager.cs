@@ -726,15 +726,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         {
             /*readonly*/
             Token t;
-            /*readonly */
+           
             string curTokenImage;
-            /*readonly */
+           
             int beginLine;
-            /*readonly */
+           
             int endLine;
-            /*readonly */
+           
             int beginColumn;
-            /*readonly */
+           
             int endColumn;
             string im = JjstrLiteralImages[jjmatchedKind];
             curTokenImage = (im == null) ? InputStream.GetImage() : im;

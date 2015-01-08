@@ -112,7 +112,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Sets the label associated with the current node, if there is one.
         /// </summary>
-        public override void SetLabel( /*final */ Label label)
+        public override void SetLabel(Label label)
         {
             this._label = label;
         }

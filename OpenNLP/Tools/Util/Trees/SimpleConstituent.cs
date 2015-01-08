@@ -87,14 +87,14 @@ namespace OpenNLP.Tools.Util.Trees
         /// A <code>SimpleConstituentLabelFactory</code> object makes a
         /// <code>StringLabel</code> <code>LabeledScoredConstituent</code>.
         /// </summary>
-        private /*static*/ class SimpleConstituentLabelFactory : LabelFactory
+        private class SimpleConstituentLabelFactory : LabelFactory
         {
             public Label NewLabel( /*final*/ string labelStr)
             {
                 return new SimpleConstituent(0, 0);
             }
 
-            public Label NewLabel( /*final*/ string labelStr, /*final */int options)
+            public Label NewLabel( /*final*/ string labelStr,int options)
             {
                 return NewLabel(labelStr);
             }
@@ -137,7 +137,7 @@ namespace OpenNLP.Tools.Util.Trees
             /// A <code>SimpleConstituentFactory</code> acts as a factory for
             /// creating objects of class <code>SimpleConstituent</code>.
             /// </summary>
-            private /*static*/ class SimpleConstituentFactory : ConstituentFactory
+            private class SimpleConstituentFactory : ConstituentFactory
             {
 
                 public Constituent NewConstituent(int start, int end)

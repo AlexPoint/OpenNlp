@@ -53,7 +53,7 @@ namespace OpenNLP.Tools.Util.Trees
             return new LabeledScoredTreeNode(_lf.NewLabel(label));
         }
 
-        public override Tree NewTreeNode( /*final*/ string parent, /*final */List<Tree> children)
+        public override Tree NewTreeNode( /*final*/ string parent,List<Tree> children)
         {
             return new LabeledScoredTreeNode(_lf.NewLabel(parent), children);
         }

@@ -583,7 +583,7 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        private /*static*/ class NoPunctFilter : IPredicate<Dependency<Label, Label, Object>>
+        private class NoPunctFilter : IPredicate<Dependency<Label, Label, Object>>
         {
             private readonly Predicate<string> npf;
 
@@ -615,7 +615,7 @@ namespace OpenNLP.Tools.Util.Trees
             bool Test(T elt);
         }
 
-        private /*static*/ class NoPunctTypedDependencyFilter : IPredicate<TypedDependency>
+        private class NoPunctTypedDependencyFilter : IPredicate<TypedDependency>
         {
             private readonly Predicate<string> npf;
 
@@ -974,7 +974,7 @@ namespace OpenNLP.Tools.Util.Trees
 
         private static readonly long serialVersionUID = 2286294455343892678L;
 
-        private /*static*/ class NameComparator<X> : IComparer<X>
+        private class NameComparator<X> : IComparer<X>
         {
             public int Compare(X o1, X o2)
             {

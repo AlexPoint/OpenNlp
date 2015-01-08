@@ -1104,7 +1104,7 @@ namespace OpenNLP.Tools.Util.Trees
                 kid.PercolateHeadAnnotations(hf);
             }
 
-            /*readonly */
+           
             Tree head = hf.DetermineHead(this);
             if (head == null)
             {
@@ -1993,7 +1993,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// The <code>TreeFactory</code> which will be used for creating new nodes for the returned <code>Tree</code>
         /// </param>
         /// <returns>a transformation of this <code>Tree</code></returns>
-        public Tree Transform( /*readonly*/ TreeTransformer transformer, /*readonly */TreeFactory tf)
+        public Tree Transform( /*readonly*/ TreeTransformer transformer,TreeFactory tf)
         {
             Tree t;
             if (IsLeaf())
@@ -2043,7 +2043,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// A <code>TreeFactory</code> for making new trees. Used if the root node is deleted.
         /// </param>
         /// <returns>a filtered copy of the tree</returns>
-        public Tree SpliceOut( /*readonly*/ Predicate<Tree> nodeFilter, /*readonly */TreeFactory tf)
+        public Tree SpliceOut( /*readonly*/ Predicate<Tree> nodeFilter,TreeFactory tf)
         {
             List<Tree> l = SpliceOutHelper(nodeFilter, tf);
             if (!l.Any())

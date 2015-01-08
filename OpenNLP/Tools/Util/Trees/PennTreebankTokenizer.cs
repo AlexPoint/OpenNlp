@@ -22,7 +22,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// A StreamTokenizer for PennTreebank trees.
         /// </summary>
-        private /*static*/ class EnglishTreebankStreamTokenizer : StreamTokenizer
+        private class EnglishTreebankStreamTokenizer : StreamTokenizer
         {
             /// <summary>
             /// Create a StreamTokenizer for PennTreebank trees.

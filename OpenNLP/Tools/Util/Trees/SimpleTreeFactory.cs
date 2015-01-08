@@ -29,12 +29,12 @@ namespace OpenNLP.Tools.Util.Trees
             return new SimpleTree();
         }
 
-        public virtual Tree NewTreeNode( /*final*/ string parent, /*final */List<Tree> children)
+        public virtual Tree NewTreeNode( /*final*/ string parent,List<Tree> children)
         {
             return new SimpleTree(null, children);
         }
 
-        public virtual Tree NewTreeNode( /*final */ Label parentLabel, /*final */List<Tree> children)
+        public virtual Tree NewTreeNode(Label parentLabel,List<Tree> children)
         {
             return new SimpleTree(parentLabel, children);
         }

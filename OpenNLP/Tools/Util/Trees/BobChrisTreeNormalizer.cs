@@ -82,7 +82,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="label">The label from the treebank</param>
         /// <returns>The cleaned up label (phrase structure category)</returns>
-        protected string CleanUpLabel( /*readonly */ string label)
+        protected string CleanUpLabel(string label)
         {
             if (string.IsNullOrEmpty(label))
             {

@@ -83,7 +83,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// <summary>
         /// Set the value for the label.
         /// </summary>
-        public override void SetValue( /*final */ string value)
+        public override void SetValue(string value)
         {
             str = value;
         }
@@ -91,7 +91,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// <summary>
         /// Set the label from a string.
         /// </summary>
-        public override void SetFromString( /*final */ string str)
+        public override void SetFromString(string str)
         {
             this.str = str;
         }

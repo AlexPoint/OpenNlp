@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenNLP.Tools.Util.Ling;
+using OpenNLP.Tools.Ling;
 using OpenNLP.Tools.Util.Process;
 
 namespace OpenNLP.Tools.Util.Trees

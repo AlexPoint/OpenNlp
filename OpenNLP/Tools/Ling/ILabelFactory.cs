@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenNLP.Tools.Util.Ling
+namespace OpenNLP.Tools.Ling
 {
     /// <summary>
     /// A <code>LabelFactory</code> object acts as a factory for creating

@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Util;
 
-namespace OpenNLP.Tools.Util.Ling
+namespace OpenNLP.Tools.Ling
 {
     /// <summary>
     /// A CoreLabel represents a single word with ancillary information

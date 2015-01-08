@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenNLP.Tools.Parser;
-using OpenNLP.Tools.Util.Ling;
+using OpenNLP.Tools.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {

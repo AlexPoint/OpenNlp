@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenNLP.Tools.Util.Ling;
+using OpenNLP.Tools.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {

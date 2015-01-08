@@ -4,8 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Util;
 
-namespace OpenNLP.Tools.Util.Ling
+namespace OpenNLP.Tools.Ling
 {
     /// <summary>
     /// Set of common annotations for {@link CoreMap}s. The classes
@@ -1924,11 +1925,11 @@ namespace OpenNLP.Tools.Util.Ling
         /// <summary>
         /// Used in incremental DAG parser
         /// </summary>
-        public class LeftChildrenNodeAnnotation : ICoreAnnotation<SortedSet<Tuple<CoreLabel, string>>>
+        public class LeftChildrenNodeAnnotation : ICoreAnnotation<System.Collections.Generic.SortedSet<Tuple<CoreLabel, string>>>
         {
             public Type GetAnnotationType()
             {
-                return typeof (SortedSet<Tuple<CoreLabel, string>>);
+                return typeof (System.Collections.Generic.SortedSet<Tuple<CoreLabel, string>>);
             }
         }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenNLP.Tools.Util.Ling
+namespace OpenNLP.Tools.Ling
 {
     /// <summary>
     /// Scored: This is a simple interface that says that an object can answer

@@ -335,28 +335,28 @@
     <Compile Include="Tools\Util\IntTriple.cs" />
     <Compile Include="Tools\Util\IntTuple.cs" />
     <Compile Include="Tools\Util\IntUni.cs" />
-    <Compile Include="Tools\Util\Ling\IAbstractCoreLabel.cs" />
-    <Compile Include="Tools\Util\Ling\ICoreAnnotation.cs" />
-    <Compile Include="Tools\Util\Ling\CoreAnnotations.cs" />
-    <Compile Include="Tools\Util\Ling\CoreLabel.cs" />
-    <Compile Include="Tools\Util\Ling\IHasCategory.cs" />
-    <Compile Include="Tools\Util\Ling\IHasContext.cs" />
-    <Compile Include="Tools\Util\Ling\IHasIndex.cs" />
-    <Compile Include="Tools\Util\Ling\IHasLemma.cs" />
-    <Compile Include="Tools\Util\Ling\IHasOffset.cs" />
-    <Compile Include="Tools\Util\Ling\IHasTag.cs" />
-    <Compile Include="Tools\Util\Ling\IHasWord.cs" />
-    <Compile Include="Tools\Util\Ling\IndexedWord.cs" />
-    <Compile Include="Tools\Util\Ling\ILabel.cs" />
-    <Compile Include="Tools\Util\Ling\ILabeled.cs" />
-    <Compile Include="Tools\Util\Ling\LabeledWord.cs" />
-    <Compile Include="Tools\Util\Ling\ILabelFactory.cs" />
-    <Compile Include="Tools\Util\Ling\IScored.cs" />
-    <Compile Include="Tools\Util\Ling\StringLabelFactory.cs" />
-    <Compile Include="Tools\Util\Ling\TaggedWord.cs" />
-    <Compile Include="Tools\Util\Ling\TaggedWordFactory.cs" />
-    <Compile Include="Tools\Util\Ling\ValueLabel.cs" />
-    <Compile Include="Tools\Util\Ling\WordFactory.cs" />
+    <Compile Include="Tools\Ling\IAbstractCoreLabel.cs" />
+    <Compile Include="Tools\Ling\ICoreAnnotation.cs" />
+    <Compile Include="Tools\Ling\CoreAnnotations.cs" />
+    <Compile Include="Tools\Ling\CoreLabel.cs" />
+    <Compile Include="Tools\Ling\IHasCategory.cs" />
+    <Compile Include="Tools\Ling\IHasContext.cs" />
+    <Compile Include="Tools\Ling\IHasIndex.cs" />
+    <Compile Include="Tools\Ling\IHasLemma.cs" />
+    <Compile Include="Tools\Ling\IHasOffset.cs" />
+    <Compile Include="Tools\Ling\IHasTag.cs" />
+    <Compile Include="Tools\Ling\IHasWord.cs" />
+    <Compile Include="Tools\Ling\IndexedWord.cs" />
+    <Compile Include="Tools\Ling\ILabel.cs" />
+    <Compile Include="Tools\Ling\ILabeled.cs" />
+    <Compile Include="Tools\Ling\LabeledWord.cs" />
+    <Compile Include="Tools\Ling\ILabelFactory.cs" />
+    <Compile Include="Tools\Ling\IScored.cs" />
+    <Compile Include="Tools\Ling\StringLabelFactory.cs" />
+    <Compile Include="Tools\Ling\TaggedWord.cs" />
+    <Compile Include="Tools\Ling\TaggedWordFactory.cs" />
+    <Compile Include="Tools\Ling\ValueLabel.cs" />
+    <Compile Include="Tools\Ling\WordFactory.cs" />
     <Compile Include="Tools\Util\ListHeap.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -386,7 +386,7 @@
     <Compile Include="Tools\Util\Span.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tools\Util\Ling\StringLabel.cs" />
+    <Compile Include="Tools\Ling\StringLabel.cs" />
     <Compile Include="Tools\Util\StringTokenizer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -494,7 +494,7 @@
     <Compile Include="Tools\Util\Trees\UnnamedConcreteDependency.cs" />
     <Compile Include="Tools\Util\Trees\UnnamedDependency.cs" />
     <Compile Include="Tools\Util\ITypesafeMap.cs" />
-    <Compile Include="Tools\Util\Ling\Word.cs" />
+    <Compile Include="Tools\Ling\Word.cs" />
     <Compile Include="Tools\Util\XMLUtils.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenNLP.Tools.Util.Ling;
 
-namespace OpenNLP.Tools.Util.Ling
+namespace OpenNLP.Tools.Ling
 {
     /// <summary>
     /// A <code>Word</code> object acts as a Label by containing a string.

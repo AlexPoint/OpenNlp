@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using OpenNLP.Tools.Graphs;
-using OpenNLP.Tools.Util.Ling;
+using OpenNLP.Tools.Ling;
 
 namespace OpenNLP.Tools.Util.Trees
 {

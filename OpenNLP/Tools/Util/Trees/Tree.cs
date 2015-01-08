@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenNLP.Tools.Ling;
 using OpenNLP.Tools.Parser;
-using OpenNLP.Tools.Util.Ling;
 using OpenNLP.Tools.Util.Trees;
 
 namespace OpenNLP.Tools.Util.Trees

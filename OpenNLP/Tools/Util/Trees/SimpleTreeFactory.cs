@@ -19,17 +19,17 @@ namespace OpenNLP.Tools.Util.Trees
     /// </summary>
     public class SimpleTreeFactory : TreeFactory
     {
-        public virtual Tree NewLeaf( /*final*/ string word)
+        public virtual Tree NewLeaf(string word)
         {
             return new SimpleTree();
         }
 
-        public virtual Tree NewLeaf( /*final*/ Label word)
+        public virtual Tree NewLeaf(Label word)
         {
             return new SimpleTree();
         }
 
-        public virtual Tree NewTreeNode( /*final*/ string parent,List<Tree> children)
+        public virtual Tree NewTreeNode(string parent,List<Tree> children)
         {
             return new SimpleTree(null, children);
         }

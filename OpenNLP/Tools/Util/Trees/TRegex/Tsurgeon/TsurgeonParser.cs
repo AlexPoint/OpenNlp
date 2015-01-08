@@ -1365,8 +1365,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         /** Get the specific Token. */
-        /*readonly*/
-
         /*public Token getToken(int index)
         {
             Token t = token;

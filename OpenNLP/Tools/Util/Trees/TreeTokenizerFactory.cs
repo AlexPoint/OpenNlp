@@ -32,25 +32,25 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Gets a tokenizer from a reader
         /// </summary>
-        public Tokenizer<Tree> GetTokenizer( /*final*/ TextReader r)
+        public Tokenizer<Tree> GetTokenizer(TextReader r)
         {
             /*return new AbstractTokenizer<Tree>() {
-      TreeReader tr = trf.newTreeReader(r);
-      @Override
-      public Tree getNext() {
-        try {
-          return tr.readTree();
-        }
-        catch(IOException e) {
-          System.err.println("Error in reading tree.");
-          return null;
-        }
-      }
-    };*/
+              TreeReader tr = trf.newTreeReader(r);
+              @Override
+              public Tree getNext() {
+                try {
+                  return tr.readTree();
+                }
+                catch(IOException e) {
+                  System.err.println("Error in reading tree.");
+                  return null;
+                }
+              }
+            };*/
             throw new NotImplementedException();
         }
 
-        public Tokenizer<Tree> GetTokenizer( /*final*/ TextReader r, string extraOptions)
+        public Tokenizer<Tree> GetTokenizer(TextReader r, string extraOptions)
         {
             // Silently ignore extra options
             return GetTokenizer(r);

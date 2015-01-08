@@ -35,7 +35,7 @@ namespace OpenNLP.Tools.Util.Trees
             this.mlf = mlf;
         }
 
-        public Tree NewLeaf( /*final*/ string word)
+        public Tree NewLeaf(string word)
         {
             return NewLeaf(mlf.NewLabel(word));
         }
@@ -45,7 +45,7 @@ namespace OpenNLP.Tools.Util.Trees
             return new TreeGraphNode(label);
         }
 
-        public Tree NewTreeNode( /*final*/ string parent, /*final*/ List<Tree> children)
+        public Tree NewTreeNode(string parent, List<Tree> children)
         {
             return NewTreeNode(mlf.NewLabel(parent), children);
         }

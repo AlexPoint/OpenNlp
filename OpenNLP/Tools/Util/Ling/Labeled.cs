@@ -29,7 +29,7 @@ namespace OpenNLP.Tools.Util.Ling
         /// Sets the label associated with this object.
         /// </summary>
         /// <param name="label">The Label value</param>
-        void SetLabel( /*final*/ Label label);
+        void SetLabel(Label label);
 
         /// <summary>
         /// Gives back all labels for this thing.
@@ -44,6 +44,6 @@ namespace OpenNLP.Tools.Util.Ling
         /// Sets the labels associated with this object.
         /// </summary>
         /// <param name="labels">The set of Label values</param>
-        void SetLabels( /*final*/ ICollection<Label> labels);
+        void SetLabels(ICollection<Label> labels);
     }
 }

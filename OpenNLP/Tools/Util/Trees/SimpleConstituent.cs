@@ -89,17 +89,17 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         private class SimpleConstituentLabelFactory : LabelFactory
         {
-            public Label NewLabel( /*final*/ string labelStr)
+            public Label NewLabel(string labelStr)
             {
                 return new SimpleConstituent(0, 0);
             }
 
-            public Label NewLabel( /*final*/ string labelStr,int options)
+            public Label NewLabel(string labelStr,int options)
             {
                 return NewLabel(labelStr);
             }
 
-            public Label NewLabelFromString( /*final*/ string labelStr)
+            public Label NewLabelFromString(string labelStr)
             {
                 return NewLabel(labelStr);
             }

@@ -39,7 +39,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /// <param name="t2">The tree that is the right operand</param>
         /// <param name="root">The common root of t1 and t2</param>
         /// <returns>Whether this relationship is satisfied</returns>
-        public abstract bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly*/ TregexMatcher matcher);
+        public abstract bool Satisfies(Tree t1, Tree t2, Tree root,TregexMatcher matcher);
 
         /// <summary>
         /// For a given node, returns an {@link Iterator} over the nodes
@@ -48,8 +48,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
         /// <param name="t">A node in a Tree</param>
         /// <param name="matcher">The matcher that nodes have to satisfy</param>
         /// <returns>An Iterator over the nodes of the root tree that satisfy the relation.</returns>
-        public abstract IEnumerator<Tree> GetSearchNodeIterator( /*readonly*/ Tree t,
-            /*readonly*/ TregexMatcher matcher);
+        public abstract IEnumerator<Tree> GetSearchNodeIterator(Tree t,
+           TregexMatcher matcher);
 
         private static readonly Regex ParentOfLastChild = new Regex("(<-|<`)");
 
@@ -1688,7 +1688,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 this.hf = hf;
             }
 
-            public override bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly*/ TregexMatcher matcher)
+            public override bool Satisfies(Tree t1, Tree t2, Tree root,TregexMatcher matcher)
             {
                 if (t2.IsLeaf())
                 {
@@ -1714,7 +1714,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
             }
 
-            public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly*/ Tree t,
+            public override IEnumerator<Tree> GetSearchNodeIterator(Tree t,
                TregexMatcher matcher)
             {
                 var next = t;
@@ -1840,12 +1840,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 this._heads = Interner<Heads>.GlobalIntern(new Heads(hf));
             }
 
-            public override bool Satisfies(Tree t1, Tree t2, Tree root, /*readonly*/ TregexMatcher matcher)
+            public override bool Satisfies(Tree t1, Tree t2, Tree root,TregexMatcher matcher)
             {
                 return _heads.Satisfies(t2, t1, root, matcher);
             }
 
-            public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly*/ Tree t,
+            public override IEnumerator<Tree> GetSearchNodeIterator(Tree t,
                TregexMatcher matcher)
             {
                 var finder = matcher.GetHeadFinder() != null ? matcher.GetHeadFinder() : this._heads.hf;
@@ -1908,8 +1908,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 }
             }
 
-            public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly*/ Tree t,
-                /*readonly*/ TregexMatcher matcher)
+            public override IEnumerator<Tree> GetSearchNodeIterator(Tree t,
+               TregexMatcher matcher)
             {
                 if (t != matcher.GetRoot())
                 {
@@ -1971,7 +1971,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
                 return _immediatelyHeads.Satisfies(t2, t1, root, matcher);
             }
 
-            public override IEnumerator<Tree> GetSearchNodeIterator( /*readonly*/ Tree t,
+            public override IEnumerator<Tree> GetSearchNodeIterator(Tree t,
                TregexMatcher matcher)
             {
                 if (!t.IsLeaf())

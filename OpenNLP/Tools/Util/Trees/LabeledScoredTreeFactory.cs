@@ -38,7 +38,7 @@ namespace OpenNLP.Tools.Util.Trees
             this._lf = lf;
         }
 
-        public override Tree NewLeaf( /*final*/ string word)
+        public override Tree NewLeaf(string word)
         {
             return new LabeledScoredTreeNode(_lf.NewLabel(word));
         }
@@ -53,7 +53,7 @@ namespace OpenNLP.Tools.Util.Trees
             return new LabeledScoredTreeNode(_lf.NewLabel(label));
         }
 
-        public override Tree NewTreeNode( /*final*/ string parent,List<Tree> children)
+        public override Tree NewTreeNode(string parent,List<Tree> children)
         {
             return new LabeledScoredTreeNode(_lf.NewLabel(parent), children);
         }

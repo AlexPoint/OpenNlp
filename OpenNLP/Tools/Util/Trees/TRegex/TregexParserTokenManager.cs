@@ -692,7 +692,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             18, 19, 20, 21,
         };
 
-        private static /*readonly*/ bool JjCanMove_0(int hiByte, int i1, int i2, long l1, long l2)
+        private static bool JjCanMove_0(int hiByte, int i1, int i2, long l1, long l2)
         {
             switch (hiByte)
             {
@@ -724,25 +724,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
 
         protected Token JjFillToken()
         {
-            /*readonly*/
-            Token t;
-           
-            string curTokenImage;
-           
-            int beginLine;
-           
-            int endLine;
-           
-            int beginColumn;
-           
-            int endColumn;
             string im = JjstrLiteralImages[jjmatchedKind];
-            curTokenImage = (im == null) ? InputStream.GetImage() : im;
-            beginLine = InputStream.GetBeginLine();
-            beginColumn = InputStream.GetBeginColumn();
-            endLine = InputStream.GetEndLine();
-            endColumn = InputStream.GetEndColumn();
-            t = Token.NewToken(jjmatchedKind, curTokenImage);
+            string curTokenImage = (im == null) ? InputStream.GetImage() : im;
+            int beginLine = InputStream.GetBeginLine();
+            int beginColumn = InputStream.GetBeginColumn();
+            int endLine = InputStream.GetEndLine();
+            int endColumn = InputStream.GetEndColumn();
+            Token t = Token.NewToken(jjmatchedKind, curTokenImage);
 
             t.BeginLine = beginLine;
             t.EndLine = endLine;

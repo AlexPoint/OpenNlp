@@ -504,7 +504,6 @@ namespace OpenNLP.Tools.Util.Trees
             }
             if (!(o is GrammaticalRelation)) return false;
 
-            /*final*/
             var gr = (GrammaticalRelation) o;
             // == okay for language as enum!
             return this.language == gr.language &&

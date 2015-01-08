@@ -150,7 +150,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <summary>
         /// Sets the label associated with the current node
         /// </summary>
-        public void SetLabel( /*readonly*/ CoreLabel label)
+        public void SetLabel(CoreLabel label)
         {
             this._label = label;
         }
@@ -348,7 +348,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// tags as references to nodes, not merely as <code>string</code>s.)
         /// </summary>
         /// <param name="hwn">the node containing the head word for this node</param>
-        private void SetHeadWordNode( /*readonly*/ TreeGraphNode hwn)
+        private void SetHeadWordNode(TreeGraphNode hwn)
         {
             _label.Set(typeof (TreeCoreAnnotations.HeadWordAnnotation), hwn);
         }
@@ -381,7 +381,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// <code>string</code>s.)
         /// </summary>
         /// <param name="htn">the node containing the head tag for this node</param>
-        private void SetHeadTagNode( /*readonly*/ TreeGraphNode htn)
+        private void SetHeadTagNode(TreeGraphNode htn)
         {
             _label.Set(typeof (TreeCoreAnnotations.HeadTagAnnotation), htn);
         }

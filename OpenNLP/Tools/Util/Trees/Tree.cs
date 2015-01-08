@@ -1162,11 +1162,9 @@ namespace OpenNLP.Tools.Util.Trees
                     kid.PercolateHeads(hf);
                 }
 
-                /*readonly*/
                 Tree head = hf.DetermineHead(this);
                 if (head != null)
                 {
-                    /*readonly*/
                     Label headLabel = head.Label();
 
                     // Set the head tag.
@@ -1639,7 +1637,6 @@ namespace OpenNLP.Tools.Util.Trees
             if (IsPreTerminal())
             {
                 var taggedWord = new CoreLabel();
-                /*readonly*/
                 string tag = (Value() == null) ? "" : Value();
                 taggedWord.SetValue(tag);
                 taggedWord.SetTag(tag);
@@ -1973,7 +1970,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="transformer">The function that transforms tree nodes or subtrees</param>
         /// <returns>a transformation of this <code>Tree</code></returns>
-        public Tree Transform( /*readonly*/ TreeTransformer transformer)
+        public Tree Transform(TreeTransformer transformer)
         {
             return Transform(transformer, TreeFactory());
         }
@@ -1990,7 +1987,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// The <code>TreeFactory</code> which will be used for creating new nodes for the returned <code>Tree</code>
         /// </param>
         /// <returns>a transformation of this <code>Tree</code></returns>
-        public Tree Transform( /*readonly*/ TreeTransformer transformer,TreeFactory tf)
+        public Tree Transform(TreeTransformer transformer,TreeFactory tf)
         {
             Tree t;
             if (IsLeaf())
@@ -2017,7 +2014,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// </summary>
         /// <param name="nodeFilter">a Filter method which returns true to mean keep this node, false to mean delete it</param>
         /// <returns>a filtered copy of the tree</returns>
-        public Tree SpliceOut( /*readonly*/ Predicate<Tree> nodeFilter)
+        public Tree SpliceOut(Predicate<Tree> nodeFilter)
         {
             return SpliceOut(nodeFilter, TreeFactory());
         }
@@ -2040,7 +2037,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// A <code>TreeFactory</code> for making new trees. Used if the root node is deleted.
         /// </param>
         /// <returns>a filtered copy of the tree</returns>
-        public Tree SpliceOut( /*readonly*/ Predicate<Tree> nodeFilter,TreeFactory tf)
+        public Tree SpliceOut(Predicate<Tree> nodeFilter,TreeFactory tf)
         {
             List<Tree> l = SpliceOutHelper(nodeFilter, tf);
             if (!l.Any())
@@ -2109,7 +2106,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// a filtered copy of the tree, including the possibility of
         /// <code>null</code> if the root node of the tree is filtered
         /// </returns>
-        public Tree Prune( /*readonly*/ Predicate<Tree> filter)
+        public Tree Prune(Predicate<Tree> filter)
         {
             return Prune(filter, TreeFactory());
         }

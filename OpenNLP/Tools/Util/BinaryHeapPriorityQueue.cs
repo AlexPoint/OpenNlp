@@ -183,7 +183,7 @@ namespace OpenNLP.Tools.Util
         /// percolating the element entry downwards.  I've replaced the obvious
         /// recursive formulation with an iterative one to gain (marginal) speed.
         /// </summary>
-        private void HeapifyDown( /*final*/ Entry<E> entry)
+        private void HeapifyDown(Entry<E> entry)
         {
             Entry<E> bestEntry; // initialized below
 

@@ -38,14 +38,11 @@ namespace OpenNLP.Tools.Util
             return Get(1);
         }
 
-
-        //@Override
         public override IntTuple GetCopy()
         {
             return new IntPair(elements[0], elements[1]);
         }
 
-        //@Override
         public override bool Equals(Object iO)
         {
             if (!(iO is IntPair))
@@ -56,7 +53,6 @@ namespace OpenNLP.Tools.Util
             return elements[0] == i.Get(0) && elements[1] == i.Get(1);
         }
 
-        //@Override
         public override int GetHashCode()
         {
             return elements[0]*17 + elements[1];

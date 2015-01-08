@@ -31,20 +31,17 @@ namespace OpenNLP.Tools.Util
             public int index;
             public double priority;
 
-            //@Override
             public override string ToString()
             {
                 return key + " at " + index + " (" + priority + ')';
             }
         }
 
-        //@Override
         public bool HasNext()
         {
             return Size() > 0;
         }
 
-        //@Override
         public E Next()
         {
             if (Size() == 0)
@@ -54,7 +51,6 @@ namespace OpenNLP.Tools.Util
             return RemoveFirst();
         }
 
-        //@Override
         public void Remove()
         {
             throw new KeyNotFoundException();
@@ -440,7 +436,6 @@ namespace OpenNLP.Tools.Util
             return keyToEntry.ContainsKey(key);
         }
 
-        //@Override
         public List<E> ToSortedList()
         {
             var sortedList = new List<E>(Size());
@@ -467,7 +462,6 @@ namespace OpenNLP.Tools.Util
             return DeepCopy(MapFactory<E, Entry<E>>.hashMapFactory<E, Entry<E>>());
         }
 
-        //@Override
         public IEnumerator<E> Iterator()
         {
             return new ReadOnlyCollection<E>(ToSortedList()).GetEnumerator();
@@ -497,14 +491,11 @@ namespace OpenNLP.Tools.Util
         //    }
         //  }
 
-        //@Override
         public override string ToString()
         {
             return ToString(0);
         }
 
-        /** {@inheritDoc} */
-        //@Override
         public string ToString(int maxKeysToPrint)
         {
             if (maxKeysToPrint <= 0) maxKeysToPrint = int.MaxValue;
@@ -562,13 +553,13 @@ namespace OpenNLP.Tools.Util
         public BinaryHeapPriorityQueue(MapFactory<E, Entry<E>> mapFactory)
         {
             indexToEntry = new List<Entry<E>>();
-            keyToEntry = mapFactory.newMap();
+            keyToEntry = mapFactory.NewMap();
         }
 
         public BinaryHeapPriorityQueue(MapFactory<E, Entry<E>> mapFactory, int initCapacity)
         {
             indexToEntry = new List<Entry<E>>(initCapacity);
-            keyToEntry = mapFactory.newMap(initCapacity);
+            keyToEntry = mapFactory.NewMap(initCapacity);
         }
     }
 }

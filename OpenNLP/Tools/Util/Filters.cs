@@ -50,17 +50,14 @@ namespace OpenNLP.Tools.Util
       return judgment;
     }
 
-    //@Override
     public string ToString() {
       return "CategoricalFilter(" + judgment + ")";
     }
 
-    //@Override
     public int hashCode() {
       return ToString().hashCode();
     }
 
-    //@Override
     public bool equals(Object other) {
       if (other == this) {
         return true;

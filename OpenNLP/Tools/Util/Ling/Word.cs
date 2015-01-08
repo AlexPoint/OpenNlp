@@ -57,15 +57,11 @@ namespace OpenNLP.Tools.Util.Ling
         {
         }
 
-
-        //@Override
         public string GetWord()
         {
             return Value();
         }
 
-
-        //@Override
         public void SetWord(string word)
         {
             SetValue(word);
@@ -74,11 +70,7 @@ namespace OpenNLP.Tools.Util.Ling
         // extra class guarantees correct lazy loading (Bloch p.194)
         private static class WordFactoryHolder
         {
-
             public static readonly LabelFactory lf = new WordFactory();
-
-            //private WordFactoryHolder() { }
-
         }
 
         /// <summary>

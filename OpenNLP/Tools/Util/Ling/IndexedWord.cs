@@ -145,133 +145,111 @@ namespace OpenNLP.Tools.Util.Ling
             return label.Size();
         }
 
-        //@Override
         public string Value()
         {
             return label.Value();
         }
 
-        //@Override
         public void SetValue(string value)
         {
             label.SetValue(value);
         }
 
-        //@Override
         public string Tag()
         {
             return label.Tag();
         }
 
-        //@Override
         public void SetTag(string tag)
         {
             label.SetTag(tag);
         }
 
-        //@Override
         public string GetWord()
         {
             return label.GetWord();
         }
 
-        //@Override
         public void SetWord(string word)
         {
             label.SetWord(word);
         }
 
-        //@Override
         public string Lemma()
         {
             return label.Lemma();
         }
 
-        //@Override
         public void SetLemma(string lemma)
         {
             label.SetLemma(lemma);
         }
 
-        //@Override
         public string Ner()
         {
             return label.Ner();
         }
 
-        //@Override
         public void SetNer(string ner)
         {
             label.SetNer(ner);
         }
 
-        //@Override
         public string DocId()
         {
             return label.DocId();
         }
 
-        //@Override
         public void SetDocId(string docId)
         {
             label.SetDocId(docId);
         }
 
-        //@Override
         public int Index()
         {
             return label.Index();
         }
 
-        //@Override
         public void SetIndex(int index)
         {
             label.SetIndex(index);
         }
 
-        //@Override
         public int SentIndex()
         {
             return label.SentIndex();
         }
 
-        //@Override
         public void SetSentIndex(int sentIndex)
         {
             label.SetSentIndex(sentIndex);
         }
 
-        //@Override
         public string OriginalText()
         {
             return label.OriginalText();
         }
 
-        //@Override
         public void SetOriginalText(string originalText)
         {
             label.SetOriginalText(originalText);
         }
 
-        //@Override
         public int BeginPosition()
         {
             return label.BeginPosition();
         }
 
-        //@Override
         public int EndPosition()
         {
             return label.EndPosition();
         }
 
-        //@Override
         public void SetBeginPosition(int beginPos)
         {
             label.SetBeginPosition(beginPos);
         }
 
-        //@Override
         public void SetEndPosition(int endPos)
         {
             label.SetEndPosition(endPos);

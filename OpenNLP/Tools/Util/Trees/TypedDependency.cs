@@ -91,8 +91,6 @@ namespace OpenNLP.Tools.Util.Trees
             this.pextra = true;
         }
 
-        //@SuppressWarnings({"RedundantIfStatement"})
-        //@Override
         public override bool Equals(Object o)
         {
             if (this == o)
@@ -103,9 +101,8 @@ namespace OpenNLP.Tools.Util.Trees
             {
                 return false;
             }
-            /*final*/
-            var typedDep = (TypedDependency) o;
 
+            var typedDep = (TypedDependency) o;
             if (preln != null ? !preln.Equals(typedDep.Reln()) : typedDep.Reln() != null)
             {
                 return false;
@@ -122,7 +119,6 @@ namespace OpenNLP.Tools.Util.Trees
             return true;
         }
 
-        //@Override
         public override int GetHashCode()
         {
             int result = (preln != null ? preln.GetHashCode() : 17);
@@ -131,7 +127,6 @@ namespace OpenNLP.Tools.Util.Trees
             return result;
         }
 
-        //@Override
         public override string ToString()
         {
             return ToString(CoreLabel.OutputFormat.VALUE_INDEX);

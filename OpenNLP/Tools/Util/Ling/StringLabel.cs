@@ -96,7 +96,6 @@ namespace OpenNLP.Tools.Util.Ling
             this.str = str;
         }
 
-        //@Override
         public override string ToString()
         {
             return str;

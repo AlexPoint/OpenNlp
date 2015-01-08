@@ -199,10 +199,9 @@ namespace OpenNLP.Tools.Util.Ling
   }*/
 
 
-        public /*static*/ class CoreLabelFactory : LabelFactory
+        public class CoreLabelFactory : LabelFactory
         {
 
-            //@Override
             public Label NewLabel(string labelStr)
             {
                 var label = new CoreLabel();
@@ -210,13 +209,11 @@ namespace OpenNLP.Tools.Util.Ling
                 return label;
             }
 
-            //@Override
             public Label NewLabel(string labelStr, int options)
             {
                 return NewLabel(labelStr);
             }
 
-            //@Override
             public Label NewLabel(Label oldLabel)
             {
                 if (oldLabel is CoreLabel)
@@ -249,7 +246,6 @@ namespace OpenNLP.Tools.Util.Ling
                 }
             }
 
-            //@Override
             public Label NewLabelFromString(string encodedLabelStr)
             {
                 throw new InvalidOperationException("This code branch left blank" +

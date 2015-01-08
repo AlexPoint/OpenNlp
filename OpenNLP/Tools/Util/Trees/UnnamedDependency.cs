@@ -99,13 +99,11 @@ namespace OpenNLP.Tools.Util.Trees
             return label.Value();
         }
 
-        //@Override
         public override int GetHashCode()
         {
             return RegentText.GetHashCode() ^ DependentText.GetHashCode();
         }
 
-        //@Override
         public override bool Equals(Object o)
         {
             return EqualsIgnoreName(o);
@@ -131,7 +129,6 @@ namespace OpenNLP.Tools.Util.Trees
             return thisHeadWord.Equals(headWord) && thisDepWord.Equals(depWord);
         }
 
-        //@Override
         public override string ToString()
         {
             return string.Format("{0} --> {1}", RegentText, DependentText);
@@ -178,7 +175,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// A <code>DependencyFactory</code> acts as a factory for creating objects 
         /// of class <code>Dependency</code>
         /// </summary>
-        private /*static*/ class UnnamedDependencyFactory : DependencyFactory
+        private class UnnamedDependencyFactory : DependencyFactory
         {
             /// <summary>
             /// Create a new <code>Dependency</code>.

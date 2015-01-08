@@ -56,55 +56,32 @@ namespace OpenNLP.Tools.Util.Trees
             this.tlp = tlp;
         }
 
-
-        /**
-   * Normalizes a leaf contents.
-   * This implementation interns the leaf.
-   */
-        //@Override
         /// <summary>
-        /// 
+        /// Normalizes a leaf contents.
+        /// This implementation interns the leaf.
         /// </summary>
-        /// <param name="leaf"></param>
-        /// <returns></returns>
         public override string NormalizeTerminal(string leaf)
         {
             // We could unquote * and / with backslash \ in front of them
             return leaf /*.intern()*/;
         }
 
-
-        /**
-   * Normalizes a nonterminal contents.
-   * This implementation strips functional tags, etc. and interns the
-   * nonterminal.
-   */
-        //@Override
         /// <summary>
-        /// 
+        /// Normalizes a nonterminal contents.
+        /// This implementation strips functional tags, etc. and interns the nonterminal.
         /// </summary>
-        /// <param name="category"></param>
-        /// <returns></returns>
         public override string NormalizeNonterminal(string category)
         {
             return CleanUpLabel(category) /*.intern()*/;
         }
 
-
-        /**
-   * Remove things like hyphened functional tags and equals from the
-   * end of a node label.  This version always just returns the phrase
-   * structure category, or "ROOT" if the label was <code>null</code>.
-   *
-   * @param label The label from the treebank
-   * @return The cleaned up label (phrase structure category)
-   */
-
         /// <summary>
-        /// 
+        /// Remove things like hyphened functional tags and equals from the
+        /// end of a node label.  This version always just returns the phrase
+        /// structure category, or "ROOT" if the label was <code>null</code>.
         /// </summary>
-        /// <param name="label"></param>
-        /// <returns></returns>
+        /// <param name="label">The label from the treebank</param>
+        /// <returns>The cleaned up label (phrase structure category)</returns>
         protected string CleanUpLabel( /*readonly */ string label)
         {
             if (string.IsNullOrEmpty(label))
@@ -118,20 +95,12 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-
-        /**
-   * Normalize a whole tree -- one can assume that this is the
-   * root.  This implementation deletes empty elements (ones with
-   * nonterminal tag label '-NONE-') from the tree, and splices out
-   * unary A over A nodes.  It does work for a null tree.
-   */
-        //@Override
         /// <summary>
-        /// 
+        /// Normalize a whole tree -- one can assume that this is the
+        /// root.  This implementation deletes empty elements (ones with
+        /// nonterminal tag label '-NONE-') from the tree, and splices out
+        /// unary A over A nodes.  It does work for a null tree.
         /// </summary>
-        /// <param name="tree"></param>
-        /// <param name="tf"></param>
-        /// <returns></returns>
         public override Tree NormalizeWholeTree(Tree tree, TreeFactory tf)
         {
             return tree.Prune(emptyFilter.Test, tf).SpliceOut(aOverAFilter.Test, tf);
@@ -150,7 +119,7 @@ namespace OpenNLP.Tools.Util.Trees
         private static readonly long serialVersionUID = -1005188028979810143L;
 
 
-        public /*static */ class EmptyFilter /*: Predicate<Tree>*/ /*, Serializable*/
+        public class EmptyFilter /*: Predicate<Tree>*/ /*, Serializable*/
         {
 
             private static readonly long serialVersionUID = 8914098359495987617L;
@@ -172,7 +141,7 @@ namespace OpenNLP.Tools.Util.Trees
         } // end class EmptyFilter
 
 
-        public /*static*/ class AOverAFilter /* : Predicate<Tree>*/ /*, Serializable*/
+        public class AOverAFilter /* : Predicate<Tree>*/ /*, Serializable*/
         {
             /// <summary>
             /// Doesn't accept nodes that are A over A nodes (perhaps due to

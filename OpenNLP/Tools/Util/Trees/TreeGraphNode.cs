@@ -135,7 +135,6 @@ namespace OpenNLP.Tools.Util.Trees
             return o == this;
         }
 
-        //@Override
         /*public override int GetHashCode() {
             return System.identityHashCode(this);
           }*/

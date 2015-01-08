@@ -21,8 +21,6 @@ namespace OpenNLP.Tools.Util
             elements[2] = trgt;
         }
 
-
-        //@Override
         public override IntTuple GetCopy()
         {
             var nT = new IntTriple(elements[0], elements[1], elements[2]);

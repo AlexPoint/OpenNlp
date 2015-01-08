@@ -117,14 +117,13 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
-   * Returns a factory for {@link PTBTokenizer}.
-   *
-   * @return A tokenizer
-   */
-        //@Override
+       * Returns a factory for {@link PTBTokenizer}.
+       *
+       * @return A tokenizer
+       */
         /*public TokenizerFactory<CoreLabel> getTokenizerFactory() {
-    return PTBTokenizer.coreLabelFactory();
-  }*/
+            return PTBTokenizer.coreLabelFactory();
+          }*/
 
         public override TokenizerFactory<HasWord> GetTokenizerFactory()
         {
@@ -149,21 +148,19 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
         /**
-   * Return a GrammaticalStructure suitable for this language/treebank.
-   * <p>
-   * <i>Note:</i> This is loaded by reflection so basic treebank use does not require all the Stanford Dependencies code.
-   *
-   * @return A GrammaticalStructure suitable for this language/treebank.
-   */
-        //@Override
+        * Return a GrammaticalStructure suitable for this language/treebank.
+        * <p>
+        * <i>Note:</i> This is loaded by reflection so basic treebank use does not require all the Stanford Dependencies code.
+        *
+        * @return A GrammaticalStructure suitable for this language/treebank.
+        */
         /*public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<string> puncFilter) {
-    return new EnglishGrammaticalStructureFactory(puncFilter);
-  }*/
+            return new EnglishGrammaticalStructureFactory(puncFilter);
+          }*/
 
-        //@Override
         /*public GrammaticalStructureFactory grammaticalStructureFactory(Predicate<string> puncFilter, HeadFinder hf) {
-    return new EnglishGrammaticalStructureFactory(puncFilter, hf);
-  }*/
+            return new EnglishGrammaticalStructureFactory(puncFilter, hf);
+          }*/
 
         public override bool SupportsGrammaticalStructures()
         {

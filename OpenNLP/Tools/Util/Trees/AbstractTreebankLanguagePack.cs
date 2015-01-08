@@ -346,7 +346,6 @@ namespace OpenNLP.Tools.Util.Trees
                 this.tlp = tlp;
             }
 
-            //@Override
             public string Apply(string input)
             {
                 return tlp.BasicCategory(input);
@@ -355,7 +354,7 @@ namespace OpenNLP.Tools.Util.Trees
         }
 
 
-        public /*static*/ class CategoryAndFunctionStringFunction /*implements Function<string,String>, Serializable */
+        public class CategoryAndFunctionStringFunction /*implements Function<string,String>, Serializable */
         {
 
             private static readonly long serialVersionUID = 1L;
@@ -487,9 +486,8 @@ namespace OpenNLP.Tools.Util.Trees
         *
         * @return The filter
         */
-            //@Override
-            /*public Predicate<string> startSymbolAcceptFilter() {
-        return startSymbolAcceptFilter;
+        /*public Predicate<string> startSymbolAcceptFilter() {
+            return startSymbolAcceptFilter;
         }*/
 
         /// <summary>
@@ -545,9 +543,8 @@ namespace OpenNLP.Tools.Util.Trees
         *
         * @return A tokenizer
         */
-            //@Override
-            /*public TokenizerFactory<HasWord> getTokenizerFactory() {
-        return WhitespaceTokenizer.factory(false);
+        /*public TokenizerFactory<HasWord> getTokenizerFactory() {
+            return WhitespaceTokenizer.factory(false);
         }*/
 
         /// <summary>

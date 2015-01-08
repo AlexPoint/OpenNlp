@@ -15,10 +15,6 @@ namespace OpenNLP.Tools.Util
     /// </summary>
     public abstract class MapFactory<K, V>
     {
-        // allow people to write subclasses
-        protected MapFactory()
-        {
-        }
 
         private static readonly long serialVersionUID = 4529666940763477360L;
 
@@ -129,33 +125,28 @@ namespace OpenNLP.Tools.Util
 
             private new static readonly long serialVersionUID = -9222344631596580863L;
 
-            //@Override
-            public override Dictionary<K, V> newMap()
+            public override Dictionary<K, V> NewMap()
             {
                 return new Dictionary<K, V>();
             }
 
-            //@Override
-            public override Dictionary<K, V> newMap(int initCapacity)
+            public override Dictionary<K, V> NewMap(int initCapacity)
             {
                 return new Dictionary<K, V>(initCapacity);
             }
 
-            //@Override
-            public override Set<K> newSet()
+            public override Set<K> NewSet()
             {
                 return new Set<K>();
             }
 
-            //@Override
-            public override /*<K1, V1>*/ Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1, V1> map)
+            public override /*<K1, V1>*/ Dictionary<K1, V1> SetMap<K1, V1>(Dictionary<K1, V1> map)
             {
                 map = new Dictionary<K1, V1>();
                 return map;
             }
 
-            //@Override
-            public override /*<K1, V1>*/ Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1, V1> map, int initCapacity)
+            public override /*<K1, V1>*/ Dictionary<K1, V1> SetMap<K1, V1>(Dictionary<K1, V1> map, int initCapacity)
             {
                 map = new Dictionary<K1, V1>(initCapacity);
                 return map;
@@ -166,162 +157,139 @@ namespace OpenNLP.Tools.Util
 
         /*private class IdentityHashMapFactory<K,V> : MapFactory<K,V> {
 
-    private static readonly long serialVersionUID = -9222344631596580863L;
+            private static readonly long serialVersionUID = -9222344631596580863L;
 
-    //@Override
-    public Dictionary<K,V> newMap() {
-      return new IdentityHashDictionary<K,V>();
-    }
+            public Dictionary<K,V> newMap() {
+              return new IdentityHashDictionary<K,V>();
+            }
 
-    //@Override
-    public Dictionary<K,V> newMap(int initCapacity) {
-      return new IdentityHashDictionary<K,V>(initCapacity);
-    }
+            public Dictionary<K,V> newMap(int initCapacity) {
+              return new IdentityHashDictionary<K,V>(initCapacity);
+            }
 
-    //@Override
-    public Set<K> newSet() {
-      return Collections.newSetFromMap(new IdentityHashDictionary<K, Boolean>());
-    }
+            public Set<K> newSet() {
+              return Collections.newSetFromMap(new IdentityHashDictionary<K, Boolean>());
+            }
 
-    //@Override
-    public /*<K1, V1>#1# Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1,V1> map) {
-      map = new IdentityHashDictionary<K1,V1>();
-      return map;
-    }
+            public /*<K1, V1>#1# Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1,V1> map) {
+              map = new IdentityHashDictionary<K1,V1>();
+              return map;
+            }
 
-    //@Override
-    public /*<K1, V1>#1# Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1,V1> map, int initCapacity) {
-      map = new IdentityHashDictionary<K1,V1>(initCapacity);
-      return map;
-    }
+            public /*<K1, V1>#1# Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1,V1> map, int initCapacity) {
+              map = new IdentityHashDictionary<K1,V1>(initCapacity);
+              return map;
+            }
 
-  } // end class IdentityHashMapFactory*/
+          } // end class IdentityHashMapFactory*/
 
 
         /*private static class WeakHashMapFactory<K,V> : MapFactory<K,V> {
 
-    private static readonly long serialVersionUID = 4790014244304941000L;
+            private static readonly long serialVersionUID = 4790014244304941000L;
 
-    //@Override
-    public override Dictionary<K,V> newMap() {
-      return new WeakHashDictionary<K,V>();
-    }
+            public override Dictionary<K,V> newMap() {
+              return new WeakHashDictionary<K,V>();
+            }
 
-    //@Override
-    public override Dictionary<K,V> newMap(int initCapacity) {
-      return new WeakHashDictionary<K,V>(initCapacity);
-    }
+            public override Dictionary<K,V> newMap(int initCapacity) {
+              return new WeakHashDictionary<K,V>(initCapacity);
+            }
 
-    //@Override
-    public override Set<K> newSet() {
-      return Collections.newSetFromMap(new WeakHashDictionary<K, Boolean>());
-    }
+            public override Set<K> newSet() {
+              return Collections.newSetFromMap(new WeakHashDictionary<K, Boolean>());
+            }
 
+            public override /*<K1, V1>#1# Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1,V1> map) {
+              //map = new WeakHashDictionary<K1,V1>();
+              map = new Dictionary<K1,V1>();
+              return map;
+            }
 
-    //@Override
-    public override /*<K1, V1>#1# Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1,V1> map) {
-      //map = new WeakHashDictionary<K1,V1>();
-      map = new Dictionary<K1,V1>();
-      return map;
-    }
+            public override /*<K1, V1>#1# Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1,V1> map, int initCapacity) {
+              //map = new WeakHashDictionary<K1,V1>(initCapacity);
+              map = new Dictionary<K1,V1>(initCapacity);
+              return map;
+            }
 
-    //@Override
-    public override /*<K1, V1>#1# Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1,V1> map, int initCapacity) {
-      //map = new WeakHashDictionary<K1,V1>(initCapacity);
-      map = new Dictionary<K1,V1>(initCapacity);
-      return map;
-    }
-
-  } // end class WeakHashMapFactory*/
+          } // end class WeakHashMapFactory*/
 
 
         /*private static class TreeMapFactory<K,V> : MapFactory<K,V> {
 
-    private static readonly long serialVersionUID = -9138736068025818670L;
+            private static readonly long serialVersionUID = -9138736068025818670L;
 
-    private readonly Comparator<? super K> comparator;
+            private readonly Comparator<? super K> comparator;
 
-    public TreeMapFactory() {
-      this.comparator = null;
-    }
+            public TreeMapFactory() {
+              this.comparator = null;
+            }
 
-    public TreeMapFactory(Comparator<? super K> comparator) {
-      this.comparator = comparator;
-    }
+            public TreeMapFactory(Comparator<? super K> comparator) {
+              this.comparator = comparator;
+            }
 
-    //@Override
-    public override Dictionary<K,V> newMap() {
-      //return comparator == null ? new TreeDictionary<K,V>() : new TreeDictionary<K,V>(comparator);
-      return comparator == null ? new Dictionary<K,V>() : new Dictionary<K,V>(comparator);
-    }
+            public override Dictionary<K,V> newMap() {
+              //return comparator == null ? new TreeDictionary<K,V>() : new TreeDictionary<K,V>(comparator);
+              return comparator == null ? new Dictionary<K,V>() : new Dictionary<K,V>(comparator);
+            }
 
-    //@Override
-    public override Dictionary<K,V> newMap(int initCapacity) {
-      return newMap();
-    }
+            public override Dictionary<K,V> newMap(int initCapacity) {
+              return newMap();
+            }
 
-    //@Override
-    public override Set<K> newSet() {
-      return comparator == null ? new TreeSet<K>() : new TreeSet<K>(comparator);
-    }
+            public override Set<K> newSet() {
+              return comparator == null ? new TreeSet<K>() : new TreeSet<K>(comparator);
+            }
 
+            public override/*<K1, V1>#1# Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1,V1> map) {
+              if (comparator == null) {
+                throw new UnsupportedOperationException();
+              }
+              map = new TreeDictionary<K1,V1>();
+              return map;
+            }
 
-    //@Override
-    public override/*<K1, V1>#1# Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1,V1> map) {
-      if (comparator == null) {
-        throw new UnsupportedOperationException();
-      }
-      map = new TreeDictionary<K1,V1>();
-      return map;
-    }
+            public override/*<K1, V1>#1# Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1,V1> map, int initCapacity) {
+              if (comparator == null) {
+                throw new NotSupportedException();
+              }
+              //map = new TreeDictionary<K1,V1>();
+              map = new Dictionary<K1,V1>();
+              return map;
+            }
 
-    //@Override
-    public override/*<K1, V1>#1# Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1,V1> map, int initCapacity) {
-      if (comparator == null) {
-        throw new NotSupportedException();
-      }
-      //map = new TreeDictionary<K1,V1>();
-      map = new Dictionary<K1,V1>();
-      return map;
-    }
-
-  } // end class TreeMapFactory*/
+          } // end class TreeMapFactory*/
 
         private class LinkedHashMapFactory<K, V> : MapFactory<K, V>
         {
 
             private new static readonly long serialVersionUID = -9138736068025818671L;
 
-            //@Override
-            public override Dictionary<K, V> newMap()
+            public override Dictionary<K, V> NewMap()
             {
                 //return new LinkedHashDictionary<K,V>();
                 return new Dictionary<K, V>();
             }
 
-            //@Override
-            public override Dictionary<K, V> newMap(int initCapacity)
+            public override Dictionary<K, V> NewMap(int initCapacity)
             {
-                return newMap();
+                return NewMap();
             }
 
-            //@Override
-            public override Set<K> newSet()
+            public override Set<K> NewSet()
             {
                 return new HashSet<K>();
             }
 
-
-            //@Override
-            public override /*<K1, V1>*/ Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1, V1> map)
+            public override /*<K1, V1>*/ Dictionary<K1, V1> SetMap<K1, V1>(Dictionary<K1, V1> map)
             {
                 //map = new LinkedHashDictionary<K1,V1>();
                 map = new Dictionary<K1, V1>();
                 return map;
             }
 
-            //@Override
-            public override /*<K1, V1>*/ Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1, V1> map, int initCapacity)
+            public override /*<K1, V1>*/ Dictionary<K1, V1> SetMap<K1, V1>(Dictionary<K1, V1> map, int initCapacity)
             {
                 //map = new LinkedHashDictionary<K1,V1>();
                 map = new Dictionary<K1, V1>();
@@ -336,34 +304,29 @@ namespace OpenNLP.Tools.Util
 
             private new static readonly long serialVersionUID = -5855812734715185523L;
 
-            //@Override
-            public override Dictionary<K, V> newMap()
+            public override Dictionary<K, V> NewMap()
             {
                 //return new ArrayDictionary<K,V>();
                 return new Dictionary<K, V>();
             }
 
-            //@Override
-            public override Dictionary<K, V> newMap(int initCapacity)
+            public override Dictionary<K, V> NewMap(int initCapacity)
             {
                 //return new ArrayDictionary<K,V>(initCapacity);
                 return new Dictionary<K, V>(initCapacity);
             }
 
-            //@Override
-            public override Set<K> newSet()
+            public override Set<K> NewSet()
             {
                 return new Set<K>();
             }
 
-            //@Override
-            public override /*<K1, V1>*/ Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1, V1> map)
+            public override /*<K1, V1>*/ Dictionary<K1, V1> SetMap<K1, V1>(Dictionary<K1, V1> map)
             {
                 return new /*ArrayDictionary*/ Dictionary<K1, V1>();
             }
 
-            //@Override
-            public override /*<K1, V1>*/ Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1, V1> map, int initCapacity)
+            public override /*<K1, V1>*/ Dictionary<K1, V1> SetMap<K1, V1>(Dictionary<K1, V1> map, int initCapacity)
             {
                 //map = new ArrayDictionary<K1,V1>(initCapacity);
                 map = new Dictionary<K1, V1>(initCapacity);
@@ -372,36 +335,30 @@ namespace OpenNLP.Tools.Util
 
         } // end class ArrayMapFactory
 
+        /// <summary>
+        /// Returns a new non-parameterized map of a particular sort
+        /// </summary>
+        public abstract Dictionary<K, V> NewMap();
 
-        /**
-   * Returns a new non-parameterized map of a particular sort.
-   *
-   * @return A new non-parameterized map of a particular sort
-   */
-        public abstract Dictionary<K, V> newMap();
+        /// <summary>
+        /// Returns a new non-parameterized map of a particular sort with an initial capacity.
+        /// </summary>
+        /// <param name="initCapacity">initial capacity of the map</param>
+        /// <returns> A new non-parameterized map of a particular sort with an initial capacity</returns>
+        public abstract Dictionary<K, V> NewMap(int initCapacity);
 
-        /**
-   * Returns a new non-parameterized map of a particular sort with an initial capacity.
-   *
-   * @param initCapacity initial capacity of the map
-   * @return A new non-parameterized map of a particular sort with an initial capacity
-   */
-        public abstract Dictionary<K, V> newMap(int initCapacity);
+        /// <summary>
+        /// A set with the same <code>K</code> parameterization of the Maps
+        /// </summary>
+        public abstract Set<K> NewSet();
 
-        /**
-   * A set with the same <code>K</code> parameterization of the Maps.
-   */
-        public abstract Set<K> newSet();
+        /// <summary>
+        /// A method to get a parameterized (genericized) map out.
+        /// </summary>
+        /// <param name="map">A type-parameterized {@link Map} argument</param>
+        /// <returns>A {@link Map} with type-parameterization identical to that of the argument</returns>
+        public abstract /*<K1, V1>*/ Dictionary<K1, V1> SetMap<K1, V1>(Dictionary<K1, V1> map);
 
-        /**
-   * A method to get a parameterized (genericized) map out.
-   *
-   * @param map A type-parameterized {@link Map} argument
-   * @return A {@link Map} with type-parameterization identical to that of
-   *         the argument.
-   */
-        public abstract /*<K1, V1>*/ Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1, V1> map);
-
-        public abstract /*<K1, V1>*/ Dictionary<K1, V1> setMap<K1, V1>(Dictionary<K1, V1> map, int initCapacity);
+        public abstract /*<K1, V1>*/ Dictionary<K1, V1> SetMap<K1, V1>(Dictionary<K1, V1> map, int initCapacity);
     }
 }

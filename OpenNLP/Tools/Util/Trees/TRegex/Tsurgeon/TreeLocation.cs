@@ -91,7 +91,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
         }
 
-        //@Override
         public override string ToString()
         {
             return relation + " " + child;

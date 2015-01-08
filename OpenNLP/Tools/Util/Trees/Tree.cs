@@ -2277,47 +2277,43 @@ namespace OpenNLP.Tools.Util.Trees
 
         /*private static class TreeIterator : Iterator<Tree> {
 
-    private readonly List<Tree> treeStack;
+            private readonly List<Tree> treeStack;
 
-    protected TreeIterator(Tree t) {
-      treeStack = new List<Tree>();
-      treeStack.Add(t);
-    }
+            protected TreeIterator(Tree t) {
+              treeStack = new List<Tree>();
+              treeStack.Add(t);
+            }
 
-    //@Override
-    public bool hasNext() {
-      return (treeStack.Any());
-    }
+            public bool hasNext() {
+              return (treeStack.Any());
+            }
 
-    //@Override
-    public Tree next() {
-      int lastIndex = treeStack.Count - 1;
-      if (lastIndex < 0) {
-        throw new NoSuchElementException("TreeIterator exhausted");
-      }
-      Tree tr = treeStack.Remove(lastIndex);
-      Tree[] kids = tr.children();
-      // so that we can efficiently use one List, we reverse them
-      for (int i = kids.Length - 1; i >= 0; i--) {
-        treeStack.Add(kids[i]);
-      }
-      return tr;
-    }
+            public Tree next() {
+              int lastIndex = treeStack.Count - 1;
+              if (lastIndex < 0) {
+                throw new NoSuchElementException("TreeIterator exhausted");
+              }
+              Tree tr = treeStack.Remove(lastIndex);
+              Tree[] kids = tr.children();
+              // so that we can efficiently use one List, we reverse them
+              for (int i = kids.Length - 1; i >= 0; i--) {
+                treeStack.Add(kids[i]);
+              }
+              return tr;
+            }
 
-    /**
-     * Not supported
-     #1#
-    //@Override
-    public void remove() {
-      throw new InvalidOperationException();
-    }
+            /**
+             * Not supported
+             #1#
+            public void remove() {
+              throw new InvalidOperationException();
+            }
 
-    //@Override
-    public override string ToString() {
-      return "TreeIterator";
-    }
+            public override string ToString() {
+              return "TreeIterator";
+            }
 
-  }*/
+          }*/
 
         public class TreeIterator : IEnumerator<Tree>
         {
@@ -2329,32 +2325,7 @@ namespace OpenNLP.Tools.Util.Trees
                 treeStack = new List<Tree>();
                 treeStack.Add(t);
             }
-
-            //@Override
-            /*public bool hasNext()
-      {
-          return (treeStack.Any());
-      }
-
-      //@Override
-      public Tree next()
-      {
-          int lastIndex = treeStack.Count - 1;
-          if (lastIndex < 0)
-          {
-              throw new IndexOutOfRangeException("TreeIterator exhausted");
-          }
-          Tree tr = treeStack[lastIndex];
-          treeStack.Remove(tr);
-          Tree[] kids = tr.children();
-          // so that we can efficiently use one List, we reverse them
-          for (int i = kids.Length - 1; i >= 0; i--)
-          {
-              treeStack.Add(kids[i]);
-          }
-          return tr;
-      }*/
-
+            
             public void Dispose()
             {
                 throw new NotImplementedException();

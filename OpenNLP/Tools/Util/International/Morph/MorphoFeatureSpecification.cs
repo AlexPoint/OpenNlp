@@ -73,10 +73,9 @@ namespace OpenNLP.Tools.Util.International.Morph
 
         public abstract MorphoFeatures StrToFeatures(string spec);
 
-        /**
-   * Returns the lemma as pair.first() and the morph analysis as pair.second().
-   */
-
+        /// <summary>
+        /// Returns the lemma as pair.first() and the morph analysis as pair.second()
+        /// </summary>
         public static Tuple<string, string> SplitMorphString(string word, string morphStr)
         {
             if (morphStr == null || morphStr.Trim().Equals(""))
@@ -92,7 +91,6 @@ namespace OpenNLP.Tools.Util.International.Morph
         }
 
 
-        //@Override
         public override string ToString()
         {
             return ActiveFeatures.ToString();

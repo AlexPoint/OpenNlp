@@ -79,7 +79,6 @@ namespace OpenNLP.Tools.Util.Ling
             this.vTag = tag;
         }
 
-        //@Override
         public override string ToString()
         {
             return ToString(Divider);

@@ -106,7 +106,6 @@ namespace OpenNLP.Tools.Util
             return elements;
         }
 
-        //@Override
         public override bool Equals(Object iO)
         {
             if (!(iO is IntTuple))
@@ -128,8 +127,6 @@ namespace OpenNLP.Tools.Util
             return true;
         }
 
-
-        //@Override
         public override int GetHashCode()
         {
             int sum = 0;
@@ -139,14 +136,12 @@ namespace OpenNLP.Tools.Util
             }
             return sum;
         }
-
-
+        
         public int Length()
         {
             return elements.Length;
         }
-
-
+        
         public static IntTuple GetIntTuple(int num)
         {
             if (num == 1)
@@ -170,8 +165,7 @@ namespace OpenNLP.Tools.Util
                 return new IntTuple(num);
             }
         }
-
-
+        
         public static IntTuple GetIntTuple(List<int> integers)
         {
             IntTuple t = IntTuple.GetIntTuple(integers.Count);
@@ -182,7 +176,6 @@ namespace OpenNLP.Tools.Util
             return t;
         }
 
-        //@Override
         public override string ToString()
         {
             var name = new StringBuilder();
@@ -196,8 +189,7 @@ namespace OpenNLP.Tools.Util
             }
             return name.ToString();
         }
-
-
+        
         public static IntTuple Concat(IntTuple t1, IntTuple t2)
         {
             int n1 = t1.Length();

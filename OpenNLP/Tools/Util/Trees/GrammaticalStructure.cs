@@ -1408,7 +1408,6 @@ namespace OpenNLP.Tools.Util.Trees
       this.params = params;
     }
 
-    //@Override
     public Iterator<GrammaticalStructure> iterator() {
       return new GsIterator();
     }

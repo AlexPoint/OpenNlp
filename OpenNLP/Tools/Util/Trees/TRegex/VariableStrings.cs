@@ -86,7 +86,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex
             return varsToStrings[var];
         }
 
-        //@Override
         public override string ToString()
         {
             var s = new StringBuilder();

@@ -164,17 +164,15 @@ namespace OpenNLP.Tools.Util
             return new Set<Type>(keys);
 
             /*return new AbstractSet<Class<?>>() {
-      //@Override
+      
       public Iterator<Class<?>> iterator() {
         return new Iterator<Class<?>>() {
           private int i; // = 0;
 
-          //@Override
           public bool hasNext() {
             return i < size;
           }
 
-          //@Override
           public Class<?> next() {
             try {
               return keys[i++];
@@ -183,7 +181,6 @@ namespace OpenNLP.Tools.Util
             }
           }
 
-          //@Override
           //@SuppressWarnings("unchecked")
           public void remove() {
             ArrayCoreMap.this.remove((Class)keys[i]);
@@ -191,7 +188,6 @@ namespace OpenNLP.Tools.Util
         };
       }
 
-      //@Override
       public int size() {
         return size;
       }
@@ -266,7 +262,6 @@ namespace OpenNLP.Tools.Util
    * Returns the number of elements in this map.
    * @return The number of elements in this map.
    */
-        //@Override
         /*public int size() {
     return size;
   }*/
@@ -282,7 +277,7 @@ namespace OpenNLP.Tools.Util
             new ThreadLocal<IdentityHashSet<CoreMap>>()
             {
 /*
-            //@Override protected IdentityHashSet<CoreMap> initialValue() {
+            protected IdentityHashSet<CoreMap> initialValue() {
               return new IdentityHashSet<CoreMap>();
             }*/
             };
@@ -667,7 +662,6 @@ namespace OpenNLP.Tools.Util
         /**
    * {@inheritDoc}
    */
-        //@Override
         //@SuppressWarnings("unchecked")
         /*public void prettyLog(RedwoodChannels channels, string description) {
     Redwood.startTrack(description);

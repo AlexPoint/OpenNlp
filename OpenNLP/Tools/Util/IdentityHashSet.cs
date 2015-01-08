@@ -109,7 +109,6 @@ namespace OpenNLP.Tools.Util
    *
    *  @return a shallow copy of this set.
    */
-        //@Override
         /*public Object clone() {
     Iterator<T> it = iterator();
     IdentityHashSet<T> clone = new IdentityHashSet<T>(/*size() * 2#1#);
@@ -144,7 +143,6 @@ namespace OpenNLP.Tools.Util
    *
    *  @return an <code>Iterator</code> over the elements in this set.
    */
-        //@Override
         /*public Iterator<E> iterator() {
     return map.keySet().iterator();
   }*/

@@ -24,7 +24,6 @@ namespace OpenNLP.Tools.Util
         }
 
 
-        //@Override
         public override IntTuple GetCopy()
         {
             var nT = new IntQuadruple(elements[0], elements[1], elements[2], elements[3]);

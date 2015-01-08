@@ -75,13 +75,11 @@ namespace OpenNLP.Tools.Util.Trees
             return depIndex;
         }
 
-        //@Override
         public override int GetHashCode()
         {
             return headIndex*(depIndex << 16);
         }
 
-        //@Override
         public override bool Equals(Object o)
         {
             if (this == o)
@@ -96,7 +94,6 @@ namespace OpenNLP.Tools.Util.Trees
             return headIndex == d.headIndex && depIndex == d.depIndex;
         }
 
-        //@Override
         public override string ToString()
         {
             string headWord = GetText(Governor());
@@ -126,7 +123,6 @@ namespace OpenNLP.Tools.Util.Trees
             }
         }
 
-        //@Override
         public override DependencyFactory DependencyFactory()
         {
             return DependencyFactoryHolder.df;
@@ -147,7 +143,7 @@ namespace OpenNLP.Tools.Util.Trees
         /// A <code>DependencyFactory</code> acts as a factory for creating objects
         /// of class <code>Dependency</code>
         /// </summary>
-        private /*static */ class UnnamedConcreteDependencyFactory : DependencyFactory
+        private class UnnamedConcreteDependencyFactory : DependencyFactory
         {
             /// <summary>
             /// Create a new <code>Dependency</code>.

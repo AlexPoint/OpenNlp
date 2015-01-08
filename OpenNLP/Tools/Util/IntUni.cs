@@ -17,14 +17,12 @@ namespace OpenNLP.Tools.Util
         public IntUni() : base(1)
         {
         }
-
-
+        
         public IntUni(int src) : this()
         {
             elements[0] = src;
         }
-
-
+        
         public int GetSource()
         {
             return elements[0];
@@ -35,8 +33,6 @@ namespace OpenNLP.Tools.Util
             elements[0] = src;
         }
 
-
-        //@Override
         public override IntTuple GetCopy()
         {
             var nT = new IntUni(elements[0]);

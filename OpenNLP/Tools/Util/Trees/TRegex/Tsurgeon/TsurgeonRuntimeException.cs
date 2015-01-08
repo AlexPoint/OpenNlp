@@ -6,22 +6,19 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
-    /**
- * Something has gone wrong internally in Tsurgeon
- *
- * @author John Bauer
- */
-
+    /// <summary>
+    /// Something has gone wrong internally in Tsurgeon
+    /// 
+    /// @author John Bauer
+    /// </summary>
     public class TsurgeonRuntimeException : SystemException
     {
         private static readonly long serialVersionUID = 1;
 
-        /**
-   * Creates a new exception with a message.
-   *
-   * @param message the message for the exception
-   */
-
+        /// <summary>
+        /// Creates a new exception with a message.
+        /// </summary>
+        /// <param name="message">the message for the exception</param>
         public TsurgeonRuntimeException(string message) : base(message)
         {
         }

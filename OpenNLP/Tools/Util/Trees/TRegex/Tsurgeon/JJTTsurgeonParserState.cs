@@ -7,16 +7,19 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
-    public class JJTTsurgeonParserState
+    
+    public class JjtTsurgeonParserState
     {
         private readonly List<Node> nodes;
         private readonly List<int> marks;
 
-        private int sp; // number of nodes on stack
-        private int mk; // current mark
+        /// <summary>number of nodes on stack</summary>
+        private int sp;
+        /// <summary>current mark</summary>
+        private int mk;
         private bool node_created;
 
-        public JJTTsurgeonParserState()
+        public JjtTsurgeonParserState()
         {
             nodes = new List<Node>();
             marks = new List<int>();
@@ -24,18 +27,19 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             mk = 0;
         }
 
-        /* Determines whether the current node was actually closed and
-     pushed.  This should only be called in the final user action of a
-     node scope.  */
-
+        /// <summary>
+        /// Determines whether the current node was actually closed and pushed.
+        /// This should only be called in the final user action of a node scope.
+        /// </summary>
         public bool NodeCreated()
         {
             return node_created;
         }
 
-        /* Call this to reinitialize the node stack.  It is called
-     automatically by the parser's ReInit() method. */
-
+        /// <summary>
+        /// Call this to reinitialize the node stack.
+        /// It is called automatically by the parser's ReInit() method.
+        /// </summary>
         public void Reset()
         {
             nodes.Clear();
@@ -44,25 +48,26 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             mk = 0;
         }
 
-        /* Returns the root node of the AST.  It only makes sense to call
-     this after a successful parse. */
-
+        /// <summary>
+        /// Returns the root node of the AST.  It only makes sense to call this after a successful parse.
+        /// </summary>
         public Node RootNode()
         {
             return nodes[0];
         }
 
-        /* Pushes a node on to the stack. */
-
+        /// <summary>
+        /// Pushes a node on to the stack
+        /// </summary>
         public void PushNode(Node n)
         {
             nodes.Add(n);
             ++sp;
         }
 
-        /* Returns the node on the top of the stack, and remove it from the
-     stack.  */
-
+        /// <summary>
+        /// Returns the node on the top of the stack, and remove it from the stack.
+        /// </summary>
         public Node PopNode()
         {
             if (--sp < mk)
@@ -77,16 +82,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             //return nodes.remove(nodes.size() - 1);
         }
 
-        /* Returns the node currently on the top of the stack. */
-
+        /// <summary>
+        /// Returns the node currently on the top of the stack.
+        /// </summary>
         public Node PeekNode()
         {
             return nodes[nodes.Count - 1];
         }
 
-        /* Returns the number of children on the stack in the current node
-     scope. */
-
+        /// <summary>
+        /// Returns the number of children on the stack in the current node scope.
+        /// </summary>
         public int NodeArity()
         {
             return sp - mk;
@@ -112,12 +118,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             n.JjtOpen();
         }
 
-
-        /* A definite node is constructed from a specified number of
-     children.  That number of nodes are popped from the stack and
-     made the children of the definite node.  Then the definite node
-     is pushed on to the stack. */
-
+        /// <summary>
+        /// A definite node is constructed from a specified number of children.
+        /// That number of nodes are popped from the stack and
+        /// made the children of the definite node.
+        /// Then the definite node is pushed on to the stack.
+        /// </summary>
         public void CloseNodeScope(Node n, int num)
         {
             //mk = marks.remove(marks.size()-1);
@@ -135,12 +141,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
 
-        /* A conditional node is constructed if its condition is true.  All
-     the nodes that have been pushed since the node was opened are
-     made children of the conditional node, which is then pushed
-     on to the stack.  If the condition is false the node is not
-     constructed and they are left on the stack. */
-
+        /// <summary>
+        /// A conditional node is constructed if its condition is true.
+        /// All the nodes that have been pushed since the node was opened are
+        /// made children of the conditional node, which is then pushed
+        /// on to the stack.  If the condition is false the node is not
+        /// constructed and they are left on the stack.
+        /// </summary>
         public void CloseNodeScope(Node n, bool condition)
         {
             if (condition)

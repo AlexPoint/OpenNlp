@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
-    /**
- * Executes the give children only if the named Tregex node exists in
- * the TregexMatcher at match time (allows for OR relations or
- * optional relations)
- *
- * @author John Bauer (horatio@gmail.com)
- */
-
+    /// <summary>
+    /// Executes the give children only if the named Tregex node exists in
+    /// the TregexMatcher at match time (allows for OR relations or
+    /// optional relations)
+    /// 
+    /// @author John Bauer (horatio@gmail.com)
+    /// </summary>
     public class IfExistsNode : TsurgeonPattern
     {
         private readonly string name;
@@ -26,7 +25,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             this.invert = invert;
         }
 
-        //@Override
         public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
@@ -42,12 +40,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 this.node = node;
             }
 
-            //@Override
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
                 if (node.invert ^ (tregex.GetNode(node.name) != null))
                 {
-                    foreach (TsurgeonMatcher child in childMatcher)
+                    foreach (TsurgeonMatcher child in ChildMatcher)
                     {
                         child.Evaluate(tree, tregex);
                     }

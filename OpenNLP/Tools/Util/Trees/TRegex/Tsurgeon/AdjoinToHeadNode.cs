@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
-    /** Adjoin in a tree (like in TAG), but retain the target of adjunction as the root of the auxiliary tree.
- * @author Roger Levy (rog@nlp.stanford.edu)
- */
-
+    /// <summary>
+    /// Adjoin in a tree (like in TAG), but retain the target of adjunction as the root of the auxiliary tree.
+    /// 
+    /// @author Roger Levy (rog@nlp.stanford.edu)
+    /// </summary>
     public class AdjoinToHeadNode : AdjoinNode
     {
         public AdjoinToHeadNode(AuxiliaryTree t, TsurgeonPattern p) :
@@ -17,7 +18,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
         }
 
-        //@Override
         public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
@@ -34,16 +34,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 this.node = node;
             }
 
-            //@Override
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
                 // find match
-                Tree targetNode = childMatcher[0].Evaluate(tree, tregex);
+                Tree targetNode = ChildMatcher[0].Evaluate(tree, tregex);
                 // put children underneath target in foot of auxilary tree
                 AuxiliaryTree ft = node.AdjunctionTree().Copy(this);
-                ft.foot.SetChildren(targetNode.GetChildrenAsList());
+                ft.Foot.SetChildren(targetNode.GetChildrenAsList());
                 // put children of auxiliary tree under target.  root of auxiliary tree is ignored.  root of original is maintained.
-                targetNode.SetChildren(ft.tree.GetChildrenAsList());
+                targetNode.SetChildren(ft.Tree.GetChildrenAsList());
                 return tree;
             }
         }

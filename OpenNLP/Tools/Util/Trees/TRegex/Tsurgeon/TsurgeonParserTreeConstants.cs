@@ -8,19 +8,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
     public abstract class TsurgeonParserTreeConstants : TsurgeonParserConstants
     {
-        public int JJTROOT = 0;
-        public int JJTOPERATION = 1;
-        public int JJTLOCATION = 2;
-        public int JJTNODESELECTIONLIST = 3;
-        public int JJTNODESELECTION = 4;
-        public int JJTNODENAME = 5;
-        public int JJTTREELIST = 6;
-        public int JJTTREEROOT = 7;
-        public int JJTTREENODE = 8;
-        public int JJTTREEDTRS = 9;
+        public int JjtRoot = 0;
+        public int JjtOperation = 1;
+        public int JjtLocation = 2;
+        public int JjtNodeSelectionList = 3;
+        public int JjtNodeSelection = 4;
+        public int JjtNodeName = 5;
+        public int JjtTreeList = 6;
+        public int JjtTreeRoot = 7;
+        public int JjtTreeNode = 8;
+        public int JjtTreeDtrs = 9;
 
-
-        public static string[] jjtNodeName =
+        public static string[] JjtNodeNames =
         {
             "Root",
             "Operation",

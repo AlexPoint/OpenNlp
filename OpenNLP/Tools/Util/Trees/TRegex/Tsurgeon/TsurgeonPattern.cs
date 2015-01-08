@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
-    /**
- * An abstract class for patterns to manipulate {@link Tree}s when
- * successfully matched on with a {@link TregexMatcher}.
- *
- * @author Roger Levy
- */
-
+    /// <summary>
+    /// An abstract class for patterns to manipulate {@link Tree}s when
+    /// successfully matched on with a {@link TregexMatcher}.
+    /// 
+    /// @author Roger Levy
+    /// </summary>
     public abstract class TsurgeonPattern
     {
-        public static readonly TsurgeonPattern[] EMPTY_TSURGEON_PATTERN_ARRAY = new TsurgeonPattern[0];
+                public static readonly TsurgeonPattern[] EmptyTsurgeonPatternArray = new TsurgeonPattern[0];
 
         public readonly string label;
         public readonly TsurgeonPattern[] children;
@@ -31,20 +30,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
         }
 
-        /**
-   * In some cases, the order of the children has special meaning.
-   * For example, in the case of ReplaceNode, the first child will
-   * evaluate to the node to be replaced, and the other(s) will
-   * evaluate to the replacement.
-   */
-
+        /// <summary>
+        /// In some cases, the order of the children has special meaning.
+        /// For example, in the case of ReplaceNode, the first child will
+        /// evaluate to the node to be replaced, and the other(s) will
+        /// evaluate to the replacement.
+        /// </summary>
         public TsurgeonPattern(string label, TsurgeonPattern[] children)
         {
             this.label = label;
             this.children = children;
         }
 
-        //@Override
         public override string ToString()
         {
             var resultSb = new StringBuilder();

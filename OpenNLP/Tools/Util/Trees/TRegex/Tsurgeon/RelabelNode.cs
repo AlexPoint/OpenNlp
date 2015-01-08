@@ -10,39 +10,40 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
     public class RelabelNode : TsurgeonPattern
     {
-        // Overly complicated pattern to identify regexes surrounded by /,
-        // possibly with / escaped inside the regex.  
-        // The purpose of the [^/]*[^/\\\\] is to match characters that
-        // aren't / and to allow escaping of other characters.
-        // The purpose of the \\\\/ is to allow escaped / inside the pattern.
-        // The purpose of the \\\\\\\\ is to allow escaped \ at the end of
-        // the pattern, so you can match, for example, /\\/.  There need to
-        // be 8x\ because both java and regexes need escaping, resulting in 4x.
+        /// <summary>
+        /// Overly complicated pattern to identify regexes surrounded by /,
+        /// possibly with / escaped inside the regex.  
+        /// The purpose of the [^/]*[^/\\\\] is to match characters that
+        /// aren't / and to allow escaping of other characters.
+        /// The purpose of the \\\\/ is to allow escaped / inside the pattern.
+        /// The purpose of the \\\\\\\\ is to allow escaped \ at the end of
+        /// the pattern, so you can match, for example, /\\/.  There need to
+        /// be 8x\ because both java and regexes need escaping, resulting in 4x.
+        /// </summary>
         private const string RegexPatternString = "((?:(?:[^/]*[^/\\\\])|\\\\/)*(?:\\\\\\\\)*)";
-
         private static readonly Regex RegexPattern = new Regex("/" + RegexPatternString + "/");
 
-        /**
-   * This pattern finds relabel snippets that use a named node.
-   */
+        /// <summary>
+        /// This pattern finds relabel snippets that use a named node.
+        /// </summary>
         private const string NodePatternString = "(=\\{[a-zA-Z0-9_]+\\})";
         private static readonly Regex NodePattern = new Regex(NodePatternString);
-        /**
-   * This pattern finds relabel snippets that use a captured variable.
-   */
+        
+        /// <summary>
+        /// This pattern finds relabel snippets that use a captured variable
+        /// </summary>
         private const string VariablePatternString = "(%\\{[a-zA-Z0-9_]+\\})";
         private static readonly Regex VariablePattern = new Regex(VariablePatternString);
-        /**
-   * Finds one chunk of a general relabel operation, either named node
-   * or captured variable
-   */
-
+        
+        /// <summary>
+        /// Finds one chunk of a general relabel operation, either named node or captured variable
+        /// </summary>
         private const string OneGeneralReplacement = ("(" + NodePatternString + "|" + VariablePatternString + ")");
         private static readonly Regex OneGeneralReplacementPattern = new Regex(OneGeneralReplacement);
 
-        /**
-   * Identifies a node using the regex replacement strategy.
-   */
+        /// <summary>
+        /// Identifies a node using the regex replacement strategy
+        /// </summary>
         private static readonly Regex SubstPattern = new Regex("/" + RegexPatternString + "/(.*)/");
 
         private enum RelabelMode
@@ -52,9 +53,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         };
 
         private readonly RelabelMode mode;
-
         private readonly string newLabel;
-
         private readonly Regex labelRegex;
         private readonly string replacementString;
         private readonly List<string> replacementPieces;
@@ -146,8 +145,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             return output.ToString();
         }
 
-
-        //@Override
         public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new RelabelMatcher(newNodeNames, coindexer, this);
@@ -164,10 +161,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 this.node = node;
             }
 
-            //@Override
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree nodeToRelabel = childMatcher[0].Evaluate(tree, tregex);
+                Tree nodeToRelabel = ChildMatcher[0].Evaluate(tree, tregex);
                 switch (node.mode)
                 {
                     case RelabelMode.Fixed:
@@ -213,7 +209,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
         }
 
-        //@Override
         public override string ToString()
         {
             string result;

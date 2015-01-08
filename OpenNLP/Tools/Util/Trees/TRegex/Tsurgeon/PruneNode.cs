@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
-    /**  Pruning differs from deleting in that if a non-terminal node winds up having no children, it is pruned as well.
- * @author Roger Levy (rog@nlp.stanford.edu)
- */
-
+    /// <summary>
+    /// Pruning differs from deleting in that if a non-terminal node winds up having no children, it is pruned as well.
+    /// 
+    /// @author Roger Levy (rog@nlp.stanford.edu)
+    /// </summary>
     public class PruneNode : TsurgeonPattern
     {
         public PruneNode(TsurgeonPattern[] children) :
@@ -22,7 +23,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
         }
 
-        //@Override
         public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
@@ -38,11 +38,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 this.node = node;
             }
 
-            //@Override
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
                 bool prunedWholeTree = false;
-                foreach (TsurgeonMatcher child in childMatcher)
+                foreach (TsurgeonMatcher child in ChildMatcher)
                 {
                     Tree nodeToPrune = child.Evaluate(tree, tregex);
                     if (PruneHelper(tree, nodeToPrune) == null)

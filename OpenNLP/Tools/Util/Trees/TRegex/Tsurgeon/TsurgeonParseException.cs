@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
+    /// <summary>
+    ///  A runtime exception that indicates something went wrong parsing a
+    /// Tsurgeon expression.  The purpose is to make those exceptions
+    /// unchecked exceptions, as there are only a few circumstances in
+    /// which one could recover.
+    /// 
+    /// @author John Bauer
+    /// </summary>
     public class TsurgeonParseException : SystemException
     {
         private static readonly long serialVersionUID = -4417368416943652737L;

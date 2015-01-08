@@ -10,10 +10,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     {
         private readonly TreeLocation location;
 
-        /**
-   * Does the item being inserted need to be deep-copied before
-   * insertion?
-   */
+        // TODO Does the item being inserted need to be deep-copied before insertion?
         private readonly bool needsCopy = true;
 
         public InsertNode(TsurgeonPattern child, TreeLocation l) :
@@ -22,7 +19,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             this.location = l;
         }
 
-        //@Override
         public override void SetRoot(TsurgeonPatternRoot root)
         {
             base.SetRoot(root);
@@ -32,12 +28,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         public InsertNode(AuxiliaryTree t, TreeLocation l) :
             this(new HoldTreeNode(t), l)
         {
-
             // Copy occurs in HoldTreeNode's `evaluate` method
             needsCopy = false;
         }
 
-        //@Override
         public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
@@ -55,10 +49,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 locationMatcher = node.location.Matcher(newNodeNames, coindexer);
             }
 
-            //@Override
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree nodeToInsert = childMatcher[0].Evaluate(tree, tregex);
+                Tree nodeToInsert = ChildMatcher[0].Evaluate(tree, tregex);
                 Tuple<Tree, int> position = locationMatcher.Evaluate(tree, tregex);
                 position.Item1.InsertDtr(this.node.needsCopy ? nodeToInsert.DeepCopy() : nodeToInsert,
                     position.Item2);
@@ -66,7 +59,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
         }
 
-        //@Override
         public override string ToString()
         {
             return label + '(' + children[0] + ',' + location + ')';

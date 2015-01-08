@@ -13,12 +13,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         private readonly AuxiliaryTree subTree;
 
         public HoldTreeNode(AuxiliaryTree t) :
-            base("hold", TsurgeonPattern.EMPTY_TSURGEON_PATTERN_ARRAY)
+            base("hold", TsurgeonPattern.EmptyTsurgeonPatternArray)
         {
             this.subTree = t;
         }
 
-        //@Override
         public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
@@ -34,14 +33,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 this.node = node;
             }
 
-            //@Override
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                return node.subTree.Copy(this).tree;
+                return node.subTree.Copy(this).Tree;
             }
         }
 
-        //@Override
         public override string ToString()
         {
             return subTree.ToString();

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
-    /** Does a delete (NOT prune!) + insert operation
- * @author Roger Levy (rog@stanford.edu)
- */
-
+    /// <summary>
+    /// Does a delete (NOT prune!) + insert operation
+    /// 
+    /// @author Roger Levy (rog@stanford.edu)
+    /// </summary>
     public class MoveNode : TsurgeonPattern
     {
         private readonly TreeLocation location;
@@ -20,14 +21,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             this.location = l;
         }
 
-        //@Override
         public override void SetRoot(TsurgeonPatternRoot root)
         {
             base.SetRoot(root);
             location.SetRoot(root);
         }
 
-        //@Override
         public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
@@ -45,10 +44,9 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 locationMatcher = node.location.Matcher(newNodeNames, coindexer);
             }
 
-            //@Override
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree nodeToMove = childMatcher[0].Evaluate(tree, tregex);
+                Tree nodeToMove = ChildMatcher[0].Evaluate(tree, tregex);
                 Tree oldParent = nodeToMove.Parent(tree);
                 oldParent.RemoveChild(Trees.ObjectEqualityIndexOf(oldParent, nodeToMove));
                 Tuple<Tree, int> position = locationMatcher.Evaluate(tree, tregex);
@@ -57,7 +55,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
         }
 
-        //@Override
         public override string ToString()
         {
             return label + "(" + children[0] + " " + location + ")";

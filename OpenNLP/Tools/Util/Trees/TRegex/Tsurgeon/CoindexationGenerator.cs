@@ -9,11 +9,11 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
     public class CoindexationGenerator
     {
-        /**
-   * We require at least one character before the - so that negative
-   * numbers do not get treated as indexed nodes.  This seems more
-   * likely than a node having an index on an otherwise blank label.
-   */
+        /// <summary>
+        /// We require at least one character before the - so that negative
+        /// numbers do not get treated as indexed nodes.  This seems more
+        /// likely than a node having an index on an otherwise blank label.
+        /// </summary>
         private static readonly Regex coindexationPattern = new Regex(".+?-([0-9]+)$", RegexOptions.Compiled);
 
         private int lastIndex;

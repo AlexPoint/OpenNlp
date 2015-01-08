@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
-    /**
- * Given the start and end children of a particular node, takes all
- * children between start and end (including the endpoints) and
- * combines them in a new node with the given label.
- *
- * @author John Bauer
- */
-
+    /// <summary>
+    /// Given the start and end children of a particular node, takes all
+    /// children between start and end (including the endpoints) and
+    /// combines them in a new node with the given label.
+    /// 
+    /// @author John Bauer
+    /// </summary>
     public class CreateSubtreeNode : TsurgeonPattern
     {
         private readonly AuxiliaryTree auxTree;
@@ -33,25 +32,24 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         }
 
         /**
-   * We want to support a command syntax where a simple node label can
-   * be given (i.e., without using a tree literal).
-   *
-   * Check if this syntax is being used, and simulate a foot if so.
-   */
+         * We want to support a command syntax where a simple node label can
+         * be given (i.e., without using a tree literal).
+         * 
+         * Check if this syntax is being used, and simulate a foot if so.
+         */
 
         private void FindFoot()
         {
-            if (auxTree.foot == null)
+            if (auxTree.Foot == null)
             {
-                if (!auxTree.tree.IsLeaf())
+                if (!auxTree.Tree.IsLeaf())
                     throw new TsurgeonParseException("No foot node found for " + auxTree);
 
                 // Pretend this leaf is a foot node
-                auxTree.foot = auxTree.tree;
+                auxTree.Foot = auxTree.Tree;
             }
         }
 
-        //@Override
         public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
@@ -69,15 +67,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             }
 
             /**
-     * Combines all nodes between start and end into one subtree, then
-     * replaces those nodes with the new subtree in the corresponding
-     * location under parent
-     */
-            //@Override
+             * Combines all nodes between start and end into one subtree, then
+             * replaces those nodes with the new subtree in the corresponding
+             * location under parent
+             */
+
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree startChild = childMatcher[0].Evaluate(tree, tregex);
-                Tree endChild = (childMatcher.Length == 2) ? childMatcher[1].Evaluate(tree, tregex) : startChild;
+                Tree startChild = ChildMatcher[0].Evaluate(tree, tregex);
+                Tree endChild = (ChildMatcher.Length == 2) ? ChildMatcher[1].Evaluate(tree, tregex) : startChild;
 
                 Tree parent = startChild.Parent(tree);
 
@@ -114,8 +112,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                             innerChildren.Add(child);
 
                             // All children have been collected; place these beneath the foot of the auxiliary tree
-                            treeCopy.foot.SetChildren(innerChildren);
-                            children.Add(treeCopy.tree);
+                            treeCopy.Foot.SetChildren(innerChildren);
+                            children.Add(treeCopy.Tree);
                         }
                     }
                     else if (insideSpan)

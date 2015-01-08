@@ -9,12 +9,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     public class FetchNode : TsurgeonPattern
     {
         public FetchNode(string nodeName) :
-            base(nodeName, TsurgeonPattern.EMPTY_TSURGEON_PATTERN_ARRAY)
+            base(nodeName, TsurgeonPattern.EmptyTsurgeonPatternArray)
         {
         }
 
-
-        //@Override
         public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
@@ -30,18 +28,17 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 this.node = node;
             }
 
-            //@Override
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree result = newNodeNames[node.label];
+                Tree result = NewNodeNames[node.label];
                 if (result == null)
                 {
                     result = tregex.GetNode(node.label);
                 }
                 /*if (result == null) {
-        System.err.println("Warning -- null node fetched by Tsurgeon operation for node: " + this +
-                           " (either no node labeled this, or the labeled node didn't match anything)");
-      }*/
+                    System.err.println("Warning -- null node fetched by Tsurgeon operation for node: " + this +
+                                       " (either no node labeled this, or the labeled node didn't match anything)");
+                  }*/
                 return result;
             }
         }

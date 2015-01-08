@@ -10,18 +10,18 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
     public class AuxiliaryTree
     {
         private readonly string originalTreeString;
-        public readonly Tree tree;
-        public Tree foot;
-        private readonly IdentityDictionary<Tree, string> nodesToNames; // no one else should be able to get this one.
-        private readonly Dictionary<string, Tree> pnamesToNodes; // this one has a getter.
+        public readonly Tree Tree;
+        public Tree Foot;
+        private readonly IdentityDictionary<Tree, string> nodesToNames;
+        private readonly Dictionary<string, Tree> pnamesToNodes;
 
 
         public AuxiliaryTree(Tree tree, bool mustHaveFoot)
         {
             originalTreeString = tree.ToString();
-            this.tree = tree;
-            this.foot = FindFootNode(tree);
-            if (foot == null && mustHaveFoot)
+            this.Tree = tree;
+            this.Foot = FindFootNode(tree);
+            if (Foot == null && mustHaveFoot)
             {
                 throw new TsurgeonParseException("Error -- no foot node found for " + originalTreeString);
             }
@@ -33,8 +33,8 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         private AuxiliaryTree(Tree tree, Tree foot, Dictionary<string, Tree> namesToNodes, string originalTreeString)
         {
             this.originalTreeString = originalTreeString;
-            this.tree = tree;
-            this.foot = foot;
+            this.Tree = tree;
+            this.Foot = foot;
             this.pnamesToNodes = namesToNodes;
             nodesToNames = null;
         }
@@ -44,37 +44,34 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             return pnamesToNodes;
         }
 
-        //@Override
         public override string ToString()
         {
             return originalTreeString;
         }
 
-        /**
-   * Copies the Auxiliary tree.  Also, puts the new names->nodes map in the TsurgeonMatcher that called copy.
-   */
-
+        /// <summary>
+        /// Copies the Auxiliary tree.  Also, puts the new names->nodes map in the TsurgeonMatcher that called copy.
+        /// </summary>
         public AuxiliaryTree Copy(TsurgeonMatcher matcher)
         {
             var newNamesToNodes = new Dictionary<string, Tree>();
-            Tuple<Tree, Tree> result = CopyHelper(tree, newNamesToNodes);
+            Tuple<Tree, Tree> result = CopyHelper(Tree, newNamesToNodes);
             //if(! result.Item1.dominates(result.Item2))
             //System.err.println("Error -- aux tree copy doesn't dominate foot copy.");
             foreach (var entry in newNamesToNodes)
             {
-                matcher.newNodeNames.Add(entry.Key, entry.Value);
+                matcher.NewNodeNames.Add(entry.Key, entry.Value);
             }
             return new AuxiliaryTree(result.Item1, result.Item2, newNamesToNodes, originalTreeString);
         }
 
-        // returns Pair<node,foot>
         private Tuple<Tree, Tree> CopyHelper(Tree node, Dictionary<string, Tree> newNamesToNodes)
         {
             Tree clone;
             Tree newFoot = null;
             if (node.IsLeaf())
             {
-                if (node == foot)
+                if (node == Foot)
                 {
                     // found the foot node; pass it up.
                     clone = node.TreeFactory().NewTreeNode(node.Label(), new List<Tree>(0));
@@ -127,14 +124,13 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         private static readonly Regex EscapedFootNodeCharacter = new Regex('\\' + FootNodeCharacter,
             RegexOptions.Compiled);
 
-        /**
-   * Returns the foot node of the adjunction tree, which is the terminal node
-   * that ends in @.  In the process, turns the foot node into a TreeNode
-   * (rather than a leaf), and destructively un-escapes all the escaped
-   * instances of @ in the tree.  Note that readonly @ in a non-terminal node is
-   * ignored, and left in.
-   */
-
+        /// <summary>
+        /// Returns the foot node of the adjunction tree, which is the terminal node
+        /// that ends in @.  In the process, turns the foot node into a TreeNode
+        /// (rather than a leaf), and destructively un-escapes all the escaped
+        /// instances of @ in the tree.  Note that readonly @ in a non-terminal node is
+        /// ignored, and left in.
+        /// </summary>
         private static Tree FindFootNode(Tree t)
         {
             Tree footNode = FindFootNodeHelper(t);
@@ -187,7 +183,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 }
             }
             /*Matcher m = escapedFootNodeCharacter.matcher(t.label().value());
-    t.label().setValue(m.replaceAll(footNodeCharacter));*/
+            t.label().setValue(m.replaceAll(footNodeCharacter));*/
             var newS = EscapedFootNodeCharacter.Replace(t.Label().Value(), FootNodeCharacter);
             t.Label().SetValue(newS);
             return foundDtr;
@@ -195,25 +191,25 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 
 
         /***********************************************************
-   * below here is init stuff for getting node -> names maps *
-   ***********************************************************/
+        * below here is init stuff for getting node -> names maps *
+        ***********************************************************/
 
-        // There are two ways in which you can can match the start of a name
-        // expression.
-        // The first is if you have any number of non-escaping characters
-        // preceding an "=" and a name.  This is the ([^\\\\]*) part.
-        // The second is if you have any number of any characters, followed
-        // by a non-"\" character, as "\" is used to escape the "=".  After
-        // that, any number of pairs of "\" are allowed, as we let "\" also
-        // escape itself.  After that comes "=" and a name.
+        /// <summary>
+        /// There are two ways in which you can can match the start of a name expression.
+        /// The first is if you have any number of non-escaping characters
+        /// preceding an "=" and a name.  This is the ([^\\\\]*) part.
+        /// The second is if you have any number of any characters, followed
+        /// by a non-"\" character, as "\" is used to escape the "=".  After
+        /// that, any number of pairs of "\" are allowed, as we let "\" also
+        /// escape itself.  After that comes "=" and a name.
+        /// </summary>
         private static readonly Regex NamePattern = new Regex(
             "^((?:[^\\\\]*)|(?:(?:.*[^\\\\])?)(?:\\\\\\\\)*)=([^=]+)$", RegexOptions.Compiled);
 
-        /**
-   * Looks for new names, destructively strips them out.
-   * Destructively unescapes escaped chars, including "=", as well.
-   */
-
+        /// <summary>
+        /// Looks for new names, destructively strips them out.
+        /// Destructively unescapes escaped chars, including "=", as well.
+        /// </summary>
         private void InitializeNamesNodesMaps(Tree t)
         {
             foreach (Tree node in t.SubTreeList())

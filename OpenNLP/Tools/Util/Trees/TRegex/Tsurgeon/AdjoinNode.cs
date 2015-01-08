@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
-    /** Adjoin in a tree (like in TAG).
- *
- *  @author Roger Levy (rog@nlp.stanford.edu)
- */
-
+    /// <summary>
+    /// Adjoin in a tree (like in TAG).
+    /// 
+    /// @author Roger Levy (rog@nlp.stanford.edu)
+    /// </summary>
     public class AdjoinNode : TsurgeonPattern
     {
         private readonly AuxiliaryTree padjunctionTree;
@@ -35,7 +35,6 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
             return padjunctionTree;
         }
 
-        //@Override
         public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
@@ -51,30 +50,28 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 this.node = node;
             }
 
-            //@Override
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
                 // find match and get its parent
-                Tree targetNode = childMatcher[0].Evaluate(tree, tregex);
+                Tree targetNode = ChildMatcher[0].Evaluate(tree, tregex);
                 Tree parent = targetNode.Parent(tree);
                 // put children underneath target in foot of auxilary tree
                 AuxiliaryTree ft = node.padjunctionTree.Copy(this);
-                ft.foot.SetChildren(targetNode.GetChildrenAsList());
+                ft.Foot.SetChildren(targetNode.GetChildrenAsList());
                 // replace match with root of auxiliary tree
                 if (parent == null)
                 {
-                    return ft.tree;
+                    return ft.Tree;
                 }
                 else
                 {
                     int i = parent.ObjectIndexOf(targetNode);
-                    parent.SetChild(i, ft.tree);
+                    parent.SetChild(i, ft.Tree);
                     return tree;
                 }
             }
         }
 
-        //@Override
         public override string ToString()
         {
             return base.ToString() + "<-" + padjunctionTree;

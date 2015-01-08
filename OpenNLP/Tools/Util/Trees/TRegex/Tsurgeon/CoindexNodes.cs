@@ -15,14 +15,12 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
         {
         }
 
-        //@Override
         public override void SetRoot(TsurgeonPatternRoot root)
         {
             base.SetRoot(root);
             root.SetCoindexes();
         }
 
-        //@Override
         public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
@@ -38,11 +36,10 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 this.node = node;
             }
 
-            //@Override
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                int newIndex = coindexer.GenerateIndex();
-                foreach (TsurgeonMatcher child in childMatcher)
+                int newIndex = Coindexer.GenerateIndex();
+                foreach (TsurgeonMatcher child in ChildMatcher)
                 {
                     Tree node = child.Evaluate(tree, tregex);
                     node.Label().SetValue(node.Label().Value() + CoindexationIntroductionString + newIndex);

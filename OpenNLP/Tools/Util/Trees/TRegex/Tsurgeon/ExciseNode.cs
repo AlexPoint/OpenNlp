@@ -6,31 +6,29 @@ using System.Threading.Tasks;
 
 namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
 {
-    /** Excises all nodes from the top to the bottom, and puts all the children of bottom node in where the top was.
- * @author Roger Levy (rog@stanford.edu)
- */
-
+    /// <summary>
+    /// Excises all nodes from the top to the bottom, and puts all the children of bottom node in where the top was.
+    /// 
+    /// @author Roger Levy (rog@stanford.edu)
+    /// </summary>
     public class ExciseNode : TsurgeonPattern
     {
-        /**
-   * Top should evaluate to a node that dominates bottom, but this is not checked!
-   */
-
+        /// <summary>
+        /// Top should evaluate to a node that dominates bottom, but this is not checked!
+        /// </summary>
         public ExciseNode(TsurgeonPattern top, TsurgeonPattern bottom) :
             base("excise", new TsurgeonPattern[] {top, bottom})
         {
         }
 
-        /**
-   * Excises only the directed node.
-   */
-
+        /// <summary>
+        /// Excises only the directed node
+        /// </summary>
         public ExciseNode(TsurgeonPattern node) :
             base("excise", new TsurgeonPattern[] {node, node})
         {
         }
 
-        //@Override
         public override TsurgeonMatcher GetMatcher(Dictionary<string, Tree> newNodeNames, CoindexationGenerator coindexer)
         {
             return new Matcher(newNodeNames, coindexer, this);
@@ -46,16 +44,15 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 this.node = node;
             }
 
-            //@Override
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree topNode = childMatcher[0].Evaluate(tree, tregex);
-                Tree bottomNode = childMatcher[1].Evaluate(tree, tregex);
+                Tree topNode = ChildMatcher[0].Evaluate(tree, tregex);
+                Tree bottomNode = ChildMatcher[1].Evaluate(tree, tregex);
                 /*if(Tsurgeon.verbose) {
-        System.err.println("Excising...original tree:");
-        tree.pennPrint(System.err);
-        System.err.println("top: " + topNode + "\nbottom:" + bottomNode);
-      }*/
+                    System.err.println("Excising...original tree:");
+                    tree.pennPrint(System.err);
+                    System.err.println("top: " + topNode + "\nbottom:" + bottomNode);
+                  }*/
                 if (topNode == tree)
                 {
                     if (bottomNode.Children().Length == 1)
@@ -69,7 +66,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                 }
                 Tree parent = topNode.Parent(tree);
                 /*if(Tsurgeon.verbose)
-        System.err.println("Parent: " + parent);*/
+                     System.err.println("Parent: " + parent);*/
                 int i = Trees.ObjectEqualityIndexOf(parent, topNode);
                 parent.RemoveChild(i);
                 foreach (Tree child in bottomNode.Children())
@@ -78,7 +75,7 @@ namespace OpenNLP.Tools.Util.Trees.TRegex.Tsurgeon
                     i++;
                 }
                 /*if(Tsurgeon.verbose)
-        tree.pennPrint(System.err);*/
+                  tree.pennPrint(System.err);*/
                 return tree;
             }
         }

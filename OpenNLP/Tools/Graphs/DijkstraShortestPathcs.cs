@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Graphs
                         !visited.Contains(candidate))
                     {
                         unsettledNodes.RelaxPriority(candidate, alt);
-                        previous.Add(candidate, u);
+                        previous[candidate] = u;
                     }
                 }
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using OpenNLP.Tools.Ling;
@@ -125,20 +126,20 @@ namespace OpenNLP.Tools.Trees
             this._label = (CoreLabel) Mlf.NewLabel(t.Label());
         }
 
+        // TODO: This should be changed via introducing a Tree interface with the current Tree and this class implementing it, since what is done here breaks the equals() contract.
         /// <summary>
         /// Implements equality for <code>TreeGraphNode</code>s.
         /// Unlike <code>Tree</code>s, <code>TreeGraphNode</code>s should be
         /// considered equal only if they are ==.  <i>Implementation note:</i>
-        /// TODO: This should be changed via introducing a Tree interface with the current Tree and this class implementing it, since what is done here breaks the equals() contract.
         /// </summary>
         public override bool Equals(Object o)
         {
             return o == this;
         }
 
-        /*public override int GetHashCode() {
-            return System.identityHashCode(this);
-          }*/
+        public override int GetHashCode() {
+            return RuntimeHelpers.GetHashCode(this);
+          }
 
         /// <summary>
         /// Returns the label associated with the current node, or null if there is no label.

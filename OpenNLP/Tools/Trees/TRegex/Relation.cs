@@ -68,9 +68,7 @@ namespace OpenNLP.Tools.Trees.TRegex
         /// <param name="s">The string representation of the relation</param>
         /// <returns>The singleton static relation of the specified type</returns>
         /// <exception cref="ParseException">If bad relation s</exception>
-        public static Relation GetRelation(string s,
-            Func<string, string> basicCatFunction,
-            IHeadFinder headFinder)
+        public static Relation GetRelation(string s, Func<string, string> basicCatFunction, IHeadFinder headFinder)
             /*throws ParseException*/
         {
             if (SimpleRelationsMap.ContainsKey(s))

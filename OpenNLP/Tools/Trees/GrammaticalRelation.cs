@@ -262,7 +262,7 @@ namespace OpenNLP.Tools.Trees
             if (sourcePattern != null)
             {
                 /*try {*/
-                this.sourcePattern = new Regex(sourcePattern, RegexOptions.Compiled);
+                this.sourcePattern = new Regex("^(" + sourcePattern +")$", RegexOptions.Compiled);
                 /*} catch (java.util.regex.PatternSyntaxException e) {
         throw new RuntimeException("Bad pattern: " + sourcePattern);
       }*/

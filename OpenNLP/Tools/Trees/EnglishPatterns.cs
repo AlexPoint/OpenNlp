@@ -74,6 +74,6 @@ namespace OpenNLP.Tools.Trees
         // TODO: is there some better pattern to look for? We do not have tag information at this point
         public static readonly string RelativizingWordRegex = "(?i:that|what|which|who|whom|whose)";
 
-        public static readonly Regex RelativizingWordPattern = new Regex(RelativizingWordRegex, RegexOptions.Compiled);
+        public static readonly Regex RelativizingWordPattern = new Regex("^" + RelativizingWordRegex + "$", RegexOptions.Compiled);
     }
 }

@@ -136,7 +136,9 @@ namespace OpenNLP.Tools.Util
         /// <summary>Get the entry by key (null if none)</summary>
         private Entry<E> GetEntry(E key)
         {
-            return keyToEntry[key];
+            Entry<E> entry;
+            keyToEntry.TryGetValue(key, out entry);
+            return entry;
         }
 
         /// <summary>Get entry by index, exception if none.</summary>

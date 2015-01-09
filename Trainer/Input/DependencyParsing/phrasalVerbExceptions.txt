@@ -1,0 +1,42 @@
+// Phrasal verbs not detected (not dependency btw the root and the particle)
+bank on - I'm banking on your help; I can't do it alone.
+bash about - If you bash your monitor about like that, it won't last long.
+bawl out - She bawled Raj out for getting there late.
+book in - I'll book us in at the Intercontinental.
+boss about - She bosses everyone about.
+bowl out - He bowled the player out first ball.
+butter up - I tried buttering my tutor up but she still wouldn\'t let me hand it in late.
+call after - She was called Rose after her late grandmother.
+chime in - If it's ok, I'd like to chime in because I think it's a good idea.
+click through - Only a tiny fraction of users ever bother clicking through the banner adverts.
+cool down - I left the tea for a minute until it had cooled down enough to drink.
+cotton on - It took me ages to cotton on to what they were planning.
+dip in - I dipped the brush in the paint and began painting the wall.
+fiddle about - We spent the whole afternoon fiddling about with the computer but couldn't get it to work.
+filter in - The slip lane allows traffic to filter in at the junction.
+gad about - I spent the afternoon gadding about in the West End.
+get about - It didn't take long for the news to get about- everyone's talking about it.
+get about - She gets about a bit; she's always with some new guy.
+give away - She had to give her baby away as she couldn't afford to bring it up.
+give away - He is giving away thirty pounds to the challenger.
+go about - A rumour is going about involving the Attorney General.
+goof around - We spent the weekend goofing around.
+grind away - Although I hated it, I ground away until I had finished.
+gussy up - They spent a fortune gussying up the house.
+kick about - We kicked the idea about at the meeting.
+line up - The police got them to line up against the wall.
+mark down - I'll buy a lot more if you mark them down a bit.
+own up - Nobody owned up to breaking the window.
+pad down - I'm too tired to come home; can I pad down here tonight?
+paper over - The government tried to paper over the problems in the proposal, but the press were very critical.
+pep up - You need to pep your writing up.
+room in - Nowadays, most hospitals have a policy of rooming in mothers and their babies.
+rope in - The teacher roped her students in to carry her stuff when she had to change classroom.
+single out - Many people applied for the job but we will single out the best one.
+smoke out - The police smoked the gang out and arrested them.
+stash away - I stashed some money away behind some books.
+step aside - Everyone thinks that the prime minister should step aside so that someone new can lead the party into the election.
+top off - He complained for an hour and to top it off started shouting his head off.
+train up - I have been training my new assistant up.
+usher in - We always give a party usher in the new year.
+venture forth - If the storm has finished, we could venture forth.

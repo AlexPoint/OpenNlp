@@ -121,8 +121,8 @@ namespace OpenNLP.Tools.Util
             int indexB = entryB.index;
             entryA.index = indexB;
             entryB.index = indexA;
-            indexToEntry.Insert(indexA, entryB);
-            indexToEntry.Insert(indexB, entryA);
+            indexToEntry[indexA] = entryB;
+            indexToEntry[indexB] = entryA;
         }
 
         /// <summary>Remove the last element of the heap (last in the index array)</summary>

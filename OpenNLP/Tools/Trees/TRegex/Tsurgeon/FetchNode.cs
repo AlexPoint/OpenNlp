@@ -30,7 +30,8 @@ namespace OpenNLP.Tools.Trees.TRegex.Tsurgeon
 
             public override Tree Evaluate(Tree tree, TregexMatcher tregex)
             {
-                Tree result = NewNodeNames[node.label];
+                Tree result;
+                NewNodeNames.TryGetValue(node.label, out result);
                 if (result == null)
                 {
                     result = tregex.GetNode(node.label);

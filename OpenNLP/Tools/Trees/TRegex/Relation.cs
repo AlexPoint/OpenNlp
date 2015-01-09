@@ -1623,8 +1623,10 @@ namespace OpenNLP.Tools.Trees.TRegex
 
             public override IEnumerator<Tree> GetSearchNodeIterator(Tree t, TregexMatcher matcher)
             {
-                // TODO: check this implementation, sounds strange to me
-                return t.GetChildrenAsList().GetEnumerator();
+                // return parent and children
+                var elements = new List<Tree>(){t};
+                elements.AddRange(t.GetChildrenAsList());
+                return elements.GetEnumerator();
             }
         }
 

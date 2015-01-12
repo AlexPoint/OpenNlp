@@ -62,6 +62,7 @@ namespace OpenNLP.Tools.Trees.TRegex
         /// <param name="tree">The tree to start searching on</param>
         public virtual void ResetChildIter(Tree tree)
         {
+            Console.WriteLine("resetChildIter() on node " + tree);
             this.tree = tree;
             ResetChildIter();
         }
@@ -142,7 +143,7 @@ namespace OpenNLP.Tools.Trees.TRegex
         /// </summary>
         public bool FindAt(Tree node)
         {
-            //Console.WriteLine("findAt() on '" + node);
+            Console.WriteLine("findAt() on '" + node);
             if (findCurrent != null && findCurrent != node)
             {
                 throw new InvalidOperationException(
@@ -181,7 +182,9 @@ namespace OpenNLP.Tools.Trees.TRegex
         /// <returns>node labeled by the name</returns>
         public Tree GetNode(string name)
         {
-            return namesToNodes[name];
+            Tree res;
+            namesToNodes.TryGetValue(name, out res);
+            return res;
         }
 
         public List<string> GetNodeNames()
@@ -203,7 +206,9 @@ namespace OpenNLP.Tools.Trees.TRegex
             {
                 FillNodesToParents(root, null);
             }
-            return nodesToParents[node];
+            Tree parent;
+            nodesToParents.TryGetValue(node, out parent);
+            return parent;
         }
 
         private void FillNodesToParents(Tree node, Tree parent)

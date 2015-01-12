@@ -327,7 +327,7 @@ namespace OpenNLP.Tools.Parser
 						}
 						else
 						{
-							System.Console.Error.WriteLine("Couldn't advance parse " + derivationLength + " stage " + derivationsProcessed + "!\n");
+							Console.Error.WriteLine("Couldn't advance parse " + derivationLength + " stage " + derivationsProcessed + "!\n");
 						}
 					}
 					derivationLength++;
@@ -344,7 +344,7 @@ namespace OpenNLP.Tools.Parser
 			
 			if (mParses.Count == 0)
 			{
-				System.Console.Error.WriteLine("Couldn't find parse for: " + flatParse);
+				Console.Error.WriteLine("Couldn't find parse for: " + flatParse);
 				//oFullParse = (Parse) mOldDerivationsHeap.First(); 
 				return new Parse[] {guessParse};
 			}

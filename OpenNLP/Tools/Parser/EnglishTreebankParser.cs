@@ -103,94 +103,62 @@ namespace OpenNLP.Tools.Parser
 			}
 		}
 		
-		public string DoParse(string[] lines, int requestedParses)
+        private Parse[] DoParse(IEnumerable<string> tokens, int requestedParses)
+	    {
+            var lineBuilder = new System.Text.StringBuilder();
+            var convertedTokens = new List<string>();
+            foreach (string rawToken in tokens)
+            {
+                string convertedToken = ConvertToken(rawToken);
+                convertedTokens.Add(convertedToken);
+                lineBuilder.Append(convertedToken).Append(" ");
+            }
+            if (lineBuilder.Length != 0)
+            {
+                string text = lineBuilder.ToString(0, lineBuilder.Length - 1);
+                var currentParse = new Parse(text, new Util.Span(0, text.Length), "INC", 1, null);
+                int start = 0;
+
+                foreach (string token in convertedTokens)
+                {
+                    currentParse.Insert(new Parse(text, new Util.Span(start, start + token.Length), MaximumEntropyParser.TokenNode, 0));
+                    start += token.Length + 1;
+                }
+
+                Parse[] parses = _parser.FullParse(currentParse, requestedParses);
+                return parses;
+            }
+            else
+            {
+                return null;
+            }
+	    }
+
+        /// <summary>
+        /// Builds the syntax tree (or parse tree) of a sentence.
+        /// </summary>
+        /// <param name="sentence">The sentence</param>
+        /// <returns>The syntax tree</returns>
+		public Parse DoParse(string sentence)
 		{
-			var parseStringBuilder = new System.Text.StringBuilder();
-
-			foreach (string line in lines)
-			{
-				var lineBuilder = new System.Text.StringBuilder();				
-			
-				string[] rawTokens = _tokenizer.Tokenize(line);
-				var tokens = new ArrayList();
-				foreach (string rawToken in rawTokens)
-				{
-					string convertedToken = ConvertToken(rawToken);
-					tokens.Add(convertedToken);
-					lineBuilder.Append(convertedToken).Append(" ");
-				}
-				if (lineBuilder.Length != 0)
-				{
-					string text = lineBuilder.ToString(0, lineBuilder.Length - 1);
-					var currentParse = new Parse(text, new Util.Span(0, text.Length), "INC", 1, null);
-					int start = 0;
-					
-					foreach (string token in tokens)
-					{
-						currentParse.Insert(new Parse(text, new Util.Span(start, start + token.Length), MaximumEntropyParser.TokenNode, 0));
-						start += token.Length + 1;
-					}
-					
-					Parse[] parses = _parser.FullParse(currentParse, requestedParses);
-					for (int currentParseIndex = 0, parseCount = parses.Length; currentParseIndex < parseCount; currentParseIndex++)
-					{
-						if (requestedParses > 1)
-						{
-						lineBuilder.Append(currentParse.ToString() + " " + parses[currentParseIndex].Probability.ToString(System.Globalization.CultureInfo.InvariantCulture) + " ");
-						}
-						lineBuilder.Append(parses[currentParseIndex].Show());
-						parseStringBuilder.Append(lineBuilder.ToString());
-					}
-				}
-				else
-				{
-					parseStringBuilder.Append("\r\n");
-				}
-			}
-			return parseStringBuilder.ToString();
+		    var tokens = _tokenizer.Tokenize(sentence);
+		    return DoParse(tokens);
 		}
 
-		public Parse[] DoParse(string line, int requestedParses)
-		{			
-			var lineBuilder = new System.Text.StringBuilder();				
-			string[] rawTokens = _tokenizer.Tokenize(line);
-			var tokens = new ArrayList();
-			foreach (string rawToken in rawTokens)
-			{
-				string convertedToken = ConvertToken(rawToken);
-				tokens.Add(convertedToken);
-				lineBuilder.Append(convertedToken).Append(" ");
-			}
-			if (lineBuilder.Length != 0)
-			{
-				string text = lineBuilder.ToString(0, lineBuilder.Length - 1).ToString();
-				var currentParse = new Parse(text, new Util.Span(0, text.Length), "INC", 1, null);
-				int start = 0;
-				
-				foreach (string token in tokens)
-				{
-					currentParse.Insert(new Parse(text, new Util.Span(start, start + token.Length), MaximumEntropyParser.TokenNode, 0));
-					start += token.Length + 1;
-				}
-				
-				Parse[] parses = _parser.FullParse(currentParse, requestedParses);
-				return parses;
-			}
-			else
-			{
-				return null;
-			}
-		}
-
-		public Parse DoParse(string line)
-		{
-			Parse[] parses = DoParse(line, 1);
-			if (parses != null)
-			{
-				return parses[0];
-			}
-			return null;
-		}
+        /// <summary>
+        /// Builds the syntax Tree (or parse tree) of a tokenized sentence.
+        /// </summary>
+        /// <param name="tokens">The collection of tokens for a sentence</param>
+        /// <returns>The sytax tree</returns>
+	    public Parse DoParse(IEnumerable<string> tokens)
+	    {
+            Parse[] parses = DoParse(tokens, 1);
+            if (parses != null)
+            {
+                return parses[0];
+            }
+            return null;
+	    }
 
 
         // Inner classes ------------------------------

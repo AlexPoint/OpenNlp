@@ -35,6 +35,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace OpenNLP.Tools.Parser
@@ -47,17 +48,17 @@ namespace OpenNLP.Tools.Parser
 		/// <summary>
 		/// The maximum number of parses advanced from all preceding parses at each derivation step.
 		/// </summary>
-		private int M;
+		private readonly int M;
 
 		///<summary>
 		///The maximum number of parses to advance from a single preceding parse.
 		///</summary>
-		private int K;
+		private readonly int K;
 
 		///<summary>
 		///The minimum total probability mass of advanced outcomes.
 		///</summary>
-		private double Q;
+		private readonly double Q;
 
 		///<summary>
 		///The default beam size used if no beam size is given.
@@ -72,7 +73,7 @@ namespace OpenNLP.Tools.Parser
 		///<summary>
 		///Completed parses.
 		///</summary>
-		private Util.SortedSet<Parse> mParses;
+		private readonly Util.SortedSet<Parse> mParses;
 		
 		///<summary>
 		///Incomplete parses which will be advanced.
@@ -84,19 +85,19 @@ namespace OpenNLP.Tools.Parser
 		///</summary>
         private Util.SortedSet<Parse> mNewDerivationsHeap;
 
-		private IParserTagger mPosTagger; 
-		private IParserChunker mBasalChunker; 
+		private readonly IParserTagger mPosTagger; 
+		private readonly IParserChunker mBasalChunker; 
 		
-		private SharpEntropy.IMaximumEntropyModel mBuildModel;
-		private SharpEntropy.IMaximumEntropyModel mCheckModel;
+		private readonly SharpEntropy.IMaximumEntropyModel mBuildModel;
+		private readonly SharpEntropy.IMaximumEntropyModel mCheckModel;
 		
-		private BuildContextGenerator mBuildContextGenerator;
-		private CheckContextGenerator mCheckContextGenerator;
+		private readonly BuildContextGenerator mBuildContextGenerator;
+		private readonly CheckContextGenerator mCheckContextGenerator;
 		
-		private IHeadRules mHeadRules;
+		private readonly IHeadRules mHeadRules;
 		
-		private double[] mBuildProbabilities;
-		private double[] mCheckProbabilities;
+		private readonly double[] mBuildProbabilities;
+		private readonly double[] mCheckProbabilities;
 		
 		public const string TopNode = "TOP";
 		public const string TokenNode = "TK";
@@ -128,18 +129,18 @@ namespace OpenNLP.Tools.Parser
 		/// </summary>
 		public const string IncompleteOutcome = "i";
 		
-		private const string mTopStart = StartPrefix + TopNode;
+		private const string MTopStart = StartPrefix + TopNode;
 
-		private int mTopStartIndex;
-		private Dictionary<string, string> mStartTypeMap;
-        private Dictionary<string, string> mContinueTypeMap;
+		private readonly int mTopStartIndex;
+		private readonly Dictionary<string, string> mStartTypeMap;
+        private readonly Dictionary<string, string> mContinueTypeMap;
   
-		private int mCompleteIndex;
-		private int mIncompleteIndex;
-  
-		private bool mCreateDerivationString = false;
+		private readonly int mCompleteIndex;
+		private readonly int mIncompleteIndex;
 
-		///<summary>
+	    private const bool CreateDerivationString = false;
+
+	    ///<summary>
 		///Creates a new parser using the specified models and head rules.
 		///</summary>
 		///<param name="buildModel">
@@ -220,7 +221,7 @@ namespace OpenNLP.Tools.Parser
 					mContinueTypeMap.Add(outcome, outcome.Substring(ContinuePrefix.Length));
 				}
 			}
-			mTopStartIndex = buildModel.GetOutcomeIndex(mTopStart);
+			mTopStartIndex = buildModel.GetOutcomeIndex(MTopStart);
 			mCompleteIndex = checkModel.GetOutcomeIndex(CompleteOutcome);
 			mIncompleteIndex = checkModel.GetOutcomeIndex(IncompleteOutcome);
 		}
@@ -239,7 +240,7 @@ namespace OpenNLP.Tools.Parser
 		/// </returns>
 		public virtual Parse[] FullParse(Parse flatParse, int parseCount)
 		{
-			if (mCreateDerivationString) 
+			if (CreateDerivationString) 
 			{
 				flatParse.InitializeDerivationBuffer();
 			}
@@ -327,7 +328,7 @@ namespace OpenNLP.Tools.Parser
 						}
 						else
 						{
-							Console.Error.WriteLine("Couldn't advance parse " + derivationLength + " stage " + derivationsProcessed + "!\n");
+							//Console.Error.WriteLine("Couldn't advance parse " + derivationLength + " stage " + derivationsProcessed + "!\n");
 						}
 					}
 					derivationLength++;
@@ -344,7 +345,7 @@ namespace OpenNLP.Tools.Parser
 			
 			if (mParses.Count == 0)
 			{
-				Console.Error.WriteLine("Couldn't find parse for: " + flatParse);
+				//Console.Error.WriteLine("Couldn't find parse for: " + flatParse);
 				//oFullParse = (Parse) mOldDerivationsHeap.First(); 
 				return new Parse[] {guessParse};
 			}
@@ -357,7 +358,7 @@ namespace OpenNLP.Tools.Parser
 			}
 			else
 			{
-                List<Parse> topParses = new List<Parse>(parseCount);
+                var topParses = new List<Parse>(parseCount);
 				while(!mParses.IsEmpty() && topParses.Count < parseCount) 
 				{
 					Parse topParse = mParses.First();
@@ -373,9 +374,9 @@ namespace OpenNLP.Tools.Parser
 		private void AdvanceTop(Parse inputParse)
 		{
 			mBuildModel.Evaluate(mBuildContextGenerator.GetContext(inputParse.GetChildren(), 0), mBuildProbabilities);
-			inputParse.AddProbability(System.Math.Log(mBuildProbabilities[mTopStartIndex]));
+			inputParse.AddProbability(Math.Log(mBuildProbabilities[mTopStartIndex]));
 			mCheckModel.Evaluate(mCheckContextGenerator.GetContext(inputParse.GetChildren(), TopNode, 0, 0), mCheckProbabilities);
-			inputParse.AddProbability(System.Math.Log(mCheckProbabilities[mCompleteIndex]));
+			inputParse.AddProbability(Math.Log(mCheckProbabilities[mCompleteIndex]));
 			inputParse.Type = TopNode;
 		}
 		
@@ -418,7 +419,7 @@ namespace OpenNLP.Tools.Parser
 					//System.Console.Error.WriteLine("lastStart " + lastStartIndex + " " + lastStartNode.Label + " " + lastStartNode.Probability);
 				}
 			}
-            List<Parse> newParsesList = new List<Parse>(mBuildModel.OutcomeCount);
+            var newParsesList = new List<Parse>(mBuildModel.OutcomeCount);
 			//call build
 			mBuildModel.Evaluate(mBuildContextGenerator.GetContext(children, advanceNodeIndex), mBuildProbabilities);
 			double buildProbabilitiesSum = 0;
@@ -463,15 +464,15 @@ namespace OpenNLP.Tools.Parser
 						continue; //Cont must match previous start or continue
 					}
 				}
-				Parse newParse1 = (Parse) inputParse.Clone(); //clone parse
-				if (mCreateDerivationString)
+				var newParse1 = (Parse) inputParse.Clone(); //clone parse
+				if (CreateDerivationString)
 				{
 					newParse1.AppendDerivationBuffer(highestBuildProbabilityIndex.ToString(System.Globalization.CultureInfo.InvariantCulture));
 					newParse1.AppendDerivationBuffer("-");
 				}
 				newParse1.SetChild(advanceNodeIndex, tag); //replace constituent labeled
 
-				newParse1.AddProbability(System.Math.Log(highestBuildProbability));
+				newParse1.AddProbability(Math.Log(highestBuildProbability));
 				//check
 				mCheckModel.Evaluate(mCheckContextGenerator.GetContext(newParse1.GetChildren(), lastStartType, lastStartIndex, advanceNodeIndex), mCheckProbabilities);
 				//System.Console.Out.WriteLine("check " + mCheckProbabilities[mCompleteIndex] + " " + mCheckProbabilities[mIncompleteIndex]);
@@ -479,7 +480,7 @@ namespace OpenNLP.Tools.Parser
 				if (mCheckProbabilities[mCompleteIndex] > q) 
 				{ //make sure a reduce is likely
 					newParse2 = (Parse) newParse1.Clone();
-					if (mCreateDerivationString)
+					if (CreateDerivationString)
 					{
 						newParse2.AppendDerivationBuffer("1");
 						newParse2.AppendDerivationBuffer(".");
@@ -516,14 +517,14 @@ namespace OpenNLP.Tools.Parser
 				}
 				if (mCheckProbabilities[mIncompleteIndex] > q) 
 				{ //make sure a shift is likely
-					if (mCreateDerivationString)
+					if (CreateDerivationString)
 					{
 						newParse1.AppendDerivationBuffer("0");
 						newParse1.AppendDerivationBuffer(".");
 					}
 					if (advanceNodeIndex != nodeCount - 1) 
 					{ //can't shift last element
-						newParse1.AddProbability(System.Math.Log(mCheckProbabilities[0]));
+						newParse1.AddProbability(Math.Log(mCheckProbabilities[0]));
 						newParsesList.Add(newParse1);
 					}
 				}
@@ -548,23 +549,22 @@ namespace OpenNLP.Tools.Parser
 		{
 			// chunk
 			Parse[] children = inputParse.GetChildren();
-			string[] words = new string[children.Length];
-			string[] parseTags = new string[words.Length];
-			double[] probabilities = new double[words.Length];
-			Parse currentChildParse = null;
-			for (int childParseIndex = 0, childParseCount = children.Length; childParseIndex < childParseCount; childParseIndex++) 
+			var words = new string[children.Length];
+			var parseTags = new string[words.Length];
+			var probabilities = new double[words.Length];
+		    for (int childParseIndex = 0, childParseCount = children.Length; childParseIndex < childParseCount; childParseIndex++) 
 			{
-				currentChildParse = children[childParseIndex];
+				Parse currentChildParse = children[childParseIndex];
 				words[childParseIndex] = currentChildParse.Head.ToString();
 				parseTags[childParseIndex] = currentChildParse.Type;
 			}
 			//System.Console.Error.WriteLine("adjusted min chunk score = " + (minChunkScore - inputParse.Probability));
 			Util.Sequence[] chunkerSequences = mBasalChunker.TopKSequences(words, parseTags, minChunkScore - inputParse.Probability);
-			Parse[] newParses = new Parse[chunkerSequences.Length];
+			var newParses = new Parse[chunkerSequences.Length];
 			for (int sequenceIndex = 0, sequenceCount = chunkerSequences.Length; sequenceIndex < sequenceCount; sequenceIndex++) 
 			{
 				newParses[sequenceIndex] = (Parse) inputParse.Clone(); //copies top level
-				if (mCreateDerivationString)
+				if (CreateDerivationString)
 				{
 					newParses[sequenceIndex].AppendDerivationBuffer(sequenceIndex.ToString(System.Globalization.CultureInfo.InvariantCulture));
 					newParses[sequenceIndex].AppendDerivationBuffer(".");
@@ -583,7 +583,7 @@ namespace OpenNLP.Tools.Parser
 					//}
 					if (tagIndex != tags.Length) 
 					{
-						newParses[sequenceIndex].AddProbability(System.Math.Log(probabilities[tagIndex]));
+						newParses[sequenceIndex].AddProbability(Math.Log(probabilities[tagIndex]));
 					}
 					if (tagIndex != tags.Length && tags[tagIndex].StartsWith(ContinuePrefix)) 
 					{ // if continue just update end chunking tag don't use mContinueTypeMap
@@ -597,7 +597,7 @@ namespace OpenNLP.Tools.Parser
 							Parse startParse = children[start];
 							Parse endParse = children[end];
 							//System.Console.Error.WriteLine("Putting " + type + " at " + start + "," + end + " " + newParses[sequenceIndex].Probability);
-							Parse[] consitituents = new Parse[end - start + 1];
+							var consitituents = new Parse[end - start + 1];
 							consitituents[0] = startParse;
 							//consitituents[0].Label = "Start-" + type;
 							if (end - start != 0) 
@@ -645,8 +645,8 @@ namespace OpenNLP.Tools.Parser
 		private Parse[] AdvanceTags(Parse inputParse) 
 		{
 			Parse[] children = inputParse.GetChildren();
-			string[] words = new string[children.Length];
-			double[] probabilities = new double[words.Length];
+			var words = new string[children.Length];
+			var probabilities = new double[words.Length];
 			for (int childParseIndex = 0; childParseIndex < children.Length; childParseIndex++) 
 			{
 				words[childParseIndex] = (children[childParseIndex]).ToString();
@@ -654,15 +654,15 @@ namespace OpenNLP.Tools.Parser
 			Util.Sequence[] tagSequences = mPosTagger.TopKSequences(words);
 			if (tagSequences.Length == 0) 
 			{
-				System.Console.Error.WriteLine("no tag sequence");
+				Console.Error.WriteLine("no tag sequence");
 			}
-			Parse[] newParses = new Parse[tagSequences.Length];
+			var newParses = new Parse[tagSequences.Length];
 			for (int tagSequenceIndex = 0; tagSequenceIndex < tagSequences.Length; tagSequenceIndex++) 
 			{
 				string[] tags = tagSequences[tagSequenceIndex].Outcomes.ToArray();
 				tagSequences[tagSequenceIndex].GetProbabilities(probabilities);
 				newParses[tagSequenceIndex] = (Parse) inputParse.Clone(); //copies top level
-				if (mCreateDerivationString)
+				if (CreateDerivationString)
 				{
 					newParses[tagSequenceIndex].AppendDerivationBuffer(tagSequenceIndex.ToString(System.Globalization.CultureInfo.InvariantCulture));
 					newParses[tagSequenceIndex].AppendDerivationBuffer(".");
@@ -673,7 +673,7 @@ namespace OpenNLP.Tools.Parser
 					//System.Console.Error.WriteLine("inserting tag " + tags[wordIndex]);
 					double wordProbability = probabilities[wordIndex];
 					newParses[tagSequenceIndex].Insert(new Parse(wordParse.Text, wordParse.Span, tags[wordIndex], wordProbability));
-					newParses[tagSequenceIndex].AddProbability(System.Math.Log(wordProbability));
+					newParses[tagSequenceIndex].AddProbability(Math.Log(wordProbability));
 					//newParses[tagSequenceIndex].Show();
 				}
 			}
@@ -682,7 +682,7 @@ namespace OpenNLP.Tools.Parser
 
 		private static SharpEntropy.GisModel Train(SharpEntropy.ITrainingEventReader eventStream, int iterations, int cut)
 		{
-			SharpEntropy.GisTrainer trainer = new SharpEntropy.GisTrainer();
+			var trainer = new SharpEntropy.GisTrainer();
 			trainer.TrainModel(iterations, new SharpEntropy.TwoPassDataIndexer(eventStream, cut));
 			return new SharpEntropy.GisModel(trainer);
 		}
@@ -694,8 +694,8 @@ namespace OpenNLP.Tools.Parser
 
 		public static SharpEntropy.GisModel TrainModel(string trainingFile, EventType modelType, string headRulesFile, int iterations, int cutoff)
 		{
-			EnglishHeadRules rules = new EnglishHeadRules(headRulesFile);
-			SharpEntropy.ITrainingEventReader eventReader = new ParserEventReader(new SharpEntropy.PlainTextByLineDataReader(new System.IO.StreamReader(trainingFile)), rules, modelType);
+			var rules = new EnglishHeadRules(headRulesFile);
+			SharpEntropy.ITrainingEventReader eventReader = new ParserEventReader(new SharpEntropy.PlainTextByLineDataReader(new StreamReader(trainingFile)), rules, modelType);
 			return Train(eventReader, iterations, cutoff);
 		}
 	}

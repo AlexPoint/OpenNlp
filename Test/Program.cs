@@ -84,9 +84,11 @@ namespace Test
 
             // parsing
             var sentence = "Barging in here isn't going...";
+            var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
+            var tokens = tokenizer.Tokenize(sentence);
             var modelPath = currentDirectory + "../Resources/Models/";
             var parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(modelPath, true, false);
-            var parse = parser.DoParse(sentence);
+            var parse = parser.DoParse(tokens);
             // Extract dependencies from lexical tree
             var tlp = new PennTreebankLanguagePack();
             var gsf = tlp.GrammaticalStructureFactory();

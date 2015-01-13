@@ -355,6 +355,7 @@ namespace OpenNLP.Tools.Trees
         private static void AttachStrandedNodes(TreeGraphNode t, TreeGraphNode root, bool attach,
             Predicate<string> puncFilter, DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph)
         {
+            //Console.WriteLine("attachStrandedNodes() [t=" + t + "], [root=" + root + "], [attach=" + attach + "]");
             if (t.IsLeaf())
             {
                 return;
@@ -381,7 +382,9 @@ namespace OpenNLP.Tools.Trees
             }
             foreach (TreeGraphNode kid in t.Children())
             {
-                AttachStrandedNodes(kid, root, (kid.HeadWordNode() != t.HeadWordNode()), puncFilter, basicGraph);
+                var kidHeadWordNode = kid.HeadWordNode();
+                var treeHeadWordNode = t.HeadWordNode();
+                AttachStrandedNodes(kid, root, (kidHeadWordNode != treeHeadWordNode), puncFilter, basicGraph);
             }
         }
 
@@ -391,7 +394,7 @@ namespace OpenNLP.Tools.Trees
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> completeGraph)
         {
-            //Console.WriteLine("analyzeNode()");
+            //Console.WriteLine("analyzeNode() [t=" + t + "], [root=" + root + "], [relationsCount=" + relations.Count() + "], [hf=" + hf + "]");
             if (t.IsPhrasal())
             {
                 // don't do leaves or preterminals!

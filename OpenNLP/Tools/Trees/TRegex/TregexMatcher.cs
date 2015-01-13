@@ -62,7 +62,7 @@ namespace OpenNLP.Tools.Trees.TRegex
         /// <param name="tree">The tree to start searching on</param>
         public virtual void ResetChildIter(Tree tree)
         {
-            Console.WriteLine("resetChildIter() on node " + tree);
+            //Console.WriteLine("resetChildIter() on node " + tree);
             this.tree = tree;
             ResetChildIter();
         }
@@ -143,7 +143,7 @@ namespace OpenNLP.Tools.Trees.TRegex
         /// </summary>
         public bool FindAt(Tree node)
         {
-            Console.WriteLine("findAt() on '" + node);
+            //Console.WriteLine("findAt() on '" + node);
             if (findCurrent != null && findCurrent != node)
             {
                 throw new InvalidOperationException(

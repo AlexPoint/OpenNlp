@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>OpenNLP</id>
-    <version>1.2.5</version>
+    <version>1.2.6</version>
     <authors>AlexPoint</authors>
     <owners>AlexPoint</owners>
     <projectUrl>https://github.com/AlexPoint/OpenNlp</projectUrl>

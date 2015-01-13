@@ -4,6 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OpenNLP.Tools.Chunker;
 using OpenNLP.Tools.PosTagger;
@@ -82,7 +83,7 @@ namespace Test
             }*/
 
             // parsing
-            var sentence = "You should Get up and give the elderly man your seat.";
+            var sentence = "Barging in here isn't going...";
             var modelPath = currentDirectory + "../Resources/Models/";
             var parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(modelPath, true, false);
             var parse = parser.DoParse(sentence);

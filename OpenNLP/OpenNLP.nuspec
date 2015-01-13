@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>OpenNLP</id>
-    <version>1.2.6</version>
+    <version>1.2.7</version>
     <authors>AlexPoint</authors>
     <owners>AlexPoint</owners>
     <projectUrl>https://github.com/AlexPoint/OpenNlp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>C# port of the Java OpenNLP tools retrieved from http://sharpnlp.codeplex.com/ (it's not mine!)</description>
-    <releaseNotes>Remove logging infos</releaseNotes>
+    <releaseNotes>Added option to create parse/syntax trees from token collections</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>NLP Natural Language Processing</tags>
   </metadata>

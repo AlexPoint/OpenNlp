@@ -1,2 +1,4 @@
 "Sam carefully repaired the car."
 --> "repaired" detected as VBN (past participle), instead of VBD (past tense)
+"Many people have been shut away in psychiatric hospitals for disagreeing with the government."
+-> "disagreeing" detected as NN (should be VBG)

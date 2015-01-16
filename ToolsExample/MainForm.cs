@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Data;
 using System.Text;
 using System.Configuration;
+using OpenNLP.Tools.Parser;
 
 namespace ToolsExample
 {
@@ -66,7 +67,8 @@ namespace ToolsExample
 			base.Dispose( disposing );
 		}
 
-		#region Windows Form Designer generated code
+		// Windows Form Designer generated code ------------------
+
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
@@ -213,7 +215,7 @@ namespace ToolsExample
             this.PerformLayout();
 
 		}
-		#endregion
+		
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -224,7 +226,7 @@ namespace ToolsExample
 			Application.Run(new MainForm());
 		}
 
-		#region Button click events
+		// Button click events -----------------------------------
 
 		private void btnSplit_Click(object sender, EventArgs e)
 		{		
@@ -316,9 +318,8 @@ namespace ToolsExample
 			_txtOut.Text = output.ToString();
 		}
 
-		#endregion
 
-		#region NLP methods
+		// NLP methods -------------------------------------------
 
 		private string[] SplitSentences(string paragraph)
 		{
@@ -360,7 +361,7 @@ namespace ToolsExample
 			return string.Join(" ", _chunker.GetChunks(tokens, tags));
 		}
 
-		private OpenNLP.Tools.Parser.Parse ParseSentence(string sentence)
+		private Parse ParseSentence(string sentence)
 		{
 			if (_parser == null)
 			{
@@ -409,7 +410,7 @@ namespace ToolsExample
             return _coreferenceFinder.GetCoreferenceParse(parsedSentences.ToArray());
         }
 
-		#endregion
+		
 
         private void btnGender_Click(object sender, EventArgs e)
         {

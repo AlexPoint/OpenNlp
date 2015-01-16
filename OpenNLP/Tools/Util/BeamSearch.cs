@@ -159,7 +159,7 @@ namespace OpenNLP.Tools.Util
                     {
                         if (scores[currentScore] < minimum)
                         {
-                            continue; //only advance first "size" outcomes
+                                continue; //only advance first "size" outcomes
                         }
 
                         string outcomeName = Model.GetOutcomeName(currentScore);
@@ -174,7 +174,7 @@ namespace OpenNLP.Tools.Util
                     }
                     if (nextHeap.Size == 0)
                     {
-//if no advanced sequences, advance all valid
+                        //if no advanced sequences, advance all valid
                         for (int currentScore = 0; currentScore < scores.Length; currentScore++)
                         {
                             string outcomeName = Model.GetOutcomeName(currentScore);

@@ -83,7 +83,7 @@ namespace Test
             }*/
 
             // parsing
-            var sentence = "Barging in here isn't going...";
+            var sentence = "I did hear something about that.";
             var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
             var tokens = tokenizer.Tokenize(sentence);
             var modelPath = currentDirectory + "../Resources/Models/";

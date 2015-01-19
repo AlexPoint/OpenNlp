@@ -17,7 +17,7 @@ namespace Trainer
 
         static void Main(string[] args)
         {
-            var tokenizeTrainingFileDirectory = CurrentDirectory + "Input/Tokenize/";
+            /*var tokenizeTrainingFileDirectory = CurrentDirectory + "Input/Tokenize/";
             // train tokenizer
             const char splitMarker = '|';
 
@@ -42,7 +42,9 @@ namespace Trainer
                 testData.Add(testDataPoint);
             }
             var results = tokenizer.RunAgainstTestData(testData);
-            Console.WriteLine("Accuracy of model iteration={0}, cut={1}: {2}", iterations, cut, results.GetAccuracy());
+            Console.WriteLine("Accuracy of model iteration={0}, cut={1}: {2}", iterations, cut, results.GetAccuracy());*/
+
+            OptimizeSentenceDetectionTraining();
 
             /*// tests
             Console.WriteLine("Running tests...");
@@ -59,9 +61,9 @@ namespace Trainer
             }*/
 
             // Persisting model
-            var outputFilePath = CurrentDirectory + "Output/Tokenize.nbin";
+            /*var outputFilePath = CurrentDirectory + "Output/Tokenize.nbin";
             Console.WriteLine("Persisting model in file '{0}'", outputFilePath);
-            new BinaryGisModelWriter().Persist(model, outputFilePath);
+            new BinaryGisModelWriter().Persist(model, outputFilePath);*/
 
             Console.WriteLine("OK");
             Console.ReadKey();
@@ -137,7 +139,7 @@ namespace Trainer
 
             // load training data
             var allSentences = new List<string>();
-            foreach (var file in allTrainFiles)
+            foreach (var file in allTrainFiles.Where(f => !f.Contains("wsj")))
             {
                 allSentences.AddRange(File.ReadAllLines(file));
             }
@@ -156,8 +158,20 @@ namespace Trainer
                     var results = sentenceDetector.SentenceDetect(testData);
 
                     // not perfect for comparing files but it gives a very good approximation
-                    var commonValues = allSentences.Intersect(results).Count();
-                    var accuracyScore = (float)commonValues / (allSentences.Count + results.Count());
+                    //var commonValues = allSentences.Intersect(results).Count();
+                    var nbOfCommonSentences = 0;
+                    foreach (var result in results)
+                    {
+                        if (allSentences.Contains(result))
+                        {
+                            nbOfCommonSentences++;
+                        }
+                        else
+                        {
+                            //Console.WriteLine(result);
+                        }
+                    }
+                    var accuracyScore = (float)2 * nbOfCommonSentences / (allSentences.Count + results.Count());
                     Console.WriteLine("Accuracy for iteration={0} and cut={1}: {2}", iteration, cut, accuracyScore);
                     if (accuracyScore > bestAccuracy)
                     {
@@ -174,6 +188,60 @@ namespace Trainer
             var bestModel = MaximumEntropySentenceDetector.TrainModel(allTrainFiles, bestIterationValue, bestCutValue, endOfSentenceScanner);
             new BinaryGisModelWriter().Persist(bestModel, outputFilePath);
             Console.WriteLine("Output file written.");
+        }
+
+        /*private static void TrainSentenceDetector(int iterations, int cut)
+        {
+            // train sentence detector
+            var sdTrainingFileDirectory = CurrentDirectory + "Input/SentenceDetect";
+            var allTrainingFiles = Directory.GetFiles(sdTrainingFileDirectory);
+
+            Console.WriteLine("Starting training...");
+            var model = MaximumEntropySentenceDetector.TrainModel(allTrainingFiles, iterations, cut, new CharactersSpecificEndOfSentenceScanner('.','?','!','"'));
+            var tokenizer = new MaximumEntropySentenceDetector(model);
+
+            // test data
+            var trainingLines = new List<string>();
+            foreach (var trainingFile in allTrainingFiles)
+            {
+                trainingLines.AddRange(File.ReadAllLines(trainingFile));
+            }
+            var testData = new List<TokenizerTestData>();
+            foreach (var trainingLine in trainingLines)
+            {
+                var testDataPoint = new TokenizerTestData(trainingLine, splitMarker.ToString());
+                testData.Add(testDataPoint);
+            }
+            var results = tokenizer.RunAgainstTestData(testData);
+            Console.WriteLine("Accuracy of model iteration={0}, cut={1}: {2}", iterations, cut, results.GetAccuracy());
+        }*/
+
+        private static void TrainTokenizer(int iterations, int cut)
+        {
+            // train tokenizer
+            var tokenizeTrainingFileDirectory = CurrentDirectory + "Input/Tokenize/";
+            const char splitMarker = '|';
+
+            var allTrainingFiles = Directory.GetFiles(tokenizeTrainingFileDirectory);
+
+            Console.WriteLine("Starting training...");
+            var model = MaximumEntropyTokenizer.Train(allTrainingFiles, iterations, cut);
+            var tokenizer = new MaximumEntropyTokenizer(model);
+
+            // test data
+            var trainingLines = new List<string>();
+            foreach (var trainingFile in allTrainingFiles)
+            {
+                trainingLines.AddRange(File.ReadAllLines(trainingFile));
+            }
+            var testData = new List<TokenizerTestData>();
+            foreach (var trainingLine in trainingLines)
+            {
+                var testDataPoint = new TokenizerTestData(trainingLine, splitMarker.ToString());
+                testData.Add(testDataPoint);
+            }
+            var results = tokenizer.RunAgainstTestData(testData);
+            Console.WriteLine("Accuracy of model iteration={0}, cut={1}: {2}", iterations, cut, results.GetAccuracy());
         }
         
         private static T LoopUntilValidUserInput<T>(Func<string, T> valueExtractionFunction, Func<T, bool> valueCheckFunction, string invalidInputMessage)

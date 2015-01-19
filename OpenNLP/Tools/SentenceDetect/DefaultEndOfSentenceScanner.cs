@@ -35,6 +35,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenNLP.Tools.SentenceDetect
 {
@@ -46,16 +47,18 @@ namespace OpenNLP.Tools.SentenceDetect
 	/// </summary>
 	public class DefaultEndOfSentenceScanner : IEndOfSentenceScanner
 	{
-		public static char[] GetEndOfSentenceCharacters()
-		{
-			return new char[]{'.', '?', '!'};
-		}
-
+        private static readonly List<char> defaultEndOfSentenceCharacters = new List<char>(){'?','!','.'};
+        
 	    /// <summary> 
 	    /// Creates a new <code>DefaultEndOfSentenceScanner</code> instance.
 	    /// </summary>
 	    public DefaultEndOfSentenceScanner(){}
-        
+
+
+        public List<char> GetPotentialEndOfSentenceCharacters()
+        {
+            return defaultEndOfSentenceCharacters;
+        }
 
         public virtual List<int> GetPositions(string input)
 		{
@@ -73,7 +76,11 @@ namespace OpenNLP.Tools.SentenceDetect
 			
 			for (int currentChar = 0; currentChar < charBuffer.Length; currentChar++)
 			{
-				switch (charBuffer[currentChar])
+			    if (this.GetPotentialEndOfSentenceCharacters().Contains(charBuffer[currentChar]))
+			    {
+			        positionList.Add(currentChar);
+			    }
+				/*switch (charBuffer[currentChar])
 				{	
 					case '.': 
 					case '?': 
@@ -82,9 +89,15 @@ namespace OpenNLP.Tools.SentenceDetect
 						break;
 					default: 
 						break;
-				}
+				}*/
 			}
 			return positionList;
 		}
+
+
+	    public static List<char> GetDefaultEndOfSentenceCharacters()
+	    {
+	        return defaultEndOfSentenceCharacters;
+	    }
 	}
 }

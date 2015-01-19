@@ -57,20 +57,20 @@ namespace OpenNLP.Tools.SentenceDetect
 		private readonly IEndOfSentenceScanner _scanner;
 		
 		/// <summary>
-		/// Creates a new <code>SentenceDetectionEventReader</code> instance.  A
-		/// DefaultEndOfSentenceScanner is used to locate sentence endings.
+		/// Creates a new <code>SentenceDetectionEventReader</code> instance.
+		/// A DefaultEndOfSentenceScanner is used to locate sentence endings.
 		/// </summary>
 		/// <param name="dataReader">a <code>ITrainingDataReader</code> value
 		/// </param>
 		public SentenceDetectionEventReader(ITrainingDataReader<string> dataReader): 
-            this(dataReader, new DefaultEndOfSentenceScanner(), new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters())){}
+            this(dataReader, new DefaultEndOfSentenceScanner(), new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetDefaultEndOfSentenceCharacters().ToArray())){}
 		
 		/// <summary>
 		/// Class constructor which uses the EndOfSentenceScanner to locate
 		/// sentence endings.
 		/// </summary>
 		public SentenceDetectionEventReader(ITrainingDataReader<string> dataReader, IEndOfSentenceScanner scanner) : 
-            this(dataReader, scanner, new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters())){}
+            this(dataReader, scanner, new SentenceDetectionContextGenerator(scanner.GetPotentialEndOfSentenceCharacters().ToArray())){}
 
         public SentenceDetectionEventReader(ITrainingDataReader<string> dataReader, IEndOfSentenceScanner scanner, 
             IContextGenerator<Tuple<StringBuilder, int>> contextGenerator)

@@ -17,15 +17,7 @@ namespace OpenNLP.Tools.SentenceDetect
 
 
         // Constructors --------------
-
-        /// <summary>
-        /// Ready to flight constructor with potential end of sentence characters '.', '?' and '!'
-        /// </summary>
-        public CharactersSpecificEndOfSentenceScanner()
-        {
-            _endOfSentencePotentialCharacters = new List<char>(){'.', '?', '!' };
-        }
-
+        
         /// <summary>
         /// Constructor to specify the potential end of sentence characters 
         /// </summary>
@@ -60,6 +52,11 @@ namespace OpenNLP.Tools.SentenceDetect
                 }
             }
             return positionList;
+        }
+
+        public List<char> GetPotentialEndOfSentenceCharacters()
+        {
+            return _endOfSentencePotentialCharacters;
         }
     }
 }

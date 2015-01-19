@@ -35,6 +35,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace OpenNLP.Tools.SentenceDetect
 {
@@ -83,5 +84,11 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// a <code>List</code> of integers.
 		/// </returns>
         List<int> GetPositions(char[] characterBuffer);
+
+        /// <summary>
+        /// Gets the characters for which we are testing a potential 
+        /// end of sentence for this scanner.
+        /// </summary>
+	    List<char> GetPotentialEndOfSentenceCharacters();
 	} 
 }

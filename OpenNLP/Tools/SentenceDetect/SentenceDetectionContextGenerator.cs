@@ -162,7 +162,7 @@ namespace OpenNLP.Tools.SentenceDetect
 				}
 			}
 		
-			int nextEnd = NextSpaceIndex(buffer, suffixEnd + 1, lastIndex + 1);
+			    int nextEnd = NextSpaceIndex(buffer, suffixEnd + 1, lastIndex + 1);
 			if (position == lastIndex)
 			{
 				suffix = "";

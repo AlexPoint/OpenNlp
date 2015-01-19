@@ -84,7 +84,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// evaluate end-of-sentence decisions.
 		/// </param>
 		public MaximumEntropySentenceDetector(IMaximumEntropyModel model):
-            this(model, new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetEndOfSentenceCharacters()), new DefaultEndOfSentenceScanner())
+            this(model, new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetDefaultEndOfSentenceCharacters().ToArray()), new DefaultEndOfSentenceScanner())
 		{
             _sentenceProbs = new List<double>(50);
 		}
@@ -223,7 +223,8 @@ namespace OpenNLP.Tools.SentenceDetect
 				}
 
                 var pair = new Tuple<StringBuilder, int>(buffer, candidate);
-				double[] probabilities = _model.Evaluate(_contextGenerator.GetContext(pair));
+			    var context = _contextGenerator.GetContext(pair);
+				double[] probabilities = _model.Evaluate(context);
 				string bestOutcome = _model.GetBestOutcome(probabilities);
 				sentenceProbability *= probabilities[_model.GetOutcomeIndex(bestOutcome)];
 				if (bestOutcome.Equals("T") && IsAcceptableBreak(input, index, cInt))

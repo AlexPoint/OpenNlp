@@ -767,7 +767,8 @@ namespace OpenNLP.Tools.Trees
                     {
                         IndexedWord td2Dep = td2.Dep;
                         string td2DepPOS = td2Dep.Tag();
-                        if (td2DepPOS.Equals("IN") || td2DepPOS.Equals("TO"))
+                        if (td2DepPOS == PartsOfSpeech.PrepositionOrSubordinateConjunction 
+                            || td2DepPOS == PartsOfSpeech.To)
                         {
                             samePrepositionInEachConjunct = samePrepositionInEachConjunct &&
                                                             td2Dep.Value().Equals(td1Dep.Value());
@@ -787,7 +788,7 @@ namespace OpenNLP.Tools.Trees
                                     // problem with multiple prep (mcdm)
                                     if ((td3.Reln == EnglishGrammaticalRelations.PrepositionalObject ||
                                          td3.Reln == EnglishGrammaticalRelations.PrepositionalComplement) &&
-                                        (!(td3DepPOS.Equals("IN") || td3DepPOS.Equals("TO"))) && prepOtherDep == null)
+                                        (!(td3DepPOS == PartsOfSpeech.PrepositionOrSubordinateConjunction || td3DepPOS == PartsOfSpeech.To)) && prepOtherDep == null)
                                     {
                                         prepOtherDep = td3;
                                         if (td3.Reln == EnglishGrammaticalRelations.PrepositionalComplement)
@@ -834,9 +835,10 @@ namespace OpenNLP.Tools.Trees
                         if ((td2.Reln == GrammaticalRelation.Dependent ||
                              td2.Reln == EnglishGrammaticalRelations.PrepositionalObject ||
                              td2.Reln == EnglishGrammaticalRelations.PrepositionalComplement) &&
-                            (td1DepPOS.Equals("IN") || td1DepPOS.Equals("TO") || td1DepPOS.Equals("VBG")) &&
-                            prepDep == null &&
-                            (!(td2DepPOS.Equals("RB") || td2DepPOS.Equals("IN") || td2DepPOS.Equals("TO"))))
+                            (PartsOfSpeech.PrepositionOrSubordinateConjunction == td1DepPOS || PartsOfSpeech.To == td1DepPOS
+                            || PartsOfSpeech.VerbGerundOrPresentParticiple == td1DepPOS) 
+                            && prepDep == null 
+                            && (!(PartsOfSpeech.Adverb == td2DepPOS || PartsOfSpeech.PrepositionOrSubordinateConjunction == td2DepPOS || PartsOfSpeech.To == td2DepPOS)))
                         {
                             // same index trick, in case we have multiple deps
                             // I deleted this to see if it helped [cdm Jan 2010] &&
@@ -998,7 +1000,7 @@ namespace OpenNLP.Tools.Trees
                     {
                         // special treatment for prepositions: the original relation is
                         // likely to be a "dep" and we want this to be a "prep"
-                        if (otd.Dep.Tag().Equals("IN"))
+                        if (otd.Dep.Tag() == PartsOfSpeech.PrepositionOrSubordinateConjunction)
                         {
                             otd.Reln = EnglishGrammaticalRelations.PrepositionalModifier;
                         }
@@ -1072,8 +1074,10 @@ namespace OpenNLP.Tools.Trees
                             }
                             else if ((td2.Reln == EnglishGrammaticalRelations.PrepositionalObject ||
                                       td2.Reln == EnglishGrammaticalRelations.PrepositionalComplement) &&
-                                     (td1DepPOS.Equals("IN") || td1DepPOS.Equals("TO") || td1DepPOS.Equals("VBG")) &&
-                                     (!(td2DepPOS.Equals("RB") || td2DepPOS.Equals("IN") || td2DepPOS.Equals("TO"))) &&
+                                     (PartsOfSpeech.PrepositionOrSubordinateConjunction == td1DepPOS 
+                                || PartsOfSpeech.To == td1DepPOS || PartsOfSpeech.VerbGerundOrPresentParticiple == td1DepPOS) &&
+                                     (!(PartsOfSpeech.Adverb == td2DepPOS 
+                                || PartsOfSpeech.PrepositionOrSubordinateConjunction == td2DepPOS || PartsOfSpeech.To == td2DepPOS)) &&
                                      !IsConjWithNoPrep(td2.Gov, possibles))
                             {
                                 // we don't collapse preposition conjoined with a non-preposition
@@ -1165,7 +1169,8 @@ namespace OpenNLP.Tools.Trees
                     // we have a conjunct
                     // check the POS of the dependent
                     string tdDepPos = td.Dep.Tag();
-                    if (!(tdDepPos.Equals("IN") || tdDepPos.Equals("TO")))
+                    if (!(tdDepPos == PartsOfSpeech.PrepositionOrSubordinateConjunction 
+                        || tdDepPos == PartsOfSpeech.To))
                     {
                         return true;
                     }
@@ -1550,7 +1555,7 @@ namespace OpenNLP.Tools.Trees
                     // CDM 2008: I also added in JJ, since participial verbs are often
                     // tagged JJ
                     string tag = dep.Tag();
-                    if (subjectMap.ContainsKey(gov) && (tag.StartsWith("VB") || tag.StartsWith("JJ")) &&
+                    if (subjectMap.ContainsKey(gov) && (PartsOfSpeech.IsVerb(tag) || PartsOfSpeech.IsAdjective(tag)) &&
                         ! subjectMap.ContainsKey(dep))
                     {
                         TypedDependency tdsubj = subjectMap[gov];
@@ -1613,7 +1618,10 @@ namespace OpenNLP.Tools.Trees
         private static bool IsDefinitelyActive(string tag)
         {
             // we should include VBD, but don't as it is often a tagging mistake.
-            return tag.Equals("VB") || tag.Equals("VBZ") || tag.Equals("VBP") || tag.StartsWith("JJ");
+            return tag == PartsOfSpeech.VerbBaseForm
+                || tag == PartsOfSpeech.Verb3rdPersSingPresent
+                || tag == PartsOfSpeech.VerbNon3rdPersSingPresent 
+                || PartsOfSpeech.IsAdjective(tag);
         }
 
         /// <summary>

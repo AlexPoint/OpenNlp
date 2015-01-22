@@ -75,7 +75,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		
 		public override bool CanResolve(MentionContext mention)
 		{
-			return (mention.HeadTokenTag.StartsWith("NNP") || mention.HeadTokenTag.StartsWith("CD"));
+			return (PartsOfSpeech.IsProperNoun(mention.HeadTokenTag) || mention.HeadTokenTag.StartsWith("CD"));
 		}
 		
 		private void  initAcronyms(string name)
@@ -136,7 +136,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
             {
 				//use first extent which is propername
 				string xecHeadTag = xec.HeadTokenTag;
-				if (xecHeadTag.StartsWith("NNP") || InitialCaps.IsMatch(xec.HeadTokenText))
+				if (PartsOfSpeech.IsProperNoun(xecHeadTag) || InitialCaps.IsMatch(xec.HeadTokenText))
 				{
 					return xec;
 				}
@@ -192,7 +192,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			
             foreach (MentionContext xec in entity.Mentions)
 			{
-				if (xec.HeadTokenTag.StartsWith("NNP"))
+                if (PartsOfSpeech.IsProperNoun(xec.HeadTokenTag))
 				{
 					// || initialCaps.matcher(xec.headToken.ToString()).find()) {
 					return false;

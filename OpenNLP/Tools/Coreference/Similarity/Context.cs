@@ -90,7 +90,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
             _tokens = tokenList.ToArray();
 			this.HeadTokenTag = headToken.SyntacticType;
 			this.HeadTokenText = headToken.ToString();
-			if (this.HeadTokenTag.StartsWith("NN") && !this.HeadTokenTag.StartsWith("NNP"))
+			if (PartsOfSpeech.IsNoun(this.HeadTokenTag) && !PartsOfSpeech.IsProperNoun(this.HeadTokenTag))
 			{
 				this.Synsets = GetSynsetSet(this);
 			}
@@ -143,8 +143,8 @@ namespace OpenNLP.Tools.Coreference.Similarity
             Mention.IDictionary dictionary = Mention.DictionaryFactory.GetDictionary();
 			foreach (string lemma in lemmas)
 			{
-			    synsetSet.Add(dictionary.GetSenseKey(lemma, "NN", 0));
-			    string[] synsets = dictionary.GetParentSenseKeys(lemma, "NN", 0);
+			    synsetSet.Add(dictionary.GetSenseKey(lemma, PartsOfSpeech.NounSingularOrMass, 0));
+                string[] synsets = dictionary.GetParentSenseKeys(lemma, PartsOfSpeech.NounSingularOrMass, 0);
 			    for (int currentSynset = 0, sn = synsets.Length; currentSynset < sn; currentSynset++)
 			    {
 			        synsetSet.Add(synsets[currentSynset]);
@@ -156,7 +156,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		private static string[] GetLemmas(Context context)
 		{
 			string word = context.HeadTokenText.ToLower();
-            return Mention.DictionaryFactory.GetDictionary().GetLemmas(word, "NN");
+            return Mention.DictionaryFactory.GetDictionary().GetLemmas(word, PartsOfSpeech.NounSingularOrMass);
 		}
 	}
 }

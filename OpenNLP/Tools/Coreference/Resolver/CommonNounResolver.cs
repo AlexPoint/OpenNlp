@@ -71,7 +71,8 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		{
 			string firstToken = mention.FirstTokenText.ToLower();
 			string firstTokenTag = mention.FirstToken.SyntacticType;
-			bool canResolve = mention.HeadTokenTag == "NN" && !IsDefiniteArticle(firstToken, firstTokenTag);
+			bool canResolve = mention.HeadTokenTag == PartsOfSpeech.NounSingularOrMass 
+                && !IsDefiniteArticle(firstToken, firstTokenTag);
 			return canResolve;
 		}
 		

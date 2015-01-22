@@ -281,8 +281,8 @@ namespace OpenNLP.Tools.Coreference.Mention
         nonDescriptorStart = 0;
         initHeads(headFinder.getHeadIndex(head));
         this.neType= nameType;
-        if (getHeadTokenTag().startsWith("NN") && !getHeadTokenTag().startsWith("NNP")) {
-        //if (headTokenTag.startsWith("NNP") && neType != null) {
+        if (PartsOfSpeech.IsNoun(getHeadTokenTag()) && !PartsOfSpeech.IsProperNoun(getHeadTokenTag())) {
+        //if (PartsOfSpeech.IsProperNoun(headTokenTag) && neType != null) {
         this.synsets = getSynsetSet(this);
         }
         else {
@@ -294,8 +294,8 @@ namespace OpenNLP.Tools.Coreference.Mention
         this.numberProb = 0d;
         }
         */
-		
-		private void  InitializeHeads(int headIndex)
+
+        private void  InitializeHeads(int headIndex)
 		{
 			HeadTokenIndex = headIndex;
 			mHeadToken = (IParse) Tokens[HeadTokenIndex];
@@ -316,28 +316,28 @@ namespace OpenNLP.Tools.Coreference.Mention
 		{
 			return Parse.ToString();
 		}
+
+        /*
+        private static string[] getLemmas(MentionContext xec) {
+        //TODO: Try multi-word lemmas first.
+        string word = xec.getHeadTokenText();
+        return DictionaryFactory.getDictionary().getLemmas(word,PartsOfSpeech.NounSingularOrMass);
+        }
 		
-		/*
-		private static string[] getLemmas(MentionContext xec) {
-		//TODO: Try multi-word lemmas first.
-		string word = xec.getHeadTokenText();
-		return DictionaryFactory.getDictionary().getLemmas(word,"NN");
-		}
-		
-		private static Set getSynsetSet(MentionContext xec) {
-		Set synsetSet = new HashSet();
-		string[] lemmas = getLemmas(xec);
-		for (int li = 0; li < lemmas.length; li++) {
-		string[] synsets = DictionaryFactory.getDictionary().getParentSenseKeys(lemmas[li],"NN",0);
-		for (int si=0,sn=synsets.length;si<sn;si++) {
-		synsetSet.add(synsets[si]);
-		}
-		}
-		return (synsetSet);
-		}
-		*/
-		
-		/// <summary>
+        private static Set getSynsetSet(MentionContext xec) {
+        Set synsetSet = new HashSet();
+        string[] lemmas = getLemmas(xec);
+        for (int li = 0; li < lemmas.length; li++) {
+        string[] synsets = DictionaryFactory.getDictionary().getParentSenseKeys(lemmas[li],PartsOfSpeech.NounSingularOrMass,0);
+        for (int si=0,sn=synsets.length;si<sn;si++) {
+        synsetSet.add(synsets[si]);
+        }
+        }
+        return (synsetSet);
+        }
+        */
+
+        /// <summary>
         /// Assigns the specified gender with the specified probability to this mention.
         /// </summary>
 		/// <param name="gender">

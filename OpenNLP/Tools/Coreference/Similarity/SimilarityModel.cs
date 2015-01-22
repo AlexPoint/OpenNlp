@@ -436,22 +436,22 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		
 		private bool IsName(Context nounPhrase)
 		{
-			return nounPhrase.HeadTokenTag.StartsWith("NNP");
+			return PartsOfSpeech.IsProperNoun(nounPhrase.HeadTokenTag);
 		}
 		
 		private bool IsCommonNoun(Context nounPhrase)
 		{
-			return !nounPhrase.HeadTokenTag.StartsWith("NNP") && nounPhrase.HeadTokenTag.StartsWith("NN");
+			return !PartsOfSpeech.IsProperNoun(nounPhrase.HeadTokenTag) && PartsOfSpeech.IsNoun(nounPhrase.HeadTokenTag);
 		}
 		
 		private bool IsPronoun(Context nounPhrase)
 		{
-			return nounPhrase.HeadTokenTag.StartsWith("PRP");
+			return PartsOfSpeech.IsPersonalOrPossessivePronoun(nounPhrase.HeadTokenTag);
 		}
 		
 		private bool IsNumber(Context nounPhrase)
 		{
-			return nounPhrase.HeadTokenTag == "CD";
+            return nounPhrase.HeadTokenTag == PartsOfSpeech.CardinalNumber;
 		}
 		
 		private IEnumerable<string> GetNameCommonFeatures(Context name, Context common)

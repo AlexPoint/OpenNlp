@@ -613,7 +613,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		protected internal virtual bool IsDefiniteArticle(string token, string tag)
 		{
 			token = token.ToLower();
-			if (token == "the" || token == "these" || token == "these" || tag == "PRP$")
+			if (token == "the" || token == "these" || token == "these" || tag == PartsOfSpeech.PossessivePronoun)
 			{
 				return true;
 			}
@@ -756,12 +756,12 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		{
 			bool foundCompatiblePronoun = false;
 			bool foundIncompatiblePronoun = false;
-			if (mention.HeadTokenTag.StartsWith("PRP"))
+			if (PartsOfSpeech.IsPersonalOrPossessivePronoun(mention.HeadTokenTag))
 			{
                 Dictionary<string, string> pronounMap = GetPronounFeatureMap(mention.HeadTokenText);
 				foreach (Mention.MentionContext candidateMention in entity.Mentions)
                 {
-					if (candidateMention.HeadTokenTag.StartsWith("PRP"))
+					if (PartsOfSpeech.IsPersonalOrPossessivePronoun(candidateMention.HeadTokenTag))
 					{
 						if (mention.HeadTokenText.ToUpper() == candidateMention.HeadTokenText.ToUpper())
 						{
@@ -974,14 +974,14 @@ namespace OpenNLP.Tools.Coreference.Resolver
 
         private string ExcludedDeterminerMentionString(Mention.MentionContext entityContext)
 		{
-			System.Text.StringBuilder output = new System.Text.StringBuilder();
+			var output = new StringBuilder();
 			bool first = true;
             Mention.IParse[] mentionTokenParses = entityContext.TokenParses;
 			for (int tokenIndex = 0; tokenIndex < mentionTokenParses.Length; tokenIndex++)
 			{
                 Mention.IParse token = mentionTokenParses[tokenIndex];
 				string tag = token.SyntacticType;
-				if (tag != "DT")
+				if (tag != PartsOfSpeech.Determiner)
 				{
 					if (!first)
 					{

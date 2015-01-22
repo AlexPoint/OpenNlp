@@ -132,7 +132,7 @@ namespace OpenNLP.Tools.Coreference.Mention
 				{
                     List<IParse> childTokens = parts[0].Tokens;
 					IParse token = childTokens[childTokens.Count - 1];
-					if (token.SyntacticType == "POS")
+					if (token.SyntacticType == PartsOfSpeech.PossessiveEnding)
 					{
 						return true;
 					}
@@ -140,7 +140,8 @@ namespace OpenNLP.Tools.Coreference.Mention
 			}
 			if (parts.Count > 2)
 			{
-                if (parts[1].IsToken && parts[1].SyntacticType == "POS" && parts[0].IsNounPhrase && parts[2].IsNounPhrase)
+                if (parts[1].IsToken && parts[1].SyntacticType == PartsOfSpeech.PossessiveEnding 
+                    && parts[0].IsNounPhrase && parts[2].IsNounPhrase)
 				{
 					return true;
 				}
@@ -177,7 +178,7 @@ namespace OpenNLP.Tools.Coreference.Mention
 			{
                 if (currentPart.IsToken)
 				{
-                    if (currentPart.SyntacticType == "CC")
+                    if (currentPart.SyntacticType == PartsOfSpeech.CoordinatingConjunction)
 					{
 						hasConjunction = true;
 					}
@@ -204,7 +205,7 @@ namespace OpenNLP.Tools.Coreference.Mention
 				{
 					if (lastNounPhraseTokenIndex != tokenIndex)
 					{
-						if (tokenIndex - 1 >= 0 && (nounPhraseTokens[tokenIndex - 1]).SyntacticType.StartsWith("NN"))
+						if (tokenIndex - 1 >= 0 && PartsOfSpeech.IsNoun(nounPhraseTokens[tokenIndex - 1].SyntacticType))
 						{
                             var nounPhraseSpan = new Util.Span((nounPhraseTokens[tokenIndex + 1]).Span.Start, (nounPhraseTokens[lastNounPhraseTokenIndex]).Span.End);
 							var nounPhraseSpanExtent = new Mention(nounPhraseSpan, nounPhraseSpan, token.EntityId, null, "CNP");
@@ -218,7 +219,7 @@ namespace OpenNLP.Tools.Coreference.Mention
 					}
 					lastNounPhraseTokenIndex = tokenIndex - 1;
 				}
-				else if (inCoordinatedNounPhrase && tokenText.Equals(","))
+				else if (inCoordinatedNounPhrase && tokenText == PartsOfSpeech.Comma)
 				{
 					if (lastNounPhraseTokenIndex != tokenIndex)
 					{
@@ -267,9 +268,9 @@ namespace OpenNLP.Tools.Coreference.Mention
 				{
 					continue;
 				}
-				if (token.SyntacticType.StartsWith("PRP") && IsHandledPronoun(token.ToString()))
+				if (PartsOfSpeech.IsPersonalOrPossessivePronoun(token.SyntacticType) && IsHandledPronoun(token.ToString()))
 				{
-					var possessivePronounExtent = new Mention(token.Span, token.Span, token.EntityId, null, OpenNLP.Tools.Coreference.Linker.PronounModifier);
+					var possessivePronounExtent = new Mention(token.Span, token.Span, token.EntityId, null, Linker.PronounModifier);
 					entities.Add(possessivePronounExtent);
 					break;
 				}

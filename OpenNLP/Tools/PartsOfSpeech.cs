@@ -72,6 +72,54 @@ namespace OpenNLP.Tools
         // Utilities -------------------------------------------------------
 
         /// <summary>
+        /// Returns true if the pos corresponds to a verb
+        /// (base form, present form non 3rd, present form 3rd, past form,
+        /// present particle/gerundive or past participle).
+        /// Return false otherwise.
+        /// </summary>
+        public static bool IsVerb(string pos)
+        {
+            return !string.IsNullOrEmpty(pos) && pos.StartsWith("VB");
+        }
+
+        /// <summary>
+        /// Returns true if the pos corresponds to a noun (plural, singular or proper).
+        /// Returns false otherwise.
+        /// </summary>
+        public static bool IsNoun(string pos)
+        {
+            return !string.IsNullOrEmpty(pos) && pos.StartsWith("NN");
+        }
+
+        /// <summary>
+        /// Returns true if the pos corresponds to a proper noun (plural or singular).
+        /// Returns false otherwise.
+        /// </summary>
+        public static bool IsProperNoun(string pos)
+        {
+            return !string.IsNullOrEmpty(pos) && pos.StartsWith("NNP");
+        }
+
+        /// <summary>
+        /// Returns true if the pos corresponds to an adjective
+        /// (regular, comparative or superlative).
+        /// Returns false otherwise.
+        /// </summary>
+        public static bool IsAdjective(string pos)
+        {
+            return !string.IsNullOrEmpty(pos) && pos.StartsWith("JJ");
+        }
+
+        /// <summary>
+        /// Returns true if the pos corresponds to a personnal or possessive pronoun.
+        /// Returns false otherwise.
+        /// </summary>
+        public static bool IsPersonalOrPossessivePronoun(string pos)
+        {
+            return !string.IsNullOrEmpty(pos) && pos.StartsWith("PRP");
+        }
+
+        /// <summary>
         /// Writes the part of speech to be human understandable
         /// </summary>
         public static string Write(string pos)

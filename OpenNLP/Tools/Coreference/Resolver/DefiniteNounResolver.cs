@@ -62,7 +62,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			Object[] mtokens = mention.Tokens;
 			
 			string firstTok = mention.FirstTokenText.ToLower();
-			bool rv = mtokens.Length > 1 && !mention.HeadTokenTag.StartsWith("NNP") && IsDefiniteArticle(firstTok, mention.FirstTokenTag);
+			bool rv = mtokens.Length > 1 && !PartsOfSpeech.IsProperNoun(mention.HeadTokenTag) && IsDefiniteArticle(firstTok, mention.FirstTokenTag);
 			return (rv);
 		}
 		

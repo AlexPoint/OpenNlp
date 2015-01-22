@@ -166,7 +166,9 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			for (int currentToken = mentionTokens.Length - 1; currentToken >= 0; currentToken--)
 			{
                 Mention.IParse token = mentionTokens[currentToken];
-				if (token.SyntacticType != "POS" && token.SyntacticType != "," && token.SyntacticType != ".")
+				if (token.SyntacticType != PartsOfSpeech.PossessiveEnding 
+                    && token.SyntacticType != PartsOfSpeech.Comma 
+                    && token.SyntacticType != PartsOfSpeech.SentenceFinalPunctuation)
 				{
 					return currentToken;
 				}
@@ -290,7 +292,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
                 return null;
 			}
 			//strip determiners
-			if (mentionTokens[start].SyntacticType == "DT")
+			if (mentionTokens[start].SyntacticType == PartsOfSpeech.Determiner)
 			{
 				start++;
 			}
@@ -303,7 +305,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			for (int index = start; index < end; index++)
 			{
 				type = mentionTokens[start].SyntacticType;
-				if (type.StartsWith("NNP"))
+				if (PartsOfSpeech.IsProperNoun(type))
 				{
 					break;
 				}

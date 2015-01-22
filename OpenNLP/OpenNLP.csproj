@@ -297,6 +297,12 @@
     <Compile Include="Tools\Tokenize\TokenSpanEventReader.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Trees\CollinsHeadFinder.cs" />
+    <Compile Include="Tools\Trees\ModCollinsHeadFinder.cs" />
+    <Compile Include="Tools\Trees\PennTreebankLanguagePack.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tools\Trees\SemanticHeadFinder.cs" />
     <Compile Include="Tools\Util\AbstractCollection.cs" />
     <Compile Include="Tools\Util\ArrayCoreMap.cs" />
     <Compile Include="Tools\Util\BeamSearch.cs">
@@ -397,7 +403,6 @@
     <Compile Include="Tools\Trees\AbstractCollinsHeadFinder.cs" />
     <Compile Include="Tools\Trees\AbstractTreebankLanguagePack.cs" />
     <Compile Include="Tools\Trees\BobChrisTreeNormalizer.cs" />
-    <Compile Include="Tools\Trees\CollinsHeadFinder.cs" />
     <Compile Include="Tools\Trees\Constituent.cs" />
     <Compile Include="Tools\Trees\IConstituentFactory.cs" />
     <Compile Include="Tools\Trees\CoordinationTransformer.cs" />
@@ -418,16 +423,13 @@
     <Compile Include="Tools\Trees\LabeledScoredTreeFactory.cs" />
     <Compile Include="Tools\Trees\LabeledScoredTreeNode.cs" />
     <Compile Include="Tools\Trees\LabeledScoredTreeReaderFactory.cs" />
-    <Compile Include="Tools\Trees\ModCollinsHeadFinder.cs" />
     <Compile Include="Tools\Trees\NamedDependency.cs" />
     <Compile Include="Tools\Trees\ParseTree.cs" />
     <Compile Include="Tools\Trees\ParseTreeFactory.cs" />
-    <Compile Include="Tools\Trees\PennTreebankLanguagePack.cs" />
     <Compile Include="Tools\Trees\PennTreebankTokenizer.cs" />
     <Compile Include="Tools\Trees\PennTreeReader.cs" />
     <Compile Include="Tools\Trees\PennTreeReaderFactory.cs" />
     <Compile Include="Tools\Trees\QPTreeTransformer.cs" />
-    <Compile Include="Tools\Trees\SemanticHeadFinder.cs" />
     <Compile Include="Tools\Trees\SimpleConstituent.cs" />
     <Compile Include="Tools\Trees\SimpleConstituentFactory.cs" />
     <Compile Include="Tools\Trees\SimpleTree.cs" />

@@ -64,7 +64,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		
 		public override bool CanResolve(MentionContext context)
 		{
-			if (context.HeadTokenTag.StartsWith("NN"))
+			if (PartsOfSpeech.IsNoun(context.HeadTokenTag))
 			{
                 return (context.PreviousToken != null && predicativePattern.IsMatch(context.PreviousToken.ToString()));
 			}
@@ -89,7 +89,8 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				return false;
 			}
 			//full parse w/ trailing comma or period
-			if (currentContext.IndexSpan.End <= context.IndexSpan.End + 2 && (context.NextToken != null && (context.NextToken.ToString().Equals(",") || context.NextToken.ToString().Equals("."))))
+			if (currentContext.IndexSpan.End <= context.IndexSpan.End + 2 && (context.NextToken != null 
+                && (context.NextToken.ToString() == PartsOfSpeech.Comma || context.NextToken.ToString() == PartsOfSpeech.SentenceFinalPunctuation)))
 			{
 				return false;
 			}
@@ -184,39 +185,39 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			features.add("ht2=" + mention.headTokenTag);
 			*/
 			//semantic categories
-			/*
-			if (ant.neType != null) {
-			if (re.neType != null) {
-			features.add("sc="+ant.neType+","+re.neType);
-			}
-			else if (!re.headTokenTag.startsWith("NNP") && re.headTokenTag.startsWith("NN")) {
-			Set synsets = re.synsets;
-			for (Iterator si=synsets.iterator();si.hasNext();) {
-			features.add("sc="+ant.neType+","+si.next());
-			}
-			}
-			}
-			else if (!ant.headTokenTag.startsWith("NNP") && ant.headTokenTag.startsWith("NN")) {
-			if (re.neType != null) {
-			Set synsets = ant.synsets;
-			for (Iterator si=synsets.iterator();si.hasNext();) {
-			features.add("sc="+re.neType+","+si.next());
-			}
-			}
-			else if (!re.headTokenTag.startsWith("NNP") && re.headTokenTag.startsWith("NN")) {
-			Set synsets1 = ant.synsets;
-			Set synsets2 = re.synsets;
-			for (Iterator si=synsets1.iterator();si.hasNext();) {
-			Object synset = si.next();
-			if (synsets2.contains(synset)) {
-			features.add("sc="+synset);
-			}
-			}
-			}
-			}
-			}
-			*/
-			return features;
+            /*
+            if (ant.neType != null) {
+            if (re.neType != null) {
+            features.add("sc="+ant.neType+","+re.neType);
+            }
+            else if (!PartsOfSpeech.IsProperNoun(re.headTokenTag) && PartsOfSpeech.IsNoun(re.headTokenTag)) {
+            Set synsets = re.synsets;
+            for (Iterator si=synsets.iterator();si.hasNext();) {
+            features.add("sc="+ant.neType+","+si.next());
+            }
+            }
+            }
+            else if (!PartsOfSpeech.IsProperNoun(ant.headTokenTag) && PartsOfSpeech.IsNoun(ant.headTokenTag)) {
+            if (re.neType != null) {
+            Set synsets = ant.synsets;
+            for (Iterator si=synsets.iterator();si.hasNext();) {
+            features.add("sc="+re.neType+","+si.next());
+            }
+            }
+            else if (!PartsOfSpeech.IsProperNoun(re.headTokenTag) && PartsOfSpeech.IsNoun(re.headTokenTag)) {
+            Set synsets1 = ant.synsets;
+            Set synsets2 = re.synsets;
+            for (Iterator si=synsets1.iterator();si.hasNext();) {
+            Object synset = si.next();
+            if (synsets2.contains(synset)) {
+            features.add("sc="+synset);
+            }
+            }
+            }
+            }
+            }
+            */
+            return features;
 		}
 	}
 }

@@ -39,7 +39,7 @@ namespace OpenNLP.Tools.Coreference.Mention
 					{
 						IParse child = parts[currentPart];
 						string childType = child.SyntacticType;
-						if (childType != null && childType == "CC" && !(child.ToString() == "&"))
+                        if (childType != null && childType == PartsOfSpeech.CoordinatingConjunction && !(child.ToString() == "&"))
 						{
 							return true;
 						}

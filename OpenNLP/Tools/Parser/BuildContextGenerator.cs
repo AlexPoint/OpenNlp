@@ -241,12 +241,12 @@ namespace OpenNLP.Tools.Parser
 					}
 				}
 			}
-			if (currentParseWord == "''")
+			if (currentParseWord == PartsOfSpeech.RightCloseDoubleQuote)
 			{
 				for (int parseIndex = index - 1; parseIndex >= 0; parseIndex--)
 				{
 					Parse testParse = constituents[parseIndex];
-					if (testParse.ToString() == "``")
+                    if (testParse.ToString() == PartsOfSpeech.LeftOpenDoubleQuote)
 					{
 						features.Add("quotesmatch");
 						break;
@@ -273,12 +273,12 @@ namespace OpenNLP.Tools.Parser
 					}
 				}
 			}
-			if (currentParseWord == ",")
+			if (currentParseWord == PartsOfSpeech.Comma)
 			{
 				for (int parseIndex = index - 1; parseIndex >= 0; parseIndex--)
 				{
 					Parse testParse = constituents[parseIndex];
-					if (testParse.ToString() == ",")
+					if (testParse.ToString() == PartsOfSpeech.Comma)
 					{
 						features.Add("iscomma");
 						break;
@@ -289,7 +289,7 @@ namespace OpenNLP.Tools.Parser
 					}
 				}
 			}
-			if (currentParseWord == (".") && index == constituentCount - 1)
+			if (currentParseWord == PartsOfSpeech.SentenceFinalPunctuation && index == constituentCount - 1)
 			{
 				for (int parseIndex = index - 1; parseIndex >= 0; parseIndex--)
 				{

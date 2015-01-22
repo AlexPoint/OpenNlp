@@ -657,7 +657,7 @@ namespace SharpEntropy
 		/// </summary>
 		private void ConvertPredicates()
 		{
-			PatternedPredicate[] predicates = new PatternedPredicate[mParameters.Length];
+			var predicates = new PatternedPredicate[mParameters.Length];
 			
 			for (mPredicateId = 0; mPredicateId < mPredicateCount; mPredicateId++)
 			{
@@ -665,7 +665,7 @@ namespace SharpEntropy
 				predicates[mPredicateId] = new PatternedPredicate(mPredicateLabels[mPredicateId], parameters);
 			}
 
-			OutcomePatternComparer comparer = new OutcomePatternComparer();
+			var comparer = new OutcomePatternComparer();
 			Array.Sort(mOutcomePatterns, predicates, comparer);
 
             List<int[]> outcomePatterns = new List<int[]>();

@@ -80,7 +80,8 @@ namespace OpenNLP.Tools.Coreference.Mention
 				//shallow parse POS
 				if (parts.Count > 2)
 				{
-                    if (parts[1].IsToken && parts[1].SyntacticType == "POS" && parts[0].IsNounPhrase && parts[2].IsNounPhrase)
+                    if (parts[1].IsToken && parts[1].SyntacticType == PartsOfSpeech.PossessiveEnding
+                        && parts[0].IsNounPhrase && parts[2].IsNounPhrase)
 					{
                         return (parts[2]);
 					}
@@ -96,7 +97,7 @@ namespace OpenNLP.Tools.Coreference.Mention
                             Console.Error.WriteLine("PTBHeadFinder: NP " + parts[0] + " with no tokens");
 						}
 						IParse tok = childTokens[childTokens.Count - 1];
-						if (tok.SyntacticType == "POS")
+						if (tok.SyntacticType == PartsOfSpeech.PossessiveEnding)
 						{
 							return null;
 						}
@@ -107,7 +108,7 @@ namespace OpenNLP.Tools.Coreference.Mention
 				{
 					for (int currentPart = 1; currentPart < parts.Count - 1; currentPart++)
 					{
-                        if (parts[currentPart].IsToken && parts[currentPart].SyntacticType == "CC")
+                        if (parts[currentPart].IsToken && parts[currentPart].SyntacticType == PartsOfSpeech.CoordinatingConjunction)
 						{
 							return null;
 						}
@@ -190,11 +191,11 @@ namespace OpenNLP.Tools.Coreference.Mention
 
 		static PennTreebankHeadFinder()
 		{
-			mSkipSet.Add("POS");
-			mSkipSet.Add(",");
-			mSkipSet.Add(":");
-			mSkipSet.Add(".");
-			mSkipSet.Add("''");
+			mSkipSet.Add(PartsOfSpeech.PossessiveEnding);
+			mSkipSet.Add(PartsOfSpeech.Comma);
+			mSkipSet.Add(PartsOfSpeech.ColonSemiColon);
+			mSkipSet.Add(PartsOfSpeech.SentenceFinalPunctuation);
+			mSkipSet.Add(PartsOfSpeech.RightCloseDoubleQuote);
 			mSkipSet.Add("-RRB-");
 			mSkipSet.Add("-RCB-");
 		}

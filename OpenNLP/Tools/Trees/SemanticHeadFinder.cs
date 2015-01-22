@@ -574,7 +574,7 @@ namespace OpenNLP.Tools.Trees
                 // iterate over the daughters and checks if existential
                 foreach (Tree kid in kids)
                 {
-                    if (!kid.Value().StartsWith("VB"))
+                    if (!PartsOfSpeech.IsVerb(kid.Value()))
                     {
                         //not necessary to look into the verb
                         List<ILabel> tags = kid.PreTerminalYield();
@@ -712,12 +712,14 @@ namespace OpenNLP.Tools.Trees
                                 tag = kidkid.Value();
                             }
                             // we allow in VBD because of frequent tagging mistakes
-                            if ("VBN".Equals(tag) || "VBG".Equals(tag) || "VBD".Equals(tag))
+                            if (PartsOfSpeech.VerbPastParticiple == tag 
+                                || PartsOfSpeech.VerbGerundOrPresentParticiple == tag 
+                                || PartsOfSpeech.VerbPastTense == tag)
                             {
                                 foundPassiveVp = true;
                                 break;
                             }
-                            else if ("CC".Equals(tag) && foundParticipleInVp)
+                            else if (PartsOfSpeech.CoordinatingConjunction == tag && foundParticipleInVp)
                             {
                                 foundPassiveVp = true;
                                 break;
@@ -771,7 +773,9 @@ namespace OpenNLP.Tools.Trees
                     {
                         tag = kid.Value();
                     }
-                    if ("VBN".Equals(tag) || "VBG".Equals(tag) || "VBD".Equals(tag))
+                    if (PartsOfSpeech.VerbPastParticiple == tag 
+                        || PartsOfSpeech.VerbGerundOrPresentParticiple == tag 
+                        || PartsOfSpeech.VerbPastTense == tag)
                     {
                         return true;
                     }

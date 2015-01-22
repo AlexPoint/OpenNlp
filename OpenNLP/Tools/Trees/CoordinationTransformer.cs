@@ -284,11 +284,11 @@ namespace OpenNLP.Tools.Trees
 
         private static string GetHeadTag(Tree t)
         {
-            if (t.Value().StartsWith("NN"))
+            if (PartsOfSpeech.IsNoun(t.Value()))
             {
                 return "NP";
             }
-            else if (t.Value().StartsWith("JJ"))
+            else if (PartsOfSpeech.IsAdjective(t.Value()))
             {
                 return "ADJP";
             }
@@ -328,10 +328,13 @@ namespace OpenNLP.Tools.Trees
             // a CC b c ... -> (a CC b) c ...  with b not a DT
             string beforeSibling = ccSiblings[ccIndex - 1].Value();
             if (ccIndex == 1 &&
-                (beforeSibling.Equals("DT") || beforeSibling.Equals("JJ") || beforeSibling.Equals("RB") ||
-                 ! (ccSiblings[ccIndex + 1].Value().Equals("DT"))) && ! (beforeSibling.StartsWith("NP")
-                                                                         || beforeSibling.Equals("ADJP")
-                                                                         || beforeSibling.Equals("NNS")))
+                (beforeSibling == PartsOfSpeech.Determiner
+                || beforeSibling == PartsOfSpeech.Adjective 
+                || beforeSibling == PartsOfSpeech.Adverb 
+                || !(ccSiblings[ccIndex + 1].Value() == PartsOfSpeech.Determiner)) 
+                && !(beforeSibling.StartsWith("NP")
+                || beforeSibling.Equals("ADJP")
+                || beforeSibling == PartsOfSpeech.NounPlural))
             {
                 // && (ccSiblings.Length == ccIndex + 3 || !ccPositions.isEmpty())) {  // something like "soya or maize oil"
                 string leftHead = GetHeadTag(ccSiblings[ccIndex - 1]);
@@ -354,7 +357,7 @@ namespace OpenNLP.Tools.Trees
                 {
                     bool comma = false;
                     int index = ccPositions[0];
-                    if (ccSiblings[index - 1].Value().Equals(","))
+                    if (ccSiblings[index - 1].Value() == PartsOfSpeech.Comma)
                     {
                         //to handle the case of a comma ("soya and maize oil, and vegetables")
                         index = index - 1;
@@ -402,7 +405,7 @@ namespace OpenNLP.Tools.Trees
             }
             // DT a CC b c -> DT (a CC b) c
             else if (ccIndex == 2 && ccSiblings[0].Value().StartsWith("DT") &&
-                     !ccSiblings[ccIndex - 1].Value().Equals("NNS") &&
+                     ccSiblings[ccIndex - 1].Value() != PartsOfSpeech.NounPlural &&
                      (ccSiblings.Length == 5 || (ccPositions.Any() && ccPositions[0] == 5)))
             {
                 string head = GetHeadTag(ccSiblings[ccIndex - 1]);
@@ -423,8 +426,8 @@ namespace OpenNLP.Tools.Trees
                 t.AddChild(1, child);
             }
             // ... a, b CC c ... -> ... (a, b CC c) ...
-            else if (ccIndex > 2 && ccSiblings[ccIndex - 2].Value().Equals(",") &&
-                     !ccSiblings[ccIndex - 1].Value().Equals("NNS"))
+            else if (ccIndex > 2 && ccSiblings[ccIndex - 2].Value() == PartsOfSpeech.Comma &&
+                     ccSiblings[ccIndex - 1].Value() != PartsOfSpeech.NounPlural)
             {
                 string head = GetHeadTag(ccSiblings[ccIndex - 1]);
                 Tree child = tf.NewTreeNode(lf.NewLabel(head), null);
@@ -435,7 +438,7 @@ namespace OpenNLP.Tools.Trees
                 }
 
                 int i = ccIndex - 4;
-                while (i > 0 && ccSiblings[i].Value().Equals(","))
+                while (i > 0 && ccSiblings[i].Value() == PartsOfSpeech.Comma)
                 {
                     child.AddChild(0, ccSiblings[i]); // add the comma
                     child.AddChild(0, ccSiblings[i - 1]); // add the word before the comma
@@ -464,7 +467,7 @@ namespace OpenNLP.Tools.Trees
                 bool commaRight = false;
                 bool preconj = false;
                 int indexBegin = 0;
-                Tree conjT = tf.NewTreeNode(lf.NewLabel("CC"), null);
+                Tree conjT = tf.NewTreeNode(lf.NewLabel(PartsOfSpeech.CoordinatingConjunction), null);
 
                 // create the left tree
                 string leftHead = GetHeadTag(ccSiblings[ccIndex - 1]);
@@ -486,7 +489,7 @@ namespace OpenNLP.Tools.Trees
                     left.AddChild(ccSiblings[i]);
                 }
                 // handle the case of a comma ("GM soya and maize, and food ingredients")
-                if (ccSiblings[ccIndex - 1].Value().Equals(","))
+                if (ccSiblings[ccIndex - 1].Value() ==  PartsOfSpeech.Comma)
                 {
                     commaLeft = true;
                 }
@@ -515,7 +518,7 @@ namespace OpenNLP.Tools.Trees
                     right.AddChild(ccSiblings[i]);
                 }
                 // handle the case of a comma ("GM soya and maize, and food ingredients")
-                if (ccSiblings[nextCc - 1].Value().Equals(","))
+                if (ccSiblings[nextCc - 1].Value() ==  PartsOfSpeech.Comma)
                 {
                     commaRight = true;
                 }

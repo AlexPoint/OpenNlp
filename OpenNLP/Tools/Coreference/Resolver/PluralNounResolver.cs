@@ -70,7 +70,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		{
 			string firstTok = mention.FirstTokenText.ToLower();
 			string firstTokTag = mention.FirstToken.SyntacticType;
-			bool rv = mention.HeadTokenTag.Equals("NNS") && !IsDefiniteArticle(firstTok, firstTokTag);
+			bool rv = mention.HeadTokenTag == PartsOfSpeech.NounPlural && !IsDefiniteArticle(firstTok, firstTokTag);
 			return rv;
 		}
 		
@@ -83,7 +83,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			else
 			{
 				MentionContext cec = entity.LastExtent;
-				return (!cec.HeadTokenTag.Equals("NNS") || base.IsExcluded(mention, entity));
+                return (cec.HeadTokenTag != PartsOfSpeech.NounPlural || base.IsExcluded(mention, entity));
 			}
 		}
 	}

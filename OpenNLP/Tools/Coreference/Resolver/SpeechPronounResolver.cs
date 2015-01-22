@@ -70,11 +70,11 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				features.AddRange(GetPronounMatchFeatures(mention, entity));
 				List<string> contexts = GetContextFeatures(mention);
 				MentionContext cec = entity.LastExtent;
-				if (mention.HeadTokenTag.StartsWith("PRP") && cec.HeadTokenTag.StartsWith("PRP"))
+				if (PartsOfSpeech.IsPersonalOrPossessivePronoun(mention.HeadTokenTag) && PartsOfSpeech.IsPersonalOrPossessivePronoun(cec.HeadTokenTag))
 				{
 					features.Add(mention.HeadTokenText + "," + cec.HeadTokenText);
 				}
-				else if (mention.HeadTokenText.StartsWith("NNP"))
+				else if (PartsOfSpeech.IsProperNoun(mention.HeadTokenText))
 				{
 					for (int ci = 0, cl = contexts.Count; ci < cl; ci++)
 					{
@@ -104,8 +104,8 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		public override bool CanResolve(MentionContext mention)
 		{
 			string tag = mention.HeadTokenTag;
-			bool fpp = tag != null && tag.StartsWith("PRP") && Linker.SpeechPronounPattern.IsMatch(mention.HeadTokenText);
-			bool pn = tag != null && tag.StartsWith("NNP");
+			bool fpp = tag != null && PartsOfSpeech.IsPersonalOrPossessivePronoun(tag) && Linker.SpeechPronounPattern.IsMatch(mention.HeadTokenText);
+            bool pn = tag != null && PartsOfSpeech.IsProperNoun(tag);
 			return (fpp || pn);
 		}
 		
@@ -121,10 +121,10 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			{
 				return true;
 			}
-			if (mention.HeadTokenTag.StartsWith("NNP"))
+			if (PartsOfSpeech.IsProperNoun(mention.HeadTokenTag))
 			{
 				//mention is a propernoun
-				if (cec.HeadTokenTag.StartsWith("NNP"))
+				if (PartsOfSpeech.IsProperNoun(cec.HeadTokenTag))
 				{
 					return true; // both NNP
 				}
@@ -137,28 +137,28 @@ namespace OpenNLP.Tools.Coreference.Resolver
 					return !CanResolve(cec);
 				}
 			}
-			else if (mention.HeadTokenTag.StartsWith("PRP"))
+			else if (PartsOfSpeech.IsPersonalOrPossessivePronoun(mention.HeadTokenTag))
 			{
 				// mention is a speech pronoun
 				// cec can be either a speech pronoun or a propernoun
-				if (cec.HeadTokenTag.StartsWith("NNP"))
+				if (PartsOfSpeech.IsProperNoun(cec.HeadTokenTag))
 				{
 					//exclude antecedents not in the same sentence when they are not pronoun 
 					return (mention.SentenceNumber - cec.SentenceNumber != 0);
 				}
-				else if (cec.HeadTokenTag.StartsWith("PRP"))
+				else if (PartsOfSpeech.IsPersonalOrPossessivePronoun(cec.HeadTokenTag))
 				{
 					return false;
 				}
 				else
 				{
-					System.Console.Error.WriteLine("Unexpected candidate exluded: " + cec.ToText());
+					Console.Error.WriteLine("Unexpected candidate exluded: " + cec.ToText());
 					return true;
 				}
 			}
 			else
 			{
-				System.Console.Error.WriteLine("Unexpected mention exluded: " + mention.ToText());
+				Console.Error.WriteLine("Unexpected mention exluded: " + mention.ToText());
 				return true;
 			}
 		}

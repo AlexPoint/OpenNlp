@@ -162,7 +162,7 @@ namespace OpenNLP.Tools.Trees
 
         private Tree GetTreeFromInputStream()
         {
-            int wordIndex = 1;
+            int wordIndex = 0;
 
             // FSA
             //label:

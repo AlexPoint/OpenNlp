@@ -1266,7 +1266,7 @@ namespace OpenNLP.Tools.Trees
                 ILabel hl = HeadTerminal(hf).Label();
                 var rl = new CoreLabel();
                 rl.Set(typeof (CoreAnnotations.TextAnnotation), rootName);
-                rl.Set(typeof (CoreAnnotations.IndexAnnotation), 0);
+                rl.Set(typeof (CoreAnnotations.IndexAnnotation), -1);
                 deps.Add(new NamedDependency(rl, hl, rootName));
             }
             return deps;
@@ -1493,7 +1493,7 @@ namespace OpenNLP.Tools.Trees
         public List<CoreLabel> TaggedLabeledYield()
         {
             var ty = new List<CoreLabel>();
-            TaggedLabeledYield(ty, 0);
+            TaggedLabeledYield(ty, -1);
             return ty;
         }
 
@@ -1502,7 +1502,7 @@ namespace OpenNLP.Tools.Trees
             if (IsPreTerminal())
             {
                 var taggedWord = new CoreLabel();
-                string tag = (Value() == null) ? "" : Value();
+                string tag = Value() ?? "";
                 taggedWord.SetValue(tag);
                 taggedWord.SetTag(tag);
                 taggedWord.SetIndex(termIdx);
@@ -2811,7 +2811,7 @@ namespace OpenNLP.Tools.Trees
         /// </summary>
         public void IndexLeaves()
         {
-            IndexLeaves(1, false);
+            IndexLeaves(0, false);
         }
 
         /// <summary>
@@ -2820,7 +2820,7 @@ namespace OpenNLP.Tools.Trees
         /// <param name="overWrite">Whether to replace an existing index for a leaf.</param>
         public void IndexLeaves(bool overWrite)
         {
-            IndexLeaves(1, overWrite);
+            IndexLeaves(0, overWrite);
         }
 
         /// <summary>

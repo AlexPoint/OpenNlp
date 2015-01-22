@@ -83,7 +83,7 @@ namespace Test
             }*/
 
             // parsing
-            var sentence = "I did hear something about that.";
+            var sentence = "This is a generic bank response, which indicates simply that they are not willing to accept the transaction.";
             var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
             var tokens = tokenizer.Tokenize(sentence);
             var modelPath = currentDirectory + "../Resources/Models/";

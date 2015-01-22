@@ -131,7 +131,7 @@ namespace OpenNLP.Tools.Trees
         /// </summary>
         private void IndexNodes(TreeGraphNode tree)
         {
-            IndexNodes(tree, IndexLeaves(tree, 1));
+            IndexNodes(tree, IndexLeaves(tree, 0));
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace OpenNLP.Tools.Trees
 
             root.SetChildren(tgPOSNodes.ToArray());
 
-            root.SetIndex(0);
+            root.SetIndex(-1);
 
             // Build list of TypedDependencies
             var tdeps = new List<TypedDependency>(deps.Count);
@@ -476,7 +476,7 @@ namespace OpenNLP.Tools.Trees
 
             // add the root
             var dependencyRoot = new TreeGraphNode(new Word("ROOT"));
-            dependencyRoot.SetIndex(0);
+            dependencyRoot.SetIndex(-1);
             TreeGraphNode rootDep = Root().HeadWordNode();
             if (rootDep == null)
             {
@@ -570,7 +570,7 @@ namespace OpenNLP.Tools.Trees
                             new IndexedWord(dep.HeadWordNode().Label()));
                         if (!deps.Contains(newDep) && puncTypedDepFilter(newDep) && extraTreeDepFilter(newDep))
                         {
-                            newDep.SetExtra();
+                            newDep.Extra = true;
                             deps.Add(newDep);
                         }
                     }
@@ -621,7 +621,7 @@ namespace OpenNLP.Tools.Trees
             {
                 if (d == null) return false;
 
-                IndexedWord l = d.Dep();
+                IndexedWord l = d.Dep;
                 if (l == null) return false;
 
                 return npf(l.Value());
@@ -648,9 +648,9 @@ namespace OpenNLP.Tools.Trees
             var labels = new List<GrammaticalRelation>();
             foreach (TypedDependency dependency in TypedDependencies(true))
             {
-                if (dependency.Gov().Equals(gov) && dependency.Dep().Equals(dep))
+                if (dependency.Gov.Equals(gov) && dependency.Dep.Equals(dep))
                 {
-                    labels.Add(dependency.Reln());
+                    labels.Add(dependency.Reln);
                 }
             }
 
@@ -932,14 +932,14 @@ namespace OpenNLP.Tools.Trees
             ICollection<IndexedWord> deps = new System.Collections.Generic.HashSet<IndexedWord>();
             foreach (TypedDependency typedDep in list)
             {
-                deps.Add(typedDep.Dep());
+                deps.Add(typedDep.Dep);
             }
 
             // go through the list and add typedDependency for which the gov is not a dep
             ICollection<IndexedWord> govs = new System.Collections.Generic.HashSet<IndexedWord>();
             foreach (TypedDependency typedDep in list)
             {
-                IndexedWord gov = typedDep.Gov();
+                IndexedWord gov = typedDep.Gov;
                 if (!deps.Contains(gov) && !govs.Contains(gov))
                 {
                     roots.Add(typedDep);

@@ -38,13 +38,13 @@ using System;
 namespace OpenNLP.Tools.SentenceDetect
 {
 	/// <summary> 
-	/// The interface for sentence detectors, which find the sentence boundaries in
-	/// a text.
+	/// The interface for sentence detectors, 
+	/// which find the sentence boundaries in a text.
 	/// </summary>
 	public interface ISentenceDetector
 	{
 		/// <summary> 
-		/// Sentence detect a string.
+		/// Sentence detect a string
 		/// </summary>
 		/// <param name="input">
 		/// The string to be sentence detected.

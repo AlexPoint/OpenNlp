@@ -36,6 +36,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace OpenNLP.Tools.SentenceDetect
 {
@@ -60,7 +61,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// a <code>List</code> of integers.
 		/// </returns>
         List<int> GetPositions(string input);
-			
+
 		/// <summary>
 		/// The receiver scans 'buffer' for sentence ending characters and
 		/// returns their offsets.
@@ -71,7 +72,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// <returns>
 		/// a <code>List</code> of integers.
 		/// </returns>
-        List<int> GetPositions(System.Text.StringBuilder buffer);
+        List<int> GetPositions(StringBuilder buffer);
 			
 		/// <summary>
 		/// The receiver scans 'characterBuffer' for sentence ending characters and

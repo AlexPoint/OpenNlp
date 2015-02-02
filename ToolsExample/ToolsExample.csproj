@@ -116,10 +116,10 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+  <Target Name="AfterBuild">
+    <CreateItem Include="..\Resources\**\*.*">
+      <Output TaskParameter="Include" ItemName="Resources" />
+    </CreateItem>
+    <Copy SourceFiles="@(Resources)" DestinationFolder="$(OutputPath)Resources\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>

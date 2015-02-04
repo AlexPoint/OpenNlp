@@ -44,10 +44,10 @@ namespace OpenNLP.Tools.SentenceDetect
 	/// </summary>
     public class SentenceDetectionContextGenerator : SharpEntropy.IContextGenerator<Tuple<StringBuilder, int>>
 	{		
-		private readonly StringBuilder mBuffer = new StringBuilder();
-        private readonly List<string> mCollectFeatures = new List<string>();
-		private readonly Util.Set<string> mInducedAbbreviations;
-		private readonly char[] mEndOfSentenceCharacters;
+		private readonly StringBuilder _buffer = new StringBuilder();
+        private readonly List<string> _collectFeatures = new List<string>();
+		private readonly Util.Set<string> _inducedAbbreviations;
+		private readonly char[] _endOfSentenceCharacters;
 		
 		/// <summary>
 		/// Creates a new <code>SentenceDetectionContextGenerator</code> instance with
@@ -70,8 +70,8 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// </param>
 		public SentenceDetectionContextGenerator(Util.Set<string> inducedAbbreviations, char[] endOfSentenceCharacters)
 		{
-			mInducedAbbreviations = inducedAbbreviations;
-			mEndOfSentenceCharacters = endOfSentenceCharacters;
+			_inducedAbbreviations = inducedAbbreviations;
+			this._endOfSentenceCharacters = endOfSentenceCharacters;
 		}
 		
 		/// <summary>
@@ -115,13 +115,13 @@ namespace OpenNLP.Tools.SentenceDetect
 			// compute space previousToken and space next features.
 			if (position > 0 && buffer[position - 1] == ' ')
 			{
-				mCollectFeatures.Add("sp");
+				_collectFeatures.Add("sp");
 			}
 			if (position < lastIndex && buffer[position + 1] == ' ')
 			{
-				mCollectFeatures.Add("sn");
+				_collectFeatures.Add("sn");
 			}
-			mCollectFeatures.Add("eos=" + buffer[position]);
+			_collectFeatures.Add("eos=" + buffer[position]);
 		
 			int prefixStart = PreviousSpaceIndex(buffer, position);
 			
@@ -130,9 +130,9 @@ namespace OpenNLP.Tools.SentenceDetect
 			//assign prefix, stop if you run into a period though otherwise stop at space
 			while (--currentPosition > prefixStart)
 			{
-				for (int currentEndOfSentenceCharacter = 0, endOfSentenceCharactersLength = mEndOfSentenceCharacters.Length; currentEndOfSentenceCharacter < endOfSentenceCharactersLength; currentEndOfSentenceCharacter++)
+				for (int currentEndOfSentenceCharacter = 0, endOfSentenceCharactersLength = _endOfSentenceCharacters.Length; currentEndOfSentenceCharacter < endOfSentenceCharactersLength; currentEndOfSentenceCharacter++)
 				{
-					if (buffer[currentPosition] == mEndOfSentenceCharacters[currentEndOfSentenceCharacter])
+					if (buffer[currentPosition] == _endOfSentenceCharacters[currentEndOfSentenceCharacter])
 					{
 						prefixStart = currentPosition;
 						currentPosition++; // this gets us out of while loop.
@@ -151,9 +151,9 @@ namespace OpenNLP.Tools.SentenceDetect
 			currentPosition = position;
 			while (++currentPosition < suffixEnd)
 			{
-				for (int currentEndOfSentenceCharacter = 0, endOfSentenceCharactersLength = mEndOfSentenceCharacters.Length; currentEndOfSentenceCharacter < endOfSentenceCharactersLength; currentEndOfSentenceCharacter++)
+				for (int currentEndOfSentenceCharacter = 0, endOfSentenceCharactersLength = _endOfSentenceCharacters.Length; currentEndOfSentenceCharacter < endOfSentenceCharactersLength; currentEndOfSentenceCharacter++)
 				{
-					if (buffer[currentPosition] == mEndOfSentenceCharacters[currentEndOfSentenceCharacter])
+					if (buffer[currentPosition] == _endOfSentenceCharacters[currentEndOfSentenceCharacter])
 					{
 						suffixEnd = currentPosition;
 						currentPosition--; // this gets us out of while loop.
@@ -174,73 +174,73 @@ namespace OpenNLP.Tools.SentenceDetect
 				nextToken = buffer.ToString(suffixEnd + 1, nextEnd - (suffixEnd + 1)).Trim();
 			}
 			
-			mBuffer.Append("x=");
-			mBuffer.Append(prefix);
-			mCollectFeatures.Add(mBuffer.ToString());
-			mBuffer.Length = 0;
+			_buffer.Append("x=");
+			_buffer.Append(prefix);
+			_collectFeatures.Add(_buffer.ToString());
+			_buffer.Length = 0;
 			if (prefix.Length > 0)
 			{
-				mCollectFeatures.Add(Convert.ToString(prefix.Length, System.Globalization.CultureInfo.InvariantCulture));
+				_collectFeatures.Add(Convert.ToString(prefix.Length, System.Globalization.CultureInfo.InvariantCulture));
 				if (IsFirstUpper(prefix))
 				{
-					mCollectFeatures.Add("xcap");
+					_collectFeatures.Add("xcap");
 				}
-				if (mInducedAbbreviations.Contains(prefix))
+				if (_inducedAbbreviations.Contains(prefix))
 				{
-					mCollectFeatures.Add("xabbrev");
+					_collectFeatures.Add("xabbrev");
 				}
 			}
 			
-			mBuffer.Append("v=");
-			mBuffer.Append(previousToken);
-			mCollectFeatures.Add(mBuffer.ToString());
-			mBuffer.Length = 0;
+			_buffer.Append("v=");
+			_buffer.Append(previousToken);
+			_collectFeatures.Add(_buffer.ToString());
+			_buffer.Length = 0;
 			if (previousToken.Length > 0)
 			{
 				if (IsFirstUpper(previousToken))
 				{
-					mCollectFeatures.Add("vcap");
+					_collectFeatures.Add("vcap");
 				}
-				if (mInducedAbbreviations.Contains(previousToken))
+				if (_inducedAbbreviations.Contains(previousToken))
 				{
-					mCollectFeatures.Add("vabbrev");
+					_collectFeatures.Add("vabbrev");
 				}
 			}
 			
-			mBuffer.Append("s=");
-			mBuffer.Append(suffix);
-			mCollectFeatures.Add(mBuffer.ToString());
-			mBuffer.Length = 0;
+			_buffer.Append("s=");
+			_buffer.Append(suffix);
+			_collectFeatures.Add(_buffer.ToString());
+			_buffer.Length = 0;
 			if (suffix.Length > 0)
 			{
 				if (IsFirstUpper(suffix))
 				{
-					mCollectFeatures.Add("scap");
+					_collectFeatures.Add("scap");
 				}
-				if (mInducedAbbreviations.Contains(suffix))
+				if (_inducedAbbreviations.Contains(suffix))
 				{
-					mCollectFeatures.Add("sabbrev");
+					_collectFeatures.Add("sabbrev");
 				}
 			}
 			
-			mBuffer.Append("n=");
-			mBuffer.Append(nextToken);
-			mCollectFeatures.Add(mBuffer.ToString());
-			mBuffer.Length = 0;
+			_buffer.Append("n=");
+			_buffer.Append(nextToken);
+			_collectFeatures.Add(_buffer.ToString());
+			_buffer.Length = 0;
 			if (nextToken.Length > 0)
 			{
 				if (IsFirstUpper(nextToken))
 				{
-					mCollectFeatures.Add("ncap");
+					_collectFeatures.Add("ncap");
 				}
-				if (mInducedAbbreviations.Contains(nextToken))
+				if (_inducedAbbreviations.Contains(nextToken))
 				{
-					mCollectFeatures.Add("nabbrev");
+					_collectFeatures.Add("nabbrev");
 				}
 			}
 			
-			string[] context = mCollectFeatures.ToArray();
-			mCollectFeatures.Clear();
+			string[] context = _collectFeatures.ToArray();
+			_collectFeatures.Clear();
 			return context;
 		}
 		

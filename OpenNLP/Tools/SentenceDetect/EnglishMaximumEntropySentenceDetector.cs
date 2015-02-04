@@ -49,5 +49,8 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// </summary>
 		public EnglishMaximumEntropySentenceDetector(string name): 
             base(new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(name))){}
+
+        public EnglishMaximumEntropySentenceDetector(string name, IEndOfSentenceScanner scanner):
+            base(new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(name)), scanner) { }
 	}
 }

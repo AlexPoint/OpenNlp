@@ -17,34 +17,8 @@ namespace Trainer
 
         static void Main(string[] args)
         {
-            /*var tokenizeTrainingFileDirectory = CurrentDirectory + "Input/Tokenize/";
-            // train tokenizer
-            const char splitMarker = '|';
-
-            var iterations = 20;
-            var cut = 1;
-            var allTrainingFiles = Directory.GetFiles(tokenizeTrainingFileDirectory);
-
-            Console.WriteLine("Starting training...");
-            var model = MaximumEntropyTokenizer.Train(allTrainingFiles, iterations, cut);
-            var tokenizer = new MaximumEntropyTokenizer(model);
-
-            // test data
-            var trainingLines = new List<string>();
-            foreach (var trainingFile in allTrainingFiles)
-            {
-                trainingLines.AddRange(File.ReadAllLines(trainingFile));
-            }
-            var testData = new List<TokenizerTestData>();
-            foreach (var trainingLine in trainingLines)
-            {
-                var testDataPoint = new TokenizerTestData(trainingLine, splitMarker.ToString());
-                testData.Add(testDataPoint);
-            }
-            var results = tokenizer.RunAgainstTestData(testData);
-            Console.WriteLine("Accuracy of model iteration={0}, cut={1}: {2}", iterations, cut, results.GetAccuracy());*/
-
-            OptimizeSentenceDetectionTraining();
+            OptimizeTokenizerTraining();
+            //OptimizeSentenceDetectionTraining();
 
             /*// tests
             Console.WriteLine("Running tests...");
@@ -60,52 +34,10 @@ namespace Trainer
                 Console.WriteLine(string.Join("|", tokens));
             }*/
 
-            // Persisting model
-            /*var outputFilePath = CurrentDirectory + "Output/Tokenize.nbin";
-            Console.WriteLine("Persisting model in file '{0}'", outputFilePath);
-            new BinaryGisModelWriter().Persist(model, outputFilePath);*/
-
             Console.WriteLine("OK");
             Console.ReadKey();
         }
-
-        private static void OptimizeTokenizerTraining()
-        {
-            var tokenizeTrainingFileDirectory = CurrentDirectory + "Input/Tokenize/";
-            // train tokenizer
-            const char splitMarker = '|';
-
-            foreach (var iterations in new List<int>() { 1, 5, 10, 20 })
-            {
-                foreach (var cut in new List<int>() { 1, 2, 5 })
-                {
-                    //var iterations = 10;
-                    //var cut = 1;
-                    var allTrainingFiles = Directory.GetFiles(tokenizeTrainingFileDirectory);
-
-                    Console.WriteLine("Starting training...");
-                    var model = MaximumEntropyTokenizer.Train(allTrainingFiles, iterations, cut);
-                    var tokenizer = new MaximumEntropyTokenizer(model);
-
-                    // test data
-                    var trainingLines = new List<string>();
-                    foreach (var trainingFile in allTrainingFiles)
-                    {
-                        trainingLines.AddRange(File.ReadAllLines(trainingFile));
-                    }
-                    var testData = new List<TokenizerTestData>();
-                    foreach (var trainingLine in trainingLines)
-                    {
-                        var testDataPoint = new TokenizerTestData(trainingLine, splitMarker.ToString());
-                        testData.Add(testDataPoint);
-                    }
-                    var results = tokenizer.RunAgainstTestData(testData);
-                    Console.WriteLine("Accuracy of model iteration={0}, cut={1}: {2}", iterations, cut, results.GetAccuracy());
-                }
-            }
-        }
-
-
+        
         private static void OptimizeSentenceDetectionTraining()
         {
             // all directories in Input folder
@@ -134,7 +66,6 @@ namespace Trainer
             // train model file
             var directory = allDirectories[directoryIndexPicked];
             var allTrainFiles = Directory.GetFiles(directory, "*.train");
-            var endOfSentenceScanner = new CharactersSpecificEndOfSentenceScanner('.', '?', '!', '"', '-');
             Console.WriteLine("Training model with files {0}", string.Join(", ", allTrainFiles.Select(f => Path.GetFileNameWithoutExtension(f))));
 
             // load training data
@@ -148,13 +79,15 @@ namespace Trainer
             var bestIterationValue = iterations.First();
             var bestCutValue = iterations.First();
             var bestAccuracy = 0.0d;
+
+            var endOfSentenceScanner = new CharactersSpecificEndOfSentenceScanner('.', '?', '!', '"', '-', '…');
             foreach (var iteration in iterations)
             {
                 foreach (var cut in cuts)
                 {
                     var model = MaximumEntropySentenceDetector.TrainModel(allTrainFiles, iteration, cut, endOfSentenceScanner);
                     // compute accuracy
-                    var sentenceDetector = new MaximumEntropySentenceDetector(model);
+                    var sentenceDetector = new MaximumEntropySentenceDetector(model, endOfSentenceScanner);
                     var results = sentenceDetector.SentenceDetect(testData);
 
                     // not perfect for comparing files but it gives a very good approximation
@@ -186,6 +119,82 @@ namespace Trainer
             var outputFilePath = CurrentDirectory + "Output/" + Path.GetFileName(directory) + ".nbin";
             Console.WriteLine("Persisting model for iteration={0} and cut={1} to file '{2}'...", bestIterationValue, bestCutValue, outputFilePath);
             var bestModel = MaximumEntropySentenceDetector.TrainModel(allTrainFiles, bestIterationValue, bestCutValue, endOfSentenceScanner);
+            new BinaryGisModelWriter().Persist(bestModel, outputFilePath);
+            Console.WriteLine("Output file written.");
+        }
+
+        private static void OptimizeTokenizerTraining()
+        {
+            // all directories in Input folder
+            var inputFolderPath = CurrentDirectory + "Input/";
+            var allDirectories = Directory.GetDirectories(inputFolderPath);
+            Console.WriteLine("Pick the model to train:");
+            for (var i = 0; i < allDirectories.Length; i++)
+            {
+                Console.WriteLine("{0} - {1}", i, Path.GetFileName(allDirectories[i]));
+            }
+
+            // read directory chosen by user
+            int directoryIndexPicked = LoopUntilValidUserInput(input => int.Parse(input),
+                i => i < allDirectories.Length, string.Format("Please enter a number in [0..{0}]", allDirectories.Length - 1));
+
+            // read user parameters
+            Console.WriteLine("Enter the iteration values to test, separated by a comma (ex: 10,100,200)");
+            var iterations = LoopUntilValidUserInput(input => input.Split(',').Select(s => int.Parse(s.Trim())).ToList(),
+                li => li != null && li.Any(),
+                "At least one iteration value is required");
+            Console.WriteLine("Enter the cut values to test, separated by a comma (ex: 1,2,5)");
+            var cuts = LoopUntilValidUserInput(input => input.Split(',').Select(s => int.Parse(s.Trim())).ToList(),
+                li => li != null && li.Any(),
+                "At least one cut value is required");
+
+            // train model file
+            var directory = allDirectories[directoryIndexPicked];
+            var allTrainFiles = Directory.GetFiles(directory, "*.train");
+            Console.WriteLine("Training model with files: {0}", string.Join(", ", allTrainFiles.Select(f => Path.GetFileNameWithoutExtension(f))));
+
+            // load training data
+            var trainingLines = new List<string>();
+            foreach (var file in allTrainFiles.Where(f => !f.Contains("wsj")))
+            {
+                trainingLines.AddRange(File.ReadAllLines(file));
+            }
+
+            var bestIterationValue = iterations.First();
+            var bestCutValue = iterations.First();
+            var bestAccuracy = 0.0d;
+
+            foreach (var iteration in iterations)
+            {
+                foreach (var cut in cuts)
+                {
+                    var model = MaximumEntropyTokenizer.Train(allTrainFiles, iteration, cut);
+                    // compute accuracy
+                    var tokenizer = new MaximumEntropyTokenizer(model);
+
+                    // test data
+                    var testData = new List<TokenizerTestData>();
+                    foreach (var trainingLine in trainingLines)
+                    {
+                        var testDataPoint = new TokenizerTestData(trainingLine, "|");
+                        testData.Add(testDataPoint);
+                    }
+                    var results = tokenizer.RunAgainstTestData(testData);
+                    Console.WriteLine("Accuracy of model iteration={0}, cut={1}: {2}", iteration, cut, results.GetAccuracy());
+
+                    if (results.GetAccuracy() > bestAccuracy)
+                    {
+                        bestAccuracy = results.GetAccuracy();
+                        bestIterationValue = iteration;
+                        bestCutValue = cut;
+                    }
+                }
+            }
+
+            // Persit model
+            var outputFilePath = CurrentDirectory + "Output/" + Path.GetFileName(directory) + ".nbin";
+            Console.WriteLine("Persisting model for iteration={0} and cut={1} to file '{2}'...", bestIterationValue, bestCutValue, outputFilePath);
+            var bestModel = MaximumEntropyTokenizer.Train(allTrainFiles, bestIterationValue, bestCutValue);
             new BinaryGisModelWriter().Persist(bestModel, outputFilePath);
             Console.WriteLine("Output file written.");
         }

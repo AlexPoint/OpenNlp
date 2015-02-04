@@ -84,7 +84,10 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// evaluate end-of-sentence decisions.
 		/// </param>
 		public MaximumEntropySentenceDetector(IMaximumEntropyModel model):
-            this(model, new SentenceDetectionContextGenerator(DefaultEndOfSentenceScanner.GetDefaultEndOfSentenceCharacters().ToArray()), new DefaultEndOfSentenceScanner())
+            this(model, new DefaultEndOfSentenceScanner()){}
+		
+		public MaximumEntropySentenceDetector(IMaximumEntropyModel model, IEndOfSentenceScanner scanner):
+            this(model, new SentenceDetectionContextGenerator(scanner.GetPotentialEndOfSentenceCharacters().ToArray()), scanner)
 		{
             _sentenceProbs = new List<double>(50);
 		}

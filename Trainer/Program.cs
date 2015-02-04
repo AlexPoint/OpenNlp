@@ -155,7 +155,7 @@ namespace Trainer
 
             // load training data
             var trainingLines = new List<string>();
-            foreach (var file in allTrainFiles.Where(f => !f.Contains("wsj")))
+            foreach (var file in allTrainFiles/*.Where(f => !f.Contains("wsj"))*/)
             {
                 trainingLines.AddRange(File.ReadAllLines(file));
             }

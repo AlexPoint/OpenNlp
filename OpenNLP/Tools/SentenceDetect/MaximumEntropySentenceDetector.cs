@@ -276,25 +276,32 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// sentence scanner which provides a different set of ending chars
 		/// other than the default ones. They are "\\.|!|\\?|\\\"|\\)".
 		/// </summary>
-		public static GisModel TrainModel(string inFile, int iterations, int cut, IEndOfSentenceScanner scanner)
+		public static GisModel TrainModel(string filePath, int iterations, int cut, IEndOfSentenceScanner scanner)
 		{
-		    return TrainModel(new List<string>() {inFile}, iterations, cut, scanner);
+		    return TrainModel(new List<string>() {filePath}, iterations, cut, scanner);
 		}
 
-        public static GisModel TrainModel(IEnumerable<string> files, int iterations, int cut, IEndOfSentenceScanner scanner)
+        public static GisModel TrainModel(IEnumerable<string> filePaths, int iterations, int cut, IEndOfSentenceScanner scanner)
         {
             var trainer = new GisTrainer();
 
-            foreach (var file in files)
+            // create memory stream with all the data
+            var mStream = new MemoryStream();
+            foreach (var path in filePaths)
             {
-                using (var streamReader = new StreamReader(file))
+                using (var fStream = File.OpenRead(path))
                 {
-                    ITrainingDataReader<string> dataReader = new PlainTextByLineDataReader(streamReader);
-                    ITrainingEventReader eventReader = new SentenceDetectionEventReader(dataReader, scanner);
-
-                    trainer.TrainModel(eventReader, iterations, cut);
+                    fStream.CopyTo(mStream);
                 }
             }
+            mStream.Seek(0, SeekOrigin.Begin);
+
+            // train the model
+            var streamReader = new StreamReader(mStream);
+            ITrainingDataReader<string> dataReader = new PlainTextByLineDataReader(streamReader);
+            ITrainingEventReader eventReader = new SentenceDetectionEventReader(dataReader, scanner);
+
+            trainer.TrainModel(eventReader, iterations, cut);
 
             return new GisModel(trainer);
         }

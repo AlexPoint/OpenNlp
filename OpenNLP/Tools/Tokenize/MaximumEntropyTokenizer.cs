@@ -239,30 +239,40 @@ namespace OpenNLP.Tools.Tokenize
         /// Trains a tokenizer model from the "events" in the input file
         /// and write the resulting gis model in the ouput file (as binary)
         /// </summary>
-		public static GisModel Train(string input, int iterations, int cut, char splitMarker = '|')
+		public static GisModel Train(string inputFilePath, int iterations, int cut, char splitMarker = '|')
         {
-            return Train(new List<string>() {input}, iterations, cut, splitMarker);
+            return Train(new List<string>() {inputFilePath}, iterations, cut, splitMarker);
         }
 
 	    /// <summary>
 	    /// Trains a tokenizer model from input files well formatted for
 	    /// a token event reader.
 	    /// </summary>
-	    /// <param name="inputFiles">The collection of training input files</param>
+	    /// <param name="inputFilePaths">The collection of training input files</param>
 	    /// <param name="iterations">The number of iterations to run when training the model</param>
 	    /// <param name="cut">The minimum nb of occurences for statistical relevancy in the trained model</param>
 	    /// <param name="splitMarker">The character indicating a split in the files</param>
 	    /// <returns>The freshly trained GisModel</returns>
-        public static GisModel Train(IEnumerable<string> inputFiles, int iterations, int cut, char splitMarker = '|')
+        public static GisModel Train(IEnumerable<string> inputFilePaths, int iterations, int cut, char splitMarker = '|')
 	    {
 	        var trainer = new GisTrainer(0.1);
-	        foreach (var inputFile in inputFiles)
-	        {
-	            var dataReader = new StreamReader(inputFile);
-	            var eventReader = new TokenEventReader(dataReader, splitMarker);
 
-                trainer.TrainModel(iterations, new TwoPassDataIndexer(eventReader, cut));
+            // create memory stream with all the data
+            var mStream = new MemoryStream();
+	        foreach (var path in inputFilePaths)
+	        {
+	            using (var fStream = File.OpenRead(path))
+	            {
+	                fStream.CopyTo(mStream);
+	            }
 	        }
+	        mStream.Seek(0, SeekOrigin.Begin);
+
+            // train the model
+            var dataReader = new StreamReader(mStream);
+            var eventReader = new TokenEventReader(dataReader, splitMarker);
+            trainer.TrainModel(iterations, new TwoPassDataIndexer(eventReader, cut));
+
             return new GisModel(trainer);
 	    }
 	}

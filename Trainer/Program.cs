@@ -17,8 +17,11 @@ namespace Trainer
 
         static void Main(string[] args)
         {
-            OptimizeTokenizerTraining();
-            //OptimizeSentenceDetectionTraining();
+            /*var testFilePath = CurrentDirectory + "Input/Tokenize/test.train";
+            MaximumEntropyTokenizer.Train(testFilePath, 5, 1);*/
+
+            //OptimizeTokenizerTraining();
+            OptimizeSentenceDetectionTraining();
 
             /*// tests
             Console.WriteLine("Running tests...");

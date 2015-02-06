@@ -93,6 +93,8 @@ namespace OpenNLP.Tools.Tokenize
 		/// <returns>A span array containing individual tokens as elements</returns>
 		public virtual Span[] TokenizePositions(string input)
 		{
+            if (string.IsNullOrEmpty(input)) { return new Span[0]; }
+
 			var tokens = Split(input);
 			_newTokens.Clear();
 			_tokenProbabilities.Clear();
@@ -163,6 +165,8 @@ namespace OpenNLP.Tools.Tokenize
 		/// <returns>Array of spans</returns>
 		internal static Span[] Split(string input)
 		{
+            if (string.IsNullOrEmpty(input)) { return new Span[0];}
+
 			int tokenStart = - 1;
             var tokens = new List<Span>();
 			bool isInToken = false;

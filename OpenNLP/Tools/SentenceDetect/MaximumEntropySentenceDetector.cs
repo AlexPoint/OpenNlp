@@ -207,6 +207,7 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// </returns>
 		public virtual int[] SentencePositionDetect(string input)
 		{
+		    if (string.IsNullOrEmpty(input)){ return new int[] {}; }
 			double sentenceProbability = 1;
 			_sentenceProbs.Clear();
 			var buffer = new StringBuilder(input);

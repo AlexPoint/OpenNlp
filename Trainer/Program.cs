@@ -20,8 +20,8 @@ namespace Trainer
             /*var testFilePath = CurrentDirectory + "Input/Tokenize/test.train";
             MaximumEntropyTokenizer.Train(testFilePath, 5, 1);*/
 
-            //OptimizeTokenizerTraining();
-            OptimizeSentenceDetectionTraining();
+            OptimizeTokenizerTraining();
+            //OptimizeSentenceDetectionTraining();
 
             /*// tests
             Console.WriteLine("Running tests...");
@@ -153,12 +153,12 @@ namespace Trainer
 
             // train model file
             var directory = allDirectories[directoryIndexPicked];
-            var allTrainFiles = Directory.GetFiles(directory, "*.train");
+            var allTrainFiles = Directory.GetFiles(directory, "*.train")/*.Where(f => f.Contains("wsj"))*/;
             Console.WriteLine("Training model with files: {0}", string.Join(", ", allTrainFiles.Select(f => Path.GetFileNameWithoutExtension(f))));
 
             // load training data
             var trainingLines = new List<string>();
-            foreach (var file in allTrainFiles/*.Where(f => !f.Contains("wsj"))*/)
+            foreach (var file in allTrainFiles/*.Where(f => f.Contains("wsj"))*/)
             {
                 trainingLines.AddRange(File.ReadAllLines(file));
             }

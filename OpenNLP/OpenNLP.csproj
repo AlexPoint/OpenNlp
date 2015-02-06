@@ -289,6 +289,7 @@
     <Compile Include="Tools\Tokenize\TokenContextGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\Tokenize\MultipleFileTokenEventReader.cs" />
     <Compile Include="Tools\Tokenize\TokenEventReader.cs">
       <SubType>Code</SubType>
     </Compile>

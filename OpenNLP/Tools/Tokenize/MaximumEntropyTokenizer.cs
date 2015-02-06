@@ -257,20 +257,15 @@ namespace OpenNLP.Tools.Tokenize
 	    {
 	        var trainer = new GisTrainer(0.1);
 
-            // create memory stream with all the data
-            var mStream = new MemoryStream();
+            var dataReaders = new List<StreamReader>();
 	        foreach (var path in inputFilePaths)
 	        {
-	            using (var fStream = File.OpenRead(path))
-	            {
-	                fStream.CopyTo(mStream);
-	            }
+                var dataReader = new StreamReader(path);
+                dataReaders.Add(dataReader);
 	        }
-	        mStream.Seek(0, SeekOrigin.Begin);
 
             // train the model
-            var dataReader = new StreamReader(mStream);
-            var eventReader = new TokenEventReader(dataReader, splitMarker);
+            var eventReader = new MultipleFileTokenEventReader(dataReaders, splitMarker);
             trainer.TrainModel(iterations, new TwoPassDataIndexer(eventReader, cut));
 
             return new GisModel(trainer);

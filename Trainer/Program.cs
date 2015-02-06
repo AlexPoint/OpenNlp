@@ -20,8 +20,8 @@ namespace Trainer
             /*var testFilePath = CurrentDirectory + "Input/Tokenize/test.train";
             MaximumEntropyTokenizer.Train(testFilePath, 5, 1);*/
 
-            OptimizeTokenizerTraining();
-            //OptimizeSentenceDetectionTraining();
+            //OptimizeTokenizerTraining();
+            OptimizeSentenceDetectionTraining();
 
             /*// tests
             Console.WriteLine("Running tests...");

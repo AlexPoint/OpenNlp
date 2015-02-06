@@ -285,20 +285,15 @@ namespace OpenNLP.Tools.SentenceDetect
         {
             var trainer = new GisTrainer();
 
-            // create memory stream with all the data
-            var mStream = new MemoryStream();
+            var readers = new List<StreamReader>();
             foreach (var path in filePaths)
             {
-                using (var fStream = File.OpenRead(path))
-                {
-                    fStream.CopyTo(mStream);
-                }
+                var streamReader = new StreamReader(path);
+                readers.Add(streamReader);
             }
-            mStream.Seek(0, SeekOrigin.Begin);
 
             // train the model
-            var streamReader = new StreamReader(mStream);
-            ITrainingDataReader<string> dataReader = new PlainTextByLineDataReader(streamReader);
+            ITrainingDataReader<string> dataReader = new MultipleFilesPlainTextByLineDataReader(readers);
             ITrainingEventReader eventReader = new SentenceDetectionEventReader(dataReader, scanner);
 
             trainer.TrainModel(eventReader, iterations, cut);

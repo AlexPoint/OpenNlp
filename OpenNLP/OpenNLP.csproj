@@ -264,6 +264,7 @@
     <Compile Include="Tools\SentenceDetect\MaximumEntropySentenceDetector.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tools\SentenceDetect\MultipleFilesPlainTextByLineDataReader.cs" />
     <Compile Include="Tools\SentenceDetect\SentenceDetectionContextGenerator.cs">
       <SubType>Code</SubType>
     </Compile>

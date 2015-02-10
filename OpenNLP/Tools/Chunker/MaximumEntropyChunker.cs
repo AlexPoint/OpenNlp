@@ -43,8 +43,6 @@ namespace OpenNLP.Tools.Chunker
 	/// </summary>
 	public class MaximumEntropyChunker : IChunker
 	{
-		private Util.Sequence _bestSequence;
-
 		/// <summary>
 		/// The beam used to search for sequences of chunk tag assignments.
 		/// </summary>
@@ -93,8 +91,8 @@ namespace OpenNLP.Tools.Chunker
 		/// <returns>string array containing a value for each token, indicating the chunk that that token belongs to</returns>
 		public virtual string[] Chunk(string[] tokens, string[] tags)
 		{
-			_bestSequence = Beam.BestSequence(tokens, new object[]{tags});
-            return _bestSequence.Outcomes.ToArray();
+			var bestSequence = Beam.BestSequence(tokens, new object[]{tags});
+            return bestSequence.Outcomes.ToArray();
 		}
 		
 		/// <summary>Gets a list of all the possible chunking tags</summary>
@@ -133,32 +131,6 @@ namespace OpenNLP.Tools.Chunker
 			return true;
 		}
         
-		/// <summary>
-		/// Populates the specified array with the probabilities of the last decoded sequence.  The
-		/// sequence was determined based on the previous call to <code>chunk</code>.  The 
-		/// specified array should be at least as large as the numbe of tokens in the previous call to <code>chunk</code>.
-		/// </summary>
-		/// <param name="probabilities">
-		/// An array used to hold the probabilities of the last decoded sequence.
-		/// </param>
-		public virtual void GetProbabilities(double[] probabilities)
-		{
-			_bestSequence.GetProbabilities(probabilities);
-		}
-		
-		/// <summary>
-		/// Returns an array with the probabilities of the last decoded sequence.  The
-		/// sequence was determined based on the previous call to <code>chunk</code>.
-		/// </summary>
-		/// <returns>
-		/// An array with the same number of probabilities as tokens were sent to <code>chunk</code>
-		/// when it was last called.   
-		/// </returns>
-		public virtual double[] GetProbabilities()
-		{
-			return _bestSequence.GetProbabilities();
-		}
-		
 
         // Utilities ---------------
 

@@ -50,8 +50,6 @@ namespace OpenNLP.Tools.PosTagger
 	{
         private const int DefaultBeamSize = 3;
 
-		private Util.Sequence _bestSequence;
-
 		public virtual string NegativeOutcome
 		{
 			get
@@ -160,18 +158,8 @@ namespace OpenNLP.Tools.PosTagger
         /// <returns>The collection of tags as strings</returns>
 		public virtual string[] Tag(string[] tokens)
 		{
-            _bestSequence = Beam.BestSequence(tokens, null);
-            return _bestSequence.Outcomes.ToArray();
-		}
-		
-		public virtual void GetProbabilities(double[] probabilities)
-		{
-			_bestSequence.GetProbabilities(probabilities);
-		}
-		
-		public virtual double[] GetProbabilities()
-		{
-			return _bestSequence.GetProbabilities();
+            var bestSequence = Beam.BestSequence(tokens, null);
+            return bestSequence.Outcomes.ToArray();
 		}
 		
         /// <summary>

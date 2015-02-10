@@ -65,11 +65,6 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// sentence offsets.
 		/// </summary>
 		private readonly IEndOfSentenceScanner _scanner;
-				
-		/// <summary>
-		/// The list of probabilities associated with each decision
-		/// </summary>
-		private readonly List<double> _sentenceProbs;
 		
         
         // Constructors ------------------
@@ -87,10 +82,7 @@ namespace OpenNLP.Tools.SentenceDetect
             this(model, new DefaultEndOfSentenceScanner()){}
 		
 		public MaximumEntropySentenceDetector(IMaximumEntropyModel model, IEndOfSentenceScanner scanner):
-            this(model, new SentenceDetectionContextGenerator(scanner.GetPotentialEndOfSentenceCharacters().ToArray()), scanner)
-		{
-            _sentenceProbs = new List<double>(50);
-		}
+            this(model, new SentenceDetectionContextGenerator(scanner.GetPotentialEndOfSentenceCharacters().ToArray()), scanner){ }
 		
 		/// <summary>
 		/// Constructor which takes a IMaximumEntropyModel and a IContextGenerator.
@@ -129,20 +121,6 @@ namespace OpenNLP.Tools.SentenceDetect
 			_scanner = scanner;
 		}
 		
-		/// <summary>
-		/// Returns the probabilities associated with the most recent
-		/// calls to SentenceDetect().
-		/// </summary>
-		/// <returns>
-		/// probability for each sentence returned for the most recent
-		/// call to SentenceDetect.  If not applicable an empty array is
-		/// returned.
-		/// </returns>
-		public virtual double[] GetSentenceProbabilities()
-		{
-            return _sentenceProbs.ToArray();
-		}
-
 		/// <summary> 
 		/// Detect sentences in a string.
 		/// </summary>
@@ -208,8 +186,6 @@ namespace OpenNLP.Tools.SentenceDetect
 		public virtual int[] SentencePositionDetect(string input)
 		{
 		    if (string.IsNullOrEmpty(input)){ return new int[] {}; }
-			double sentenceProbability = 1;
-			_sentenceProbs.Clear();
 			var buffer = new StringBuilder(input);
 			List<int> endersList = _scanner.GetPositions(input);
 			var positions = new List<int>(endersList.Count);
@@ -230,13 +206,11 @@ namespace OpenNLP.Tools.SentenceDetect
 			    var context = _contextGenerator.GetContext(pair);
 				double[] probabilities = _model.Evaluate(context);
 				string bestOutcome = _model.GetBestOutcome(probabilities);
-				sentenceProbability *= probabilities[_model.GetOutcomeIndex(bestOutcome)];
 				if (bestOutcome.Equals("T") && IsAcceptableBreak(input, index, cInt))
 				{
 					if (index != cInt)
 					{
-						positions.Add(GetFirstNonWhitespace(input, GetFirstWhitespace(input, cInt + 1)));//moIntegerPool.GetInteger(GetFirstNonWhitespace(input, GetFirstWhitespace(input, cInt + 1))));
-						_sentenceProbs.Add(probabilities[_model.GetOutcomeIndex(bestOutcome)]);
+						positions.Add(GetFirstNonWhitespace(input, GetFirstWhitespace(input, cInt + 1)));
 					}
 					index = cInt + 1;
 				}

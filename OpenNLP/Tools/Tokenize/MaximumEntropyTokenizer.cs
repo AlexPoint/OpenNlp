@@ -65,12 +65,6 @@ namespace OpenNLP.Tools.Tokenize
         private readonly IContextGenerator<Tuple<string, int>> _contextGenerator;
 		
 		/// <summary>
-		/// List of probabilities for each token returned from call to Tokenize() 
-		/// </summary>
-		private readonly List<double> _tokenProbabilities;
-		private readonly List<Span> _newTokens;
-
-		/// <summary>
         /// Optimization flag to skip alpha numeric tokens for further tokenization.
 		/// </summary>
 		public bool AlphaNumericOptimization { get; set; }
@@ -84,8 +78,6 @@ namespace OpenNLP.Tools.Tokenize
 			_contextGenerator = new TokenContextGenerator();
 			AlphaNumericOptimization = false;
 			this._model = model;
-            _newTokens = new List<Span>();
-			_tokenProbabilities = new List<double>(50);
 		}
 		
 		/// <summary>Tokenizes the string</summary>
@@ -96,8 +88,8 @@ namespace OpenNLP.Tools.Tokenize
             if (string.IsNullOrEmpty(input)) { return new Span[0]; }
 
 			var tokens = Split(input);
-			_newTokens.Clear();
-			_tokenProbabilities.Clear();
+			var newTokens = new List<Span>();
+			var tokenProbabilities = new List<double>();
 			
 			for (int currentToken = 0, tokenCount = tokens.Length; currentToken < tokenCount; currentToken++)
 			{
@@ -106,13 +98,13 @@ namespace OpenNLP.Tools.Tokenize
 				// Can't tokenize single characters
 				if (token.Length < 2)
 				{
-					_newTokens.Add(tokenSpan);
-					_tokenProbabilities.Add(1.0);
+					newTokens.Add(tokenSpan);
+					tokenProbabilities.Add(1.0);
 				}
 				else if (AlphaNumericOptimization && AlphaNumeric.IsMatch(token))
 				{
-					_newTokens.Add(tokenSpan);
-					_tokenProbabilities.Add(1.0);
+					newTokens.Add(tokenSpan);
+					tokenProbabilities.Add(1.0);
 				}
 				else
 				{
@@ -129,18 +121,18 @@ namespace OpenNLP.Tools.Tokenize
 						tokenProbability *= probabilities[_model.GetOutcomeIndex(bestOutcome)];
 						if (bestOutcome == TokenContextGenerator.SplitIndicator)
 						{
-							_newTokens.Add(new Span(startPosition, currentPosition));
-							_tokenProbabilities.Add(tokenProbability);
+							newTokens.Add(new Span(startPosition, currentPosition));
+							tokenProbabilities.Add(tokenProbability);
 							startPosition = currentPosition;
 							tokenProbability = 1.0;
 						}
 					}
-					_newTokens.Add(new Span(startPosition, endPosition));
-					_tokenProbabilities.Add(tokenProbability);
+					newTokens.Add(new Span(startPosition, endPosition));
+					tokenProbabilities.Add(tokenProbability);
 				}
 			}
 			
-			return _newTokens.ToArray();
+			return newTokens.ToArray();
 		}
 
 	    /// <summary>Tokenize a string</summary>
@@ -200,21 +192,6 @@ namespace OpenNLP.Tools.Tokenize
 			return tokens.ToArray();
 		}
 		
-		/// <summary>
-		/// Returns the probabilities associated with the most recent
-		/// calls to Tokenize() or TokenizePositions().
-		/// </summary>
-		/// <returns>
-		/// probability for each token returned for the most recent
-		/// call to tokenize.  If not applicable an empty array is
-		/// returned.
-		/// </returns>
-		public virtual double[] GetTokenProbabilities()
-		{
-            return _tokenProbabilities.ToArray();
-		}
-
-
         public TokenizationTestResults RunAgainstTestData(List<TokenizerTestData> dataPoints)
         {
             var result = new TokenizationTestResults();

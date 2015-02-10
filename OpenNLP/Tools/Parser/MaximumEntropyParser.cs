@@ -36,6 +36,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace OpenNLP.Tools.Parser
@@ -70,21 +71,6 @@ namespace OpenNLP.Tools.Parser
 		///</summary>
 		public const double DefaultAdvancePercentage = 0.95;
 		
-		///<summary>
-		///Completed parses.
-		///</summary>
-		private readonly Util.SortedSet<Parse> parses;
-		
-		///<summary>
-		///Incomplete parses which will be advanced.
-		///</summary>
-        private Util.SortedSet<Parse> oldDerivationsHeap;
-
-		///<summary>
-		///Incomplete parses which have been advanced.
-		///</summary>
-        private Util.SortedSet<Parse> newDerivationsHeap;
-
 		private readonly IParserTagger posTagger; 
 		private readonly IParserChunker basalChunker; 
 		
@@ -95,9 +81,6 @@ namespace OpenNLP.Tools.Parser
 		private readonly CheckContextGenerator checkContextGenerator;
 		
 		private readonly IHeadRules headRules;
-		
-		private readonly double[] buildProbabilities;
-		private readonly double[] checkProbabilities;
 		
 		public const string TopNode = "TOP";
 		public const string TokenNode = "TK";
@@ -134,8 +117,7 @@ namespace OpenNLP.Tools.Parser
 		private readonly int topStartIndex;
 		private readonly Dictionary<string, string> startTypeMap;
         private readonly Dictionary<string, string> continueTypeMap;
-  
-		private readonly int completeIndex;
+        private readonly int completeIndex;
 		private readonly int incompleteIndex;
 
 	    private const bool CreateDerivationString = false;
@@ -199,15 +181,10 @@ namespace OpenNLP.Tools.Parser
 			k = beamSize;
 			q = advancePercentage;
 
-			buildProbabilities = new double[this.buildModel.OutcomeCount];
-			checkProbabilities = new double[this.checkModel.OutcomeCount];
 			buildContextGenerator = new BuildContextGenerator();
 			checkContextGenerator = new CheckContextGenerator();
 			this.headRules = headRules;
-			oldDerivationsHeap = new Util.TreeSet<Parse>();
-			newDerivationsHeap = new Util.TreeSet<Parse>();
-			parses = new Util.TreeSet<Parse>();
-
+			
 			startTypeMap = new Dictionary<string, string>();
             continueTypeMap = new Dictionary<string, string>();
 			for (int buildOutcomeIndex = 0, buildOutcomeCount = buildModel.OutcomeCount; buildOutcomeIndex < buildOutcomeCount; buildOutcomeIndex++) 
@@ -250,23 +227,27 @@ namespace OpenNLP.Tools.Parser
 			{
 				flatParse.InitializeDerivationBuffer();
 			}
-			oldDerivationsHeap.Clear();
-			newDerivationsHeap.Clear();
-			parses.Clear();
+
+            var oldDerivationsHeap = new Util.SortedSet<Parse>();
+            var parses = new Util.SortedSet<Parse>();
+
 			int derivationLength = 0; 
 			int maxDerivationLength = 2 * flatParse.ChildCount + 3;
 			oldDerivationsHeap.Add(flatParse);
 			Parse guessParse = null;
 			double bestComplete = - 100000; //approximating -infinity/0 in ln domain
+            
+            var buildProbabilities = new double[this.buildModel.OutcomeCount];
+            var checkProbabilities = new double[this.checkModel.OutcomeCount];
+
 			while (parses.Count < m && derivationLength < maxDerivationLength)
 			{
-				newDerivationsHeap = new Util.TreeSet<Parse>();
+                var newDerivationsHeap = new Util.TreeSet<Parse>();
 				if (oldDerivationsHeap.Count > 0)
 				{
 					int derivationsProcessed = 0;
 
 					foreach (Parse currentParse in oldDerivationsHeap)
-						//for (System.Collections.IEnumerator pi = mOldDerivationsHeap.GetEnumerator(); pi.MoveNext() && derivationsProcessed < K; derivationsProcessed++)
 					{
 						derivationsProcessed++;
 						if (derivationsProcessed >= k) 
@@ -285,10 +266,6 @@ namespace OpenNLP.Tools.Parser
 							guessParse = currentParse;
 						}
 
-						//System.Console.Out.Write(derivationLength + " " + derivationsProcessed + " "+currentParse.Probability);
-						//System.Console.Out.Write(currentParse.Show());
-						//System.Console.Out.WriteLine();
-
 						Parse[] newDerivations = null;
 						if (0 == derivationLength) 
 						{
@@ -302,12 +279,12 @@ namespace OpenNLP.Tools.Parser
 							}
 							else 
 							{
-								newDerivations = AdvanceChunks(currentParse,((Parse) newDerivationsHeap.Last()).Probability);
+								newDerivations = AdvanceChunks(currentParse, newDerivationsHeap.Last().Probability);
 							}
 						}
 						else 
 						{ // derivationLength > 1
-							newDerivations = AdvanceParses(currentParse, q);
+							newDerivations = AdvanceParses(currentParse, q, buildProbabilities, checkProbabilities);
 						}
 
 						if (newDerivations != null)
@@ -316,7 +293,7 @@ namespace OpenNLP.Tools.Parser
 							{
 								if (newDerivations[currentDerivation].IsComplete)
 								{
-									AdvanceTop(newDerivations[currentDerivation]);
+									AdvanceTop(newDerivations[currentDerivation], buildProbabilities, checkProbabilities);
 									if (newDerivations[currentDerivation].Probability > bestComplete)
 									{
 										bestComplete = newDerivations[currentDerivation].Probability;
@@ -377,7 +354,7 @@ namespace OpenNLP.Tools.Parser
 			}
 		}
 		
-		private void AdvanceTop(Parse inputParse)
+		private void AdvanceTop(Parse inputParse, double[] buildProbabilities, double[] checkProbabilities)
 		{
 			buildModel.Evaluate(buildContextGenerator.GetContext(inputParse.GetChildren(), 0), buildProbabilities);
 			inputParse.AddProbability(Math.Log(buildProbabilities[topStartIndex]));
@@ -393,18 +370,18 @@ namespace OpenNLP.Tools.Parser
 		///<param name="inputParse">
 		///The parse to advance.
 		///</param>
-		///<param name="Q">
+		///<param name="qParam">
 		///The amount of probability mass that should be accounted for by the advanced parses.
 		///</param> 
-		private Parse[] AdvanceParses(Parse inputParse, double Q) 
+		private Parse[] AdvanceParses(Parse inputParse, double qParam, double[] buildProbabilities, double[] checkProbabilities) 
 		{
-			double q = 1 - Q;
+			double qOpp = 1 - qParam;
 			Parse lastStartNode = null;		// The closest previous node which has been labeled as a start node.
 			int lastStartIndex = -1;			// The index of the closest previous node which has been labeled as a start node. 
 			string lastStartType = null;	// The type of the closest previous node which has been labeled as a start node.
 			int advanceNodeIndex;			// The index of the node which will be labeled in this iteration of advancing the parse.
 			Parse advanceNode = null;		// The node which will be labeled in this iteration of advancing the parse.
-
+            
 			Parse[] children = inputParse.GetChildren();
 			int nodeCount = children.Length;
 
@@ -421,14 +398,13 @@ namespace OpenNLP.Tools.Parser
 					lastStartType = startTypeMap[advanceNode.Label];
 					lastStartNode = advanceNode;
 					lastStartIndex = advanceNodeIndex;
-					//System.Console.Error.WriteLine("lastStart " + lastStartIndex + " " + lastStartNode.Label + " " + lastStartNode.Probability);
 				}
 			}
             var newParsesList = new List<Parse>(buildModel.OutcomeCount);
 			//call build
 			buildModel.Evaluate(buildContextGenerator.GetContext(children, advanceNodeIndex), buildProbabilities);
 			double buildProbabilitiesSum = 0;
-			while (buildProbabilitiesSum < Q) 
+			while (buildProbabilitiesSum < qParam) 
 			{
 				//  The largest unadvanced labeling.
 				int highestBuildProbabilityIndex = 0;
@@ -482,7 +458,7 @@ namespace OpenNLP.Tools.Parser
 				checkModel.Evaluate(checkContextGenerator.GetContext(newParse1.GetChildren(), lastStartType, lastStartIndex, advanceNodeIndex), checkProbabilities);
 				//System.Console.Out.WriteLine("check " + mCheckProbabilities[mCompleteIndex] + " " + mCheckProbabilities[mIncompleteIndex]);
 				Parse newParse2 = newParse1;
-				if (checkProbabilities[completeIndex] > q) 
+				if (checkProbabilities[completeIndex] > qOpp) 
 				{ //make sure a reduce is likely
 					newParse2 = (Parse) newParse1.Clone();
 					if (CreateDerivationString)
@@ -491,7 +467,7 @@ namespace OpenNLP.Tools.Parser
 						newParse2.AppendDerivationBuffer(".");
 					}
 					newParse2.AddProbability(System.Math.Log(checkProbabilities[1]));
-					Parse[] constituent = new Parse[advanceNodeIndex - lastStartIndex + 1];
+					var constituent = new Parse[advanceNodeIndex - lastStartIndex + 1];
 					bool isFlat = true;
 					//first
 					constituent[0] = lastStartNode;
@@ -520,7 +496,7 @@ namespace OpenNLP.Tools.Parser
 						newParsesList.Add(newParse2);
 					}
 				}
-				if (checkProbabilities[incompleteIndex] > q) 
+				if (checkProbabilities[incompleteIndex] > qOpp) 
 				{ //make sure a shift is likely
 					if (CreateDerivationString)
 					{

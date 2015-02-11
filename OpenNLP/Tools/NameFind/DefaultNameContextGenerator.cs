@@ -34,6 +34,8 @@
 //Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
+using System.Collections.Specialized;
+using System.Runtime.Caching;
 using System.Text.RegularExpressions;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,11 +63,8 @@ namespace OpenNLP.Tools.NameFind
 		private Regex mAllCapsPattern;
 		private Regex mCapPeriodPattern;
 		private Regex mInitialCapPattern;
-		
-		private Cache mContextsCache;
-		private object mWordsKey;
-		private int mPreviousIndex = -1;
-		private List<string> mPreviousStaticFeatures;
+
+	    private readonly MemoryCache contextsCache;
 
 		/// <summary>
 		/// Creates a name context generator.
@@ -77,12 +76,16 @@ namespace OpenNLP.Tools.NameFind
 		/// <summary>
 		/// Creates a name context generator with the specified cache size.
 		/// </summary>
-		public DefaultNameContextGenerator(int cacheSize) : base()
+		public DefaultNameContextGenerator(int cacheSizeInMegaBytes) : base()
 		{
 			InitializePatterns();
-			if (cacheSize > 0)
+            if (cacheSizeInMegaBytes > 0)
 			{
-				mContextsCache = new Cache(cacheSize);
+                var properties = new NameValueCollection
+			    {
+			        {"cacheMemoryLimitMegabytes", cacheSizeInMegaBytes.ToString()}
+			    };
+                contextsCache = new MemoryCache("nameContextCache", properties);
 			}
 		}
 
@@ -104,7 +107,7 @@ namespace OpenNLP.Tools.NameFind
 		
 		public virtual string[] GetContext(object context)
 		{
-			object[] contextData = (object[]) context;
+			var contextData = (object[]) context;
             return (GetContext(((int)contextData[0]), (List<string>)contextData[1], (List<string>)contextData[2], (IDictionary<string, string>)contextData[3]));
 		}
 		
@@ -154,37 +157,24 @@ namespace OpenNLP.Tools.NameFind
 				previous = predicates[index - 1];
 			}
 
-			string cacheKey = index.ToString(System.Globalization.CultureInfo.InvariantCulture) + previous + previousPrevious;
-			if (mContextsCache != null)
+            // check if the context has already been computed (in cache)
+			string cacheKey = string.Format("{0}||{1}||{2}||{3}", 
+                index.ToString(System.Globalization.CultureInfo.InvariantCulture), previous, previousPrevious,
+                string.Join("|", tokens));
+			if (contextsCache != null)
 			{
-				if (mWordsKey == tokens)
+				var cachedContexts = (string[])contextsCache[cacheKey];
+				if (cachedContexts != null)
 				{
-					string[] cachedContexts = (string[])mContextsCache[cacheKey];
-					if (cachedContexts != null)
-					{
-						return cachedContexts;
-					}
-				}
-				else
-				{
-					mContextsCache.Clear();
-					mWordsKey = tokens;
+					return cachedContexts;
 				}
 			}
-			List<string> features;
-			if (mWordsKey == tokens && index == mPreviousIndex)
-			{
-				features = mPreviousStaticFeatures;
-			}
-			else
-			{
-				features = GetStaticFeatures(tokens, index, previousTags);
-				mPreviousIndex = index;
-				mPreviousStaticFeatures = features;
-			}
-			
+
+            // otherwise, compute context
+			List<string> features = GetStaticFeatures(tokens, index, previousTags);
 			int featureCount = features.Count;
-			string[] contexts = new string[featureCount + 4];
+			
+            var contexts = new string[featureCount + 4];
 			for (int currentFeature = 0; currentFeature < featureCount; currentFeature++)
 			{
 				contexts[currentFeature] = features[currentFeature];
@@ -193,9 +183,9 @@ namespace OpenNLP.Tools.NameFind
 			contexts[featureCount + 1] = "pow=" + previous + tokens[index];
 			contexts[featureCount + 2] = "powf=" + previous + WordFeature(tokens[index]);
 			contexts[featureCount + 3] = "ppo=" + previousPrevious;
-			if (mContextsCache != null)
+			if (contextsCache != null)
 			{
-				mContextsCache[cacheKey] = contexts;
+				contextsCache[cacheKey] = contexts;
 			}
 			return contexts;
 		}
@@ -221,7 +211,7 @@ namespace OpenNLP.Tools.NameFind
 		/// </returns>
         private List<string> GetStaticFeatures(string[] tokens, int index, IDictionary<string, string> previousTags)
 		{
-            List<string> features = new List<string>();
+            var features = new List<string>();
 			features.Add("def");
 			
 			//current word
@@ -305,7 +295,6 @@ namespace OpenNLP.Tools.NameFind
 			
 			return features;
 		}
-		
 		
 		/// <summary>
 		/// Return the most relevant feature for a given word.  This method

@@ -35,6 +35,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Runtime.Caching;
 using System.Text.RegularExpressions;
 
 namespace OpenNLP.Tools.PosTagger
@@ -53,43 +55,31 @@ namespace OpenNLP.Tools.PosTagger
 		private static readonly Regex HasCapitalRegex = new Regex("[A-Z]", RegexOptions.Compiled);
 		private static readonly Regex HasNumericRegex = new Regex("[0-9]", RegexOptions.Compiled);
 		
-		private readonly Util.Cache _contextsCache;
-		private object _wordsKey;
+	    private readonly MemoryCache memoryCache;
+
+        // Constructors ----------------------------------------
 
 		public DefaultPosContextGenerator() : this(0){}
 		
-		public DefaultPosContextGenerator(int cacheSize) 
+		public DefaultPosContextGenerator(int cacheSizeInMegaBytes) 
 		{
-			if (cacheSize > 0) 
+			if (cacheSizeInMegaBytes > 0)
 			{
-				_contextsCache = new Util.Cache(cacheSize);
+			    var properties = new NameValueCollection
+			    {
+			        {"cacheMemoryLimitMegabytes", cacheSizeInMegaBytes.ToString()}
+			    };
+			    memoryCache = new MemoryCache("posContextCache", properties);
 			}
 		}
+
+
+        // Methods ---------------------------------------------
 
 		public virtual string[] GetContext(object input)
 		{
 			var data = (object[]) input;
 			return GetContext(((int) data[0]), (string[]) data[1], (string[]) data[2], null);
-		}
-		
-		protected internal static string[] GetPrefixes(string lex)
-		{
-			var prefixes = new string[PrefixLength];
-			for (int currentPrefix = 0; currentPrefix < PrefixLength; currentPrefix++)
-			{
-				prefixes[currentPrefix] = lex.Substring(0, (System.Math.Min(currentPrefix + 1, lex.Length)) - (0));
-			}
-			return prefixes;
-		}
-		
-		protected internal static string[] GetSuffixes(string lex)
-		{
-			var suffixes = new string[SuffixLength];
-			for (int currentSuffix = 0; currentSuffix < SuffixLength; currentSuffix++)
-			{
-				suffixes[currentSuffix] = lex.Substring(System.Math.Max(lex.Length - currentSuffix - 1, 0));
-			}
-			return suffixes;
 		}
 		
 		public virtual string[] GetContext(int index, string[] sequence, string[] priorDecisions, object[] additionalContext) 
@@ -157,92 +147,112 @@ namespace OpenNLP.Tools.PosTagger
 				previous = SentenceBeginning; 
 			}
 			
-			string cacheKey = index.ToString(System.Globalization.CultureInfo.InvariantCulture) + tagPrevious + tagPreviousPrevious;
-			if (_contextsCache != null) 
+			string cacheKey = string.Format("{0}||{1}||{2}||{3}", index.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                string.Join("|", tokens), tagPrevious, tagPreviousPrevious);
+			if (memoryCache != null) 
 			{
-				if (_wordsKey == tokens)
+				var cachedContexts = (string[]) memoryCache[cacheKey];    
+				if (cachedContexts != null) 
 				{
-					var cachedContexts = (string[]) _contextsCache[cacheKey];    
-					if (cachedContexts != null) 
-					{
-						return cachedContexts;
-					}
+					return cachedContexts;
 				}
-				else 
-				{
-					_contextsCache.Clear();
-					_wordsKey = tokens;
-				}
-
 			}
 
-            var eventList = new List<string>();
-			
-			// add the word itself
-			eventList.Add("w=" + lex);
-			
-			// do some basic suffix analysis
-			string[] suffixes = GetSuffixes(lex);
-			for (int currentSuffix = 0; currentSuffix < suffixes.Length; currentSuffix++)
-			{
-				eventList.Add("suf=" + suffixes[currentSuffix]);
-			}
-			
-			string[] prefixes = GetPrefixes(lex);
-			for (int currentPrefix = 0; currentPrefix < prefixes.Length; currentPrefix++)
-			{
-				eventList.Add("pre=" + prefixes[currentPrefix]);
-			}
-			// see if the word has any special characters
-			if (lex.IndexOf('-') != - 1)
-			{
-				eventList.Add("h");
-			}
-			
-			if (HasCapitalRegex.IsMatch(lex)) 
-			{
-				eventList.Add("c");
-			}
-			
-			if (HasNumericRegex.IsMatch(lex))
-			{
-				eventList.Add("d");
-			}
-			
-			// add the words and positions of the surrounding context
-			if ((object) previous != null)
-			{
-				eventList.Add("p=" + previous);
-				if ((object) tagPrevious != null)
-				{
-					eventList.Add("t=" + tagPrevious);
-				}
-				if ((object) previousPrevious != null)
-				{
-					eventList.Add("pp=" + previousPrevious);
-					if ((object) tagPreviousPrevious != null)
-					{
-						eventList.Add("tt=" + tagPreviousPrevious);
-					}
-				}
-			}
-			
-			if ((object) next != null)
-			{
-				eventList.Add("n=" + next);
-				if ((object) nextNext != null)
-				{
-					eventList.Add("nn=" + nextNext);
-				}
-			}
+		    var eventList = CreateEventList(lex, previous, previousPrevious, tagPrevious, tagPreviousPrevious, next, nextNext);
 
 			string[] contexts = eventList.ToArray();
-			if (_contextsCache != null) 
+			if (memoryCache != null) 
 			{
-				_contextsCache[cacheKey] = contexts;
+				memoryCache[cacheKey] = contexts;
 			}
 			return contexts;
 		}
+
+	    private List<string> CreateEventList(string lex, string previous, string previousPrevious, 
+            string tagPrevious, string tagPreviousPrevious, string next, string nextNext)
+	    {
+            var eventList = new List<string>();
+
+            // add the word itself
+            eventList.Add("w=" + lex);
+
+            // do some basic suffix analysis
+            string[] suffixes = GetSuffixes(lex);
+            for (int currentSuffix = 0; currentSuffix < suffixes.Length; currentSuffix++)
+            {
+                eventList.Add("suf=" + suffixes[currentSuffix]);
+            }
+
+            string[] prefixes = GetPrefixes(lex);
+            for (int currentPrefix = 0; currentPrefix < prefixes.Length; currentPrefix++)
+            {
+                eventList.Add("pre=" + prefixes[currentPrefix]);
+            }
+            // see if the word has any special characters
+            if (lex.IndexOf('-') != -1)
+            {
+                eventList.Add("h");
+            }
+
+            if (HasCapitalRegex.IsMatch(lex))
+            {
+                eventList.Add("c");
+            }
+
+            if (HasNumericRegex.IsMatch(lex))
+            {
+                eventList.Add("d");
+            }
+
+            // add the words and positions of the surrounding context
+            if ((object)previous != null)
+            {
+                eventList.Add("p=" + previous);
+                if ((object)tagPrevious != null)
+                {
+                    eventList.Add("t=" + tagPrevious);
+                }
+                if ((object)previousPrevious != null)
+                {
+                    eventList.Add("pp=" + previousPrevious);
+                    if ((object)tagPreviousPrevious != null)
+                    {
+                        eventList.Add("tt=" + tagPreviousPrevious);
+                    }
+                }
+            }
+
+            if ((object)next != null)
+            {
+                eventList.Add("n=" + next);
+                if ((object)nextNext != null)
+                {
+                    eventList.Add("nn=" + nextNext);
+                }
+            }
+
+	        return eventList;
+	    }
+        
+        protected internal static string[] GetPrefixes(string lex)
+        {
+            var prefixes = new string[PrefixLength];
+            for (int currentPrefix = 0; currentPrefix < PrefixLength; currentPrefix++)
+            {
+                prefixes[currentPrefix] = lex.Substring(0, (System.Math.Min(currentPrefix + 1, lex.Length)) - (0));
+            }
+            return prefixes;
+        }
+
+        protected internal static string[] GetSuffixes(string lex)
+        {
+            var suffixes = new string[SuffixLength];
+            for (int currentSuffix = 0; currentSuffix < SuffixLength; currentSuffix++)
+            {
+                suffixes[currentSuffix] = lex.Substring(System.Math.Max(lex.Length - currentSuffix - 1, 0));
+            }
+            return suffixes;
+        }
 		
 	}
 }

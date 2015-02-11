@@ -35,6 +35,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Runtime.Caching;
 
 namespace OpenNLP.Tools.Parser
 {
@@ -43,26 +45,27 @@ namespace OpenNLP.Tools.Parser
 	/// </summary>
 	public class ChunkContextGenerator : Chunker.IChunkerContextGenerator
 	{
-		private const string mEndOfSentence = "eos";
+		private const string EndOfSentence = "eos";
 		
-		private Util.Cache mContextsCache;
-		private object mWordsKey;
+	    private readonly MemoryCache contextsCache;
 
-		public ChunkContextGenerator() : this(0)
-		{
-		}
+		public ChunkContextGenerator() : this(0){}
   
-		public ChunkContextGenerator(int cacheSize) : base()
+		public ChunkContextGenerator(int cacheSizeInMegaBytes) : base()
 		{
-			if (cacheSize > 0) 
+			if (cacheSizeInMegaBytes > 0) 
 			{
-				mContextsCache = new Util.Cache(cacheSize);
+				var properties = new NameValueCollection
+				{
+				    {"cacheMemoryLimitMegabytes", cacheSizeInMegaBytes.ToString()}
+				};
+			    contextsCache = new MemoryCache("chunkContextCache", properties);
 			}
 		}
 
 		public virtual string[] GetContext(object input)
 		{
-			object[] data = (object[]) input;
+			var data = (object[]) input;
 			return (GetContext(((int) data[0]), (string[]) data[1], (string[]) data[2], (string[]) data[3]));
 		}
 		
@@ -113,9 +116,9 @@ namespace OpenNLP.Tools.Parser
 			}
 			else
 			{
-				previousPreviousTag = mEndOfSentence;
-				previousPreviousPriorDecision = mEndOfSentence;
-				previousPreviousWord = mEndOfSentence;
+				previousPreviousTag = EndOfSentence;
+				previousPreviousPriorDecision = EndOfSentence;
+				previousPreviousWord = EndOfSentence;
 			}
 			
 			// ChunkAndPosTag(-1)
@@ -127,9 +130,9 @@ namespace OpenNLP.Tools.Parser
 			}
 			else
 			{
-				previousTag = mEndOfSentence;
-				previousPriorDecision = mEndOfSentence;
-				previousWord = mEndOfSentence;
+				previousTag = EndOfSentence;
+				previousPriorDecision = EndOfSentence;
+				previousWord = EndOfSentence;
 			}
 			
 			// ChunkAndPosTag(0)
@@ -144,8 +147,8 @@ namespace OpenNLP.Tools.Parser
 			}
 			else
 			{
-				nextTag = mEndOfSentence;
-				nextWord = mEndOfSentence;
+				nextTag = EndOfSentence;
+				nextWord = EndOfSentence;
 			}
 			
 			// ChunkAndPosTag(2)
@@ -156,28 +159,21 @@ namespace OpenNLP.Tools.Parser
 			}
 			else
 			{
-				nextNextTag = mEndOfSentence;
-				nextNextWord = mEndOfSentence;
+				nextNextTag = EndOfSentence;
+				nextNextWord = EndOfSentence;
 			}
 			
-			string cacheKey = currentTokenIndex.ToString(System.Globalization.CultureInfo.InvariantCulture) + previousPreviousTag + previousTag
-				+ currentTag + nextTag + nextNextTag + previousPreviousPriorDecision
-				+ previousPriorDecision;
+			string cacheKey = string.Format("{0}||{1}||{2}||{3}||{4}||{5}||{6}||{6}||{7}||{8}",
+                currentTokenIndex.ToString(System.Globalization.CultureInfo.InvariantCulture), previousPreviousTag, previousTag,
+                currentTag, nextTag, nextNextTag, previousPreviousPriorDecision, previousPriorDecision,
+                string.Join("|", words));
 
-			if (mContextsCache != null) 
+			if (contextsCache != null) 
 			{
-				if (mWordsKey == words) 
+				contexts = (string[]) contextsCache[cacheKey];
+				if (contexts != null) 
 				{
-					contexts = (string[]) mContextsCache[cacheKey];
-					if (contexts != null) 
-					{
-						return contexts;
-					}
-				}
-				else 
-				{
-					mContextsCache.Clear();
-					mWordsKey = words;
+					return contexts;
 				}
 			}
 
@@ -217,16 +213,16 @@ namespace OpenNLP.Tools.Parser
 			features.Add(currentChunkTagBackOff + "," + nextChunkTagBackOff);
 			
 			contexts = features.ToArray();
-			if (mContextsCache != null)
+			if (contextsCache != null)
 			{
-				mContextsCache[cacheKey] = contexts;
+				contextsCache[cacheKey] = contexts;
 			}
 			return contexts;
 		}
 		
 		private string ChunkAndPosTag(int index, string token, string tag, string chunk)
 		{
-			System.Text.StringBuilder feature = new System.Text.StringBuilder(20);
+			var feature = new System.Text.StringBuilder(20);
 			feature.Append(index).Append("=").Append(token).Append("|").Append(tag);
 			if (index < 0)
 			{
@@ -237,7 +233,7 @@ namespace OpenNLP.Tools.Parser
 		
 		private string ChunkAndPosTagBackOff(int index, string tag, string chunk)
 		{
-			System.Text.StringBuilder feature = new System.Text.StringBuilder(20);
+			var feature = new System.Text.StringBuilder(20);
 			feature.Append(index).Append("*=").Append(tag);
 			if (index < 0)
 			{

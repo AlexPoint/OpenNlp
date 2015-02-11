@@ -35,6 +35,8 @@
 
 using System;
 using System.Collections;
+using System.Collections.Specialized;
+using System.Runtime.Caching;
 
 namespace OpenNLP.Tools.Util
 {
@@ -50,8 +52,8 @@ namespace OpenNLP.Tools.Util
         internal SharpEntropy.IMaximumEntropyModel Model;
         internal IBeamSearchContextGenerator ContextGenerator;
         internal int Size;
-        private readonly double[] _probabilities;
-        private readonly Cache _contextsCache;
+
+        private readonly MemoryCache contextsCache;
 
 
         // Constructors -----------------
@@ -62,26 +64,27 @@ namespace OpenNLP.Tools.Util
         /// <param name="model">the model for assigning probabilities to the sequence outcomes</param>
         public BeamSearch(int size, IBeamSearchContextGenerator contextGenerator,
             SharpEntropy.IMaximumEntropyModel model) :
-                this(size, contextGenerator, model, 0)
-        {
-        }
+                this(size, contextGenerator, model, 0){}
 
         /// <summary>Creates new search object</summary>
         /// <param name="size">The size of the beam (k)</param>
         /// <param name="contextGenerator">the context generator for the model</param>
         /// <param name="model">the model for assigning probabilities to the sequence outcomes</param>
-        /// <param name="cacheSize">size of the cache to use for performance</param>
+        /// <param name="cacheSizeInMegaBytes">size of the cache to use for performance</param>
         public BeamSearch(int size, IBeamSearchContextGenerator contextGenerator,
-            SharpEntropy.IMaximumEntropyModel model, int cacheSize)
+            SharpEntropy.IMaximumEntropyModel model, int cacheSizeInMegaBytes)
         {
             Size = size;
             ContextGenerator = contextGenerator;
             Model = model;
 
-            _probabilities = new double[model.OutcomeCount];
-            if (cacheSize > 0)
+            if (cacheSizeInMegaBytes > 0)
             {
-                _contextsCache = new Cache(cacheSize);
+                var properties = new NameValueCollection
+			    {
+			        {"cacheMemoryLimitMegabytes", cacheSizeInMegaBytes.ToString()}
+			    };
+                contextsCache = new MemoryCache("beamSearchContextCache", properties);
             }
         }
 
@@ -118,6 +121,7 @@ namespace OpenNLP.Tools.Util
             int sequenceCount = sequence.Length;
             var previousHeap = new ListHeap<Sequence>(Size);
             var nextHeap = new ListHeap<Sequence>(Size);
+            var probabilities = new double[Model.OutcomeCount];//not used at the moment
 
             previousHeap.Add(new Sequence());
             if (additionalContext == null)
@@ -135,18 +139,19 @@ namespace OpenNLP.Tools.Util
                     string[] contexts = ContextGenerator.GetContext(currentSequence, sequence, outcomes,
                         additionalContext);
                     double[] scores;
-                    if (_contextsCache != null)
+                    if (contextsCache != null)
                     {
-                        scores = (double[]) _contextsCache[contexts];
+                        var contextKey = string.Join("|", contexts);
+                        scores = (double[]) contextsCache[contextKey];
                         if (scores == null)
                         {
-                            scores = Model.Evaluate(contexts, _probabilities);
-                            _contextsCache[contexts] = scores;
+                            scores = Model.Evaluate(contexts, probabilities);
+                            contextsCache[contextKey] = scores;
                         }
                     }
                     else
                     {
-                        scores = Model.Evaluate(contexts, _probabilities);
+                        scores = Model.Evaluate(contexts, probabilities);
                     }
 
                     var tempScores = new double[scores.Length];

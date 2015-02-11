@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OpenNLP.Tools.Chunker;
+using OpenNLP.Tools.Parser;
 using OpenNLP.Tools.PosTagger;
 using OpenNLP.Tools.SentenceDetect;
 using OpenNLP.Tools.Tokenize;
@@ -83,7 +84,7 @@ namespace Test
             }*/
 
             // parsing
-            var sentence = "This is a generic bank response, which indicates simply that they are not willing to accept the transaction.";
+            /*var sentence = "This is a generic bank response, which indicates simply that they are not willing to accept the transaction.";
             var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
             var tokens = tokenizer.Tokenize(sentence);
             var modelPath = currentDirectory + "../Resources/Models/";
@@ -100,7 +101,36 @@ namespace Test
             foreach (var dep in dependencies)
             {
                 Console.WriteLine(dep);
-            }
+            }*/
+
+            // multi threaded parsing
+            var sentences = new List<string>()
+            {
+                "It's all right.",
+                "It's me, Yara.",
+                "You can't trick me.",
+                "And do you suspect Byamba, son of the Khan, to have blood on his hands?",
+                "We traveled side by side.",
+                "Is that accurate, Byamba?",
+                "Were you always at the Latin's side on your journey?",
+                "I was asked to be here and I came.",
+                "But you cannot compel me to be party to this.",
+                "(Grunts sharply)",
+                "No, we were not side by side."
+            };
+            var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
+            var modelPath = currentDirectory + "../Resources/Models/";
+            var parser = new EnglishTreebankParser(modelPath, true, false);
+
+            Parallel.ForEach(sentences, sentence =>
+            {
+                var tokens = tokenizer.Tokenize(sentence);
+                var parse = parser.DoParse(tokens);
+
+                Console.WriteLine("'{0}'", sentence);
+                Console.WriteLine("{0}", parse);
+                Console.WriteLine("--");
+            });
 
             Console.WriteLine("===========");
             Console.WriteLine("OK");

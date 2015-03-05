@@ -301,10 +301,9 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				return null;
 			}
 			//get to first NNP
-			string type;
-			for (int index = start; index < end; index++)
+		    for (int index = start; index < end; index++)
 			{
-				type = mentionTokens[start].SyntacticType;
+				string type = mentionTokens[start].SyntacticType;
 				if (PartsOfSpeech.IsProperNoun(type))
 				{
 					break;

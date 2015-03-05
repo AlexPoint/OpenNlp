@@ -48,9 +48,7 @@ namespace OpenNLP.Tools.Trees
     /// </summary>
     public class ModCollinsHeadFinder : CollinsHeadFinder
     {
-        public ModCollinsHeadFinder() : this(new PennTreebankLanguagePack())
-        {
-        }
+        public ModCollinsHeadFinder() : this(new PennTreebankLanguagePack()){}
 
         public ModCollinsHeadFinder(AbstractTreebankLanguagePack tlp) : base(tlp, tlp.PunctuationTags())
         {
@@ -157,9 +155,9 @@ namespace OpenNLP.Tools.Trees
             // cdm: if you have 2 VP under an SINV, you should really take the 2nd as syntactic head, because the first is a topicalized VP complement of the second, but for now I didn't change this, since it didn't help parsing.  (If it were changed, it'd need to be also changed to the opposite in SemanticHeadFinder.)
             nonTerminalInfo.Add("SINV",
                 new string[][]
-                {new string[] {"left", "VBZ", "VBD", "VBP", "VB", "MD", "VBN", "VP", "S", "SINV", "ADJP", "JJP", "NP"}});
+                {new string[] {"left", "VBZ", "VBD", "VBP", PartsOfSpeech.VerbBaseForm, "MD", "VBN", "VP", "S", "SINV", "ADJP", "JJP", "NP"}});
             nonTerminalInfo.Add("SQ",
-                new string[][] {new string[] {"left", "VBZ", "VBD", "VBP", "VB", "MD", "AUX", "AUXG", "VP", "SQ"}});
+                new string[][] {new string[] {"left", "VBZ", "VBD", "VBP", PartsOfSpeech.VerbBaseForm, "MD", "AUX", "AUXG", "VP", "SQ"}});
                 // TODO: Should maybe put S before SQ for tag questions. Check.
             nonTerminalInfo.Add("UCP", new string[][] {new string[] {"right"}});
             // below is weird!! Make 2 lists, one for good and one for bad heads??
@@ -169,7 +167,7 @@ namespace OpenNLP.Tools.Trees
                 {
                     new string[]
                     {
-                        "left", "TO", "VBD", "VBN", "MD", "VBZ", "VB", "VBG", "VBP", "VP", "AUX", "AUXG", "ADJP", "JJP",
+                        "left", "TO", "VBD", "VBN", "MD", "VBZ", PartsOfSpeech.VerbBaseForm, "VBG", "VBP", "VP", "AUX", "AUXG", "ADJP", "JJP",
                         "NN", "NNS", "JJ", "NP", "NNP"
                     }
                 });
@@ -207,7 +205,7 @@ namespace OpenNLP.Tools.Trees
                 new string[]
                 {
                     "left", "NN", "NP", "NML", "NNP", "NNPS", "TO",
-                    "VBD", "VBN", "MD", "VBZ", "VB", "VBG", "VBP", "VP", "ADJP", "JJP", "FRAG"
+                    "VBD", "VBN", "MD", "VBZ", PartsOfSpeech.VerbBaseForm, "VBG", "VBP", "VP", "ADJP", "JJP", "FRAG"
                 }
             }); // for Brown (Roger)
             nonTerminalInfo.Add("ADV", new string[][]
@@ -222,13 +220,13 @@ namespace OpenNLP.Tools.Trees
             // SWBD
             nonTerminalInfo.Add("EDITED", new string[][] {new string[] {"left"}});
                 // crap rule for Switchboard (if don't delete EDITED nodes)
-            // in sw2756, a "VB". (copy "VP" to handle this problem, though should really fix it on reading)
-            nonTerminalInfo.Add("VB",
+            // in sw2756, a PartsOfSpeech.VerbBaseForm. (copy "VP" to handle this problem, though should really fix it on reading)
+            nonTerminalInfo.Add(PartsOfSpeech.VerbBaseForm,
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", "TO", "VBD", "VBN", "MD", "VBZ", "VB", "VBG", "VBP", "VP", "AUX", "AUXG", "ADJP", "JJP",
+                        "left", "TO", "VBD", "VBN", "MD", "VBZ", PartsOfSpeech.VerbBaseForm, "VBG", "VBP", "VP", "AUX", "AUXG", "ADJP", "JJP",
                         "NN", "NNS", "JJ", "NP", "NNP"
                     }
                 });

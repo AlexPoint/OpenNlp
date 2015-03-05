@@ -446,7 +446,7 @@ namespace OpenNLP.Tools.Coreference.Similarity
 		
 		private bool IsPronoun(Context nounPhrase)
 		{
-			return PartsOfSpeech.IsPersonalOrPossessivePronoun(nounPhrase.HeadTokenTag);
+			return PartsOfSpeech.IsPersOrPossPronoun(nounPhrase.HeadTokenTag);
 		}
 		
 		private bool IsNumber(Context nounPhrase)

@@ -87,8 +87,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		public override bool CanResolve(MentionContext mention)
 		{
 			string tag = mention.HeadTokenTag;
-            return (tag != null && PartsOfSpeech.IsPersonalOrPossessivePronoun(tag) 
-                && Linker.PluralThirdPersonPronounPattern.IsMatch(mention.HeadTokenText));
+            return (tag != null && PartsOfSpeech.IsPersOrPossPronoun(tag) && Linker.PluralThirdPersonPronounPattern.IsMatch(mention.HeadTokenText));
 		}
 	}
 }

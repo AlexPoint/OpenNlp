@@ -146,5 +146,27 @@ namespace OpenNLP.Tools
                 .Select(fieldInfo => (string) fieldInfo.GetValue(null))
                 .Any(value => value == function);
         }
+
+        public static bool IsVerb(string tag)
+        {
+            return !string.IsNullOrEmpty(tag) && tag.StartsWith("VB");
+        }
+
+        public static bool IsAdjective(string tag)
+        {
+            return !string.IsNullOrEmpty(tag) && tag.StartsWith("JJ");
+        }
+        public static bool IsNoun(string tag)
+        {
+            return !string.IsNullOrEmpty(tag) && tag.StartsWith("NN");
+        }
+        public static bool IsProperNoun(string tag)
+        {
+            return !string.IsNullOrEmpty(tag) && tag.StartsWith("NNP");
+        }
+        public static bool IsPersOrPossPronoun(string tag)
+        {
+            return !string.IsNullOrEmpty(tag) && tag.StartsWith("PRP");
+        }
     }
 }

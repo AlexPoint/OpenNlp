@@ -47,7 +47,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 	public class SingularPronounResolver:MaximumEntropyResolver
 	{
 		
-		internal int mode;
+		internal int Mode;
 		
 		internal Regex PronounPattern;
 		
@@ -64,8 +64,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		public override bool CanResolve(MentionContext mention)
 		{
 			string tag = mention.HeadTokenTag;
-			return (tag != null && PartsOfSpeech.IsPersonalOrPossessivePronoun(tag) 
-                && Linker.SingularThirdPersonPronounPattern.IsMatch(mention.HeadTokenText));
+			return (tag != null && PartsOfSpeech.IsPersOrPossPronoun(tag) && Linker.SingularThirdPersonPronounPattern.IsMatch(mention.HeadTokenText));
 		}
 		
 		protected internal override List<string> GetFeatures(MentionContext mention, DiscourseEntity entity)
@@ -129,8 +128,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			foreach (MentionContext entityMention in entity.Mentions)
             {
 				string tag = entityMention.HeadTokenTag;
-				if (tag != null && PartsOfSpeech.IsPersonalOrPossessivePronoun(tag)
-                    && Linker.SingularThirdPersonPronounPattern.IsMatch(mention.HeadTokenText))
+				if (tag != null && PartsOfSpeech.IsPersOrPossPronoun(tag) && Linker.SingularThirdPersonPronounPattern.IsMatch(mention.HeadTokenText))
 				{
 					if (mentionGender == null)
 					{

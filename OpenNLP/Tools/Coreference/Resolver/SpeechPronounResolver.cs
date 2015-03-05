@@ -70,7 +70,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 				features.AddRange(GetPronounMatchFeatures(mention, entity));
 				List<string> contexts = GetContextFeatures(mention);
 				MentionContext cec = entity.LastExtent;
-				if (PartsOfSpeech.IsPersonalOrPossessivePronoun(mention.HeadTokenTag) && PartsOfSpeech.IsPersonalOrPossessivePronoun(cec.HeadTokenTag))
+				if (PartsOfSpeech.IsPersOrPossPronoun(mention.HeadTokenTag) && PartsOfSpeech.IsPersOrPossPronoun(cec.HeadTokenTag))
 				{
 					features.Add(mention.HeadTokenText + "," + cec.HeadTokenText);
 				}
@@ -104,8 +104,8 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		public override bool CanResolve(MentionContext mention)
 		{
 			string tag = mention.HeadTokenTag;
-			bool fpp = tag != null && PartsOfSpeech.IsPersonalOrPossessivePronoun(tag) && Linker.SpeechPronounPattern.IsMatch(mention.HeadTokenText);
-            bool pn = tag != null && PartsOfSpeech.IsProperNoun(tag);
+			bool fpp = tag != null && PartsOfSpeech.IsPersOrPossPronoun(tag) && Linker.SpeechPronounPattern.IsMatch(mention.HeadTokenText);
+			bool pn = tag != null && PartsOfSpeech.IsProperNoun(tag);
 			return (fpp || pn);
 		}
 		
@@ -137,7 +137,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 					return !CanResolve(cec);
 				}
 			}
-			else if (PartsOfSpeech.IsPersonalOrPossessivePronoun(mention.HeadTokenTag))
+			else if (PartsOfSpeech.IsPersOrPossPronoun(mention.HeadTokenTag))
 			{
 				// mention is a speech pronoun
 				// cec can be either a speech pronoun or a propernoun
@@ -146,7 +146,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 					//exclude antecedents not in the same sentence when they are not pronoun 
 					return (mention.SentenceNumber - cec.SentenceNumber != 0);
 				}
-				else if (PartsOfSpeech.IsPersonalOrPossessivePronoun(cec.HeadTokenTag))
+				else if (PartsOfSpeech.IsPersOrPossPronoun(cec.HeadTokenTag))
 				{
 					return false;
 				}

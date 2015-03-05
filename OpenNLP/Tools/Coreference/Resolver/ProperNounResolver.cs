@@ -192,7 +192,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			
             foreach (MentionContext xec in entity.Mentions)
 			{
-                if (PartsOfSpeech.IsProperNoun(xec.HeadTokenTag))
+				if (PartsOfSpeech.IsProperNoun(xec.HeadTokenTag))
 				{
 					// || initialCaps.matcher(xec.headToken.ToString()).find()) {
 					return false;

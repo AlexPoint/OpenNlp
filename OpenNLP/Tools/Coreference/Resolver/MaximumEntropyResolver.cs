@@ -756,12 +756,12 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		{
 			bool foundCompatiblePronoun = false;
 			bool foundIncompatiblePronoun = false;
-			if (PartsOfSpeech.IsPersonalOrPossessivePronoun(mention.HeadTokenTag))
+			if (PartsOfSpeech.IsPersOrPossPronoun(mention.HeadTokenTag))
 			{
                 Dictionary<string, string> pronounMap = GetPronounFeatureMap(mention.HeadTokenText);
 				foreach (Mention.MentionContext candidateMention in entity.Mentions)
                 {
-					if (PartsOfSpeech.IsPersonalOrPossessivePronoun(candidateMention.HeadTokenTag))
+					if (PartsOfSpeech.IsPersOrPossPronoun(candidateMention.HeadTokenTag))
 					{
 						if (mention.HeadTokenText.ToUpper() == candidateMention.HeadTokenText.ToUpper())
 						{
@@ -795,7 +795,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 					}
 				}
 			}
-            List<string> pronounFeatures = new List<string>();
+            var pronounFeatures = new List<string>();
 			if (foundCompatiblePronoun)
 			{
 				pronounFeatures.Add("compatiblePronoun");
@@ -824,9 +824,9 @@ namespace OpenNLP.Tools.Coreference.Resolver
 			bool modifersMatch = false;
 			bool titleMatch = false;
 			bool noTheModifiersMatch = false;
-            List<string> features = new List<string>();
+            var features = new List<string>();
             Mention.IParse[] mentionTokens = mention.TokenParses;
-			OpenNLP.Tools.Util.Set<string> entityContextModifierSet = ConstructModifierSet(mentionTokens, mention.HeadTokenIndex);
+			var entityContextModifierSet = ConstructModifierSet(mentionTokens, mention.HeadTokenIndex);
 			string mentionHeadString = mention.HeadTokenText.ToLower();
 			Util.Set<string> featureSet = new Util.HashSet<string>();
 
@@ -890,7 +890,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 					titleMatch = true;
 				}
 			}
-			if (!(featureSet.Count == 0))
+			if (featureSet.Count != 0)
 			{
                 features.AddRange(featureSet);
 			}
@@ -953,13 +953,13 @@ namespace OpenNLP.Tools.Coreference.Resolver
 
         private string ExcludedHonorificMentionString(Mention.MentionContext entityContext)
 		{
-			System.Text.StringBuilder output = new System.Text.StringBuilder();
+			var output = new System.Text.StringBuilder();
 			bool first = true;
 			object[] mentionTokens = entityContext.Tokens;
 			for (int tokenIndex = 0; tokenIndex < mentionTokens.Length; tokenIndex++)
 			{
 				string token = mentionTokens[tokenIndex].ToString();
-                if (!(Linker.HonorificsPattern.Match(token).Value == token))
+                if (Linker.HonorificsPattern.Match(token).Value != token)
 				{
 					if (!first)
 					{

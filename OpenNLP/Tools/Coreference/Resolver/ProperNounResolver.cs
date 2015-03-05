@@ -75,7 +75,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		
 		public override bool CanResolve(MentionContext mention)
 		{
-			return (PartsOfSpeech.IsProperNoun(mention.HeadTokenTag) || mention.HeadTokenTag.StartsWith("CD"));
+            return (PartsOfSpeech.IsProperNoun(mention.HeadTokenTag) || mention.HeadTokenTag.StartsWith(PartsOfSpeech.CardinalNumber));
 		}
 		
 		private void  initAcronyms(string name)

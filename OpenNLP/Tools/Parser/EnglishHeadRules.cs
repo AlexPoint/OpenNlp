@@ -36,6 +36,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using OpenNLP.Tools.Trees;
 
 namespace OpenNLP.Tools.Parser
 {
@@ -57,10 +58,9 @@ namespace OpenNLP.Tools.Parser
 			{
 				return null;
 			}
-			HeadRule headRule;
-			if (type == "NP" || type == "NX")
+		    if (type == "NP" || type == "NX")
 			{
-				string[] tags1 = new string[]{"NN", "NNP", "NNPS", "NNS", "NX", "JJR", "POS"};
+                var tags1 = new string[] { PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.ProperNounSingular, PartsOfSpeech.ProperNounPlural, PartsOfSpeech.NounPlural, "NX", PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.PossessiveEnding };
 				for (int currentConstituent = constituents.Length - 1; currentConstituent >= 0; currentConstituent--)
 				{
 					for (int currentTag = tags1.Length - 1; currentTag >= 0; currentTag--)
@@ -78,7 +78,7 @@ namespace OpenNLP.Tools.Parser
 						return (constituents[currentConstituent].Head);
 					}
 				}
-				string[] tags2 = new string[]{"$", "ADJP", "PRN"};
+                var tags2 = new string[] { PartsOfSpeech.DollarSign, CoordinationTransformer.Adjective, "PRN" };
 				for (int currentConstituent = constituents.Length - 1; currentConstituent >= 0; currentConstituent--)
 				{
 					for (int currentTag = tags2.Length - 1; currentTag >= 0; currentTag--)
@@ -89,7 +89,7 @@ namespace OpenNLP.Tools.Parser
 						}
 					}
 				}
-				string[] tags3 = new string[]{"JJ", "JJS", "RB", "QP"};
+                var tags3 = new string[] { PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Adverb, "QP" };
 				for (int currentConstituent = constituents.Length - 1; currentConstituent >= 0; currentConstituent--)
 				{
 					for (int currentTag = tags3.Length - 1; currentTag >= 0; currentTag--)
@@ -106,7 +106,7 @@ namespace OpenNLP.Tools.Parser
 			{
                 if (mHeadRules.ContainsKey(type))
 				{
-                    headRule = mHeadRules[type];
+                    HeadRule headRule = mHeadRules[type];
 					string[] tags = headRule.Tags;
 					int constituentCount = constituents.Length;
 					int tagCount = tags.Length;

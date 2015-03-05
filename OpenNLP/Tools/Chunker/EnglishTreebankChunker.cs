@@ -169,7 +169,7 @@ namespace OpenNLP.Tools.Chunker
 			{
 				string[] tokenAndTag = tokenAndTags[currentTokenAndTag].Split('/');
 				tokens[currentTokenAndTag] = tokenAndTag[0];
-				tags[currentTokenAndTag] = tokenAndTag.Length > 1 ? tokenAndTag[1] : ".";
+                tags[currentTokenAndTag] = tokenAndTag.Length > 1 ? tokenAndTag[1] : PartsOfSpeech.SentenceFinalPunctuation;
 			}
 
 			return GetChunks(tokens, tags);

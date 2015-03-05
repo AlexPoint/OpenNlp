@@ -729,7 +729,7 @@ namespace OpenNLP.Tools.Trees
         /// <returns>The label of a tree node as a String</returns>
         public virtual string NodeString()
         {
-            return (Value() == null) ? "" : Value();
+            return Value() ?? "";
         }
 
         /**

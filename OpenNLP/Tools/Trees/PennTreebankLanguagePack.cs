@@ -19,19 +19,19 @@ namespace OpenNLP.Tools.Trees
     public class PennTreebankLanguagePack : AbstractTreebankLanguagePack
     {
 
-        private static readonly string[] PennPunctTags = {"''", "``", "-LRB-", "-RRB-", ".", ":", ","};
+        private static readonly string[] PennPunctTags = { PartsOfSpeech.RightCloseDoubleQuote, PartsOfSpeech.LeftOpenDoubleQuote, "-LRB-", "-RRB-", PartsOfSpeech.SentenceFinalPunctuation, PartsOfSpeech.ColonSemiColon, PartsOfSpeech.Comma };
 
-        private static readonly string[] PennSfPunctTags = {"."};
+        private static readonly string[] PennSfPunctTags = { PartsOfSpeech.SentenceFinalPunctuation };
 
-        private static readonly string[] CollinsPunctTags = {"''", "``", ".", ":", ","};
+        private static readonly string[] CollinsPunctTags = { PartsOfSpeech.RightCloseDoubleQuote, PartsOfSpeech.LeftOpenDoubleQuote, PartsOfSpeech.SentenceFinalPunctuation, PartsOfSpeech.ColonSemiColon, PartsOfSpeech.Comma };
 
         private static readonly string[] PennPunctWords =
         {
-            "''", "'", "``", "`", "-LRB-", "-RRB-", "-LCB-", "-RCB-", ".",
-            "?", "!", ",", ":", "-", "--", "...", ";"
+            PartsOfSpeech.RightCloseDoubleQuote, "'", PartsOfSpeech.LeftOpenDoubleQuote, "`", "-LRB-", "-RRB-", "-LCB-", "-RCB-", PartsOfSpeech.SentenceFinalPunctuation,
+            "?", "!", PartsOfSpeech.Comma, PartsOfSpeech.ColonSemiColon, "-", "--", "...", ";"
         };
 
-        private static readonly string[] PennSfPunctWords = {".", "!", "?"};
+        private static readonly string[] PennSfPunctWords = { PartsOfSpeech.SentenceFinalPunctuation, "!", "?" };
 
 
         /// <summary>

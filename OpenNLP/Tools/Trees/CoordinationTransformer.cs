@@ -35,6 +35,10 @@ namespace OpenNLP.Tools.Trees
     /// </summary>
     public class CoordinationTransformer : ITreeTransformer
     {
+        public const string Adjective = "ADJP";
+        public const string Noun = "NP";
+
+
         /// <summary>to get rid of unwanted nodes and tag</summary>
         private readonly ITreeTransformer tn = new DependencyTreeTransformer();
         /// <summary>to restructure the QP constituents</summary>
@@ -286,15 +290,15 @@ namespace OpenNLP.Tools.Trees
         {
             if (PartsOfSpeech.IsNoun(t.Value()))
             {
-                return "NP";
+                return Noun;
             }
             else if (PartsOfSpeech.IsAdjective(t.Value()))
             {
-                return "ADJP";
+                return Adjective;
             }
             else
             {
-                return "NP";
+                return Noun;
             }
         }
 
@@ -318,7 +322,7 @@ namespace OpenNLP.Tools.Trees
             var ccPositions = new List<int>();
             for (int i = ccIndex + 1; i < ccSiblings.Length; i++)
             {
-                if (ccSiblings[i].Value().StartsWith("CC") && i < ccSiblings.Length - 1)
+                if (ccSiblings[i].Value().StartsWith(PartsOfSpeech.CoordinatingConjunction) && i < ccSiblings.Length - 1)
                 {
                     // second conjunct to ensure that a CC we add isn't the last child
                     ccPositions.Add(i);
@@ -611,7 +615,7 @@ namespace OpenNLP.Tools.Trees
         {
             if (t.IsPreTerminal())
             {
-                if (t.Value().StartsWith("CC"))
+                if (t.Value().StartsWith(PartsOfSpeech.CoordinatingConjunction))
                 {
                     Tree parent = t.Parent(root);
                     if (parent != null && parent.Value().StartsWith("NP"))
@@ -619,7 +623,7 @@ namespace OpenNLP.Tools.Trees
                         List<Tree> children = parent.GetChildrenAsList();
                         int ccIndex = children.IndexOf(t);
                         if (children.Count > ccIndex + 2 && NotNp(children, ccIndex) && ccIndex != 0 &&
-                            (ccIndex == children.Count - 1 || !children[ccIndex + 1].Value().StartsWith("CC")))
+                            (ccIndex == children.Count - 1 || !children[ccIndex + 1].Value().StartsWith(PartsOfSpeech.CoordinatingConjunction)))
                         {
                             TransformCc(parent, ccIndex);
                             return root;

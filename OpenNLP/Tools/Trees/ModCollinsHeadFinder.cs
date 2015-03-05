@@ -61,8 +61,8 @@ namespace OpenNLP.Tools.Trees
             // QP early isn't; should prefer JJR NN RB
             // remove ADVP; it just shouldn't be there.
             // if two JJ, should take right one (e.g. South Korean)
-            // nonTerminalInfo.Add("ADJP", new string[][]{{"left", PartsOfSpeech.NounPlural, PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.DollarSign, "QP"}, {"right", PartsOfSpeech.Adjective}, {"left", PartsOfSpeech.VerbPastParticiple, PartsOfSpeech.VerbGerundOrPresentParticiple, "ADJP", "JJP", PartsOfSpeech.AdjectiveComparative, "NP", PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Determiner, PartsOfSpeech.ForeignWord, PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative, "SBAR", PartsOfSpeech.Adverb}});
-            nonTerminalInfo.Add("ADJP",
+            // nonTerminalInfo.Add(CoordinationTransformer.Adjective, new string[][]{{"left", PartsOfSpeech.NounPlural, PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.DollarSign, "QP"}, {"right", PartsOfSpeech.Adjective}, {"left", PartsOfSpeech.VerbPastParticiple, PartsOfSpeech.VerbGerundOrPresentParticiple, CoordinationTransformer.Adjective, "JJP", PartsOfSpeech.AdjectiveComparative, "NP", PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Determiner, PartsOfSpeech.ForeignWord, PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative, "SBAR", PartsOfSpeech.Adverb}});
+            nonTerminalInfo.Add(CoordinationTransformer.Adjective,
                 new string[][]
                 {
                     new string[] {"left", PartsOfSpeech.DollarSign},
@@ -71,7 +71,7 @@ namespace OpenNLP.Tools.Trees
                         "rightdis", PartsOfSpeech.NounPlural, PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.Adjective,
                         "QP", PartsOfSpeech.VerbPastParticiple, PartsOfSpeech.VerbGerundOrPresentParticiple
                     },
-                    new string[] {"left", "ADJP"},
+                    new string[] {"left", CoordinationTransformer.Adjective},
                     new string[]
                     {
                         "rightdis", "JJP", PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.AdjectiveSuperlative,
@@ -88,7 +88,7 @@ namespace OpenNLP.Tools.Trees
                     {
                         "left", PartsOfSpeech.NounPlural, PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.DollarSign,
                         "QP", PartsOfSpeech.Adjective, PartsOfSpeech.VerbPastParticiple,
-                        PartsOfSpeech.VerbGerundOrPresentParticiple, "ADJP", "JJP", PartsOfSpeech.AdjectiveComparative,
+                        PartsOfSpeech.VerbGerundOrPresentParticiple, CoordinationTransformer.Adjective, "JJP", PartsOfSpeech.AdjectiveComparative,
                         "NP", PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Determiner, PartsOfSpeech.ForeignWord,
                         PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative, "SBAR", PartsOfSpeech.Adverb
                     }
@@ -108,7 +108,7 @@ namespace OpenNLP.Tools.Trees
                     "rightdis", PartsOfSpeech.Particle, PartsOfSpeech.Determiner, PartsOfSpeech.NounSingularOrMass,
                     PartsOfSpeech.CardinalNumber, "NP", PartsOfSpeech.VerbPastParticiple,
                     PartsOfSpeech.ProperNounSingular, PartsOfSpeech.CoordinatingConjunction, PartsOfSpeech.ForeignWord,
-                    PartsOfSpeech.NounPlural, "ADJP", "NML"
+                    PartsOfSpeech.NounPlural, CoordinationTransformer.Adjective, "NML"
                 }
             });
             nonTerminalInfo.Add("CONJP",
@@ -140,7 +140,7 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.ExistentialThere, PartsOfSpeech.DollarSign, PartsOfSpeech.CardinalNumber, "QP",
                         PartsOfSpeech.PersonalPronoun, PartsOfSpeech.VerbGerundOrPresentParticiple,
                         PartsOfSpeech.Adjective,
-                        PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.AdjectiveComparative, "ADJP", "JJP",
+                        PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.AdjectiveComparative, CoordinationTransformer.Adjective, "JJP",
                         PartsOfSpeech.ForeignWord
                     }
                 });
@@ -168,7 +168,7 @@ namespace OpenNLP.Tools.Trees
                 {
                     new string[]
                     {
-                        "left", "VP", "NP", "PP", "SQ", "S", "SINV", "SBAR", "ADJP", "JJP", "ADVP", "INTJ", "WHNP",
+                        "left", "VP", "NP", "PP", "SQ", "S", "SINV", "SBAR", CoordinationTransformer.Adjective, "JJP", "ADVP", "INTJ", "WHNP",
                         "NAC",
                         PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.Adjective,
                         PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.ProperNounSingular
@@ -192,14 +192,12 @@ namespace OpenNLP.Tools.Trees
             // For choosing between NP and PP, really need to know which one is temporal and to choose the other.
             // It's not clear ADVP needs to be in the list at all (delete?).
             nonTerminalInfo.Add("RRC",
-                new string[][]
-                {new string[] {"left", "RRC"}, new string[] {"right", "VP", "ADJP", "JJP", "NP", "PP", "ADVP"}});
+                new string[][] { new string[] { "left", "RRC" }, new string[] { "right", "VP", CoordinationTransformer.Adjective, "JJP", "NP", "PP", "ADVP" } });
 
             // delete IN -- go for main part of sentence; add FRAG
 
             nonTerminalInfo.Add("S",
-                new string[][]
-                {new string[] {"left", PartsOfSpeech.To, "VP", "S", "FRAG", "SBAR", "ADJP", "JJP", "UCP", "NP"}});
+                new string[][] { new string[] { "left", PartsOfSpeech.To, "VP", "S", "FRAG", "SBAR", CoordinationTransformer.Adjective, "JJP", "UCP", "NP" } });
             nonTerminalInfo.Add("SBAR",
                 new string[][]
                 {
@@ -219,7 +217,7 @@ namespace OpenNLP.Tools.Trees
                     {
                         "left", PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbPastTense,
                         PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Modal,
-                        PartsOfSpeech.VerbPastParticiple, "VP", "S", "SINV", "ADJP", "JJP", "NP"
+                        PartsOfSpeech.VerbPastParticiple, "VP", "S", "SINV", CoordinationTransformer.Adjective, "JJP", "NP"
                     }
                 });
             nonTerminalInfo.Add("SQ",
@@ -244,7 +242,7 @@ namespace OpenNLP.Tools.Trees
                         "left", PartsOfSpeech.To, PartsOfSpeech.VerbPastTense, PartsOfSpeech.VerbPastParticiple,
                         PartsOfSpeech.Modal, PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbBaseForm,
                         PartsOfSpeech.VerbGerundOrPresentParticiple, PartsOfSpeech.VerbNon3rdPersSingPresent, "VP",
-                        "AUX", "AUXG", "ADJP", "JJP",
+                        "AUX", "AUXG", CoordinationTransformer.Adjective, "JJP",
                         PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.NounPlural, PartsOfSpeech.Adjective, "NP",
                         PartsOfSpeech.ProperNounSingular
                     }
@@ -254,7 +252,7 @@ namespace OpenNLP.Tools.Trees
                 {
                     new string[]
                     {
-                        "left", PartsOfSpeech.WhAdverb, "WHADVP", PartsOfSpeech.Adverb, PartsOfSpeech.Adjective, "ADJP",
+                        "left", PartsOfSpeech.WhAdverb, "WHADVP", PartsOfSpeech.Adverb, PartsOfSpeech.Adjective, CoordinationTransformer.Adjective,
                         "JJP", PartsOfSpeech.AdjectiveComparative
                     }
                 });
@@ -278,7 +276,7 @@ namespace OpenNLP.Tools.Trees
                     }
                 });
             nonTerminalInfo.Add("X",
-                new string[][] {new string[] {"right", "S", "VP", "ADJP", "JJP", "NP", "SBAR", "PP", "X"}});
+                new string[][] { new string[] { "right", "S", "VP", CoordinationTransformer.Adjective, "JJP", "NP", "SBAR", "PP", "X" } });
             nonTerminalInfo.Add("NP",
                 new string[][]
                 {
@@ -289,7 +287,7 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.PossessiveEnding, PartsOfSpeech.AdjectiveComparative
                     },
                     new string[] {"left", "NP", PartsOfSpeech.PersonalPronoun},
-                    new string[] {"rightdis", PartsOfSpeech.DollarSign, "ADJP", "JJP", "PRN", PartsOfSpeech.ForeignWord},
+                    new string[] {"rightdis", PartsOfSpeech.DollarSign, CoordinationTransformer.Adjective, "JJP", "PRN", PartsOfSpeech.ForeignWord},
                     new string[] {"right", PartsOfSpeech.CardinalNumber},
                     new string[]
                     {
@@ -318,7 +316,7 @@ namespace OpenNLP.Tools.Trees
                     PartsOfSpeech.ProperNounPlural, PartsOfSpeech.To,
                     PartsOfSpeech.VerbPastTense, PartsOfSpeech.VerbPastParticiple, PartsOfSpeech.Modal,
                     PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbBaseForm,
-                    PartsOfSpeech.VerbGerundOrPresentParticiple, PartsOfSpeech.VerbNon3rdPersSingPresent, "VP", "ADJP",
+                    PartsOfSpeech.VerbGerundOrPresentParticiple, PartsOfSpeech.VerbNon3rdPersSingPresent, "VP", CoordinationTransformer.Adjective,
                     "JJP", "FRAG"
                 }
             }); // for Brown (Roger)
@@ -346,7 +344,7 @@ namespace OpenNLP.Tools.Trees
                         "left", PartsOfSpeech.To, PartsOfSpeech.VerbPastTense, PartsOfSpeech.VerbPastParticiple,
                         PartsOfSpeech.Modal, PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbBaseForm,
                         PartsOfSpeech.VerbGerundOrPresentParticiple, PartsOfSpeech.VerbNon3rdPersSingPresent, "VP",
-                        "AUX", "AUXG", "ADJP", "JJP",
+                        "AUX", "AUXG", CoordinationTransformer.Adjective, "JJP",
                         PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.NounPlural, PartsOfSpeech.Adjective, "NP",
                         PartsOfSpeech.ProperNounSingular
                     }

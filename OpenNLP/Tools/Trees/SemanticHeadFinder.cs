@@ -154,7 +154,7 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.WhPronoun
                     },
                     new string[] {"left", "NP", PartsOfSpeech.PersonalPronoun},
-                    new string[] {"rightdis", PartsOfSpeech.DollarSign, "ADJP", PartsOfSpeech.ForeignWord},
+                    new string[] {"rightdis", PartsOfSpeech.DollarSign, CoordinationTransformer.Adjective, PartsOfSpeech.ForeignWord},
                     new string[] {"right", PartsOfSpeech.CardinalNumber},
                     new string[]
                     {
@@ -182,7 +182,7 @@ namespace OpenNLP.Tools.Trees
                     PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.WhPronoun
                 },
                 new string[] {"left", "WHNP", "NP"},
-                new string[] {"rightdis", PartsOfSpeech.DollarSign, "ADJP", "PRN", PartsOfSpeech.ForeignWord},
+                new string[] {"rightdis", PartsOfSpeech.DollarSign, CoordinationTransformer.Adjective, "PRN", PartsOfSpeech.ForeignWord},
                 new string[] {"right", PartsOfSpeech.CardinalNumber},
                 new string[]
                 {"rightdis", PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Adverb, "QP"},
@@ -192,7 +192,7 @@ namespace OpenNLP.Tools.Trees
             nonTerminalInfo["WHADJP"] = new string[][]
             {
                 new string[]
-                {"left", "ADJP", PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.WhPronoun},
+                {"left", CoordinationTransformer.Adjective, PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.WhPronoun},
                 new string[] {"right", PartsOfSpeech.Adverb}, new string[] {"right"}
             };
             //WHADJP
@@ -216,7 +216,7 @@ namespace OpenNLP.Tools.Trees
             // S: "He considered him a friend" -> we want a friend to be the head
             nonTerminalInfo["S"] = new string[][]
             {
-                new string[] {"left", "VP", "S", "FRAG", "SBAR", "ADJP", "UCP", PartsOfSpeech.To},
+                new string[] {"left", "VP", "S", "FRAG", "SBAR", CoordinationTransformer.Adjective, "UCP", PartsOfSpeech.To},
                 new string[] {"right", "NP"}
             };
 
@@ -234,7 +234,7 @@ namespace OpenNLP.Tools.Trees
             {
                 new string[]
                 {
-                    "left", "VP", "SQ", "ADJP", PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Verb3rdPersSingPresent,
+                    "left", "VP", "SQ", CoordinationTransformer.Adjective, PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Verb3rdPersSingPresent,
                     PartsOfSpeech.VerbPastTense, PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.Modal, "AUX",
                     "AUXG"
                 }
@@ -261,7 +261,7 @@ namespace OpenNLP.Tools.Trees
             {
                 new string[] {"left", PartsOfSpeech.PrepositionOrSubordinateConjunction},
                 new string[] {"right", PartsOfSpeech.Adverb}, new string[] {"left", "NP"},
-                new string[] {"left", "ADJP", "ADVP", "FRAG", "S", "SBAR", "VP"}
+                new string[] {"left", CoordinationTransformer.Adjective, "ADVP", "FRAG", "S", "SBAR", "VP"}
             };
 
             // PRN: sentence first
@@ -269,7 +269,7 @@ namespace OpenNLP.Tools.Trees
             {
                 new string[]
                 {
-                    "left", "VP", "SQ", "S", "SINV", "SBAR", "NP", "ADJP", "PP", "ADVP", "INTJ", "WHNP", "NAC",
+                    "left", "VP", "SQ", "S", "SINV", "SBAR", "NP", CoordinationTransformer.Adjective, "PP", "ADVP", "INTJ", "WHNP", "NAC",
                     PartsOfSpeech.VerbNon3rdPersSingPresent,
                     PartsOfSpeech.Adjective, PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.ProperNounSingular
                 }
@@ -498,16 +498,15 @@ namespace OpenNLP.Tools.Trees
                 // looks for auxiliaries
                 if (HasVerbalAuxiliary(kids, verbalAuxiliaries, true) || HasPassiveProgressiveAuxiliary(kids))
                 {
-                    // string[] how = new string[] {"left", "VP", "ADJP", "NP"};
+                    // string[] how = new string[] {"left", "VP", CoordinationTransformer.Adjective, "NP"};
                     // Including NP etc seems okay for copular sentences but is
                     // problematic for other auxiliaries, like 'he has an answer'
                     // But maybe doing ADJP is fine!
-                    string[] how = {"left", "VP", "ADJP"};
-                    if (tmpFilteredChildren == null)
-                    {
-                        //tmpFilteredChildren = ArrayUtils.filter(kids, REMOVE_TMP_AND_ADV);
-                        tmpFilteredChildren = kids.Where(k => RemoveTmpAndAdv(k)).ToArray();
-                    }
+                    string[] how = { "left", "VP", CoordinationTransformer.Adjective };
+                    
+                    //tmpFilteredChildren = ArrayUtils.filter(kids, REMOVE_TMP_AND_ADV);
+                    tmpFilteredChildren = kids.Where(k => RemoveTmpAndAdv(k)).ToArray();
+                    
                     Tree pti = TraverseLocate(tmpFilteredChildren, how, false);
                     if (pti != null)
                     {
@@ -521,11 +520,11 @@ namespace OpenNLP.Tools.Trees
                     string[] how;
                     if (motherCat.Equals("SQ"))
                     {
-                        how = new string[] {"right", "VP", "ADJP", "NP", "WHADJP", "WHNP"};
+                        how = new string[] { "right", "VP", CoordinationTransformer.Adjective, "NP", "WHADJP", "WHNP" };
                     }
                     else
                     {
-                        how = new string[] {"left", "VP", "ADJP", "NP", "WHADJP", "WHNP"};
+                        how = new string[] { "left", "VP", CoordinationTransformer.Adjective, "NP", "WHADJP", "WHNP" };
                     }
                     // Avoid undesirable heads by filtering them from the list of potential children
                     if (tmpFilteredChildren == null)

@@ -47,14 +47,14 @@ namespace OpenNLP.Tools.Trees
 
             nonTerminalInfo = new Dictionary<string, string[][]>();
             // This version from Collins' diss (1999: 236-238)
-            nonTerminalInfo.Add("ADJP",
+            nonTerminalInfo.Add(CoordinationTransformer.Adjective,
                 new string[][]
                 {
                     new string[]
                     {
                         "left", PartsOfSpeech.NounPlural, "QP", PartsOfSpeech.NounSingularOrMass,
                         PartsOfSpeech.DollarSign, "ADVP", PartsOfSpeech.Adjective, PartsOfSpeech.VerbPastParticiple,
-                        PartsOfSpeech.VerbGerundOrPresentParticiple, "ADJP", PartsOfSpeech.AdjectiveComparative, "NP",
+                        PartsOfSpeech.VerbGerundOrPresentParticiple, CoordinationTransformer.Adjective, PartsOfSpeech.AdjectiveComparative, "NP",
                         PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Determiner, PartsOfSpeech.ForeignWord,
                         PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative, "SBAR", PartsOfSpeech.Adverb
                     }
@@ -94,7 +94,7 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.ExistentialThere, PartsOfSpeech.DollarSign, PartsOfSpeech.CardinalNumber, "QP",
                         PartsOfSpeech.PersonalPronoun, PartsOfSpeech.VerbGerundOrPresentParticiple,
                         PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveSuperlative,
-                        PartsOfSpeech.AdjectiveComparative, "ADJP", PartsOfSpeech.ForeignWord
+                        PartsOfSpeech.AdjectiveComparative, CoordinationTransformer.Adjective, PartsOfSpeech.ForeignWord
                     }
                 });
             nonTerminalInfo.Add("NX", new string[][] {new string[] {"left"}}); // crap
@@ -122,14 +122,14 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.AdjectiveSuperlative
                     }
                 });
-            nonTerminalInfo.Add("RRC", new string[][] {new string[] {"right", "VP", "NP", "ADVP", "ADJP", "PP"}});
+            nonTerminalInfo.Add("RRC", new string[][] { new string[] { "right", "VP", "NP", "ADVP", CoordinationTransformer.Adjective, "PP" } });
             nonTerminalInfo.Add("S",
                 new string[][]
                 {
                     new string[]
                     {
                         "left", PartsOfSpeech.To, PartsOfSpeech.PrepositionOrSubordinateConjunction, "VP", "S", "SBAR",
-                        "ADJP", "UCP", "NP"
+                        CoordinationTransformer.Adjective, "UCP", "NP"
                     }
                 });
             nonTerminalInfo.Add("SBAR",
@@ -149,7 +149,7 @@ namespace OpenNLP.Tools.Trees
                     {
                         "left", PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbPastTense,
                         PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Modal, "VP",
-                        "S", "SINV", "ADJP", "NP"
+                        "S", "SINV", CoordinationTransformer.Adjective, "NP"
                     }
                 });
             nonTerminalInfo.Add("SQ",
@@ -171,7 +171,7 @@ namespace OpenNLP.Tools.Trees
                         "left", PartsOfSpeech.To, PartsOfSpeech.VerbPastTense, PartsOfSpeech.VerbPastParticiple,
                         PartsOfSpeech.Modal, PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbBaseForm,
                         PartsOfSpeech.VerbGerundOrPresentParticiple, PartsOfSpeech.VerbNon3rdPersSingPresent, "AUX",
-                        "AUXG", "VP", "ADJP", PartsOfSpeech.NounSingularOrMass,
+                        "AUXG", "VP", CoordinationTransformer.Adjective, PartsOfSpeech.NounSingularOrMass,
                         PartsOfSpeech.NounPlural, "NP"
                     }
                 });
@@ -181,7 +181,7 @@ namespace OpenNLP.Tools.Trees
                     new string[]
                     {
                         "left", PartsOfSpeech.CoordinatingConjunction, PartsOfSpeech.WhAdverb, PartsOfSpeech.Adjective,
-                        "ADJP"
+                        CoordinationTransformer.Adjective
                     }
                 });
             nonTerminalInfo.Add("WHADVP", new string[][] {new string[] {"right", PartsOfSpeech.CoordinatingConjunction, PartsOfSpeech.WhAdverb}});
@@ -214,7 +214,7 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.AdjectiveComparative
                     },
                     new string[] {"left", "NP"},
-                    new string[] {"rightdis", PartsOfSpeech.DollarSign, "ADJP", "PRN"},
+                    new string[] {"rightdis", PartsOfSpeech.DollarSign, CoordinationTransformer.Adjective, "PRN"},
                     new string[] {"right", PartsOfSpeech.CardinalNumber},
                     new string[]
                     {

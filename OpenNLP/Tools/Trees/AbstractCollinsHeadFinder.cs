@@ -100,6 +100,7 @@ namespace OpenNLP.Tools.Trees
         public const string TOP = "TOP";
         public const string ADV = "ADV";
         public const string META = "META";
+        public const string EMBED = "EMBED";
 
         public const string Left = "left";
         public const string Right = "right";

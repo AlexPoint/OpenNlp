@@ -58,9 +58,14 @@ namespace OpenNLP.Tools.Parser
 			{
 				return null;
 			}
-            if (type == CoordinationTransformer.Noun || type == "NX")
-			{
-                var tags1 = new string[] { PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.ProperNounSingular, PartsOfSpeech.ProperNounPlural, PartsOfSpeech.NounPlural, "NX", PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.PossessiveEnding };
+            if (type == CoordinationTransformer.Noun || type == AbstractCollinsHeadFinder.NX)
+            {
+                var tags1 = new string[]
+                {
+                    PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.ProperNounSingular, PartsOfSpeech.ProperNounPlural,
+                    PartsOfSpeech.NounPlural, AbstractCollinsHeadFinder.NX, PartsOfSpeech.AdjectiveComparative,
+                    PartsOfSpeech.PossessiveEnding
+                };
 				for (int currentConstituent = constituents.Length - 1; currentConstituent >= 0; currentConstituent--)
 				{
 					for (int currentTag = tags1.Length - 1; currentTag >= 0; currentTag--)
@@ -78,7 +83,7 @@ namespace OpenNLP.Tools.Parser
 						return (constituents[currentConstituent].Head);
 					}
 				}
-                var tags2 = new string[] { PartsOfSpeech.DollarSign, CoordinationTransformer.Adjective, "PRN" };
+                var tags2 = new string[] { PartsOfSpeech.DollarSign, CoordinationTransformer.Adjective, AbstractCollinsHeadFinder.PRN };
 				for (int currentConstituent = constituents.Length - 1; currentConstituent >= 0; currentConstituent--)
 				{
 					for (int currentTag = tags2.Length - 1; currentTag >= 0; currentTag--)
@@ -89,7 +94,7 @@ namespace OpenNLP.Tools.Parser
 						}
 					}
 				}
-                var tags3 = new string[] { PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Adverb, "QP" };
+                var tags3 = new string[] { PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Adverb, AbstractCollinsHeadFinder.QP };
 				for (int currentConstituent = constituents.Length - 1; currentConstituent >= 0; currentConstituent--)
 				{
 					for (int currentTag = tags3.Length - 1; currentTag >= 0; currentTag--)
@@ -145,18 +150,18 @@ namespace OpenNLP.Tools.Parser
 		
 		private void ReadHeadRules(string file)
 		{
-			using (StreamReader headRulesStreamReader = new StreamReader(file, System.Text.Encoding.UTF7))
+			using (var headRulesStreamReader = new StreamReader(file, System.Text.Encoding.UTF7))
 			{
 				string line = headRulesStreamReader.ReadLine();
                 mHeadRules = new Dictionary<string, HeadRule>(30);
 			
 				while (line != null)
 				{
-					Util.StringTokenizer tokenizer = new Util.StringTokenizer(line);
+					var tokenizer = new Util.StringTokenizer(line);
 					string number = tokenizer.NextToken();
 					string type = tokenizer.NextToken();
 					string direction = tokenizer.NextToken();
-					string[] tags = new string[int.Parse(number, System.Globalization.CultureInfo.InvariantCulture)];
+					var tags = new string[int.Parse(number, System.Globalization.CultureInfo.InvariantCulture)];
 					int currentTag = 0;
 					string tag = tokenizer.NextToken();
 					while (tag != null)
@@ -173,8 +178,8 @@ namespace OpenNLP.Tools.Parser
 		
 		private class HeadRule
 		{
-			public bool LeftToRight;
-			public string[] Tags;
+			public readonly bool LeftToRight;
+			public readonly string[] Tags;
 			public HeadRule(bool leftToRight, string[] tags)
 			{
 				LeftToRight = leftToRight;

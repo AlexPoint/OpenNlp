@@ -332,7 +332,7 @@ namespace OpenNLP.Tools.Trees
             if (headIdx >= 2)
             {
                 string prevLab = Tlp.BasicCategory(daughterTrees[headIdx - 1].Value());
-                if (prevLab.Equals(PartsOfSpeech.CoordinatingConjunction) || prevLab.Equals("CONJP"))
+                if (prevLab.Equals(PartsOfSpeech.CoordinatingConjunction) || prevLab.Equals(CONJP))
                 {
                     bool origWasInterjection = PartsOfSpeech.Interjection.Equals(Tlp.BasicCategory(daughterTrees[headIdx].Value()));
                     int newHeadIdx = headIdx - 2;
@@ -520,11 +520,11 @@ namespace OpenNLP.Tools.Trees
                     string[] how;
                     if (motherCat.Equals("SQ"))
                     {
-                        how = new string[] { Right, AbstractCollinsHeadFinder.VerbPhrase, CoordinationTransformer.Adjective, CoordinationTransformer.Noun, "WHADJP", WHNP };
+                        how = new string[] { Right, AbstractCollinsHeadFinder.VerbPhrase, CoordinationTransformer.Adjective, CoordinationTransformer.Noun, WHADJP, WHNP };
                     }
                     else
                     {
-                        how = new string[] { Left, AbstractCollinsHeadFinder.VerbPhrase, CoordinationTransformer.Adjective, CoordinationTransformer.Noun, "WHADJP", WHNP };
+                        how = new string[] { Left, AbstractCollinsHeadFinder.VerbPhrase, CoordinationTransformer.Adjective, CoordinationTransformer.Noun, WHADJP, WHNP };
                     }
                     // Avoid undesirable heads by filtering them from the list of potential children
                     if (tmpFilteredChildren == null)

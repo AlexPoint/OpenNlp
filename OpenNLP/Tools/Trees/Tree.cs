@@ -2029,7 +2029,7 @@ namespace OpenNLP.Tools.Trees
             if (!IsUnaryRewrite())
                 return this;
             string lab = Label().Value();
-            return (lab == null || !lab.Any() || "ROOT".Equals(lab)) ? FirstChild() : this;
+            return (lab == null || !lab.Any() || AbstractCollinsHeadFinder.ROOT.Equals(lab)) ? FirstChild() : this;
         }
 
         /// <summary>

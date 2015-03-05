@@ -87,7 +87,7 @@ namespace OpenNLP.Tools.Trees
             root.PercolateHeads(hf);
             if (root.Value() == null)
             {
-                root.SetValue("ROOT"); // todo: cdm: it doesn't seem like this line should be here
+                root.SetValue(AbstractCollinsHeadFinder.ROOT); // todo: cdm: it doesn't seem like this line should be here
             }
             // add dependencies, using heads
             this.puncFilter = puncFilter;
@@ -254,7 +254,7 @@ namespace OpenNLP.Tools.Trees
             var tgPOSNodes = new List<TreeGraphNode>(tokens.Count);
 
             var rootLabel = new CoreLabel();
-            rootLabel.SetValue("ROOT");
+            rootLabel.SetValue(AbstractCollinsHeadFinder.ROOT);
             var nodeWords = new List<IndexedWord>(tgPOSNodes.Count + 1) {new IndexedWord(rootLabel)};
 
             var headFinder = new SemanticHeadFinder();
@@ -475,8 +475,8 @@ namespace OpenNLP.Tools.Trees
             }
 
             // add the root
-            var dependencyRoot = new TreeGraphNode(new Word("ROOT"));
-            dependencyRoot.SetIndex(-1);
+            var dependencyRoot = new TreeGraphNode(new Word(AbstractCollinsHeadFinder.ROOT));
+            dependencyRoot.SetIndex(0);
             TreeGraphNode rootDep = Root().HeadWordNode();
             if (rootDep == null)
             {

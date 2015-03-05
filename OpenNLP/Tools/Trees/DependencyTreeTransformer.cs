@@ -46,9 +46,9 @@ namespace OpenNLP.Tools.Trees
 
         protected static string CleanUpRoot(string label)
         {
-            if (label == null || label.Equals("TOP"))
+            if (label == null || label.Equals(AbstractCollinsHeadFinder.TOP))
             {
-                return "ROOT";
+                return AbstractCollinsHeadFinder.ROOT;
                 // string constants are always interned
             }
             else

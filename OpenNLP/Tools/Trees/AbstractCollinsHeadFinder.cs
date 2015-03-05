@@ -104,7 +104,10 @@ namespace OpenNLP.Tools.Trees
 
         public const string Left = "left";
         public const string Right = "right";
+        public const string LeftDis = "leftdis";
         public const string RightDis = "rightdis";
+        public const string LeftExcept = "leftexcept";
+        public const string RightExcept = "rightexcept";
 
 
         protected readonly AbstractTreebankLanguagePack Tlp;
@@ -145,15 +148,15 @@ namespace OpenNLP.Tools.Trees
             DefaultRightRule = new string[categoriesToAvoid.Length + 1];
             if (categoriesToAvoid.Length > 0)
             {
-                DefaultLeftRule[0] = "leftexcept";
-                DefaultRightRule[0] = "rightexcept";
+                DefaultLeftRule[0] = LeftExcept;
+                DefaultRightRule[0] = RightExcept;
                 Array.Copy(categoriesToAvoid, 0, DefaultLeftRule, 1, categoriesToAvoid.Length);
                 Array.Copy(categoriesToAvoid, 0, DefaultRightRule, 1, categoriesToAvoid.Length);
             }
             else
             {
-                DefaultLeftRule[0] = "left";
-                DefaultRightRule[0] = "right";
+                DefaultLeftRule[0] = Left;
+                DefaultRightRule[0] = Right;
             }
         }
 
@@ -300,22 +303,22 @@ namespace OpenNLP.Tools.Trees
             int headIdx;
             switch (how[0])
             {
-                case "left":
+                case Left:
                     headIdx = FindLeftHead(daughterTrees, how);
                     break;
-                case "leftdis":
+                case LeftDis:
                     headIdx = FindLeftDisHead(daughterTrees, how);
                     break;
-                case "leftexcept":
+                case LeftExcept:
                     headIdx = FindLeftExceptHead(daughterTrees, how);
                     break;
-                case "right":
+                case Right:
                     headIdx = FindRightHead(daughterTrees, how);
                     break;
-                case "rightdis":
+                case RightDis:
                     headIdx = FindRightDisHead(daughterTrees, how);
                     break;
-                case "rightexcept":
+                case RightExcept:
                     headIdx = FindRightExceptHead(daughterTrees, how);
                     break;
                 default:
@@ -333,7 +336,7 @@ namespace OpenNLP.Tools.Trees
                     // setting headIdx).  We want to be careful to ensure that postOperationFix
                     // runs exactly once.
                     string[] rule;
-                    if (how[0].StartsWith("left"))
+                    if (how[0].StartsWith(Left))
                     {
                         headIdx = 0;
                         rule = DefaultLeftRule;

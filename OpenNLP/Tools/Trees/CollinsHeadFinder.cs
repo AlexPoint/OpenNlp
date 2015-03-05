@@ -170,7 +170,7 @@ namespace OpenNLP.Tools.Trees
                         SQ
                     }
                 });
-            NonTerminalInfo.Add("UCP", new string[][] {new string[] {"right"}});
+            NonTerminalInfo.Add("UCP", new string[][] {new string[] {Right}});
             NonTerminalInfo.Add(AbstractCollinsHeadFinder.VerbPhrase,
                 new string[][]
                 {
@@ -240,7 +240,7 @@ namespace OpenNLP.Tools.Trees
             if (headIdx >= 2)
             {
                 string prevLab = Tlp.BasicCategory(daughterTrees[headIdx - 1].Value());
-                if (prevLab.Equals(PartsOfSpeech.CoordinatingConjunction) || prevLab.Equals("CONJP"))
+                if (prevLab.Equals(PartsOfSpeech.CoordinatingConjunction) || prevLab.Equals(AbstractCollinsHeadFinder.CONJP))
                 {
                     int newHeadIdx = headIdx - 2;
                     Tree t = daughterTrees[newHeadIdx];

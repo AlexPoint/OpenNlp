@@ -47,7 +47,7 @@ namespace OpenNLP.Tools.Trees
         /// <summary>
         /// This is valid for "BobChrisTreeNormalizer" conventions only.
         /// </summary>
-        private static readonly string[] PennStartSymbols = {"ROOT", "TOP"};
+        private static readonly string[] PennStartSymbols = { AbstractCollinsHeadFinder.ROOT, AbstractCollinsHeadFinder.TOP };
 
         /// <summary>
         /// Returns a string array of punctuation tags for this treebank/language.

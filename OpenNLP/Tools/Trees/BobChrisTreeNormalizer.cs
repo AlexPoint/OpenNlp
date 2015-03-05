@@ -86,7 +86,7 @@ namespace OpenNLP.Tools.Trees
         {
             if (string.IsNullOrEmpty(label))
             {
-                return "ROOT";
+                return AbstractCollinsHeadFinder.ROOT;
                 // string constants are always interned
             }
             else

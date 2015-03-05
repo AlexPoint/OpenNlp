@@ -74,7 +74,7 @@ namespace OpenNLP.Tools.Trees
         };
 
         // include Charniak tags so can do BLLIP right
-        private static readonly string[] VerbTags = {"TO", "MD", "VB", "VBD", "VBP", "VBZ", "VBG", "VBN", "AUX", "AUXG"};
+        private static readonly string[] VerbTags = { "TO", "MD", PartsOfSpeech.VerbBaseForm, "VBD", "VBP", "VBZ", "VBG", "VBN", "AUX", "AUXG" };
         // These ones are always auxiliaries, even if the word is "too", "my", or whatever else appears in web text.
         private static readonly string[] UnambiguousAuxTags = {"TO", "MD", "AUX", "AUXG"};
 
@@ -151,7 +151,7 @@ namespace OpenNLP.Tools.Trees
                     new string[] {"left", "NP", "PRP"}, new string[] {"rightdis", "$", "ADJP", "FW"},
                     new string[] {"right", "CD"},
                     new string[] {"rightdis", "JJ", "JJS", "QP", "DT", "WDT", "NML", "PRN", "RB", "RBR", "ADVP"},
-                    new string[] {"rightdis", "VP", "VB", "VBZ", "VBD", "VBP"},
+                    new string[] {"rightdis", "VP", PartsOfSpeech.VerbBaseForm, "VBZ", "VBD", "VBP"},
                     new string[] {"left", "POS"}
                 };
             nonTerminalInfo["NX"] = nonTerminalInfo["NP"];
@@ -192,14 +192,14 @@ namespace OpenNLP.Tools.Trees
             // VP shouldn't be needed in SBAR, but occurs in one buggy tree in PTB3 wsj_1457 and otherwise does no harm
 
             nonTerminalInfo["SQ"] = new string[][]
-            {new string[] {"left", "VP", "SQ", "ADJP", "VB", "VBZ", "VBD", "VBP", "MD", "AUX", "AUXG"}};
+            {new string[] {"left", "VP", "SQ", "ADJP", PartsOfSpeech.VerbBaseForm, "VBZ", "VBD", "VBP", "MD", "AUX", "AUXG"}};
 
 
             // UCP take the first element as head
             nonTerminalInfo["UCP"] = new string[][] {new string[] {"left"}};
 
             // CONJP: we want different heads for "but also" and "but not" and we don't want "not" to be the head in "not to mention"; now make "mention" head of "not to mention"
-            nonTerminalInfo["CONJP"] = new string[][] {new string[] {"right", "CC", "VB", "JJ", "RB", "IN"}};
+            nonTerminalInfo["CONJP"] = new string[][] {new string[] {"right", "CC", PartsOfSpeech.VerbBaseForm, "JJ", "RB", "IN"}};
 
             // FRAG: crap rule needs to be change if you want to parse
             // glosses; but it is correct to have ADJP and ADVP before S

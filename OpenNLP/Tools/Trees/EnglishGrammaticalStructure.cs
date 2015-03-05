@@ -1767,7 +1767,7 @@ namespace OpenNLP.Tools.Trees
                 // or a couple of parsing errors where the dependency is wrong anyway, so
                 // it's probably okay to keep it a dep.  So I'm disabling this.
                 // string tag = td.dep().tag();
-                // if (td.reln() == DEPENDENT && (tag.equals("PRP$") || tag.equals("WP$"))) {
+                // if (td.reln() == DEPENDENT && (tag.equals(PartsOfSpeech.PossessivePronoun) || tag.equals(PartsOfSpeech.PossessiveWhPronoun))) {
                 //  td.setReln(POSSESSION_MODIFIER);
                 // }
             }

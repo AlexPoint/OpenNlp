@@ -92,6 +92,14 @@ namespace OpenNLP.Tools.Trees
         public const string XS = "XS";
         public const string EDITED = "EDITED";
         public const string TYPO = "TYPO";
+        public const string JJP = "JJP";
+        public const string NML = "NML";
+        public const string VP = "VP";
+        public const string POSSP = "POSSP";
+        public const string ROOT = "ROOT";
+        public const string TOP = "TOP";
+        public const string ADV = "ADV";
+        public const string META = "META";
 
         public const string Left = "left";
         public const string Right = "right";

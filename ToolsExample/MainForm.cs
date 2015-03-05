@@ -49,7 +49,7 @@ namespace ToolsExample
 			//
 			InitializeComponent();
 
-			_modelPath = ConfigurationManager.AppSettings["MaximumEntropyModelDirectory"];
+            _modelPath = AppDomain.CurrentDomain.BaseDirectory + "../../../Resources/Models/";
 		}
 
 		/// <summary>

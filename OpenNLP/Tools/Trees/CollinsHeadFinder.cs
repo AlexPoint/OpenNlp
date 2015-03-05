@@ -94,16 +94,16 @@ namespace OpenNLP.Tools.Trees
                 });
             nonTerminalInfo.Add("SBARQ", new string[][] {new string[] {"left", "SQ", "S", "SINV", "SBARQ", "FRAG"}});
             nonTerminalInfo.Add("SINV",
-                new string[][] {new string[] {"left", "VBZ", "VBD", "VBP", PartsOfSpeech.VerbBaseForm, "MD", "VP", "S", "SINV", "ADJP", "NP"}});
+                new string[][] {new string[] {"left", "VBZ", "VBD", PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.VerbBaseForm, "MD", "VP", "S", "SINV", "ADJP", "NP"}});
             nonTerminalInfo.Add("SQ",
-                new string[][] {new string[] {"left", "VBZ", "VBD", "VBP", PartsOfSpeech.VerbBaseForm, "MD", "VP", "SQ"}});
+                new string[][] {new string[] {"left", "VBZ", "VBD", PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.VerbBaseForm, "MD", "VP", "SQ"}});
             nonTerminalInfo.Add("UCP", new string[][] {new string[] {"right"}});
             nonTerminalInfo.Add("VP",
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", "TO", "VBD", "VBN", "MD", "VBZ", PartsOfSpeech.VerbBaseForm, "VBG", "VBP", "AUX", "AUXG", "VP", "ADJP", "NN",
+                        "left", "TO", "VBD", "VBN", "MD", "VBZ", PartsOfSpeech.VerbBaseForm, "VBG", PartsOfSpeech.VerbNon3rdPersSingPresent, "AUX", "AUXG", "VP", "ADJP", "NN",
                         "NNS", "NP"
                     }
                 });

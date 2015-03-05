@@ -74,7 +74,7 @@ namespace OpenNLP.Tools.Trees
         };
 
         // include Charniak tags so can do BLLIP right
-        private static readonly string[] VerbTags = { "TO", "MD", PartsOfSpeech.VerbBaseForm, "VBD", "VBP", "VBZ", "VBG", "VBN", "AUX", "AUXG" };
+        private static readonly string[] VerbTags = { "TO", "MD", PartsOfSpeech.VerbBaseForm, "VBD", PartsOfSpeech.VerbNon3rdPersSingPresent, "VBZ", "VBG", "VBN", "AUX", "AUXG" };
         // These ones are always auxiliaries, even if the word is "too", "my", or whatever else appears in web text.
         private static readonly string[] UnambiguousAuxTags = {"TO", "MD", "AUX", "AUXG"};
 
@@ -151,7 +151,7 @@ namespace OpenNLP.Tools.Trees
                     new string[] {"left", "NP", "PRP"}, new string[] {"rightdis", "$", "ADJP", "FW"},
                     new string[] {"right", "CD"},
                     new string[] {"rightdis", "JJ", "JJS", "QP", "DT", "WDT", "NML", "PRN", "RB", "RBR", "ADVP"},
-                    new string[] {"rightdis", "VP", PartsOfSpeech.VerbBaseForm, "VBZ", "VBD", "VBP"},
+                    new string[] {"rightdis", "VP", PartsOfSpeech.VerbBaseForm, "VBZ", "VBD", PartsOfSpeech.VerbNon3rdPersSingPresent},
                     new string[] {"left", "POS"}
                 };
             nonTerminalInfo["NX"] = nonTerminalInfo["NP"];
@@ -192,7 +192,7 @@ namespace OpenNLP.Tools.Trees
             // VP shouldn't be needed in SBAR, but occurs in one buggy tree in PTB3 wsj_1457 and otherwise does no harm
 
             nonTerminalInfo["SQ"] = new string[][]
-            {new string[] {"left", "VP", "SQ", "ADJP", PartsOfSpeech.VerbBaseForm, "VBZ", "VBD", "VBP", "MD", "AUX", "AUXG"}};
+            {new string[] {"left", "VP", "SQ", "ADJP", PartsOfSpeech.VerbBaseForm, "VBZ", "VBD", PartsOfSpeech.VerbNon3rdPersSingPresent, "MD", "AUX", "AUXG"}};
 
 
             // UCP take the first element as head
@@ -215,7 +215,7 @@ namespace OpenNLP.Tools.Trees
             {
                 new string[]
                 {
-                    "left", "VP", "SQ", "S", "SINV", "SBAR", "NP", "ADJP", "PP", "ADVP", "INTJ", "WHNP", "NAC", "VBP",
+                    "left", "VP", "SQ", "S", "SINV", "SBAR", "NP", "ADJP", "PP", "ADVP", "INTJ", "WHNP", "NAC", PartsOfSpeech.VerbNon3rdPersSingPresent,
                     "JJ", "NN", "NNP"
                 }
             };

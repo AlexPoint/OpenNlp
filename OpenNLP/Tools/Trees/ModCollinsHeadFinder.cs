@@ -123,7 +123,7 @@ namespace OpenNLP.Tools.Trees
                     new string[]
                     {
                         "left", "VP", "NP", "PP", "SQ", "S", "SINV", "SBAR", "ADJP", "JJP", "ADVP", "INTJ", "WHNP", "NAC",
-                        "VBP", "JJ", "NN", "NNP"
+                        PartsOfSpeech.VerbNon3rdPersSingPresent, "JJ", "NN", "NNP"
                     }
                 });
             nonTerminalInfo.Add("PRT", new string[][] {new string[] {"right", "RP"}});
@@ -155,9 +155,9 @@ namespace OpenNLP.Tools.Trees
             // cdm: if you have 2 VP under an SINV, you should really take the 2nd as syntactic head, because the first is a topicalized VP complement of the second, but for now I didn't change this, since it didn't help parsing.  (If it were changed, it'd need to be also changed to the opposite in SemanticHeadFinder.)
             nonTerminalInfo.Add("SINV",
                 new string[][]
-                {new string[] {"left", "VBZ", "VBD", "VBP", PartsOfSpeech.VerbBaseForm, "MD", "VBN", "VP", "S", "SINV", "ADJP", "JJP", "NP"}});
+                {new string[] {"left", "VBZ", "VBD", PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.VerbBaseForm, "MD", "VBN", "VP", "S", "SINV", "ADJP", "JJP", "NP"}});
             nonTerminalInfo.Add("SQ",
-                new string[][] {new string[] {"left", "VBZ", "VBD", "VBP", PartsOfSpeech.VerbBaseForm, "MD", "AUX", "AUXG", "VP", "SQ"}});
+                new string[][] {new string[] {"left", "VBZ", "VBD", PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.VerbBaseForm, "MD", "AUX", "AUXG", "VP", "SQ"}});
                 // TODO: Should maybe put S before SQ for tag questions. Check.
             nonTerminalInfo.Add("UCP", new string[][] {new string[] {"right"}});
             // below is weird!! Make 2 lists, one for good and one for bad heads??
@@ -167,7 +167,7 @@ namespace OpenNLP.Tools.Trees
                 {
                     new string[]
                     {
-                        "left", "TO", "VBD", "VBN", "MD", "VBZ", PartsOfSpeech.VerbBaseForm, "VBG", "VBP", "VP", "AUX", "AUXG", "ADJP", "JJP",
+                        "left", "TO", "VBD", "VBN", "MD", "VBZ", PartsOfSpeech.VerbBaseForm, "VBG", PartsOfSpeech.VerbNon3rdPersSingPresent, "VP", "AUX", "AUXG", "ADJP", "JJP",
                         "NN", "NNS", "JJ", "NP", "NNP"
                     }
                 });
@@ -205,7 +205,7 @@ namespace OpenNLP.Tools.Trees
                 new string[]
                 {
                     "left", "NN", "NP", "NML", "NNP", "NNPS", "TO",
-                    "VBD", "VBN", "MD", "VBZ", PartsOfSpeech.VerbBaseForm, "VBG", "VBP", "VP", "ADJP", "JJP", "FRAG"
+                    "VBD", "VBN", "MD", "VBZ", PartsOfSpeech.VerbBaseForm, "VBG", PartsOfSpeech.VerbNon3rdPersSingPresent, "VP", "ADJP", "JJP", "FRAG"
                 }
             }); // for Brown (Roger)
             nonTerminalInfo.Add("ADV", new string[][]
@@ -226,7 +226,7 @@ namespace OpenNLP.Tools.Trees
                 {
                     new string[]
                     {
-                        "left", "TO", "VBD", "VBN", "MD", "VBZ", PartsOfSpeech.VerbBaseForm, "VBG", "VBP", "VP", "AUX", "AUXG", "ADJP", "JJP",
+                        "left", "TO", "VBD", "VBN", "MD", "VBZ", PartsOfSpeech.VerbBaseForm, "VBG", PartsOfSpeech.VerbNon3rdPersSingPresent, "VP", "AUX", "AUXG", "ADJP", "JJP",
                         "NN", "NNS", "JJ", "NP", "NNP"
                     }
                 });

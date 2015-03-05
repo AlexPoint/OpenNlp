@@ -54,15 +54,15 @@ namespace OpenNLP.Tools.Trees
         {
             // avoid punctuation as head in readonly default rule
 
-            nonTerminalInfo = new Dictionary<string, string[][]>();
+            NonTerminalInfo = new Dictionary<string, string[][]>();
 
             // This version from Collins' diss (1999: 236-238)
             // NNS, NN is actually sensible (money, etc.)!
             // QP early isn't; should prefer JJR NN RB
             // remove ADVP; it just shouldn't be there.
             // if two JJ, should take right one (e.g. South Korean)
-            // nonTerminalInfo.Add(CoordinationTransformer.Adjective, new string[][]{{"left", PartsOfSpeech.NounPlural, PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.DollarSign, "QP"}, {"right", PartsOfSpeech.Adjective}, {"left", PartsOfSpeech.VerbPastParticiple, PartsOfSpeech.VerbGerundOrPresentParticiple, CoordinationTransformer.Adjective, "JJP", PartsOfSpeech.AdjectiveComparative, "NP", PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Determiner, PartsOfSpeech.ForeignWord, PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative, "SBAR", PartsOfSpeech.Adverb}});
-            nonTerminalInfo.Add(CoordinationTransformer.Adjective,
+            // NonTerminalInfo.Add(CoordinationTransformer.Adjective, new string[][]{{"left", PartsOfSpeech.NounPlural, PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.DollarSign, "QP"}, {"right", PartsOfSpeech.Adjective}, {"left", PartsOfSpeech.VerbPastParticiple, PartsOfSpeech.VerbGerundOrPresentParticiple, CoordinationTransformer.Adjective, "JJP", PartsOfSpeech.AdjectiveComparative, CoordinationTransformer.Noun, PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Determiner, PartsOfSpeech.ForeignWord, PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative, "SBAR", PartsOfSpeech.Adverb}});
+            NonTerminalInfo.Add(CoordinationTransformer.Adjective,
                 new string[][]
                 {
                     new string[] {"left", PartsOfSpeech.DollarSign},
@@ -79,9 +79,9 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.CardinalNumber, PartsOfSpeech.PrepositionOrSubordinateConjunction,
                         PartsOfSpeech.VerbPastTense
                     },
-                    new string[] {"left", "ADVP", "NP"}
+                    new string[] {"left", ADVP, CoordinationTransformer.Noun}
                 });
-            nonTerminalInfo.Add("JJP",
+            NonTerminalInfo.Add("JJP",
                 new string[][]
                 {
                     new string[]
@@ -89,15 +89,15 @@ namespace OpenNLP.Tools.Trees
                         "left", PartsOfSpeech.NounPlural, PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.DollarSign,
                         "QP", PartsOfSpeech.Adjective, PartsOfSpeech.VerbPastParticiple,
                         PartsOfSpeech.VerbGerundOrPresentParticiple, CoordinationTransformer.Adjective, "JJP", PartsOfSpeech.AdjectiveComparative,
-                        "NP", PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Determiner, PartsOfSpeech.ForeignWord,
+                        CoordinationTransformer.Noun, PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Determiner, PartsOfSpeech.ForeignWord,
                         PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative, "SBAR", PartsOfSpeech.Adverb
                     }
                 });
             // JJP is introduced for NML-like adjective phrases in Vadas' treebank; Chris wishes he hadn't used JJP which should be a POS-tag.
             // ADVP rule rewritten by Chris in Nov 2010 to be rightdis.  This is right! JJ.* is often head and rightmost.
-            nonTerminalInfo.Add("ADVP", new string[][]
+            NonTerminalInfo.Add(ADVP, new string[][]
             {
-                new string[] {"left", "ADVP", PartsOfSpeech.PrepositionOrSubordinateConjunction},
+                new string[] {"left", ADVP, PartsOfSpeech.PrepositionOrSubordinateConjunction},
                 new string[]
                 {
                     "rightdis", PartsOfSpeech.Adverb, PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative,
@@ -106,12 +106,12 @@ namespace OpenNLP.Tools.Trees
                 new string[]
                 {
                     "rightdis", PartsOfSpeech.Particle, PartsOfSpeech.Determiner, PartsOfSpeech.NounSingularOrMass,
-                    PartsOfSpeech.CardinalNumber, "NP", PartsOfSpeech.VerbPastParticiple,
+                    PartsOfSpeech.CardinalNumber, CoordinationTransformer.Noun, PartsOfSpeech.VerbPastParticiple,
                     PartsOfSpeech.ProperNounSingular, PartsOfSpeech.CoordinatingConjunction, PartsOfSpeech.ForeignWord,
                     PartsOfSpeech.NounPlural, CoordinationTransformer.Adjective, "NML"
                 }
             });
-            nonTerminalInfo.Add("CONJP",
+            NonTerminalInfo.Add("CONJP",
                 new string[][]
                 {
                     new string[]
@@ -120,9 +120,9 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.PrepositionOrSubordinateConjunction
                     }
                 });
-            nonTerminalInfo.Add("FRAG", new string[][] {new string[] {"right"}}); // crap
-            nonTerminalInfo.Add("INTJ", new string[][] {new string[] {"left"}});
-            nonTerminalInfo.Add("LST",
+            NonTerminalInfo.Add("FRAG", new string[][] {new string[] {"right"}}); // crap
+            NonTerminalInfo.Add(INTJ, new string[][] {new string[] {"left"}});
+            NonTerminalInfo.Add("LST",
                 new string[][] {new string[] {"right", PartsOfSpeech.ListItemMarker, PartsOfSpeech.ColonSemiColon}});
 
             // NML is head in: (NAC-LOC (NML San Antonio) (, ,) (NNP Texas))
@@ -130,13 +130,13 @@ namespace OpenNLP.Tools.Trees
             //   (NAC (NML New York) (NNP Court) (PP of Appeals))
             //   (NAC (NML Prudential Insurance) (NNP Co.) (PP Of America))
             // Chris: This could maybe still do with more thought, but NAC is rare.
-            nonTerminalInfo.Add("NAC",
+            NonTerminalInfo.Add(NAC,
                 new string[][]
                 {
                     new string[]
                     {
                         "left", PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.NounPlural, "NML",
-                        PartsOfSpeech.ProperNounSingular, PartsOfSpeech.ProperNounPlural, "NP", "NAC",
+                        PartsOfSpeech.ProperNounSingular, PartsOfSpeech.ProperNounPlural, CoordinationTransformer.Noun, NAC,
                         PartsOfSpeech.ExistentialThere, PartsOfSpeech.DollarSign, PartsOfSpeech.CardinalNumber, "QP",
                         PartsOfSpeech.PersonalPronoun, PartsOfSpeech.VerbGerundOrPresentParticiple,
                         PartsOfSpeech.Adjective,
@@ -151,7 +151,7 @@ namespace OpenNLP.Tools.Trees
             // should prefer JJ? (PP (JJ such) (IN as) (NP (NN crocidolite)))  Michel thinks we should make JJ a head of PP
             // added SYM as used in new treebanks for symbols filling role of IN
             // Changed PP search to left -- just what you want for conjunction (and consistent with SemanticHeadFinder)
-            nonTerminalInfo.Add("PP",
+            NonTerminalInfo.Add(PP,
                 new string[][]
                 {
                     new string[]
@@ -160,23 +160,23 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.VerbGerundOrPresentParticiple, PartsOfSpeech.VerbPastParticiple,
                         PartsOfSpeech.Particle, PartsOfSpeech.ForeignWord, PartsOfSpeech.Adjective, PartsOfSpeech.Symbol
                     },
-                    new string[] {"left", "PP"}
+                    new string[] {"left", PP}
                 });
 
-            nonTerminalInfo.Add("PRN",
+            NonTerminalInfo.Add("PRN",
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", "VP", "NP", "PP", "SQ", "S", "SINV", "SBAR", CoordinationTransformer.Adjective, "JJP", "ADVP", "INTJ", "WHNP",
-                        "NAC",
+                        "left", "VP", CoordinationTransformer.Noun, PP, "SQ", "S", "SINV", "SBAR", CoordinationTransformer.Adjective, "JJP", ADVP, INTJ, WHNP,
+                        NAC,
                         PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.Adjective,
                         PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.ProperNounSingular
                     }
                 });
-            nonTerminalInfo.Add("PRT", new string[][] {new string[] {"right", PartsOfSpeech.Particle}});
+            NonTerminalInfo.Add("PRT", new string[][] {new string[] {"right", PartsOfSpeech.Particle}});
             // add '#' for pounds!!
-            nonTerminalInfo.Add("QP",
+            NonTerminalInfo.Add("QP",
                 new string[][]
                 {
                     new string[]
@@ -191,36 +191,36 @@ namespace OpenNLP.Tools.Trees
             // reduced relative clause can be any predicate VP, ADJP, NP, PP.
             // For choosing between NP and PP, really need to know which one is temporal and to choose the other.
             // It's not clear ADVP needs to be in the list at all (delete?).
-            nonTerminalInfo.Add("RRC",
-                new string[][] { new string[] { "left", "RRC" }, new string[] { "right", "VP", CoordinationTransformer.Adjective, "JJP", "NP", "PP", "ADVP" } });
+            NonTerminalInfo.Add("RRC",
+                new string[][] { new string[] { "left", "RRC" }, new string[] { "right", "VP", CoordinationTransformer.Adjective, "JJP", CoordinationTransformer.Noun, PP, ADVP } });
 
             // delete IN -- go for main part of sentence; add FRAG
 
-            nonTerminalInfo.Add("S",
-                new string[][] { new string[] { "left", PartsOfSpeech.To, "VP", "S", "FRAG", "SBAR", CoordinationTransformer.Adjective, "JJP", "UCP", "NP" } });
-            nonTerminalInfo.Add("SBAR",
+            NonTerminalInfo.Add("S",
+                new string[][] { new string[] { "left", PartsOfSpeech.To, "VP", "S", "FRAG", "SBAR", CoordinationTransformer.Adjective, "JJP", "UCP", CoordinationTransformer.Noun } });
+            NonTerminalInfo.Add("SBAR",
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", "WHNP", "WHPP", "WHADVP", "WHADJP", PartsOfSpeech.PrepositionOrSubordinateConjunction,
+                        "left", WHNP, "WHPP", "WHADVP", "WHADJP", PartsOfSpeech.PrepositionOrSubordinateConjunction,
                         PartsOfSpeech.Determiner, "S", "SQ", "SINV", "SBAR", "FRAG"
                     }
                 });
-            nonTerminalInfo.Add("SBARQ",
+            NonTerminalInfo.Add("SBARQ",
                 new string[][] {new string[] {"left", "SQ", "S", "SINV", "SBARQ", "FRAG", "SBAR"}});
             // cdm: if you have 2 VP under an SINV, you should really take the 2nd as syntactic head, because the first is a topicalized VP complement of the second, but for now I didn't change this, since it didn't help parsing.  (If it were changed, it'd need to be also changed to the opposite in SemanticHeadFinder.)
-            nonTerminalInfo.Add("SINV",
+            NonTerminalInfo.Add("SINV",
                 new string[][]
                 {
                     new string[]
                     {
                         "left", PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbPastTense,
                         PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Modal,
-                        PartsOfSpeech.VerbPastParticiple, "VP", "S", "SINV", CoordinationTransformer.Adjective, "JJP", "NP"
+                        PartsOfSpeech.VerbPastParticiple, "VP", "S", "SINV", CoordinationTransformer.Adjective, "JJP", CoordinationTransformer.Noun
                     }
                 });
-            nonTerminalInfo.Add("SQ",
+            NonTerminalInfo.Add("SQ",
                 new string[][]
                 {
                     new string[]
@@ -231,10 +231,10 @@ namespace OpenNLP.Tools.Trees
                     }
                 });
                 // TODO: Should maybe put S before SQ for tag questions. Check.
-            nonTerminalInfo.Add("UCP", new string[][] {new string[] {"right"}});
+            NonTerminalInfo.Add("UCP", new string[][] {new string[] {"right"}});
             // below is weird!! Make 2 lists, one for good and one for bad heads??
             // VP: added AUX and AUXG to work with Charniak tags
-            nonTerminalInfo.Add("VP",
+            NonTerminalInfo.Add("VP",
                 new string[][]
                 {
                     new string[]
@@ -243,11 +243,11 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.Modal, PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbBaseForm,
                         PartsOfSpeech.VerbGerundOrPresentParticiple, PartsOfSpeech.VerbNon3rdPersSingPresent, "VP",
                         "AUX", "AUXG", CoordinationTransformer.Adjective, "JJP",
-                        PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.NounPlural, PartsOfSpeech.Adjective, "NP",
+                        PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.NounPlural, PartsOfSpeech.Adjective, CoordinationTransformer.Noun,
                         PartsOfSpeech.ProperNounSingular
                     }
                 });
-            nonTerminalInfo.Add("WHADJP",
+            NonTerminalInfo.Add("WHADJP",
                 new string[][]
                 {
                     new string[]
@@ -256,17 +256,17 @@ namespace OpenNLP.Tools.Trees
                         "JJP", PartsOfSpeech.AdjectiveComparative
                     }
                 });
-            nonTerminalInfo.Add("WHADVP", new string[][] {new string[] {"right", PartsOfSpeech.WhAdverb, "WHADVP"}});
-            nonTerminalInfo.Add("WHNP",
+            NonTerminalInfo.Add("WHADVP", new string[][] {new string[] {"right", PartsOfSpeech.WhAdverb, "WHADVP"}});
+            NonTerminalInfo.Add(WHNP,
                 new string[][]
                 {
                     new string[]
                     {
                         "left", PartsOfSpeech.WhDeterminer, PartsOfSpeech.WhPronoun, PartsOfSpeech.PossessiveWhPronoun,
-                        "WHADJP", "WHPP", "WHNP"
+                        "WHADJP", "WHPP", WHNP
                     }
                 });
-            nonTerminalInfo.Add("WHPP",
+            NonTerminalInfo.Add("WHPP",
                 new string[][]
                 {
                     new string[]
@@ -275,9 +275,9 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.ForeignWord
                     }
                 });
-            nonTerminalInfo.Add("X",
-                new string[][] { new string[] { "right", "S", "VP", CoordinationTransformer.Adjective, "JJP", "NP", "SBAR", "PP", "X" } });
-            nonTerminalInfo.Add("NP",
+            NonTerminalInfo.Add("X",
+                new string[][] { new string[] { "right", "S", "VP", CoordinationTransformer.Adjective, "JJP", CoordinationTransformer.Noun, "SBAR", PP, "X" } });
+            NonTerminalInfo.Add(CoordinationTransformer.Noun,
                 new string[][]
                 {
                     new string[]
@@ -286,33 +286,33 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.ProperNounPlural, PartsOfSpeech.NounPlural, "NML", "NX",
                         PartsOfSpeech.PossessiveEnding, PartsOfSpeech.AdjectiveComparative
                     },
-                    new string[] {"left", "NP", PartsOfSpeech.PersonalPronoun},
+                    new string[] {"left", CoordinationTransformer.Noun, PartsOfSpeech.PersonalPronoun},
                     new string[] {"rightdis", PartsOfSpeech.DollarSign, CoordinationTransformer.Adjective, "JJP", "PRN", PartsOfSpeech.ForeignWord},
                     new string[] {"right", PartsOfSpeech.CardinalNumber},
                     new string[]
                     {
                         "rightdis", PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Adverb, "QP",
-                        PartsOfSpeech.Determiner, PartsOfSpeech.WhDeterminer, PartsOfSpeech.AdverbComparative, "ADVP"
+                        PartsOfSpeech.Determiner, PartsOfSpeech.WhDeterminer, PartsOfSpeech.AdverbComparative, ADVP
                     }
                 });
-            nonTerminalInfo.Add("NX", nonTerminalInfo["NP"]);
+            NonTerminalInfo.Add("NX", NonTerminalInfo[CoordinationTransformer.Noun]);
             // TODO: seems JJ should be head of NML in this case:
             // (NP (NML (JJ former) (NML Red Sox) (JJ great)) (NNP Luis) (NNP Tiant)),
             // (although JJ great is tagged wrong)
-            nonTerminalInfo.Add("NML", nonTerminalInfo["NP"]);
+            NonTerminalInfo.Add("NML", NonTerminalInfo[CoordinationTransformer.Noun]);
 
 
-            nonTerminalInfo.Add("POSSP", new string[][] {new string[] {"right", PartsOfSpeech.PossessiveEnding}});
+            NonTerminalInfo.Add("POSSP", new string[][] {new string[] {"right", PartsOfSpeech.PossessiveEnding}});
 
             /* HJT: Adding the following to deal with oddly formed data in (for example) the Brown corpus */
-            nonTerminalInfo.Add("ROOT", new string[][] {new string[] {"left", "S", "SQ", "SINV", "SBAR", "FRAG"}});
+            NonTerminalInfo.Add("ROOT", new string[][] {new string[] {"left", "S", "SQ", "SINV", "SBAR", "FRAG"}});
             // Just to handle trees which have TOP instead of ROOT at the root
-            nonTerminalInfo.Add("TOP", nonTerminalInfo["ROOT"]);
-            nonTerminalInfo.Add("TYPO", new string[][]
+            NonTerminalInfo.Add("TOP", NonTerminalInfo["ROOT"]);
+            NonTerminalInfo.Add("TYPO", new string[][]
             {
                 new string[]
                 {
-                    "left", PartsOfSpeech.NounSingularOrMass, "NP", "NML", PartsOfSpeech.ProperNounSingular,
+                    "left", PartsOfSpeech.NounSingularOrMass, CoordinationTransformer.Noun, "NML", PartsOfSpeech.ProperNounSingular,
                     PartsOfSpeech.ProperNounPlural, PartsOfSpeech.To,
                     PartsOfSpeech.VerbPastTense, PartsOfSpeech.VerbPastParticiple, PartsOfSpeech.Modal,
                     PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbBaseForm,
@@ -320,23 +320,23 @@ namespace OpenNLP.Tools.Trees
                     "JJP", "FRAG"
                 }
             }); // for Brown (Roger)
-            nonTerminalInfo.Add("ADV", new string[][]
+            NonTerminalInfo.Add("ADV", new string[][]
             {
                 new string[]
                 {
                     "right", PartsOfSpeech.Adverb, PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative,
                     PartsOfSpeech.ForeignWord,
-                    "ADVP", PartsOfSpeech.To, PartsOfSpeech.CardinalNumber, PartsOfSpeech.AdjectiveComparative,
-                    PartsOfSpeech.Adjective, PartsOfSpeech.PrepositionOrSubordinateConjunction, "NP", "NML",
+                    ADVP, PartsOfSpeech.To, PartsOfSpeech.CardinalNumber, PartsOfSpeech.AdjectiveComparative,
+                    PartsOfSpeech.Adjective, PartsOfSpeech.PrepositionOrSubordinateConjunction, CoordinationTransformer.Noun, "NML",
                     PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.NounSingularOrMass
                 }
             });
 
             // SWBD
-            nonTerminalInfo.Add("EDITED", new string[][] {new string[] {"left"}});
+            NonTerminalInfo.Add("EDITED", new string[][] {new string[] {"left"}});
                 // crap rule for Switchboard (if don't delete EDITED nodes)
             // in sw2756, a PartsOfSpeech.VerbBaseForm. (copy "VP" to handle this problem, though should really fix it on reading)
-            nonTerminalInfo.Add(PartsOfSpeech.VerbBaseForm,
+            NonTerminalInfo.Add(PartsOfSpeech.VerbBaseForm,
                 new string[][]
                 {
                     new string[]
@@ -345,16 +345,16 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.Modal, PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbBaseForm,
                         PartsOfSpeech.VerbGerundOrPresentParticiple, PartsOfSpeech.VerbNon3rdPersSingPresent, "VP",
                         "AUX", "AUXG", CoordinationTransformer.Adjective, "JJP",
-                        PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.NounPlural, PartsOfSpeech.Adjective, "NP",
+                        PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.NounPlural, PartsOfSpeech.Adjective, CoordinationTransformer.Noun,
                         PartsOfSpeech.ProperNounSingular
                     }
                 });
 
-            nonTerminalInfo.Add("META", new string[][] {new string[] {"left"}});
+            NonTerminalInfo.Add("META", new string[][] {new string[] {"left"}});
                 // rule for OntoNotes, but maybe should just be deleted in TreeReader??
-            nonTerminalInfo.Add("XS", new string[][] {new string[] {"right", PartsOfSpeech.PrepositionOrSubordinateConjunction}});
+            NonTerminalInfo.Add("XS", new string[][] {new string[] {"right", PartsOfSpeech.PrepositionOrSubordinateConjunction}});
                 // rule for new structure in QP, introduced by Stanford in QPTreeTransformer
-            // nonTerminalInfo.Add(null, new string[][] {{"left"}});  // rule for OntoNotes from Michel, but it would be better to fix this in TreeReader or to use a default rule?
+            // NonTerminalInfo.Add(null, new string[][] {{"left"}});  // rule for OntoNotes from Michel, but it would be better to fix this in TreeReader or to use a default rule?
 
             // todo: Uncomment this line if we always want to take the leftmost if no head rule is defined for the mother category.
             // defaultRule = defaultLeftRule; // Don't exception, take leftmost if no rule defined for a certain parent category

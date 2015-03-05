@@ -58,7 +58,7 @@ namespace OpenNLP.Tools.Parser
 			{
 				return null;
 			}
-		    if (type == "NP" || type == "NX")
+            if (type == CoordinationTransformer.Noun || type == "NX")
 			{
                 var tags1 = new string[] { PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.ProperNounSingular, PartsOfSpeech.ProperNounPlural, PartsOfSpeech.NounPlural, "NX", PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.PossessiveEnding };
 				for (int currentConstituent = constituents.Length - 1; currentConstituent >= 0; currentConstituent--)
@@ -73,7 +73,7 @@ namespace OpenNLP.Tools.Parser
 				}
 				for (int currentConstituent = 0; currentConstituent < constituents.Length; currentConstituent++)
 				{
-					if (constituents[currentConstituent].Type.Equals("NP"))
+                    if (constituents[currentConstituent].Type.Equals(CoordinationTransformer.Noun))
 					{
 						return (constituents[currentConstituent].Head);
 					}

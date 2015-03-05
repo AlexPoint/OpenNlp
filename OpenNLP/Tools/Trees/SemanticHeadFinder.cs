@@ -144,7 +144,7 @@ namespace OpenNLP.Tools.Trees
         {
             //  NP: don't want a POS to be the head
             // verbs are here so that POS isn't favored in the case of bad parses
-            nonTerminalInfo["NP"] =
+            NonTerminalInfo[CoordinationTransformer.Noun] =
                 new string[][]
                 {
                     new string[]
@@ -153,27 +153,27 @@ namespace OpenNLP.Tools.Trees
                         PartsOfSpeech.ProperNounPlural, PartsOfSpeech.NounPlural, "NX", "NML",
                         PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.WhPronoun
                     },
-                    new string[] {"left", "NP", PartsOfSpeech.PersonalPronoun},
+                    new string[] {"left", CoordinationTransformer.Noun, PartsOfSpeech.PersonalPronoun},
                     new string[] {"rightdis", PartsOfSpeech.DollarSign, CoordinationTransformer.Adjective, PartsOfSpeech.ForeignWord},
                     new string[] {"right", PartsOfSpeech.CardinalNumber},
                     new string[]
                     {
                         "rightdis", PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveSuperlative, "QP",
                         PartsOfSpeech.Determiner, PartsOfSpeech.WhDeterminer, "NML", "PRN", PartsOfSpeech.Adverb,
-                        PartsOfSpeech.AdverbComparative, "ADVP"
+                        PartsOfSpeech.AdverbComparative, ADVP
                     },
                     new string[]
                     {
-                        "rightdis", "VP", PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Verb3rdPersSingPresent,
+                        "rightdis", AbstractCollinsHeadFinder.VerbPhrase, PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Verb3rdPersSingPresent,
                         PartsOfSpeech.VerbPastTense, PartsOfSpeech.VerbNon3rdPersSingPresent
                     },
                     new string[] {"left", PartsOfSpeech.PossessiveEnding}
                 };
-            nonTerminalInfo["NX"] = nonTerminalInfo["NP"];
-            nonTerminalInfo["NML"] = nonTerminalInfo["NP"];
+            NonTerminalInfo["NX"] = NonTerminalInfo[CoordinationTransformer.Noun];
+            NonTerminalInfo["NML"] = NonTerminalInfo[CoordinationTransformer.Noun];
             // WHNP clauses should have the same sort of head as an NP
             // but it a WHNP has a NP and a WHNP under it, the WHNP should be the head.  E.g.,  (WHNP (WHNP (WP$ whose) (JJ chief) (JJ executive) (NN officer))(, ,) (NP (NNP James) (NNP Gatward))(, ,))
-            nonTerminalInfo["WHNP"] = new string[][]
+            NonTerminalInfo[WHNP] = new string[][]
             {
                 new string[]
                 {
@@ -181,7 +181,7 @@ namespace OpenNLP.Tools.Trees
                     PartsOfSpeech.ProperNounPlural, PartsOfSpeech.NounPlural, "NX", "NML",
                     PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.WhPronoun
                 },
-                new string[] {"left", "WHNP", "NP"},
+                new string[] {"left", WHNP, CoordinationTransformer.Noun},
                 new string[] {"rightdis", PartsOfSpeech.DollarSign, CoordinationTransformer.Adjective, "PRN", PartsOfSpeech.ForeignWord},
                 new string[] {"right", PartsOfSpeech.CardinalNumber},
                 new string[]
@@ -189,17 +189,17 @@ namespace OpenNLP.Tools.Trees
                 new string[] {"left", "WHPP", "WHADJP", PartsOfSpeech.PossessiveWhPronoun, PartsOfSpeech.WhDeterminer}
             };
             //WHADJP
-            nonTerminalInfo["WHADJP"] = new string[][]
+            NonTerminalInfo["WHADJP"] = new string[][]
             {
                 new string[]
                 {"left", CoordinationTransformer.Adjective, PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.WhPronoun},
                 new string[] {"right", PartsOfSpeech.Adverb}, new string[] {"right"}
             };
             //WHADJP
-            nonTerminalInfo["WHADVP"] = new string[][] {new string[] {"rightdis", PartsOfSpeech.WhAdverb, "WHADVP", PartsOfSpeech.Adverb, PartsOfSpeech.Adjective}};
+            NonTerminalInfo["WHADVP"] = new string[][] {new string[] {"rightdis", PartsOfSpeech.WhAdverb, "WHADVP", PartsOfSpeech.Adverb, PartsOfSpeech.Adjective}};
             // if not WRB or WHADVP, probably has flat NP structure, allow JJ for "how long" constructions
             // QP: we don't want the first CD to be the semantic head (e.g., "three billion": head should be "billion"), so we go from right to left
-            nonTerminalInfo["QP"] =
+            NonTerminalInfo["QP"] =
                 new string[][]
                 {
                     new string[]
@@ -214,27 +214,27 @@ namespace OpenNLP.Tools.Trees
 
             // S, SBAR and SQ clauses should prefer the main verb as the head
             // S: "He considered him a friend" -> we want a friend to be the head
-            nonTerminalInfo["S"] = new string[][]
+            NonTerminalInfo["S"] = new string[][]
             {
-                new string[] {"left", "VP", "S", "FRAG", "SBAR", CoordinationTransformer.Adjective, "UCP", PartsOfSpeech.To},
-                new string[] {"right", "NP"}
+                new string[] {"left", AbstractCollinsHeadFinder.VerbPhrase, "S", "FRAG", "SBAR", CoordinationTransformer.Adjective, "UCP", PartsOfSpeech.To},
+                new string[] {"right", CoordinationTransformer.Noun}
             };
 
-            nonTerminalInfo["SBAR"] = new string[][]
+            NonTerminalInfo["SBAR"] = new string[][]
             {
                 new string[]
                 {
-                    "left", "S", "SQ", "SINV", "SBAR", "FRAG", "VP", "WHNP", "WHPP", "WHADVP", "WHADJP",
+                    "left", "S", "SQ", "SINV", "SBAR", "FRAG", AbstractCollinsHeadFinder.VerbPhrase, WHNP, "WHPP", "WHADVP", "WHADJP",
                     PartsOfSpeech.PrepositionOrSubordinateConjunction, PartsOfSpeech.Determiner
                 }
             };
             // VP shouldn't be needed in SBAR, but occurs in one buggy tree in PTB3 wsj_1457 and otherwise does no harm
 
-            nonTerminalInfo["SQ"] = new string[][]
+            NonTerminalInfo["SQ"] = new string[][]
             {
                 new string[]
                 {
-                    "left", "VP", "SQ", CoordinationTransformer.Adjective, PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Verb3rdPersSingPresent,
+                    "left", AbstractCollinsHeadFinder.VerbPhrase, "SQ", CoordinationTransformer.Adjective, PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Verb3rdPersSingPresent,
                     PartsOfSpeech.VerbPastTense, PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.Modal, "AUX",
                     "AUXG"
                 }
@@ -242,10 +242,10 @@ namespace OpenNLP.Tools.Trees
 
 
             // UCP take the first element as head
-            nonTerminalInfo["UCP"] = new string[][] {new string[] {"left"}};
+            NonTerminalInfo["UCP"] = new string[][] {new string[] {"left"}};
 
             // CONJP: we want different heads for "but also" and "but not" and we don't want "not" to be the head in "not to mention"; now make "mention" head of "not to mention"
-            nonTerminalInfo["CONJP"] = new string[][]
+            NonTerminalInfo["CONJP"] = new string[][]
             {
                 new string[]
                 {
@@ -257,37 +257,37 @@ namespace OpenNLP.Tools.Trees
             // FRAG: crap rule needs to be change if you want to parse
             // glosses; but it is correct to have ADJP and ADVP before S
             // because of weird parses of reduced sentences.
-            nonTerminalInfo["FRAG"] = new string[][]
+            NonTerminalInfo["FRAG"] = new string[][]
             {
                 new string[] {"left", PartsOfSpeech.PrepositionOrSubordinateConjunction},
-                new string[] {"right", PartsOfSpeech.Adverb}, new string[] {"left", "NP"},
-                new string[] {"left", CoordinationTransformer.Adjective, "ADVP", "FRAG", "S", "SBAR", "VP"}
+                new string[] {"right", PartsOfSpeech.Adverb}, new string[] {"left", CoordinationTransformer.Noun},
+                new string[] {"left", CoordinationTransformer.Adjective, ADVP, "FRAG", "S", "SBAR", AbstractCollinsHeadFinder.VerbPhrase}
             };
 
             // PRN: sentence first
-            nonTerminalInfo["PRN"] = new string[][]
+            NonTerminalInfo["PRN"] = new string[][]
             {
                 new string[]
                 {
-                    "left", "VP", "SQ", "S", "SINV", "SBAR", "NP", CoordinationTransformer.Adjective, "PP", "ADVP", "INTJ", "WHNP", "NAC",
+                    "left", AbstractCollinsHeadFinder.VerbPhrase, "SQ", "S", "SINV", "SBAR", CoordinationTransformer.Noun, CoordinationTransformer.Adjective, PP, ADVP, INTJ, WHNP, NAC,
                     PartsOfSpeech.VerbNon3rdPersSingPresent,
                     PartsOfSpeech.Adjective, PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.ProperNounSingular
                 }
             };
 
             // add the constituent XS (special node to add a layer in a QP tree introduced in our QPTreeTransformer)
-            nonTerminalInfo["XS"] = new string[][] {new string[] {"right", PartsOfSpeech.PrepositionOrSubordinateConjunction}};
+            NonTerminalInfo["XS"] = new string[][] {new string[] {"right", PartsOfSpeech.PrepositionOrSubordinateConjunction}};
 
             // add a rule to deal with the CoNLL data
-            nonTerminalInfo["EMBED"] = new string[][] {new string[] {"right", "INTJ"}};
+            NonTerminalInfo["EMBED"] = new string[][] {new string[] {"right", INTJ}};
 
         }
         
         private bool ShouldSkip(Tree t, bool origWasInterjection)
         {
             return t.IsPreTerminal() &&
-                   (tlp.IsPunctuationTag(t.Value()) || ! origWasInterjection && PartsOfSpeech.Interjection.Equals(t.Value())) ||
-                   "INTJ".Equals(t.Value()) && ! origWasInterjection;
+                   (Tlp.IsPunctuationTag(t.Value()) || ! origWasInterjection && PartsOfSpeech.Interjection.Equals(t.Value())) ||
+                   INTJ.Equals(t.Value()) && ! origWasInterjection;
         }
 
         private int FindPreviousHead(int headIdx, Tree[] daughterTrees, bool origWasInterjection)
@@ -301,14 +301,14 @@ namespace OpenNLP.Tools.Trees
                 {
                     return newHeadIdx;
                 }
-                string label = tlp.BasicCategory(daughterTrees[newHeadIdx].Value());
+                string label = Tlp.BasicCategory(daughterTrees[newHeadIdx].Value());
                 if (PartsOfSpeech.Comma.Equals(label) || PartsOfSpeech.ColonSemiColon.Equals(label))
                 {
                     seenSeparator = true;
                 }
                 else if (daughterTrees[newHeadIdx].IsPreTerminal() &&
-                         (tlp.IsPunctuationTag(label) || ! origWasInterjection && PartsOfSpeech.Interjection.Equals(label)) ||
-                         "INTJ".Equals(label) && ! origWasInterjection)
+                         (Tlp.IsPunctuationTag(label) || ! origWasInterjection && PartsOfSpeech.Interjection.Equals(label)) ||
+                         INTJ.Equals(label) && ! origWasInterjection)
                 {
                     // keep looping
                 }
@@ -331,10 +331,10 @@ namespace OpenNLP.Tools.Trees
         {
             if (headIdx >= 2)
             {
-                string prevLab = tlp.BasicCategory(daughterTrees[headIdx - 1].Value());
+                string prevLab = Tlp.BasicCategory(daughterTrees[headIdx - 1].Value());
                 if (prevLab.Equals(PartsOfSpeech.CoordinatingConjunction) || prevLab.Equals("CONJP"))
                 {
-                    bool origWasInterjection = PartsOfSpeech.Interjection.Equals(tlp.BasicCategory(daughterTrees[headIdx].Value()));
+                    bool origWasInterjection = PartsOfSpeech.Interjection.Equals(Tlp.BasicCategory(daughterTrees[headIdx].Value()));
                     int newHeadIdx = headIdx - 2;
                     // newHeadIdx is now left of conjunction.  Now try going back over commas, etc. for 3+ conjuncts
                     // Don't allow INTJ unless conjoined with INTJ - important in informal genres "Oh and don't forget to call!"
@@ -409,7 +409,7 @@ namespace OpenNLP.Tools.Trees
             }
             TregexPattern noVerbOverTempTregex =
                 TregexPattern.Compile("/^VP/ < NP-TMP !< /^V/ !< NNP|NN|NNPS|NNS|NP|JJ|ADJP|S");
-            if (label.Value().StartsWith("VP") && noVerbOverTempTregex.Matcher(tree).Matches())
+            if (label.Value().StartsWith(AbstractCollinsHeadFinder.VerbPhrase) && noVerbOverTempTregex.Matcher(tree).Matches())
             {
                 return false;
             }
@@ -428,7 +428,7 @@ namespace OpenNLP.Tools.Trees
         /// <returns>The parse tree that is the head</returns>
         protected override Tree DetermineNonTrivialHead(Tree t, Tree parent)
         {
-            string motherCat = tlp.BasicCategory(t.Label().Value());
+            string motherCat = Tlp.BasicCategory(t.Label().Value());
             
             // Some conj expressions seem to make more sense with the "not" or
             // other key words as the head.  For example, "and not" means
@@ -491,18 +491,18 @@ namespace OpenNLP.Tools.Trees
             Tree[] tmpFilteredChildren = null;
 
             // do VPs with auxiliary as special case
-            if ((motherCat.Equals("VP") || motherCat.Equals("SQ") || motherCat.Equals("SINV")))
+            if ((motherCat.Equals(AbstractCollinsHeadFinder.VerbPhrase) || motherCat.Equals("SQ") || motherCat.Equals("SINV")))
             {
                 Tree[] kids = t.Children();
                 // try to find if there is an auxiliary verb
                 // looks for auxiliaries
                 if (HasVerbalAuxiliary(kids, verbalAuxiliaries, true) || HasPassiveProgressiveAuxiliary(kids))
                 {
-                    // string[] how = new string[] {"left", "VP", CoordinationTransformer.Adjective, "NP"};
+                    // string[] how = new string[] {"left", AbstractCollinsHeadFinder.VerbPhrase, CoordinationTransformer.Adjective, CoordinationTransformer.Noun};
                     // Including NP etc seems okay for copular sentences but is
                     // problematic for other auxiliaries, like 'he has an answer'
                     // But maybe doing ADJP is fine!
-                    string[] how = { "left", "VP", CoordinationTransformer.Adjective };
+                    string[] how = { "left", AbstractCollinsHeadFinder.VerbPhrase, CoordinationTransformer.Adjective };
                     
                     //tmpFilteredChildren = ArrayUtils.filter(kids, REMOVE_TMP_AND_ADV);
                     tmpFilteredChildren = kids.Where(k => RemoveTmpAndAdv(k)).ToArray();
@@ -520,11 +520,11 @@ namespace OpenNLP.Tools.Trees
                     string[] how;
                     if (motherCat.Equals("SQ"))
                     {
-                        how = new string[] { "right", "VP", CoordinationTransformer.Adjective, "NP", "WHADJP", "WHNP" };
+                        how = new string[] { "right", AbstractCollinsHeadFinder.VerbPhrase, CoordinationTransformer.Adjective, CoordinationTransformer.Noun, "WHADJP", WHNP };
                     }
                     else
                     {
-                        how = new string[] { "left", "VP", CoordinationTransformer.Adjective, "NP", "WHADJP", "WHNP" };
+                        how = new string[] { "left", AbstractCollinsHeadFinder.VerbPhrase, CoordinationTransformer.Adjective, CoordinationTransformer.Noun, "WHADJP", WHNP };
                     }
                     // Avoid undesirable heads by filtering them from the list of potential children
                     if (tmpFilteredChildren == null)
@@ -535,7 +535,7 @@ namespace OpenNLP.Tools.Trees
                     Tree pti = TraverseLocate(tmpFilteredChildren, how, false);
                     // In SQ, only allow an NP to become head if there is another one to the left (then it's probably predicative)
                     if (motherCat.Equals("SQ") && pti != null && pti.Label() != null &&
-                        pti.Label().Value().StartsWith("NP"))
+                        pti.Label().Value().StartsWith(CoordinationTransformer.Noun))
                     {
                         bool foundAnotherNp = false;
                         foreach (Tree kid in kids)
@@ -544,7 +544,7 @@ namespace OpenNLP.Tools.Trees
                             {
                                 break;
                             }
-                            else if (kid.Label() != null && kid.Label().Value().StartsWith("NP"))
+                            else if (kid.Label() != null && kid.Label().Value().StartsWith(CoordinationTransformer.Noun))
                             {
                                 foundAnotherNp = true;
                                 break;
@@ -594,16 +594,16 @@ namespace OpenNLP.Tools.Trees
         private bool IsExistential(Tree t, Tree parent)
         {
             bool toReturn = false;
-            string motherCat = tlp.BasicCategory(t.Label().Value());
+            string motherCat = Tlp.BasicCategory(t.Label().Value());
             // affirmative case
-            if (motherCat.Equals("VP") && parent != null)
+            if (motherCat.Equals(AbstractCollinsHeadFinder.VerbPhrase) && parent != null)
             {
                 //take t and the sisters
                 Tree[] kids = parent.Children();
                 // iterate over the sisters before t and checks if existential
                 foreach (Tree kid in kids)
                 {
-                    if (!kid.Value().Equals("VP"))
+                    if (!kid.Value().Equals(AbstractCollinsHeadFinder.VerbPhrase))
                     {
                         List<ILabel> tags = kid.PreTerminalYield();
                         foreach (ILabel tag in tags)
@@ -745,7 +745,7 @@ namespace OpenNLP.Tools.Trees
                     {
                         cat = kid.Value();
                     }
-                    if (! cat.StartsWith("VP"))
+                    if (!cat.StartsWith(AbstractCollinsHeadFinder.VerbPhrase))
                     {
                         continue;
                     }
@@ -790,7 +790,7 @@ namespace OpenNLP.Tools.Trees
                             {
                                 catcat = kid.Value();
                             }
-                            if ("VP".Equals(catcat))
+                            if (AbstractCollinsHeadFinder.VerbPhrase.Equals(catcat))
                             {
                                 foundParticipleInVp = VpContainsParticiple(kidkid);
                             }

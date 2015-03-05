@@ -388,7 +388,7 @@ namespace OpenNLP.Tools.Trees
                         t.AddChild(0, left);
                     }
 
-                    Tree rightTree = tf.NewTreeNode(lf.NewLabel("NP"), null);
+                    Tree rightTree = tf.NewTreeNode(lf.NewLabel(Noun), null);
                     int start = 2;
                     if (comma)
                     {
@@ -539,7 +539,7 @@ namespace OpenNLP.Tools.Trees
                 if (ccPositions.Any())
                 {
                     // need an extra level
-                    Tree tree = tf.NewTreeNode(lf.NewLabel("NP"), null);
+                    Tree tree = tf.NewTreeNode(lf.NewLabel(Noun), null);
 
                     if (preconj)
                     {
@@ -596,7 +596,7 @@ namespace OpenNLP.Tools.Trees
         {
             for (int i = ccIndex, sz = children.Count; i < sz; i++)
             {
-                if (children[i].Value().StartsWith("NP"))
+                if (children[i].Value().StartsWith(CoordinationTransformer.Noun))
                 {
                     return false;
                 }
@@ -618,7 +618,7 @@ namespace OpenNLP.Tools.Trees
                 if (t.Value().StartsWith(PartsOfSpeech.CoordinatingConjunction))
                 {
                     Tree parent = t.Parent(root);
-                    if (parent != null && parent.Value().StartsWith("NP"))
+                    if (parent != null && parent.Value().StartsWith(CoordinationTransformer.Noun))
                     {
                         List<Tree> children = parent.GetChildrenAsList();
                         int ccIndex = children.IndexOf(t);

@@ -513,7 +513,7 @@ namespace OpenNLP.Tools.Trees
         /// </summary>
         public static readonly GrammaticalRelation IndirectObject =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "iobj", "indirect object",
-                Object, "VP", TregexCompiler,
+                Object, AbstractCollinsHeadFinder.VerbPhrase, TregexCompiler,
                 new string[]
                 {
                     "VP < (NP=target !< /\\$/ !<# (/^NN/ < " + EnglishPatterns.TimeWordRegex + ") $+ (NP !<# (/^NN/ < " +
@@ -764,7 +764,7 @@ namespace OpenNLP.Tools.Trees
         /// </summary>
         public static readonly GrammaticalRelation AdjectivalComplement =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "acomp", "adjectival complement",
-                Complement, "VP", TregexCompiler,
+                Complement, AbstractCollinsHeadFinder.VerbPhrase, TregexCompiler,
                 new string[]
                 {
                     "VP [ < ADJP=target | ( < (/^VB/ [ ( < " + EnglishPatterns.ClausalComplementRegex +

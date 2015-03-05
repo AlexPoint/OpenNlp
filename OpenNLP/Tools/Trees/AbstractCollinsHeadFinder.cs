@@ -62,9 +62,45 @@ namespace OpenNLP.Tools.Trees
     /// </summary>
     public abstract class AbstractCollinsHeadFinder : IHeadFinder
     {
-        protected readonly AbstractTreebankLanguagePack tlp;
-        protected Dictionary<string, string[][]> nonTerminalInfo;
+        public const string VerbPhrase = "VP";
+        public const string PP = "PP";
+        public const string AUX = "AUX";
+        public const string AUXG = "AUXG";
+        public const string ADVP = "ADVP";
+        public const string INTJ = "INTJ";
+        public const string WHNP = "WHNP";
+        public const string NAC = "NAC";
+        public const string QP = "QP";
+        public const string SBAR = "SBAR";
+        public const string CONJP = "CONJP";
+        public const string FRAG = "FRAG";
+        public const string LST = "LST";
+        public const string NX = "NX";
+        public const string PRN = "PRN";
+        public const string PRT = "PRT";
+        public const string NCD = "NCD";
+        public const string RRC = "RRC";
+        public const string S = "S";
+        public const string SQ = "SQ";
+        public const string SBARQ = "SBARQ";
+        public const string SINV = "SINV";
+        public const string UCP = "UCP";
+        public const string WHPP = "WHPP";
+        public const string WHADJP = "WHADJP";
+        public const string WHADVP = "WHADVP";
+        public const string X = "X";
+        public const string XS = "XS";
+        public const string EDITED = "EDITED";
+        public const string TYPO = "TYPO";
 
+        public const string Left = "left";
+        public const string Right = "right";
+        public const string RightDis = "rightdis";
+
+
+        protected readonly AbstractTreebankLanguagePack Tlp;
+        protected Dictionary<string, string[][]> NonTerminalInfo;
+        
         /// <summary>
         /// Default direction if no rule is found for category (the head/parent).
         /// Subclasses can turn it on if they like.
@@ -94,7 +130,7 @@ namespace OpenNLP.Tools.Trees
         /// <param name="categoriesToAvoid">Constituent types to avoid as head</param>
         protected AbstractCollinsHeadFinder(AbstractTreebankLanguagePack tlp, string[] categoriesToAvoid)
         {
-            this.tlp = tlp;
+            this.Tlp = tlp;
             // automatically build defaultLeftRule, defaultRightRule
             DefaultLeftRule = new string[categoriesToAvoid.Length + 1];
             DefaultRightRule = new string[categoriesToAvoid.Length + 1];
@@ -160,7 +196,7 @@ namespace OpenNLP.Tools.Trees
         /// </returns>
         public Tree DetermineHead(Tree t, Tree parent)
         {
-            if (nonTerminalInfo == null)
+            if (NonTerminalInfo == null)
             {
                 throw new InvalidDataException(
                     "Classes derived from AbstractCollinsHeadFinder must create and fill HashMap nonTerminalInfo.");
@@ -200,7 +236,7 @@ namespace OpenNLP.Tools.Trees
         protected virtual Tree DetermineNonTrivialHead(Tree t, Tree parent)
         {
             Tree theHead = null;
-            string motherCat = tlp.BasicCategory(t.Label().Value());
+            string motherCat = Tlp.BasicCategory(t.Label().Value());
             if (motherCat.StartsWith("@"))
             {
                 motherCat = motherCat.Substring(1);
@@ -217,7 +253,7 @@ namespace OpenNLP.Tools.Trees
             //      theHead = lastDtr;
             //    } else {
             string[][] how = null;
-            var success = nonTerminalInfo.TryGetValue(motherCat, out how);
+            var success = NonTerminalInfo.TryGetValue(motherCat, out how);
             Tree[] kids = t.Children();
             if (!success)
             {
@@ -326,7 +362,7 @@ namespace OpenNLP.Tools.Trees
             {
                 for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++)
                 {
-                    string childCat = tlp.BasicCategory(daughterTrees[headIdx].Label().Value());
+                    string childCat = Tlp.BasicCategory(daughterTrees[headIdx].Label().Value());
                     if (how[i].Equals(childCat))
                     {
                         return headIdx;
@@ -340,7 +376,7 @@ namespace OpenNLP.Tools.Trees
         {
             for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++)
             {
-                string childCat = tlp.BasicCategory(daughterTrees[headIdx].Label().Value());
+                string childCat = Tlp.BasicCategory(daughterTrees[headIdx].Label().Value());
                 for (int i = 1; i < how.Length; i++)
                 {
                     if (how[i].Equals(childCat))
@@ -356,7 +392,7 @@ namespace OpenNLP.Tools.Trees
         {
             for (int headIdx = 0; headIdx < daughterTrees.Length; headIdx++)
             {
-                string childCat = tlp.BasicCategory(daughterTrees[headIdx].Label().Value());
+                string childCat = Tlp.BasicCategory(daughterTrees[headIdx].Label().Value());
                 bool found = true;
                 for (int i = 1; i < how.Length; i++)
                 {
@@ -379,7 +415,7 @@ namespace OpenNLP.Tools.Trees
             {
                 for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--)
                 {
-                    string childCat = tlp.BasicCategory(daughterTrees[headIdx].Label().Value());
+                    string childCat = Tlp.BasicCategory(daughterTrees[headIdx].Label().Value());
                     if (how[i].Equals(childCat))
                     {
                         return headIdx;
@@ -394,7 +430,7 @@ namespace OpenNLP.Tools.Trees
         {
             for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--)
             {
-                string childCat = tlp.BasicCategory(daughterTrees[headIdx].Label().Value());
+                string childCat = Tlp.BasicCategory(daughterTrees[headIdx].Label().Value());
                 for (int i = 1; i < how.Length; i++)
                 {
                     if (how[i].Equals(childCat))
@@ -410,7 +446,7 @@ namespace OpenNLP.Tools.Trees
         {
             for (int headIdx = daughterTrees.Length - 1; headIdx >= 0; headIdx--)
             {
-                string childCat = tlp.BasicCategory(daughterTrees[headIdx].Label().Value());
+                string childCat = Tlp.BasicCategory(daughterTrees[headIdx].Label().Value());
                 bool found = true;
                 for (int i = 1; i < how.Length; i++)
                 {

@@ -1958,7 +1958,7 @@ namespace OpenNLP.Tools.Trees
         /// For example, the following code excises all PP nodes from a Tree: <br>
         /// <tt>Filter<Tree> f = new Filter<Tree> {
         /// public bool accept(Tree t) { <br>
-        /// return ! t.label().value().equals("PP"); <br>
+        /// return ! t.label().value().equals(PP); <br>
         /// }
         /// }; 
         /// tree.prune(f);

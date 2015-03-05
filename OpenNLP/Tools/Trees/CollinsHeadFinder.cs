@@ -45,199 +45,207 @@ namespace OpenNLP.Tools.Trees
             : base(tlp, categoriesToAvoid)
         {
 
-            nonTerminalInfo = new Dictionary<string, string[][]>();
+            NonTerminalInfo = new Dictionary<string, string[][]>();
             // This version from Collins' diss (1999: 236-238)
-            nonTerminalInfo.Add(CoordinationTransformer.Adjective,
+            NonTerminalInfo.Add(CoordinationTransformer.Adjective,
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", PartsOfSpeech.NounPlural, "QP", PartsOfSpeech.NounSingularOrMass,
-                        PartsOfSpeech.DollarSign, "ADVP", PartsOfSpeech.Adjective, PartsOfSpeech.VerbPastParticiple,
-                        PartsOfSpeech.VerbGerundOrPresentParticiple, CoordinationTransformer.Adjective, PartsOfSpeech.AdjectiveComparative, "NP",
+                        Left, PartsOfSpeech.NounPlural, QP, PartsOfSpeech.NounSingularOrMass,
+                        PartsOfSpeech.DollarSign, ADVP, PartsOfSpeech.Adjective, PartsOfSpeech.VerbPastParticiple,
+                        PartsOfSpeech.VerbGerundOrPresentParticiple, CoordinationTransformer.Adjective, PartsOfSpeech.AdjectiveComparative, CoordinationTransformer.Noun,
                         PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Determiner, PartsOfSpeech.ForeignWord,
-                        PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative, "SBAR", PartsOfSpeech.Adverb
+                        PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative, SBAR, PartsOfSpeech.Adverb
                     }
                 });
-            nonTerminalInfo.Add("ADVP",
+            NonTerminalInfo.Add(ADVP,
                 new string[][]
                 {
                     new string[]
                     {
-                        "right", PartsOfSpeech.Adverb, PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative,
-                        PartsOfSpeech.ForeignWord, "ADVP", PartsOfSpeech.To, PartsOfSpeech.CardinalNumber,
+                        Right, PartsOfSpeech.Adverb, PartsOfSpeech.AdverbComparative, PartsOfSpeech.AdverbSuperlative,
+                        PartsOfSpeech.ForeignWord, ADVP, PartsOfSpeech.To, PartsOfSpeech.CardinalNumber,
                         PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.Adjective,
-                        PartsOfSpeech.PrepositionOrSubordinateConjunction, "NP", PartsOfSpeech.AdjectiveSuperlative,
+                        PartsOfSpeech.PrepositionOrSubordinateConjunction, CoordinationTransformer.Noun, PartsOfSpeech.AdjectiveSuperlative,
                         PartsOfSpeech.NounSingularOrMass
                     }
                 });
-            nonTerminalInfo.Add("CONJP",
+            NonTerminalInfo.Add(CONJP,
                 new string[][]
                 {
                     new string[]
                     {
-                        "right", PartsOfSpeech.CoordinatingConjunction, PartsOfSpeech.Adverb,
+                        Right, PartsOfSpeech.CoordinatingConjunction, PartsOfSpeech.Adverb,
                         PartsOfSpeech.PrepositionOrSubordinateConjunction
                     }
                 });
-            nonTerminalInfo.Add("FRAG", new string[][] {new string[] {"right"}}); // crap
-            nonTerminalInfo.Add("INTJ", new string[][] {new string[] {"left"}});
-            nonTerminalInfo.Add("LST",
-                new string[][] {new string[] {"right", PartsOfSpeech.ListItemMarker, PartsOfSpeech.ColonSemiColon}});
-            nonTerminalInfo.Add("NAC",
+            NonTerminalInfo.Add(FRAG, new string[][] {new string[] {Right}}); // crap
+            NonTerminalInfo.Add(INTJ, new string[][] {new string[] {Left}});
+            NonTerminalInfo.Add(LST,
+                new string[][] {new string[] {Right, PartsOfSpeech.ListItemMarker, PartsOfSpeech.ColonSemiColon}});
+            NonTerminalInfo.Add(NAC,
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.NounPlural,
-                        PartsOfSpeech.ProperNounSingular, PartsOfSpeech.ProperNounPlural, "NP", "NAC",
-                        PartsOfSpeech.ExistentialThere, PartsOfSpeech.DollarSign, PartsOfSpeech.CardinalNumber, "QP",
+                        Left, PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.NounPlural,
+                        PartsOfSpeech.ProperNounSingular, PartsOfSpeech.ProperNounPlural, CoordinationTransformer.Noun, NAC,
+                        PartsOfSpeech.ExistentialThere, PartsOfSpeech.DollarSign, PartsOfSpeech.CardinalNumber, QP,
                         PartsOfSpeech.PersonalPronoun, PartsOfSpeech.VerbGerundOrPresentParticiple,
                         PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveSuperlative,
                         PartsOfSpeech.AdjectiveComparative, CoordinationTransformer.Adjective, PartsOfSpeech.ForeignWord
                     }
                 });
-            nonTerminalInfo.Add("NX", new string[][] {new string[] {"left"}}); // crap
-            nonTerminalInfo.Add("PP",
+            NonTerminalInfo.Add(NX, new string[][] {new string[] {Left}}); // crap
+            NonTerminalInfo.Add(PP,
                 new string[][]
                 {
                     new string[]
                     {
-                        "right", PartsOfSpeech.PrepositionOrSubordinateConjunction, PartsOfSpeech.To,
+                        Right, PartsOfSpeech.PrepositionOrSubordinateConjunction, PartsOfSpeech.To,
                         PartsOfSpeech.VerbGerundOrPresentParticiple, PartsOfSpeech.VerbPastParticiple,
                         PartsOfSpeech.Particle, PartsOfSpeech.ForeignWord
                     }
                 });
             // should prefer JJ? (PP (JJ such) (IN as) (NP (NN crocidolite)))
-            nonTerminalInfo.Add("PRN", new string[][] {new string[] {"left"}});
-            nonTerminalInfo.Add("PRT", new string[][] {new string[] {"right", PartsOfSpeech.Particle}});
-            nonTerminalInfo.Add("QP",
+            NonTerminalInfo.Add(PRN, new string[][] {new string[] {Left}});
+            NonTerminalInfo.Add(PRT, new string[][] {new string[] {Right, PartsOfSpeech.Particle}});
+            NonTerminalInfo.Add(QP,
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", PartsOfSpeech.DollarSign, PartsOfSpeech.PrepositionOrSubordinateConjunction,
+                        Left, PartsOfSpeech.DollarSign, PartsOfSpeech.PrepositionOrSubordinateConjunction,
                         PartsOfSpeech.NounPlural, PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.Adjective,
-                        PartsOfSpeech.Adverb, PartsOfSpeech.Determiner, PartsOfSpeech.CardinalNumber, "NCD", "QP",
+                        PartsOfSpeech.Adverb, PartsOfSpeech.Determiner, PartsOfSpeech.CardinalNumber, NCD, QP,
                         PartsOfSpeech.AdjectiveComparative, PartsOfSpeech.AdjectiveSuperlative
                     }
                 });
-            nonTerminalInfo.Add("RRC", new string[][] { new string[] { "right", "VP", "NP", "ADVP", CoordinationTransformer.Adjective, "PP" } });
-            nonTerminalInfo.Add("S",
+            NonTerminalInfo.Add(RRC,
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", PartsOfSpeech.To, PartsOfSpeech.PrepositionOrSubordinateConjunction, "VP", "S", "SBAR",
-                        CoordinationTransformer.Adjective, "UCP", "NP"
+                        Right, AbstractCollinsHeadFinder.VerbPhrase, CoordinationTransformer.Noun, ADVP,
+                        CoordinationTransformer.Adjective, PP
                     }
                 });
-            nonTerminalInfo.Add("SBAR",
+            NonTerminalInfo.Add(S,
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", "WHNP", "WHPP", "WHADVP", "WHADJP", PartsOfSpeech.PrepositionOrSubordinateConjunction,
-                        PartsOfSpeech.Determiner, "S", "SQ", "SINV", "SBAR", "FRAG"
+                        Left, PartsOfSpeech.To, PartsOfSpeech.PrepositionOrSubordinateConjunction, AbstractCollinsHeadFinder.VerbPhrase, S, SBAR,
+                        CoordinationTransformer.Adjective, UCP, CoordinationTransformer.Noun
                     }
                 });
-            nonTerminalInfo.Add("SBARQ", new string[][] {new string[] {"left", "SQ", "S", "SINV", "SBARQ", "FRAG"}});
-            nonTerminalInfo.Add("SINV",
+            NonTerminalInfo.Add(SBAR,
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbPastTense,
-                        PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Modal, "VP",
-                        "S", "SINV", CoordinationTransformer.Adjective, "NP"
+                        Left, WHNP, WHPP, WHADVP, WHADJP, PartsOfSpeech.PrepositionOrSubordinateConjunction,
+                        PartsOfSpeech.Determiner, S, SQ, SINV, SBAR, FRAG
                     }
                 });
-            nonTerminalInfo.Add("SQ",
+            NonTerminalInfo.Add(SBARQ, new string[][] {new string[] {Left, SQ, S, SINV, SBARQ, FRAG}});
+            NonTerminalInfo.Add(SINV,
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbPastTense,
-                        PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Modal, "VP",
-                        "SQ"
+                        Left, PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbPastTense,
+                        PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Modal, AbstractCollinsHeadFinder.VerbPhrase,
+                        S, SINV, CoordinationTransformer.Adjective, CoordinationTransformer.Noun
                     }
                 });
-            nonTerminalInfo.Add("UCP", new string[][] {new string[] {"right"}});
-            nonTerminalInfo.Add("VP",
+            NonTerminalInfo.Add(SQ,
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", PartsOfSpeech.To, PartsOfSpeech.VerbPastTense, PartsOfSpeech.VerbPastParticiple,
+                        Left, PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbPastTense,
+                        PartsOfSpeech.VerbNon3rdPersSingPresent, PartsOfSpeech.VerbBaseForm, PartsOfSpeech.Modal, AbstractCollinsHeadFinder.VerbPhrase,
+                        SQ
+                    }
+                });
+            NonTerminalInfo.Add("UCP", new string[][] {new string[] {"right"}});
+            NonTerminalInfo.Add(AbstractCollinsHeadFinder.VerbPhrase,
+                new string[][]
+                {
+                    new string[]
+                    {
+                        Left, PartsOfSpeech.To, PartsOfSpeech.VerbPastTense, PartsOfSpeech.VerbPastParticiple,
                         PartsOfSpeech.Modal, PartsOfSpeech.Verb3rdPersSingPresent, PartsOfSpeech.VerbBaseForm,
-                        PartsOfSpeech.VerbGerundOrPresentParticiple, PartsOfSpeech.VerbNon3rdPersSingPresent, "AUX",
-                        "AUXG", "VP", CoordinationTransformer.Adjective, PartsOfSpeech.NounSingularOrMass,
-                        PartsOfSpeech.NounPlural, "NP"
+                        PartsOfSpeech.VerbGerundOrPresentParticiple, PartsOfSpeech.VerbNon3rdPersSingPresent, AUX,
+                        AUXG, AbstractCollinsHeadFinder.VerbPhrase, CoordinationTransformer.Adjective, PartsOfSpeech.NounSingularOrMass,
+                        PartsOfSpeech.NounPlural, CoordinationTransformer.Noun
                     }
                 });
-            nonTerminalInfo.Add("WHADJP",
+            NonTerminalInfo.Add(WHADJP,
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", PartsOfSpeech.CoordinatingConjunction, PartsOfSpeech.WhAdverb, PartsOfSpeech.Adjective,
+                        Left, PartsOfSpeech.CoordinatingConjunction, PartsOfSpeech.WhAdverb, PartsOfSpeech.Adjective,
                         CoordinationTransformer.Adjective
                     }
                 });
-            nonTerminalInfo.Add("WHADVP", new string[][] {new string[] {"right", PartsOfSpeech.CoordinatingConjunction, PartsOfSpeech.WhAdverb}});
-            nonTerminalInfo.Add("WHNP",
+            NonTerminalInfo.Add(WHADVP, new string[][] {new string[] {Right, PartsOfSpeech.CoordinatingConjunction, PartsOfSpeech.WhAdverb}});
+            NonTerminalInfo.Add(WHNP,
                 new string[][]
                 {
                     new string[]
                     {
-                        "left", PartsOfSpeech.WhDeterminer, PartsOfSpeech.WhPronoun, PartsOfSpeech.PossessiveWhPronoun,
-                        "WHADJP", "WHPP", "WHNP"
+                        Left, PartsOfSpeech.WhDeterminer, PartsOfSpeech.WhPronoun, PartsOfSpeech.PossessiveWhPronoun,
+                        WHADJP, WHPP, WHNP
                     }
                 });
-            nonTerminalInfo.Add("WHPP",
+            NonTerminalInfo.Add(WHPP,
                 new string[][]
                 {
                     new string[]
                     {
-                        "right", PartsOfSpeech.PrepositionOrSubordinateConjunction, PartsOfSpeech.To,
+                        Right, PartsOfSpeech.PrepositionOrSubordinateConjunction, PartsOfSpeech.To,
                         PartsOfSpeech.ForeignWord
                     }
                 });
-            nonTerminalInfo.Add("X", new string[][] {new string[] {"right"}}); // crap rule
-            nonTerminalInfo.Add("NP",
+            NonTerminalInfo.Add(X, new string[][] {new string[] {Right}}); // crap rule
+            NonTerminalInfo.Add(CoordinationTransformer.Noun,
                 new string[][]
                 {
                     new string[]
                     {
-                        "rightdis", PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.ProperNounSingular,
-                        PartsOfSpeech.ProperNounPlural, PartsOfSpeech.NounPlural, "NX", PartsOfSpeech.PossessiveEnding,
+                        RightDis, PartsOfSpeech.NounSingularOrMass, PartsOfSpeech.ProperNounSingular,
+                        PartsOfSpeech.ProperNounPlural, PartsOfSpeech.NounPlural, NX, PartsOfSpeech.PossessiveEnding,
                         PartsOfSpeech.AdjectiveComparative
                     },
-                    new string[] {"left", "NP"},
-                    new string[] {"rightdis", PartsOfSpeech.DollarSign, CoordinationTransformer.Adjective, "PRN"},
-                    new string[] {"right", PartsOfSpeech.CardinalNumber},
+                    new string[] {Left, CoordinationTransformer.Noun},
+                    new string[] {RightDis, PartsOfSpeech.DollarSign, CoordinationTransformer.Adjective, PRN},
+                    new string[] {Right, PartsOfSpeech.CardinalNumber},
                     new string[]
                     {
-                        "rightdis", PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Adverb, "QP"
+                        RightDis, PartsOfSpeech.Adjective, PartsOfSpeech.AdjectiveSuperlative, PartsOfSpeech.Adverb, QP
                     }
                 });
-            nonTerminalInfo.Add("TYPO", new string[][] {new string[] {"left"}}); // another crap rule, for Brown (Roger)
-            nonTerminalInfo.Add("EDITED", new string[][] {new string[] {"left"}});
+            NonTerminalInfo.Add(TYPO, new string[][] {new string[] {Left}}); // another crap rule, for Brown (Roger)
+            NonTerminalInfo.Add(EDITED, new string[][] {new string[] {Left}});
                 // crap rule for Switchboard (if don't delete EDITED nodes)
-            nonTerminalInfo.Add("XS", new string[][] {new string[] {"right", PartsOfSpeech.PrepositionOrSubordinateConjunction}}); // rule for new structure in QP
+            NonTerminalInfo.Add(XS, new string[][] {new string[] {Right, PartsOfSpeech.PrepositionOrSubordinateConjunction}}); // rule for new structure in QP
         }
 
         protected override int PostOperationFix(int headIdx, Tree[] daughterTrees)
         {
             if (headIdx >= 2)
             {
-                string prevLab = tlp.BasicCategory(daughterTrees[headIdx - 1].Value());
+                string prevLab = Tlp.BasicCategory(daughterTrees[headIdx - 1].Value());
                 if (prevLab.Equals(PartsOfSpeech.CoordinatingConjunction) || prevLab.Equals("CONJP"))
                 {
                     int newHeadIdx = headIdx - 2;
                     Tree t = daughterTrees[newHeadIdx];
                     while (newHeadIdx >= 0 && t.IsPreTerminal() &&
-                           tlp.IsPunctuationTag(t.Value()))
+                           Tlp.IsPunctuationTag(t.Value()))
                     {
                         newHeadIdx--;
                     }

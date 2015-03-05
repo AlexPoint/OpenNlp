@@ -35,7 +35,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using OpenNLP.Tools.Trees;
 using NameFinder = OpenNLP.Tools.NameFind.EnglishNameFinder;
 using Parse = OpenNLP.Tools.Parser.Parse;
 using ParserME = OpenNLP.Tools.Parser.MaximumEntropyParser;
@@ -173,10 +173,10 @@ namespace OpenNLP.Tools.Coreference.Mention
 		{
 			get
 			{
-				Parser.Parse parent = mParse.Parent;
+				Parse parent = mParse.Parent;
 				while (parent != null)
 				{
-					if (parent.Type == "NAC")
+					if (parent.Type == AbstractCollinsHeadFinder.NAC)
 					{
 						return true;
 					}
@@ -221,7 +221,7 @@ namespace OpenNLP.Tools.Coreference.Mention
 		{
 			get
 			{
-				return mParse.Type == "NP";
+                return mParse.Type == CoordinationTransformer.Noun;
 			}
 		}
 

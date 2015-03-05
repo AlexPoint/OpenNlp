@@ -35,6 +35,7 @@
 
 using System;
 using System.Collections.Generic;
+using OpenNLP.Tools.Trees;
 using OpenNLP.Tools.Util;
 using OpenNLP.Tools.Parser;
 
@@ -156,7 +157,7 @@ namespace OpenNLP.Tools.NameFind
 						}
 						else
 						{
-							if (commonParent.Type == "NP")
+                            if (commonParent.Type == CoordinationTransformer.Noun)
 							{
 								Parse[] grandKids = kids[0].GetChildren();
 								if (grandKids.Length > 1 && nameSpan.Contains(grandKids[grandKids.Length - 1].Span))

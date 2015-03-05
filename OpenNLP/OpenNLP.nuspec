@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>OpenNLP</id>
-    <version>1.2.12</version>
+    <version>1.2.13</version>
     <authors>AlexPoint</authors>
     <owners>AlexPoint</owners>
     <projectUrl>https://github.com/AlexPoint/OpenNlp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>C# port of the Java OpenNLP tools retrieved from http://sharpnlp.codeplex.com/ (it's not mine!)</description>
-    <releaseNotes>Fix thread safety for cache uses in Tagger, NameFinder and Chunker</releaseNotes>
+    <releaseNotes>Limit the memory footprint by using const variables for parts of speeches</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>NLP Natural Language Processing</tags>
   </metadata>

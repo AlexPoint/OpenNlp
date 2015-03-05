@@ -268,7 +268,7 @@ namespace OpenNLP.Tools.Coreference.Mention
 				{
 					continue;
 				}
-				if (PartsOfSpeech.IsPersonalOrPossessivePronoun(token.SyntacticType) && IsHandledPronoun(token.ToString()))
+				if (PartsOfSpeech.IsPersOrPossPronoun(token.SyntacticType) && IsHandledPronoun(token.ToString()))
 				{
 					var possessivePronounExtent = new Mention(token.Span, token.Span, token.EntityId, null, Linker.PronounModifier);
 					entities.Add(possessivePronounExtent);

@@ -114,9 +114,9 @@ namespace OpenNLP.Tools
         /// Returns true if the pos corresponds to a personnal or possessive pronoun.
         /// Returns false otherwise.
         /// </summary>
-        public static bool IsPersonalOrPossessivePronoun(string pos)
+        public static bool IsPersOrPossPronoun(string tag)
         {
-            return !string.IsNullOrEmpty(pos) && pos.StartsWith("PRP");
+            return !string.IsNullOrEmpty(tag) && tag.StartsWith("PRP");
         }
 
         /// <summary>
@@ -145,28 +145,6 @@ namespace OpenNLP.Tools
             return fields
                 .Select(fieldInfo => (string) fieldInfo.GetValue(null))
                 .Any(value => value == function);
-        }
-
-        public static bool IsVerb(string tag)
-        {
-            return !string.IsNullOrEmpty(tag) && tag.StartsWith("VB");
-        }
-
-        public static bool IsAdjective(string tag)
-        {
-            return !string.IsNullOrEmpty(tag) && tag.StartsWith("JJ");
-        }
-        public static bool IsNoun(string tag)
-        {
-            return !string.IsNullOrEmpty(tag) && tag.StartsWith("NN");
-        }
-        public static bool IsProperNoun(string tag)
-        {
-            return !string.IsNullOrEmpty(tag) && tag.StartsWith("NNP");
-        }
-        public static bool IsPersOrPossPronoun(string tag)
-        {
-            return !string.IsNullOrEmpty(tag) && tag.StartsWith("PRP");
         }
     }
 }

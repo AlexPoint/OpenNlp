@@ -84,7 +84,7 @@ namespace Test
             }*/
 
             // parsing
-            /*var sentence = "This is a generic bank response, which indicates simply that they are not willing to accept the transaction.";
+            var sentence = "This is a generic bank response, which indicates simply that they are not willing to accept the transaction.";
             var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
             var tokens = tokenizer.Tokenize(sentence);
             var modelPath = currentDirectory + "../Resources/Models/";
@@ -101,9 +101,9 @@ namespace Test
             foreach (var dep in dependencies)
             {
                 Console.WriteLine(dep);
-            }*/
+            }
 
-            // multi threaded parsing
+            /*// multi threaded parsing
             var sentences = new List<string>()
             {
                 "It's all right.",
@@ -130,7 +130,7 @@ namespace Test
                 Console.WriteLine("'{0}'", sentence);
                 Console.WriteLine("{0}", parse);
                 Console.WriteLine("--");
-            });
+            });*/
 
             Console.WriteLine("===========");
             Console.WriteLine("OK");

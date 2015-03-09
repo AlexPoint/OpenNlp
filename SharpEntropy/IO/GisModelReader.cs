@@ -322,7 +322,7 @@ namespace SharpEntropy.IO
 		/// </param>
 		public virtual void GetPredicateData(string predicateLabel, int[] featureCounts, double[] outcomeSums)
 		{
-            if (_predicates.ContainsKey(predicateLabel))
+            if (predicateLabel != null && _predicates.ContainsKey(predicateLabel))
             {
 			    PatternedPredicate predicate = _predicates[predicateLabel];
 				int[] activeOutcomes = _outcomePatterns[predicate.OutcomePattern];

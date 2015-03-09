@@ -130,7 +130,9 @@ namespace OpenNLP.Tools.SentenceDetect
 			//assign prefix, stop if you run into a period though otherwise stop at space
 			while (--currentPosition > prefixStart)
 			{
-				for (int currentEndOfSentenceCharacter = 0, endOfSentenceCharactersLength = _endOfSentenceCharacters.Length; currentEndOfSentenceCharacter < endOfSentenceCharactersLength; currentEndOfSentenceCharacter++)
+				for (int currentEndOfSentenceCharacter = 0, endOfSentenceCharactersLength = _endOfSentenceCharacters.Length; 
+                    currentEndOfSentenceCharacter < endOfSentenceCharactersLength; 
+                    currentEndOfSentenceCharacter++)
 				{
 					if (buffer[currentPosition] == _endOfSentenceCharacters[currentEndOfSentenceCharacter])
 					{
@@ -151,7 +153,9 @@ namespace OpenNLP.Tools.SentenceDetect
 			currentPosition = position;
 			while (++currentPosition < suffixEnd)
 			{
-				for (int currentEndOfSentenceCharacter = 0, endOfSentenceCharactersLength = _endOfSentenceCharacters.Length; currentEndOfSentenceCharacter < endOfSentenceCharactersLength; currentEndOfSentenceCharacter++)
+				for (int currentEndOfSentenceCharacter = 0, endOfSentenceCharactersLength = _endOfSentenceCharacters.Length; 
+                    currentEndOfSentenceCharacter < endOfSentenceCharactersLength; 
+                    currentEndOfSentenceCharacter++)
 				{
 					if (buffer[currentPosition] == _endOfSentenceCharacters[currentEndOfSentenceCharacter])
 					{

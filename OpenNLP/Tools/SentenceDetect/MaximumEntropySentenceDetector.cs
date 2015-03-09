@@ -36,6 +36,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using SharpEntropy;
 
@@ -260,12 +261,7 @@ namespace OpenNLP.Tools.SentenceDetect
         {
             var trainer = new GisTrainer();
 
-            var readers = new List<StreamReader>();
-            foreach (var path in filePaths)
-            {
-                var streamReader = new StreamReader(path);
-                readers.Add(streamReader);
-            }
+            var readers = filePaths.Select(path => new StreamReader(path)).ToList();
 
             // train the model
             ITrainingDataReader<string> dataReader = new MultipleFilesPlainTextByLineDataReader(readers);

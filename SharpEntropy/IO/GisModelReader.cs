@@ -322,18 +322,25 @@ namespace SharpEntropy.IO
 		/// </param>
 		public virtual void GetPredicateData(string predicateLabel, int[] featureCounts, double[] outcomeSums)
 		{
-            if (predicateLabel != null && _predicates.ContainsKey(predicateLabel))
+            try
             {
-			    PatternedPredicate predicate = _predicates[predicateLabel];
-				int[] activeOutcomes = _outcomePatterns[predicate.OutcomePattern];
-					
-				for (int currentActiveOutcome = 1; currentActiveOutcome < activeOutcomes.Length; currentActiveOutcome++)
-				{
-					int outcomeIndex = activeOutcomes[currentActiveOutcome];
-					featureCounts[outcomeIndex]++;
-					outcomeSums[outcomeIndex] += predicate.GetParameter(currentActiveOutcome - 1);
-				}
-			}
+                if (predicateLabel != null && _predicates.ContainsKey(predicateLabel))
+                {
+                    PatternedPredicate predicate = _predicates[predicateLabel];
+                    int[] activeOutcomes = _outcomePatterns[predicate.OutcomePattern];
+
+                    for (int currentActiveOutcome = 1; currentActiveOutcome < activeOutcomes.Length; currentActiveOutcome++)
+                    {
+                        int outcomeIndex = activeOutcomes[currentActiveOutcome];
+                        featureCounts[outcomeIndex]++;
+                        outcomeSums[outcomeIndex] += predicate.GetParameter(currentActiveOutcome - 1);
+                    }
+                }
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new ArgumentException(string.Format("Try to find key '{0}' in predicates dictionary ({1} entries)", predicateLabel, _predicates.Count), ex);
+            }
 		}
 	
 	}

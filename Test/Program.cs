@@ -84,7 +84,7 @@ namespace Test
             }*/
 
             // parsing
-            var sentence = "This is a generic bank response, which indicates simply that they are not willing to accept the transaction.";
+            /*var sentence = "This is a generic bank response, which indicates simply that they are not willing to accept the transaction.";
             var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
             var tokens = tokenizer.Tokenize(sentence);
             var modelPath = currentDirectory + "../Resources/Models/";
@@ -101,11 +101,16 @@ namespace Test
             foreach (var dep in dependencies)
             {
                 Console.WriteLine(dep);
-            }
+            }*/
 
-            /*// multi threaded parsing
+            // multi threaded sentence detection
             var sentences = new List<string>()
             {
+                "No. Red.",
+                "A former Redbone. Price tag's gonna be steep.",
+                "I mean, she's got eyes.",
+                "- You're kicking me out of my own house? - It's your aunt Ginny's house.",
+                "Alchemillas. Or something that smells nice.",
                 "It's all right.",
                 "It's me, Yara.",
                 "You can't trick me.",
@@ -118,19 +123,20 @@ namespace Test
                 "(Grunts sharply)",
                 "No, we were not side by side."
             };
-            var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
+            var sentenceDetector = new EnglishMaximumEntropySentenceDetector(currentDirectory + "../Resources/Models/EnglishSD.nbin");
             var modelPath = currentDirectory + "../Resources/Models/";
-            var parser = new EnglishTreebankParser(modelPath, true, false);
+            //var parser = new EnglishTreebankParser(modelPath, true, false);
 
             Parallel.ForEach(sentences, sentence =>
             {
-                var tokens = tokenizer.Tokenize(sentence);
-                var parse = parser.DoParse(tokens);
+                var positions = sentenceDetector.SentencePositionDetect(sentence);
+                //var parse = parser.DoParse(positions);
 
                 Console.WriteLine("'{0}'", sentence);
-                Console.WriteLine("{0}", parse);
+                Console.WriteLine("{0}", string.Join(" | ", positions));
+                //Console.WriteLine("{0}", parse);
                 Console.WriteLine("--");
-            });*/
+            });
 
             Console.WriteLine("===========");
             Console.WriteLine("OK");

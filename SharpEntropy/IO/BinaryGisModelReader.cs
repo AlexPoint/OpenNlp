@@ -36,6 +36,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text;
 
 namespace SharpEntropy.IO
 {
@@ -57,10 +58,10 @@ namespace SharpEntropy.IO
 	/// </version>
 	public class BinaryGisModelReader : GisModelReader
 	{
-		private Stream mInput;
-		private byte[] mBuffer;
-		private int mStringLength = 0;
-		private System.Text.Encoding mEncoding = System.Text.Encoding.UTF8;
+		private readonly Stream _input;
+		private readonly byte[] _buffer;
+		private int _stringLength = 0;
+		private readonly Encoding _encoding = Encoding.UTF8;
 
 		/// <summary>
 		/// Constructor which directly instantiates the Stream containing
@@ -71,9 +72,9 @@ namespace SharpEntropy.IO
 		/// </param>
 		public BinaryGisModelReader(Stream dataInputStream)
 		{
-			using (mInput = dataInputStream)
+			using (_input = dataInputStream)
 			{
-				mBuffer = new byte[256];
+				_buffer = new byte[256];
 				base.ReadModel();
 			}
 		}
@@ -86,9 +87,9 @@ namespace SharpEntropy.IO
 		/// </param>
 		public BinaryGisModelReader(string fileName)
 		{
-			using (mInput = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+			using (_input = new FileStream(fileName, FileMode.Open, FileAccess.Read))
 			{
-				mBuffer = new byte[256];
+				_buffer = new byte[256];
 				base.ReadModel();
 			}
 		}
@@ -98,8 +99,8 @@ namespace SharpEntropy.IO
 		/// </summary>
 		protected override int ReadInt32()
 		{
-			mInput.Read(mBuffer, 0, 4);
-			return BitConverter.ToInt32(mBuffer, 0);
+			_input.Read(_buffer, 0, 4);
+			return BitConverter.ToInt32(_buffer, 0);
 		}
 		
 		/// <summary>
@@ -107,8 +108,8 @@ namespace SharpEntropy.IO
 		/// </summary>
 		protected override double ReadDouble()
 		{
-			mInput.Read(mBuffer, 0, 8);
-			return BitConverter.ToDouble(mBuffer, 0);
+			_input.Read(_buffer, 0, 8);
+			return BitConverter.ToDouble(_buffer, 0);
 		}
 		
 		/// <summary>
@@ -116,9 +117,9 @@ namespace SharpEntropy.IO
 		/// </summary>
 		protected override string ReadString()
 		{
-			mStringLength = mInput.ReadByte();
-			mInput.Read(mBuffer, 0, mStringLength);
-			return mEncoding.GetString(mBuffer, 0, mStringLength);
+			_stringLength = _input.ReadByte();
+			_input.Read(_buffer, 0, _stringLength);
+			return _encoding.GetString(_buffer, 0, _stringLength);
 		}
 
 		/// <summary>
@@ -138,8 +139,7 @@ namespace SharpEntropy.IO
 			//read from the model how many outcome patterns there are
 			int outcomePatternCount = ReadInt32();
 			outcomePatterns = new int[outcomePatternCount][];
-			int currentOutcomePatternLength = 0;
-			//read from the model how many predicates there are
+		    //read from the model how many predicates there are
             predicates = new Dictionary<string, PatternedPredicate>(ReadInt32());
 
 			//for each outcome pattern in the model
@@ -147,7 +147,7 @@ namespace SharpEntropy.IO
 			{
 				//read the number of outcomes in this pattern.  This number is 1 greater than the real number of outcomes
 				//in the pattern, because the 0th value contains the number of predicates that use this pattern.
-				currentOutcomePatternLength = ReadInt32();
+				var currentOutcomePatternLength = ReadInt32();
 				outcomePatterns[currentOutcomePattern] = new int[currentOutcomePatternLength];
 				//read in the outcomes for this pattern
 				for (int currentOutcome = 0; currentOutcome <currentOutcomePatternLength; currentOutcome++)

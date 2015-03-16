@@ -43,10 +43,8 @@ namespace OpenNLP.Tools.SentenceDetect
 	/// Generate event contexts for maxent decisions for sentence detection.
 	/// </summary>
     public class SentenceDetectionContextGenerator : SharpEntropy.IContextGenerator<Tuple<StringBuilder, int>>
-	{		
-		private readonly StringBuilder _buffer = new StringBuilder();
-        private readonly List<string> _collectFeatures = new List<string>();
-		private readonly Util.Set<string> _inducedAbbreviations;
+	{
+        private readonly Util.Set<string> _inducedAbbreviations;
 		private readonly char[] _endOfSentenceCharacters;
 		
 		/// <summary>
@@ -80,6 +78,8 @@ namespace OpenNLP.Tools.SentenceDetect
 		/// </summary>
         public virtual string[] GetContext(Tuple<StringBuilder, int> pair)
 		{
+            List<string> collectFeatures = new List<string>();
+
 			string prefix;				//string preceeding the eos character in the eos token. 
 			string previousToken;	//space delimited token preceding token containing eos character. 
 			string suffix;				//string following the eos character in the eos token. 
@@ -115,13 +115,13 @@ namespace OpenNLP.Tools.SentenceDetect
 			// compute space previousToken and space next features.
 			if (position > 0 && buffer[position - 1] == ' ')
 			{
-				_collectFeatures.Add("sp");
+				collectFeatures.Add("sp");
 			}
 			if (position < lastIndex && buffer[position + 1] == ' ')
 			{
-				_collectFeatures.Add("sn");
+				collectFeatures.Add("sn");
 			}
-			_collectFeatures.Add("eos=" + buffer[position]);
+			collectFeatures.Add("eos=" + buffer[position]);
 		
 			int prefixStart = PreviousSpaceIndex(buffer, position);
 			
@@ -178,73 +178,60 @@ namespace OpenNLP.Tools.SentenceDetect
 				nextToken = buffer.ToString(suffixEnd + 1, nextEnd - (suffixEnd + 1)).Trim();
 			}
 			
-			_buffer.Append("x=");
-			_buffer.Append(prefix);
-			_collectFeatures.Add(_buffer.ToString());
-			_buffer.Length = 0;
+            collectFeatures.Add("x=" + prefix);
 			if (prefix.Length > 0)
 			{
-				_collectFeatures.Add(Convert.ToString(prefix.Length, System.Globalization.CultureInfo.InvariantCulture));
+				collectFeatures.Add(Convert.ToString(prefix.Length, System.Globalization.CultureInfo.InvariantCulture));
 				if (IsFirstUpper(prefix))
 				{
-					_collectFeatures.Add("xcap");
+					collectFeatures.Add("xcap");
 				}
 				if (_inducedAbbreviations.Contains(prefix))
 				{
-					_collectFeatures.Add("xabbrev");
+					collectFeatures.Add("xabbrev");
 				}
 			}
-			
-			_buffer.Append("v=");
-			_buffer.Append(previousToken);
-			_collectFeatures.Add(_buffer.ToString());
-			_buffer.Length = 0;
-			if (previousToken.Length > 0)
+
+            collectFeatures.Add("v=" + previousToken);
+            if (previousToken.Length > 0)
 			{
 				if (IsFirstUpper(previousToken))
 				{
-					_collectFeatures.Add("vcap");
+					collectFeatures.Add("vcap");
 				}
 				if (_inducedAbbreviations.Contains(previousToken))
 				{
-					_collectFeatures.Add("vabbrev");
+					collectFeatures.Add("vabbrev");
 				}
 			}
-			
-			_buffer.Append("s=");
-			_buffer.Append(suffix);
-			_collectFeatures.Add(_buffer.ToString());
-			_buffer.Length = 0;
-			if (suffix.Length > 0)
+
+            collectFeatures.Add("s=" + suffix);
+            if (suffix.Length > 0)
 			{
 				if (IsFirstUpper(suffix))
 				{
-					_collectFeatures.Add("scap");
+					collectFeatures.Add("scap");
 				}
 				if (_inducedAbbreviations.Contains(suffix))
 				{
-					_collectFeatures.Add("sabbrev");
+					collectFeatures.Add("sabbrev");
 				}
 			}
 			
-			_buffer.Append("n=");
-			_buffer.Append(nextToken);
-			_collectFeatures.Add(_buffer.ToString());
-			_buffer.Length = 0;
+			collectFeatures.Add("n=" + nextToken);
 			if (nextToken.Length > 0)
 			{
 				if (IsFirstUpper(nextToken))
 				{
-					_collectFeatures.Add("ncap");
+					collectFeatures.Add("ncap");
 				}
 				if (_inducedAbbreviations.Contains(nextToken))
 				{
-					_collectFeatures.Add("nabbrev");
+					collectFeatures.Add("nabbrev");
 				}
 			}
 			
-			string[] context = _collectFeatures.ToArray();
-			_collectFeatures.Clear();
+			string[] context = collectFeatures.ToArray();
 			return context;
 		}
 		

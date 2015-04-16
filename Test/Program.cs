@@ -66,7 +66,7 @@ namespace Test
 
             // tokenize tests
             var modelPath = currentDirectory + "../Resources/Models/";
-            var maxEntTokenizer = new EnglishMaximumEntropyTokenizer(modelPath + "EnglishTok.nbin");
+            //var maxEntTokenizer = new EnglishMaximumEntropyTokenizer(modelPath + "EnglishTok.nbin");
             var ruleBasedTokenizer = new EnglishRuleBasedTokenizer();
 
             var trainingFiles = Directory.EnumerateFiles(currentDirectory + "Input/", "*.train");
@@ -76,10 +76,10 @@ namespace Test
                 .ToList();
 
             var stopwatch = new Stopwatch();
-            stopwatch.Start();
+            /*stopwatch.Start();
             var maxEntTokResults = maxEntTokenizer.RunAgainstTestData(testData);
             stopwatch.Stop();
-            Console.WriteLine("Max ent tok accuracy: {0} ({1} ms)", maxEntTokResults.GetAccuracy(), stopwatch.ElapsedMilliseconds);
+            Console.WriteLine("Max ent tok accuracy: {0} ({1} ms)", maxEntTokResults.GetAccuracy(), stopwatch.ElapsedMilliseconds);*/
 
             stopwatch.Reset();
             stopwatch.Start();

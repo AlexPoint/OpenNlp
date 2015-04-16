@@ -48,57 +48,64 @@ namespace OpenNLP.Tools.Tokenize
         private static readonly List<Regex> TokenizationRegexes = new List<Regex>()
         {
             // split before .{2,} if not preceded by '.'
-            new Regex("(?<!\\.)(?=\\.{2,})"),
+            new Regex("(?<!\\.)(?=\\.{2,})", RegexOptions.Compiled),
             // split after .{2,} if not followed by '.'
-            new Regex("(?<=\\.{2,})(?!\\.)"),
+            new Regex("(?<=\\.{2,})(?!\\.)", RegexOptions.Compiled),
             
             // split before !+ if not preceded by '!'
-            new Regex("(?<!!)(?=!+)"),
+            new Regex("(?<!!)(?=!+)", RegexOptions.Compiled),
             // split after !+ if not followed by '!'
-            new Regex("(?<=!+)(?!!)"),
+            new Regex("(?<=!+)(?!!)", RegexOptions.Compiled),
 
             // split before ?+ if not preceded by '?'
-            new Regex("(?<!\\?)(?=\\?+)"),
+            new Regex("(?<!\\?)(?=\\?+)", RegexOptions.Compiled),
             // split after ?+ if not followed by '?'
-            new Regex("(?<=\\?+)(?!\\?)"),
+            new Regex("(?<=\\?+)(?!\\?)", RegexOptions.Compiled),
             
             // split after ',' if not followed directly by figure
-            new Regex("(?<=,)(?!\\d)"), 
+            new Regex("(?<=,)(?!\\d)", RegexOptions.Compiled), 
             // split before ',' if not followed directly by figure
-            new Regex("((?=,\\D)|(?=,$))"),
+            new Regex("((?=,\\D)|(?=,$))", RegexOptions.Compiled),
             
             // split after ':' if not followed directly by figure
-            new Regex("(?<=:)(?!\\d)"), 
+            new Regex("(?<=:)(?!\\d)", RegexOptions.Compiled), 
             // split before ':' if not followed directly by figure
-            new Regex("((?=:\\D)|(?=:$))"),
+            new Regex("((?=:\\D)|(?=:$))", RegexOptions.Compiled),
 
             // split before 's, 'm, 've, 'll, 're, 'd when at the end of a token (’ == ')
-            new Regex("(?=\\'s$|\\'m$|\\'ve$|\\'ll$|\\'re$|\\'d$|’s$|’m$|’ve$|’ll$|’re$|’d$)", RegexOptions.IgnoreCase),
+            new Regex("(?=\\'s$|\\'m$|\\'ve$|\\'ll$|\\'re$|\\'d$|’s$|’m$|’ve$|’ll$|’re$|’d$)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
             // split after ' at the beginning of a token (and not 's, 'm, 'll, 've, 're or 'd)
-            new Regex("(?<=^\\')(?!s$|m$|ll$|ve$|re$|d$)", RegexOptions.IgnoreCase),
-            new Regex("(?<=^’)(?!s$|m$|ll$|ve$|re$|d$)", RegexOptions.IgnoreCase),
+            new Regex("(?<=^\\')(?!s$|m$|ll$|ve$|re$|d$)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            new Regex("(?<=^’)(?!s$|m$|ll$|ve$|re$|d$)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
             // split before ' at the end of a token
-            new Regex("(?=\\'$)"),
-            new Regex("(?=’$)"),
+            new Regex("(?=\\'$)", RegexOptions.Compiled),
+            new Regex("(?=’$)", RegexOptions.Compiled),
 
             // split before - when at the end of a token and not preceded by -
-            new Regex("(?<!\\-)(?=\\-$)"),
+            new Regex("(?<!\\-)(?=\\-$)", RegexOptions.Compiled),
             // split after - when at the beginning of a token and not followed by -
-            new Regex("(?<=^\\-)(?!\\-)"),
+            new Regex("(?<=^\\-)(?!\\-)", RegexOptions.Compiled),
             
             // split before ;, (, ), [, ], {, }, " in all cases
-            new Regex("(?=;|\\(|\\)|\\{|\\}|\\[|\\]|\"|…)"),
+            new Regex("(?=;|\\(|\\)|\\{|\\}|\\[|\\]|\"|…)", RegexOptions.Compiled),
             // split after ;, (, ), [, ], {, }, " in all cases
-            new Regex("(?<=;|\\(|\\)|\\{|\\}|\\[|\\]|\"|…)")
+            new Regex("(?<=;|\\(|\\)|\\{|\\}|\\[|\\]|\"|…)", RegexOptions.Compiled)
         };
 
+        private static readonly Regex LettersOnlyRegex = new Regex("^[a-zA-Z]+$", RegexOptions.Compiled);
         private List<Span> SplitToken(string input, Span span)
         {
             var token = input.Substring(span.Start, span.Length());
             if (string.IsNullOrEmpty(token))
             {
                 return new List<Span>();
+            }
+
+            // optimization - don't tokenize token of 1 character or token with letters only
+            if (span.Length() <= 1 || LettersOnlyRegex.IsMatch(token))
+            {
+                return new List<Span>(){ span };
             }
 
             var splitTokens = new List<string>() { token };

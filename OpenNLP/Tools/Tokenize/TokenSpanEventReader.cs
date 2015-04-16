@@ -63,7 +63,7 @@ namespace OpenNLP.Tools.Tokenize
 				int startPosition = tokens[0].Start;
 				int endPosition = tokens[tokens.Length - 1].End;
 				string sentence = input.Substring(startPosition, (endPosition) - (startPosition));
-				Util.Span[] candidateTokens = MaximumEntropyTokenizer.Split(sentence);
+				Util.Span[] candidateTokens = MaximumEntropyTokenizer.SplitOnWhitespaces(sentence);
 				int firstTrainingToken = -1;
 				int lastTrainingToken = -1;
 

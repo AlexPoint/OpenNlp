@@ -52,18 +52,20 @@ namespace OpenNLP.Tools.Tokenize
         private readonly List<SharpEntropy.TrainingEvent> _eventList = new List<SharpEntropy.TrainingEvent>();
 		private int _currentEvent = 0;
 	    private readonly char _tokenSeparator;
+        private readonly bool _includeAllCapsExamples;
 		
         // Constructors ---------------
 
-        public MultipleFileTokenEventReader(List<StreamReader> dataReaders, char tokenSeparator)
+        public MultipleFileTokenEventReader(List<StreamReader> dataReaders, char tokenSeparator, bool includeAllCapsExamples = false)
 		{
 		    _tokenSeparator = tokenSeparator;
 			_streamReaders = dataReaders;
 		    _currentStreamReaderIndex = 0;
+            _includeAllCapsExamples = includeAllCapsExamples;
 			string nextLine = GetNextLine();
             if (nextLine != null)
             {
-                AddEvents(nextLine);
+                ProcessLine(nextLine);
             }
 		}
 
@@ -88,6 +90,18 @@ namespace OpenNLP.Tools.Tokenize
                     _currentStreamReaderIndex++;
 	                return GetNextLine();
 	            }
+	        }
+	    }
+
+	    private void ProcessLine(string line)
+	    {
+            // add the events for this line
+            AddEvents(line);
+
+            // add the events for the all upper cased line if necessary
+	        if (_includeAllCapsExamples)
+	        {
+	            AddEvents(line.ToUpper());
 	        }
 	    }
 		
@@ -132,7 +146,7 @@ namespace OpenNLP.Tools.Tokenize
 				string nextLine = GetNextLine();
 				if (nextLine != null)
 				{
-					AddEvents(nextLine);
+					ProcessLine(nextLine);
 				}
 			}
 			return trainingEvent;

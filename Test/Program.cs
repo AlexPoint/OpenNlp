@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -63,14 +64,29 @@ namespace Test
             new BinaryGisModelWriter().Persist(model, outputFilePath);
             Console.WriteLine("Output file written.");*/
 
-            /*// tokenize tests
+            // tokenize tests
             var modelPath = currentDirectory + "../Resources/Models/";
-            var tokenizer = new EnglishMaximumEntropyTokenizer(modelPath + "EnglishTok.nbin");
+            var maxEntTokenizer = new EnglishMaximumEntropyTokenizer(modelPath + "EnglishTok.nbin");
+            var ruleBasedTokenizer = new EnglishRuleBasedTokenizer();
 
-            var input = "It was built of a bright brick throughout; its skyline was fantastic, and even its ground plan was wild.";
-            var tokens = tokenizer.Tokenize(input);
-            Console.WriteLine(string.Join(" | ", tokens));*/
+            var trainingFiles = Directory.EnumerateFiles(currentDirectory + "Input/", "*.train");
+            var testData = trainingFiles
+                .SelectMany(f => File.ReadAllLines(f))
+                .Select(l => new TokenizerTestData(l, "|"))
+                .ToList();
 
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var maxEntTokResults = maxEntTokenizer.RunAgainstTestData(testData);
+            stopwatch.Stop();
+            Console.WriteLine("Max ent tok accuracy: {0} ({1} ms)", maxEntTokResults.GetAccuracy(), stopwatch.ElapsedMilliseconds);
+
+            stopwatch.Reset();
+            stopwatch.Start();
+            var ruleBasedTokResults = ruleBasedTokenizer.RunAgainstTestData(testData);
+            stopwatch.Stop();
+            Console.WriteLine("rule based tok accuracy: {0} ({1} ms)", ruleBasedTokResults.GetAccuracy(), stopwatch.ElapsedMilliseconds);
+            
 
             // detect tokenization issues
             /*var pathToFile = currentDirectory + "Input/tokenizerIssues.txt";
@@ -103,41 +119,7 @@ namespace Test
                 Console.WriteLine(dep);
             }*/
 
-            // multi threaded sentence detection
-            var sentences = new List<string>()
-            {
-                "No. Red.",
-                "A former Redbone. Price tag's gonna be steep.",
-                "I mean, she's got eyes.",
-                "- You're kicking me out of my own house? - It's your aunt Ginny's house.",
-                "Alchemillas. Or something that smells nice.",
-                "It's all right.",
-                "It's me, Yara.",
-                "You can't trick me.",
-                "And do you suspect Byamba, son of the Khan, to have blood on his hands?",
-                "We traveled side by side.",
-                "Is that accurate, Byamba?",
-                "Were you always at the Latin's side on your journey?",
-                "I was asked to be here and I came.",
-                "But you cannot compel me to be party to this.",
-                "(Grunts sharply)",
-                "No, we were not side by side."
-            };
-            var sentenceDetector = new EnglishMaximumEntropySentenceDetector(currentDirectory + "../Resources/Models/EnglishSD.nbin");
-            var modelPath = currentDirectory + "../Resources/Models/";
-            //var parser = new EnglishTreebankParser(modelPath, true, false);
-
-            Parallel.ForEach(sentences, sentence =>
-            {
-                var positions = sentenceDetector.SentencePositionDetect(sentence);
-                //var parse = parser.DoParse(positions);
-
-                Console.WriteLine("'{0}'", sentence);
-                Console.WriteLine("{0}", string.Join(" | ", positions));
-                //Console.WriteLine("{0}", parse);
-                Console.WriteLine("--");
-            });
-
+            
             Console.WriteLine("===========");
             Console.WriteLine("OK");
             Console.ReadKey();

@@ -20,8 +20,8 @@ namespace Trainer
             /*var testFilePath = CurrentDirectory + "Input/Tokenize/test.train";
             MaximumEntropyTokenizer.Train(testFilePath, 5, 1);*/
 
-            //OptimizeTokenizerTraining();
-            OptimizeSentenceDetectionTraining();
+            OptimizeTokenizerTraining(true);
+            //OptimizeSentenceDetectionTraining();
 
             /*// tests
             Console.WriteLine("Running tests...");
@@ -126,7 +126,7 @@ namespace Trainer
             Console.WriteLine("Output file written.");
         }
 
-        private static void OptimizeTokenizerTraining()
+        private static void OptimizeTokenizerTraining(bool includeAllCapsExamples = false)
         {
             // all directories in Input folder
             var inputFolderPath = CurrentDirectory + "Input/";
@@ -171,7 +171,7 @@ namespace Trainer
             {
                 foreach (var cut in cuts)
                 {
-                    var model = MaximumEntropyTokenizer.Train(allTrainFiles, iteration, cut);
+                    var model = MaximumEntropyTokenizer.Train(allTrainFiles, iteration, cut, includeAllCapsExamples: includeAllCapsExamples);
                     // compute accuracy
                     var tokenizer = new MaximumEntropyTokenizer(model);
 

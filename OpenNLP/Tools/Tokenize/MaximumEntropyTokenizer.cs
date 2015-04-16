@@ -50,7 +50,7 @@ namespace OpenNLP.Tools.Tokenize
 	/// Algorithms and Applications.", which is available from his
 	/// homepage: http://www.cis.upenn.edu/~jcreynar.
 	/// </summary>
-	public class MaximumEntropyTokenizer : ITokenizer
+	public class MaximumEntropyTokenizer : AbstractTokenizer
 	{
         internal static Regex AlphaNumeric = new Regex("^[A-Za-z0-9]+$", RegexOptions.Compiled);
 
@@ -83,11 +83,11 @@ namespace OpenNLP.Tools.Tokenize
 		/// <summary>Tokenizes the string</summary>
 		/// <param name="input">The string to be tokenized</param>
 		/// <returns>A span array containing individual tokens as elements</returns>
-		public virtual Span[] TokenizePositions(string input)
+		public override Span[] TokenizePositions(string input)
 		{
             if (string.IsNullOrEmpty(input)) { return new Span[0]; }
 
-			var tokens = Split(input);
+			var tokens = SplitOnWhitespaces(input);
 			var newTokens = new List<Span>();
 			var tokenProbabilities = new List<double>();
 			
@@ -135,92 +135,14 @@ namespace OpenNLP.Tools.Tokenize
 			return newTokens.ToArray();
 		}
 
-	    /// <summary>Tokenize a string</summary>
-		/// <param name="input">The string to be tokenized</param>
-		/// <returns>A string array containing individual tokens as elements</returns>
-		public virtual string[] Tokenize(string input)
-		{
-			Span[] tokenSpans = TokenizePositions(input);
-			var tokens = new string[tokenSpans.Length];
-			for (int currentToken = 0, tokenCount = tokens.Length; currentToken < tokenCount; currentToken++)
-			{
-				tokens[currentToken] = input.Substring(tokenSpans[currentToken].Start, tokenSpans[currentToken].Length());
-			}
-			return tokens;
-		}
-		
-		/// <summary>
-		/// Constructs a list of Span objects, one for each whitespace delimited token.
-		/// Token strings can be constructed form these spans as follows: input.Substring(span.Start, span.Length());
-		/// </summary>
-		/// <param name="input">string to tokenize</param>
-		/// <returns>Array of spans</returns>
-		internal static Span[] Split(string input)
-		{
-            if (string.IsNullOrEmpty(input)) { return new Span[0];}
-
-			int tokenStart = - 1;
-            var tokens = new List<Span>();
-			bool isInToken = false;
-			
-			//gather up potential tokens
-			int endPosition = input.Length;
-			for (int currentChar = 0; currentChar < endPosition; currentChar++)
-			{
-				if (char.IsWhiteSpace(input[currentChar]))
-				{
-					if (isInToken)
-					{
-						tokens.Add(new Span(tokenStart, currentChar));
-						isInToken = false;
-						tokenStart = - 1;
-					}
-				}
-				else
-				{
-					if (!isInToken)
-					{
-						tokenStart = currentChar;
-						isInToken = true;
-					}
-				}
-			}
-			if (isInToken)
-			{
-				tokens.Add(new Span(tokenStart, endPosition));
-			}
-			return tokens.ToArray();
-		}
-		
-        public TokenizationTestResults RunAgainstTestData(List<TokenizerTestData> dataPoints)
-        {
-            var result = new TokenizationTestResults();
-
-            foreach (var dataPoint in dataPoints)
-            {
-                var sentence = dataPoint.GetCleanSentence();
-                var computedPositions = TokenizePositions(sentence);
-                var correctPositions = dataPoint.GetSpans();
-
-                var nbOfCorrectTokenizations = computedPositions.Intersect(correctPositions).Count();
-                var nbOfIncorrectTokenizations = correctPositions.Except(computedPositions).Count();
-                // count the number of tokens due to whitespaces (not relevant for the accuracy of the model)
-                var nbOfWhiteSpaceTokens = dataPoint.GetNumberOfWhitespaceOccurencesInSentence() + 1;
-                result.NbOfCorrectTokenizations += Math.Max(nbOfCorrectTokenizations - nbOfWhiteSpaceTokens, 0);
-                result.NbOfIncorrectTokenizations += nbOfIncorrectTokenizations;
-            }
-
-            return result;
-        }
-
-
+	    
         // Utilities --------------------------------------------
         
         /// <summary>
         /// Trains a tokenizer model from the "events" in the input file
         /// and write the resulting gis model in the ouput file (as binary)
         /// </summary>
-		public static GisModel Train(string inputFilePath, int iterations, int cut, char splitMarker = '|')
+        public static GisModel Train(string inputFilePath, int iterations, int cut, char splitMarker = '|', bool includeAllCapsExamples = false)
         {
             return Train(new List<string>() {inputFilePath}, iterations, cut, splitMarker);
         }
@@ -234,7 +156,7 @@ namespace OpenNLP.Tools.Tokenize
 	    /// <param name="cut">The minimum nb of occurences for statistical relevancy in the trained model</param>
 	    /// <param name="splitMarker">The character indicating a split in the files</param>
 	    /// <returns>The freshly trained GisModel</returns>
-        public static GisModel Train(IEnumerable<string> inputFilePaths, int iterations, int cut, char splitMarker = '|')
+        public static GisModel Train(IEnumerable<string> inputFilePaths, int iterations, int cut, char splitMarker = '|', bool includeAllCapsExamples = false)
 	    {
 	        var trainer = new GisTrainer(0.1);
 
@@ -246,7 +168,7 @@ namespace OpenNLP.Tools.Tokenize
 	        }
 
             // train the model
-            var eventReader = new MultipleFileTokenEventReader(dataReaders, splitMarker);
+            var eventReader = new MultipleFileTokenEventReader(dataReaders, splitMarker, includeAllCapsExamples);
             trainer.TrainModel(iterations, new TwoPassDataIndexer(eventReader, cut));
 
             return new GisModel(trainer);

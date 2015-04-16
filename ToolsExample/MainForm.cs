@@ -8,6 +8,7 @@ using System.Data;
 using System.Text;
 using System.Configuration;
 using OpenNLP.Tools.Parser;
+using OpenNLP.Tools.Tokenize;
 
 namespace ToolsExample
 {
@@ -35,7 +36,7 @@ namespace ToolsExample
 		private readonly string _modelPath;
 
 		private OpenNLP.Tools.SentenceDetect.MaximumEntropySentenceDetector _sentenceDetector;
-		private OpenNLP.Tools.Tokenize.EnglishMaximumEntropyTokenizer _tokenizer;
+		private OpenNLP.Tools.Tokenize.AbstractTokenizer _tokenizer;
 		private OpenNLP.Tools.PosTagger.EnglishMaximumEntropyPosTagger _posTagger;
 		private OpenNLP.Tools.Chunker.EnglishTreebankChunker _chunker;
         private OpenNLP.Tools.Parser.EnglishTreebankParser _parser;
@@ -335,7 +336,8 @@ namespace ToolsExample
 		{
 			if (_tokenizer == null)
 			{
-				_tokenizer = new OpenNLP.Tools.Tokenize.EnglishMaximumEntropyTokenizer(_modelPath + "EnglishTok.nbin");
+				//_tokenizer = new OpenNLP.Tools.Tokenize.EnglishMaximumEntropyTokenizer(_modelPath + "EnglishTok.nbin");
+				_tokenizer = new EnglishRuleBasedTokenizer();
 			}
 
 			return _tokenizer.Tokenize(sentence);

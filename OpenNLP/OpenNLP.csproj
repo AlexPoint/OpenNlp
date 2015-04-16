@@ -276,8 +276,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tools\TaggedWord.cs" />
+    <Compile Include="Tools\Tokenize\AbstractTokenizer.cs" />
     <Compile Include="Tools\Tokenize\Detokenizer.cs" />
     <Compile Include="Tools\Tokenize\DictionaryDetokenizer.cs" />
+    <Compile Include="Tools\Tokenize\EnglishRuleBasedTokenizer.cs" />
     <Compile Include="Tools\Tokenize\IDetokenizer.cs" />
     <Compile Include="Tools\Tokenize\EnglishMaximumEntropyTokenizer.cs">
       <SubType>Code</SubType>

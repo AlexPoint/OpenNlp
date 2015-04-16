@@ -8,6 +8,10 @@ using OpenNLP.Tools.Util;
 
 namespace OpenNLP.Tools.Tokenize
 {
+    /// <summary>
+    /// A tokenizer based on rules intended for English language only
+    /// (rule-based tokenizers are language specific)
+    /// </summary>
     public class EnglishRuleBasedTokenizer : AbstractTokenizer
     {
 
@@ -80,6 +84,9 @@ namespace OpenNLP.Tools.Tokenize
             new Regex("(?<!\\-)(?=\\-$)", RegexOptions.Compiled),
             // split after - when at the beginning of a token and not followed by -
             new Regex("(?<=^\\-)(?!\\-)", RegexOptions.Compiled),
+
+            // The two following rules are used to split compound words. Ex: x-ray --> x|-|ray
+            // Not sure this is the right way to go ultimately so remove them if necessary
             // split after - when followed by a letter
             new Regex("(?<=\\-)(?=\\w)", RegexOptions.Compiled),
             // split before - when preceded by a letter

@@ -72,12 +72,6 @@ namespace OpenNLP.Tools.Tokenize
             // split before ':' if not followed directly by figure
             new Regex("((?=:\\D)|(?=:$))", RegexOptions.Compiled),
 
-            // split before 's, 'm, 've, 'll, 're, 'd when at the end of a token (’ == ')
-            new Regex("(?=\\'s$|\\'m$|\\'ve$|\\'ll$|\\'re$|\\'d$|’s$|’m$|’ve$|’ll$|’re$|’d$)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
-            // split after ' at the beginning of a token (and not 's, 'm, 'll, 've, 're or 'd)
-            new Regex("(?<=^\\')(?!s$|m$|ll$|ve$|re$|d$)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
-            new Regex("(?<=^’)(?!s$|m$|ll$|ve$|re$|d$)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
             // split before ' at the end of a token
             new Regex("(?=\\'$)", RegexOptions.Compiled),
             new Regex("(?=’$)", RegexOptions.Compiled),
@@ -86,11 +80,22 @@ namespace OpenNLP.Tools.Tokenize
             new Regex("(?<!\\-)(?=\\-$)", RegexOptions.Compiled),
             // split after - when at the beginning of a token and not followed by -
             new Regex("(?<=^\\-)(?!\\-)", RegexOptions.Compiled),
+            // split after - when followed by a letter
+            new Regex("(?<=\\-)(?=\\w)", RegexOptions.Compiled),
+            // split before - when preceded by a letter
+            new Regex("(?<=\\w)(?=\\-)", RegexOptions.Compiled),
             
             // split before ;, (, ), [, ], {, }, " in all cases
             new Regex("(?=;|\\(|\\)|\\{|\\}|\\[|\\]|\"|…)", RegexOptions.Compiled),
             // split after ;, (, ), [, ], {, }, " in all cases
-            new Regex("(?<=;|\\(|\\)|\\{|\\}|\\[|\\]|\"|…)", RegexOptions.Compiled)
+            new Regex("(?<=;|\\(|\\)|\\{|\\}|\\[|\\]|\"|…)", RegexOptions.Compiled),
+            
+            // split after ' at the beginning of a token (and not 's, 'm, 'll, 've, 're or 'd)
+            new Regex("(?<=^\\')(?!s$|m$|ll$|ve$|re$|d$)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            new Regex("(?<=^’)(?!s$|m$|ll$|ve$|re$|d$)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+            // split before 's, 'm, 've, 'll, 're, 'd when at the end of a token (’ == ')
+            new Regex("(?=\\'s$|\\'m$|\\'ve$|\\'ll$|\\'re$|\\'d$|’s$|’m$|’ve$|’ll$|’re$|’d$)", RegexOptions.IgnoreCase | RegexOptions.Compiled)
         };
 
         private static readonly Regex LettersOnlyRegex = new Regex("^[a-zA-Z]+$", RegexOptions.Compiled);

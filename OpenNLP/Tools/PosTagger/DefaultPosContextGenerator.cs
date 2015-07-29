@@ -239,7 +239,7 @@ namespace OpenNLP.Tools.PosTagger
             var prefixes = new string[PrefixLength];
             for (int currentPrefix = 0; currentPrefix < PrefixLength; currentPrefix++)
             {
-                prefixes[currentPrefix] = lex.Substring(0, (System.Math.Min(currentPrefix + 1, lex.Length)) - (0));
+                prefixes[currentPrefix] = lex.Substring(0, (Math.Min(currentPrefix + 1, lex.Length)) - (0));
             }
             return prefixes;
         }
@@ -249,7 +249,7 @@ namespace OpenNLP.Tools.PosTagger
             var suffixes = new string[SuffixLength];
             for (int currentSuffix = 0; currentSuffix < SuffixLength; currentSuffix++)
             {
-                suffixes[currentSuffix] = lex.Substring(System.Math.Max(lex.Length - currentSuffix - 1, 0));
+                suffixes[currentSuffix] = lex.Substring(Math.Max(lex.Length - currentSuffix - 1, 0));
             }
             return suffixes;
         }

@@ -1446,7 +1446,7 @@ namespace OpenNLP.Tools.Trees
         /// other value.  This has been rewritten to thread, so only one List is used.
         /// 
         /// <i>Implementation note:</i> when we summon up enough courage, this
-        /// method will be changed to take and return a List<W extends TaggedWord>.
+        /// method will be changed to take and return a List of TaggedWord.
         /// </summary>
         /// <param name="ty">
         /// The list in which the tagged yield of the tree will be placed. 
@@ -1627,7 +1627,7 @@ namespace OpenNLP.Tools.Trees
         /// binarized version of a dependency grammar tree, then it will be
         /// flattened back to a dependency grammar tree representation.  Formally,
         /// a node will be removed from the tree when: it is not a terminal or
-        /// preterminal, and its <code>label()</code is <code>equal()</code> to
+        /// preterminal, and its <code>label()</code> is <code>equal()</code> to
         /// the <code>label()</code> of its parent, and all its children will
         /// then be promoted to become children of the parent (in the same
         /// position in the sequence of daughters.
@@ -1643,7 +1643,7 @@ namespace OpenNLP.Tools.Trees
         /// binarized version of a dependency grammar tree, then it will be
         /// flattened back to a dependency grammar tree representation.  Formally,
         /// a node will be removed from the tree when: it is not a terminal or
-        /// preterminal, and its <code>label()</code is <code>equal()</code> to
+        /// preterminal, and its <code>label()</code> is <code>equal()</code> to
         /// the <code>label()</code> of its parent, and all its children will
         /// then be promoted to become children of the parent (in the same
         /// position in the sequence of daughters.
@@ -1688,7 +1688,7 @@ namespace OpenNLP.Tools.Trees
         /// 
         /// Note: If you only want to form this Set so that you can
         /// iterate over it, it is more efficient to simply use the Tree class's
-        /// own <code>iterator() method. This will iterate over the exact same
+        /// own iterator() method. This will iterate over the exact same
         /// elements (but perhaps/probably in a different order).
         /// </summary>
         /// <returns>the <code>Set</code> of all subtrees in the tree</returns>
@@ -1704,7 +1704,7 @@ namespace OpenNLP.Tools.Trees
         /// 
         /// Note: If you only want to form this Collection so that you can
         /// iterate over it, it is more efficient to simply use the Tree class's
-        /// own <code>iterator() method. This will iterate over the exact same
+        /// own iterator() method. This will iterate over the exact same
         /// elements (but perhaps/probably in a different order).
         /// </summary>
         /// <returns>the <code>List</code> of all subtrees in the tree.</returns>
@@ -1719,7 +1719,7 @@ namespace OpenNLP.Tools.Trees
         /// 
         /// Note: If you only want to form this Collection so that you can
         /// iterate over it, it is more efficient to simply use the Tree class's
-        /// own <code>iterator() method. This will iterate over the exact same
+        /// own iterator() method. This will iterate over the exact same
         /// elements (but perhaps/probably in a different order).
         /// </summary>
         /// <param name="n">A collection of nodes to which the subtrees will be added.</param>
@@ -1955,14 +1955,15 @@ namespace OpenNLP.Tools.Trees
         /// A <code>Filter</code> can assume
         /// that it will not be called with a <code>null</code> argument.
         /// 
-        /// For example, the following code excises all PP nodes from a Tree: <br>
-        /// <tt>Filter<Tree> f = new Filter<Tree> {
-        /// public bool accept(Tree t) { <br>
-        /// return ! t.label().value().equals(PP); <br>
-        /// }
+        /// For example, the following code excises all PP nodes from a Tree:
+        /// <code>
+        /// Filter{Tree} f = new Filter{Tree} {
+        ///     public bool accept(Tree t) {
+        ///         return ! t.label().value().equals(PP);
+        ///     }
         /// }; 
         /// tree.prune(f);
-        /// </tt>
+        /// </code>
         /// 
         /// If the root of the tree is pruned, null will be returned.
         /// </summary>

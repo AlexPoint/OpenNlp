@@ -59,7 +59,7 @@ namespace OpenNLP.Tools.Trees
         /// <summary>
         /// Normalize a whole tree -- this method assumes that the argument
         /// that it is passed is the root of a complete <code>Tree</code>.
-        /// It is normally implemented as a Tree-walking routine. <p>
+        /// It is normally implemented as a Tree-walking routine.
         /// This method may return <code>null</code>. This is interpreted to
         /// mean that this is a tree that should not be included in further
         /// processing.  PennTreeReader recognizes this return value, and

@@ -75,7 +75,7 @@ namespace OpenNLP.Tools.Util
           }*/
         
         /// <summary>
-        /// Tired of Properties not behaving like {@code Map<string,string>}s?
+        /// Tired of Properties not behaving like a Dictionary of string
         /// This method will solve that problem for you.
         /// </summary>
         public static Dictionary<string, string> AsMap(Dictionary<string, string> properties)

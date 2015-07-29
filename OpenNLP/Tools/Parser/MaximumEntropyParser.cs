@@ -271,7 +271,7 @@ namespace OpenNLP.Tools.Parser
 						{
 							newDerivations = AdvanceTags(currentParse);
 						}
-						else if (1 == derivationLength) 
+						else if (derivationLength == 1)
 						{
 							if (newDerivationsHeap.Count < k) 
 							{
@@ -626,12 +626,9 @@ namespace OpenNLP.Tools.Parser
 		private Parse[] AdvanceTags(Parse inputParse) 
 		{
 			Parse[] children = inputParse.GetChildren();
-			var words = new string[children.Length];
-			var probabilities = new double[words.Length];
-			for (int childParseIndex = 0; childParseIndex < children.Length; childParseIndex++) 
-			{
-				words[childParseIndex] = (children[childParseIndex]).ToString();
-			}
+		    var words = children.Select(ch => ch.ToString()).ToArray();
+            var probabilities = new double[words.Length];
+
 			Util.Sequence[] tagSequences = posTagger.TopKSequences(words);
 			if (tagSequences.Length == 0) 
 			{

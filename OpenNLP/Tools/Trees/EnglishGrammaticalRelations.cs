@@ -578,9 +578,9 @@ namespace OpenNLP.Tools.Trees
         /// or the preposition head of the PP.
         /// 
         /// Examples:
-        /// "We have no useful information on whether users are at risk" &arr; <code>pcomp</code>(on, are)
-        /// "They heard about you missing classes." &arr; <code>pcomp</code>(about, missing)
-        /// It is warmer in Greece than in Italy &arr; <code>pcomp</code>(than, in)
+        /// "We have no useful information on whether users are at risk" -> <code>pcomp</code>(on, are)
+        /// "They heard about you missing classes." -> <code>pcomp</code>(about, missing)
+        /// It is warmer in Greece than in Italy -> <code>pcomp</code>(than, in)
         /// </summary>
         public static readonly GrammaticalRelation PrepositionalComplement =
             new GrammaticalRelation(GrammaticalRelation.Language.English, "pcomp", "prepositional complement",
@@ -1479,7 +1479,7 @@ namespace OpenNLP.Tools.Trees
 
         /// <summary>
         /// The "goes with" grammatical relation.  This corresponds to use of the GW (goes with) part-of-speech tag
-        /// in the recent Penn Treebanks. It marks partial words that should be combined with some other word. <p>
+        /// in the recent Penn Treebanks. It marks partial words that should be combined with some other word.
         /// 
         /// Example:
         /// "They come here with out legal permission." ->

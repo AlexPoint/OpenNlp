@@ -276,7 +276,7 @@ namespace OpenNLP.Tools.Trees
                 else
                 {
                     throw new ArgumentException("No head rule defined for " + motherCat + " using "
-                        /*+ this.getClass()*/+ " in " + t);
+                        + this.GetType().Name + " in " + t);
                 }
             }
             for (int i = 0; i < how.Length; i++)

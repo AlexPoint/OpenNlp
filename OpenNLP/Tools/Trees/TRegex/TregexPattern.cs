@@ -139,7 +139,7 @@ namespace OpenNLP.Tools.Trees.TRegex
     ///
     /// Relations can be combined using the '&' and '|' operators,
     /// negated with the '!' operator, and made optional with the '?' operator.
-    /// Thus <code> (NP < NN | < NNS) </code> will match an NP node dominating either
+    /// Thus <code> (NP &lt; NN | &lt; NNS) </code> will match an NP node dominating either
     /// an NN or an NNS.  <code> (NP > S & $++ VP) </code> matches an NP that
     /// is both under an S and has a VP as a right sister.
     /// 
@@ -152,7 +152,7 @@ namespace OpenNLP.Tools.Trees.TRegex
     /// expression
     ///
     /// <blockquote>
-    /// <code> NP [< NN | < NNS] & > S </code>
+    /// <code> NP [&lt; NN | &lt; NNS] & > S </code>
     /// </blockquote>
     ///
     ///  matches an NP that (1) dominates either an NN or an NNS, and (2) is under an S.  Without
@@ -161,18 +161,17 @@ namespace OpenNLP.Tools.Trees.TRegex
     /// operator is omitted in a chain of relations, so that the two patterns are equivalent:
     ///
     /// <blockquote>
-    /// <code> (S < VP < NP) </code>
-    /// <code> (S < VP & < NP) </code>
+    /// <code> (S &lt; VP &lt; NP) </code>
+    /// <code> (S &lt; VP & &lt; NP) </code>
     /// </blockquote>
     ///
-    /// As another example, <code> (VP < VV | < NP % NP)
-    /// </code> can be written explicitly as <code> (VP [< VV | [< NP & % NP] ] )
-    /// </code>
+    /// As another example, <code> (VP &lt; VV | &lt; NP % NP)</code> 
+    /// can be written explicitly as <code> (VP [&lt; VV | [&lt; NP & % NP] ] )</code>
     ///
     /// Relations can be negated with the '!' operator, in which case the
     /// expression will match only if there is no node satisfying the relation.
-    /// For example <code> (NP !< NNP) </code> matches only NPs not dominating
-    /// an NNP.  Label descriptions can also be negated with '!': (NP < !NNP|NNS) matches
+    /// For example <code> (NP !&lt; NNP) </code> matches only NPs not dominating
+    /// an NNP.  Label descriptions can also be negated with '!': (NP &lt; !NNP|NNS) matches
     /// NPs dominating some node that is not an NNP or an NNS.
 
     /// Relations can be made optional with the '?' operator.  This way the
@@ -184,7 +183,7 @@ namespace OpenNLP.Tools.Trees.TRegex
     /// In order to consider only the "basic category" of a tree label,
     /// i.e. to ignore functional tags or other annotations on the label,
     /// prefix that node's description with the &#64; symbol.  For example
-    /// <code> (@NP < @/NN.?/) </code>  This can only be used for individual nodes;
+    /// <code> (@NP &lt; @/NN.?/) </code>  This can only be used for individual nodes;
     /// if you want all nodes to use the basic category, it would be more efficient
     /// to use a {@link edu.stanford.nlp.trees.TreeNormalizer} to remove functional
     /// tags before passing the tree to the TregexPattern.
@@ -205,7 +204,7 @@ namespace OpenNLP.Tools.Trees.TRegex
     /// Nodes can be given names (a.k.a. handles) using '='.  A named node will be stored in a
     /// map that maps names to nodes so that if a match is found, the node
     /// corresponding to the named node can be extracted from the map.  For
-    /// example <code> (NP < NNP=name) </code> will match an NP dominating an NNP
+    /// example <code> (NP &lt; NNP=name) </code> will match an NP dominating an NNP
     /// and after a match is found, the map can be queried with the
     /// name to retreived the matched node using {@link TregexMatcher#getNode(String o)}
     /// with (String) argument "name" (<it>not</it> "=name").
@@ -219,7 +218,7 @@ namespace OpenNLP.Tools.Trees.TRegex
     /// For example: the pattern
     ///
     /// <blockquote>
-    /// <code> (@NP <, (@NP $+ (/,/ $+ (@NP $+ /,/=comma))) <- =comma) </code>
+    /// <code> (@NP &lt;, (@NP $+ (/,/ $+ (@NP $+ /,/=comma))) &lt;- =comma) </code>
     /// </blockquote>
     ///
     /// matches only an NP dominating exactly the four node sequence
@@ -253,7 +252,7 @@ namespace OpenNLP.Tools.Trees.TRegex
     /// For example, the pattern (designed for Penn Treebank trees)
     ///
     /// <blockquote>
-    /// <code> @SBAR < /^WH.///-([0-9]+)$/#1%index << (__=empty < (/^-NONE-/ < /^\///T\///-([0-9]+)$/#1%index)) </code>
+    /// <code> @SBAR &lt; /^WH.///-([0-9]+)$/#1%index &lt;&lt; (__=empty &lt; (/^-NONE-/ &lt; /^\///T\///-([0-9]+)$/#1%index)) </code>
     /// </blockquote>
     ///
     /// will match only such that the WH- node under the SBAR is coindexed with the trace node that gets the name <code>empty</code>.
@@ -278,8 +277,8 @@ namespace OpenNLP.Tools.Trees.TRegex
     ///   TregexMatcher matcher = patternMW.matcher(tree); 
     ///   // Iterate over all of the subtrees that matched 
     ///   while (matcher.findNextMatchingNode()) { 
-    ///   &nbsp;&nbsp;Tree match = matcher.getMatch(); 
-    ///   &nbsp;&nbsp;// do what we want to with the subtree 
+    ///     Tree match = matcher.getMatch(); 
+    ///     // do what we want to with the subtree 
     ///   }
     /// </code>
     /// </blockquote>

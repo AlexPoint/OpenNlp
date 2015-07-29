@@ -47,7 +47,7 @@ namespace OpenNLP.Tools.Util
     /// <li> Both make no guarantee about the order in which elements with equal
     /// priority are returned from the queue.  This does <i>not</i> mean that
     /// equal elements are returned in <i>random</i> order.  (In fact they are
-    /// returned in an order which depends on the order of insertion &mdash; but
+    /// returned in an order which depends on the order of insertion em-dash but
     /// the implementations reserve the right to return them in any order
     /// whatsoever.)</li>
     /// </ol>

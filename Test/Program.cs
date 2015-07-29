@@ -64,30 +64,6 @@ namespace Test
             new BinaryGisModelWriter().Persist(model, outputFilePath);
             Console.WriteLine("Output file written.");*/
 
-            // tokenize tests
-            var modelPath = currentDirectory + "../Resources/Models/";
-            //var maxEntTokenizer = new EnglishMaximumEntropyTokenizer(modelPath + "EnglishTok.nbin");
-            var ruleBasedTokenizer = new EnglishRuleBasedTokenizer();
-
-            var trainingFiles = Directory.EnumerateFiles(currentDirectory + "Input/", "*.train");
-            var testData = trainingFiles
-                .SelectMany(f => File.ReadAllLines(f))
-                .Select(l => new TokenizerTestData(l, "|"))
-                .ToList();
-
-            var stopwatch = new Stopwatch();
-            /*stopwatch.Start();
-            var maxEntTokResults = maxEntTokenizer.RunAgainstTestData(testData);
-            stopwatch.Stop();
-            Console.WriteLine("Max ent tok accuracy: {0} ({1} ms)", maxEntTokResults.GetAccuracy(), stopwatch.ElapsedMilliseconds);*/
-
-            stopwatch.Reset();
-            stopwatch.Start();
-            var ruleBasedTokResults = ruleBasedTokenizer.RunAgainstTestData(testData);
-            stopwatch.Stop();
-            Console.WriteLine("rule based tok accuracy: {0} ({1} ms)", ruleBasedTokResults.GetAccuracy(), stopwatch.ElapsedMilliseconds);
-            
-
             // detect tokenization issues
             /*var pathToFile = currentDirectory + "Input/tokenizerIssues.txt";
             var modelPath = currentDirectory + "../Resources/Models/";
@@ -100,11 +76,14 @@ namespace Test
             }*/
 
             // parsing
-            /*var sentence = "This is a generic bank response, which indicates simply that they are not willing to accept the transaction.";
+            //var sentence = "If she wakes up, and she's a little more hurt, or she's a little more concerned that she might not make it out of there in one piece, and I had something to pick a lock with...";
+            //var sentence = "that you can do what you set out to do";
+            //var sentence = "This is a test.";
+            var sentence = "The kids actually get involved in mapping out where the community center should be";
             var tokenizer = new EnglishMaximumEntropyTokenizer(currentDirectory + "../Resources/Models/EnglishTok.nbin");
             var tokens = tokenizer.Tokenize(sentence);
             var modelPath = currentDirectory + "../Resources/Models/";
-            var parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(modelPath, true, false);
+            var parser = new EnglishTreebankParser(modelPath, true, false);
             var parse = parser.DoParse(tokens);
             // Extract dependencies from lexical tree
             var tlp = new PennTreebankLanguagePack();
@@ -117,7 +96,7 @@ namespace Test
             foreach (var dep in dependencies)
             {
                 Console.WriteLine(dep);
-            }*/
+            }
 
             
             Console.WriteLine("===========");

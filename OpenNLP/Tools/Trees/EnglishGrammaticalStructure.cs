@@ -87,7 +87,7 @@ namespace OpenNLP.Tools.Trees
         }*/
 
         /// <summary>
-        /// Destructively modifies this {@code Collection<TypedDependency>}
+        /// Destructively modifies this <code>Collection{TypedDependency}</code>
         /// by collapsing several types of transitive pairs of dependencies.
         /// If called with a tree of dependencies and both CCprocess and
         /// includeExtras set to false, then the tree structure is preserved.
@@ -1297,7 +1297,7 @@ namespace OpenNLP.Tools.Trees
         /// <summary>
         /// Does some hard coding to deal with relation in CONJP. For now we deal with:
         /// but not, if not, instead of, rather than, but rather GO TO negcc
-        /// as well as, not to mention, but also, & GO TO and.
+        /// as well as, not to mention, but also, &amp; GO TO and.
         /// </summary>
         /// <param name="conj">The head dependency of the conjunction marker</param>
         /// <returns>A GrammaticalRelation made from a normalized form of that conjunction.</returns>

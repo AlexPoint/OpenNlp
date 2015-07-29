@@ -173,7 +173,7 @@ namespace OpenNLP.Tools.Trees
         /// rooted at this <code>TreeGraphNode</code>, beginning with
         /// <code>startIndex</code>, and doing a pre-order tree traversal.
         /// Any node which already has an index will not be re-indexed
-        /// &mdash; this is so that we can index the leaves first, and
+        /// em-dash this is so that we can index the leaves first, and
         /// then index the rest.
         /// </summary> 
         /// <param name="startIndex">index for this node</param>

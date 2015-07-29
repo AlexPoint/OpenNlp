@@ -185,7 +185,7 @@ namespace OpenNLP.Tools.Util.Process
 
         /// <summary>
         /// Specifies that all characters <i>c</i> in the range
-        /// <code>low <= <i>c</i> <= high</code>
+        /// <code>low &lt;= <i>c</i> &lt;= high</code>
         /// are word constituents. A word token consists of a word constituent
         /// followed by zero or more word constituents or number constituents.
         /// </summary>
@@ -209,7 +209,7 @@ namespace OpenNLP.Tools.Util.Process
 
         /// <summary>
         /// Specifies that all characters <i>c</i> in the range
-        /// <code>low <= <i>c</i <= high</code>
+        /// <code>low &lt;= <i>c</i> &lt;= high</code>
         /// are white space characters. White space characters serve only to
         /// separate tokens in the input stream.
         /// 
@@ -235,7 +235,7 @@ namespace OpenNLP.Tools.Util.Process
 
         /// <summary>
         /// Specifies that all characters <i>c</i> in the range
-        /// <code>low <= <i>c</i> <= high</code>
+        /// <code>low &lt;= <i>c</i> &lt;= high</code>
         /// are "ordinary" in this tokenizer. See the
         /// <code>ordinaryChar</code> method for more information on a character being ordinary.
         /// </summary>

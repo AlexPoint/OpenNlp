@@ -1880,7 +1880,7 @@ namespace OpenNLP.Tools.Ling
         }
 
         /// <summary>
-        /// Used in dcoref to store discourse information. (marking <TURN> or quotation)
+        /// Used in dcoref to store discourse information. (marking TURN or quotation)
         /// </summary>
         public class UtteranceAnnotation : ICoreAnnotation<int>
         {

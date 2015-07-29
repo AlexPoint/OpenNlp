@@ -25,10 +25,6 @@ namespace OpenNLP.Tools.Trees.TRegex.Tsurgeon
 
         protected char CurChar;
 
-        /** Debug output. */
-        //public  java.io.PrintStream debugStream = System.out;
-        /** Set debug output. */
-        //public  void setDebugStream(java.io.PrintStream ds) { debugStream = ds; }
         private int JjStopAtPos(int pos, int kind)
         {
             jjmatchedKind = kind;

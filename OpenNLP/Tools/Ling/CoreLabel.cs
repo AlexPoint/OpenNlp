@@ -487,7 +487,7 @@ namespace OpenNLP.Tools.Ling
         public static readonly OutputFormat DEFAULT_FORMAT = OutputFormat.VALUE_INDEX;
 
         
-        public string ToString()
+        public override string ToString()
         {
             return ToString(DEFAULT_FORMAT);
         }

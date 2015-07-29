@@ -50,7 +50,6 @@ namespace OpenNLP.Tools.Trees.TRegex.Tsurgeon
     /// Treebank lTrees;
     /// List&lt;Tree&gt; result = Tsurgeon.processPatternOnTrees(matchPattern,Tsurgeon.collectOperations(ps),lTrees);
     /// </pre>
-    /// <p>
     /// 
     /// Note: If you want to apply multiple surgery patterns, you
     /// will not want to call processPatternOnTrees, for each individual

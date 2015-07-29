@@ -15,8 +15,8 @@ namespace OpenNLP.Tools.Util.Process
     /// 
     /// <i>IMPORTANT NOTE:</i>
     /// A TokenizerFactory should also provide two static methods:
-    /// {@code public static TokenizerFactory<? extends HasWord> newTokenizerFactory(); }
-    /// {@code public static TokenizerFactory<Word> newWordTokenizerFactory(String options); }
+    /// - public static TokenizerFactory NewTokenizerFactory();
+    /// - public static TokenizerFactory NewWordTokenizerFactory(string options);
     /// 
     /// These are expected by certain JavaNLP code (e.g., LexicalizedParser),
     /// which wants to produce a TokenizerFactory by reflection.

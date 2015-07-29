@@ -149,7 +149,6 @@ namespace OpenNLP.Tools.Trees
 
         /**
         * Return a GrammaticalStructure suitable for this language/treebank.
-        * <p>
         * <i>Note:</i> This is loaded by reflection so basic treebank use does not require all the Stanford Dependencies code.
         *
         * @return A GrammaticalStructure suitable for this language/treebank.

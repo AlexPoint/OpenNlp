@@ -265,7 +265,7 @@ namespace OpenNLP.Tools.Trees
         /// to determine the heads for this node and all its descendants,
         /// and to store references to the head word node and head tag node
         /// in this node's {@link CoreLabel <code>CoreLabel</code>} and the
-        /// <code>CoreLabel</code>s of all its descendants.<p>
+        /// <code>CoreLabel</code>s of all its descendants.
         /// 
         /// Note that, in contrast to {@link Tree#percolateHeads
         /// <code>Tree.percolateHeads()</code>}, which assumes {@link

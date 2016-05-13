@@ -12,7 +12,8 @@ It provides a number of NLP tools in C#:
 
 This project started as a C# port of the Java OpenNLP tools (initial code was retrieved on http://sharpnlp.codeplex.com). It was moved to Github to improve the code (add new features and fix detected bugs) and create a nuget package.
 
-You can install this library via nuget: Install-Package OpenNp 
+You can install this library via nuget: 
+>Install-Package OpenNp 
 
 ##Quick start
 

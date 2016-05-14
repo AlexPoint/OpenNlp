@@ -21,6 +21,23 @@ You can install this library via nuget:
 
 
 ###Tokenizer
+A tokenizer breaks a text into words, symbols or meaningful elements.
+The historical tokenizers are based on the maxent alogirthm.
+For English, a specific rule-based tokenizer (based on regexes) was created and has a better precision.
+
+```csharp
+// Regular tokenizer
+var modelPath = "path/to/EnglishTok.nbin";
+var sentence = "- Sorry Mrs. Hudson, I'll skip the tea.";
+var tokenizer = new EnglishMaximumEntropyTokenizer(modelPath);
+var tokens = tokenizer.Tokenize(sentence);
+```
+```csharp
+// English tokenizer
+var tokenizer = new EnglishRuleBasedTokenizer();
+var sentence = "- Sorry Mrs. Hudson, I'll skip the tea.";
+var tokens = tokenizer.Tokenize(sentence);
+```
 
 
 ###Part-of-speech tagger

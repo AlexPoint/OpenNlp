@@ -283,7 +283,8 @@ namespace SharpWordNet
 			string record = dataFile.ReadLine();
 			
 			var tokenizer = new Tokenizer(record);
-			int offset = int.Parse(tokenizer.NextToken());
+		    var nextToken = tokenizer.NextToken();
+			int offset = int.Parse(nextToken);
 
 
 		    var nt = int.Parse(tokenizer.NextToken());

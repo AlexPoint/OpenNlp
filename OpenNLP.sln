@@ -24,8 +24,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpEntropy", "SharpEntrop
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpEntropySqlite", "SharpEntropy\SharpEntropySqlite\SharpEntropySqlite.csproj", "{0B266E2E-A9C3-4C2C-B7BA-86F553E30F24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{180AB859-BCD3-48D4-A148-A10DA41FFDAF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataFileConverter", "DataFileConverter\DataFileConverter.csproj", "{637BCF7C-D995-4D43-8FC6-01177F7A0654}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trainer", "Trainer\Trainer.csproj", "{2125CB02-B903-4850-88DA-1B83980E25B1}"
@@ -131,16 +129,6 @@ Global
 		{0B266E2E-A9C3-4C2C-B7BA-86F553E30F24}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0B266E2E-A9C3-4C2C-B7BA-86F553E30F24}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0B266E2E-A9C3-4C2C-B7BA-86F553E30F24}.Release|x86.ActiveCfg = Release|Any CPU
-		{180AB859-BCD3-48D4-A148-A10DA41FFDAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{180AB859-BCD3-48D4-A148-A10DA41FFDAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{180AB859-BCD3-48D4-A148-A10DA41FFDAF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{180AB859-BCD3-48D4-A148-A10DA41FFDAF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{180AB859-BCD3-48D4-A148-A10DA41FFDAF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{180AB859-BCD3-48D4-A148-A10DA41FFDAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{180AB859-BCD3-48D4-A148-A10DA41FFDAF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{180AB859-BCD3-48D4-A148-A10DA41FFDAF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{180AB859-BCD3-48D4-A148-A10DA41FFDAF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{180AB859-BCD3-48D4-A148-A10DA41FFDAF}.Release|x86.ActiveCfg = Release|Any CPU
 		{637BCF7C-D995-4D43-8FC6-01177F7A0654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{637BCF7C-D995-4D43-8FC6-01177F7A0654}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{637BCF7C-D995-4D43-8FC6-01177F7A0654}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

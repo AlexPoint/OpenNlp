@@ -7,7 +7,13 @@ using System.Windows.Forms;
 using System.Data;
 using System.Text;
 using System.Configuration;
+using OpenNLP.Tools.Chunker;
+using OpenNLP.Tools.Coreference.Similarity;
+using OpenNLP.Tools.Lang.English;
+using OpenNLP.Tools.NameFind;
 using OpenNLP.Tools.Parser;
+using OpenNLP.Tools.PosTagger;
+using OpenNLP.Tools.SentenceDetect;
 using OpenNLP.Tools.Tokenize;
 
 namespace ToolsExample
@@ -35,13 +41,13 @@ namespace ToolsExample
 
 		private readonly string _modelPath;
 
-		private OpenNLP.Tools.SentenceDetect.MaximumEntropySentenceDetector _sentenceDetector;
-		private OpenNLP.Tools.Tokenize.AbstractTokenizer _tokenizer;
-		private OpenNLP.Tools.PosTagger.EnglishMaximumEntropyPosTagger _posTagger;
-		private OpenNLP.Tools.Chunker.EnglishTreebankChunker _chunker;
-        private OpenNLP.Tools.Parser.EnglishTreebankParser _parser;
-		private OpenNLP.Tools.NameFind.EnglishNameFinder _nameFinder;
-        private OpenNLP.Tools.Lang.English.TreebankLinker _coreferenceFinder;
+		private MaximumEntropySentenceDetector _sentenceDetector;
+		private AbstractTokenizer _tokenizer;
+		private EnglishMaximumEntropyPosTagger _posTagger;
+		private EnglishTreebankChunker _chunker;
+        private EnglishTreebankParser _parser;
+		private EnglishNameFinder _nameFinder;
+        private TreebankLinker _coreferenceFinder;
 
 		public MainForm()
 		{
@@ -326,7 +332,7 @@ namespace ToolsExample
 		{
 			if (_sentenceDetector == null)
 			{
-				_sentenceDetector = new OpenNLP.Tools.SentenceDetect.EnglishMaximumEntropySentenceDetector(_modelPath + "EnglishSD.nbin");
+				_sentenceDetector = new EnglishMaximumEntropySentenceDetector(_modelPath + "EnglishSD.nbin");
 			}
 
 			return _sentenceDetector.SentenceDetect(paragraph);
@@ -336,7 +342,6 @@ namespace ToolsExample
 		{
 			if (_tokenizer == null)
 			{
-				//_tokenizer = new OpenNLP.Tools.Tokenize.EnglishMaximumEntropyTokenizer(_modelPath + "EnglishTok.nbin");
 				_tokenizer = new EnglishRuleBasedTokenizer();
 			}
 
@@ -347,7 +352,7 @@ namespace ToolsExample
 		{
 			if (_posTagger == null)
 			{
-				_posTagger = new OpenNLP.Tools.PosTagger.EnglishMaximumEntropyPosTagger(_modelPath + "EnglishPOS.nbin", _modelPath + @"\Parser\tagdict");
+				_posTagger = new EnglishMaximumEntropyPosTagger(_modelPath + "EnglishPOS.nbin", _modelPath + @"\Parser\tagdict");
 			}
 
 			return _posTagger.Tag(tokens);
@@ -357,7 +362,7 @@ namespace ToolsExample
 		{
 			if (_chunker == null)
 			{
-				_chunker = new OpenNLP.Tools.Chunker.EnglishTreebankChunker(_modelPath + "EnglishChunk.nbin");
+				_chunker = new EnglishTreebankChunker(_modelPath + "EnglishChunk.nbin");
 			}
 			
 			return string.Join(" ", _chunker.GetChunks(tokens, tags));
@@ -367,7 +372,7 @@ namespace ToolsExample
 		{
 			if (_parser == null)
 			{
-				_parser = new OpenNLP.Tools.Parser.EnglishTreebankParser(_modelPath, true, false);
+				_parser = new EnglishTreebankParser(_modelPath, true, false);
 			}
 
 			return _parser.DoParse(sentence);
@@ -377,18 +382,18 @@ namespace ToolsExample
 		{
 			if (_nameFinder == null)
 			{
-				_nameFinder = new OpenNLP.Tools.NameFind.EnglishNameFinder(_modelPath + "namefind\\");
+				_nameFinder = new EnglishNameFinder(_modelPath + "namefind\\");
 			}
 
 			var models = new[] {"date", "location", "money", "organization", "percentage", "person", "time"};
 			return _nameFinder.GetNames(models, sentence);
 		}
 
-        private string FindNames(OpenNLP.Tools.Parser.Parse sentenceParse)
+        private string FindNames(Parse sentenceParse)
         {
             if (_nameFinder == null)
             {
-                _nameFinder = new OpenNLP.Tools.NameFind.EnglishNameFinder(_modelPath + "namefind\\");
+                _nameFinder = new EnglishNameFinder(_modelPath + "namefind\\");
             }
 
             var models = new[] { "date", "location", "money", "organization", "percentage", "person", "time" };
@@ -399,14 +404,14 @@ namespace ToolsExample
         {
             if (_coreferenceFinder == null)
             {
-                _coreferenceFinder = new OpenNLP.Tools.Lang.English.TreebankLinker(_modelPath + "coref");
+                _coreferenceFinder = new TreebankLinker(_modelPath + "coref");
             }
 
-            var parsedSentences = new List<OpenNLP.Tools.Parser.Parse>();
+            var parsedSentences = new List<Parse>();
 
             foreach (string sentence in sentences)
             {
-                OpenNLP.Tools.Parser.Parse sentenceParse = ParseSentence(sentence);
+                Parse sentenceParse = ParseSentence(sentence);
                 parsedSentences.Add(sentenceParse);
             }
             return _coreferenceFinder.GetCoreferenceParse(parsedSentences.ToArray());
@@ -416,7 +421,7 @@ namespace ToolsExample
 
         private void btnGender_Click(object sender, EventArgs e)
         {
-            StringBuilder output = new StringBuilder();
+            var output = new StringBuilder();
 
             string[] sentences = SplitSentences(_txtIn.Text);
             
@@ -434,7 +439,7 @@ namespace ToolsExample
 
                 output.Append(posTaggedSentence);
                 output.Append("\r\n");
-                output.Append(OpenNLP.Tools.Coreference.Similarity.GenderModel.GenderMain(_modelPath + "coref\\gen", posTaggedSentence));
+                output.Append(GenderModel.GenderMain(_modelPath + "coref\\gen", posTaggedSentence));
                 output.Append("\r\n\r\n");
             }
 
@@ -461,7 +466,7 @@ namespace ToolsExample
 
                 output.Append(posTaggedSentence);
                 output.Append("\r\n");
-                output.Append(OpenNLP.Tools.Coreference.Similarity.SimilarityModel.SimilarityMain(_modelPath + "coref\\sim", posTaggedSentence));
+                output.Append(SimilarityModel.SimilarityMain(_modelPath + "coref\\sim", posTaggedSentence));
                 output.Append("\r\n\r\n");
             }
 

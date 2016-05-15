@@ -17,26 +17,7 @@ namespace Trainer
 
         static void Main(string[] args)
         {
-            /*var testFilePath = CurrentDirectory + "Input/Tokenize/test.train";
-            MaximumEntropyTokenizer.Train(testFilePath, 5, 1);*/
-
             OptimizeTokenizerTraining(true);
-            //OptimizeSentenceDetectionTraining();
-
-            /*// tests
-            Console.WriteLine("Running tests...");
-            var tokenizer = new MaximumEntropyTokenizer(model);
-            var tests = new List<string>()
-            {
-                "It was built of a bright brick throughout; its skyline was fantastic, and even its ground plan was wild.",
-            };
-            foreach (var test in tests)
-            {
-                Console.WriteLine(test);
-                var tokens = tokenizer.Tokenize(test);
-                Console.WriteLine(string.Join("|", tokens));
-            }*/
-
             Console.WriteLine("OK");
             Console.ReadKey();
         }

@@ -342,7 +342,7 @@ namespace ToolsExample
 		{
 			if (_tokenizer == null)
 			{
-				_tokenizer = new EnglishRuleBasedTokenizer();
+				_tokenizer = new EnglishRuleBasedTokenizer(false);
 			}
 
 			return _tokenizer.Tokenize(sentence);

@@ -15,6 +15,25 @@ namespace OpenNLP.Tools.Tokenize
     public class EnglishRuleBasedTokenizer : AbstractTokenizer
     {
         private static readonly Regex WhitespaceRegex = new Regex("\\s+", RegexOptions.Compiled);
+        private readonly Regex _tokenizationRegex;
+
+        // Constructors --------------
+
+        /// <summary>
+        /// Base constructor for the rule based tokenizer for English language.
+        /// </summary>
+        /// <param name="splitOnHyphen">Wether words with hyphens should be tokenized.</param>
+        public EnglishRuleBasedTokenizer(bool splitOnHyphen)
+        {
+            var tokenizationRules = TokenizationRules;
+            if (splitOnHyphen)
+            {
+                tokenizationRules.AddRange(HyphenSpecificTokenizationRules);
+            }
+            _tokenizationRegex = new Regex(string.Format("({0})", string.Join("|", tokenizationRules)), RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        }
+
+        // Methods ------------------
 
         public override Span[] TokenizePositions(string input)
         {
@@ -92,13 +111,6 @@ namespace OpenNLP.Tools.Tokenize
             // split after - when at the beginning of a token and not followed by -
             "(?<=^\\-)(?!\\-)",
 
-            // The two following rules are used to split compound words. Ex: x-ray --> x|-|ray
-            // Not sure this is the right way to go ultimately so remove them if necessary
-            // split after - when followed by a letter
-            "(?<=\\-)(?=\\w)",
-            // split before - when preceded by a letter
-            "(?<=\\w)(?=\\-)",
-            
             // split before ;, (, ), [, ], {, }, " in all cases
             "(?=;|\\(|\\)|\\{|\\}|\\[|\\]|\"|…)",
             // split after ;, (, ), [, ], {, }, " in all cases
@@ -111,7 +123,17 @@ namespace OpenNLP.Tools.Tokenize
             // split before 's, 'm, 've, 'll, 're, 'd when at the end of a token (’ == ')
             "(?=\\'s$|\\'m$|\\'ve$|\\'ll$|\\'re$|\\'d$|’s$|’m$|’ve$|’ll$|’re$|’d$)"
         };
-        private static readonly Regex TokenizationRegex = new Regex(string.Format("({0})", string.Join("|", TokenizationRules)), RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static readonly List<string> HyphenSpecificTokenizationRules = new List<string>()
+        {
+            // The two following rules are used to split compound words. Ex: x-ray --> x|-|ray
+            // Not sure this is the right way to go ultimately so remove them if necessary
+            // split after - when followed by a letter
+            "(?<=\\-)(?=\\w)",
+            // split before - when preceded by a letter
+            "(?<=\\w)(?=\\-)",
+        };
+
         private static readonly Regex LettersOnlyRegex = new Regex("^[a-zA-Z]+$", RegexOptions.Compiled);
         private IEnumerable<Span> SplitToken(string input, Span span)
         {
@@ -127,7 +149,7 @@ namespace OpenNLP.Tools.Tokenize
                 return new List<Span>(){ span };
             }
 
-            var splitTokens = TokenizationRegex.Split(token);
+            var splitTokens = _tokenizationRegex.Split(token);
 
             var spans = new List<Span>();
             var currentStart = span.Start;

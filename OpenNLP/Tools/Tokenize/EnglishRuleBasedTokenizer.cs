@@ -56,22 +56,37 @@ namespace OpenNLP.Tools.Tokenize
                 .ToList();
 
             // tokenize the last .
-            var lastSpanWithWordChar = tokenSpans.LastOrDefault(sp => Regex.IsMatch(input.Substring(sp.Start, sp.Length()), "\\w+"));
-            if (lastSpanWithWordChar != null)
+            var indexOfLastTokenWithWordChar = -1;
+            for (var i = tokenSpans.Count - 1; i >= 0; i--)
             {
-                var indexOfLastTokenWithWordChar = tokenSpans.LastIndexOf(lastSpanWithWordChar);
-                if (input.Substring(lastSpanWithWordChar.Start, lastSpanWithWordChar.Length()).EndsWith("."))
+                var span = tokenSpans[i];
+                if (input.Substring(span.Start, span.Length()).EndsWith("."))
                 {
-                    tokenSpans.RemoveAt(indexOfLastTokenWithWordChar);
-                    var lastSpans = new List<Span>()
-                    {
-                        new Span(lastSpanWithWordChar.Start, lastSpanWithWordChar.End - 1),
-                        new Span(lastSpanWithWordChar.End - 1, lastSpanWithWordChar.End)
-                    };
-                    tokenSpans.InsertRange(indexOfLastTokenWithWordChar, lastSpans);
+                    // We found a token ending with a '.'
+                    // Split it outside the loop!
+                    indexOfLastTokenWithWordChar = i;
+                    break;
+                }
+
+                // If we find a token with at least one word letter, stop looking for a '.'
+                if (Regex.IsMatch(input.Substring(span.Start, span.Length()), "\\w+"))
+                {
+                    break;
                 }
             }
 
+            if (indexOfLastTokenWithWordChar >= 0)
+            {
+                var lastSpanWithWordChar = tokenSpans[indexOfLastTokenWithWordChar];
+                tokenSpans.RemoveAt(indexOfLastTokenWithWordChar);
+                var lastSpans = new List<Span>()
+                {
+                    new Span(lastSpanWithWordChar.Start, lastSpanWithWordChar.End - 1),
+                    new Span(lastSpanWithWordChar.End - 1, lastSpanWithWordChar.End)
+                };
+                tokenSpans.InsertRange(indexOfLastTokenWithWordChar, lastSpans);
+            }
+            
             return tokenSpans.ToArray();
         }
 
@@ -102,9 +117,16 @@ namespace OpenNLP.Tools.Tokenize
             // split before ':' if not followed directly by figure
             "((?=:\\D)|(?=:$))",
 
-            // split before ' at the end of a token
+            // split after '/' if not followed directly by figure
+            "(?<=\\/)(?!\\d)",
+            // split before '/' if not followed directly by figure
+            "((?=\\/\\D)|(?=\\/$))",
+
+            // split before ' at the end of a token (or before non word character)
             "(?=\\'$)",
+            "(?=\\'\\W)",
             "(?=’$)",
+            "(?=’\\W)",
 
             // split before - when at the end of a token and not preceded by -
             "(?<!\\-)(?=\\-$)",
@@ -150,7 +172,7 @@ namespace OpenNLP.Tools.Tokenize
             }
 
             var splitTokens = _tokenizationRegex.Split(token);
-
+            
             var spans = new List<Span>();
             var currentStart = span.Start;
             foreach (var splitToken in splitTokens)

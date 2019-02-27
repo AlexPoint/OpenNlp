@@ -15,6 +15,9 @@ This project started as a C# port of the Java OpenNLP tools (initial code was re
 You can install this library via nuget: 
 >Install-Package OpenNp 
 
+For use with .net Core applications, the System.Runtime.Caching nuget package is also required for full functionality:
+>Install-Package System.Runtime.Caching
+
 ##Quick start
 
 To test easily the various NLP tools, run the ToolsExample winform project.

@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace OpenNLP.Tools.Coreference.Resolver
 {
@@ -38,7 +39,7 @@ namespace OpenNLP.Tools.Coreference.Resolver
 		public DefaultNonReferentialResolver(string projectName, string name, ResolverMode mode)
 		{
 			mResolverMode = mode;
-            mModelName = projectName + "\\" + name + "_nr";
+            mModelName = Path.Combine(projectName, name + "_nr");
 			if (mode == ResolverMode.Train)
 			{
                 mEvents = new List<SharpEntropy.TrainingEvent>();

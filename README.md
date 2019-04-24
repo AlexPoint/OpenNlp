@@ -31,7 +31,7 @@ Technically, the sentence detector will compute the likelihood that a specific c
 ```csharp
 var paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
 var modelPath = "path/to/EnglishSD.nbin";
-var sentenceDetector = EnglishMaximumEntropySentenceDetector(modelPath);
+var sentenceDetector = new EnglishMaximumEntropySentenceDetector(modelPath);
 var sentences = sentenceDetector.SentenceDetect(paragraph);
 /* 
  * sentences = ["Mr. & Mrs. Smith is a 2005 American romantic comedy action film.", 

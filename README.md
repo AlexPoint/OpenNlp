@@ -13,7 +13,7 @@ It provides a number of NLP tools in C#:
 This project started as a C# port of the Java OpenNLP tools (initial code was retrieved on http://sharpnlp.codeplex.com). It was moved to Github to improve the code (add new features and fix detected bugs) and create a nuget package.
 
 You can install this library via nuget: 
->Install-Package OpenNp 
+>Install-Package OpenNlp 
 
 For use with .net Core applications, the System.Runtime.Caching nuget package is also required for full functionality:
 >Install-Package System.Runtime.Caching
@@ -31,7 +31,7 @@ Technically, the sentence detector will compute the likelihood that a specific c
 ```csharp
 var paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
 var modelPath = "path/to/EnglishSD.nbin";
-var sentenceDetector = EnglishMaximumEntropySentenceDetector(modelPath);
+var sentenceDetector = new EnglishMaximumEntropySentenceDetector(modelPath);
 var sentences = sentenceDetector.SentenceDetect(paragraph);
 /* 
  * sentences = ["Mr. & Mrs. Smith is a 2005 American romantic comedy action film.", 

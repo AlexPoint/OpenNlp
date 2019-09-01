@@ -17,6 +17,11 @@
             <param name="con">a connection</param>
             <returns>the index of the added element in the collection</returns>
         </member>
+        <member name="P:Netron.Lithium.ConnectionCollection.Item(System.Int32)">
+            <summary>
+            integer indexer; gets the connection stored in the collection in the given position
+            </summary>
+        </member>
         <member name="M:Netron.Lithium.ConnectionCollection.Remove(Netron.Lithium.Connection)">
             <summary>
             Removes a connection from the collection
@@ -30,14 +35,14 @@
             <param name="one">the 'from' or 'to' (ShapeBase) part of the connection</param>
             <param name="two">the complementary 'from' or 'to' (ShapeBase) part of the connection</param>
         </member>
-        <member name="P:Netron.Lithium.ConnectionCollection.Item(System.Int32)">
-            <summary>
-            integer indexer; gets the connection stored in the collection in the given position
-            </summary>
-        </member>
         <member name="T:Netron.Lithium.ShapeCollection">
             <summary>
             STC of shapes
+            </summary>
+        </member>
+        <member name="E:Netron.Lithium.ShapeCollection.OnShapeAdded">
+            <summary>
+            Occurse when a shape is added to the collection
             </summary>
         </member>
         <member name="M:Netron.Lithium.ShapeCollection.Add(Netron.Lithium.ShapeBase)">
@@ -46,17 +51,6 @@
             </summary>
             <param name="shape">a ShapeBase object</param>
             <returns>the index of the added object in the collection</returns>
-        </member>
-        <member name="M:Netron.Lithium.ShapeCollection.Remove(Netron.Lithium.ShapeBase)">
-            <summary>
-            Removes the connection from the collection
-            </summary>
-            <param name="shape">a ShapeBase object</param>
-        </member>
-        <member name="E:Netron.Lithium.ShapeCollection.OnShapeAdded">
-            <summary>
-            Occurse when a shape is added to the collection
-            </summary>
         </member>
         <member name="P:Netron.Lithium.ShapeCollection.Item(System.Int32)">
             <summary>
@@ -69,9 +63,124 @@
             Gets the connection (if any) from the collection with the given UID
             </summary>
         </member>
+        <member name="M:Netron.Lithium.ShapeCollection.Remove(Netron.Lithium.ShapeBase)">
+            <summary>
+            Removes the connection from the collection
+            </summary>
+            <param name="shape">a ShapeBase object</param>
+        </member>
         <member name="T:Netron.Lithium.Connection">
             <summary>
             Represents the connection between two connectors
+            </summary>
+        </member>
+        <member name="F:Netron.Lithium.Connection.from">
+            <summary>
+            the shape where the connection starts
+            </summary>
+        </member>
+        <member name="F:Netron.Lithium.Connection.to">
+            <summary>
+            the shape where the connection ends
+            </summary>
+        </member>
+        <member name="F:Netron.Lithium.Connection.start">
+            <summary>
+            the start and end points
+            </summary>
+        </member>
+        <member name="F:Netron.Lithium.Connection.end">
+            <summary>
+            the start and end points
+            </summary>
+        </member>
+        <member name="F:Netron.Lithium.Connection.currentPen">
+            <summary>
+            the pen used to draw the connection,
+            can switch depending on the hovering state e.g.
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.Connection.From">
+            <summary>
+            Gets or sets the shape where the connection starts
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.Connection.To">
+            <summary>
+            Gets or sets where the connection ends
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.Connection.Start">
+            <summary>
+            Get the point where the connection starts
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.Connection.End">
+            <summary>
+            Gets the point where connection ends
+            </summary>
+        </member>
+        <member name="M:Netron.Lithium.Connection.#ctor">
+            <summary>
+            Default ctor
+            </summary>
+        </member>
+        <member name="M:Netron.Lithium.Connection.#ctor(Netron.Lithium.ShapeBase,Netron.Lithium.ShapeBase)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="from">the shape where the connection starts</param>
+            <param name="to">the shape where the connection ends</param>
+        </member>
+        <member name="M:Netron.Lithium.Connection.#ctor(Netron.Lithium.ShapeBase,Netron.Lithium.ShapeBase,System.Drawing.Color)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="from">the shape where the connection starts</param>
+            <param name="to">the shape where the connection ends</param>
+            <param name="color">the color of the connection</param>
+        </member>
+        <member name="M:Netron.Lithium.Connection.#ctor(Netron.Lithium.ShapeBase,Netron.Lithium.ShapeBase,System.Drawing.Color,System.Single)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="from">the shape where the connection starts</param>
+            <param name="to">the shape where the connection ends</param>
+            <param name="color">the color of the connection</param>
+            <param name="width">the (float) width of the connection (in pixels)</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Netron.Lithium.Connection.Paint(System.Drawing.Graphics)" -->
+        <member name="M:Netron.Lithium.Connection.Invalidate">
+            <summary>
+            Invalidates the connection
+            </summary>
+        </member>
+        <member name="M:Netron.Lithium.Connection.Hit(System.Drawing.Point)">
+            <summary>
+            Tests if the mouse hits this connection
+            </summary>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Netron.Lithium.Connection.Move(System.Drawing.Point)">
+            <summary>
+            Moves the connection with the given shift
+            </summary>
+            <param name="p"></param>
+        </member>
+        <member name="T:Netron.Lithium.ShowProps">
+            <summary>
+            the info coming with the show-props event
+            </summary>
+        </member>
+        <member name="T:Netron.Lithium.ShapeData">
+            <summary>
+            to pass shape data to the outside world
+            </summary>
+        </member>
+        <member name="T:Netron.Lithium.Messager">
+            <summary>
+            General purpose delegate to pass info to the outside world
             </summary>
         </member>
         <member name="T:Netron.Lithium.Entity">
@@ -129,6 +238,27 @@
             the visibility bit
             </summary>
         </member>
+        <member name="P:Netron.Lithium.Entity.IsSelected">
+            <summary>
+            Gets or sets whether the entity is selected
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.Entity.Site">
+            <summary>
+            Gets or sets the site of the entity
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.Entity.UID">
+            <summary>
+            The globally unique identifier of the entity.
+            Mostly useful for serialization.
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.Entity.Font">
+            <summary>
+            The font used for drawing the text (if any)
+            </summary>
+        </member>
         <member name="M:Netron.Lithium.Entity.#ctor">
             <summary>
             Default ctor
@@ -163,136 +293,6 @@
             Moves the entity on the canvas
             </summary>
             <param name="p">the shifting vector, not an absolute position!</param>
-        </member>
-        <member name="P:Netron.Lithium.Entity.IsSelected">
-            <summary>
-            Gets or sets whether the entity is selected
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.Entity.Site">
-            <summary>
-            Gets or sets the site of the entity
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.Entity.UID">
-            <summary>
-            The globally unique identifier of the entity.
-            Mostly useful for serialization.
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.Entity.Font">
-            <summary>
-            The font used for drawing the text (if any)
-            </summary>
-        </member>
-        <member name="F:Netron.Lithium.Connection.from">
-            <summary>
-            the shape where the connection starts
-            </summary>
-        </member>
-        <member name="F:Netron.Lithium.Connection.to">
-            <summary>
-            the shape where the connection ends
-            </summary>
-        </member>
-        <member name="F:Netron.Lithium.Connection.start">
-            <summary>
-            the start and end points
-            </summary>
-        </member>
-        <member name="F:Netron.Lithium.Connection.end">
-            <summary>
-            the start and end points
-            </summary>
-        </member>
-        <member name="F:Netron.Lithium.Connection.currentPen">
-            <summary>
-            the pen used to draw the connection,
-            can switch depending on the hovering state e.g.
-            </summary>
-        </member>
-        <member name="M:Netron.Lithium.Connection.#ctor">
-            <summary>
-            Default ctor
-            </summary>
-        </member>
-        <member name="M:Netron.Lithium.Connection.#ctor(Netron.Lithium.ShapeBase,Netron.Lithium.ShapeBase)">
-            <summary>
-            Constructor
-            </summary>
-            <param name="from">the shape where the connection starts</param>
-            <param name="to">the shape where the connection ends</param>
-        </member>
-        <member name="M:Netron.Lithium.Connection.#ctor(Netron.Lithium.ShapeBase,Netron.Lithium.ShapeBase,System.Drawing.Color)">
-            <summary>
-            Constructor
-            </summary>
-            <param name="from">the shape where the connection starts</param>
-            <param name="to">the shape where the connection ends</param>
-            <param name="color">the color of the connection</param>
-        </member>
-        <member name="M:Netron.Lithium.Connection.#ctor(Netron.Lithium.ShapeBase,Netron.Lithium.ShapeBase,System.Drawing.Color,System.Single)">
-            <summary>
-            Constructor
-            </summary>
-            <param name="from">the shape where the connection starts</param>
-            <param name="to">the shape where the connection ends</param>
-            <param name="color">the color of the connection</param>
-            <param name="width">the (float) width of the connection (in pixels)</param>
-        </member>
-        <!-- Badly formed XML comment ignored for member "M:Netron.Lithium.Connection.Paint(System.Drawing.Graphics)" -->
-        <member name="M:Netron.Lithium.Connection.Invalidate">
-            <summary>
-            Invalidates the connection
-            </summary>
-        </member>
-        <member name="M:Netron.Lithium.Connection.Hit(System.Drawing.Point)">
-            <summary>
-            Tests if the mouse hits this connection
-            </summary>
-            <param name="p"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Netron.Lithium.Connection.Move(System.Drawing.Point)">
-            <summary>
-            Moves the connection with the given shift
-            </summary>
-            <param name="p"></param>
-        </member>
-        <member name="P:Netron.Lithium.Connection.From">
-            <summary>
-            Gets or sets the shape where the connection starts
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.Connection.To">
-            <summary>
-            Gets or sets where the connection ends
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.Connection.Start">
-            <summary>
-            Get the point where the connection starts
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.Connection.End">
-            <summary>
-            Gets the point where connection ends
-            </summary>
-        </member>
-        <member name="T:Netron.Lithium.ShowProps">
-            <summary>
-            the info coming with the show-props event
-            </summary>
-        </member>
-        <member name="T:Netron.Lithium.ShapeData">
-            <summary>
-            to pass shape data to the outside world
-            </summary>
-        </member>
-        <member name="T:Netron.Lithium.Messager">
-            <summary>
-            General purpose delegate to pass info to the outside world
-            </summary>
         </member>
         <member name="T:Netron.Lithium.ShapeTypes">
             <summary>
@@ -376,6 +376,26 @@
             the root of the diagram
             </summary>
         </member>
+        <member name="P:Netron.Lithium.GraphAbstract.Root">
+            <summary>
+            Gets or sets the root of the diagram
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.GraphAbstract.Description">
+            <summary>
+            The description of the graph
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.GraphAbstract.Shapes">
+            <summary>
+            Gets or sets the shape collection
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.GraphAbstract.Connections">
+            <summary>
+            Gets or sets the connection collection of the control
+            </summary>
+        </member>
         <member name="M:Netron.Lithium.GraphAbstract.#ctor">
             <summary>
             Default ctor
@@ -420,26 +440,6 @@
             DFT of the diagram starting from the root
             </summary>
             <param name="visitor"></param>
-        </member>
-        <member name="P:Netron.Lithium.GraphAbstract.Root">
-            <summary>
-            Gets or sets the root of the diagram
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.GraphAbstract.Description">
-            <summary>
-            The description of the graph
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.GraphAbstract.Shapes">
-            <summary>
-            Gets or sets the shape collection
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.GraphAbstract.Connections">
-            <summary>
-            Gets or sets the connection collection of the control
-            </summary>
         </member>
         <member name="T:Netron.Lithium.IVisitor">
             <summary>
@@ -564,6 +564,11 @@
             Generic Collectioon of GraphML related data
             </summary>
         </member>
+        <member name="P:Netron.Lithium.GraphDataCollection.Item(System.Int32)">
+            <summary>
+            integer indexer
+            </summary>
+        </member>
         <member name="M:Netron.Lithium.GraphDataCollection.Add(System.Object)">
             <summary>
             Adds and object to the collection
@@ -588,11 +593,6 @@
             Overrides the default implementation to collect the data of the collection
             </summary>
             <returns></returns>
-        </member>
-        <member name="P:Netron.Lithium.GraphDataCollection.Item(System.Int32)">
-            <summary>
-            integer indexer
-            </summary>
         </member>
         <member name="T:Netron.Lithium.GraphSerializer">
             <summary>
@@ -749,17 +749,17 @@
             STC of ParentChild collection
             </summary>
         </member>
+        <member name="P:Netron.Lithium.ParentChildCollection.Item(System.Int32)">
+            <summary>
+            integer indexer
+            </summary>
+        </member>
         <member name="M:Netron.Lithium.ParentChildCollection.Add(Netron.Lithium.ParentChild)">
             <summary>
             Adds an item to the collection
             </summary>
             <param name="pc">a ParentChild object</param>
             <returns></returns>
-        </member>
-        <member name="P:Netron.Lithium.ParentChildCollection.Item(System.Int32)">
-            <summary>
-            integer indexer
-            </summary>
         </member>
         <member name="T:Netron.Lithium.Proxy">
             <summary>
@@ -870,81 +870,6 @@
             the level of the shape in the hierarchy
             </summary>
         </member>
-        <member name="M:Netron.Lithium.ShapeBase.#ctor">
-            <summary>
-            Default ctor
-            </summary>
-        </member>
-        <member name="M:Netron.Lithium.ShapeBase.#ctor(Netron.Lithium.LithiumControl)">
-            <summary>
-            Constructor with the site of the shape
-            </summary>
-            <param name="site">the graphcontrol instance to which the shape is attached</param>
-        </member>
-        <member name="M:Netron.Lithium.ShapeBase.Fit">
-            <summary>
-            Resizes the shape's rectangle in function of the containing text
-            </summary>
-        </member>
-        <member name="M:Netron.Lithium.ShapeBase.Expand">
-            <summary>
-            Expand the children, if any
-            </summary>
-        </member>
-        <member name="M:Netron.Lithium.ShapeBase.Collapse(System.Boolean)">
-            <summary>
-            Collapses the children underneath this shape
-            </summary>
-            <param name="change">true to set the expanded field to true</param>
-        </member>
-        <member name="M:Netron.Lithium.ShapeBase.AddChild(System.String)">
-            <summary>
-            Adds a child to this shape
-            </summary>
-            <param name="text">the text of the newly created shape</param>
-            <returns>the create shape</returns>
-        </member>
-        <member name="M:Netron.Lithium.ShapeBase.Init">
-            <summary>
-            Summarizes the initialization used by the constructors
-            </summary>
-        </member>
-        <member name="M:Netron.Lithium.ShapeBase.SetBrush">
-            <summary>
-            Sets the brush corresponding to the backcolor
-            </summary>
-        </member>
-        <member name="M:Netron.Lithium.ShapeBase.Paint(System.Drawing.Graphics)">
-            <summary>
-            Overrides the abstract paint method
-            </summary>
-            <param name="g">a graphics object onto which to paint</param>
-        </member>
-        <member name="M:Netron.Lithium.ShapeBase.Hit(System.Drawing.Point)">
-            <summary>
-            Override the abstract Hit method
-            </summary>
-            <param name="p"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Netron.Lithium.ShapeBase.Invalidate">
-            <summary>
-            Overrides the abstract Invalidate method
-            </summary>
-        </member>
-        <member name="M:Netron.Lithium.ShapeBase.Move(System.Drawing.Point)">
-            <summary>
-            Moves the shape with the given shift
-            </summary>
-            <param name="p">represent a shift-vector, not the absolute position!</param>
-        </member>
-        <member name="M:Netron.Lithium.ShapeBase.Resize(System.Int32,System.Int32)">
-            <summary>
-            Resizes the shape 
-            </summary>
-            <param name="width"></param>
-            <param name="height"></param>
-        </member>
         <member name="P:Netron.Lithium.ShapeBase.ChildNodes">
             <summary>
             Gets or sets the child node collection of this shape
@@ -1030,6 +955,81 @@
             <summary>
             Gets the top coordinate of the rectangle
             </summary>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.#ctor">
+            <summary>
+            Default ctor
+            </summary>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.#ctor(Netron.Lithium.LithiumControl)">
+            <summary>
+            Constructor with the site of the shape
+            </summary>
+            <param name="site">the graphcontrol instance to which the shape is attached</param>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.Fit">
+            <summary>
+            Resizes the shape's rectangle in function of the containing text
+            </summary>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.Expand">
+            <summary>
+            Expand the children, if any
+            </summary>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.Collapse(System.Boolean)">
+            <summary>
+            Collapses the children underneath this shape
+            </summary>
+            <param name="change">true to set the expanded field to true</param>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.AddChild(System.String)">
+            <summary>
+            Adds a child to this shape
+            </summary>
+            <param name="text">the text of the newly created shape</param>
+            <returns>the create shape</returns>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.Init">
+            <summary>
+            Summarizes the initialization used by the constructors
+            </summary>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.SetBrush">
+            <summary>
+            Sets the brush corresponding to the backcolor
+            </summary>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.Paint(System.Drawing.Graphics)">
+            <summary>
+            Overrides the abstract paint method
+            </summary>
+            <param name="g">a graphics object onto which to paint</param>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.Hit(System.Drawing.Point)">
+            <summary>
+            Override the abstract Hit method
+            </summary>
+            <param name="p"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.Invalidate">
+            <summary>
+            Overrides the abstract Invalidate method
+            </summary>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.Move(System.Drawing.Point)">
+            <summary>
+            Moves the shape with the given shift
+            </summary>
+            <param name="p">represent a shift-vector, not the absolute position!</param>
+        </member>
+        <member name="M:Netron.Lithium.ShapeBase.Resize(System.Int32,System.Int32)">
+            <summary>
+            Resizes the shape 
+            </summary>
+            <param name="width"></param>
+            <param name="height"></param>
         </member>
         <member name="T:Netron.Lithium.OvalShape">
             <summary>
@@ -1138,6 +1138,26 @@
             Netron's 'Lithium'  tree control
             </summary>
         </member>
+        <member name="E:Netron.Lithium.LithiumControl.OnShowProps">
+            <summary>
+            notifies the host to show the properties usually in the property grid
+            </summary>
+        </member>
+        <member name="E:Netron.Lithium.LithiumControl.OnNewNode">
+            <summary>
+            occurs when a new node is added to the diagram
+            </summary>
+        </member>
+        <member name="E:Netron.Lithium.LithiumControl.OnInfo">
+            <summary>
+            occurs when certain objects send info out
+            </summary>
+        </member>
+        <member name="E:Netron.Lithium.LithiumControl.OnDeleteNode">
+            <summary>
+            occurs when a shape is deleted
+            </summary>
+        </member>
         <member name="F:Netron.Lithium.LithiumControl.layoutDirection">
             <summary>
             the current layout direction
@@ -1231,6 +1251,46 @@
         <member name="F:Netron.Lithium.LithiumControl.connectionType">
             <summary>
             the type of connection
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.LithiumControl.ConnectionType">
+            <summary>
+            Gets or sets the type of connection drawn
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.LithiumControl.LayoutDirection">
+            <summary>
+            Gets or sets the direction the tree-layout expands the tree
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.LithiumControl.LayoutEnabled">
+            <summary>
+            Gets or sets whether the tree layout algorithm will do its work by default
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.LithiumControl.Shapes">
+            <summary>
+            Gets or sets the shape collection
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.LithiumControl.Connections">
+            <summary>
+            Gets or sets the connection collection
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.LithiumControl.Root">
+            <summary>
+            Gets the root of the diagram
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.LithiumControl.BranchHeight">
+            <summary>
+            Gets or sets the height between the tree branches
+            </summary>
+        </member>
+        <member name="P:Netron.Lithium.LithiumControl.WordSpacing">
+            <summary>
+            Gets or sets the spacing between the nodes
             </summary>
         </member>
         <member name="M:Netron.Lithium.LithiumControl.#ctor">
@@ -1465,70 +1525,15 @@
             <param name="visitor"></param>
             <param name="shape"></param>
         </member>
-        <member name="E:Netron.Lithium.LithiumControl.OnShowProps">
-            <summary>
-            notifies the host to show the properties usually in the property grid
-            </summary>
-        </member>
-        <member name="E:Netron.Lithium.LithiumControl.OnNewNode">
-            <summary>
-            occurs when a new node is added to the diagram
-            </summary>
-        </member>
-        <member name="E:Netron.Lithium.LithiumControl.OnInfo">
-            <summary>
-            occurs when certain objects send info out
-            </summary>
-        </member>
-        <member name="E:Netron.Lithium.LithiumControl.OnDeleteNode">
-            <summary>
-            occurs when a shape is deleted
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.LithiumControl.ConnectionType">
-            <summary>
-            Gets or sets the type of connection drawn
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.LithiumControl.LayoutDirection">
-            <summary>
-            Gets or sets the direction the tree-layout expands the tree
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.LithiumControl.LayoutEnabled">
-            <summary>
-            Gets or sets whether the tree layout algorithm will do its work by default
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.LithiumControl.Shapes">
-            <summary>
-            Gets or sets the shape collection
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.LithiumControl.Connections">
-            <summary>
-            Gets or sets the connection collection
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.LithiumControl.Root">
-            <summary>
-            Gets the root of the diagram
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.LithiumControl.BranchHeight">
-            <summary>
-            Gets or sets the height between the tree branches
-            </summary>
-        </member>
-        <member name="P:Netron.Lithium.LithiumControl.WordSpacing">
-            <summary>
-            Gets or sets the spacing between the nodes
-            </summary>
-        </member>
         <member name="T:Netron.Lithium.DeleteVisitor">
             <summary>
              Deletion of shapes is implemented via a visitor pattern to handle the fact
              that child nodes have to be deleted before its parent 
+            </summary>
+        </member>
+        <member name="E:Netron.Lithium.DeleteVisitor.OnDelete">
+            <summary>
+            Occurs when a shape is deleted
             </summary>
         </member>
         <member name="F:Netron.Lithium.DeleteVisitor.graphAbstract">
@@ -1547,11 +1552,6 @@
             Visits the shape
             </summary>
             <param name="sh"></param>
-        </member>
-        <member name="E:Netron.Lithium.DeleteVisitor.OnDelete">
-            <summary>
-            Occurs when a shape is deleted
-            </summary>
         </member>
         <member name="P:Netron.Lithium.DeleteVisitor.IsDone">
             <summary>

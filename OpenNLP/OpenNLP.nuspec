@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>OpenNLP</id>
-    <version>1.3.4</version>
+    <version>1.3.5</version>
     <authors>AlexPoint</authors>
     <owners>AlexPoint</owners>
     <projectUrl>https://github.com/AlexPoint/OpenNlp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>C# port of the Java OpenNLP tools retrieved from http://sharpnlp.codeplex.com/ (it's not mine!)</description>
-    <releaseNotes>Fixed issue in English detokenizer</releaseNotes>
-    <copyright>Copyright 2016</copyright>
+    <releaseNotes>Add FileStream method</releaseNotes>
+    <copyright>Copyright 2019</copyright>
     <tags>NLP Natural Language Processing</tags>
   </metadata>
 </package>

@@ -25,7 +25,7 @@ namespace OpenNLP.Tools.Tokenize
         /// <param name="splitOnHyphen">Wether words with hyphens should be tokenized.</param>
         public EnglishRuleBasedTokenizer(bool splitOnHyphen)
         {
-            var tokenizationRules = TokenizationRules;
+            var tokenizationRules = new List<string>(TokenizationRules);
             if (splitOnHyphen)
             {
                 tokenizationRules.AddRange(HyphenSpecificTokenizationRules);

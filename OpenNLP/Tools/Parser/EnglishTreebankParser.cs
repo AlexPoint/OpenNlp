@@ -53,18 +53,19 @@ namespace OpenNLP.Tools.Parser
 
 		public EnglishTreebankParser(string dataDirectory, bool useTagDictionary, bool useCaseSensitiveTagDictionary, int beamSize, double advancePercentage)
 		{
-			var buildModelReader = new SharpEntropy.IO.BinaryGisModelReader(dataDirectory + Path.Combine("parser","build.nbin"));
+            var parserModelsSubDirectory = "Parser";
+			var buildModelReader = new SharpEntropy.IO.BinaryGisModelReader(dataDirectory + Path.Combine(parserModelsSubDirectory, "build.nbin"));
 			var buildModel = new SharpEntropy.GisModel(buildModelReader);
 
-			var checkModelReader = new SharpEntropy.IO.BinaryGisModelReader(dataDirectory + Path.Combine("parser","check.nbin"));
+			var checkModelReader = new SharpEntropy.IO.BinaryGisModelReader(dataDirectory + Path.Combine(parserModelsSubDirectory, "check.nbin"));
 			SharpEntropy.IMaximumEntropyModel checkModel = new SharpEntropy.GisModel(checkModelReader);
 
 		    EnglishTreebankPosTagger posTagger = useTagDictionary ? 
-                new EnglishTreebankPosTagger(dataDirectory + Path.Combine("parser","tag.nbin"), dataDirectory + Path.Combine("parser","tagdict"), useCaseSensitiveTagDictionary) 
-		        : new EnglishTreebankPosTagger(dataDirectory + Path.Combine("parser","tag.nbin"));
+                new EnglishTreebankPosTagger(dataDirectory + Path.Combine(parserModelsSubDirectory, "tag.nbin"), dataDirectory + Path.Combine(parserModelsSubDirectory, "tagdict"), useCaseSensitiveTagDictionary) 
+		        : new EnglishTreebankPosTagger(dataDirectory + Path.Combine(parserModelsSubDirectory, "tag.nbin"));
 
-			var chunker = new EnglishTreebankParserChunker(dataDirectory + Path.Combine("parser","chunk.nbin"));
-			var headRules = new EnglishHeadRules(dataDirectory + Path.Combine("parser","head_rules"));
+			var chunker = new EnglishTreebankParserChunker(dataDirectory + Path.Combine(parserModelsSubDirectory, "chunk.nbin"));
+			var headRules = new EnglishHeadRules(dataDirectory + Path.Combine(parserModelsSubDirectory, "head_rules"));
 
 			_parser = new MaximumEntropyParser(buildModel, checkModel, posTagger, chunker, headRules, beamSize, advancePercentage);
 		

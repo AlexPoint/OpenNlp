@@ -55,7 +55,7 @@ namespace OpenNLP.Tools.Tokenize
         
         // Methods ---------------------
 
-        private readonly static Regex WordRegex = new Regex(@"$\w+^", RegexOptions.Compiled);
+        private readonly static Regex WordRegex = new Regex(@"^\w+$", RegexOptions.Compiled);
 
         public override DetokenizationOperation[] GetDetokenizationOperations(string[] tokens)
         {

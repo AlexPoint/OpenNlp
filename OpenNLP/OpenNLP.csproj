@@ -518,6 +518,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>$(SolutionDir)nuget\NuGet.exe pack $(SolutionDir)\OpenNLP\OpenNLP.csproj -Prop Configuration=$(ConfigurationName) -IncludeReferencedProjects</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

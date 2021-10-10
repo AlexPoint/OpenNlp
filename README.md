@@ -1,4 +1,4 @@
-#OpenNlp
+# OpenNlp
 
 OpenNlp is an open source library for Natural Language Processing (NLP). 
 It provides a number of NLP tools in C#:
@@ -15,20 +15,23 @@ This project started as a C# port of the Java OpenNLP tools (initial code was re
 You can install this library via nuget: 
 >Install-Package OpenNLP 
 
-##Quick start
+For use with .net Core applications, the System.Runtime.Caching nuget package is also required for full functionality:
+>Install-Package System.Runtime.Caching
+
+## Quick start
 
 To test easily the various NLP tools, run the ToolsExample winform project.
 You'll find below a more detailed description of the tools and how code snippets to use them directly in your code.
 All NLP tools based on the maxent algorithm need model files to run. You'll find those files for English in Resources/Models. If you want to train your own models (to improve precision on English or to use those tools on other languages), please refer to the last section.
 
-###Sentence splitter
+### Sentence splitter
 A sentence splitter splits a paragraph in sentences. 
 Technically, the sentence detector will compute the likelihood that a specific character ('.', '?' or '!' in the case of English) marks the end of a sentence.
 
 ```csharp
 var paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
 var modelPath = "path/to/EnglishSD.nbin";
-var sentenceDetector = EnglishMaximumEntropySentenceDetector(modelPath);
+var sentenceDetector = new EnglishMaximumEntropySentenceDetector(modelPath);
 var sentences = sentenceDetector.SentenceDetect(paragraph);
 /* 
  * sentences = ["Mr. & Mrs. Smith is a 2005 American romantic comedy action film.", 
@@ -37,7 +40,7 @@ var sentences = sentenceDetector.SentenceDetect(paragraph);
  */
 ```
 
-###Tokenizer
+### Tokenizer
 A tokenizer breaks a text into words, symbols or other meaningful elements.
 The historical tokenizers are based on the maxent algorithm.
 
@@ -60,7 +63,7 @@ var tokens = tokenizer.Tokenize(sentence);
 ```
 
 
-###Part-of-speech tagger
+### Part-of-speech tagger
 A part of speech tagger assigns a part of speech (noun, verb etc.) to each token in a sentence.
 
 ```csharp
@@ -73,7 +76,7 @@ var pos = posTagger.Tag(tokens);
 ```
 For the full list of part of speech abbreviations, please refer to the [Penn Treebank Project](https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html)
 
-###Chunker
+### Chunker
 A chunker is an alternative to a full sentence parser which gives the partial syntactic structure of a sentence (for instance the noun/verg groups).
 ```csharp
 var modelPath = "path/to/EnglishChunk.nbin";
@@ -84,7 +87,7 @@ var chunks = chunker.GetChunks(tokens, tags);
 // chunks = [["NP", "- Sorry Mrs. Hudson"], [",", ","], ["NP", "I"], ["VP", "'ll skip"], ["NP", "the tea"], [".", "."]]
 ```
 
-###Coreference
+### Coreference
 Coference detects all expressions that refer to the same entities in a text.
 
 ```csharp
@@ -97,7 +100,7 @@ var coref = coreferenceFinder.GetCoreferenceParse(sentences);
 // coref = 
 ```
 
-###Name entity recognition
+### Name entity recognition
 Name entity recognition identifies specific entities in sentences. With the current models, you can detect persons, dates, locations, money, percentages and time
 
 ```csharp
@@ -110,7 +113,7 @@ var ner = nameFinder.GetNames(models, sentence);
 // ner = Mr. & Mrs. <person>Smith</person> is a <date>2005</date> American romantic comedy action film.
 ```
 
-###Parse tree
+### Parse tree
 A parser gives the full syntactic structure of a sentence.
 
 ```csharp
@@ -121,9 +124,9 @@ var parse = parser.DoParse(sentence);
 // parse = (TOP (S (NP (: -) (NNP Sorry) (NNP Mrs.) (NNP Hudson)) (, ,) (NP (PRP I)) (VP (MD 'll) (VP (VB skip) (NP (DT the) (NN tea)))) (. .)))
 ```
 
-##Train your models
+## Train your models
 The models proposed are general models for English. If you need those tools on other languages or on a specialized English corpus, you can train your own models.
-To do so, you'll need examples ; for instance for sentence detections, you'll need a (big) number of paragraphs with the sentences appropriately delimited.
+To do so, you'll need examples; for instance for sentence detections, you'll need a (big) number of paragraphs with the sentences appropriately delimited.
 
 ```csharp
 // The file with the training samples; works also with an array of files

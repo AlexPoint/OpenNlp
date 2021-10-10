@@ -1002,7 +1002,7 @@ namespace Netron.Lithium
 		/// </summary>
 		public void DrawTree()
 		{
-			if(!layoutEnabled) return;
+			if(!layoutEnabled || graphAbstract.Root == null) return;
 			Point p = Point.Empty; //the shift vector difference between the original and the moved root
 			try
 			{

@@ -34,6 +34,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using System;
+using System.IO;
 
 namespace OpenNLP.Tools.SentenceDetect
 {
@@ -52,5 +53,13 @@ namespace OpenNLP.Tools.SentenceDetect
 
         public EnglishMaximumEntropySentenceDetector(string name, IEndOfSentenceScanner scanner):
             base(new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(name)), scanner) { }
-	}
+
+        /// <summary>
+        /// Constructor which loads the English sentence detection model transparently using a filestream
+        /// </summary>
+        /// <param name="dataInputStream"></param>
+        public EnglishMaximumEntropySentenceDetector(Stream dataInputStream) :
+            base(new SharpEntropy.GisModel(new SharpEntropy.IO.BinaryGisModelReader(dataInputStream)))
+        { }
+    }
 }
